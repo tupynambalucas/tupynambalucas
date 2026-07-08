@@ -4,15 +4,7 @@
 <p><font size="6">A Full-Stack Developer with a rare profile that merges over 10 years of programming studies with a deep sensitivity for design and UX/UI. My expertise lies in architecting end-to-end digital solutions, developing high-performance applications with TypeScript, and strategically selecting the optimal database technology - PostgreSQL for relational structures or - MongoDB for high-flexibility scenarios—to ensure the final product's scalability and efficiency.</font></p>
   <br>
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="{{ assetsBaseUrl }}/overview.svg{{ urlSuffix }}#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="{{ assetsBaseUrl }}/overview.svg{{ urlSuffix }}" />
-    <img alt="{{ name }}'s GitHub Stats" src="{{ assetsBaseUrl }}/overview.svg{{ urlSuffix }}" height="200px" />
-  </picture>
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="{{ assetsBaseUrl }}/languages.svg{{ urlSuffix }}#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="{{ assetsBaseUrl }}/languages.svg{{ urlSuffix }}" />
-    <img alt="Languages Used" src="{{ assetsBaseUrl }}/languages.svg{{ urlSuffix }}" height="200px" />
-  </picture>
+  {{ overviewImages }}
+  {{ languagesImages }}
 </div>
 <br>
