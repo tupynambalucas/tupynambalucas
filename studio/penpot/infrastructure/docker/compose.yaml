@@ -1,0 +1,97 @@
+name: tupynambalucas-penpot
+
+networks:
+  penpot-net:
+
+services:
+  frontend:
+    container_name: tupynambalucas-penpot-frontend
+    build:
+      context: ../../services/frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '9005:8080'
+    env_file:
+      - .env
+      - ../../services/frontend/.env.frontend
+    depends_on:
+      - backend
+      - exporter
+    networks:
+      - penpot-net
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'tupynambalucas.internal:host-gateway'
+
+  backend:
+    container_name: tupynambalucas-penpot-backend
+    build:
+      context: ../../services/backend
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      valkey:
+        condition: service_healthy
+    networks:
+      - penpot-net
+    env_file:
+      - .env
+      - ../../services/backend/.env.backend
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'tupynambalucas.internal:host-gateway'
+
+  exporter:
+    container_name: tupynambalucas-penpot-exporter
+    build:
+      context: ../../services/exporter
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+      - ../../services/exporter/.env.exporter
+    depends_on:
+      valkey:
+        condition: service_healthy
+    networks:
+      - penpot-net
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'tupynambalucas.internal:host-gateway'
+
+  valkey:
+    container_name: tupynambalucas-penpot-valkey
+    build:
+      context: ../../services/valkey
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - penpot_valkey_data:/data
+    healthcheck:
+      test: ['CMD-SHELL', 'valkey-cli ping | grep PONG']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - penpot-net
+
+  aide:
+    container_name: tupynambalucas-penpot-aide
+    build:
+      context: ../../services/aide
+      dockerfile: Dockerfile
+    restart: no
+    env_file:
+      - ../../services/aide/.env.aide
+    ports:
+      - '4400:4400'
+      - '4401:4401'
+      - '4402:4402'
+      - '4403:4403'
+    networks:
+      - penpot-net
+
+volumes:
+  penpot_frontend_data:
+  penpot_valkey_data:

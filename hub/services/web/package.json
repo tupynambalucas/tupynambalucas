@@ -1,0 +1,53 @@
+{
+  "name": "@tupynambalucas-hub/web",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "tupynambalucas.dev hub Web Application",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/hub/services/web#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "hub/services/web"
+  },
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "vite --mode dev",
+    "build": "tsc -p tsconfig.build.json && vite build",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix --ext .ts,.tsx .",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tupynambalucas-hub/core": "workspace:*",
+    "@tupynambalucas-studio/assets": "workspace:*",
+    "@gsap/react": "catalog:web-stack",
+    "gsap": "catalog:web-stack",
+    "react": "catalog:web-stack",
+    "react-dom": "catalog:web-stack",
+    "react-i18next": "catalog:web-stack",
+    "i18next": "catalog:web-stack",
+    "react-datepicker": "catalog:web-stack",
+    "date-fns": "catalog:shared-stack",
+    "axios": "catalog:shared-stack",
+    "zustand": "catalog:web-stack",
+    "@marsidev/react-turnstile": "catalog:web-stack"
+  },
+  "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*",
+    "prettier": "catalog:tooling-stack",
+    "eslint": "catalog:tooling-stack",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "@vitejs/plugin-react-swc": "catalog:web-stack",
+    "@types/react": "catalog:web-stack",
+    "@types/react-dom": "catalog:web-stack",
+    "@tailwindcss/vite": "catalog:web-stack",
+    "tailwindcss": "catalog:shared-stack",
+    "vite": "catalog:web-stack",
+    "vite-plugin-svgr": "catalog:web-stack"
+  }
+}

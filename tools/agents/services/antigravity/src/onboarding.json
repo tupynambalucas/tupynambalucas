@@ -1,0 +1,9 @@
+{
+  "onboardingComplete": true,
+  "consumerOnboardingComplete": true,
+  "enterpriseOnboardingComplete": true,
+  "onboarded": true,
+  "isOnboarded": true,
+  "agentOnboardingCompleted": "AGENT_ONBOARDING_STATE_COMPLETED",
+  "agent_onboarding_completed": "AGENT_ONBOARDING_STATE_COMPLETED"
+}

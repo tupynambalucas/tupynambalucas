@@ -1,0 +1,59 @@
+---
+slug: /
+title: Introdução às Workspaces
+sidebar_label: Introdução
+sidebar_position: 1
+---
+
+import DocCardList from '@theme/DocCardList';
+
+# Portal de Documentação das Workspaces
+
+Bem-vindo ao **Portal de Documentação das Workspaces do Elo Orgânico**. Esta seção fornece detalhamentos técnicos dedicados à arquitetura, design e engenharia interna de cada Contexto Delimitado (Bounded Context) específico dentro do monorepo.
+
+Para decisões arquiteturais de alto nível do projeto e princípios globais, consulte o [Manual de Arquitetura](/docs/architecture/overview).
+
+## Explorar Workspaces
+
+Selecione uma workspace abaixo para ler sua documentação técnica e visão geral:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/workspaces/hub',
+      label: 'Workspace Hub',
+      description: 'Portal web pessoal, motor de blog e catálogo de serviços.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/profile',
+      label: 'Workspace Profile',
+      description: 'Compilador de estatísticas em Zig e gerador de perfil do GitHub.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/studio',
+      label: 'Workspace Studio',
+      description: 'Identidade visual, tokens de design e sistema de design Penpot self-hosted.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/tools',
+      label: 'Workspace Tools',
+      description: 'Infraestrutura, automação de desenvolvedor de IA e servidores de contexto MCP.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/docs',
+      label: 'Workspace Docs',
+      description: 'Portal do desenvolvedor e base de conhecimento arquitetural em Docusaurus.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/shared',
+      label: 'Workspace Shared',
+      description: 'Paridade de configuração global e auxiliares de todo o monorepo.',
+    },
+  ]}
+/>

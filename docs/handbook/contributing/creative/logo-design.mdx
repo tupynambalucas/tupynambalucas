@@ -1,0 +1,115 @@
+---
+title: Logo Design & Sizes
+description: Logo dimensions, print specifications, and social media formats for tupynambalucas.dev.
+sidebar_position: 2
+---
+
+# Logo Design & Sizing Standards
+
+This document establishes the sizing standards and dimensions for deploying `tupynambalucas.dev`
+brand logos across digital applications, social profiles, print media, and software suites. To
+ensure our logos maintain perfect fidelity, developers and designers must adhere to the standard
+dimensions listed below.
+
+For local monorepo development details, refer to the
+[Studio & Creative Assets](/workspaces/studio/creative-assets) documentation.
+
+---
+
+## 1. Overview of Sizing Constants
+
+Choosing the correct logo dimensions prevents pixelation, maintains brand readability, and ensures
+that visual assets scale perfectly across various screen types and print media.
+
+- **Screen Resolution Standard:** 72 DPI (dots per inch) is standard for web and digital displays.
+- **Print Resolution Standard:** 300 DPI is required for clean, crisp reproduction on physical items.
+- **Vector Formats (SVG):** Highly recommended for digital interfaces because they scale dynamically
+  and compile as dynamic React components.
+- **Raster Formats (PNG):** Preferred for digital platforms requiring transparency (such as website
+  headers or social media profile icons).
+
+---
+
+## 2. Standard Print Sizing
+
+When exporting logos for printing, vector formats should be used to prevent loss of detail. Below
+are the recommended dimensions and DPI requirements:
+
+| Collateral / Use Case  | Recommended Dimensions (inches) | DPI Target | Layout & Placement Notes                           |
+| :--------------------- | :------------------------------ | :--------- | :------------------------------------------------- |
+| **Business Cards**     | 1.5″ × 1.5″                     | 300 DPI    | Typically square; positioned top-left or centered. |
+| **Letterhead**         | 2″ × 2″ or smaller              | 300 DPI    | Subtle scaling (A4 size: 210mm x 297mm).           |
+| **Brochures & Flyers** | 2.0″ to 3.0″ wide               | 300 DPI    | Scales depending on the overall layout.            |
+| **Posters & Banners**  | 5.0″ to 12.0″ wide (or larger)  | 300 DPI    | Adjust dynamically to match the banner canvas.     |
+| **T-Shirts/Merch**     | 8″ × 10″ (centered)             | 300 DPI    | High-resolution vector preferred.                  |
+| **Packaging/Labels**   | 1″ to 3″ wide                   | 300 DPI    | Adjust based on label or package area.             |
+
+### Additional Print Context
+
+- **Business Cards (Overall Card Size):** 3.5 in x 2.0 in (the logo itself is typically 0.75 in x 0.75
+  in).
+- **Mugs (11 oz Standard):** 7.5 in x 3.0 in.
+- **Hats:** 3.0 in to 3.5 in wide.
+- **Tote Bags:** 14.0 in x 16.0 in.
+- **T-Shirt Placements:** Adult chest (3.5 in x 3.5 in), child chest (3.3 in x 3.3 in), maximum print
+  area (14.0 in x 15.0 in), and pocket logos (4.25 in x 5.25 in).
+- **Envelopes (Standard/C4):** 22.9 cm x 32.4 cm (C4 size) or 4.125 in x 9.5 in.
+
+---
+
+## 3. Web and Digital Sizing
+
+For digital channels, keep file sizes minimized (for example, below 30 KB for email signatures) to
+reduce page load time.
+
+| Digital Use Case        | Recommended Dimensions (pixels) | Aspect Ratio  | Format Recommendations                             |
+| :---------------------- | :------------------------------ | :------------ | :------------------------------------------------- |
+| **Website Header Logo** | 250 × 100 px (average)          | Flexible      | PNG (for transparency) or SVG.                     |
+| **Favicon**             | 16 × 16 px or 32 × 32 px        | 1:1           | ICO or transparent PNG.                            |
+| **Email Signature**     | 320 × 100 px                    | 3.2:1         | Keep under 30 KB (typically 300-400px x 70-100px). |
+| **Mobile App Icon**     | 512 × 512 px                    | 1:1           | PNG format preferred for application stores.       |
+| **Mobile App Logo**     | 864 × 864 px (design)           | 1:1           | Canvas size used for high-fidelity assets.         |
+| **Desktop App Icon**    | 256 × 256 px                    | 1:1           | Vector format recommended for high-res screens.    |
+| **Banner Logo**         | 1800 × 200 px                   | 9:1           | Horizontally oriented banner graphics.             |
+| **Product Packaging**   | 1920 × 1020 px                  | 16:9 (approx) | High-definition digital previews.                  |
+
+### CMS and E-Commerce Platform Specifics
+
+- **WordPress Headers:** Horizontal logos should target 250 x 45 px or 250 x 55 px.
+- **Shopify Themes:** The Parallax theme, for instance, recommends 410 x 205 px.
+- **Squarespace Templates:** The Bedford theme template targets a logo height of 100 px.
+
+---
+
+## 4. Social Media Sizing
+
+Social media platforms compress uploaded files. Utilizing high-quality PNG formats (or JPGs for
+Instagram) will yield the best visual outcome.
+
+| Social Platform | Profile Picture Dimensions (px) | Cover / Banner Dimensions (px) | Notes & File Types                            |
+| :-------------- | :------------------------------ | :----------------------------- | :-------------------------------------------- |
+| **Facebook**    | 170 × 170                       | 820 × 312                      | Use PNG files for high quality.               |
+| **Instagram**   | 320 × 320                       | N/A                            | Instagram converts all assets to JPG.         |
+| **Twitter (X)** | 400 × 400                       | 1500 × 500                     | Max file size: 5 MB (PNG, JPG, or GIF).       |
+| **LinkedIn**    | 400 × 400                       | 1128 × 191                     | Max file size: 10 MB (PNG, JPG, or GIF).      |
+| **YouTube**     | 800 × 800                       | 2560 × 1440                    | Desktop/TV banner sizes (PNG, JPG, GIF, BMP). |
+| **Twitch**      | 1600 × 1600                     | N/A                            | High-resolution square profiles.              |
+| **Discord**     | 128 × 128                       | N/A                            | Keep to 1:1 aspect ratio; max size 8 MB.      |
+| **Pinterest**   | 165 × 165                       | 800 × 450                      | Profile and showcase boards.                  |
+| **TikTok**      | 200 × 200                       | N/A                            | Circle-cropped profile pictures.              |
+
+---
+
+## 5. Design Software Canvas Recommendations
+
+When launching new logo projects in professional editor suites, establish the following base canvas
+sizes:
+
+### Adobe Photoshop
+
+- **Standard Starter Canvas:** 1000 × 600 px or 500 × 500 px.
+- **Scalable Canvas:** 1200 × 1200 px (permits easy scaling down without visual distortion).
+
+### Adobe Illustrator
+
+- **Standard Canvas:** 320 × 500 px (optimized for mobile viewport aspect ratios).

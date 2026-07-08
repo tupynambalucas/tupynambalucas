@@ -1,0 +1,18 @@
+{
+  "name": "@tupynambalucas-shared/config",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./prettierrc.json",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": "./prettierrc.json",
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./prettierrc.json": "./prettierrc.json",
+    "./.prettierignore": "./.prettierignore"
+  },
+  "scripts": {},
+  "dependencies": {
+    "prettier": "catalog:tooling-stack"
+  }
+}

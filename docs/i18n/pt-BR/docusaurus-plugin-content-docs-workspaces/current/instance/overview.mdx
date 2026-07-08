@@ -1,0 +1,70 @@
+---
+title: Workspace Instance (Loja da Comunidade)
+sidebar_label: Visão Geral
+sidebar_position: 1
+slug: /instance
+---
+
+O workspace Instance contém todas as aplicações e pacotes relacionados às lojas locais de comunidades. É o foco principal do monorepo Elo Orgânico, fornecendo e-commerce localizado, logística de pedidos, sistemas de pagamento e interfaces administrativas para hubs individuais de comunidades agrícolas.
+
+## Estrutura de Diretórios
+
+```
+instance/
+├── apps/
+│   ├── api/          # REST API em Fastify 5
+│   └── web/          # Aplicação de Página Única (SPA) em React 19
+├── packages/
+│   └── core/         # Modelo de Domínio Compartilhado (SSOT)
+├── compose.dev.yaml  # Stack de containers de desenvolvimento (MongoDB + Redis)
+│   └── compose.prod.yaml # Stack de containers de produção
+```
+
+## Componentes e Arquitetura Core
+
+### `@elo-instance/core` (SSOT do Domínio)
+
+Todas as configurações de esquemas, modelos de banco de dados, validadores e regras de negócio core são definidas neste pacote. Ao forçar a API e quaisquer ferramentas secundárias a herdarem definições dessa camada de core, garantimos a paridade estrita do Contexto Delimitado (Bounded Context) e evitamos a duplicação de modelos.
+
+- **Stack Tecnológica**: TypeScript, Mongoose, Zod.
+- **Arquivos Chave**: Definições de esquemas compartilhados para produtos, pedidos, ciclos, usuários e transações.
+
+### `@elo-instance/api` (Motor Fastify 5)
+
+Uma API REST de alto desempenho construída com Fastify v5, implementando uma arquitetura de software desacoplada e em camadas.
+
+- **Fluxo de Design em Camadas**: `Controller ──> Service ──> Repository ──> Model`
+- **Integrações Chave**:
+  - Conexão do Mongoose com o banco de dados MongoDB local/Atlas.
+  - Gerenciadores de cache Redis para limitação de taxa (rate-limiting), armazenamento de sessões e consultas rápidas.
+  - Ganchos (hooks) de validação Zod para requisições recebidas (body, query, params) e respostas enviadas.
+- **Diretrizes Estritas**:
+  - Todas as operações assíncronas devem ser tratadas explicitamente. Promessas não aguardadas devem ser prefixadas com o operador `void`.
+  - Comparações booleanas estritas são aplicadas em todos os controladores da API (`if (value === true)`).
+
+### `@elo-instance/web` (Portal React 19)
+
+A vitrine de loja e painel administrativo dos usuários construídos em React 19 e compilados com Vite.
+
+- **Stack Tecnológica**: React 19, TypeScript, Vite, Zustand (gerenciamento de estado), Studio Tokens (integração de tema).
+- **Paridade de Design**: Herda variáveis de tema, cores e constantes de layout diretamente do pacote `@elo-studio/assets`.
+- **Recursos do React 19**: Implementa padrões modernos do React 19, utilizando o gancho `use()` para carregar promessas de recursos e garantindo comparações booleanas estritas em todos os templates JSX.
+
+## Configuração de Infraestrutura e Banco de Dados
+
+Para suportar operações financeiras de alta integridade (como confirmações de Pix e controle de estoque durante o fechamento de ciclos), o ambiente local executa um conjunto de réplicas (replica set) do MongoDB orquestrado por Docker:
+
+- **Nome do Replica Set**: `rs0`
+- **Serviço de Inicialização**: `db-init` (em `compose.dev.yaml`) inicializa a configuração do replica set (`rs.initiate()`) após o MongoDB estar pronto.
+- **Camada de Cache**: O container do Redis gerencia o armazenamento de chave-valor de alta velocidade e a limitação de taxa.
+
+## Scripts do Workspace
+
+Execute esses comandos a partir do diretório raiz para gerenciar o contexto Instance:
+
+| Comando              | Ação                                                                                                     |
+| :------------------- | :------------------------------------------------------------------------------------------------------- |
+| `pnpm instance:up`   | Inicializa os containers locais de banco de dados (MongoDB Replica Set) e Redis.                         |
+| `pnpm instance:dev`  | Executa o servidor de API (via `tsx watch`) e o cliente Web (via servidor dev do Vite) concorrentemente. |
+| `pnpm instance:down` | Interrompe e remove os containers do Docker.                                                             |
+| `pnpm instance:prod` | Constrói e inicializa imagens de containers de produção usando as configurações de ambiente de produção. |

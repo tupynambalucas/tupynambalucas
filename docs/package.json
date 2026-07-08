@@ -1,0 +1,91 @@
+{
+  "name": "@tupynambalucas/docs",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "Elo Orgânico Knowledge Base Package",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/docs#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "docs"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./roadmap/*": "./roadmap/*",
+    "./releases/*": "./releases/*"
+  },
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start --host 0.0.0.0 --port 3002",
+    "start:pt": "docusaurus start --host 0.0.0.0 --port 3002 --locale pt-BR",
+    "build": "tsx scripts/docs-build.ts",
+    "swizzle": "docusaurus swizzle",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "edit": "npx editsaurus",
+    "docs:generate:changelog": "tsx tooling/generate-changelog.ts",
+    "docs:generate:roadmap": "tsx tooling/generate-roadmap.ts",
+    "typecheck": "tsc",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@tupynambalucas-studio/assets": "workspace:*",
+    "@docusaurus/core": "catalog:docs-stack",
+    "@docusaurus/faster": "catalog:docs-stack",
+    "@docusaurus/theme-live-codeblock": "catalog:docs-stack",
+    "@docusaurus/theme-mermaid": "catalog:docs-stack",
+    "@docusaurus/plugin-content-docs": "catalog:docs-stack",
+    "@docusaurus/plugin-content-blog": "catalog:docs-stack",
+    "@docusaurus/plugin-content-pages": "catalog:docs-stack",
+    "@docusaurus/plugin-debug": "catalog:docs-stack",
+    "@docusaurus/plugin-google-gtag": "catalog:docs-stack",
+    "@docusaurus/plugin-google-tag-manager": "catalog:docs-stack",
+    "@docusaurus/plugin-sitemap": "catalog:docs-stack",
+    "@docusaurus/plugin-svgr": "catalog:docs-stack",
+    "@docusaurus/plugin-css-cascade-layers": "catalog:docs-stack",
+    "@docusaurus/theme-classic": "catalog:docs-stack",
+    "@docusaurus/theme-search-algolia": "catalog:docs-stack",
+    "@docusaurus/theme-common": "catalog:docs-stack",
+    "@react-three/drei": "catalog:shared-stack",
+    "@react-three/fiber": "catalog:shared-stack",
+    "@mdx-js/react": "catalog:docs-stack",
+    "clsx": "catalog:docs-stack",
+    "three": "catalog:shared-stack",
+    "prism-react-renderer": "catalog:docs-stack",
+    "react": "catalog:web-stack",
+    "react-dom": "catalog:web-stack",
+    "three-stdlib": "catalog:shared-stack",
+    "gsap": "catalog:web-stack",
+    "@gsap/react": "catalog:web-stack"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "catalog:docs-stack",
+    "@docusaurus/tsconfig": "catalog:docs-stack",
+    "@docusaurus/types": "catalog:docs-stack",
+    "@tailwindcss/postcss": "catalog:web-stack",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:web-stack",
+    "@types/three": "catalog:shared-stack",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=20.0"
+  }
+}

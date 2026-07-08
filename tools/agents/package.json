@@ -1,0 +1,28 @@
+{
+  "name": "@tupynambalucas-tools/agents",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "Tupynambá Lucas Tools Package",
+  "license": "https://github.com/tupynambalucas/codecanvas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/codecanvas/tree/main/tools/agents#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/codecanvas.git",
+    "directory": "tools/agents"
+  },
+  "scripts": {
+    "agents:up": "docker compose -f infrastructure/docker/compose.yaml up -d",
+    "agents:down": "docker compose -f infrastructure/docker/compose.yaml down",
+    "agents:reset": "docker compose -f infrastructure/docker/compose.yaml down --volumes && docker compose -f infrastructure/docker/compose.yaml up -d --build",
+    "antigravity:up": "docker compose -f infrastructure/docker/compose.yaml up -d antigravity",
+    "antigravity:down": "docker compose -f infrastructure/docker/compose.yaml stop antigravity && docker compose -f infrastructure/docker/compose.yaml rm -f antigravity",
+    "antigravity:reset": "docker compose -f infrastructure/docker/compose.yaml stop antigravity && docker compose -f infrastructure/docker/compose.yaml rm -f antigravity && docker compose -f infrastructure/docker/compose.yaml up -d --build antigravity",
+    "copilot:up": "docker compose -f infrastructure/docker/compose.yaml up -d copilot",
+    "copilot:down": "docker compose -f infrastructure/docker/compose.yaml stop copilot && docker compose -f infrastructure/docker/compose.yaml rm -f copilot",
+    "copilot:reset": "docker compose -f infrastructure/docker/compose.yaml stop copilot && docker compose -f infrastructure/docker/compose.yaml rm -f copilot && docker compose -f infrastructure/docker/compose.yaml up -d --build copilot",
+    "antigravity:auth": "docker exec -it agent-antigravity-dev agy",
+    "copilot:auth": "docker exec -it agent-copilot-dev copilot login"
+  }
+}

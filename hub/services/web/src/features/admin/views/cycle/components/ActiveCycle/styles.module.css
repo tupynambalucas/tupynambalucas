@@ -1,0 +1,236 @@
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.description {
+  color: #555;
+  font-style: italic;
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  border-left: 0.25rem solid #e5e7eb;
+}
+
+.stats {
+  display: flex;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  min-width: 8.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 0.0625rem solid #eee;
+}
+
+.card strong {
+  display: block;
+  font-size: 2rem;
+  color: var(--color-success);
+}
+
+.card span {
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.0625rem;
+}
+
+.actionBtn {
+  background: #f0fdf4;
+  color: var(--color-success);
+  border: 0.125rem dashed var(--color-success);
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background: #dcfce7;
+  transform: translateY(-0.125rem);
+}
+
+.backBtn {
+  background: #f3f4f6;
+  border: 0.0625rem solid #d1d5db;
+  border-radius: 0.375rem;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.backBtn:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.filterSection {
+  padding: 0.5rem 0;
+}
+
+.productsList {
+  flex: 1;
+  overflow-y: auto;
+  border: 0.0625rem solid #f0f0f0;
+  border-radius: 0.375rem;
+}
+
+.productRow {
+  padding: 1rem;
+  border-bottom: 0.0625rem solid #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.1s;
+}
+
+.productRow:hover {
+  background: #fafafa;
+}
+
+.pInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pInfo strong {
+  color: #333;
+}
+
+.pInfo span {
+  font-size: 0.8rem;
+  color: #888;
+  background: #f3f4f6;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+}
+
+.price {
+  font-weight: 600;
+  color: var(--color-success);
+  background: #e8f5e9;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.pActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.iconBtn {
+  background: white;
+  border: 0.0625rem solid #ddd;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.iconBtn:hover {
+  border-color: #aaa;
+  color: #333;
+}
+
+.iconBtn.danger:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.editInlineContainer {
+  padding: 1.5rem;
+  background: #fff;
+  border: 0.0625rem solid #e5e7eb;
+  border-left: 0.25rem solid #3b82f6;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 0.25rem 0.375rem -0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+.fixGrid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.fixField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.fixField label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.fixInput {
+  padding: 0.6rem;
+  border: 0.0625rem solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+.fixInput:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 0.1875rem rgba(59, 130, 246, 0.1);
+}
+
+.editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.saveInlineBtn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancelInlineBtn {
+  background: #f1f1f1;
+  color: #4b5563;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+}

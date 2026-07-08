@@ -1,0 +1,117 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Copilot CLI [Host]",
+      "type": "shell",
+      "command": "copilot",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "focus": true,
+        "reveal": "always",
+        "clear": true,
+        "group": "llm-cli-group"
+      },
+      "isBackground": false
+    },
+    {
+      "label": "Antigravity CLI [Host]",
+      "type": "shell",
+      "command": "agy",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "focus": true,
+        "reveal": "always",
+        "clear": true,
+        "group": "llm-cli-group"
+      },
+      "isBackground": false
+    },
+    {
+      "label": "Copilot CLI [Docker]",
+      "type": "shell",
+      "command": "wt",
+      "args": [
+        "-w",
+        "new",
+        "-d",
+        "${workspaceFolder}",
+        "pwsh",
+        "-NoLogo",
+        "-NoExit",
+        "-Command",
+        "docker exec -it agent-copilot-dev copilot"
+      ],
+      "presentation": {
+        "reveal": "never",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Antigravity CLI [Docker]",
+      "type": "shell",
+      "command": "wt",
+      "args": [
+        "-w",
+        "new",
+        "-d",
+        "${workspaceFolder}",
+        "pwsh",
+        "-NoLogo",
+        "-NoExit",
+        "-Command",
+        "docker exec -it agent-antigravity-dev agy"
+      ],
+      "presentation": {
+        "reveal": "never",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "GitHub Bash [Docker]",
+      "type": "shell",
+      "command": "wt",
+      "args": [
+        "-w",
+        "new",
+        "-d",
+        "${workspaceFolder}",
+        "pwsh",
+        "-NoLogo",
+        "-NoExit",
+        "-Command",
+        "docker exec -it github-git-bash bash"
+      ],
+      "presentation": {
+        "reveal": "never",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "GitHub CLI [Docker]",
+      "type": "shell",
+      "command": "wt",
+      "args": [
+        "-w",
+        "new",
+        "-d",
+        "${workspaceFolder}",
+        "pwsh",
+        "-NoLogo",
+        "-NoExit",
+        "-Command",
+        "docker exec -it github-gh-cli bash"
+      ],
+      "presentation": {
+        "reveal": "never",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    }
+  ]
+}

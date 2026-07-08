@@ -1,0 +1,61 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/deploy-docs.yaml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  deployments: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM Environment
+        uses: ./.github/actions/setup-pnpm-env
+        with:
+          node-version: 22
+          frozen-lockfile: 'false'
+          filter: '@tupynambalucas/docs...'
+
+      - name: Generate Global Documents
+        run: |
+          pnpm docs:generate:changelog
+          pnpm docs:generate:roadmap
+
+      - name: Commit and Push Compiled Documents
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md ROADMAP.md
+          if git diff --staged --quiet; then
+            echo "No changes to CHANGELOG.md or ROADMAP.md"
+          else
+            git commit -m "docs: update root CHANGELOG.md and ROADMAP.md [skip ci]"
+            git push
+          fi
+
+      - name: Build documentation
+        run: pnpm docs:build
+        env:
+          CLOUDFLARE_R2_ASSETS_PUBLIC_URL: ${{ secrets.CLOUDFLARE_R2_ASSETS_PUBLIC_URL }}
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy docs/build --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT_DOCS_NAME }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

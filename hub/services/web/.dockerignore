@@ -1,0 +1,10 @@
+# Exclude files from the Docker build context.
+# Note: when building from the monorepo root, the root .dockerignore takes precedence.
+
+node_modules
+dist
+*.log
+.env
+.env.*
+*.tsbuildinfo
+.turbo

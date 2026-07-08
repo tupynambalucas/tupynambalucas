@@ -1,0 +1,54 @@
+---
+title: Compilação do README.md Raiz
+sidebar_label: Compilação do README
+sidebar_position: 2
+---
+
+O workspace Profile apresenta um motor de template em Markdown que compila o README.md na raiz do repositório utilizando substituição de tokens e referências SVG sensíveis ao tema.
+
+---
+
+## Fluxo de Compilação do Template
+
+O processo de montagem do README segue os seguintes passos:
+
+1. **Leitura do Template**: Lê o arquivo de template em `src/templates/README.template.md`.
+2. **Substituição de Tokens**: Substitui as variáveis definidas dentro de chaves duplas (`\{\{ variable \}\}`) pelas estatísticas de desenvolvedor calculadas.
+3. **Escrita da Saída**: Escreve o documento compilado diretamente no diretório raiz do monorepo (`README.md`), substituindo as estatísticas e elementos visuais anteriores.
+
+---
+
+## Referência de Tokens
+
+Os seguintes placeholders podem ser embutidos no template do README e são substituídos dinamicamente:
+
+- **`\{\{ name \}\}`**: O nome de exibição ou login do desenvolvedor.
+- **`\{\{ user \}\}`**: O nome de usuário/login do GitHub.
+- **`\{\{ contributions \}\}`**: Total de commits, issues, PRs e revisões de PRs.
+- **`\{\{ stars \}\}`**: Total de estrelas acumuladas em todos os repositórios contabilizados.
+- **`\{\{ forks \}\}`**: Total de forks acumulados em todos os repositórios contabilizados.
+- **`\{\{ lines_changed \}\}`**: Total de adições e deleções de código.
+- **`\{\{ views \}\}`**: Soma de visualizações de tráfego das últimas duas semanas.
+- **`\{\{ repos \}\}`**: Número de repositórios ativos com contribuições.
+
+---
+
+## Suporte a Temas Duplos no README.md
+
+Para lidar com os esquemas de cores claro e escuro do GitHub nativamente sem a necessidade de criar vários arquivos, o gerador injeta hashes sensíveis ao alvo dentro de elementos HTML `<picture>` padrão:
+
+```html
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="./profile/dist/overview.svg#gh-dark-mode-only"
+  />
+  <source media="(prefers-color-scheme: light)" srcset="./profile/dist/overview.svg" />
+  <img alt="GitHub Stats" src="./profile/dist/overview.svg" height="200px" />
+</picture>
+```
+
+Quando o GitHub renderiza a página de perfil:
+
+- **Modo Escuro**: Utiliza a fonte correspondente à media query `(prefers-color-scheme: dark)`, que anexa o hash `#gh-dark-mode-only` à URL do SVG. Isso ativa as regras CSS internas do SVG para trocar as cores para o tema escuro.
+- **Modo Claro**: Resolve para a URL padrão sem o hash de alvo, renderizando as cores do tema claro.

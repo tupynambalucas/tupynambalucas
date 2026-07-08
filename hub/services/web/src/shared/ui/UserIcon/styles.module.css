@@ -1,0 +1,55 @@
+.iconBase {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.selectorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5vh;
+  width: 100%;
+}
+
+.selectorContainer label {
+  font-size: clamp(0.75rem, 1vw, 1rem);
+  color: var(--color-title-dark);
+  font-weight: 500;
+}
+
+.iconGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1vw;
+  width: 100%;
+}
+
+.iconOption {
+  width: clamp(2.1875rem, 5vw, 3.75rem);
+  height: clamp(2.1875rem, 5vw, 3.75rem);
+  border-radius: 50%;
+  cursor: pointer;
+  border: 0.125rem solid var(--color-border-light);
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+  overflow: hidden;
+}
+
+.iconOption img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.iconOption:hover {
+  transform: scale(1.1);
+  border-color: var(--color-highlight);
+}
+
+.selectedIcon {
+  border-color: var(--color-highlight);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 0.3vh color-mix(in srgb, var(--color-highlight) 30%, transparent);
+}

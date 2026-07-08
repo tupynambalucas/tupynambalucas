@@ -1,0 +1,14 @@
+{
+  "name": "@tupynambalucas-shared/git",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "Elo Orgânico Git Tooling Package",
+  "scripts": {
+    "prepare": "cd ../.. && husky shared/git/husky"
+  },
+  "devDependencies": {
+    "husky": "catalog:"
+  }
+}

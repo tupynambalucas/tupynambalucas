@@ -1,0 +1,59 @@
+services:
+  # ---------------------------------------------------------------- #
+  # API — Fastify Node.js Server (Production/Staging Build)
+  # ---------------------------------------------------------------- #
+  api:
+    build:
+      context: ../../../
+      dockerfile: instance/services/api/Dockerfile
+    image: tupynambalucas-hub-api:latest
+    restart: unless-stopped
+    expose:
+      - '3000'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          'const http = require("http"); const req = http.request("http://localhost:3000/health", (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }); req.on("error", () => process.exit(1)); req.end();',
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ---------------------------------------------------------------- #
+  # Web — React SPA served by Nginx (Production/Staging Build)
+  # ---------------------------------------------------------------- #
+  web:
+    build:
+      context: ../../../
+      dockerfile: instance/services/web/Dockerfile
+      args:
+        VITE_TURNSTILE_SITE_KEY: ${VITE_TURNSTILE_SITE_KEY}
+    image: tupynambalucas-hub-web:latest
+    ports:
+      - '80:80'
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------- #
+  # Redis — BullMQ message broker
+  # ---------------------------------------------------------------- #
+  redis:
+    build:
+      context: ../../services/redis
+      dockerfile: Dockerfile
+    image: tupynambalucas-hub-redis:latest
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  redis-data:
+    name: tupynambalucas_hub_redis_prod_data

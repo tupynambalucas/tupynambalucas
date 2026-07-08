@@ -1,0 +1,54 @@
+---
+title: Root README.md Compilation
+sidebar_label: README Compilation
+sidebar_position: 2
+---
+
+The Profile workspace features a Markdown template engine that compiles the root README.md using token replacement and theme-aware SVG references.
+
+---
+
+## Template Compilation Flow
+
+The README assembly process follows these steps:
+
+1. **Template Parsing**: Reads the template file from `src/templates/README.template.md`.
+2. **Token Substitution**: Replaces defined variables inside double curly braces (`\{\{ variable \}\}`) with calculated developer statistics.
+3. **Writing Output**: Writes the compiled document directly to the monorepo root directory (`README.md`), replacing the previous profile stats and visual elements.
+
+---
+
+## Token Reference
+
+The following placeholders can be embedded in the README template and are replaced dynamically:
+
+- **`\{\{ name \}\}`**: The developer's display name or login.
+- **`\{\{ user \}\}`**: The GitHub username/login.
+- **`\{\{ contributions \}\}`**: Total commits, issues, PRs, and PR reviews.
+- **`\{\{ stars \}\}`**: Aggregated stargazers count across all counted repositories.
+- **`\{\{ forks \}\}`**: Aggregated fork count across all counted repositories.
+- **`\{\{ lines_changed \}\}`**: Aggregated additions and deletions of code.
+- **`\{\{ views \}\}`**: Sum of traffic views from the past two weeks.
+- **`\{\{ repos \}\}`**: Number of active repositories contributed to.
+
+---
+
+## Dual-Theme Support in README.md
+
+To handle GitHub's light and dark color schemes natively without creating multiple files, the generator injects target-sensitive hashes inside standard HTML `<picture>` elements:
+
+```html
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="./profile/dist/overview.svg#gh-dark-mode-only"
+  />
+  <source media="(prefers-color-scheme: light)" srcset="./profile/dist/overview.svg" />
+  <img alt="GitHub Stats" src="./profile/dist/overview.svg" height="200px" />
+</picture>
+```
+
+When GitHub renders the profile page:
+
+- **Dark Mode**: Uses the source matching the `(prefers-color-scheme: dark)` media query, which appends the `#gh-dark-mode-only` hash to the SVG URL. This triggers the SVG target CSS rules to switch colors.
+- **Light Mode**: Resolves to the default URL without the target hash, rendering light colors.

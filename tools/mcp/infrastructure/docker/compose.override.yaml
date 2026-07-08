@@ -1,0 +1,42 @@
+services:
+  gateway:
+    build:
+      context: ../..
+      dockerfile: gateway/Dockerfile
+    ports:
+      - '${GATEWAY_PORT:-3005}:${GATEWAY_PORT:-3005}'
+
+  github:
+    build:
+      context: ../..
+      dockerfile: services/github/Dockerfile
+    volumes:
+      - ../../services/github/instructions.md:/app/instructions.md:ro
+
+  context7:
+    build:
+      context: ../..
+      dockerfile: services/context7/Dockerfile
+    volumes:
+      - ../../services/context7/instructions.md:/app/instructions.md:ro
+
+  browser:
+    build:
+      context: ../..
+      dockerfile: services/browser/Dockerfile
+    volumes:
+      - ../../services/browser/instructions.md:/app/instructions.md:ro
+
+  dockerhub:
+    build:
+      context: ../..
+      dockerfile: services/dockerhub/Dockerfile
+    volumes:
+      - ../../services/dockerhub/instructions.md:/app/instructions.md:ro
+
+  firecrawl:
+    build:
+      context: ../..
+      dockerfile: services/firecrawl/Dockerfile
+    volumes:
+      - ../../services/firecrawl/instructions.md:/app/instructions.md:ro

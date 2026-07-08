@@ -1,0 +1,9 @@
+{
+  "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["vite.config.ts", "*.config.ts"],
+  "exclude": ["src", "dist", "node_modules"]
+}

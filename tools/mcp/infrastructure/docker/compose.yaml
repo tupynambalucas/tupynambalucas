@@ -1,0 +1,77 @@
+name: tupynambalucas-mcp
+
+services:
+  gateway:
+    profiles: ['dev', 'prod', 'staging']
+    image: tupynambalucas-mcp-gateway:${TAG:-latest}
+    container_name: tupynambalucas-mcp-gateway-${APP_ENV:-prod}
+    environment:
+      - PORT=${GATEWAY_PORT}
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'tupynambalucas.internal:host-gateway'
+    networks:
+      tupynambalucas-mcp-net:
+        aliases:
+          - tupynambalucas.internal.tools.mcp
+    depends_on:
+      - github
+      - context7
+      - browser
+      - dockerhub
+      - firecrawl
+
+  github:
+    profiles: ['dev', 'prod', 'staging']
+    image: tupynambalucas-mcp-github:${TAG:-latest}
+    container_name: tupynambalucas-mcp-github-${APP_ENV:-prod}
+    environment:
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
+    networks:
+      - tupynambalucas-mcp-net
+
+  context7:
+    profiles: ['dev', 'prod', 'staging']
+    image: tupynambalucas-mcp-context7:${TAG:-latest}
+    container_name: tupynambalucas-mcp-context7-${APP_ENV:-prod}
+    environment:
+      - CONTEXT7_API_KEY=${CONTEXT7_API_KEY}
+    networks:
+      - tupynambalucas-mcp-net
+
+  browser:
+    profiles: ['dev', 'prod', 'staging']
+    image: tupynambalucas-mcp-browser:${TAG:-latest}
+    container_name: tupynambalucas-mcp-browser-${APP_ENV:-prod}
+    environment:
+      - MCP_REWRITE_LOCALHOST=${BROWSER_REWRITE_LOCALHOST}
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'tupynambalucas.internal:host-gateway'
+    shm_size: '2gb'
+    networks:
+      - tupynambalucas-mcp-net
+
+  dockerhub:
+    profiles: ['dev', 'prod', 'staging']
+    image: tupynambalucas-mcp-dockerhub:${TAG:-latest}
+    container_name: tupynambalucas-mcp-dockerhub-${APP_ENV:-prod}
+    environment:
+      - HUB_PAT_TOKEN=${DOCKERHUB_PAT_TOKEN}
+      - HUB_USERNAME=${DOCKERHUB_USERNAME}
+    networks:
+      - tupynambalucas-mcp-net
+
+  firecrawl:
+    profiles: ['dev', 'prod', 'staging']
+    image: tupynambalucas-mcp-firecrawl:${TAG:-latest}
+    container_name: tupynambalucas-mcp-firecrawl-${APP_ENV:-prod}
+    environment:
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
+    networks:
+      - tupynambalucas-mcp-net
+
+networks:
+  tupynambalucas-mcp-net:
+    name: tupynambalucas-mcp-net
+    driver: bridge

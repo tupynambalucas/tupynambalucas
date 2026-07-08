@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------- #
+# MONOREPO ROOT — DOCKER BUILD CONTEXT IGNORE
+# Applied when build context is the monorepo root (API and Web builds).
+# Excludes anything that should not enter the Docker build context.
+# ---------------------------------------------------------------- #
+
+# Version control
+.git
+.gitignore
+
+# Dependencies (rebuilt inside the image)
+**/node_modules
+
+# Build artifacts (rebuilt inside the image)
+**/dist
+**/build
+**/.turbo
+**/*.tsbuildinfo
+
+# Secrets — NEVER copy env files into a Docker image
+**/.env
+**/.env.*
+
+# Logs
+**/*.log
+**/logs
+
+# Test and coverage
+**/coverage
+**/__tests__
+**/*.test.ts
+**/*.spec.ts
+
+# Editor and OS artifacts
+**/.idea
+**/.vscode
+**/.DS_Store
+**/Thumbs.db
+
+# Documentation (not needed in production images)
+docs/
+README.md
+CHANGELOG.md
+LICENSE.md

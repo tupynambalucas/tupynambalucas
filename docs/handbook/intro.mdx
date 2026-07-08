@@ -1,0 +1,106 @@
+---
+title: Introduction
+description: Project introduction and overview.
+sidebar_position: 1
+---
+
+import DocCardList from '@theme/DocCardList';
+
+# tupynambalucas.dev Monorepo
+
+This repository is a monorepo containing a developer profile stats generator, personal website/hub, developer tools, design tokens, and documentation.
+
+---
+
+## 1. Product Overview & Value Proposition
+
+The monorepo coordinates the developer's personal website (`hub`), automated stats visualizations (`profile`), design systems (`studio`), and automation tools (`tools`).
+
+The primary customer-facing application is the **Developer Hub** (`@tupynambalucas-hub/*`):
+
+| For Visitors                                                        | For the Developer (Admin)                                            |
+| :------------------------------------------------------------------ | :------------------------------------------------------------------- |
+| **Portfolio**: View projects, code architectures, and highlights.   | **Blog Publishing**: Publish technical articles and case studies.    |
+| **Contact Form**: Securely submit messages or consulting queries.   | **Lead Collection**: Manage submissions and dashboard data.          |
+| **Services Catalog**: Request custom software development services. | **Profile Automation**: Automatically update GitHub metrics via Zig. |
+
+---
+
+## 2. Operational Flow
+
+The portfolio website and stats generator operate on a streamlined workflow:
+
+1. **Portfolio Presentation**: Visitors explore the frontend `@tupynambalucas-hub/web`, consuming blog posts and project highlights served by `@tupynambalucas-hub/api`.
+2. **Contact Submission**: Form inputs are validated via Turnstile anti-spam keys, serialized using Zod schemas from `@tupynambalucas-hub/core`, and persisted to a MongoDB instance.
+3. **Profile Statistics Generation**: The `@tupynambalucas/profile` workspace compiles GitHub metrics using a native Zig CLI and dynamically overwrites the root `README.md` file.
+
+---
+
+## 3. Hosting & Deployment Strategy
+
+The monorepo uses Cloudflare and standard VPS environments for zero-maintenance and high-performance operation.
+
+### Infrastructure & Hosting
+
+- **Cloudflare Pages**: The Docusaurus documentation hub (`docs/`) and the developer React SPA frontend (`hub/services/web`) are deployed to Cloudflare Pages for optimized CDN delivery.
+- **Hetzner Cloud VPS / Linux VPS**: The backend Fastify REST API (`hub/services/api`) and MongoDB/Redis compose stacks run on a lightweight VPS instance.
+- **DNS & SSL**: DNS routing and proxy protection are handled globally through Cloudflare.
+
+---
+
+## 4. Architecture & Monorepo Workspaces
+
+We use **PNPM Workspaces** with a **Context-Driven Root** layout to isolate our domains.
+
+For a comprehensive breakdown of our context philosophy, directory structure, and application roles, please read our dedicated architectural guides:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/docs/architecture/bounded-context',
+      label: 'Bounded Context Architecture',
+      description:
+        'Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles.',
+    },
+    {
+      type: 'link',
+      href: '/docs/architecture/overview',
+      label: 'Architecture Overview',
+      description: 'Comprehensive technical stack and monorepo strategy overview.',
+    },
+  ]}
+/>
+
+---
+
+## 5. Standalone Workspaces
+
+Our priority is the deployment and maintenance of:
+
+- **`@tupynambalucas-hub/*`**: Personal React/Fastify hub.
+- **`@tupynambalucas/profile`**: Zig-based GitHub profile stats compiler.
+
+---
+
+## 6. Quick Start
+
+Ensure you have **Node.js 22+**, **PNPM 11+**, **Zig**, and **Docker** installed.
+
+1. **Install Dependencies:**
+
+   ```bash
+   pnpm install
+   ```
+
+2. **Set Up Environment Files:**
+   Each workspace and service has its own environment file. Copy the example templates and add your local parameters:
+
+   ```bash
+   # Hub configuration
+   cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
+   ```
+
+3. **Start Local Infrastructure & Applications:**
+   We provide unified orchestration scripts via Turborepo to spin up Docker containers and local dev servers simultaneously.
+   See [MONOREPO.md](https://github.com/tupynambalucas/tupynambalucas/blob/develop/MONOREPO.md) or the [Command Reference](./commands-reference.mdx) for details on running `pnpm hub:dev`.

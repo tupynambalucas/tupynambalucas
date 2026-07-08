@@ -1,0 +1,43 @@
+---
+title: v0.1.0 - Fundação Arquitetural & Gênese do Monorepo
+date: 2026-05-05
+tags: [core, architecture, monorepo, instance, portal]
+---
+
+O lançamento da versão fundacional do Elo Orgânico (v0.1.0) estabelece a arquitetura core do monorepo, as fronteiras de isolamento de workspaces e os alicerces de domínio para a loja da comunidade local e para o hub da plataforma global.
+
+{/* truncate */}
+
+### Arquitetura de Monorepo e Bounded Contexts
+
+- **Segregação de Workspaces**: Estruturação do monorepo utilizando PNPM Workspaces v11 e Turborepo para segregar domínios, ferramentas locais e sistemas de design.
+- **Bounded Contexts Estritos**: Aplicação de separação absoluta de conceitos entre os códigos de `instance` e `portal`. As importações cruzadas entre workspaces são restringidas por meio de análise estática (regras de ESLint e restrições do compilador TypeScript).
+- **Core do Domínio Primeiro**: Estabelecimento de `packages/core` dentro de cada contexto como a Fonte Única de Verdade (SSOT) para modelos de dados, schemas de validação e interfaces, garantindo que a API e o frontend compilem sobre o mesmo registro de tipos.
+- **Gestão Unificada de Dependências**: Implementação do PNPM Catalogs para manter consistência de versões de dependências externas em todos os pacotes do monorepo.
+
+### Workspace Instance (Loja da Comunidade)
+
+- **Arquitetura de Backend em Camadas**: Implementação da API Fastify v5 (`@elo-instance/api`) utilizando a arquitetura em camadas estritas (`Controller -> Service -> Repository -> Model`).
+- **Implementação de Domínio**: Conclusão dos módulos iniciais para:
+  - `auth`: Estado de sessão baseado em JWT e verificação de credenciais.
+  - `product`: Catálogo local de produtos e inventários.
+  - `cycle`: Estruturas de governança para ciclos de compartilhamento comunitário e ciclos cooperativos agrícolas.
+- **Workspace de Frontend**: Criação do `@elo-instance/web` usando React 19, apresentando interfaces estilizadas com CSS Modules, roteamento de views de cliente e integração com a API do backend. Inclui módulos de autenticação, painel do usuário, checkout da loja e administração local.
+
+### Workspace Portal (Hub SaaS Global)
+
+- **Infraestrutura Base**: Estruturação do esqueleto do workspace do portal (`@elo-portal/api`, `@elo-portal/web` e `@elo-portal/core`).
+- **Esqueleto de Autenticação**: Implementação do esqueleto do domínio `auth` para contas do portal, estabelecendo o precedente arquitetural para os próximos módulos do SaaS global.
+
+### Studio e Ativos de Marca
+
+- **Design Tokens**: Padronização de cores, espaçamentos, tipografia e ativos visuais no pacote `@elo-studio/assets` para exportar um tema unificado.
+- **Integração de Design Ops**: Implantação de uma instância própria do Penpot para manter o design visual e pipeline de ativos de design para código.
+
+### Ferramentas de Desenvolvimento e Gateways de Contexto
+
+- **Ambientes Orquestrados**: Configuração de ambientes de desenvolvimento localizados utilizando Docker Compose para provisionar serviços (Infra, API e Frontend) de forma limpa com arquivos de ambiente unificados.
+- **Model Context Protocol (MCP)**: Implementação de um gateway Fastify baseado em SSE que fornece integração conteinerizada de contextos do workspace para clientes LLM, expondo APIs do GitHub, consultas de documentação no Context7, automação do Playwright Browser e interfaces de registro do Docker Hub.
+- **Base de Conhecimento TupyDocs**: Configuração do Docusaurus como o portal central de desenvolvedores para referências de arquitetura, manuais e guias de estilo.
+
+---

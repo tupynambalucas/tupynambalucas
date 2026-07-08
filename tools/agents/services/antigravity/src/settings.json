@@ -1,0 +1,28 @@
+{
+  "allowNonWorkspaceAccess": true,
+  "colorScheme": "dark",
+  "editor": "code",
+  "enableTelemetry": false,
+  "permissions": {
+    "allow": [
+      "command(pnpm lint)",
+      "command(pnpm typecheck)",
+      "command(git diff)",
+      "command(docker ps)",
+      "mcp(context7/resolve-library-id)",
+      "mcp(context7/query-docs)",
+      "command(docker compose)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /root/.gemini/antigravity-cli/statusline.sh",
+    "enabled": true
+  },
+  "title": {
+    "type": "command",
+    "command": "bash /root/.gemini/antigravity-cli/title.sh",
+    "enabled": true
+  },
+  "trustedWorkspaces": ["/workspace"]
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
+  "compilerOptions": {
+    /* Força o rigor de ESM para compatibilidade com Fastify/Node moderno */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "paths": {
+      /* HMR: lê a fonte do core em tempo real */
+      "@tupynambalucas-hub/core": ["../../packages/core/src/index.ts"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "@tupynambalucas-studio/penpot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "Elo Orgânico Studio Package",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/studio/penpot#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "studio/penpot"
+  },
+  "scripts": {
+    "penpot:up": "docker compose -f infrastructure/docker/compose.yaml up -d",
+    "penpot:down": "docker compose -f infrastructure/docker/compose.yaml down",
+    "penpot:reset": "docker compose -f infrastructure/docker/compose.yaml down --volumes && docker compose -f infrastructure/docker/compose.yaml up -d --build",
+    "penpot:update": "docker compose -f infrastructure/docker/compose.yaml pull && docker compose -f infrastructure/docker/compose.yaml up -d",
+    "aide:up": "docker compose -f infrastructure/docker/compose.yaml up -d aide",
+    "aide:down": "docker compose -f infrastructure/docker/compose.yaml stop aide"
+  },
+  "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*"
+  }
+}

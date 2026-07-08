@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "Changelog",
+    "description": "The title for the blog used in SEO"
+  },
+  "description": {
+    "message": "Acompanhe as últimas atualizações, melhorias e correções do Elo Orgânico.",
+    "description": "The description for the blog used in SEO"
+  },
+  "sidebar.title": {
+    "message": "Todas as versões",
+    "description": "The label for the left sidebar"
+  }
+}

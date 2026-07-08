@@ -1,0 +1,90 @@
+---
+title: Command Reference
+description: Centralized reference for all CLI commands, scripts, and orchestration workflows.
+sidebar_position: 2
+---
+
+# Command Reference
+
+This document serves as the **Single Source of Truth** for every CLI command, PNPM script, Docker command, and orchestration instruction used in the Elo Orgânico monorepo.
+
+## Monorepo Orchestration
+
+Scripts used to manage dependencies, cleaning, and workspace-wide tasks.
+
+- **`pnpm install`**: Installs all dependencies across the monorepo.
+- **`pnpm install --frozen-lockfile`**: Installs dependencies strictly from `pnpm-lock.yaml` (used in CI/CD).
+- **`pnpm project:clear`**: Clears all `node_modules` and build caches using `npkill`.
+- **`pnpm add <package> --catalog`**: Adds a package to the shared PNPM catalog.
+- **`pnpm add <package>@catalog: --filter <app-name>`**: Installs a cataloged package into a specific workspace.
+
+## Validation & Quality
+
+Scripts to ensure code quality and type safety.
+
+- **`pnpm typecheck`**: Runs parallel TypeScript validation across all workspaces via Turborepo.
+- **`pnpm typecheck --filter=@elo-instance/*`**: Runs typecheck only for the Instance bounded context.
+- **`pnpm lint`**: Runs ESLint validation across all workspaces.
+- **`pnpm build`**: Compiles a production build for all applications and packages.
+- **`pnpm --filter @elo-instance/core build`**: Builds a specific package.
+
+## Instance (Community)
+
+Commands specific to the `@elo-instance/*` bounded context.
+
+- **`pnpm instance:up`**: Starts local infrastructure (MongoDB Replica Set + Redis) via `compose.dev.yaml`.
+- **`pnpm instance:dev`**: Starts the full development stack (Infrastructure + API on port 3000 + Web on port 5173). Internally calls `instance:up` first.
+- **`pnpm instance:down`**: Stops local infrastructure and forcefully kills ports 3000 and 5173.
+- **`pnpm instance:reset`**: Destroys local infrastructure volumes (wiping the database) and restarts the stack.
+- **`pnpm instance:staging`**: Builds and orchestrates the staging environment using `compose.prod.yaml` and `.env.staging`.
+- **`pnpm instance:staging:down`**: Stops the staging topology.
+- **`pnpm instance:prod`**: Builds and orchestrates the production environment using `compose.prod.yaml` and `.env.prod`.
+- **`pnpm instance:prod:down`**: Stops the production topology.
+
+## Portal (Platform)
+
+Commands specific to the `@elo-portal/*` bounded context.
+
+- **`pnpm portal:up`**: Starts local infrastructure for the portal.
+- **`pnpm portal:dev`**: Starts the full portal development stack (API on port 3001 + Web on port 5174).
+- **`pnpm portal:down`**: Stops local infrastructure and forcefully kills ports 3001 and 5174.
+- **`pnpm portal:reset`**: Destroys local portal infrastructure volumes.
+- **`pnpm portal:staging`**: Builds and orchestrates the portal staging environment.
+- **`pnpm portal:staging:down`**: Stops the portal staging topology.
+- **`pnpm portal:prod`**: Builds and orchestrates the portal production environment.
+- **`pnpm portal:prod:down`**: Stops the portal production topology.
+
+## Documentation
+
+Commands for the Docusaurus Knowledge Base (`docs/`).
+
+- **`pnpm docs:dev`**: Starts the local Docusaurus development server with HMR.
+- **`pnpm docs:build`**: Compiles the documentation into static HTML/CSS for production.
+
+## Studio & Tools
+
+Commands for design and AI agents.
+
+- **`pnpm penpot:up`** / **`pnpm penpot:down`**: Starts or stops the self-hosted Penpot Studio.
+- **`pnpm penpot:aide:up`** / **`pnpm penpot:aide:down`**: Starts or stops the Penpot Aide AI Bridge.
+
+## Git & Version Control
+
+Workflows for branching, committing, and releases.
+
+- **`git flow feature start <name>`**: Starts a new feature branch from `develop`.
+- **`git push -u origin feature/<name>`**: Pushes a feature branch to the remote repository.
+- **`gh pr create --base develop --fill --web`**: Creates a Pull Request targeting the `develop` branch.
+- **`gh pr merge --squash --delete-branch`**: Merges a PR using the squash-and-merge strategy.
+- **`git flow hotfix start <name>`** / **`git flow hotfix finish <name>`**: Manages emergency fixes against the `main` branch.
+- **`pnpm version:changeset`**: Generates a changeset file to track version bumps and changelogs.
+
+## Docker & Infrastructure
+
+Direct Docker CLI commands for debugging and maintenance.
+
+- **`docker ps --filter "name=elo-instance"`**: Lists running containers for the instance context.
+- **`docker compose -f instance/compose.prod.yaml --env-file instance/.env.prod logs -f`**: Tails the logs of the production stack in real-time.
+- **`docker logs elo-instance-api-prod`**: Inspects logs for a specific container.
+- **`turbo prune`**: Prunes the monorepo workspace for minimal Docker builds.
+- **`pnpm deploy`**: Used inside Dockerfiles to extract only built dependencies for a specific package.

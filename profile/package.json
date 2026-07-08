@@ -1,0 +1,30 @@
+{
+  "name": "@tupynambalucas/profile",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "Elo Orgânico Instance Core Package",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/profile#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "profile"
+  },
+  "scripts": {
+    "clean": "rimraf generated tsconfig.tsbuildinfo",
+    "generate": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "zod": "catalog:shared-stack",
+    "dotenv": "catalog:shared-stack"
+  },
+  "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*",
+    "@types/node": "catalog:",
+    "rimraf": "catalog:"
+  }
+}

@@ -1,0 +1,64 @@
+---
+title: Docs Workspace (tupynambalucas.dev Docs)
+sidebar_label: Overview
+sidebar_position: 1
+slug: /docs
+---
+
+The Docs workspace manages the official documentation hub for the tupynambalucas.dev project, known as **tupynambalucas.dev Docs**. Built on Docusaurus, it serves as the central developer portal, housing architectural guidelines, style guides, product planning documents, and automated project changelogs and roadmaps.
+
+## Directory Structure
+
+```
+docs/
+├── handbook/         # General project handbook (Architecture, Style Guide, Guidelines)
+├── roadmap/          # Modular roadmap source documents
+├── releases/         # Blog-formatted release updates
+├── workspaces/       # Modular workspace descriptions (this section)
+├── i18n/             # Internationalization configurations (Portuguese translations)
+├── src/              # Custom react layout pages, assets, and styling components
+├── sidebars.ts       # Main documentation sidebar rules
+├── sidebarsRoadmap.ts    # Sidebar configurations for Roadmaps
+├── sidebarsWorkspaces.ts # Sidebar configurations for Workspaces
+└── docusaurus.config.ts  # Master Docusaurus site configuration
+```
+
+## Core Architecture and Custom Plugins
+
+tupynambalucas.dev Docs is configured with a multi-instance documentation setup using Docusaurus plugins to segment the different areas of the developer portal with independent left sidebars:
+
+1.  **General Documentation (Docs)**: Located in `handbook/` and mapped to `/docs`. Governs high-level architectural briefs, security strategies, coding style guides, and master vision files.
+2.  **Strategic Roadmaps (Roadmap)**: Located in `roadmap/` and mapped to `/roadmap`. Governs context-specific milestones and goals.
+3.  **Workspaces (Workspaces)**: Located in `workspaces/` and mapped to `/workspaces`. Houses detailed modular descriptions of each package context.
+4.  **Changelog (Blog)**: Located in `releases/` and mapped to `/changelog`. Governs version history and release notes.
+
+## Internationalization (i18n)
+
+tupynambalucas.dev Docs fully supports English (`en`) and Portuguese (`pt-BR`) locales. Localized files mirror the structure of English documents:
+
+- **General Docs**: `i18n/pt-BR/docusaurus-plugin-content-docs/current/`
+- **Roadmap Docs**: `i18n/pt-BR/docusaurus-plugin-content-docs-roadmap/current/`
+- **Workspaces Docs**: `i18n/pt-BR/docusaurus-plugin-content-docs-workspaces/current/`
+- **Changelog Posts**: `i18n/pt-BR/docusaurus-plugin-content-blog/`
+
+## Automated Root Compilers (Temporarily Paused in CI/CD)
+
+To maintain clean repository standards, the documentation workspace features build-time script compiles to write unified markdown documentation at the repository root level:
+
+- **`generate-roadmap.ts`**: Aggregates all context files inside `roadmap/` and generates `/ROADMAP.md` at the repository root.
+- **`generate-changelog.ts`**: Parses the release blog posts under `releases/` and generates `/CHANGELOG.md` at the repository root.
+
+:::note[CI/CD Workflow Status]
+To prevent build conflicts and optimize deployment flow, the execution of the compilation scripts (`generate-changelog` and `generate-roadmap`) and their subsequent push back to the repository have been temporarily disabled in the `.github/workflows/deploy-docs.yaml` pipeline. In a future iteration, we will refactor and re-enable this modular documentation compilation workflow.
+:::
+
+## Workspace Scripts
+
+Run these commands from the root directory to manage the documentation context:
+
+| Command               | Action                                                                                |
+| :-------------------- | :------------------------------------------------------------------------------------ |
+| `pnpm docs:dev`       | Launches the local Docusaurus development server at `http://localhost:3002`.          |
+| `pnpm docs:build`     | Compiles the production build of the Docusaurus portal (runs link check validations). |
+| `pnpm docs:roadmap`   | Manually triggers compiling the modular roadmap documents into the root `ROADMAP.md`. |
+| `pnpm docs:changelog` | Manually triggers compiling the release updates into the root `CHANGELOG.md`.         |

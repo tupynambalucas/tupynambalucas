@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "github": {
+      "url": "http://tupynambalucas.internal.tools.mcp:3005/github/sse",
+      "lifecycle": "eager"
+    },
+    "context7": {
+      "url": "http://tupynambalucas.internal.tools.mcp:3005/context7/sse",
+      "lifecycle": "eager"
+    },
+    "browser": {
+      "url": "http://tupynambalucas.internal.tools.mcp:3005/browser/sse",
+      "lifecycle": "eager"
+    },
+    "dockerhub": {
+      "url": "http://tupynambalucas.internal.tools.mcp:3005/dockerhub/sse",
+      "lifecycle": "eager"
+    }
+  }
+}

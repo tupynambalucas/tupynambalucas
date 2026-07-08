@@ -1,0 +1,59 @@
+{
+  "name": "@tupynambalucas-hub/api",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "tupynambalucas.dev hub API Application",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/hub/services/api#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "hub/services/api"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "tsx --watch --env-file=../../infrastructure/docker/.env.dev src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@tupynambalucas-hub/core": "workspace:*",
+    "@fastify/cookie": "catalog:api-stack",
+    "@fastify/cors": "catalog:api-stack",
+    "@fastify/csrf-protection": "catalog:api-stack",
+    "@fastify/env": "catalog:api-stack",
+    "@fastify/jwt": "catalog:api-stack",
+    "@fastify/one-line-logger": "catalog:api-stack",
+    "@fastify/rate-limit": "catalog:api-stack",
+    "@fastify/session": "catalog:api-stack",
+    "@sentry/node": "catalog:api-stack",
+    "@sentry/profiling-node": "catalog:api-stack",
+    "bcrypt": "catalog:api-stack",
+    "bullmq": "catalog:api-stack",
+    "fastify": "catalog:api-stack",
+    "fastify-metrics": "catalog:api-stack",
+    "fastify-plugin": "catalog:api-stack",
+    "fastify-type-provider-zod": "catalog:api-stack",
+    "ioredis": "catalog:api-stack",
+    "mongoose": "catalog:api-stack",
+    "pino-roll": "catalog:api-stack",
+    "sdk-node-apis-efi": "catalog:api-stack",
+    "zod": "catalog:shared-stack",
+    "dotenv": "catalog:shared-stack"
+  },
+  "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/bcrypt": "catalog:api-stack",
+    "prettier": "catalog:tooling-stack",
+    "eslint": "catalog:tooling-stack",
+    "typescript": "catalog:",
+    "tsx": "catalog:",
+    "rimraf": "catalog:"
+  }
+}

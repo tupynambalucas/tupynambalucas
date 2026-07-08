@@ -1,0 +1,55 @@
+---
+title: Shared Workspace (Global Library)
+sidebar_label: Overview
+sidebar_position: 1
+slug: /shared
+---
+
+The Shared workspace acts as the global, cross-context library and integration foundation of the Elo Orgânico monorepo. It houses centralized configuration standards, common helper utilities, and upcoming shared component packages designed to be imported by any downstream application (e.g., `instance/apps/web`, `portal/apps/web`) or core package within the monorepo.
+
+By isolating configuration and central library components inside a dedicated `shared/` workspace, we prevent configuration drift, promote design consistency, and enable frictionless monorepo maintenance.
+
+## Directory Structure
+
+```
+shared/
+├── config/              # Centralized configuration assets
+│   ├── .husky/          # Global git hooks
+│   ├── prettierrc.json  # Base Prettier settings
+│   ├── tsconfig.base.json # Shared base TypeScript compilation rules
+│   └── package.json     # Configuration package (@elo-shared/config)
+└── ui/                  # (Future) Shared React UI component library
+```
+
+## Core Packages
+
+### `@elo-shared/config` (Centralized Tooling & Quality)
+
+This package centralizes static analysis and code styling rules across the entire monorepo. Instead of duplicating config files inside every project workspace, each sub-workspace's `tsconfig.json` and toolconfigs inherit directly from this package.
+
+- **Unified Formatting**: Prettier configuration (`prettierrc.json`) and ignore rules (`.prettierignore`) reside here, ensuring perfect styling parity from a single file.
+- **Base TSConfig**: TypeScript base configurations (`tsconfig.base.json`) establish strict type-checking parameters, path aliases, and module resolutions for all sub-projects.
+- **Git Hooks**: Integrated Husky configs orchestrate pre-commit quality gates, such as running lint-staged scripts before commits are written.
+
+### `@elo-organico/ui` (Centralized UI System — Future)
+
+The upcoming `@elo-organico/ui` package will establish a premium, unified React component library. It acts as the visual counterpart of our design token system in the Studio workspace.
+
+- **Design Tokens Integration**: Imports color palettes, responsive typography, and animation scales directly from `@elo-studio/assets` to map them to functional React components.
+- **Universal Reusability**: Components built here are fully decoupled from database and backend contexts, making them safe to import and render in:
+  - `instance/web` (Customer Storefront and Admin panel)
+  - `portal/web` (Multi-tenant Platform Dashboard)
+  - `docs` (Custom interactive pages inside TupyDocs)
+- **High-Quality Standards**: Every component is strictly typed, compliant with modern React 19 rules, and structured for modular tree-shaking in compilation pipelines.
+
+## Workspace Management
+
+The configurations inside the Shared workspace are consumed at the root and package levels. For example, the root `package.json` references `@elo-shared/config` to coordinate git hook preparation:
+
+```json
+"prepare": "pnpm --filter @elo-shared/config prepare"
+```
+
+:::info[Strict Dry Dependency Rule]
+Files inside `shared/` must always remain stateless, generic, and isolated from specific business or database layers. They should focus exclusively on developer ergonomics, platform configurations, and stateless visual presentation.
+:::

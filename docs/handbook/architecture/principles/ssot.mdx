@@ -1,0 +1,58 @@
+---
+title: Single Source of Truth (SSOT)
+description: Decoupling and centralized governance of shared schemas and models in the Elo Orgânico monorepo.
+---
+
+# Single Source of Truth (SSOT)
+
+The Single Source of Truth (SSOT) principle ensures that every data structure, schema, and core business rule is defined in exactly one authoritative location, eliminating duplication and synchronization issues across different applications in the monorepo.
+
+---
+
+## 1. Architectural Concept & Overview
+
+Single Source of Truth (SSOT) is a fundamental engineering paradigm stating that all system components reference a unique, centralized definition for data models, validation contracts, and constants. This design prevents "split-brain" states where independent packages (such as API backends, message queues, and user interfaces) diverge on property names, data types, or schema boundaries.
+
+By centralizing core schemas, we:
+
+- Ensure complete type safety from database to UI.
+- Enable instantaneous prop and schema updates across all apps on modifications.
+- Reduce code duplication and tooling overhead.
+
+---
+
+## 2. Project-Specific Utilization
+
+In Elo Orgânico, the SSOT principle is implemented natively via our monorepo architecture:
+
+### A. Centralized Core Libraries
+
+The `@elo-instance/core` and `@elo-portal/core` workspaces serve as the absolute SSOT for their respective bounded contexts. Any schema, interface, or type shared by more than one application (such as backend API and frontend web SPA) must be declared here first, following our **Core First Design** guardrail.
+
+### B. Contract & Type Sharing
+
+Downstream applications like `@elo-instance/api` (Fastify) and `@elo-instance/web` (React SPA) do not maintain duplicate data transfer object (DTO) interfaces or database models. Instead, they directly import types, interfaces, and classes from the shared core package:
+
+```typescript
+// Core package definition
+// instance/packages/core/src/domains/cycle/cycle.types.ts
+export interface ICycle {
+  id: string;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  status: 'active' | 'closed' | 'draft';
+}
+```
+
+```typescript
+// Consumed directly in downstream API
+// instance/apps/api/src/domains/cycle/cycle.service.ts
+import type { ICycle } from '@elo-instance/core';
+```
+
+### C. Schema Validation Consistency
+
+Shared validation schemas are declared once using Zod within the core libraries. The backend API consumes these schemas in its controllers to validate incoming HTTP payloads, while the frontend web application uses the identical schemas for client-side form validation.
+
+Modifying a field requires updating a single file in the core workspace, which automatically propagates across the build pipeline during compile-time verification, eliminating manual API contract synchronization.

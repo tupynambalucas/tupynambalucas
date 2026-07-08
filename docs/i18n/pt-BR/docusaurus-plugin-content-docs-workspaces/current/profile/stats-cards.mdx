@@ -1,0 +1,48 @@
+---
+title: Geração de Cartões de Estatísticas SVG
+sidebar_label: Cartões SVG
+sidebar_position: 3
+---
+
+O gerador constrói dois cartões visuais que representam as estatísticas gerais do desenvolvedor e a distribuição de linguagens por tamanho de arquivo.
+
+---
+
+## Cartões Gerados
+
+### 1. Cartão de Visão Geral (`overview.svg`)
+
+Exibe contagens agregadas de métricas (Estrelas, Forks, Contribuições Totais, Linhas de Código Modificadas, Visualizações e Repositórios com Contribuições). Ele utiliza um loop de delay de animação CSS onde cada linha desliza sequencialmente com um delay incremental (`(row_index + 1) * 150` ms).
+
+### 2. Cartão de Linguagens (`languages.svg`)
+
+Exibe as porcentagens das linguagens ordenadas de forma decrescente pelo tamanho do arquivo.
+
+- **Barra de Progresso**: Acumula os tamanhos para exibir uma barra multi-colorida. A porcentagem da largura é formatada para exatamente 3 casas decimais no markup do template.
+- **Itens da Lista**: Marcadores individuais de lista contendo o nome, cor hexadecimal e porcentagem formatada para exatamente 2 casas decimais.
+
+---
+
+## Arquitetura de Coleta de Dados
+
+Para computar essas métricas, o motor em TypeScript se comunica com o GitHub por meio de GraphQL e REST.
+
+### Estratégia de Subdivisão Anual em GraphQL
+
+Devido ao limite da API do GitHub de retornar no máximo 100 repositórios por requisição, uma estratégia de divisão recursiva é aplicada:
+
+- O motor coleta os repositórios e as contribuições ano a ano.
+- Se uma consulta retornar exatamente 100 repositórios, o intervalo é dividido pelos fatores primos (2 ou 3) em sub-intervalos (ex: blocos de 6 meses ou de 3 meses).
+- Esses sub-intervalos são consultados recursivamente até que a resposta retorne abaixo do limite de 100 repositórios, evitando qualquer omissão de dados.
+
+### Estatísticas de Colaboradores & Fallback de Git Local
+
+O cálculo de linhas modificadas (adições + deleções) depende de um endpoint assíncrono `GET /repos/{owner}/{repo}/stats/contributors`.
+
+- **Loop de Repetição da API**: Se o GitHub ainda estiver compilando as estatísticas, ele retorna `202 Accepted`. Bloqueios de taxa limite retornam `403 Forbidden` ou `429 Too Many Requests`. O cliente gerencia esses status aguardando com um delay aleatório (0 a 4 segundos) e tentando novamente até `maxRetries` vezes.
+- **Fallback de Clone de Git Bare**: Se as tentativas se esgotarem ou outros erros não fatais ocorrerem, o gerador executa um clone bare de git para calcular as linhas modificadas localmente:
+  ```bash
+  git clone --bare --filter=blob:limit=1m --no-tags --single-branch <url> <path>
+  git -C <path> log --numstat --pretty=tformat: --author <email1> --author <email2>
+  ```
+  Este fallback conta as deleções e adições localmente utilizando os endereços de e-mail de git registrados do desenvolvedor, deletando em seguida o repositório clone temporário.

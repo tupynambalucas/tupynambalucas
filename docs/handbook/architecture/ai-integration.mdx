@@ -1,0 +1,88 @@
+---
+title: AI Integration
+sidebar_label: AI Integration
+sidebar_position: 3
+---
+
+# AI Integration in tupynambalucas.dev
+
+The **tupynambalucas.dev** platform is built from the ground up to support AI-native engineering workflows. Rather than treating AI agents as external chat tools, the monorepo provides a containerized infrastructure that mounts code environments directly to LLMs, bridges the design hub to agents via Model Context Protocol (MCP), and guarantees system parity across host and container runtimes.
+
+---
+
+## 1. Overview & Architecture
+
+For a high-level view of how AI tools and design systems fit into the global monorepo structure, refer to the **[Technical Architecture Overview](./overview.mdx)**.
+
+Our AI integration specifically relies on three major pillars:
+
+1. **MCP Ecosystem (`tools/mcp`)**: Exposes the codebase and critical host tools (GitHub, browser, dependencies documentation) to active LLM sessions through Server-Sent Events (SSE) gateways.
+2. **Containerized Developer Terminals (`tools/agents`)**: Self-contained CLI nodes running Google Antigravity CLI (`agy`) and GitHub Copilot CLI in Docker. They communicate with the MCP gateway internally.
+3. **Design System Automation (`studio/penpot/aide`)**: A self-hosted Penpot instance coupled with the `aide` AI service. This allows design-to-code components and vector asset generation to be automated.
+
+---
+
+## 2. Model Context Protocol (MCP) Ecosystem
+
+The MCP ecosystem provides a unified, secure gateway allowing LLM agents to execute actions and fetch context in real time.
+
+### Architectural Components
+
+- **Fastify SSE Gateway (`tupynambalucas-mcp-gateway`)**: Exposes internal HTTP endpoints representing each MCP server. It coordinates cross-network routing on port `3005` (host) and port `3000` (internal bridge network).
+- **Zero-Dependency SSE Adapters**: Standard input/output (stdio) servers are wrapped in custom Fastify adapters (`sse-adapter.ts`) to stream JSON-RPC messages bi-directionally over HTTP Server-Sent Events.
+
+### Configured Servers
+
+1.  **GitHub MCP Server**: Enables agents to coordinate branches, commits, and pull requests directly from the workspace.
+2.  **Context7 MCP Server**: Queries real-time external documentation for project dependencies (Fastify 5, React 19) to ensure accuracy.
+3.  **Browser MCP Server (Playwright)**: Launches a headless Chrome browser to execute UI audits, capture screenshots, and test frontends.
+4.  **Docker Hub MCP Server**: Validates upstream Docker tags and updates container manifests.
+
+:::info[Detailed Configuration]
+For complete server registries, custom Fastify SSE adapter logic, gateway routing, and technical configurations, refer to the **[Tools Workspace Setup Guide](../../workspaces/tools)**.
+:::
+
+---
+
+## 3. Containerized AI Agents
+
+To avoid complex manual installations and state corruption on developer host systems, we run long-running AI terminals inside dedicated Docker containers.
+
+### Parity & Mount Strategy
+
+The agent containers bind-mount crucial developer files to ensure workspace parity without leaking files to global host system directories:
+
+- **Monorepo Working Dir**: Mounted at `/workspace` for zero-latency code generation.
+- **Docker-out-of-Docker (DooD)**: Mounted `/var/run/docker.sock` socket inside containers to compile and test images against the host daemon.
+- **Session Persistence**: Mapped `./copilot/data/` and `./antigravity/data/` persist OAuth credentials, preventing session logouts on container rebuilds.
+- **Shared Agent Skills**: Bind-mounted `./skills/` folder propagates context rules (such as `code-expert` and `docusaurus-kb-expert`) to agents.
+
+:::caution[Boot Sequence Requirement]
+The MCP stack must be running before the agents stack is started. Starting the agents before the MCP stack will produce a Docker network resolution error.
+:::
+
+:::info[Detailed Installation]
+For directory bind mount mappings, authentication device-flow persistence instructions, and VS Code task integration configurations, refer to the **[Tools Workspace Setup Guide](../../workspaces/tools)**.
+:::
+
+---
+
+## 4. Penpot & Aide AI Integration
+
+Our self-hosted collaborative design studio integrates the **Aide** AI assistant service to synchronize creative brand assets with the code implementation.
+
+### Communication Bridge
+
+Aide operates inside the isolated `penpot-net` network via bidirectional WebSockets. It uses Port `4402` to interface with the Penpot Plugin API, allowing AI agents to perform design audits and layer manipulation.
+
+### Code-Design Sync Protocol
+
+AI design-to-code generation must respect the following rules:
+
+- **Token-First Design**: Exported color elements must refer to custom CSS properties defined in `src/tokens/`.
+- **SVG Optimization**: Vector SVGs must be compiled into the central Studio components wrapper registry.
+- **Component Reuse**: Prioritize existing React components in `@tupynambalucas-hub/web` before generating new visual elements.
+
+:::info[Detailed Installation]
+For the detailed installation steps, architecture diagrams, command lists, and mandatory component/token reuse rules, refer to the **[Studio Workspace Setup Guide](../../workspaces/studio)**.
+:::

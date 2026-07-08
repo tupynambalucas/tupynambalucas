@@ -1,0 +1,27 @@
+.container {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.container > main {
+  height: 100%;
+  flex: 1;
+  position: relative;
+  background: var(--color-background-tint);
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 2.5vw, 2.5rem);
+  overflow-y: auto;
+  min-width: 0;
+}
+
+@media (max-width: 75rem) {
+  .container > main {
+    padding: 1.5rem;
+  }
+}

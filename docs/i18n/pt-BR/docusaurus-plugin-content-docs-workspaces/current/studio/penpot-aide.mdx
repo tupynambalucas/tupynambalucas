@@ -1,0 +1,43 @@
+---
+title: Penpot & Aide
+sidebar_label: Penpot & Aide
+sidebar_position: 3
+---
+
+### Engenharia de Design Self-Hosted
+
+O tupynambalucas.dev utiliza uma stack do Penpot distribuída integrada com o Aide, um assistente de engenharia AI-native. Esta configuração garante soberania absoluta de dados e sincronização automatizada entre as camadas de design e a base de código.
+
+#### Arquitetura de Infraestrutura
+
+O ambiente é orquestrado via uma stack do Docker multi-container, utilizando backends em nuvem para durabilidade.
+
+- **Orchestration:** Gerenciada via `studio/penpot/compose.yaml` (Frontend, Backend, Exporter, Valkey).
+- **Camada de Banco de Dados:** Persistência do PostgreSQL hospedada no Neon.tech para integridade transacional sem servidor (serverless).
+- **Armazenamento de Objetos:** Ativos binários são persistidos em buckets compatíveis com S3 do Cloudflare R2, garantindo um footprint mínimo no Git.
+
+#### Aide: Integração Nativa de IA
+
+O Aide funciona como uma ponte Model Context Protocol (MCP), permitindo que agentes de IA interajam diretamente com a API de Plugins do Penpot para consultas avançadas e transformações de layout.
+
+##### Lógica da Ponte Aide
+
+- **Protocolo:** Comunicação WebSocket bidirecional entre o servidor `@penpot/mcp` e o ambiente Penpot.
+- **Segurança:** O Aide opera dentro da rede isolada `penpot-net`, fornecendo um gateway controlado para manipulação do design.
+- **Conectividade:** Utiliza a Porta 4402 para auditorias e sincronização de design em tempo real.
+
+##### Scripts Operacionais
+
+| Comando              | Responsabilidade Técnica                                                             |
+| :------------------- | :----------------------------------------------------------------------------------- |
+| `pnpm penpot:up`     | Inicializa os serviços core de design em `http://localhost:9005`.                    |
+| `pnpm penpot:update` | Baixa as últimas imagens de serviço e realiza um reinício gradual (rolling restart). |
+| `pnpm aide:up`       | Ativa a ponte do Aide (Penpot MCP) para manipulação de design por IA.                |
+| `pnpm aide:down`     | Desativa a ponte de automação.                                                       |
+
+##### Regras Obrigatórias de Manipulação por IA
+
+- **Reutilização de Componentes:** Sempre verifique a biblioteca de componentes existente (Penpot) ou a biblioteca de UI (`hub/services/web/src/components`) antes de criar novos elementos. O Aide deve priorizar os tokens e componentes existentes do design system.
+- **Lógica de Tokens Primeiro:** As exportações de design para código devem usar estritamente as propriedades personalizadas do CSS (CSS Custom Properties) derivadas de `src/tokens/` para cores, fontes e espaçamento.
+- **Otimização de SVG:** Certifique-se de que o código SVG exportado está otimizado, segue os padrões de ícones do projeto e está integrado através do registro `@tupynambalucas-studio/assets/icons`.
+- **Hierarquia de Camadas:** A manutenção do agrupamento semântico é obrigatória. Os elementos devem ser organizados em páginas e frames claros (ex: `Layout/Grid`, `Components/Buttons`).

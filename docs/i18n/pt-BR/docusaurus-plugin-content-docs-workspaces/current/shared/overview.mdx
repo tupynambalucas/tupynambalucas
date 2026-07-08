@@ -1,0 +1,55 @@
+---
+title: Workspace Shared (Biblioteca Global)
+sidebar_label: Visão Geral
+sidebar_position: 1
+slug: /shared
+---
+
+O workspace Shared atua como a fundação de integração e biblioteca global de múltiplos contextos do monorepo Elo Orgânico. Ele abriga padrões de configuração centralizados, utilitários comuns e futuros pacotes de componentes compartilhados projetados para serem importados por qualquer aplicação downstream (ex: `instance/apps/web`, `portal/apps/web`) ou pacote principal dentro do monorepo.
+
+Ao isolar a configuração e componentes centrais de biblioteca dentro de um workspace dedicado `shared/`, evitamos a divergência de configurações, promovemos a consistência de design e permitimos uma manutenção sem atritos do monorepo.
+
+## Estrutura de Diretórios
+
+```
+shared/
+├── config/              # Ativos de configuração centralizada
+│   ├── .husky/          # Git hooks globais
+│   ├── prettierrc.json  # Configurações base do Prettier
+│   ├── tsconfig.base.json # Regras base compartilhadas de compilação TypeScript
+│   └── package.json     # Pacote de configuração (@elo-shared/config)
+└── ui/                  # (Futuro) Biblioteca de componentes React UI compartilhados
+```
+
+## Pacotes Principais
+
+### `@elo-shared/config` (Ferramentas e Qualidade Centralizadas)
+
+Este pacote centraliza as regras de análise estática e estilo de código em todo o monorepo. Em vez de duplicar arquivos de configuração dentro de cada workspace do projeto, o `tsconfig.json` de cada sub-workspace e as configurações de ferramentas herdam diretamente deste pacote.
+
+- **Formatação Unificada**: A configuração do Prettier (`prettierrc.json`) e as regras de ignore (`.prettierignore`) residem aqui, garantindo paridade de estilo perfeita a partir de um único arquivo.
+- **TSConfig Base**: As configurações base do TypeScript (`tsconfig.base.json`) estabelecem parâmetros estritos de verificação de tipos, aliases de caminhos e resoluções de módulos para todos os subprojetos.
+- **Git Hooks**: Configurações integradas do Husky orquestram etapas de qualidade de pré-commit, como a execução de scripts do lint-staged antes de os commits serem consolidados.
+
+### `@elo-organico/ui` (Sistema de UI Centralizado — Futuro)
+
+O futuro pacote `@elo-organico/ui` estabelecerá uma biblioteca de componentes React premium e unificada. Ele atua como a contraparte visual de nosso sistema de design tokens no workspace Studio.
+
+- **Integração de Design Tokens**: Importa paletas de cores, tipografia responsiva e escalas de animação diretamente de `@elo-studio/assets` para mapeá-los em componentes React funcionais.
+- **Reutilização Universal**: Os componentes construídos aqui são totalmente desacoplados de contextos de banco de dados e backend, tornando-os seguros para importar e renderizar em:
+  - `instance/web` (Vitrine de Clientes e Painel Administrativo)
+  - `portal/web` (Dashboard da Plataforma Multi-inquilino)
+  - `docs` (Páginas interativas personalizadas dentro do TupyDocs)
+- **Padrões de Alta Qualidade**: Cada componente é estritamente tipado, compatível com as regras modernas do React 19 e estruturado para tree-shaking modular em pipelines de compilação.
+
+## Gerenciamento do Workspace
+
+As configurações dentro do workspace Shared são consumidas nos níveis raiz e de pacote. Por exemplo, o `package.json` raiz referencia `@elo-shared/config` para coordenar a preparação do git hook:
+
+```json
+"prepare": "pnpm --filter @elo-shared/config prepare"
+```
+
+:::info[Regra Estrita de Dependência Seca]
+Os arquivos dentro de `shared/` devem sempre permanecer sem estado (stateless), genéricos e isolados de camadas de negócios ou de banco de dados específicas. Eles devem se concentrar exclusivamente em ergonomia de desenvolvedor, configurações de plataforma e apresentação visual sem estado.
+:::

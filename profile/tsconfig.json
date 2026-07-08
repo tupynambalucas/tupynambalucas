@@ -1,0 +1,10 @@
+{
+  "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@profile/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

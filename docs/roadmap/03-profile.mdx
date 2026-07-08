@@ -1,0 +1,33 @@
+---
+title: Profile Generator (profile)
+sidebar_label: Profile Generator
+---
+
+This section details the milestones and plans for the Node.js and TypeScript-based GitHub profile stats compiler and visual card generator. We prioritize TypeScript to maintain a cohesive, full-type codebase across the entire monorepo.
+
+---
+
+## Completed Milestones
+
+### Workspace Initialization
+
+- **Reference Integration**: Imported the upstream Zig-based reference code to serve as a guide for API query logic and SVG visual layout constraints.
+- **Context Routing Setup**: Configured localized documentation (`README.md`) and agent guidelines (`AGENTS.md`) detailing the workspace specifications.
+
+### Engine Re-Architecture & Implementation
+
+- **TypeScript GraphQL Client**: Developed a robust API client in Node.js/TypeScript to query the GitHub GraphQL API, compiling commits, issues, PRs, and PR reviews.
+- **Recursive Division Strategy**: Implemented recursive subdivision of monthly ranges to bypass the GitHub GraphQL API's 100-repository query limit.
+- **Lines Changed API & Git Fallback**: Set up a retry loop for the asynchronous contributor statistics endpoint (supporting 202, 403, and 429 status codes), integrated with a fallback bare clone and `git log` analyzer.
+- **SVG Visual Renderers**: Programmed visual SVGs for overview stats and language size statistics utilizing CSS animations and target hashes (`#gh-dark-mode-only` / `prefers-color-scheme`) for dual-theme support.
+- **Automated Workflow Actions**: Programmed a GitHub Actions pipeline that builds and executes the TypeScript generator, automatically injecting updated visual elements into the root `README.md` on a daily cron schedule and on push.
+- **Upstream Reference Clean-up**: Deleted the deprecated Zig-based codebase from the monorepo, keeping references clean and pointing directly to the upstream inspiration repository.
+
+---
+
+## Planned Focus
+
+### Performance & Security Optimization
+
+- **API Request Batching**: Optimize calls to the GitHub API to reduce network latency and limit the possibility of rate-limiting.
+- **Subagent Customizations**: Extend the profile generator tool configuration to allow custom themes or layout parameters via environment variables.

@@ -1,0 +1,58 @@
+---
+title: Fonte Única de Verdade (SSOT)
+description: Desacoplamento e governança centralizada de esquemas e modelos compartilhados no monorepo do Elo Orgânico.
+---
+
+# Fonte Única de Verdade (SSOT)
+
+O princípio da Fonte Única de Verdade (SSOT - Single Source of Truth) garante que cada estrutura de dados, esquema de validação e regra de negócio central seja definida em exatamente um local autoritativo, eliminando a duplicação e problemas de sincronização entre as diferentes aplicações do monorepo.
+
+---
+
+## 1. Conceito Arquitetural & Visão Geral
+
+A Fonte Única de Verdade (SSOT) é um paradigma de engenharia essencial que dita que todos os componentes do sistema devem referenciar uma definição única e centralizada para modelos de dados, contratos de validação e constantes. Esse design evita estados de inconsistência ("split-brain") onde pacotes independentes (como backends de API, filas de mensageria e interfaces de usuário) divergem sobre nomes de propriedades, tipos de dados ou limites de esquemas.
+
+Ao centralizar os esquemas centrais, nós:
+
+- Garantimos a segurança completa de tipos do banco de dados até a interface do usuário.
+- Permitimos atualizações instantâneas de propriedades e esquemas em todos os aplicativos ao fazer modificações.
+- Reduzimos a duplicação de código e os custos de manutenção das ferramentas.
+
+---
+
+## 2. Utilização Específica no Projeto
+
+No Elo Orgânico, o princípio SSOT é implementado nativamente através da nossa arquitetura de monorepo:
+
+### A. Bibliotecas Core Centralizadas
+
+Os workspaces `@elo-instance/core` e `@elo-portal/core` servem como a SSOT absoluta para seus respectivos contextos delimitados (bounded contexts). Qualquer esquema, interface ou tipo compartilhado por mais de uma aplicação (como a API do backend e o SPA web do frontend) deve ser declarado aqui primeiro, seguindo nossa diretriz de **Design Orientado ao Core Primeiro**.
+
+### B. Compartilhamento de Contratos e Tipos
+
+Aplicações downstream como `@elo-instance/api` (Fastify) e `@elo-instance/web` (React SPA) não mantêm cópias de interfaces de DTO (Data Transfer Object) ou modelos de banco de dados. Em vez disso, elas importam tipos, interfaces e classes diretamente do pacote core compartilhado:
+
+```typescript
+// Definição no pacote Core
+// instance/packages/core/src/domains/cycle/cycle.types.ts
+export interface ICycle {
+  id: string;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  status: 'active' | 'closed' | 'draft';
+}
+```
+
+```typescript
+// Consumido diretamente na API a jusante (downstream)
+// instance/apps/api/src/domains/cycle/cycle.service.ts
+import type { ICycle } from '@elo-instance/core';
+```
+
+### C. Consistência de Esquemas de Validação
+
+Esquemas de validação compartilhados são declarados uma única vez usando Zod dentro das bibliotecas core. A API do backend consome esses esquemas em seus controllers para validar os payloads HTTP recebidos, enquanto a aplicação web frontend utiliza os mesmos esquemas para validação de formulários no lado do cliente.
+
+A modificação de um campo exige a atualização de apenas um arquivo no workspace core, propagando-se automaticamente por todo o pipeline de build durante as validações em tempo de compilação, eliminando a sincronização manual de contratos de API.

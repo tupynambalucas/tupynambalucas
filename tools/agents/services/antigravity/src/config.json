@@ -1,0 +1,8 @@
+{
+  "telemetryEnabled": false,
+  "theme": "dark",
+  "editor": "code",
+  "onboardingComplete": true,
+  "consumerOnboardingComplete": true,
+  "enterpriseOnboardingComplete": true
+}

@@ -1,0 +1,64 @@
+---
+title: Workspace Docs (tupynambalucas.dev Docs)
+sidebar_label: Visão Geral
+sidebar_position: 1
+slug: /docs
+---
+
+O workspace Docs gerencia o hub oficial de documentação para o projeto tupynambalucas.dev, conhecido como **tupynambalucas.dev Docs**. Construído sobre o Docusaurus, ele serve como o portal central do desenvolvedor, abrigando diretrizes arquiteturais, guias de estilo, documentos de planejamento de produto, além de changelogs e roadmaps automatizados do projeto.
+
+## Estrutura de Diretórios
+
+```
+docs/
+├── handbook/         # Manual geral do projeto (Arquitetura, Guia de Estilo, Diretrizes)
+├── roadmap/          # Documentos de origem do roadmap modular
+├── releases/         # Atualizações de release formatadas em blog
+├── workspaces/       # Descrições modulares de workspaces (esta seção)
+├── i18n/             # Configurações de internacionalização (traduções em português)
+├── src/              # Páginas de layout React customizadas, ativos e componentes de estilização
+├── sidebars.ts       # Regras da barra lateral de documentação principal
+├── sidebarsRoadmap.ts    # Configurações de barra lateral para Roadmaps
+├── sidebarsWorkspaces.ts # Sidebar configurations for Workspaces
+└── docusaurus.config.ts  # Configuração mestre do site Docusaurus
+```
+
+## Core Architecture e Plugins Customizados
+
+O tupynambalucas.dev Docs está configurado com uma estrutura de documentação multi-instância usando plugins do Docusaurus para segmentar as diferentes áreas do portal do desenvolvedor com barras laterais esquerdas independentes:
+
+1.  **Documentação Geral (Docs)**: Localizada em `handbook/` e mapeada para `/docs`. Governa resumos arquiteturais de alto nível, estratégias de segurança, guias de estilo de codificação e arquivos de visão mestre.
+2.  **Roadmaps Estratégicos (Roadmap)**: Localizado em `roadmap/` e mapeado para `/roadmap`. Governa marcos e objetivos específicos de cada contexto.
+3.  **Workspaces (Workspaces)**: Localizado em `workspaces/` e mapeado para `/workspaces`. Abriga descrições detalhadas de cada contexto de pacote.
+4.  **Changelog (Blog)**: Localizado em `releases/` e mapeado para `/changelog`. Governa o histórico de versões e notas de release.
+
+## Internacionalização (i18n)
+
+O tupynambalucas.dev Docs suporta totalmente as localidades Inglês (`en`) e Português (`pt-BR`). Os arquivos localizados espelham a estrutura dos documentos em inglês:
+
+- **Docs Gerais**: `i18n/pt-BR/docusaurus-plugin-content-docs/current/`
+- **Docs de Roadmap**: `i18n/pt-BR/docusaurus-plugin-content-docs-roadmap/current/`
+- **Docs de Workspaces**: `i18n/pt-BR/docusaurus-plugin-content-docs-workspaces/current/`
+- **Posts do Changelog**: `i18n/pt-BR/docusaurus-plugin-content-blog/`
+
+## Compiladores Automáticos de Raiz (Temporariamente Pausado em CI/CD)
+
+Para manter padrões de repositório limpos, o workspace de documentação apresenta scripts de compilação em tempo de build para gravar documentações unificadas em markdown no nível raiz do repositório:
+
+- **`generate-roadmap.ts`**: Agrega todos os arquivos de contexto dentro de `roadmap/` e gera `/ROADMAP.md` na raiz do repositório.
+- **`generate-changelog.ts`**: Analisa as postagens de blog de release sob `releases/` e gera `/CHANGELOG.md` na raiz do repositório.
+
+:::note[Status do Workflow do CI/CD]
+Para evitar conflitos de build e otimizar o fluxo de deploy, a execução dos scripts de compilação (`generate-changelog` e `generate-roadmap`) e o subsequente push de volta para o repositório foram temporariamente desativados no pipeline `.github/workflows/deploy-docs.yaml`. Em uma iteração futura, iremos refatorar e reativar este fluxo de compilação modular de documentação.
+:::
+
+## Scripts do Workspace
+
+Execute esses comandos a partir do diretório raiz para gerenciar o contexto de documentação:
+
+| Comando               | Ação                                                                                                  |
+| :-------------------- | :---------------------------------------------------------------------------------------------------- |
+| `pnpm docs:dev`       | Inicializa o servidor de desenvolvimento local do Docusaurus em `http://localhost:3002`.              |
+| `pnpm docs:build`     | Compila a versão de produção do portal Docusaurus (executa validações de links).                      |
+| `pnpm docs:roadmap`   | Dispara manualmente a compilação dos documentos de roadmap modulares no arquivo `ROADMAP.md` na raiz. |
+| `pnpm docs:changelog` | Dispara manualmente a compilação das atualizações de release no arquivo `CHANGELOG.md` na raiz.       |

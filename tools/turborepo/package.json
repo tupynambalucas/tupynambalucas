@@ -1,0 +1,21 @@
+{
+  "name": "@tupynambalucas-tools/turborepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "Tupynambá Lucas Tools Package",
+  "license": "https://github.com/tupynambalucas/codecanvas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/codecanvas/tree/main/tools/turborepo#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/codecanvas.git",
+    "directory": "tools/turborepo"
+  },
+  "scripts": {
+    "cache:up": "docker compose -f architecture/docker/compose.yaml up -d --build",
+    "cache:down": "docker compose -f architecture/docker/compose.yaml down",
+    "cache:logs": "docker compose -f architecture/docker/compose.yaml logs -f",
+    "cache:reset": "docker compose -f architecture/docker/compose.yaml down --volumes && docker compose -f architecture/docker/compose.yaml up -d --build"
+  }
+}

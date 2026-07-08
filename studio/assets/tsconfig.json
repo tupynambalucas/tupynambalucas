@@ -1,0 +1,11 @@
+{
+  "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@studio/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*", "bucket/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

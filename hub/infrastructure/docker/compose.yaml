@@ -1,0 +1,82 @@
+name: tupynambalucas-hub
+
+services:
+  # ---------------------------------------------------------------- #
+  # API — Fastify Node.js Server (Production/Staging profile)
+  # ---------------------------------------------------------------- #
+  api:
+    profiles: ['prod', 'staging']
+    image: tupynambalucas-hub-api:${TAG:-latest}
+    container_name: tupynambalucas-hub-api-${APP_ENV:-prod}
+    environment:
+      - NODE_ENV=${NODE_ENV:?NODE_ENV missing}
+      - SERVER_PORT=${SERVER_PORT}
+      - SERVER_HOST=${SERVER_HOST}
+      - MONGO_URI=${MONGO_URI:?MONGO_URI missing}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - USER_SESSION_KEY=${USER_SESSION_KEY}
+      - ADMIN_USER_SEED=${ADMIN_USER_SEED}
+      - ADMIN_EMAIL_SEED=${ADMIN_EMAIL_SEED}
+      - ADMIN_PASS_SEED=${ADMIN_PASS_SEED}
+      - SENTRY_DSN=${SENTRY_DSN}
+      - TURNSTILE_SECRET_KEY=${TURNSTILE_SECRET_KEY}
+    networks:
+      network:
+        aliases:
+          - tupynambalucas.hub.prod
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------- #
+  # Web — React SPA served by Nginx (Production/Staging profile)
+  # ---------------------------------------------------------------- #
+  web:
+    profiles: ['prod', 'staging']
+    image: tupynambalucas-hub-web:${TAG:-latest}
+    container_name: tupynambalucas-hub-web-${APP_ENV:-prod}
+    networks:
+      - network
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------- #
+  # Redis — BullMQ message broker (Always running / Default profile)
+  # ---------------------------------------------------------------- #
+  redis:
+    image: tupynambalucas-hub-redis:${TAG:-latest}
+    container_name: tupynambalucas-hub-redis-${APP_ENV:-prod}
+    networks:
+      - network
+
+  # ---------------------------------------------------------------- #
+  # MongoDB — Local Database (Dev only / Default profile)
+  # ---------------------------------------------------------------- #
+  db:
+    profiles: ['dev']
+    image: tupynambalucas-hub-db:${TAG:-latest}
+    container_name: tupynambalucas-hub-db-${APP_ENV:-dev}
+    networks:
+      - network
+
+  # ---------------------------------------------------------------- #
+  # MongoDB RS Init — Replica Set initialization (Dev only)
+  # ---------------------------------------------------------------- #
+  db-init:
+    profiles: ['dev']
+    image: tupynambalucas-hub-db-init:${TAG:-latest}
+    container_name: tupynambalucas-hub-db-init-${APP_ENV:-dev}
+    networks:
+      - network
+    depends_on:
+      db:
+        condition: service_healthy
+
+networks:
+  network:
+    name: tupynambalucas-hub_network
+    driver: bridge

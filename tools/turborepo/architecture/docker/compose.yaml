@@ -1,0 +1,17 @@
+name: tupynambalucas-turborepo
+
+services:
+  cache:
+    build:
+      context: ../..
+      dockerfile: services/cache/Dockerfile
+    container_name: tupynambalucas-turborepo-cache
+    ports:
+      - '${PORT:-3008}:3000'
+    env_file:
+      - ../../services/cache/.env.cache
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+    volumes:
+      - ../data/cache:/data/tupynambalucas-organico
+    restart: unless-stopped

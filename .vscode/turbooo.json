@@ -1,0 +1,5 @@
+{
+  "apiurl": "http://localhost:3008",
+  "teamslug": "elo-organico",
+  "token": "elo_organico_secret_token_123"
+}

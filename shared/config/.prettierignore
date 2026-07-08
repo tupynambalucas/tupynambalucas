@@ -1,0 +1,11 @@
+**/node_modules/**
+**/dist/**
+**/build/**
+**/.docusaurus/**
+**/.turbo/**
+**/.eslintcache/**
+**/tools/agents/data/**
+**/tools/agents/shared/**
+**/.vscode-test/**
+**/out/**
+**/.dockerignore

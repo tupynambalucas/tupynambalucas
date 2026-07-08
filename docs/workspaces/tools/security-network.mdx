@@ -1,0 +1,20 @@
+---
+title: AI Security & Network
+sidebar_label: Security & Network
+sidebar_position: 4
+---
+
+### Isolated Infrastructure & Network Routing
+
+Security and environment predictability are maintained through isolated Docker bridge networks (`elo-agents-net` for agents and `elo-mcp-net` for MCP tools), preventing unauthorized cross-network access.
+
+#### Gateway & Routing Configuration
+
+- **Fastify HTTP Proxy Gateway:** A lightweight Fastify v5 server (`elo-mcp-gateway`) running on Node.js serves as the entrypoint. It exposes port `3005` to the host machine. Using `@fastify/http-proxy`, it proxies path prefixes (e.g., `/github`) to the respective backend containers.
+- **Network-Level CORS & SSE Handling:** The gateway intercepts `OPTIONS` requests and injects appropriate CORS headers globally. It disables default HTTP timeouts on proxies to prevent active Server-Sent Events (SSE) connections from dropping during long-running tasks.
+- **Internal Domain Routing:** Within the MCP stack, the gateway is aliased as `elo.internal.tools.mcp`. Agent containers running in separate network namespaces can route requests directly through `http://elo.internal.tools.mcp:3005/[service]/sse` via the host bridge mapping.
+- **Host-to-Container Bridge:** Local development clients (such as the Google Antigravity CLI) communicate with the gateway from the host machine loopback interface using:
+  ```
+  http://localhost:3005/github/sse
+  ```
+- **Buffered stdio Stream Mapping:** The wrapper executes child processes locally, preventing stdout fragmentation. By checking JSON-RPC transaction `id`s line-by-line, the adapter resolves HTTP requests with complete, un-truncated payloads.

@@ -1,0 +1,33 @@
+---
+title: Gerador de Perfil (profile)
+sidebar_label: Gerador de Perfil
+---
+
+Esta seção detalha os marcos e planos para o compilador de estatísticas do GitHub e gerador de cartões visuais baseado em Node.js e TypeScript. Priorizamos o TypeScript para manter uma base de código unificada e tipada em todo o monorepo.
+
+---
+
+## Marcos Concluídos
+
+### Inicialização do Workspace
+
+- **Integração de Referência**: Importação do código de referência em Zig para servir como guia para lógicas de query da API e restrições de layout visual SVG.
+- **Configuração de Roteamento de Contexto**: Configuração de documentação local (`README.md`) e diretrizes de agentes (`AGENTS.md`) detalhando as especificações do workspace.
+
+### Rearquitetura & Implementação do Motor
+
+- **Cliente GraphQL em TypeScript**: Desenvolvimento de um cliente de API robusto em Node.js/TypeScript para consultar a API GraphQL do GitHub, compilando commits, issues, PRs e revisões de PRs.
+- **Estratégia de Divisão Recursiva**: Implementação de subdivisão recursiva de intervalos mensais para contornar o limite de consulta de 100 repositórios da API GraphQL do GitHub.
+- **API de Linhas Modificadas & Fallback de Git**: Configuração de um loop de repetição para o endpoint assíncrono de estatísticas de colaboradores (suportando os status 202, 403 e 429), integrado com um fallback para clone bare e analisador de `git log`.
+- **Renderizadores Visuais de SVG**: Programação de SVGs visuais para estatísticas gerais e dados de tamanho de linguagem utilizando animações CSS e hashes de alvo (`#gh-dark-mode-only` / `prefers-color-scheme`) para suporte a temas duplos.
+- **Ações de Workflow Automatizadas**: Programação de um pipeline de GitHub Actions que compila e executa o gerador em TypeScript, injetando automaticamente os elementos visuais atualizados no `README.md` raiz diariamente e em pushes.
+- **Limpeza da Referência Upstream**: Remoção da base de código obsoleta em Zig do monorepo, mantendo as referências limpas e apontando diretamente para o repositório original de inspiração.
+
+---
+
+## Foco Planejado
+
+### Otimização de Performance & Segurança
+
+- **Agrupamento de Requisições de API**: Otimizar chamadas para a API do GitHub para reduzir a latência de rede e limitar a possibilidade de rate-limiting.
+- **Customizações de Subagente**: Expandir a configuração da ferramenta geradora de perfil para permitir temas personalizados ou parâmetros de layout por meio de variáveis de ambiente.
