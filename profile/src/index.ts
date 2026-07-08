@@ -61,9 +61,8 @@ async function main(): Promise<void> {
     const totalLinesChanged = stats.repositories.reduce((acc, r) => acc + r.lines_changed, 0);
     const totalViews = stats.repositories.reduce((acc, r) => acc + r.views, 0);
 
-    // Dynamic Base URL based on environment logic
     const assetsBaseUrl = config.isGitHubAction
-      ? `https://github.com/${config.repositoryOwner}/${config.repositoryName}/blob/generated/stats`
+      ? `https://raw.githubusercontent.com/${config.repositoryOwner}/${config.repositoryName}/generated/stats`
       : './stats';
 
     const readmeData = {
@@ -114,7 +113,7 @@ async function main(): Promise<void> {
       );
 
       console.info('Syncing README.md across active branches...');
-      const targetBranches = ['develop', 'main'];
+      const targetBranches = ['main'];
       for (const branch of targetBranches) {
         console.info(`Uploading README.md to ${branch}...`);
         await uploadFileContents(
