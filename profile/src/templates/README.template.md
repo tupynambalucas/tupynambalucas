@@ -5,14 +5,14 @@
   <br>
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="{{ assetsBaseUrl }}/overview.svg?raw=true#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="{{ assetsBaseUrl }}/overview.svg?raw=true" />
-    <img alt="{{ name }}'s GitHub Stats" src="{{ assetsBaseUrl }}/overview.svg?raw=true" height="200px" />
+    <source media="(prefers-color-scheme: dark)" srcset="{{ assetsBaseUrl }}/overview.svg{{ urlSuffix }}#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="{{ assetsBaseUrl }}/overview.svg{{ urlSuffix }}" />
+    <img alt="{{ name }}'s GitHub Stats" src="{{ assetsBaseUrl }}/overview.svg{{ urlSuffix }}" height="200px" />
   </picture>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="{{ assetsBaseUrl }}/languages.svg?raw=true#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="{{ assetsBaseUrl }}/languages.svg?raw=true" />
-    <img alt="Languages Used" src="{{ assetsBaseUrl }}/languages.svg?raw=true" height="200px" />
+    <source media="(prefers-color-scheme: dark)" srcset="{{ assetsBaseUrl }}/languages.svg{{ urlSuffix }}#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="{{ assetsBaseUrl }}/languages.svg{{ urlSuffix }}" />
+    <img alt="Languages Used" src="{{ assetsBaseUrl }}/languages.svg{{ urlSuffix }}" height="200px" />
   </picture>
 </div>
 <br>

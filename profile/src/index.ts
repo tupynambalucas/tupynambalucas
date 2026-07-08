@@ -65,6 +65,8 @@ async function main(): Promise<void> {
       ? `https://raw.githubusercontent.com/${config.repositoryOwner}/${config.repositoryName}/generated/stats`
       : './stats';
 
+    const urlSuffix = config.isGitHubAction ? '?raw=true' : '';
+
     const readmeData = {
       name: stats.name,
       user: stats.user,
@@ -75,6 +77,7 @@ async function main(): Promise<void> {
       views: totalViews,
       repos: stats.repositories.length,
       assetsBaseUrl,
+      urlSuffix,
     };
 
     const compiledReadme = fillTemplate(readmeTemplate, readmeData);
