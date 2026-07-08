@@ -3,9 +3,16 @@
   <br>
 <p><font size="6">A Full-Stack Developer with a rare profile that merges over 10 years of programming studies with a deep sensitivity for design and UX/UI. My expertise lies in architecting end-to-end digital solutions, developing high-performance applications with TypeScript, and strategically selecting the optimal database technology - PostgreSQL for relational structures or - MongoDB for high-flexibility scenarios—to ensure the final product's scalability and efficiency.</font></p>
   <br>
-<div>
-  <a href="https://github.com/tupynambalucas">
-  <img height="150em" src="https://github-readme-stats.vercel.app/api?username=tupynambalucas&show_icons=true&theme=dark"/>
-  <img height="150em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=tupynambalucas&layout=compact&langs_count=7&theme=dark"/>
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/stats/overview.svg?raw=true#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/stats/overview.svg?raw=true" />
+    <img alt="Tupynambá Lucas's GitHub Stats" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/stats/overview.svg?raw=true" height="200px" />
+  </picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/stats/languages.svg?raw=true#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/stats/languages.svg?raw=true" />
+    <img alt="Languages Used" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/stats/languages.svg?raw=true" height="200px" />
+  </picture>
 </div>
 <br>
