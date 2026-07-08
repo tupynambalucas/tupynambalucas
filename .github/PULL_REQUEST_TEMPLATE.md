@@ -9,7 +9,7 @@ All commits must follow the Conventional Commits specification. Ensure your PR t
 `[type]([scope]): [description]`
 
 - **Types**: `feat` | `fix` | `docs` | `style` | `refactor` | `perf` | `test` | `chore`
-- **Scopes**: `extension` | `studio` | `core` | `studio` | `tools` | `deps`
+- **Scopes**: `hub` | `profile` | `studio` | `tools` | `docs` | `deps`
 
 ---
 

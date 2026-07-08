@@ -13,12 +13,11 @@ A clear and concise description of the bug.
 
 Please specify the affected workspace(s):
 
-- [ ] `extension` (Extension)
-- [ ] `studio` (Studio)
+- [ ] `hub` (Developer Hub, API, & Core)
+- [ ] `profile` (GitHub Profile Visualizer)
 - [ ] `studio` (Design Tokens / Penpot / Assets)
-- [ ] `tools` (MCP servers / automation CLI)
+- [ ] `tools` (MCP / CLI / Automation)
 - [ ] `docs` (Docusaurus Knowledge Base)
-- [ ] `core` (Shared Package core logic)
 
 ## Environment Details
 

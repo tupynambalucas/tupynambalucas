@@ -1,5 +1,5 @@
 # ==============================================================================
-#  CodeCanvas - Repository CODEOWNERS
+#  tupynambalucas.dev - Repository CODEOWNERS
 # ==============================================================================
 # This file defines team/user ownership for files and directories in the monorepo.
 # Rules are processed in order, with the last matching rule taking precedence.
@@ -19,20 +19,17 @@
 /pnpm-workspace.yaml                             @tupynambalucas
 /turbo.json                                      @tupynambalucas
 
-# Bounded Workspace: VS Code Extension (Apps & Core Package)
-/extension/                                       @tupynambalucas
+# Bounded Workspace: Developer Hub (Web Client, API & Core)
+/hub/                                            @tupynambalucas
 
-# Bounded Workspace: Studio Themes (Apps & Core Package)
+# Bounded Workspace: GitHub Profile Visualizer
+/profile/                                        @tupynambalucas
+
+# Bounded Workspace: Visual Identity & Design System (Assets & Penpot)
 /studio/                                         @tupynambalucas
 
-# Bounded Workspace: Visual Identity & Design System
-/studio/                                         @tupynambalucas
-
-# Bounded Workspace: AI & DevOps Automation (MCP, scripts, gh container)
+# Bounded Workspace: AI & DevOps Automation (MCP, scripts, remote cache)
 /tools/                                          @tupynambalucas
-
-# Shared Configurations, Schemas, and Assets
-/shared/                                         @tupynambalucas
 
 # Centralized Documentation (Docusaurus Knowledge Base & Handbooks)
 /docs/                                           @tupynambalucas

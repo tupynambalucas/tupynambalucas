@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Propose a new feature, enhancement, or tool integration for CodeCanvas.
+about: Propose a new feature, enhancement, or tool integration for the monorepo.
 title: 'feat([scope]): '
 labels: enhancement, triage
 ---
@@ -17,12 +17,11 @@ A clear and concise description of what you want to happen. Describe the archite
 
 Please specify the affected workspace(s):
 
-- [ ] `extension` (Extension)
-- [ ] `studio` (Studio)
+- [ ] `hub` (Developer Hub, API, & Core)
+- [ ] `profile` (GitHub Profile Visualizer)
 - [ ] `studio` (Design Tokens / Penpot / Assets)
-- [ ] `tools` (MCP servers / automation CLI)
+- [ ] `tools` (MCP / CLI / Automation)
 - [ ] `docs` (Docusaurus Knowledge Base)
-- [ ] `core` (Shared Package core logic)
 
 ## Technical Architecture & Impact
 
