@@ -4,13 +4,13 @@ All planned and completed milestones for each key workspace context in the tupyn
 
 ## Core Architecture & Strategy
 
-This section outlines the strategic monorepo architecture, catalog configurations, and logical multi-tenant isolation goals for the Elo Orgânico project.
+This section outlines the strategic monorepo architecture, catalog configurations, and logical multi-tenant isolation goals for the tupynambalucas.dev project.
 
 ## Current Development Focus: "Single-Instance Mastery"
 
-**CRITICAL STRATEGY:** Our immediate and absolute priority is to deliver a **complete, 100% functional, and polished single-instance application** (`@elo-instance/*`).
+**CRITICAL STRATEGY:** Our immediate and absolute priority is to deliver a **complete, 100% functional, and polished single-instance application** (`@tupynambalucas-hub/*`).
 
-While we have a long-term vision of becoming a multi-tenant SaaS platform, **SaaS architectural complexities must not be implemented at this stage.** All current development (codebase, database schemas, UI/UX) must remain focused on producing the best possible version of a standalone system for an ecovillage. The transition to a full SaaS model (Phase 6 of the Master Plan) will onldsay be considered after the single-instance application is stable and fully operational.
+While we have a long-term vision of becoming a multi-tenant SaaS platform, **SaaS architectural complexities must not be implemented at this stage.** All current development (codebase, database schemas, UI/UX) must remain focused on producing the best possible version of a standalone system for an ecovillage. The transition to a full SaaS model (Phase 6 of the Master Plan) will only be considered after the single-instance application is stable and fully operational.
 
 ---
 
