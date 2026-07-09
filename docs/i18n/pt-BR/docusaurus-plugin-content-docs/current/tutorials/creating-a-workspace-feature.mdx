@@ -1,0 +1,96 @@
+---
+title: Creating a Workspace Feature
+description: Learn how to build a feature that spans across multiple layers in a workspace.
+---
+
+# Creating a Workspace Feature
+
+In this tutorial, we will build a small, vertical feature across the `hub` workspace. We will start by defining the core logic, expose it via the API, and finally consume it in the web frontend.
+
+This will teach us how the different layers (Core, API, Web) interact within our bounded contexts.
+
+## Step 1: Define the Core Logic
+
+We will start in the Core layer, which holds our domain models and pure functions.
+
+Navigate to `workspaces/hub/packages/core/src/` and create a new file named `greeter.ts`.
+
+Add the following code:
+
+```typescript
+export function getGreeting(name: string): string {
+  return `Hello, ${name}! Welcome to the hub.`;
+}
+```
+
+Now, let's export it so other packages can use it. Open `workspaces/hub/packages/core/src/index.ts` and add:
+
+```typescript
+export * from './greeter';
+```
+
+## Step 2: Expose the Logic in the API
+
+Next, we will move to the API layer to create an endpoint that uses our new core function.
+
+Navigate to `workspaces/hub/apps/api/src/routes/` and create a new file named `greet.ts`.
+
+Add the following Fastify route:
+
+```typescript
+import { FastifyInstance } from 'fastify';
+import { getGreeting } from '@tupynambalucas-hub/core';
+
+export default async function (fastify: FastifyInstance) {
+  fastify.get('/greet', async (request, reply) => {
+    const { name = 'Developer' } = request.query as { name?: string };
+    const message = getGreeting(name);
+    return { message };
+  });
+}
+```
+
+## Step 3: Consume the API in the Web Frontend
+
+Finally, we will display this greeting in our React frontend.
+
+Navigate to `workspaces/hub/apps/web/src/components/` and create `GreetingPanel.tsx`.
+
+Add the following React component:
+
+```tsx
+import React, { useEffect, useState } from 'react';
+
+export function GreetingPanel() {
+  const [message, setMessage] = useState('Loading...');
+
+  useEffect(() => {
+    fetch('/api/greet?name=Explorer')
+      .then((res) => res.json())
+      .then((data) => setMessage(data.message))
+      .catch(() => setMessage('Failed to load greeting.'));
+  }, []);
+
+  return (
+    <div className="greeting-panel">
+      <h2>{message}</h2>
+    </div>
+  );
+}
+```
+
+## Step 4: Verify the Feature
+
+Now, we will run the development server to see our feature in action.
+
+```bash
+pnpm dev --filter=@tupynambalucas-hub/*
+```
+
+Open your browser to `http://localhost:3000`. You should see your new component rendering the text:
+
+`Hello, Explorer! Welcome to the hub.`
+
+## Conclusion
+
+Great job! We have successfully implemented a vertical feature by creating pure logic in the Core, serving it through the API, and rendering it in the Web layer. This pattern is the foundation for all feature development in our architecture.

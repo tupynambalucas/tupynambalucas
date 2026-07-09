@@ -1,4 +1,4 @@
-# Knowledge Base Code Patterns
+# Docusaurus Docs Code Patterns
 
 These patterns must be followed in all code examples generated in the CodeCanvas documentation. For formatting syntax, refer to the [MDX Syntax Guide](syntax.md).
 

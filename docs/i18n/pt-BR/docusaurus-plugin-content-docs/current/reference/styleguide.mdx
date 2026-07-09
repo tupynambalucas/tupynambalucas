@@ -1,0 +1,406 @@
+---
+title: Style Guide & Standards
+description: Coding conventions, TypeScript rules, and quality requirements for maintaining a consistent and maintainable monorepo.
+---
+
+# Style Guide and Standards
+
+This document defines the strict coding conventions and quality requirements for the **tupynambalucas.dev** project. All code must adhere to these standards to ensure consistency and maintainability across the monorepo.
+
+---
+
+## 1. Code Formatting (Prettier)
+
+Code must follow the rules defined in `shared/config/prettierrc.json`:
+
+- **Indentation:** 2 spaces.
+- **Semicolons:** Always use (true).
+- **Quotes:** Use single quotes (true), except in JSX.
+- **Trailing Comma:** Always use where possible (all).
+- **Line Width:** Maximum of 100 characters.
+
+## 2. TypeScript Rules (Strict Mode)
+
+We prioritize maximum type safety through a rigorous TypeScript configuration.
+
+- **Object Definitions:** Use `interface` for object definitions to ensure consistency. Type aliases are permitted for unions or utility types (e.g., `z.infer<>`).
+- **Arrays:** Use the `T[]` syntax instead of `Array<T>`.
+- **Type Imports:** Always use `import type` for types. Import types separately from values (`style: separate-type-imports`).
+- **Unused Variables:** Prefix with an underscore (e.g., `_id`) to signal intent.
+- **Strict Typing:** The use of `any` is strictly forbidden.
+- **Comparisons:** Always use strict equality (`===`).
+- **Strict Booleans:** Boolean expressions must be explicit. Use `if (value !== undefined)` instead of `if (value)`.
+- **Safe Conversions:** Do not use `String(value)` or `${value}` on generic `unknown` or `object` types. Use explicit type guards for primitives to prevent `[object Object]` bugs.
+- **Type Assertions:** Avoid unnecessary type assertions (e.g., `value as T` when `value` is already `T`). The linter will flag these; remove them to keep code clean.
+
+## 3. Asynchronous Code Management (Critical)
+
+- **No Floating Promises:** Never leave promises "floating" without handling or awaiting.
+- **The `void` Operator:** When an async function is called for its side effects and is NOT awaited, prefix it with `void` (e.g., `void startServer()`). This signals intentional non-blocking execution.
+- **Fastify Handlers:** Route handlers should use the `FastifyZodHandler` type and return `Promise<void>`. Use `void reply.send()` when not returning the reply directly.
+- **Fastify Plugins:** If a `FastifyPluginAsync` does not use `await`, remove the `async` keyword and return `Promise.resolve()` to comply with `require-await` while maintaining type integrity.
+- **Error Handling:** Every `await` operation must be within a `try/catch` block or part of a `.catch()` chain.
+
+## 4. Package-Specific Standards
+
+### 4.1. Core Packages (`@tupynambalucas-hub/core` / `@tupynambalucas-hub/core`)
+
+- **Zero Warnings:** These packages must have zero lint warnings or errors.
+- **Public APIs:** All exported members must have explicitly defined return types.
+
+### 4.2. API (Fastify)
+
+- **Naming:** Controllers and Services use `PascalCase` for classes and `camelCase` for methods.
+- **Mapping:** Controllers are responsible for mapping database models to Core DTOs via private methods.
+
+### 4.3. Web (React)
+
+- **React 19 Patterns:** Use the `use()` hook for consuming promises and context when applicable, reducing `useEffect` boilerplate. Prefer **Server Actions** (if applicable) or optimized `action` props in forms for a smoother user experience.
+- **Global State:** Trigger async side-effects in Stores or Effects using the `void` operator for unawaited calls.
+- **Refs:** Accessing `ref.current` during render is strictly forbidden. When passing multiple refs to a child component, pass them individually rather than in a grouped object to avoid linter confusion and ensure clarity.
+- **Strict Booleans in UI:** In JSX, always use explicit comparisons: `{isValid === true && <Component />}` to avoid rendering `0` or `NaN` in the UI.
+- **State Syncing:** Avoid calling `setState` synchronously within `useEffect` if the update is derived from props or other state. Instead, sync state during render (the "prevProps" pattern) or initialize state with a function.
+- **List Keys:** Always use stable, unique IDs (e.g., `_id`) as keys in lists. Avoid using array indices unless the list is static and has no unique identifiers. If indices must be used, document the reason.
+- **Styling & Responsive Measures:** Use **CSS Modules** (`.module.css`). Utility classes from Tailwind are allowed inside modules via `@apply`. Adhere strictly to the **Responsive Standards** defined in Section 5.
+- **Console Logs:** `console.log` is forbidden and will fail the production build. Use `console.info/warn/error` sparingly.
+
+## 5. CSS & Responsive Standards (Strict)
+
+To ensure a fluid, accessible, and modern user interface, the following rules are mandatory for all applications:
+
+- **No Pixels (`px`):** The use of fixed `px` values is strictly forbidden for sizing, spacing, and typography.
+  - _Exception:_ `1px` is allowed for borders when a hairline effect is desired.
+- **Relative Typography:** Always use `rem` for font sizes. Never use `px` or `em` for typography.
+- **Fluid Spacing:** Use `rem` for consistent spacing or `clamp()` for fluid spacing that scales with the viewport.
+- **Structural Layouts:** Use modern layout primitives: `flexbox`, `grid`, `%`, `vw`, and `vh`.
+- **Logical Functions:** Leverage `clamp()`, `min()`, and `max()` to create boundaries for fluid elements without using media queries for every minor adjustment.
+
+### Responsive Examples
+
+```css title="ResponsiveHero.module.css"
+.container {
+  /* Fluid width: min 320px, preferred 90%, max 75rem (1200px) */
+  width: clamp(20rem, 90%, 75rem);
+  padding: 1.5rem;
+}
+
+.heroTitle {
+  /* Fluid typography: min 1.5rem, scales with 4vw, max 3rem */
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  color: var(--color-title-dark);
+}
+
+.heroSection {
+  /* Full viewport height minus header height (assumed 4rem) */
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-background-tint);
+}
+```
+
+```tsx title="ResponsiveHero.tsx"
+import styles from './ResponsiveHero.module.css';
+
+export const ResponsiveHero = () => {
+  return (
+    <section className={styles.heroSection}>
+      <div className={styles.container}>
+        <h1 className={styles.heroTitle}>Design Fluido e Responsivo</h1>
+      </div>
+    </section>
+  );
+};
+```
+
+## 6. Naming Conventions
+
+- **Schemas:** Must end with `Schema` (e.g., `ProductSchema`).
+- **Files:** Follow the `name.type.ts` pattern (e.g., `auth.controller.ts`, `apiPlugin.ts`).
+- **Directories:** Use `camelCase` for directory names within source folders.
+
+---
+
+## 7. Language Standards (Strict English-First)
+
+To maintain global accessibility, scalability, and code consistency across all contexts of the monorepo:
+
+- **Source Code & Comments:** All source code (variable names, functions, classes, interfaces, properties, schemas, files) and comments within code files MUST be written exclusively in **English (en-US)**.
+- **Documentation:** All technical and product documentation, READMEs, security guidelines, and architectural briefs MUST be written in English.
+- **Git History:** Commit messages and Pull Request titles/descriptions MUST follow the Conventional Commits specification and be written in English (see [Commit Conventions](./commit-conventions.mdx)).
+- **Localization & i18n Exceptions:** The ONLY exceptions are localization files (e.g., `i18n` configurations, translation tables, dictionary JSON files) and explicit mock data representing end-user text in Portuguese. All internal application logic and definitions must remain strictly in English.
+
+---
+
+## 8. Code Block Standards (`live` blocks)
+
+:::danger[Restricted Usage]
+The Docusaurus `live` code block (interactive editor) is EXCLUSIVELY reserved for this Style Guide. It must NOT be used in any other documentation page.
+:::
+
+Its purpose is strictly to demonstrate:
+
+1.  **React Components:** Following rigorous patterns (explicit booleans, strict types, etc.).
+2.  **API Domain Structures:** Visualizing how domain models should be structured.
+
+### 8.1. Rigorous React & CSS Module Pattern Example
+
+The example below demonstrates our preferred pattern for interactive components using **CSS Modules**. It showcases the integration of state management, memoization, and asynchronous handling while strictly adhering to our TypeScript, boolean logic, and styling rules.
+
+```css title="AdvancedCycleManager.module.css"
+.container {
+  padding: 1.5rem;
+  border: 0.0625rem solid var(--color-border-light);
+  border-radius: 0.75rem;
+  background-color: var(--color-background-white);
+  box-shadow: 0 0.25rem 0.375rem -0.0625rem rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-title-dark);
+}
+
+.statusBadge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1.25rem;
+  letter-spacing: 0.05em;
+}
+
+.statusInvalid {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.statusReady {
+  background-color: #f0fdf4;
+  color: #166534;
+}
+
+.productList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.productItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid var(--color-border-light);
+  background-color: var(--color-background-tint);
+}
+
+.productInvalid {
+  border-color: #fecaca;
+  background-color: #fff1f2;
+}
+
+.productName {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-title-dark);
+}
+
+.productId {
+  font-size: 0.7rem;
+  color: var(--color-subtitle-dark);
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.currency {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-subtitle-dark);
+}
+
+.priceInput {
+  width: 5rem;
+  padding: 0.4rem;
+  border-radius: 0.375rem;
+  border: 0.0625rem solid var(--color-border-light);
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: var(--color-identity-primary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition:
+    opacity 0.2s,
+    background-color 0.2s;
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.submitButton:hover:not(:disabled) {
+  filter: brightness(1.1);
+  cursor: pointer;
+}
+```
+
+```jsx live
+/**
+ * Advanced Cycle Product Manager
+ * Demonstrates: CSS Modules (styles object), useCallback, void operator, explicit booleans, and stable keys.
+ */
+
+// import styles from './AdvancedCycleManager.module.css';
+
+function AdvancedCycleManager() {
+  // In real development, 'styles' comes from the CSS Module import above.
+  // In this live demo, we map keys to the simulated class names defined below.
+  const styles = {
+    container: 'ACM_container',
+    header: 'ACM_header',
+    title: 'ACM_title',
+    statusBadge: 'ACM_statusBadge',
+    statusInvalid: 'ACM_statusInvalid',
+    statusReady: 'ACM_statusReady',
+    productList: 'ACM_productList',
+    productItem: 'ACM_productItem',
+    productInvalid: 'ACM_productInvalid',
+    productName: 'ACM_productName',
+    productId: 'ACM_productId',
+    inputGroup: 'ACM_inputGroup',
+    currency: 'ACM_currency',
+    priceInput: 'ACM_priceInput',
+    submitButton: 'ACM_submitButton',
+  };
+
+  const [products, setProducts] = React.useState([
+    { id: 'uuid-1', name: 'Alface Crespa', price: 4.5, isValid: true },
+    { id: 'uuid-2', name: 'Tomate Cereja', price: 0, isValid: false },
+  ]);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const hasErrors = React.useMemo(() => {
+    return products.some((p) => p.isValid === false);
+  }, [products]);
+
+  const updateProductPrice = React.useCallback((id, value) => {
+    const numericValue = parseFloat(value) || 0;
+    setProducts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, price: numericValue, isValid: numericValue > 0 } : p)),
+    );
+  }, []);
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      console.info('Products submitted:', products);
+      alert('Cycle products updated successfully!');
+    } catch (err) {
+      console.error('[Update Error]:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleAction = () => {
+    void handleSubmit();
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Gerenciador de Ciclo</h3>
+
+        <span
+          className={`${styles.statusBadge} ${
+            hasErrors === true ? styles.statusInvalid : styles.statusReady
+          }`}
+        >
+          {hasErrors === true ? '⚠ ITENS INVÁLIDOS' : '✓ PRONTO PARA SALVAR'}
+        </span>
+      </div>
+
+      <div className={styles.productList}>
+        {products.map((product) => (
+          <div
+            key={product.id}
+            className={`${styles.productItem} ${
+              product.isValid === false ? styles.productInvalid : ''
+            }`}
+          >
+            <div>
+              <div className={styles.productName}>{product.name}</div>
+              <div className={styles.productId}>ID: {product.id}</div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <span className={styles.currency}>R$</span>
+              <input
+                type="number"
+                value={product.price}
+                onChange={(e) => updateProductPrice(product.id, e.target.value)}
+                className={styles.priceInput}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        disabled={isSubmitting === true || hasErrors === true}
+        onClick={handleAction}
+        className={styles.submitButton}
+      >
+        {isSubmitting === true ? 'Processando Atualização...' : 'Salvar Alterações do Ciclo'}
+      </button>
+
+      {/* Internal CSS for the demo purpose only - NOT for production */}
+      <style>{`
+        .ACM_container { padding: 1.5rem; border: 1px solid #e2e8f0; border-radius: 12px; background: white; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .ACM_header { display: flex; justify-content: space-between; margin-bottom: 1.5rem; align-items: center; }
+        .ACM_title { margin: 0; color: #1e293b; }
+        .ACM_statusBadge { font-size: 0.7rem; font-weight: 800; padding: 0.3rem 0.8rem; border-radius: 20px; letter-spacing: 0.05em; }
+        .ACM_statusInvalid { background-color: #fee2e2; color: #991b1b; }
+        .ACM_statusReady { background-color: #f0fdf4; color: #166534; }
+        .ACM_productList { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
+        .ACM_productItem { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem; border-radius: 8px; border: 1px solid #f1f5f9; background: #fafafa; }
+        .ACM_productInvalid { border-color: #fecaca; background-color: #fff1f2; }
+        .ACM_productName { font-weight: 700; font-size: 0.9rem; color: #334155; }
+        .ACM_productId { font-size: 0.7rem; color: #94a3b8; }
+        .ACM_inputGroup { display: flex; align-items: center; gap: 0.5rem; }
+        .ACM_currency { font-size: 0.8rem; font-weight: 600; color: #64748b; }
+        .ACM_priceInput { width: 80px; padding: 0.4rem; border-radius: 6px; border: 1px solid #cbd5e1; text-align: right; }
+        .ACM_submitButton { width: 100%; padding: 1rem; border-radius: 8px; border: none; background: #16a34a; color: white; font-weight: 700; cursor: pointer; }
+        .ACM_submitButton:disabled { opacity: 0.6; cursor: not-allowed; }
+      `}</style>
+    </div>
+  );
+}
+```
+
+---
+
+_Last Updated: June 2026_
