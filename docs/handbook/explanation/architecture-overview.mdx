@@ -1,0 +1,247 @@
+---
+title: Overview
+description: Comprehensive overview of tupynambalucas.dev's monorepo structure, bounded contexts, and technology stack.
+sidebar_position: 1
+---
+
+import DocCardList from '@theme/DocCardList';
+
+# Technical Architecture
+
+## 1. Executive Summary
+
+tupynambalucas.dev is a personal developer portal, portfolio, blog, and automation engine. The system is built on a **Monorepo** architecture using **PNPM Workspaces** and **Turborepo**, prioritizing high performance, strict typing, and domain isolation through a **Bounded Context** strategy.
+
+The architecture is designed to host the developer hub website (`hub`) and the automated stats compiler (`profile`), logically decoupled at the root level.
+
+---
+
+## 2. Monorepo Structure & Bounded Contexts
+
+The tupynambalucas.dev codebase is organized into **Domain Contexts** at the root level. For a detailed breakdown of the application roles, context philosophy, and directory structures, please refer to the Bounded Context guide:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: './bounded-contexts',
+      label: 'Bounded Context & Workspace Roles',
+      description:
+        'Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles.',
+    },
+  ]}
+/>
+
+---
+
+## 3. Workspace Build & Resolution Strategy
+
+We employ a **Hybrid High-Performance Architecture** optimized by **Turborepo** to manage internal dependencies and task orchestration.
+
+### 3.1. Task Orchestration (Turborepo)
+
+**Turborepo** is the engine behind our monorepo productivity. It handles:
+
+- **Dependency Graph:** Automatically identifying which packages need to be built or checked based on local changes.
+- **Infrastructure Coupling:** Orchestrating Docker Compose services as pre-requisites for application development (e.g., `pnpm hub:up` starts databases before the API).
+- **Caching:** Speeding up builds, type-checking, and linting by skipping unchanged modules.
+- **Unified Outputs:** Standardizing build artifacts into `dist/` (for apps and core) and `build/` (for Docusaurus).
+
+---
+
+## 4. Operational Commands
+
+We use a unified CLI interface defined in the root **package.json** to orchestrate and manage the monorepo across all environments (**development**, **staging**, and **production**).
+
+For a complete reference list of orchestration scripts, service commands, and dev stack workflows, please refer to the Command Reference:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '../reference/commands',
+      label: 'Command Reference',
+      description:
+        'Centralized reference for all CLI commands, scripts, and orchestration workflows.',
+    },
+  ]}
+/>
+
+---
+
+## 5. Architectural Principles
+
+To ensure extreme maintainability, long-term readability, and clean boundaries across our domain contexts, tupynambalucas.dev follows four foundational architectural principles.
+
+Click on any card below to explore a deep dive into each principle:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/docs/explanation/principles/solid',
+      label: 'SOLID Principles',
+      description:
+        'Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/principles/ssot',
+      label: 'Single Source of Truth (SSOT)',
+      description:
+        'Ensuring that every data element has a single, unambiguous, and authoritative representation.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/principles/inherited-configuration',
+      label: 'Inherited Configuration',
+      description:
+        'Cascading hierarchical settings across workspace contexts to promote reuse and strict defaults.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/principles/ddd-fsd',
+      label: 'DDD & Feature-Sliced Design (FSD)',
+      description:
+        'Applying Domain-Driven Design and Feature-Sliced Design principles for modular and scalable codebase organization.',
+    },
+  ]}
+/>
+
+---
+
+## 6. Technology Stack
+
+### 6.1. Package Management & Orchestration
+
+- **Runtime**: Node.js 22+ (LTS).
+- **Package Manager**: PNPM v11 (Strict dependency management via symlinks and hard-link content storage).
+- **Dependency Management**: **PNPM Catalogs** (Centralized version control for shared dependencies across the workspace using `catalog:` protocol).
+- **Task Orchestrator**: **Turborepo** (Optimized caching and parallel execution).
+- **Tooling**: TypeScript 6, ESLint 10 (Flat Config), Prettier 3, Vite 8, Zig.
+
+### 6.2. Backend (API Layer)
+
+- **Framework**: Fastify v5 (Optimized for high throughput).
+- **ORM/ODM**: Mongoose with MongoDB (Replica Set enabled for ACID transactions).
+- **Validation**: Zod (Integrated via domain-specific core packages).
+- **Processing**: BullMQ + Redis for asynchronous tasks.
+
+### 6.3. Frontend (UI Layer)
+
+- **Framework**: React 19.
+- **State Management**: Zustand (Atomic and performant state using Slices and Selectors).
+- **Styling**: TailwindCSS v4 + CSS Modules for scoped styles.
+- **Animations**: GSAP (High-fidelity interactive feedback).
+
+---
+
+## 7. Architectural Patterns
+
+### 7.1. Layered Responsibilities (Backend)
+
+Each domain follows a strict hierarchy to isolate concerns:
+Controller -> Service -> Repository -> Model
+
+- **Controller**: Handles HTTP I/O, route definitions, and Zod schema validation.
+- **Service**: Orchestrates business rules, complex logic, and cross-model transactions.
+- **Repository**: Abstracts data persistence logic (Repository Pattern) to keep services database-agnostic.
+- **Model**: Defines the Mongoose database structure and data integrity rules.
+
+#### Implementation Example (Repository Pattern)
+
+To maintain strict typing and decoupling, repositories receive the Mongoose model via dependency injection.
+
+```typescript
+// hub/services/api/src/domains/auth/auth.repository.ts
+import type { Model } from 'mongoose';
+import type { IUser } from '@tupynambalucas-hub/core';
+
+export class AuthRepository {
+  constructor(private readonly userModel: Model<IUser>) {}
+
+  async findByEmail(email: string): Promise<IUser | null> {
+    return this.userModel.findOne({ email }).exec();
+  }
+
+  async create(data: Partial<IUser>): Promise<IUser> {
+    return this.userModel.create(data);
+  }
+}
+```
+
+### 7.2. Frontend State Orchestration (Zustand & FSD)
+
+To prevent monolithic stores and unnecessary re-renders in React 19, the frontend adopts a strict **Atomic Selectors Pattern** coupled with **Domain Hooks**:
+
+1. **State vs. Actions Separation**: The Zustand store separates `state` from `actions`. Pure domain logic (like calculations) is extracted out of the store to maintain the **Single Source of Truth** and testability.
+2. **Atomic Selectors**: Monolithic exports (`export const useAuthStore = create(...)`) are wrapped in specific hooks.
+3. **Domain Hooks (`src/domains/*/hooks`)**: Selectors are exposed as individual hooks (e.g., `useAuthUser()`, `useProductActions()`). This ensures that a component only re-renders when the exact slice of state it subscribes to changes.
+
+#### Implementation Example (Zustand Atomic Selectors)
+
+```typescript
+// hub/services/web/src/domains/cart/hooks/useCart.ts
+import { useCartStore } from '../cart.store';
+
+// Atomic Selectors
+export const useCartItems = () => useCartStore((state) => state.items);
+export const useCartActions = () => useCartStore((state) => state.actions);
+
+// Derived State Selector (Never stored in state)
+export const useCartTotal = () =>
+  useCartStore((state) => state.items.reduce((acc, item) => acc + calculateItemPrice(item), 0));
+```
+
+### 7.3. Dependency Injection
+
+Modular management through Fastify decorators and a centralized registry to decouple components and facilitate testing.
+
+---
+
+## 8. Infrastructure & Deployment
+
+Designed for **Self-Hosted Excellence** on Hetzner Cloud, our containerization standards, multi-service Docker Compose topologies, environment variables strategy, and networking standards are managed centrally.
+
+For a comprehensive, deep-dive guide on directory structures, gold-standard Docker Compose blueprints, and advanced multi-service patterns (including the Gateway and Distributed Stack patterns), refer to the dedicated documentation:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '../reference/infrastructure',
+      label: 'Infrastructure',
+      description:
+        'To keep the tupynambalucas.dev infrastructure, DevOps tooling, and background runtime environments robust, maintainable, and highly modular, this document unifies our self-hosted infrastructure standards, directory conventions, and multi-service Docker topologies.',
+    },
+    {
+      type: 'link',
+      href: '../guides/deployment',
+      label: 'Deployment',
+      description:
+        'To ensure high availability, security, and reproducible environments, tupynambalucas.dev utilizes a modern, self-hosted deployment model designed for Hetzner Cloud virtual machines. This guide outlines our deployment strategy, environment synchronization, and operational procedures.',
+    },
+  ]}
+/>
+
+---
+
+## 9. Studio & Automation (Architecture)
+
+The Studio and Tools workspaces provide the infrastructure for design-to-code alignment, automation pipelines, and AI-assisted engineering.
+
+- **Design Alignment & Assets**: Managed in the **[Studio Workspace](/workspaces/studio)**.
+- **AI Contextual Bridge & Automation**: Managed in the **[Tools Workspace](/workspaces/tools)**.
+
+---
+
+## 10. Security Standards
+
+tupynambalucas.dev follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](../reference/security.mdx)** document.
+
+- **Bot Protection**: Integration with Cloudflare Turnstile for all authentication entry points.
+- **Brute-Force Mitigation**: IP-based rate limiting and account lockout logic.
+- **Strict Typing**: TypeScript Strict Mode enabled project-wide.
+- **Build Integrity**: Automated build script approvals via `pnpm.onlyBuiltDependencies`.
+- **Data Integrity**: MongoDB Replica Set (`rs0`) for transactional reliability and ACID compliance.
+- **Validation**: Strict Zod validation at every entry point (API requests, Environment variables, internal contracts).

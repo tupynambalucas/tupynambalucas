@@ -5,7 +5,7 @@ sidebar_position: 1
 slug: /shared
 ---
 
-The Shared workspace acts as the global, cross-context library and integration foundation of the Elo Orgânico monorepo. It houses centralized configuration standards, common helper utilities, and upcoming shared component packages designed to be imported by any downstream application (e.g., `instance/apps/web`, `portal/apps/web`) or core package within the monorepo.
+The Shared workspace acts as the global, cross-context library and integration foundation of the tupynambalucas.dev monorepo. It houses centralized configuration standards, common helper utilities, and upcoming shared component packages designed to be imported by any downstream application (e.g., `instance/apps/web`, `portal/apps/web`) or core package within the monorepo.
 
 By isolating configuration and central library components inside a dedicated `shared/` workspace, we prevent configuration drift, promote design consistency, and enable frictionless monorepo maintenance.
 
@@ -31,11 +31,11 @@ This package centralizes static analysis and code styling rules across the entir
 - **Base TSConfig**: TypeScript base configurations (`tsconfig.base.json`) establish strict type-checking parameters, path aliases, and module resolutions for all sub-projects.
 - **Git Hooks**: Integrated Husky configs orchestrate pre-commit quality gates, such as running lint-staged scripts before commits are written.
 
-### `@elo-organico/ui` (Centralized UI System — Future)
+### `@tupynambalucas/ui` (Centralized UI System — Future)
 
-The upcoming `@elo-organico/ui` package will establish a premium, unified React component library. It acts as the visual counterpart of our design token system in the Studio workspace.
+The upcoming `@tupynambalucas/ui` package will establish a premium, unified React component library. It acts as the visual counterpart of our design token system in the Studio workspace.
 
-- **Design Tokens Integration**: Imports color palettes, responsive typography, and animation scales directly from `@elo-studio/assets` to map them to functional React components.
+- **Design Tokens Integration**: Imports color palettes, responsive typography, and animation scales directly from `@tupynambalucas-studio/assets` to map them to functional React components.
 - **Universal Reusability**: Components built here are fully decoupled from database and backend contexts, making them safe to import and render in:
   - `instance/web` (Customer Storefront and Admin panel)
   - `portal/web` (Multi-tenant Platform Dashboard)

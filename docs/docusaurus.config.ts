@@ -263,15 +263,15 @@ const config: Config = {
             },
             {
               label: 'Architecture',
-              to: '/docs/architecture/overview',
+              to: '/docs/explanation/architecture-overview',
             },
             {
               label: 'Style Guide',
-              to: '/docs/contributing/styleguide',
+              to: '/docs/reference/styleguide',
             },
             {
               label: 'Command Reference',
-              to: '/docs/commands-reference',
+              to: '/docs/reference/commands',
             },
           ],
         },

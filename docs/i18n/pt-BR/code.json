@@ -1,6 +1,6 @@
 {
   "homepage.title": {
-    "message": "Documentação Elo Orgânico",
+    "message": "Documentação tupynambalucas.dev",
     "description": "The homepage welcome message"
   },
   "homepage.description": {
@@ -27,7 +27,7 @@
     "description": "Label for the documentation button"
   },
   "homepage.why.title": {
-    "message": "Por que o Elo Orgânico?"
+    "message": "Por que o tupynambalucas.dev?"
   },
   "homepage.why.item1.title": {
     "message": "Pertencimento"
@@ -76,7 +76,7 @@
     "description": "Title for the monorepo map section"
   },
   "homepage.monorepo.subtitle": {
-    "message": "Visualização interativa dos contextos delimitados do Elo Orgânico. Clique em um contexto para explorar.",
+    "message": "Visualização interativa dos contextos delimitados do tupynambalucas.dev. Clique em um contexto para explorar.",
     "description": "Subtitle for the monorepo map section"
   },
   "homepage.monorepo.techstack": {

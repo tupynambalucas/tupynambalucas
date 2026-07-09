@@ -1,0 +1,70 @@
+---
+title: Inherited Configuration
+description: Tooling governance and root-level config inheritance across the tupynambalucas.dev monorepo.
+---
+
+# Inherited Configuration
+
+Inherited Configuration centralizes the governance of tooling and compilation rules at the root of the monorepo, allowing downstream applications to extend shared configurations without duplicating settings.
+
+---
+
+## 1. Architectural Concept & Overview
+
+Managing linting, compilation, and formatting individually per package in a monorepo inevitably leads to tooling drift and inconsistent code style. Centralizing tool configurations at the root and having individual workspaces extend them ensures strict, unified code quality guidelines while dramatically reducing workspace configuration boilerplate.
+
+This layout allows us to enforce strict workspace standards (such as Airbnb-level code formatting, strict TypeScript checks, and secure package boundaries) in a single-source configuration file, keeping all apps and packages clean and predictable.
+
+---
+
+## 2. Project-Specific Utilization
+
+In tupynambalucas.dev, all toolings and configurations are centrally orchestrated from the root:
+
+### A. Unified ESLint Governance
+
+ESLint 9 (Flat Config) rules are centralized in the monorepo root. Individual packages import and extend this base configuration in their local `eslint.config.js` files, guaranteeing that security boundaries, styling guides, and code quality standards are applied uniformly across all projects:
+
+```javascript
+// Local eslint.config.js extending root Flat Config
+import baseConfig from '../../eslint.config.js';
+
+export default [
+  ...baseConfig,
+  {
+    files: ['**/*.ts'],
+    rules: {
+      // Local package-specific overrides if necessary
+    },
+  },
+];
+```
+
+### B. Cascading TypeScript Configs
+
+Root-level `tsconfig.json` files define the baseline strictness:
+
+- `strict: true`
+- `noImplicitAny: true`
+- `noFallthroughCasesInSwitch: true`
+
+Workspaces extend these shared settings via the `extends` property, customizing only runtime-specific libraries or target environments (such as Node.js vs. DOM/browser contexts):
+
+```json
+// instance/apps/web/tsconfig.json
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"]
+  }
+}
+```
+
+### C. Consolidated Formatting Rules
+
+Code style is governed globally by a single Prettier configuration file at the monorepo root. Prettier format rules are applied consistently to all TypeScript, JSON, CSS, and Markdown files across the entire workspace structure, ensuring a completely consistent layout without ad-hoc rules.
+
+### D. Task Orchestration Governance
+
+Turborepo relies on a root-level `turbo.json` file to model the workspace's dependency graph. This unifies task pipeline definitions (such as `build`, `lint`, `typecheck`) and ensures caching optimizations and target task pipelines behave identically in every workspace.

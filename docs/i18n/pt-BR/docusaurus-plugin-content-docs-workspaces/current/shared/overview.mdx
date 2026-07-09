@@ -5,7 +5,7 @@ sidebar_position: 1
 slug: /shared
 ---
 
-O workspace Shared atua como a fundação de integração e biblioteca global de múltiplos contextos do monorepo Elo Orgânico. Ele abriga padrões de configuração centralizados, utilitários comuns e futuros pacotes de componentes compartilhados projetados para serem importados por qualquer aplicação downstream (ex: `instance/apps/web`, `portal/apps/web`) ou pacote principal dentro do monorepo.
+O workspace Shared atua como a fundação de integração e biblioteca global de múltiplos contextos do monorepo tupynambalucas.dev. Ele abriga padrões de configuração centralizados, utilitários comuns e futuros pacotes de componentes compartilhados projetados para serem importados por qualquer aplicação downstream (ex: `instance/apps/web`, `portal/apps/web`) ou pacote principal dentro do monorepo.
 
 Ao isolar a configuração e componentes centrais de biblioteca dentro de um workspace dedicado `shared/`, evitamos a divergência de configurações, promovemos a consistência de design e permitimos uma manutenção sem atritos do monorepo.
 
@@ -31,11 +31,11 @@ Este pacote centraliza as regras de análise estática e estilo de código em to
 - **TSConfig Base**: As configurações base do TypeScript (`tsconfig.base.json`) estabelecem parâmetros estritos de verificação de tipos, aliases de caminhos e resoluções de módulos para todos os subprojetos.
 - **Git Hooks**: Configurações integradas do Husky orquestram etapas de qualidade de pré-commit, como a execução de scripts do lint-staged antes de os commits serem consolidados.
 
-### `@elo-organico/ui` (Sistema de UI Centralizado — Futuro)
+### `@tupynambalucas/ui` (Sistema de UI Centralizado — Futuro)
 
-O futuro pacote `@elo-organico/ui` estabelecerá uma biblioteca de componentes React premium e unificada. Ele atua como a contraparte visual de nosso sistema de design tokens no workspace Studio.
+O futuro pacote `@tupynambalucas/ui` estabelecerá uma biblioteca de componentes React premium e unificada. Ele atua como a contraparte visual de nosso sistema de design tokens no workspace Studio.
 
-- **Integração de Design Tokens**: Importa paletas de cores, tipografia responsiva e escalas de animação diretamente de `@elo-studio/assets` para mapeá-los em componentes React funcionais.
+- **Integração de Design Tokens**: Importa paletas de cores, tipografia responsiva e escalas de animação diretamente de `@tupynambalucas-studio/assets` para mapeá-los em componentes React funcionais.
 - **Reutilização Universal**: Os componentes construídos aqui são totalmente desacoplados de contextos de banco de dados e backend, tornando-os seguros para importar e renderizar em:
   - `instance/web` (Vitrine de Clientes e Painel Administrativo)
   - `portal/web` (Dashboard da Plataforma Multi-inquilino)
