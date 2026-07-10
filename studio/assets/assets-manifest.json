@@ -5,7 +5,7 @@
       "push": ["/images", "/three", "/brand"],
       "pull": ["/images", "/three", "/brand"],
       "docs": ["/three", "/images", "/brand"],
-      "web": ["/images", "/brand"]
+      "web": ["/images", "/brand", "three"]
     },
     "creative": {
       "name": "tupynambalucas-creative",
