@@ -155,33 +155,12 @@
   "less.validate": false,
 
   /* --- Misc --- */
-  "json.schemaDownload.enable": true,
-  "yaml.schemaStore.enable": true,
-  "yaml.kubernetesCRDStore.enable": false,
+  // "json.schemaDownload.enable": true,
+  // "yaml.schemaStore.enable": true,
+  // "yaml.kubernetesCRDStore.enable": false,
 
   /* --- Color Highlight --- */
-  "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"],
+  "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"]
 
   /* --- GitHub Copilot Chat Configuration --- */
-  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
-  "github.copilot.chat.customInstructionsInSystemMessage": true,
-  "github.copilot.chat.cli.mcp.enabled": true,
-  "github.copilot.chat.agent.currentEditorContext.enabled": true,
-  "github.copilot.chat.agent.largeToolResultsToDisk.enabled": true,
-  "github.copilot.chat.agent.modelDetails.enabled": true,
-  "github.copilot.chat.askAgent.additionalTools": [
-    "mcp_server/github",
-    "mcp_server/context7",
-    "mcp_server/browser",
-    "mcp_server/dockerhub"
-  ],
-  "github.copilot.chat.planAgent.additionalTools": [
-    "mcp_server/github",
-    "mcp_server/context7",
-    "mcp_server/browser",
-    "mcp_server/dockerhub"
-  ],
-  "github.copilot.chat.conversationCompaction.usePrismCompaction": true,
-  "github.copilot.chat.inlineChat.enableThinking": false,
-  "github.copilot.chat.inlineChat.reasoningEffort": "low"
 }

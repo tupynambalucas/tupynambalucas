@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=none
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  # Exportador para o Grafana Cloud (Métricas de performance)
+  otlphttp/grafanacloud:
+    endpoint: '${env:GRAFANA_CLOUD_OTLP_ENDPOINT}'
+    headers:
+      Authorization: 'Basic ${env:GRAFANA_CLOUD_TOKEN}'
+
+  # Exportador para o Sentry (Captura de Erros e Crashs)
+  otlphttp/sentry:
+    endpoint: '${env:SENTRY_OTLP_ENDPOINT}'
+    headers:
+      x-sentry-auth: '${env:SENTRY_AUTH_HEADER}'
+  debug:
+    verbosity: detailed
+
+processors:
+  batch:
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/grafanacloud, debug]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      # Envia os traces tanto para o Grafana quanto para o Sentry simultaneamente
+      exporters: [otlphttp/grafanacloud, otlphttp/sentry, debug]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      # Envia logs nativos para o Grafana Cloud (Loki)
+      exporters: [otlphttp/grafanacloud, debug]

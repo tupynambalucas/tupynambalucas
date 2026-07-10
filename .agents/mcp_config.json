@@ -1,24 +1,8 @@
 {
   "mcpServers": {
-    "github": {
-      "url": "http://localhost:3005/github/sse",
+    "agentgateway": {
+      "url": "http://localhost:3005/mcp/http",
       "lifecycle": "eager"
-    },
-    "context7": {
-      "url": "http://localhost:3005/context7/sse",
-      "lifecycle": "eager"
-    },
-    "browser": {
-      "url": "http://localhost:3005/browser/sse",
-      "lifecycle": "eager"
-    },
-    "dockerhub": {
-      "url": "http://localhost:3005/dockerhub/sse",
-      "lifecycle": "eager"
-    },
-    "firecrawl": {
-      "url": "http://localhost:3005/firecrawl/sse",
-      "lifecycle": "lazy"
     }
   }
 }

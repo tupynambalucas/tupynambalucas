@@ -1,48 +1,31 @@
 services:
-  gateway:
-    build:
-      context: ../..
-      dockerfile: gateway/Dockerfile
-    ports:
-      - '${GATEWAY_PORT}:${GATEWAY_PORT}'
+  etcd:
+    restart: unless-stopped
+
+  apisix:
     restart: unless-stopped
 
   github:
-    build:
-      context: ../..
-      dockerfile: services/github/Dockerfile
     volumes:
       - ../../services/github/instructions.md:/app/instructions.md:ro
     restart: unless-stopped
 
   context7:
-    build:
-      context: ../..
-      dockerfile: services/context7/Dockerfile
     volumes:
       - ../../services/context7/instructions.md:/app/instructions.md:ro
     restart: unless-stopped
 
   browser:
-    build:
-      context: ../..
-      dockerfile: services/browser/Dockerfile
     volumes:
       - ../../services/browser/instructions.md:/app/instructions.md:ro
     restart: unless-stopped
 
   dockerhub:
-    build:
-      context: ../..
-      dockerfile: services/dockerhub/Dockerfile
     volumes:
       - ../../services/dockerhub/instructions.md:/app/instructions.md:ro
     restart: unless-stopped
 
   firecrawl:
-    build:
-      context: ../..
-      dockerfile: services/firecrawl/Dockerfile
     volumes:
       - ../../services/firecrawl/instructions.md:/app/instructions.md:ro
     restart: unless-stopped

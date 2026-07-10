@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+config:
+  adminAddr: '[::]:15000'
+  tracing:
+    otlpEndpoint: http://tupynambalucas-monitor-otel-dev:4317
+    randomSampling: true
+mcp:
+  port: 8080
+  policies:
+    cors:
+      allowOrigins:
+        - http://localhost:15000
+      allowMethods:
+        - '*'
+        - GET
+        - POST
+      allowHeaders:
+        - '*'
+      exposeHeaders:
+        - Mcp-Session-Id
+  targets:
+    - name: github
+      mcp:
+        host: http://github:8080/mcp
+    - name: context7
+      mcp:
+        host: http://context7:8080/mcp
+    - name: browser
+      mcp:
+        host: http://browser:8080/mcp
+    - name: dockerhub
+      mcp:
+        host: http://dockerhub:8080/mcp
+    - name: firecrawl
+      mcp:
+        host: http://firecrawl:8080/mcp
+binds: []

@@ -1,30 +1,36 @@
 name: tupynambalucas-mcp
 
 services:
-  gateway:
+  # ==========================================
+  # INFRASTRUCTURE CORE (Control Plane)
+  # ==========================================
+  agentgateway:
     profiles: ['dev', 'prod', 'staging']
-    image: tupynambalucas-mcp-gateway:${TAG:-latest}
-    container_name: tupynambalucas-mcp-gateway-${APP_ENV:-prod}
+    image: cr.agentgateway.dev/agentgateway:v1.3.1
+    container_name: tupynambalucas-mcp-agentgateway-${APP_ENV:-prod}
+    ports:
+      - '${GATEWAY_PORT:-3005}:8080' # Tráfego principal IAs
+      - '15000:15000' # Web UI do AgentGateway
+    volumes:
+      - ../../gateway/config.yaml:/config.yaml
+    command: ['-f', '/config.yaml']
     environment:
-      - PORT=${GATEWAY_PORT}
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
-      - 'tupynambalucas.internal:host-gateway'
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://tupynambalucas-monitor-otel-dev:4317}
     networks:
       tupynambalucas-mcp-net:
         aliases:
           - tupynambalucas.internal.tools.mcp
-    depends_on:
-      - github
-      - context7
-      - browser
-      - dockerhub
-      - firecrawl
+      tupynambalucas-monitor-net:
 
+  # ==========================================
+  # MCP SERVERS (Data Plane)
+  # ==========================================
   github:
     profiles: ['dev', 'prod', 'staging']
-    image: tupynambalucas-mcp-github:${TAG:-latest}
     container_name: tupynambalucas-mcp-github-${APP_ENV:-prod}
+    build:
+      context: ../../
+      dockerfile: services/github/Dockerfile
     environment:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
     networks:
@@ -32,8 +38,10 @@ services:
 
   context7:
     profiles: ['dev', 'prod', 'staging']
-    image: tupynambalucas-mcp-context7:${TAG:-latest}
     container_name: tupynambalucas-mcp-context7-${APP_ENV:-prod}
+    build:
+      context: ../../
+      dockerfile: services/context7/Dockerfile
     environment:
       - CONTEXT7_API_KEY=${CONTEXT7_API_KEY}
     networks:
@@ -41,8 +49,10 @@ services:
 
   browser:
     profiles: ['dev', 'prod', 'staging']
-    image: tupynambalucas-mcp-browser:${TAG:-latest}
     container_name: tupynambalucas-mcp-browser-${APP_ENV:-prod}
+    build:
+      context: ../../
+      dockerfile: services/browser/Dockerfile
     environment:
       - MCP_REWRITE_LOCALHOST=${BROWSER_REWRITE_LOCALHOST}
     extra_hosts:
@@ -54,8 +64,10 @@ services:
 
   dockerhub:
     profiles: ['dev', 'prod', 'staging']
-    image: tupynambalucas-mcp-dockerhub:${TAG:-latest}
     container_name: tupynambalucas-mcp-dockerhub-${APP_ENV:-prod}
+    build:
+      context: ../../
+      dockerfile: services/dockerhub/Dockerfile
     environment:
       - HUB_PAT_TOKEN=${DOCKERHUB_PAT_TOKEN}
       - HUB_USERNAME=${DOCKERHUB_USERNAME}
@@ -64,8 +76,10 @@ services:
 
   firecrawl:
     profiles: ['dev', 'prod', 'staging']
-    image: tupynambalucas-mcp-firecrawl:${TAG:-latest}
     container_name: tupynambalucas-mcp-firecrawl-${APP_ENV:-prod}
+    build:
+      context: ../../
+      dockerfile: services/firecrawl/Dockerfile
     environment:
       - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
     networks:
@@ -75,3 +89,5 @@ networks:
   tupynambalucas-mcp-net:
     name: tupynambalucas-mcp-net
     driver: bridge
+  tupynambalucas-monitor-net:
+    external: true

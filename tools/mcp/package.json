@@ -23,14 +23,6 @@
     "mcp:staging:down": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging down",
     "mcp:staging:reset": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging down --volumes && docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging up -d --build"
   },
-  "dependencies": {
-    "fastify": "catalog:api-stack",
-    "@fastify/sse": "catalog:api-stack",
-    "@fastify/http-proxy": "catalog:api-stack"
-  },
-  "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
-    "@types/node": "catalog:",
-    "typescript": "catalog:"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
