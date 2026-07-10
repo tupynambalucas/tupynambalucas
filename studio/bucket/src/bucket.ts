@@ -8,8 +8,8 @@ import type { BucketManifest } from './bucket.interface.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const studioDir = path.resolve(__dirname, '..');
-const manifestPath = path.resolve(studioDir, 'assets-manifest.json');
+const studioDir = path.resolve(__dirname, '../../design');
+const manifestPath = path.resolve(studioDir, 'assets/assets-manifest.json');
 
 async function main(): Promise<void> {
   intro('Cloudflare R2 Bucket Synchronizer');

@@ -33,7 +33,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@tupynambalucas-studio/assets": "workspace:*",
+    "@tupynambalucas-studio/design": "workspace:*",
     "@docusaurus/core": "catalog:docs-stack",
     "@docusaurus/faster": "catalog:docs-stack",
     "@docusaurus/theme-live-codeblock": "catalog:docs-stack",

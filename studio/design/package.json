@@ -1,0 +1,54 @@
+{
+  "name": "@tupynambalucas-studio/design",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "tupynambalucas.dev Studio Package",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/studio/assets#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "studio/assets"
+  },
+  "files": [
+    "assets"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./assets-manifest.json": "./assets/assets-manifest.json",
+    "./icons": "./assets/icons/index.tsx",
+    "./logos": "./assets/brand/logos/index.ts",
+    "./logos/*": "./assets/brand/logos/*",
+    "./three/*": "./assets/three/*",
+    "./images/*": "./assets/images/*",
+    "./brand/*": "./assets/brand/*",
+    "./tokens": "./assets/tokens/index.ts",
+    "./tokens.css": "./assets/tokens/tokens.css",
+    "./theme.css": "./assets/tokens/theme.css"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "penpot:up": "docker compose -f infrastructure/docker/compose.yaml up -d",
+    "penpot:down": "docker compose -f infrastructure/docker/compose.yaml down",
+    "penpot:reset": "docker compose -f infrastructure/docker/compose.yaml down --volumes && docker compose -f infrastructure/docker/compose.yaml up -d --build",
+    "penpot:update": "docker compose -f infrastructure/docker/compose.yaml pull && docker compose -f infrastructure/docker/compose.yaml up -d",
+    "aide:up": "docker compose -f infrastructure/docker/compose.yaml up -d aide",
+    "aide:down": "docker compose -f infrastructure/docker/compose.yaml stop aide"
+  },
+  "dependencies": {
+    "@fontsource-variable/nunito": "catalog:studio-stack",
+    "react": "catalog:web-stack",
+    "react-dom": "catalog:web-stack",
+    "react-icons": "catalog:studio-stack"
+  },
+  "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*",
+    "@types/react": "catalog:web-stack",
+    "@types/react-dom": "catalog:web-stack",
+    "tailwindcss": "catalog:shared-stack",
+    "typescript": "catalog:"
+  }
+}

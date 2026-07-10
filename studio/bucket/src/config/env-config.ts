@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export function loadBucketConfig(): DualBucketConfig {
-  const bucketEnvPath = path.resolve(__dirname, '../.env.studio.bucket');
+  const bucketEnvPath = path.resolve(__dirname, '../../.env.studio.bucket');
   if (fs.existsSync(bucketEnvPath) === true) {
     dotenv.config({ path: bucketEnvPath });
   }

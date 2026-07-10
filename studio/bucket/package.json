@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-studio/assets",
+  "name": "@tupynambalucas-studio/bucket",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -10,50 +10,31 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
-    "directory": "studio/assets"
+    "directory": "studio/bucket"
   },
   "files": [
-    "src",
-    "assets-manifest.json"
+    "src"
   ],
   "exports": {
-    "./package.json": "./package.json",
-    "./assets-manifest.json": "./assets-manifest.json",
-    "./icons": "./src/icons/index.tsx",
-    "./logos": "./src/brand/logos/index.ts",
-    "./logos/*": "./src/brand/logos/*",
-    "./three/*": "./src/three/*",
-    "./images/*": "./src/images/*",
-    "./brand/*": "./src/brand/*",
-    "./tokens": "./src/tokens/index.ts",
-    "./tokens.css": "./src/tokens/tokens.css",
-    "./theme.css": "./src/tokens/theme.css"
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "bucket": "tsx bucket/bucket.ts",
+    "bucket": "tsx src/bucket.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ."
   },
   "dependencies": {
     "@aws-sdk/client-s3": "catalog:",
     "@clack/prompts": "catalog:",
-    "@fontsource-variable/nunito": "catalog:studio-stack",
     "@smithy/node-http-handler": "catalog:",
     "dotenv": "catalog:shared-stack",
     "glob": "catalog:",
-    "mime-types": "catalog:",
-    "react": "catalog:web-stack",
-    "react-dom": "catalog:web-stack",
-    "react-icons": "catalog:studio-stack"
+    "mime-types": "catalog:"
   },
   "devDependencies": {
     "@tupynambalucas-shared/config": "workspace:*",
     "@types/glob": "catalog:",
     "@types/mime-types": "catalog:",
-    "@types/react": "catalog:web-stack",
-    "@types/react-dom": "catalog:web-stack",
-    "jimp": "catalog:",
-    "tailwindcss": "catalog:shared-stack",
     "typescript": "catalog:"
   }
 }

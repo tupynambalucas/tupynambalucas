@@ -9,7 +9,7 @@ export class GlobAssetDiscoveryService implements IAssetDiscoveryService {
 
     // Trim leading slash, e.g., '/images' -> 'images'
     const cleanFolder = folder.replace(/^\//, '');
-    const localRoot = isCreative ? 'creative' : 'src';
+    const localRoot = isCreative ? 'creative' : 'assets';
     const targetDir = path.join(studioDir, localRoot, cleanFolder);
 
     if (fs.existsSync(targetDir) === true) {

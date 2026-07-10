@@ -43,7 +43,7 @@ export class AssetSyncOrchestrator {
     isCreative: boolean,
   ): Promise<void> {
     const pushFolders = bucketConfig.push;
-    const rootDirName = isCreative ? 'creative/' : 'src/';
+    const rootDirName = isCreative ? 'creative/' : 'assets/';
 
     for (const folder of pushFolders) {
       const cleanFolder = folder.replace(/^\//, '');
@@ -95,7 +95,7 @@ export class AssetSyncOrchestrator {
     isCreative: boolean,
   ): Promise<void> {
     const pullFolders = bucketConfig.pull;
-    const localRoot = isCreative ? 'creative' : 'src';
+    const localRoot = isCreative ? 'creative' : 'assets';
 
     for (const folder of pullFolders) {
       const cleanFolder = folder.replace(/^\//, '');

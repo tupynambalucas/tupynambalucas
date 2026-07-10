@@ -3,9 +3,9 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "paths": {
-      "@studio/*": ["./src/*"]
+      "@studio-bucket/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "bucket/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
