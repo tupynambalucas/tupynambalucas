@@ -1,2 +1,2 @@
-FROM penpotapp/exporter:2.16.0
+FROM penpotapp/exporter:latest
 # Add custom exporter configurations or scripts if needed

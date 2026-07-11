@@ -1,2 +1,2 @@
-FROM penpotapp/backend:2.16.0
+FROM penpotapp/backend:latest
 # Add custom backend configurations or scripts if needed

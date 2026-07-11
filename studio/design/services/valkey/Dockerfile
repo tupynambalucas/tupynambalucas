@@ -1,2 +1,2 @@
-FROM valkey/valkey:9.1-alpine3.23
+FROM valkey/valkey:latest
 # Valkey specialized configuration

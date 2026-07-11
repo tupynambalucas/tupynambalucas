@@ -43,4 +43,15 @@ mcp:
     - name: grafana
       mcp:
         host: http://grafana:8080/mcp
+  statefulMode: stateless
+  prefixMode: null
+  failureMode: failOpen
 binds: []
+llm:
+  port: 4000
+  models: []
+  providers: []
+  virtualModels: []
+frontendPolicies:
+  http:
+    maxBufferSize: 33554432

@@ -37,4 +37,4 @@ jobs:
         run: pnpm --filter @tupynambalucas/profile generate
         env:
           PROFILE_GH_PAT: ${{ secrets.PROFILE_GH_PAT }}
-          GITHUB_ACTIONS: "true"
+          GITHUB_ACTIONS: 'true'

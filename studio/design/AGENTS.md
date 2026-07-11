@@ -10,8 +10,8 @@ This workspace (`[studio/design/](./)`) configures, hosts, and deploys the self-
   - `assets/tokens/`: Color systems, tokens, and CSS properties.
   - `assets/icons/`: Shared icon components.
   - `assets/brand/logos/`: Canonical brand logo assets.
-- **`[infrastructure/docker/compose.yaml](./infrastructure/docker/compose.yaml)`**: Docker Compose orchestration for Penpot backend, frontend wrapper, Valkey cache, Postgres database, and Penpot AI service (aide).
-- **`[services/](./services/)`**: Custom service configurations and environment properties for `frontend`, `backend`, `exporter`, `valkey`, and `aide`.
+- **`[infrastructure/docker/](./infrastructure/docker/)`**: Centralized Docker Compose files (`compose.yaml`, `compose.override.yaml`, `compose.prod.yaml`) and environment files (`.env.dev`, `.env.prod`, `.env.staging`) for orchestrating the Penpot services.
+- **`[services/](./services/)`**: Custom service configurations and Dockerfiles for `frontend`, `backend`, `exporter`, `valkey`, and `aide`.
 
 ---
 
@@ -40,9 +40,14 @@ This workspace (`[studio/design/](./)`) configures, hosts, and deploys the self-
 
 Run these scripts from the monorepo root:
 
-- `pnpm penpot:up`: Builds and runs Penpot local containers.
-- `pnpm penpot:down`: Stops local Penpot containers.
-- `pnpm penpot:reset`: Recreates compose containers.
-- `pnpm penpot:aide:up`: Boots Penpot AI assistant.
+- `pnpm penpot:dev:up`: Builds and runs Penpot local containers in development mode.
+- `pnpm penpot:dev:down`: Stops local development Penpot containers.
+- `pnpm penpot:dev:reset`: Recreates dev compose containers.
+- `pnpm penpot:prod:up`: Runs production profile containers.
+- `pnpm penpot:prod:down`: Stops production profile containers.
+- `pnpm penpot:prod:reset`: Recreates production compose containers.
+- `pnpm penpot:staging:up`: Runs staging profile containers.
+- `pnpm penpot:staging:down`: Stops staging profile containers.
+- `pnpm penpot:staging:reset`: Recreates staging compose containers.
 - `pnpm studio:typecheck`: Validates TypeScript type safety across the studio packages.
 - `pnpm studio:lint`: Runs ESLint verification.
