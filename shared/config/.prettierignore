@@ -3,6 +3,7 @@
 **/build/**
 **/.docusaurus/**
 **/.turbo/**
+/.github/**
 **/.eslintcache/**
 **/tools/agents/data/**
 **/tools/agents/shared/**
