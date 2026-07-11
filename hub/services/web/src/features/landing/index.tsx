@@ -2,7 +2,7 @@ import { lazy, Suspense, useRef } from 'react';
 import { useIsAuthenticated } from '@/domains/auth';
 import { useActiveCycle, useCycleLoading } from '@/domains/cycle';
 import { useGSAP } from '@gsap/react';
-import { LogoHorizontalNegative } from '@tupynambalucas-studio/assets/logos';
+import { LogoHorizontalNegative } from '@tupynambalucas-studio/design/logos';
 import { animateLandingIntro } from './animations';
 import styles from './styles.module.css';
 

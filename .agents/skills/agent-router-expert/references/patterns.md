@@ -11,7 +11,7 @@ The root `AGENTS.md` must act as the primary entry point, outlining monorepo top
 ### Outline Layout
 
 ```markdown
-# CodeCanvas - Monorepo AI Master Context & Router
+# tupynambalucas - Monorepo AI Master Context & Router
 
 This file establishes the authoritative monorepo context, global rules, and interaction standards for AI agents.
 

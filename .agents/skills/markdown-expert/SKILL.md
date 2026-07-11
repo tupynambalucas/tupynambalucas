@@ -5,7 +5,7 @@ description: Use this skill to write, analyze, or update general Markdown files 
 
 # Markdown Expert
 
-This skill defines the standards, structure, design patterns, and validation workflow for general Markdown documentation in the **CodeCanvas** monorepo.
+This skill defines the standards, structure, design patterns, and validation workflow for general Markdown documentation in the **tupynambalucas** monorepo.
 
 ## 1. Global Documentation Standards
 
@@ -42,10 +42,10 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### G. Prohibited Absolute Paths
 
-- Absolute filesystem paths or `file:///` URLs (e.g., `file:///D:/projects/...` or `/absolute/path/...`) are strictly forbidden in all Markdown links and document references.
+- Absolute filesystem paths or local protocol URLs (e.g., file scheme paths or `/absolute/path/...`) are strictly forbidden in all Markdown links and document references.
 - All references must use:
   1. Standard relative paths (e.g., `./relative-file.md` or `../sibling/file.md`).
-  2. Fully-qualified public web URLs with explicit domains (e.g., `https://codecanvas.dev` or external domain references).
+  2. Fully-qualified public web URLs with explicit domains (e.g., `https://tupynambalucas.dev` or external domain references).
 
 ---
 

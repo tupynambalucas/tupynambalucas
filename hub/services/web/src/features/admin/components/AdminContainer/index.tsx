@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 import styles from './styles.module.css';
-import { Icon, type IconType } from '@tupynambalucas-studio/assets/icons';
+import { Icon, type IconType } from '@tupynambalucas-studio/design/icons';
 
 interface AdminContainerProps {
   children: ReactNode;

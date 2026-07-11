@@ -1,6 +1,6 @@
 # Docusaurus Docs Code Patterns
 
-These patterns must be followed in all code examples generated in the CodeCanvas documentation. For formatting syntax, refer to the [MDX Syntax Guide](syntax.md).
+These patterns must be followed in all code examples generated in the tupynambalucas documentation. For formatting syntax, refer to the [MDX Syntax Guide](syntax.md).
 
 ---
 
@@ -89,7 +89,7 @@ Combine TailwindCSS v4 and CSS Modules. **The use of `px` is strictly forbidden*
 
 ### 1. Layered Responsibilities
 
-Code examples must align with: `Controller -> Service -> Repository -> Model`. All data schemas must reside in core packages (e.g., `@codecanvas-shared/config` or `@codecanvas-shared/config`) first.
+Code examples must align with: `Controller -> Service -> Repository -> Model`. All data schemas must reside in core packages (e.g., `@tupynambalucas-hub/core`) first.
 
 ### 2. Dependency Injection
 
@@ -116,11 +116,11 @@ API examples must feature security-first configurations:
 
 ### 1. Database Naming Parity
 
-API connection scripts must dynamically override the database path in the MongoDB connection URI to enforce `codecanvasdb` across all environments.
+API connection scripts must dynamically override the database path in the MongoDB connection URI to enforce `tupynambalucasdb` across all environments.
 
 ```typescript
-// Enforce canonical database name "codecanvasdb" in connection string
-const connectionUri = originalUri.replace(/\/[^?]*(\?|$)/, '/codecanvasdb$1');
+// Enforce canonical database name "tupynambalucasdb" in connection string
+const connectionUri = originalUri.replace(/\/[^?]*(\?|$)/, '/tupynambalucasdb$1');
 await mongoose.connect(connectionUri);
 ```
 
@@ -134,7 +134,7 @@ await UserModel.findOneAndUpdate(
   { role: 'admin' },
   {
     $setOnInsert: {
-      email: 'admin@codecanvas.com',
+      email: 'admin@tupynambalucas.dev',
       username: 'admin',
       password: hashedSecurePassword,
       role: 'admin',

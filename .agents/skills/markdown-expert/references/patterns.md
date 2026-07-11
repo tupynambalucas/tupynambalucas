@@ -1,6 +1,6 @@
 # GitHub Markdown Patterns
 
-This document defines the formatting, structural patterns, and content conventions for general Markdown files (`.md`, `README.md`, and skill documentation) across the **CodeCanvas** monorepo.
+This document defines the formatting, structural patterns, and content conventions for general Markdown files (`.md`, `README.md`, and skill documentation) across the **tupynambalucas** monorepo.
 
 ---
 

@@ -107,14 +107,14 @@ This section covers the Penpot environment, design-token sync automation, and cu
 
 ### Collaborative Design Environment
 
-- **Self-Hosted Design Hub**: Deployed a containerized Penpot v2 instance (Aide-supported design workspace) inside the `@tupynambalucas-studio/assets` environment, enabling secure local collaborative styling mockups.
-- **Centralized Design System Packages**: Structured `@tupynambalucas-studio/assets` to serve as the unified package for brand guidelines, typography styles, spacing configurations, and palette design tokens.
+- **Self-Hosted Design Hub**: Deployed a containerized Penpot v2 instance (Aide-supported design workspace) inside the `@tupynambalucas-studio/design` environment, enabling secure local collaborative styling mockups.
+- **Centralized Design System Packages**: Structured `@tupynambalucas-studio/design` to serve as the unified package for brand guidelines, typography styles, spacing configurations, and palette design tokens.
 
 ### Asset Pipelines
 
 - **Branding Assets Export**: Standardized export assets (including SVG vectors, logo marks, and color sheets) in the project repositories, providing raw templates for web applications.
 - **Brand Identity Realignment**: Reorganized the assets workspace structure to establish a canonical `brand` namespace (grouping logos, palettes, favicons, banners, guidelines) and renamed the design sources directory from `raw` to `sources`.
-- **Cloud-Based Asset Hosting**: Implemented a bidirectional asset synchronization CLI engine under `@tupynambalucas-studio/assets/bucket`, enabling seamless replication of brand-identity sources and web-ready assets with Cloudflare R2 Object Storage, eliminating heavy assets from Git history.
+- **Cloud-Based Asset Hosting**: Implemented a bidirectional asset synchronization CLI engine under `@tupynambalucas-studio/design/bucket`, enabling seamless replication of brand-identity sources and web-ready assets with Cloudflare R2 Object Storage, eliminating heavy assets from Git history.
 
 ## Planned Focus
 

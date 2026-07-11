@@ -5,7 +5,7 @@ import type { GLTF } from 'three-stdlib';
 import type { ThreeElements } from '@react-three/fiber';
 import { useFrame } from '@react-three/fiber';
 import { cabinMaterial, peelMaterial, pulpMaterial, seedMaterial } from './avokado.material';
-import MODEL_FILE from '@tupynambalucas-studio/assets/three/models/avokado.glb';
+import MODEL_FILE from '@tupynambalucas-studio/design/three/models/avokado.glb';
 
 type GLTFResult = GLTF & {
   nodes: {

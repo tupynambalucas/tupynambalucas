@@ -11,17 +11,17 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: 'Pertencimento',
-    Svg: require('@tupynambalucas-studio/assets/logos/logo-horizontal-positive.svg').default,
+    Svg: require('@tupynambalucas-studio/design/logos/logo-horizontal-positive.svg').default,
     description: <>Faça parte de uma rede que valoriza o produtor local.</>,
   },
   {
     title: 'Simplicidade',
-    Svg: require('@tupynambalucas-studio/assets/logos/logo-horizontal-positive.svg').default,
+    Svg: require('@tupynambalucas-studio/design/logos/logo-horizontal-positive.svg').default,
     description: <>Processos diretos e transparentes para todos.</>,
   },
   {
     title: 'Conexão Humana',
-    Svg: require('@tupynambalucas-studio/assets/logos/logo-horizontal-positive.svg').default,
+    Svg: require('@tupynambalucas-studio/design/logos/logo-horizontal-positive.svg').default,
     description: <>Relações baseadas na confiança e no respeito.</>,
   },
 ];

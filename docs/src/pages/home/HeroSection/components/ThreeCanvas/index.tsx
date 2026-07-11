@@ -11,7 +11,7 @@ interface NavigatorGPU {
 import SceneCamera from './components/camera';
 import SceneDirectionalLight from './components/directional-light';
 import Avokado from './components/avokado';
-import EXR_FILE from '@tupynambalucas-studio/assets/three/exr/farm_field.exr';
+import EXR_FILE from '@tupynambalucas-studio/design/three/exr/farm_field.exr';
 
 // Extend R3F to recognize the WebGPU version of THREE.js components.
 // This is necessary because R3F's default is WebGL.

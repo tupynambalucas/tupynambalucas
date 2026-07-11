@@ -1,4 +1,4 @@
-# tupynambalucas.dev Monorepo
+# tupynambalucas Monorepo
 
 This repository is a monorepo containing a developer profile generator, design systems, personal developer website (hub), developer tools, and documentation.
 
@@ -17,9 +17,9 @@ This is the personal developer portal. It serves as the primary website, hosting
 - Blog engine for publishing articles.
 - Contact forms and integration services.
 
-- **`@tupynambalucas-hub/web`**: React web client (`services/web`).
-- **`@tupynambalucas-hub/api`**: Fastify API (`services/api`).
-- **`@tupynambalucas-hub/core`**: Shared core library (`packages/core`).
+- **`@tupynambalucas-hub/web`**: React web client (`hub/services/web`).
+- **`@tupynambalucas-hub/api`**: Fastify API (`hub/services/api`).
+- **`@tupynambalucas-hub/core`**: Shared core library (`hub/packages/core`).
 
 ### 2. [@tupynambalucas/profile](./profile/README.md) (`profile/`)
 
@@ -29,8 +29,8 @@ A custom TypeScript-based automation tool that generates visualizations of GitHu
 
 Manages design resources, brand identity assets, and design-to-code pipelines.
 
-- **`@tupynambalucas-studio/assets`**: Brand colors, icons, tokens, and asset synchronization via S3/Cloudflare R2.
-- **`@tupynambalucas-studio/penpot`**: Self-hosted Docker configuration for the Penpot collaborative design editor.
+- **`@tupynambalucas-studio/design`**: Brand colors, icons, tokens, assets, and Penpot editor docker configuration.
+- **`@tupynambalucas-studio/bucket`**: Command-line asset synchronization script for Cloudflare R2 object storage.
 
 ### 4. [@tupynambalucas-tools/](./tools/README.md) (`tools/`)
 
@@ -87,8 +87,8 @@ graph TD
         Core["@tupynambalucas-hub/core"]
     end
     subgraph Studio_Context ["studio/"]
-        Assets["@tupynambalucas-studio/assets"]
-        Penpot["@tupynambalucas-studio/penpot"]
+        Design["@tupynambalucas-studio/design"]
+        Bucket["@tupynambalucas-studio/bucket"]
     end
     subgraph Tools_Context ["tools/"]
         MCPAgents["@tupynambalucas-tools/agents"]
@@ -97,6 +97,6 @@ graph TD
     end
     Web --> Core
     API --> Core
-    Web --> Assets
+    Web --> Design
     MCPAgents --> MCPGateway
 ```

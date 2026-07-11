@@ -6,7 +6,7 @@ This reference defines the verification steps required when creating, updating, 
 
 - **Git Diff Inspection**: Review `git diff` to ensure that no critical sections, links, or technical guidelines were accidentally deleted or modified during the edit.
 - **Reference Validation**: Check that any file links added or modified point to existing, valid paths in the repository using the correct relative directory depth.
-- **Absolute Path Prohibition Verification**: Ensure that NO absolute filesystem paths or `file:///` URLs (e.g., `file:///D:/projects/...` or `/absolute/...`) are introduced into any links or references. All links must be relative paths or fully-qualified public web URLs with explicit domains.
+- **Absolute Path Prohibition Verification**: Ensure that NO absolute filesystem paths or local protocol URLs (e.g., file scheme paths or `/absolute/...`) are introduced into any links or references. All links must be relative paths or fully-qualified public web URLs with explicit domains.
 
 ## 2. Formatting Check
 

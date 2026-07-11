@@ -1,0 +1,21 @@
+# Build & Runtime
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Ignore Studio's local development files
+
+
+creative/
+assets/images/
+assets/three/
+# Ignore brand binaries while keeping SVGs tracked
+assets/brand/palettes/
+assets/brand/guidelines/
+assets/brand/favicons/
+!assets/brand/favicons/*.svg
+assets/brand/logos/*.png
+assets/brand/logos/*.jpg
+assets/brand/logos/*.webp
+
+# Keep studio/assets/ tracked in GitHub

@@ -48,7 +48,7 @@ To ensure high-fidelity parsing by LLMs, all `AGENTS.md` files must adhere to th
 ### A. Explicit Relative Links
 
 - Every referenced file, schema, or configuration directory MUST use clickable relative markdown links (e.g. `[tsconfig.json](./tsconfig.json)` or `[src/domains/](./src/domains/)`) to facilitate rapid tool-based navigation.
-- Absolute file system paths (e.g., `D:\projects\...`, `/projects/...`) and external production web URLs (e.g., `https://github.com/...`, `https://docusaurus.io/...`) MUST NEVER be included inside `AGENTS.md` files. Only local localhost-based development urls are permitted inside orchestration command execution examples.
+- Absolute file system paths (e.g., `/absolute/path/to/project`, `/projects/...`) and external production web URLs (e.g., `https://github.com/...`, `https://docusaurus.io/...`) MUST NEVER be included inside `AGENTS.md` files. Only local localhost-based development urls are permitted inside orchestration command execution examples.
 
 ### B. Imperative, Rule-Based Phrasing
 

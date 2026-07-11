@@ -1,97 +1,66 @@
-# @tupynambalucas-studio/assets - Studio Design Assets
+# @tupynambalucas-studio/design - Studio Assets and Penpot Configuration
 
-This package houses the design assets and dynamic asset synchronization engine for the tupynambalucas.dev Studio workspace. It provides bidirectional (`push` and `pull`) replication of web-ready assets (e.g., images, 3D assets/Three.js vectors, and raw backups) directly with Cloudflare R2 Object Storage.
+This package houses the centralized brand assets, design tokens, and the Penpot collaborative design editor docker orchestration for the tupynambalucas workspace.
 
 ---
 
-## Architecture Overview
+## Workspace Structure
 
-The sync tool is built on clean domain separation and dependency injection principles, abstracting the storage provider (S3 SDK) and filesystem scanner (Glob).
+The package is split into visual identity assets and self-hosted design tool configurations:
 
-```mermaid
-graph TD
-    direction TD
-    subgraph "CLI Entrypoints"
-        Push["push.ts (CLI)"]
-        Pull["pull.ts (CLI)"]
-    end
+### 1. Design Assets (`assets/`)
 
-    subgraph "Orchestration"
-        Orch["AssetSyncOrchestrator"]
-    end
+Provides shared assets and visual building blocks used across all client packages (such as React packages in `hub`):
 
-    subgraph "Service Interfaces"
-        IF_Disc["IAssetDiscoveryService"]
-        IF_Store["IAssetUploaderService / IAssetDownloaderService / IAssetSearchService"]
-    end
+- **Icons**: Shared SVG React components (`assets/icons/`).
+- **Brand/Logos**: SVG and raster logos for brand consistency (`assets/brand/logos/`).
+- **Design Tokens**: Standard color maps, light/dark themes, CSS variables (`assets/tokens/`).
 
-    subgraph "Infrastructure Adapters"
-        Glob["GlobAssetDiscoveryService (Filesystem)"]
-        S3["BucketStorageService (Cloudflare R2 AWS SDK)"]
-    end
+All assets are exported via ESM exports defined in `package.json`.
 
-    Push --> Orch
-    Pull --> Orch
-    Orch --> IF_Disc
-    Orch --> IF_Store
-    Glob -.->|implements| IF_Disc
-    S3 -.->|implements| IF_Store
+### 2. Penpot Editor Orchestration (`infrastructure/docker/` and `services/`)
+
+Configures and runs the self-hosted collaborative designer tool for creating layouts and prototyping:
+
+- Valkey cache.
+- Postgres database.
+- Penpot backend (clojure) and frontend (js).
+- Penpot AI assistant (aide).
+
+---
+
+## Getting Started
+
+### Design Tokens Integration
+
+Import the CSS variables or helper hooks directly in client applications:
+
+```css
+@import '@tupynambalucas-studio/design/tokens.css';
+@import '@tupynambalucas-studio/design/theme.css';
 ```
 
----
+### Starting Penpot Local Editor
 
-## Directory Structure
-
-- **`application/`**:
-  - `sync.orchestrator.ts`: Coordinate the main sync sequence. Compares file sizes and MD5 hashes locally with R2 object size and ETag to avoid redundant uploads and downloads.
-- **`config/`**:
-  - `env-config.ts`: Loads, parses, and validates the environment variables from `.env.studio.bucket`.
-- **`services/`**:
-  - `bucket-storage.service.ts`: Wrapper for `@aws-sdk/client-s3` to list, upload, and download assets.
-  - `glob-discovery.service.ts`: Uses standard glob patterns to recursively find local files under directory rules.
-- **`bucket.interface.ts`**: Standard type contracts, interface definitions, and bucket manifest schemas.
-- **`infrastructure/cli/`**:
-  - `push.command.ts`: SOLID encapsulation of the local asset scan and R2 push synchronization flow.
-  - `pull.command.ts`: SOLID encapsulation of the remote metadata check and local pull synchronization flow.
-- **`bucket.ts`**: Main CLI interactive entrypoint utilizing `@clack/prompts` and directing operations based on user menu selections.
+1. Spin up the docker environment from the monorepo root:
+   ```bash
+   pnpm penpot:up
+   ```
+2. Open your browser and navigate to `http://localhost:9005`.
+3. To stop all design editor services:
+   ```bash
+   pnpm penpot:down
+   ```
 
 ---
 
-## Optimization & Free-Tier Safety
+## Key Scripts
 
-To avoid excess API usage costs and operate strictly within Cloudflare R2's free limit (10GB storage, 1M Class A operations/month, 10M Class B operations/month):
+Manage the design system environment using these scripts from the monorepo root:
 
-- **Zero Redundant Writes**: Uses local MD5 calculation and remote ETag comparison.
-- **Direct Root Uploads**: Uploads are performed directly to the root of the bucket (e.g., `images/...` or `raw/...`) based on the paths configured in `studio/assets-manifest.json` instead of adding nested path layers like `studio/`.
-- **Dynamic File Discovery**: Automatically targets specific assets folder structures defined in `studio/assets-manifest.json`.
-
----
-
-## Environment Configuration
-
-Configure the synchronizer using `.env.studio.bucket` in the `bucket/` directory:
-
-```bash
-# Path: studio/assets/bucket/.env.studio.bucket
-
-S3_API=https://your-cloudflare-r2-endpoint.r2.cloudflarestorage.com/your-bucket-name
-CLOUDFLARE_R2_ACCESS_KEY_ID=your_access_key_id
-CLOUDFLARE_R2_SECRET_ACCESS_KEY=your_secret_access_key
-CLOUDFLARE_R2_PUBLIC_URL=https://your-public-cdn-url.r2.dev
-```
-
----
-
-## Sychronization Commands
-
-Execute the main interactive wizard from the monorepo root:
-
-```bash
-pnpm studio:bucket
-```
-
-This starts a polished, command-line selection interface. Use the up and down arrow keys to choose:
-
-- **Push**: Scan and synchronize local modified files directly to R2.
-- **Pull**: Check R2 object metadata and download any new or updated files locally.
-- **Exit**: Safely terminate the CLI.
+- `pnpm penpot:up`: Builds and runs Penpot local containers.
+- `pnpm penpot:down`: Stops local Penpot containers.
+- `pnpm penpot:reset`: Recreates compose containers.
+- `pnpm penpot:aide:up`: Boots Penpot AI assistant.
+- `pnpm studio:typecheck`: Validates TypeScript type safety across the studio packages.
+- `pnpm studio:lint`: Runs ESLint verification.

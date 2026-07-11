@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, faExclamationTriangle } from '@tupynambalucas-studio/assets/icons';
+import { Icon, faExclamationTriangle } from '@tupynambalucas-studio/design/icons';
 import styles from '../styles.module.css';
 import type { IProduct } from '@tupynambalucas-hub/core';
 import type { FailedLine } from '../parseList';

@@ -1,6 +1,6 @@
 # MDX & Docusaurus Syntax Reference
 
-This reference outlines MDX syntax standards and native Docusaurus v3 features used in the **CodeCanvas** monorepo.
+This reference outlines MDX syntax standards and native Docusaurus v3 features used in the **tupynambalucas** monorepo.
 
 ---
 

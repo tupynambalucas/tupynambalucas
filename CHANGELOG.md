@@ -6,7 +6,7 @@ All updates, improvements, and new features of tupynambalucas.dev documented in 
 
 The foundational release of tupynambalucas.dev (v0.1.0) establishes the core monorepo architecture, workspace isolation boundaries, and domain foundations for the local community shop and global platform hub.
 
-{/* truncate */}
+{/_ truncate _/}
 
 ### Monorepo Architecture & Bounded Contexts
 
@@ -31,7 +31,7 @@ The foundational release of tupynambalucas.dev (v0.1.0) establishes the core mon
 
 ### Studio & Branding Assets
 
-- **Design Tokens**: Standardized colors, spacing, typography, and visual assets in `@tupynambalucas-studio/assets` to export a unified theme.
+- **Design Tokens**: Standardized colors, spacing, typography, and visual assets in `@tupynambalucas-studio/design` to export a unified theme.
 - **Design Ops Integration**: Deployed a self-hosted Penpot instance to maintain visual strategy designs and design-to-code asset generation.
 
 ### Development Tooling & Context Gateways

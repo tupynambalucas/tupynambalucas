@@ -6,10 +6,10 @@ This file defines the domain rules, local stack services, and directory structur
 
 ## Studio Navigation
 
-Before editing or analyzing design files or brand tokens, read the local rules for the specific workspace:
+Before editing or analyzing design files, brand tokens, or the S3 synchronization scripts, read the local rules for the specific workspace:
 
-- **Penpot Collaborative Design**: [penpot/AGENTS.md](./penpot/AGENTS.md) — Self-hosted Penpot setup, S3 bucket mappings, PostgreSQL, and Penpot AI assistant (aide).
-- **Cloudflare R2 Storage Sync**: [assets/AGENTS.md](./assets/AGENTS.md) — Dynamic synchronization engine for design assets, vectors, and web-ready vectors with Cloudflare R2 bucket.
+- **Design Assets & Penpot Editor**: [design/AGENTS.md](./design/AGENTS.md) — Shared brand assets, theme tokens, and self-hosted Penpot docker configuration under `@tupynambalucas-studio/design`.
+- **Cloudflare R2 Storage Sync**: [bucket/AGENTS.md](./bucket/AGENTS.md) — Dynamic synchronization CLI engine for design assets with Cloudflare R2 bucket under `@tupynambalucas-studio/bucket`.
 
 ---
 
@@ -17,16 +17,16 @@ Before editing or analyzing design files or brand tokens, read the local rules f
 
 The Studio workspace centralizes brand visual assets, CSS design tokens, and SVG icon wrappers:
 
-- **[assets/src/tokens/](./assets/src/tokens/)**: Canonical design token definitions (color variables, typography mappings) consumed by both Hub and Docs clients.
-- **[assets/src/icons/](./assets/src/icons/)**: Scoped React SVG wrapper components generated from raw vectors.
-- **[assets/bucket/](./assets/bucket/)**: Custom asset synchronization script for Cloudflare R2.
+- **[design/assets/tokens/](./design/assets/tokens/)**: Canonical design token definitions (color variables, typography mappings) consumed by both Hub and Docs clients.
+- **[design/assets/icons/](./design/assets/icons/)**: Scoped React SVG wrapper components generated from raw vectors.
+- **[bucket/](./bucket/)**: Custom asset synchronization script for Cloudflare R2.
 
 ---
 
 ## Studio Guardrails
 
 1. **Token Invariance**: Brand CSS color tokens and variables MUST be maintained in this workspace and exported. AI agents MUST NEVER define hardcoded hex values in local application CSS modules.
-2. **Asset Organization**: AI agents MUST NEVER commit heavy binary design backups to git branches. Keep source design vectors in [assets/src/logos/](./assets/src/logos/) and load final web-ready SVGs into [assets/src/icons/](./assets/src/icons/).
+2. **Asset Organization**: AI agents MUST NEVER commit heavy binary design backups to git branches. Keep source design vectors in [design/assets/brand/logos/](./design/assets/brand/logos/) and load final web-ready SVGs into [design/assets/icons/](./design/assets/icons/).
 3. **No Dead References**: Avoid references to theme configurations or custom IDE extensions in this workspace.
 
 ---

@@ -1,39 +1,48 @@
-# Workspace Context: Studio Bucket Synchronizer
+# Local Context: Studio Design & Penpot Hub
 
-This file establishes the localized rules, stack-specific standards, and engineering guardrails for AI agents working within the `@tupynambalucas-studio/assets` asset synchronization tool (`[studio/bucket/](./)`).
-
----
-
-## Technical Stack & Dependencies
-
-All files in this workspace MUST be strictly written in TypeScript complying with ESM module execution. The tech stack consists of:
-
-- **Storage Adapter**: `@aws-sdk/client-s3` (defined in [package.json](../package.json)).
-- **HTTP Handler**: `@smithy/node-http-handler` (defined in [package.json](../package.json)), configured with customized HTTP/HTTPS agents for connection pooling and lifecycle tuning.
-- **Filesystem Scanner**: `glob` (defined in [package.json](../package.json)).
-- **Config Loader**: `dotenv` (defined in [package.json](../package.json)), which loads variables from the dynamic environment file `[.env.studio.bucket](./.env.studio.bucket)`.
+This workspace (`[studio/design/](./)`) configures, hosts, and deploys the self-hosted collaborative design services (Penpot) and manages the shared design assets (icons, brand logos, three.js vectors, and design tokens) under `@tupynambalucas-studio/design`.
 
 ---
 
-## Core Engineering Guardrails
+## Local Architecture & Directory Map
 
-1. **Free-Tier Optimization (Cloudflare R2)**:
-   - Operations MUST minimize Class A and Class B API calls to guarantee usage remains under the free monthly quotas (1M Class A, 10M Class B).
-   - **No redundant uploads/downloads**: AI agents MUST ALWAYS compare the local file's size and MD5 hash against the remote object's size and ETag.
-   - **Never hardcode paths**: AI agents MUST ALWAYS resolve synchronization targets dynamically from `[assets-manifest.json](../assets-manifest.json)`.
-
-2. **Strict Boolean Logic & Optional Parameters**:
-   - Conditionals MUST ALWAYS be explicit. Use `if (value === true)` or `if (value !== undefined)`. AI agents MUST NEVER rely on implicit truthiness.
-
-3. **No Unawaited Promises**:
-   - All asynchronous calls MUST ALWAYS be fully awaited. AI agents MUST NEVER leave asynchronous promises floating. Use `void` only for explicit background processes that are intentionally detached.
+- **`[assets/](./assets/)`**: Centralized design system components, icons, theme configurations, and tokens.
+  - `assets/tokens/`: Color systems, tokens, and CSS properties.
+  - `assets/icons/`: Shared icon components.
+  - `assets/brand/logos/`: Canonical brand logo assets.
+- **`[infrastructure/docker/compose.yaml](./infrastructure/docker/compose.yaml)`**: Docker Compose orchestration for Penpot backend, frontend wrapper, Valkey cache, Postgres database, and Penpot AI service (aide).
+- **`[services/](./services/)`**: Custom service configurations and environment properties for `frontend`, `backend`, `exporter`, `valkey`, and `aide`.
 
 ---
 
-## Scoped Quality Verification
+## Design Assets & CSS Guardrails
 
-Before completing any code or structure edits, AI agents MUST run validation checks from the monorepo root:
+1. **Relative CSS Units**:
+   - The use of raw `px` units is strictly forbidden in layout definitions.
+   - AI agents MUST use relative units (`rem`, `em`, `vh`, `vw`, `clamp`) for scalable fluid typography and layouts.
+2. **ESM Exports**:
+   - Verify that all newly created assets (icons, vectors, images) are registered correctly in `[package.json](./package.json)` under the exports map to make them importable across the monorepo workspaces.
 
-- **Typecheck**: `pnpm studio:typecheck`
-- **Linter**: `pnpm studio:lint`
-- **Verify Git Status**: `git status` to ensure a clean working tree.
+---
+
+## Penpot Infrastructure Guardrails
+
+1. **Volume Mappings**:
+   - AI agents MUST ALWAYS ensure that database assets (PostgreSQL) and session volumes are correctly bound to avoid design data loss during container restarts or updates.
+2. **S3 Assets Persistence**:
+   - The Penpot application uses S3-compatible object storage to persist assets and uploads. AI agents MUST verify that S3 configurations (`PENPOT_BUCKET_NAME`, credentials) are loaded correctly from local env properties.
+3. **Port Collisions**:
+   - Penpot services run on host port `9005` by default. AI agents MUST NEVER change this port in dev compose files to ensure smooth routing.
+
+---
+
+## Scoped Commands
+
+Run these scripts from the monorepo root:
+
+- `pnpm penpot:up`: Builds and runs Penpot local containers.
+- `pnpm penpot:down`: Stops local Penpot containers.
+- `pnpm penpot:reset`: Recreates compose containers.
+- `pnpm penpot:aide:up`: Boots Penpot AI assistant.
+- `pnpm studio:typecheck`: Validates TypeScript type safety across the studio packages.
+- `pnpm studio:lint`: Runs ESLint verification.

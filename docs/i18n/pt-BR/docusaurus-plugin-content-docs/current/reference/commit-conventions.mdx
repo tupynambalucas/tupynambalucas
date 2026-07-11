@@ -71,7 +71,7 @@ Running a full typecheck across all monorepo packages (`pnpm typecheck`) can tak
 2. It detects the file extensions: if no JavaScript or TypeScript files have changed, it skips typechecking completely.
 3. It maps the changed files to their corresponding monorepo workspaces:
    - Files in `instance/` $\rightarrow$ typecheck `@tupynambalucas-hub/*` packages.
-   - Files in `studio/` $\rightarrow$ typecheck `@tupynambalucas-studio/assets`.
+   - Files in `studio/` $\rightarrow$ typecheck `@tupynambalucas-studio/design`.
    - Files in `tools/` $\rightarrow$ typecheck `@tupynambalucas/tools`.
    - Files in `docs/` $\rightarrow$ typecheck `@tupynambalucas/docs`.
    - Files in `portal/` $\rightarrow$ typecheck `@tupynambalucas-hub/*`.

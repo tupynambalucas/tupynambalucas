@@ -15,7 +15,7 @@ interface WebpackMock {
 }
 
 const webpack = require('webpack') as unknown as WebpackMock;
-const studioPath = path.dirname(require.resolve('@tupynambalucas-studio/assets/package.json'));
+const studioPath = path.dirname(require.resolve('@tupynambalucas-studio/design/package.json'));
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -42,7 +42,7 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  staticDirectories: [path.join(studioPath, 'src')],
+  staticDirectories: [path.join(studioPath, 'assets')],
 
   customFields: {
     studioPath,
@@ -97,13 +97,13 @@ const config: Config = {
 
         const hasBucketUrl = bucketUrl !== undefined && bucketUrl !== '';
 
-        const manifestPath = require.resolve('@tupynambalucas-studio/assets/assets-manifest.json');
+        const manifestPath = require.resolve('@tupynambalucas-studio/design/assets-manifest.json');
         const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as {
           buckets: { assets: { docs: string[] } };
         };
         const buildFolders = manifest.buckets.assets.docs;
         const folderPattern = buildFolders.map((f: string) => f.replace(/^\//, '')).join('|');
-        const matchRegex = new RegExp(`^@tupynambalucas-studio\\/assets\\/(${folderPattern})\\/.*`);
+        const matchRegex = new RegExp(`^@tupynambalucas-studio\\/design\\/(${folderPattern})\\/.*`);
 
         // Heavy/3D assets rule so Webpack can resolve direct imports of .exr/.glb files
         const assetRules = [

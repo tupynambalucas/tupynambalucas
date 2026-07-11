@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Icon, faEye, faEyeSlash } from '@tupynambalucas-studio/assets/icons';
+import { Icon, faEye, faEyeSlash } from '@tupynambalucas-studio/design/icons';
 import { AUTH_RULES } from '@tupynambalucas-hub/core';
 import { IconSelector } from '@/shared/ui/UserIcon';
 import type { AuthFormData, AuthFieldErrors, AuthFormRefs } from '../types';

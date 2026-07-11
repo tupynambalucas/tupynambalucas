@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "paths": {
-      "@studio-assets/*": ["./assets/*"]
+      "@assets/*": ["./assets/*"]
     }
   },
   "include": ["assets/**/*"],

@@ -1,6 +1,6 @@
 # GFM Syntax (GitHub Flavored Markdown)
 
-Technical reference for writing and formatting Markdown files within the CodeCanvas workspace.
+Technical reference for writing and formatting Markdown files within the tupynambalucas workspace.
 
 ## Headings
 
@@ -96,7 +96,7 @@ Use triple backticks to create standalone code blocks. Optionally, specify the l
 
 ````markdown
 ```typescript
-const app = 'codecanvas';
+const app = 'tupynambalucas';
 console.log(app);
 ```
 ````
@@ -104,7 +104,7 @@ console.log(app);
 #### Rendered Preview
 
 ```typescript
-const app = 'codecanvas';
+const app = 'tupynambalucas';
 console.log(app);
 ```
 
@@ -151,11 +151,11 @@ Wrap the text in square brackets `[ ]` and the URL in parentheses `( )`.
 Relative paths can be used to link to files within the repository.
 
 > [!IMPORTANT]
-> **Prohibited Absolute Paths**: Do not use absolute filesystem paths or `file:///` URLs (e.g.,
-> `file:///D:/projects/code-canvas/docs/CONTRIBUTING.md` or `/D:/...`). You must always use relative
-> paths starting with `./` or `../` (or simply `path/to/file` if resolving from the current
-> directory) or fully-qualified public web URLs with explicit domains (e.g.,
-> `https://codecanvas.dev/`).
+> **Prohibited Absolute Paths**: Do not use absolute filesystem paths or local protocol URLs (e.g.,
+> file scheme paths like `/absolute/path/to/docs/CONTRIBUTING.md` or similar). You must always use
+> relative paths starting with `./` or `../` (or simply `path/to/file` if resolving from the
+> current directory) or fully-qualified public web URLs with explicit domains (e.g.,
+> `https://tupynambalucas.dev/`).
 
 #### Syntax
 

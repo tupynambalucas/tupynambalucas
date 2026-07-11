@@ -5,7 +5,7 @@ description: Use this skill to create, analyze, or update technical documentatio
 
 # Docusaurus Docs Expert
 
-This skill defines the authoritative standards, directory structures, design patterns, and validation workflows for the **CodeCanvas** Docusaurus Docs Hub (`docs/`).
+This skill defines the authoritative standards, directory structures, design patterns, and validation workflows for the **tupynambalucas** Docusaurus Docs Hub (`docs/`).
 
 ---
 
@@ -50,7 +50,7 @@ All files placed inside the documentation directories MUST strictly adhere to th
 
 ### C. Cross-linking and Content Preservation
 
-- **Cross-linking**: Use Docusaurus absolute paths (e.g., `[Link Text](/docs/handbook/reference/...)`) for internal markdown links to prevent dead links caused by the deeply nested Diátaxis structure. Avoid relative paths like `../../`.
+- **Cross-linking**: Use Docusaurus absolute paths (e.g., `[Link Text]` followed by `(/docs/handbook/reference/...)`) for internal markdown links to prevent dead links caused by the deeply nested Diátaxis structure. Avoid relative paths like `../../`.
 - **Content Integrity**: When migrating or converting existing `.md` documentation into MDX, you MUST migrate the content 1:1. Never summarize, truncate, or omit the original text. External web URLs (`http://` or `https://`) must be strictly preserved without modification.
 
 ### D. Formatting & Prettier Standards

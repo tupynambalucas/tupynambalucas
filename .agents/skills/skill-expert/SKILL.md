@@ -1,11 +1,11 @@
 ---
 name: skill-expert
-description: Skill Creator for the CodeCanvas project. Use when requested to create, refine, analyze, or update custom Agent Skills (.agents/skills/*) within this workspace.
+description: Skill Creator for the tupynambalucas project. Use when requested to create, refine, analyze, or update custom Agent Skills (.agents/skills/*) within this workspace.
 ---
 
 # Skill Creator Guidelines
 
-This skill establishes the authoritative, senior-grade engineering guidelines, workflows, and automated verification protocols for creating, updating, and maintaining custom Agent Skills in the **CodeCanvas** monorepo.
+This skill establishes the authoritative, senior-grade engineering guidelines, workflows, and automated verification protocols for creating, updating, and maintaining custom Agent Skills in the **tupynambalucas** monorepo.
 
 ---
 
@@ -88,7 +88,7 @@ If a skill contains automated scripts under `scripts/`:
 
 ---
 
-## 5. CodeCanvas Non-Negotiable Guardrails
+## 5. Non-Negotiable Guardrails
 
 All code, templates, and procedures within custom skills MUST conform to the project's core engineering rules:
 

@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { AdminContainer } from '../../components';
-import { faUsers } from '@tupynambalucas-studio/assets/icons';
+import { faUsers } from '@tupynambalucas-studio/design/icons';
 
 const CustomersView: FC = () => {
   return (
