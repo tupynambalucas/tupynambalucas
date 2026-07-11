@@ -1,33 +1,11 @@
 name: tupynambalucas-mcp
 
+networks:
+  tupynambalucas-mcp-net:
+    name: tupynambalucas-mcp-net
+    driver: bridge
+
 services:
-  # ==========================================
-  # INFRASTRUCTURE CORE (Control Plane)
-  # ==========================================
-  agentgateway:
-    profiles: ['dev', 'prod', 'staging']
-    image: cr.agentgateway.dev/agentgateway:v1.3.1
-    container_name: tupynambalucas-mcp-agentgateway-${APP_ENV:-prod}
-    ports:
-      - '${GATEWAY_PORT:-3005}:8080' # Tráfego principal IAs
-      - '15000:15000' # Web UI do AgentGateway
-    volumes:
-      - ../../gateway/config.yaml:/config.yaml
-    command: ['-f', '/config.yaml']
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: 'host.docker.internal:24224'
-        tag: 'agentgateway'
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://tupynambalucas-monitor-otel-dev:4317}
-    networks:
-      tupynambalucas-mcp-net:
-        aliases:
-          - tupynambalucas.internal.tools.mcp
-      tupynambalucas-monitor-net:
-        aliases:
-          - agentgateway-metrics
   # ==========================================
   # MCP SERVERS (Data Plane)
   # ==========================================
@@ -102,10 +80,3 @@ services:
       - GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_SERVICE_ACCOUNT_TOKEN}
     networks:
       - tupynambalucas-mcp-net
-
-networks:
-  tupynambalucas-mcp-net:
-    name: tupynambalucas-mcp-net
-    driver: bridge
-  tupynambalucas-monitor-net:
-    external: true

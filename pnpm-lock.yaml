@@ -1089,9 +1089,7 @@ importers:
 
   tools/mcp: {}
 
-  tools/monitor: {}
-
-  tools/turborepo: {}
+  tools/platform: {}
 
 packages:
   '@algolia/abtesting@1.21.1':

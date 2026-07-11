@@ -1,10 +1,4 @@
 services:
-  etcd:
-    restart: unless-stopped
-
-  apisix:
-    restart: unless-stopped
-
   github:
     volumes:
       - ../../services/github/instructions.md:/app/instructions.md:ro
