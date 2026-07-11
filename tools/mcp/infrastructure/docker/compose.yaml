@@ -14,6 +14,11 @@ services:
     volumes:
       - ../../gateway/config.yaml:/config.yaml
     command: ['-f', '/config.yaml']
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 'host.docker.internal:24224'
+        tag: 'agentgateway'
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://tupynambalucas-monitor-otel-dev:4317}
     networks:
@@ -21,7 +26,8 @@ services:
         aliases:
           - tupynambalucas.internal.tools.mcp
       tupynambalucas-monitor-net:
-
+        aliases:
+          - agentgateway-metrics
   # ==========================================
   # MCP SERVERS (Data Plane)
   # ==========================================
@@ -82,6 +88,18 @@ services:
       dockerfile: services/firecrawl/Dockerfile
     environment:
       - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
+    networks:
+      - tupynambalucas-mcp-net
+
+  grafana:
+    profiles: ['dev', 'prod', 'staging']
+    container_name: tupynambalucas-mcp-grafana-${APP_ENV:-prod}
+    build:
+      context: ../../
+      dockerfile: services/grafana/Dockerfile
+    environment:
+      - GRAFANA_URL=${GRAFANA_CLOUD_URL}
+      - GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_SERVICE_ACCOUNT_TOKEN}
     networks:
       - tupynambalucas-mcp-net
 

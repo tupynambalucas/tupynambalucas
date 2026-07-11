@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 config:
   adminAddr: '[::]:15000'
+  statsAddr: '[::]:15001'
+  logging:
+    format: json
   tracing:
     otlpEndpoint: http://tupynambalucas-monitor-otel-dev:4317
     randomSampling: true
@@ -10,11 +13,14 @@ mcp:
     cors:
       allowOrigins:
         - http://localhost:15000
+        - http://127.0.0.1:15000
+        - http://localhost:19000
       allowMethods:
         - '*'
         - GET
         - POST
       allowHeaders:
+        - authorization
         - '*'
       exposeHeaders:
         - Mcp-Session-Id
@@ -34,4 +40,7 @@ mcp:
     - name: firecrawl
       mcp:
         host: http://firecrawl:8080/mcp
+    - name: grafana
+      mcp:
+        host: http://grafana:8080/mcp
 binds: []

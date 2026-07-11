@@ -7,6 +7,19 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
+  # Coleta métricas ativamente (Pull) do Agent Gateway
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'agentgateway-metrics'
+          scrape_interval: 15s
+          static_configs:
+            - targets: ['agentgateway-metrics:15001']
+
+  # Receptor Fluentd (Permite que o Docker envie logs nativamente sem ler arquivos no Windows)
+  fluentforward:
+    endpoint: 0.0.0.0:24224
+
 exporters:
   # Exportador para o Grafana Cloud (Métricas de performance)
   otlphttp/grafanacloud:
@@ -24,20 +37,40 @@ exporters:
 
 processors:
   batch:
+    send_batch_size: 8192
+    timeout: 1s
+
+  # Força o nome do serviço (Resource Attribute) para logs vindo do fluentforward
+  resource/fluentd:
+    attributes:
+      - key: service.name
+        value: agentgateway
+        action: insert
+
+  filter/sentry_errors:
+    error_mode: ignore
+    traces:
+      span:
+        - 'status.code != 2' # Status 2 no OTel significa Erro
 
 service:
   pipelines:
     metrics:
-      receivers: [otlp]
+      receivers: [otlp, prometheus]
       processors: [batch]
       exporters: [otlphttp/grafanacloud, debug]
-    traces:
-      receivers: [otlp]
-      processors: [batch]
-      # Envia os traces tanto para o Grafana quanto para o Sentry simultaneamente
-      exporters: [otlphttp/grafanacloud, otlphttp/sentry, debug]
+
     logs:
+      receivers: [otlp, fluentforward]
+      processors: [resource/fluentd, batch]
+      exporters: [otlphttp/grafanacloud, debug]
+
+    traces/grafana:
       receivers: [otlp]
       processors: [batch]
-      # Envia logs nativos para o Grafana Cloud (Loki)
       exporters: [otlphttp/grafanacloud, debug]
+
+    traces/sentry:
+      receivers: [otlp]
+      processors: [filter/sentry_errors, batch]
+      exporters: [otlphttp/sentry, debug]

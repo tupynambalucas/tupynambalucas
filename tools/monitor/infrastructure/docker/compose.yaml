@@ -8,6 +8,8 @@ services:
     command: ['--config=/etc/otelcol-contrib/config.yaml']
     volumes:
       - ../../gateway/monitor-gateway.yaml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - '24224:24224'
     environment:
       # Injetando as variáveis do .env para dentro do container para uso do OTel
       - GRAFANA_CLOUD_OTLP_ENDPOINT=${GRAFANA_CLOUD_OTLP_ENDPOINT}
