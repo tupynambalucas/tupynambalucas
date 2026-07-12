@@ -13,7 +13,8 @@ This document serves as the root context router for AI agents operating in the t
 - [hub](./hub/AGENTS.md): Developer website client, REST API, and data core library.
 - [profile](./profile/AGENTS.md): GitHub profile stats visualizer and dynamic README generator.
 - [studio](./studio/AGENTS.md): Brand visual assets, design tokens, and Penpot editor configurations.
-- [tools](./tools/AGENTS.md): Model Context Protocol gateway, containerized terminals, and remote cache.
+- [platform](./platform/AGENTS.md): Core cluster services, ingress routing, telemetry monitoring, and build cache.
+- [tools](./tools/AGENTS.md): Model Context Protocol gateway, containerized terminals, and LLM worker agents.
 
 ## Global Constraints
 

@@ -17,6 +17,7 @@ packages:
   - 'shared/*'
   - 'studio/*'
   - 'tools/*'
+  - 'platform'
   - 'docs'
   - 'profile'
 

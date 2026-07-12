@@ -1,16 +1,16 @@
 {
-  "name": "@tupynambalucas-tools/platform",
+  "name": "@tupynambalucas/platform",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
   "description": "Tupynambá Lucas Tools Package",
   "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
-  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/tools/platform#readme",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/platform#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
-    "directory": "tools/platform"
+    "directory": "platform"
   },
   "scripts": {
     "platform:dev:up": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev up -d --build",

@@ -31,9 +31,6 @@ mcp:
     - name: context7
       mcp:
         host: http://context7:8080/mcp
-    - name: browser
-      mcp:
-        host: http://browser:8080/mcp
     - name: dockerhub
       mcp:
         host: http://dockerhub:8080/mcp

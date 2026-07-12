@@ -7,10 +7,6 @@ services:
     volumes:
       - ../../services/context7/instructions.md:/app/instructions.md:ro
 
-  browser:
-    volumes:
-      - ../../services/browser/instructions.md:/app/instructions.md:ro
-
   dockerhub:
     volumes:
       - ../../services/dockerhub/instructions.md:/app/instructions.md:ro
@@ -18,3 +14,7 @@ services:
   firecrawl:
     volumes:
       - ../../services/firecrawl/instructions.md:/app/instructions.md:ro
+
+  grafana:
+    volumes:
+      - ../../services/grafana/instructions.md:/app/instructions.md:ro

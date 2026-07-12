@@ -8,7 +8,7 @@ The ecosystem operates on a modern AgentGateway proxy model using federation:
 
 1.  **AgentGateway:** An official Go-based proxy service (`cr.agentgateway.dev/agentgateway`) that intercepts and federates MCP traffic. It exposes port `8080` for AI clients (like Google Antigravity) and port `15000` for its Web UI Playground.
 2.  **Downstream MCP Servers:** Each MCP container either natively supports HTTP/SSE (like Grafana) or uses `mcp-proxy` to wrap stdio-based CLI binaries and expose them via HTTP/SSE.
-3.  **Federation (Single Endpoint):** Clients don't need to connect to each server individually. The AgentGateway aggregates tools from all upstream servers (GitHub, Context7, Browser, DockerHub, Firecrawl, Grafana) and presents them as a single unified MCP endpoint.
+3.  **Federation (Single Endpoint):** Clients don't need to connect to each server individually. The AgentGateway aggregates tools from all upstream servers (GitHub, Context7, DockerHub, Firecrawl, Grafana) and presents them as a single unified MCP endpoint.
 4.  **Isolated Bridge Network:** Services communicate internally over the bridge network `tupynambalucas-mcp-net`. The Gateway also connects to `tupynambalucas-monitor-net` to push OpenTelemetry logs/traces.
 
 ```
@@ -43,7 +43,7 @@ The ecosystem operates on a modern AgentGateway proxy model using federation:
 
 - `infrastructure/docker/`: Contains the orchestration file (`compose.yaml`) and environment configurations (`.env.*`).
 - `gateway/`: Gateway server configuration (`config.yaml`).
-- `services/`: Containerized setups and Dockerfiles for the downstream servers (GitHub, Browser, Context7, DockerHub, Firecrawl, Grafana).
+- `services/`: Containerized setups and Dockerfiles for the downstream servers (GitHub, Context7, DockerHub, Firecrawl, Grafana).
 
 ---
 

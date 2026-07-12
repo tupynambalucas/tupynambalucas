@@ -31,21 +31,6 @@ services:
     networks:
       - tupynambalucas-mcp-net
 
-  browser:
-    profiles: ['dev', 'prod', 'staging']
-    container_name: tupynambalucas-mcp-browser-${APP_ENV:-prod}
-    build:
-      context: ../../
-      dockerfile: services/browser/Dockerfile
-    environment:
-      - MCP_REWRITE_LOCALHOST=${BROWSER_REWRITE_LOCALHOST}
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
-      - 'tupynambalucas.internal:host-gateway'
-    shm_size: '2gb'
-    networks:
-      - tupynambalucas-mcp-net
-
   dockerhub:
     profiles: ['dev', 'prod', 'staging']
     container_name: tupynambalucas-mcp-dockerhub-${APP_ENV:-prod}

@@ -1,6 +1,6 @@
 # Local Context: Monorepo Platform Infrastructure
 
-This workspace ([tools/platform/](./)) centralizes and manages the operational, always-running platform utilities supporting local development, continuous integration, and telemetry aggregation.
+This workspace ([platform/](./)) centralizes and manages the operational, always-running platform utilities supporting local development, continuous integration, and telemetry aggregation.
 
 ---
 
