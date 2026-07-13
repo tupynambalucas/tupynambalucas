@@ -1,6 +1,6 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
-import type { TupynambalucasPresetOptions, ThemeConfig } from './tupynambalucas-preset';
+import type { TupynambalucasPresetOptions, ThemeConfig } from './preset';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -176,7 +176,7 @@ const config: Config = {
 
   presets: [
     [
-      './tupynambalucas-preset/index.ts',
+      './preset/index.ts',
       {
         docs: {
           path: 'handbook',
