@@ -8,12 +8,23 @@ This is the central, authoritative documentation hub for the tupynambalucas.dev 
 
 The documentation workspace is organized as follows:
 
-- **[handbook/](./handbook/)**: Core project documentation structured around the **Diátaxis framework** (Tutorials, How-To Guides, Reference, Explanation).
-- **[workspaces/](./workspaces/)**: Technical specifications and developer guidelines for each monorepo workspace (Hub, Profile, Studio, Tools, Docs, Shared).
-- **[roadmap/](./roadmap/)**: Project development timeline and release roadmap.
-- **[releases/](./releases/)**: Official project Changelog and versioned release notes.
-- **[src/pages/](./src/pages/)**: MDX layout configurations and custom React landing pages.
-- **[i18n/](./i18n/)**: Full internationalization support (English and Brazilian Portuguese).
+- **[handbook/](./handbook/)**: Central project documentation structured using the Diátaxis framework:
+  - **[tutorials/](./handbook/tutorials/)**: Learning-oriented guides to get started.
+  - **[guides/](./handbook/guides/)**: Goal-oriented directions to solve specific tasks.
+  - **[reference/](./handbook/reference/)**: Information-oriented technical specs and APIs.
+  - **[explanation/](./handbook/explanation/)**: Understanding-oriented concept explanations.
+- **[workspaces/](./workspaces/)**: Structural and technical specifications for each monorepo workspace.
+- **[roadmap/](./roadmap/)**: Project roadmap and timeline milestones.
+- **[releases/](./releases/)**: Official changelogs and release notes (Changelog blog posts).
+- **[i18n/](./i18n/)**: Translation catalogs for localized content (English and Brazilian Portuguese).
+- **[src/](./src/)**: Custom React components, theme styles, page templates, and layouts.
+  - **[src/pages/](./src/pages/)**: MDX landing pages and custom layout files.
+- **[preset/](./preset/)**: Custom Docusaurus preset options and design tokens theme configurations.
+- **[loaders/](./loaders/)**: Webpack asset loaders for dynamic, bucket-stored Studio design resources.
+- **[scripts/](./scripts/)**: Task scripts orchestrating documentation dev/build pipelines.
+- **[tooling/](./tooling/)**: Utility scripts compiling raw git history into changelogs and roadmaps.
+- **[docusaurus.config.ts](./docusaurus.config.ts)**: Primary Docusaurus configuration for plugins, headers, footers, and localization.
+- **[sidebars.ts](./sidebars.ts)** / **[sidebarsRoadmap.ts](./sidebarsRoadmap.ts)** / **[sidebarsWorkspaces.ts](./sidebarsWorkspaces.ts)**: Navigation structures for sidebars mapping.
 
 ---
 
