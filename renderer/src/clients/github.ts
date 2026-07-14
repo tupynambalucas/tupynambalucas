@@ -1,4 +1,3 @@
-import { getLocalLinesChanged } from './git-fallback.js';
 import type { Repository } from '../schemas/repository.schema.js';
 import type { GitHubStats } from '../schemas/githubstats.schema.js';
 
@@ -476,16 +475,10 @@ export async function getGitHubStats(options: FetchOptions): Promise<GitHubStats
     }
 
     if (!success) {
-      console.info(`Cloning ${repo.name} to get lines changed...`);
-      repo.lines_changed = getLocalLinesChanged({
-        login: basicInfo.login,
-        token: token,
-        repo: repo.name,
-        emails: basicInfo.emails,
-      });
-      console.info(
-        `Got ${repo.lines_changed} lines changed for ${repo.name} via local clone fallback`,
+      console.warn(
+        `[GitHub API] Failed to fetch lines changed for ${repo.name} after ${maxRetries} retries. Defaulting to 0.`,
       );
+      repo.lines_changed = 0;
     }
   }
 

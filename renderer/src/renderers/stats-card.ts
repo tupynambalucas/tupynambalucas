@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
 import type { Config } from '../schemas/env.schema.js';
 import type { GitHubStats } from '../schemas/githubstats.schema.js';
 import { fillTemplate } from '../utils/template-fill.js';
@@ -88,9 +88,20 @@ export function renderStatsCards(options: RenderOptions): void {
 
   const overviewSvg = fillTemplate(overviewTemplate, overviewData);
   const overviewOutPath = config.overviewOutputFile;
-  console.info(`Writing overview card to ${overviewOutPath}...`);
-  mkdirSync(dirname(overviewOutPath), { recursive: true });
-  writeFileSync(overviewOutPath, overviewSvg, 'utf8');
+  const outDir = dirname(overviewOutPath);
+  mkdirSync(outDir, { recursive: true });
+
+  if (!config.isGitHubAction) {
+    console.info(`Writing local light overview card to ${join(outDir, 'overview-light.svg')}...`);
+    writeFileSync(join(outDir, 'overview-light.svg'), overviewSvg, 'utf8');
+
+    console.info(`Writing local dark overview card to ${join(outDir, 'overview-dark.svg')}...`);
+    const darkOverviewSvg = overviewSvg.replace(/#gh-dark-mode-only:target/g, '#gh-dark-mode-only');
+    writeFileSync(join(outDir, 'overview-dark.svg'), darkOverviewSvg, 'utf8');
+  } else {
+    console.info(`Writing production adaptive overview card to ${overviewOutPath}...`);
+    writeFileSync(overviewOutPath, overviewSvg, 'utf8');
+  }
 
   // 2. Render Languages Card
   const progressItems = sortedLanguages
@@ -138,7 +149,25 @@ export function renderStatsCards(options: RenderOptions): void {
   });
 
   const languagesOutPath = config.languagesOutputFile;
-  console.info(`Writing languages card to ${languagesOutPath}...`);
-  mkdirSync(dirname(languagesOutPath), { recursive: true });
-  writeFileSync(languagesOutPath, languagesSvg, 'utf8');
+  const langOutDir = dirname(languagesOutPath);
+  mkdirSync(langOutDir, { recursive: true });
+
+  if (!config.isGitHubAction) {
+    console.info(
+      `Writing local light languages card to ${join(langOutDir, 'languages-light.svg')}...`,
+    );
+    writeFileSync(join(langOutDir, 'languages-light.svg'), languagesSvg, 'utf8');
+
+    console.info(
+      `Writing local dark languages card to ${join(langOutDir, 'languages-dark.svg')}...`,
+    );
+    const darkLanguagesSvg = languagesSvg.replace(
+      /#gh-dark-mode-only:target/g,
+      '#gh-dark-mode-only',
+    );
+    writeFileSync(join(langOutDir, 'languages-dark.svg'), darkLanguagesSvg, 'utf8');
+  } else {
+    console.info(`Writing production adaptive languages card to ${languagesOutPath}...`);
+    writeFileSync(languagesOutPath, languagesSvg, 'utf8');
+  }
 }

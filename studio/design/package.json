@@ -42,7 +42,6 @@
     "penpot:staging:reset": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging down --volumes && docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging up -d --build"
   },
   "dependencies": {
-    "@fontsource-variable/nunito": "catalog:studio-stack",
     "react": "catalog:web-stack",
     "react-dom": "catalog:web-stack",
     "react-icons": "catalog:studio-stack"

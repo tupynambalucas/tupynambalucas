@@ -1,12 +1,14 @@
 import { getGitHubStats, uploadFileContents } from './clients/github.js';
 import { renderStatsCards } from './renderers/stats-card.js';
+import { renderHeaderCards } from './renderers/header-card.js';
 import { ConfigSchema } from './schemas/env.schema.js';
 import { config as rawConfig } from './config/env.config.js';
 import { brandColors } from '@tupynambalucas-studio/design/tokens';
 import { fileURLToPath } from 'url';
-import { dirname, resolve, join } from 'path';
+import { dirname, resolve, join, basename } from 'path';
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { fillTemplate } from './utils/template-fill.js';
+import { activePipelines } from './pipelines/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,12 +20,20 @@ async function main(): Promise<void> {
 
     console.info('Starting Profile Stats Generator...');
 
-    // Resolve output files strictly to profile/generated/stats/ for local tracking
-    const statsDir = resolve(workspaceRoot, 'generated/stats');
-    mkdirSync(statsDir, { recursive: true });
+    // Resolve output folder based on environment: local development uses 'generated/cards/' flat, CI/CD uses subdirectories 'generated/cards/stats/' and 'generated/cards/static/'
+    const cardsDir = resolve(workspaceRoot, 'generated/cards');
+    const localMode = !config.isGitHubAction;
 
-    const overviewOutputFile = resolve(statsDir, 'overview.svg');
-    const languagesOutputFile = resolve(statsDir, 'languages.svg');
+    const statsOutputDir = localMode ? cardsDir : join(cardsDir, 'stats');
+    const staticOutputDir = localMode ? cardsDir : join(cardsDir, 'static');
+
+    mkdirSync(statsOutputDir, { recursive: true });
+    mkdirSync(staticOutputDir, { recursive: true });
+
+    const overviewOutputFile = resolve(statsOutputDir, 'overview.svg');
+    const languagesOutputFile = resolve(statsOutputDir, 'languages.svg');
+    const headerLightOutputFile = resolve(staticOutputDir, 'header-light.svg');
+    const headerDarkOutputFile = resolve(staticOutputDir, 'header-dark.svg');
 
     const resolvedConfig = {
       ...config,
@@ -38,17 +48,28 @@ async function main(): Promise<void> {
       maxRetries: resolvedConfig.maxRetries,
     });
 
-    console.info('Generating SVG cards...');
+    console.info('Generating SVG stats cards...');
     renderStatsCards({
       stats,
       config: resolvedConfig,
-      defaultOverviewTemplatePath: join(workspaceRoot, 'src/templates/overview.svg'),
-      defaultLanguagesTemplatePath: join(workspaceRoot, 'src/templates/languages.svg'),
+      defaultOverviewTemplatePath: join(
+        workspaceRoot,
+        'src/templates/cards/stats/overview.template.svg',
+      ),
+      defaultLanguagesTemplatePath: join(
+        workspaceRoot,
+        'src/templates/cards/stats/languages.template.svg',
+      ),
     });
 
-    console.info('Compiling root README.md...');
-    const readmeTemplatePath = join(workspaceRoot, 'src/templates/README.template.md');
-    const readmeTemplate = readFileSync(readmeTemplatePath, 'utf8');
+    console.info('Generating brand header cards...');
+    renderHeaderCards({
+      outputDir: staticOutputDir,
+      defaultHeaderTemplatePath: join(
+        workspaceRoot,
+        'src/templates/cards/static/header.template.svg',
+      ),
+    });
 
     const totalContributions =
       stats.repo_contributions +
@@ -63,26 +84,34 @@ async function main(): Promise<void> {
     const totalViews = stats.repositories.reduce((acc, r) => acc + r.views, 0);
 
     const assetsBaseUrl = config.isGitHubAction
-      ? `https://raw.githubusercontent.com/${config.repositoryOwner}/${config.repositoryName}/generated/stats`
-      : './stats';
+      ? `https://raw.githubusercontent.com/${config.repositoryOwner}/${config.repositoryName}/generated/cards`
+      : './cards';
 
     const urlSuffix = config.isGitHubAction ? '?raw=true' : '';
 
     const overviewImages = config.isGitHubAction
       ? `<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="${assetsBaseUrl}/overview.svg${urlSuffix}#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="${assetsBaseUrl}/overview.svg${urlSuffix}" />
-    <img alt="${stats.name}'s GitHub Stats" src="${assetsBaseUrl}/overview.svg${urlSuffix}" height="200px" />
+    <source media="(prefers-color-scheme: dark)" srcset="${assetsBaseUrl}/stats/overview.svg${urlSuffix}#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="${assetsBaseUrl}/stats/overview.svg${urlSuffix}" />
+    <img alt="${stats.name}'s GitHub Stats" src="${assetsBaseUrl}/stats/overview.svg${urlSuffix}" height="200px" />
   </picture>`
       : `<img alt="${stats.name}'s GitHub Stats" src="${assetsBaseUrl}/overview.svg" height="200px" />`;
 
     const languagesImages = config.isGitHubAction
       ? `<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="${assetsBaseUrl}/languages.svg${urlSuffix}#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="${assetsBaseUrl}/languages.svg${urlSuffix}" />
-    <img alt="Languages Used" src="${assetsBaseUrl}/languages.svg${urlSuffix}" height="200px" />
+    <source media="(prefers-color-scheme: dark)" srcset="${assetsBaseUrl}/stats/languages.svg${urlSuffix}#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="${assetsBaseUrl}/stats/languages.svg${urlSuffix}" />
+    <img alt="Languages Used" src="${assetsBaseUrl}/stats/languages.svg${urlSuffix}" height="200px" />
   </picture>`
       : `<img alt="Languages Used" src="${assetsBaseUrl}/languages.svg" height="200px" />`;
+
+    const headerImage = config.isGitHubAction
+      ? `<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="${assetsBaseUrl}/static/header-dark.svg${urlSuffix}#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="${assetsBaseUrl}/static/header-light.svg${urlSuffix}" />
+    <img alt="Olá! Eu sou Tupynambá Lucas" src="${assetsBaseUrl}/static/header-light.svg${urlSuffix}" width="750" />
+  </picture>`
+      : `<img alt="Olá! Eu sou Tupynambá Lucas" src="${assetsBaseUrl}/header-light.svg" width="750" />`;
 
     const readmeData = {
       name: stats.name,
@@ -97,6 +126,7 @@ async function main(): Promise<void> {
       urlSuffix,
       overviewImages,
       languagesImages,
+      headerImage,
       colors: {
         brandPurple: brandColors.identity.brandPurple,
         brandBlue: brandColors.identity.brandBlue,
@@ -117,26 +147,83 @@ async function main(): Promise<void> {
       },
     };
 
-    const compiledReadme = fillTemplate(readmeTemplate, readmeData);
+    console.info('Executing document rendering pipeline...');
+    for (const pipeline of activePipelines) {
+      console.info(`\n--- Running Pipeline: ${pipeline.name} ---`);
+
+      for (const target of pipeline.targets) {
+        console.info(`Compiling target: ${target.name}...`);
+
+        const templateFullPath = resolve(workspaceRoot, target.templatePath);
+        const templateContent = readFileSync(templateFullPath, 'utf8');
+
+        if (!config.isGitHubAction) {
+          // Local / Development mode: Generate both light and dark document previews inside docs/light/ and docs/dark/
+          const outputFilename = basename(target.outputPath);
+
+          // 1. Generate Light Mode Preview Document
+          const lightReadmeData = {
+            ...readmeData,
+            headerImage: `<img alt="Olá! Eu sou Tupynambá Lucas" src="../../cards/header-light.svg" width="750" />`,
+            overviewImages: `<img alt="${stats.name}'s GitHub Stats" src="../../cards/overview-light.svg" height="200px" />`,
+            languagesImages: `<img alt="Languages Used" src="../../cards/languages-light.svg" height="200px" />`,
+          };
+          const lightContent = fillTemplate(templateContent, lightReadmeData);
+          const lightFullPath = resolve(workspaceRoot, 'generated/docs/light', outputFilename);
+          console.info(`Local dev mode: Writing light preview document to ${lightFullPath}...`);
+          mkdirSync(dirname(lightFullPath), { recursive: true });
+          writeFileSync(lightFullPath, lightContent, 'utf8');
+
+          // 2. Generate Dark Mode Preview Document
+          const darkReadmeData = {
+            ...readmeData,
+            headerImage: `<img alt="Olá! Eu sou Tupynambá Lucas" src="../../cards/header-dark.svg" width="750" />`,
+            overviewImages: `<img alt="${stats.name}'s GitHub Stats" src="../../cards/overview-dark.svg" height="200px" />`,
+            languagesImages: `<img alt="Languages Used" src="../../cards/languages-dark.svg" height="200px" />`,
+          };
+          const darkContent = fillTemplate(templateContent, darkReadmeData);
+          const darkFullPath = resolve(workspaceRoot, 'generated/docs/dark', outputFilename);
+          console.info(`Local dev mode: Writing dark preview document to ${darkFullPath}...`);
+          mkdirSync(dirname(darkFullPath), { recursive: true });
+          writeFileSync(darkFullPath, darkContent, 'utf8');
+        } else {
+          // CI/CD mode: Interpolate standard responsive data and upload to all specified branches
+          const compiledContent = fillTemplate(templateContent, readmeData);
+
+          for (const branch of target.ciBranches) {
+            console.info(
+              `Uploading compiled target to branch [${branch}] at path "${target.ciPath}"...`,
+            );
+            await uploadFileContents(
+              config.repositoryOwner,
+              config.repositoryName,
+              target.ciPath,
+              compiledContent,
+              branch,
+              config.githubToken,
+              `docs: dynamically update ${target.name.toLowerCase()}`,
+            );
+          }
+        }
+      }
+    }
 
     if (!config.isGitHubAction) {
-      // Development mode: Save preview locally
-      const previewPath = join(workspaceRoot, 'generated/README.preview.md');
-      console.info(`Local dev mode: Writing preview README to ${previewPath}...`);
-      writeFileSync(previewPath, compiledReadme, 'utf8');
+      console.info('\nLocal compile complete! Checking outputs...');
       console.info('GitHub Profile generated locally for preview!');
     } else {
-      // CI/CD mode: Upload to GitHub branches
-      console.info('Running in GitHub Actions environment. Uploading assets to GitHub...');
+      console.info('\nRunning in GitHub Actions environment. Uploading assets to GitHub...');
 
       const overviewContent = readFileSync(overviewOutputFile, 'utf8');
       const languagesContent = readFileSync(languagesOutputFile, 'utf8');
+      const headerLightContent = readFileSync(headerLightOutputFile, 'utf8');
+      const headerDarkContent = readFileSync(headerDarkOutputFile, 'utf8');
 
       console.info('Uploading SVGs to "generated" branch...');
       await uploadFileContents(
         config.repositoryOwner,
         config.repositoryName,
-        'stats/overview.svg',
+        'cards/stats/overview.svg',
         overviewContent,
         'generated',
         config.githubToken,
@@ -145,27 +232,30 @@ async function main(): Promise<void> {
       await uploadFileContents(
         config.repositoryOwner,
         config.repositoryName,
-        'stats/languages.svg',
+        'cards/stats/languages.svg',
         languagesContent,
         'generated',
         config.githubToken,
         'chore: update languages stats',
       );
-
-      console.info('Syncing README.md across active branches...');
-      const targetBranches = ['main'];
-      for (const branch of targetBranches) {
-        console.info(`Uploading README.md to ${branch}...`);
-        await uploadFileContents(
-          config.repositoryOwner,
-          config.repositoryName,
-          'README.md',
-          compiledReadme,
-          branch,
-          config.githubToken,
-          'docs: dynamically update README stats',
-        );
-      }
+      await uploadFileContents(
+        config.repositoryOwner,
+        config.repositoryName,
+        'cards/static/header-light.svg',
+        headerLightContent,
+        'generated',
+        config.githubToken,
+        'chore: update header-light card',
+      );
+      await uploadFileContents(
+        config.repositoryOwner,
+        config.repositoryName,
+        'cards/static/header-dark.svg',
+        headerDarkContent,
+        'generated',
+        config.githubToken,
+        'chore: update header-dark card',
+      );
 
       console.info('GitHub Profile successfully synced to all branches!');
     }
