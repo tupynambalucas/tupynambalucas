@@ -30,8 +30,8 @@ export function renderHeaderCards(options: RenderHeaderOptions): void {
   const darkData = {
     nunitoFontBase64,
     colors: {
-      titleColor: brandColors.typography.titles.light, // Light text for dark background
-      subtitleColor: brandColors.typography.subtitles.light,
+      titleColor: brandColors.typography.titles.dark, // Light text for dark background
+      subtitleColor: brandColors.typography.subtitles.dark,
       brandPurple: brandColors.identity.brandPurple,
     },
   };
@@ -44,8 +44,8 @@ export function renderHeaderCards(options: RenderHeaderOptions): void {
   const lightData = {
     nunitoFontBase64,
     colors: {
-      titleColor: brandColors.typography.titles.dark, // Dark text for light background
-      subtitleColor: brandColors.typography.subtitles.dark,
+      titleColor: brandColors.typography.titles.light, // Dark text for light background
+      subtitleColor: brandColors.typography.subtitles.light,
       brandPurple: brandColors.identity.brandPurple,
     },
   };
