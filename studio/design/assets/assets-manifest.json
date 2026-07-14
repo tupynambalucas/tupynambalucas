@@ -2,10 +2,10 @@
   "buckets": {
     "assets": {
       "name": "tupynambalucas-assets",
-      "push": ["/images", "/three", "/brand"],
-      "pull": ["/images", "/three", "/brand"],
-      "docs": ["/three", "/images", "/brand"],
-      "web": ["/images", "/brand", "three"]
+      "push": ["/images", "/three", "/brand", "/fonts"],
+      "pull": ["/images", "/three", "/brand", "/fonts"],
+      "docs": ["/three", "/images", "/brand", "/fonts"],
+      "web": ["/images", "/brand", "/three", "/fonts"]
     },
     "creative": {
       "name": "tupynambalucas-creative",
