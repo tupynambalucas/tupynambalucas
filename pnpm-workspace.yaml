@@ -19,7 +19,7 @@ packages:
   - 'tools/*'
   - 'platform'
   - 'docs'
-  - 'profile'
+  - 'renderer'
 
 catalog:
   '@types/node': '^25.6.0'

@@ -5,7 +5,7 @@ config:
   logging:
     format: json
   tracing:
-    otlpEndpoint: http://tupynambalucas-monitor-otel-dev:4317
+    otlpEndpoint: http://otel-collector:4317
     randomSampling: true
 mcp:
   port: 8080

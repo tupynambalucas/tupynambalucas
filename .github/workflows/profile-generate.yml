@@ -34,7 +34,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run Profile Generator
-        run: pnpm --filter @tupynambalucas/profile generate
+        run: pnpm --filter @tupynambalucas/renderer generate
         env:
           PROFILE_GH_PAT: ${{ secrets.PROFILE_GH_PAT }}
           GITHUB_ACTIONS: 'true'

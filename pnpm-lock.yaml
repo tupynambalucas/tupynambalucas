@@ -972,8 +972,11 @@ importers:
 
   platform: {}
 
-  profile:
+  renderer:
     dependencies:
+      '@tupynambalucas-studio/design':
+        specifier: workspace:*
+        version: link:../studio/design
       dotenv:
         specifier: catalog:shared-stack
         version: 17.4.2

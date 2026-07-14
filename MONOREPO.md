@@ -21,9 +21,9 @@ This is the personal developer portal. It serves as the primary website, hosting
 - **`@tupynambalucas-hub/api`**: Fastify API (`hub/services/api`).
 - **`@tupynambalucas-hub/core`**: Shared core library (`hub/packages/core`).
 
-### 2. [@tupynambalucas/profile](./profile/README.md) (`profile/`)
+### 2. [@tupynambalucas/renderer](./renderer/README.md) (`renderer/`)
 
-A custom TypeScript automation tool that generates visualizations of GitHub user statistics and dynamically updates the GitHub profile [README.md](./README.md).
+A generic dynamic asset generator and document compilation engine that supports Tailwind CSS design tokens and compiles custom repository READMEs.
 
 ### 3. [@tupynambalucas-studio/](./studio/README.md) (`studio/`)
 
@@ -87,6 +87,9 @@ graph TD
     direction TB
     subgraph Docs_Context ["docs/"]
         Docs["@tupynambalucas/docs"]
+    end
+    subgraph Renderer_Context ["renderer/"]
+        Renderer["@tupynambalucas/renderer"]
     end
     subgraph Hub_Context ["hub/"]
         Web["@tupynambalucas-hub/web"]

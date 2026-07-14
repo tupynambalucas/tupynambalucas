@@ -2,6 +2,7 @@ import { getGitHubStats, uploadFileContents } from './clients/github.js';
 import { renderStatsCards } from './renderers/stats-card.js';
 import { ConfigSchema } from './schemas/env.schema.js';
 import { config as rawConfig } from './config/env.config.js';
+import { brandColors } from '@tupynambalucas-studio/design/tokens';
 import { fileURLToPath } from 'url';
 import { dirname, resolve, join } from 'path';
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
@@ -96,6 +97,24 @@ async function main(): Promise<void> {
       urlSuffix,
       overviewImages,
       languagesImages,
+      colors: {
+        brandPurple: brandColors.identity.brandPurple,
+        brandBlue: brandColors.identity.brandBlue,
+        brandViolet: brandColors.identity.brandViolet,
+        baseLight: brandColors.surface.baseLight,
+        baseDark: brandColors.surface.baseDark,
+        borderLight: brandColors.neutral.borderLight,
+        borderDark: brandColors.neutral.borderDark,
+        accent: brandColors.feedback.accent,
+        success: brandColors.feedback.success,
+        error: brandColors.feedback.error,
+        titleLight: brandColors.typography.titles.light,
+        titleDark: brandColors.typography.titles.dark,
+        subtitleLight: brandColors.typography.subtitles.light,
+        subtitleDark: brandColors.typography.subtitles.dark,
+        paragraphLight: brandColors.typography.paragraphs.light,
+        paragraphDark: brandColors.typography.paragraphs.dark,
+      },
     };
 
     const compiledReadme = fillTemplate(readmeTemplate, readmeData);
