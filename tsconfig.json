@@ -4,7 +4,7 @@
     { "path": "./tsconfig.node.json" },
 
     { "path": "./docs" },
-    { "path": "./profile" },
+    { "path": "./renderer" },
     { "path": "./hub" },
     { "path": "./studio" },
     { "path": "./tools" }
