@@ -13,7 +13,7 @@
         font-family: 'Nunito', -apple-system, sans-serif;
         font-size: 30px;
         font-weight: 850;
-        fill: #F6F6F7;
+        fill: #0F0F0F;
         letter-spacing: -0.5px;
       }
       
@@ -21,7 +21,7 @@
         font-family: 'Nunito', -apple-system, sans-serif;
         font-size: 18px;
         font-weight: 500;
-        fill: #AA77A7;
+        fill: #4C4D9A;
         letter-spacing: 0.2px;
       }
 
