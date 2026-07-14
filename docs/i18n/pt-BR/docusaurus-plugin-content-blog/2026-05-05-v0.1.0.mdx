@@ -4,7 +4,7 @@ date: 2026-05-05
 tags: [core, architecture, monorepo, instance, portal]
 ---
 
-O lançamento da versão fundacional do Elo Orgânico (v0.1.0) estabelece a arquitetura core do monorepo, as fronteiras de isolamento de workspaces e os alicerces de domínio para a loja da comunidade local e para o hub da plataforma global.
+O lançamento da versão fundacional do tupynambalucas.dev (v0.1.0) estabelece a arquitetura core do monorepo, as fronteiras de isolamento de workspaces e os alicerces de domínio para a loja da comunidade local e para o hub da plataforma global.
 
 {/* truncate */}
 
@@ -17,21 +17,21 @@ O lançamento da versão fundacional do Elo Orgânico (v0.1.0) estabelece a arqu
 
 ### Workspace Instance (Loja da Comunidade)
 
-- **Arquitetura de Backend em Camadas**: Implementação da API Fastify v5 (`@elo-instance/api`) utilizando a arquitetura em camadas estritas (`Controller -> Service -> Repository -> Model`).
+- **Arquitetura de Backend em Camadas**: Implementação da API Fastify v5 (`@tupynambalucas-hub/api`) utilizando a arquitetura em camadas estritas (`Controller -> Service -> Repository -> Model`).
 - **Implementação de Domínio**: Conclusão dos módulos iniciais para:
   - `auth`: Estado de sessão baseado em JWT e verificação de credenciais.
   - `product`: Catálogo local de produtos e inventários.
   - `cycle`: Estruturas de governança para ciclos de compartilhamento comunitário e ciclos cooperativos agrícolas.
-- **Workspace de Frontend**: Criação do `@elo-instance/web` usando React 19, apresentando interfaces estilizadas com CSS Modules, roteamento de views de cliente e integração com a API do backend. Inclui módulos de autenticação, painel do usuário, checkout da loja e administração local.
+- **Workspace de Frontend**: Criação do `@tupynambalucas-hub/web` usando React 19, apresentando interfaces estilizadas com CSS Modules, roteamento de views de cliente e integração com a API do backend. Inclui módulos de autenticação, painel do usuário, checkout da loja e administração local.
 
 ### Workspace Portal (Hub SaaS Global)
 
-- **Infraestrutura Base**: Estruturação do esqueleto do workspace do portal (`@elo-portal/api`, `@elo-portal/web` e `@elo-portal/core`).
+- **Infraestrutura Base**: Estruturação do esqueleto do workspace do portal (`@tupynambalucas-hub/api`, `@tupynambalucas-hub/web` e `@tupynambalucas-hub/core`).
 - **Esqueleto de Autenticação**: Implementação do esqueleto do domínio `auth` para contas do portal, estabelecendo o precedente arquitetural para os próximos módulos do SaaS global.
 
 ### Studio e Ativos de Marca
 
-- **Design Tokens**: Padronização de cores, espaçamentos, tipografia e ativos visuais no pacote `@elo-studio/assets` para exportar um tema unificado.
+- **Design Tokens**: Padronização de cores, espaçamentos, tipografia e ativos visuais no pacote `@tupynambalucas-studio/design` para exportar um tema unificado.
 - **Integração de Design Ops**: Implantação de uma instância própria do Penpot para manter o design visual e pipeline de ativos de design para código.
 
 ### Ferramentas de Desenvolvimento e Gateways de Contexto

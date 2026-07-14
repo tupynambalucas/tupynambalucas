@@ -31,7 +31,7 @@ Os arquivos mestre transitam para as camadas da aplicação através de um pipel
 
 #### Sincronizador de Ativos Cloudflare R2
 
-Para manter nosso repositório Git leve, ativos estáticos prontos para produção não são commitados diretamente no código-fonte. Em vez disso, eles são gerenciados e sincronizados bidirecionalmente com o Cloudflare R2 Object Storage usando nosso pacote de sincronização CLI dedicado `@tupynambalucas-studio/assets/bucket`.
+Para manter nosso repositório Git leve, ativos estáticos prontos para produção não são commitados diretamente no código-fonte. Em vez disso, eles são gerenciados e sincronizados bidirecionalmente com o Cloudflare R2 Object Storage usando nosso pacote de sincronização CLI dedicado `@tupynambalucas-studio/design/bucket`.
 
 ##### Sincronização Dinâmica e Verificação
 
@@ -158,7 +158,7 @@ Todos os nomes de arquivos de logotipo devem seguir o padrão `logo-[lockup]-[va
 Para eliminar o armazenamento de arquivos duplicados em aplicações consumidoras como `@tupynambalucas-hub/web`:
 
 - **Em Desenvolvimento**: O servidor de desenvolvimento Vite intercepta requisições que começam com `/@studio-assets/` e serve os arquivos dinamicamente a partir do diretório local do pacote de ativos na sua máquina.
-- **Em Produção (Cópia em Tempo de Build)**: O sistema de build da aplicação usa o `vite-plugin-static-copy` para replicar automaticamente os arquivos de `node_modules/@tupynambalucas-studio/assets/src/brand/` para o diretório de saída de build `dist/` em tempo de empacotamento.
+- **Em Produção (Cópia em Tempo de Build)**: O sistema de build da aplicação usa o `vite-plugin-static-copy` para replicar automaticamente os arquivos de `node_modules/@tupynambalucas-studio/design/src/brand/` para o diretório de saída de build `dist/` em tempo de empacotamento.
 
 ---
 
@@ -166,8 +166,8 @@ Para eliminar o armazenamento de arquivos duplicados em aplicações consumidora
 
 Pacotes internos acessam ativos criativos através de exportações estritamente definidas para garantir o isolamento arquitetônico:
 
-- `@tupynambalucas-studio/assets/icons`: Biblioteca SVG otimizada e registro de componentes Icon com curadoria.
-- `@tupynambalucas-studio/assets/logos`: Logotipos canônicos da marca.
-- `@tupynambalucas-studio/assets/brand/*`: Ativos fundamentais da marca (paletas, favicons, banners).
-- `@tupynambalucas-studio/assets/tokens`: Constantes de design fortemente tipadas para a lógica JS/TS.
-- `@tupynambalucas-studio/assets/theme.css`: Configuração de tema Tailwind CSS com zero runtime.
+- `@tupynambalucas-studio/design/icons`: Biblioteca SVG otimizada e registro de componentes Icon com curadoria.
+- `@tupynambalucas-studio/design/logos`: Logotipos canônicos da marca.
+- `@tupynambalucas-studio/design/brand/*`: Ativos fundamentais da marca (paletas, favicons, banners).
+- `@tupynambalucas-studio/design/tokens`: Constantes de design fortemente tipadas para a lógica JS/TS.
+- `@tupynambalucas-studio/design/theme.css`: Configuração de tema Tailwind CSS com zero runtime.

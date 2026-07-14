@@ -5,7 +5,7 @@ sidebar_position: 1
 slug: /portal
 ---
 
-O workspace Portal serve como o Hub SaaS global e camada de orquestração de inquilinos (tenants) para o ecossistema Elo Orgânico. Embora o projeto esteja atualmente na fase de **Domínio de Instância Única** (priorizando a entrega da loja de comunidade autônoma), o Portal contém a base de código estrutural e os scripts de infraestrutura projetados para escalar a plataforma em uma rede de assinatura multi-inquilino.
+O workspace Portal serve como o Hub SaaS global e camada de orquestração de inquilinos (tenants) para o ecossistema tupynambalucas.dev. Embora o projeto esteja atualmente na fase de **Domínio de Instância Única** (priorizando a entrega da loja de comunidade autônoma), o Portal contém a base de código estrutural e os scripts de infraestrutura projetados para escalar a plataforma em uma rede de assinatura multi-inquilino.
 
 ## Estrutura de Diretórios
 
@@ -22,26 +22,26 @@ portal/
 
 ## Componentes e Arquitetura Core
 
-### `@elo-portal/core` (SSOT da Plataforma)
+### `@tupynambalucas-hub/core` (SSOT da Plataforma)
 
 Coordena os esquemas de inquilinos, planos de assinatura de usuários e definições de autenticação de workspace. Ele mantém modelos de dados separados de `instance/` para preservar um limite arquitetônico limpo.
 
 - **Stack Tecnológica**: TypeScript, Mongoose, Zod.
 - **Escopo**: Esquemas de registros multi-inquilino, metadados de inquilinos e configurações de cobrança do SaaS.
 
-### `@elo-portal/api` (Motor Portal Fastify 5)
+### `@tupynambalucas-hub/api` (Motor Portal Fastify 5)
 
 Expõe rotas de endpoints para operações em toda a plataforma: registro de novos hubs de comunidades, autenticação de administradores globais e roteamento de fluxos de pagamento para planos SaaS.
 
 - **Fluxo em Camadas**: Utiliza a arquitetura padrão: `Controller ──> Service ──> Repository ──> Model`
 - **Integrações Chave**: Plugins do Fastify v5, configurações de instância do MongoDB e Redis.
 
-### `@elo-portal/web` (Landing Page SaaS React 19)
+### `@tupynambalucas-hub/web` (Landing Page SaaS React 19)
 
 A landing page oficial e o hub administrativo onde os usuários podem se cadastrar, adquirir assinaturas e provisionar uma nova instância de loja comunitária.
 
 - **Stack Tecnológica**: React 19, Vite, Tailwind CSS v4, Zustand.
-- **Diretrizes Estritas**: Totalmente alinhada com as variáveis de marca do `@elo-studio/assets` e padrões de renderização do React 19.
+- **Diretrizes Estritas**: Totalmente alinhada com as variáveis de marca do `@tupynambalucas-studio/design` e padrões de renderização do React 19.
 
 ## Scripts do Workspace
 

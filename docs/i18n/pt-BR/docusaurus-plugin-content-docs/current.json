@@ -8,7 +8,7 @@
     "description": "The label for category 'Product' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Product.link.generated-index.description": {
-    "message": "O 'Porquê' e o 'O Quê' do Elo Orgânico: Visão, Plano Mestre e Roadmap.",
+    "message": "O 'Porquê' e o 'O Quê' do tupynambalucas.dev: Visão, Plano Mestre e Roadmap.",
     "description": "The generated-index page description for category 'Product' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Engineering": {
@@ -16,7 +16,7 @@
     "description": "The label for category 'Engineering' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Engineering.link.generated-index.description": {
-    "message": "O 'Como' e os 'Padrões' do Elo Orgânico: Arquitetura e Guia de Estilo.",
+    "message": "O 'Como' e os 'Padrões' do tupynambalucas.dev: Arquitetura e Guia de Estilo.",
     "description": "The generated-index page description for category 'Engineering' in sidebar 'tutorialSidebar'"
   }
 }

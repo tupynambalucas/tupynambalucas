@@ -1,0 +1,99 @@
+---
+title: Security
+description: Comprehensive overview of security measures, bot protection, and brute-force mitigation in tupynambalucas.dev.
+sidebar_position: 4
+---
+
+# Security Architecture
+
+tupynambalucas.dev implements a multi-layered security strategy to protect community data and ensure the integrity of sharing cycles. Our approach combines industry-standard protocols with specialized bot protection and brute-force mitigation.
+
+---
+
+## 1. Bot Protection (Cloudflare Turnstile)
+
+To prevent automated registrations and login attempts, we utilize **Cloudflare Turnstile**. Unlike traditional CAPTCHAs, Turnstile provides a privacy-focused, non-intrusive verification experience.
+
+### 1.1. Client-Side Integration (React 19)
+
+The `AuthFeature` utilizes the `@marsidev/react-turnstile` component in **Managed Mode**.
+
+- **Managed Mode**: Displays a smart checkbox that verifies the user is human.
+- **State Management**: The submit button remains disabled until a valid `turnstileToken` is emitted by the widget.
+- **Isolation**: Each form (Login/Register) maintains its own Turnstile instance via unique React keys to ensure fresh validation on mode toggle.
+
+### 1.2. Server-Side Validation (Fastify 5)
+
+The API does not trust client-side state alone.
+
+- **Verification**: The `AuthService` performs a secure POST request to `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
+- **IP Validation**: The client's IP address is passed to Cloudflare to detect proxy-based botnets.
+- **Mandatory DTOs**: The `LoginDTOSchema` and `RegisterDTOSchema` in `@tupynambalucas-hub/core` strictly require the `turnstileToken`.
+
+---
+
+## 2. Brute-Force Mitigation
+
+We protect our authentication endpoints from dictionary attacks and automated guessing through two primary mechanisms.
+
+### 2.1. Rate Limiting
+
+Utilizing `@fastify/rate-limit`, we apply context-specific limits to sensitive routes.
+
+- **Global Policy**: A base limit of 100 requests per minute per IP for general API usage.
+- **Strict Auth Policy**: Routes `/api/auth/login` and `/api/auth/register` are limited to **5 attempts per minute per IP**.
+- **Return Code**: Exceeding these limits triggers a `429 (Too Many Requests)` response.
+
+### 2.2. Account Lockout Logic
+
+To prevent targeted attacks against specific user accounts:
+
+- **Max Attempts**: After **5 consecutive failed attempts**, the account is locked.
+- **Lock Duration**: The account remains inaccessible for **15 minutes** (`lockUntil`).
+- **Persistence**: Lockout state is stored directly in the Mongoose `User` model (`loginAttempts`, `lockUntil`).
+
+---
+
+## 3. Data Protection & Obfuscation
+
+### 3.1. User Enumeration Prevention
+
+The API is designed to leak as little information as possible about the system's state to unauthenticated users.
+
+- **Generic Errors**: Both "User Not Found" and "Invalid Password" return a unified `INVALID_CREDENTIALS` error code.
+- **Uniform Response Time**: Cryptographic comparisons (Bcrypt) are performed even if the user identifier doesn't exist, preventing timing attacks.
+
+### 3.2. Secure Communication
+
+- **JWT (HS256)**: All authenticated requests require a JSON Web Token signed with a strong symmetric secret.
+- **CSRF Protection**: `@fastify/csrf-protection` is enabled, requiring a `CSRF-Token` header for all state-changing requests (POST, PUT, DELETE).
+- **HTTP-Only Cookies**: Session tokens are stored in signed, HTTP-only cookies to mitigate XSS-based token theft.
+
+---
+
+## 4. Environment Requirements
+
+The following security keys are mandatory for the **Instance** stack to operate. Each variable lives in the env file owned by the responsible application, following the project's **Bounded Context** isolation principle.
+
+### 4.1. API (`instance/apps/api/.env.*`)
+
+| Variable               | Purpose                                                                                                    | Environments       |
+| :--------------------- | :--------------------------------------------------------------------------------------------------------- | :----------------- |
+| `TURNSTILE_SECRET_KEY` | Server-side Cloudflare Turnstile token verification.                                                       | dev, prod, staging |
+| `JWT_SECRET`           | Signing and verifying JSON Web Tokens.                                                                     | dev, prod, staging |
+| `SESSION_SECRET`       | Encrypting signed HTTP-only session cookies.                                                               | dev, prod, staging |
+| `MONGO_URI`            | MongoDB connection string. Dev uses local Replica Set; prod/staging uses MongoDB Atlas (`mongodb+srv://`). | dev, prod, staging |
+
+### 4.2. Web (`instance/apps/web/.env.*` / Docker `ARG`)
+
+| Variable                  | Purpose                                             | Injection Method                                                                                                                                       |
+| :------------------------ | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_TURNSTILE_SITE_KEY` | Public site key for rendering the Turnstile widget. | Local dev: read from `.env.dev` by Vite (`--mode dev`). Production: injected as Docker `ARG` during image build — baked statically into the JS bundle. |
+
+:::warning
+**Important:** `VITE_TURNSTILE_SITE_KEY` is a **public** key (safe to embed in client bundles). The `TURNSTILE_SECRET_KEY` is **private** and must only ever exist in the API environment, never in the Web app or committed to version control.
+:::
+
+---
+
+_Last Updated: June 2026_

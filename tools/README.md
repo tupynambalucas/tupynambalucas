@@ -1,58 +1,68 @@
-# @tupynambalucas-tools - Project Automation, MCP & AI Agents
+# Monorepo Developer Tools and AI Agent Workspaces
 
-This workspace manages the infrastructure for development automation, specialized workflows, and containerized AI-native environments within the monorepo.
-
----
-
-## Structure Overview
-
-The tools workspace is divided into three primary sub-stacks:
-
-### 1. [MCP Ecosystem (Model Context Protocol)](./mcp/README.md)
-
-Contains the containerized gateway proxy and downstream adapters translating CLI tools (GitHub, Playwright Browser, Context7, Docker Hub) into Server-Sent Events (SSE).
-
-- **Purpose:** Exposes rich codebase contexts and environment utilities to AI clients.
-- **Detailed Guide:** Refer to the [MCP README](./mcp/README.md) for network specifications, config parameters, and routing.
-
-### 2. [AI Agents Workspace](./agents/README.md)
-
-Deploys long-running Docker services containing terminal-based AI client sessions (Google Antigravity CLI and GitHub Copilot CLI).
-
-- **Purpose:** Eliminates manual per-developer CLI installations and guarantees environment parity.
-- **Detailed Guide:** Refer to the [Agents README](./agents/README.md) for Docker-out-of-Docker (DooD) settings, mounting specifications, and OAuth authentication flows.
-
-### 3. [Turborepo Infrastructure](./turborepo/README.md)
-
-Deploys the self-hosted Turborepo Remote Cache server.
-
-- **Purpose:** Centralizes build caches to drastically speed up local and CI builds using local or cloud volumes.
-- **Detailed Guide:** Refer to the [Turborepo README](./turborepo/README.md) for caching setup and configuration.
-
-### 4. [GitHub Automation & Hooks](./github/README.md)
-
-Local git hooks, branch protection checks, and automated validation scripts.
+This workspace centralizes the development utilities, Model Context Protocol (MCP) integrations, git automation scripts, and containerized AI agent development platforms.
 
 ---
 
-## Mapped Lifecycle Commands
+## 1. Directory Structure and Reference Maps
 
-Execute these commands from the monorepo root:
+The tools folder is divided into three functional domains. Each domain contains localized specifications, design patterns, and instructions:
 
-| Command               | Action                                                | Scope        |
-| :-------------------- | :---------------------------------------------------- | :----------- |
-| `pnpm mcp:dev:up`     | Starts gateway and downstream MCP dev containers      | MCP Stack    |
-| `pnpm mcp:dev:down`   | Stops the MCP dev containers                          | MCP Stack    |
-| `pnpm mcp:dev:reset`  | Prunes volumes, builds Fastify adapters, and restarts | MCP Stack    |
-| `pnpm agents:up`      | Boots Copilot and Antigravity containers              | Agents Stack |
-| `pnpm agents:down`    | Stops the agent containers                            | Agents Stack |
-| `pnpm agents:reset`   | Resets agent volumes and mounts                       | Agents Stack |
-| `pnpm turborepo:up`   | Boots the Turborepo remote cache container            | Turbo Cache  |
-| `pnpm turborepo:down` | Stops the Turborepo remote cache container            | Turbo Cache  |
+| Subspace      | Domain Purpose                                                             | Documentation Entry Points      | Scoped Agent Instructions       |
+| :------------ | :------------------------------------------------------------------------- | :------------------------------ | :------------------------------ |
+| **`mcp/`**    | Server-Sent Events (SSE) adapters and Model Context Protocol integrations. | [README.md](./mcp/README.md)    | [AGENTS.md](./mcp/AGENTS.md)    |
+| **`github/`** | Git version control CLI containers and repo-wide automation scripts.       | [README.md](./github/README.md) | [AGENTS.md](./github/AGENTS.md) |
+| **`agents/`** | Google Antigravity and GitHub Copilot containerized terminal shells.       | [README.md](./agents/README.md) | [AGENTS.md](./agents/AGENTS.md) |
 
 ---
 
-## Diagnostics & Code Quality
+## 2. Architecture and Logic Flow
 
-- **`pnpm typecheck`**: Validates TypeScript type safety across the scripts and gateway tools.
-- **`pnpm lint`**: Enforces strict formatting and linting guidelines on the tools source code.
+The tools in this context communicate over dedicated virtual docker networks to provide an isolated runtime environment on the developer's machine:
+
+```mermaid
+graph TD
+    subgraph host [Host Machine]
+        direction TB
+        A[Developer Shell / IDE]
+    end
+
+    subgraph tools_network [Docker Bridge Networks]
+        direction TB
+        subgraph agents_subnet [tupynambalucas-agents-net]
+            B[tools/agents - Antigravity Container]
+            C[tools/agents - Copilot Container]
+        end
+
+        subgraph mcp_subnet [tupynambalucas-mcp-net]
+            D[tools/mcp - Downstream Servers]
+            E[github, firecrawl, context7, etc.]
+            D --> E
+        end
+    end
+
+    subgraph platform_network [tupynambalucas-platform-net]
+        F[platform - Ingress / AgentGateway]
+    end
+
+    A -->|docker exec| B
+    A -->|docker exec| C
+    B -->|Request Tools| F
+    C -->|Request Tools| F
+    F -->|Federate Request| D
+```
+
+- **Execution Isolation**: AI agent sessions execute commands in the `agents` container network. This prevents compromised tasks from affecting the host container daemon directly.
+- **Unified Gateway Routing**: Agents do not connect to downstream tools directly. They send requests to the central `agentgateway` (located in the root `/platform` workspace), which federates those queries to downstream tool servers inside the `mcp` workspace.
+
+---
+
+## 3. Global Orchestration Scripts
+
+All operations are run from the monorepo root folder using workspace-scoped package managers:
+
+- **Launch MCP Servers**: `pnpm mcp:dev:up` (Stops: `pnpm mcp:dev:down`)
+- **Launch GitHub Tools**: `pnpm github:services:up` (Stops: `pnpm github:services:down`)
+- **Launch Agent Workspaces**: `pnpm agents:up` (Stops: `pnpm agents:down`)
+- **Authenticate Agents**: `pnpm antigravity:auth` / `pnpm copilot:auth`
+- **Execute Auto-scripts**: `pnpm github:generate:changelog` / `pnpm github:generate:roadmap`

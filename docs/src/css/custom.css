@@ -1,5 +1,5 @@
 @import 'tailwindcss/theme' layer(theme);
-@import '@tupynambalucas-studio/assets/tokens.css' layer(theme);
+@import '@tupynambalucas-studio/design/tokens.css' layer(theme);
 @import 'tailwindcss/utilities' layer(utilities);
 
 @source "../../docs/**/*.{md,mdx}";

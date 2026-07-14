@@ -21,7 +21,7 @@ This reference defines the verification steps required when creating, updating, 
 
 ### A. Zero Emojis
 
-- **Critical Audit**: Check all headings, bullet points, and descriptions for emojis. Emojis are strictly forbidden in `AGENTS.md` files. All headings must use plain text (e.g. `## Bounded Context Navigation` instead of `## 📚 Bounded Context Navigation`).
+- **Critical Audit**: Check all headings, bullet points, and descriptions for emojis. Emojis are strictly forbidden in `AGENTS.md` files. All headings must use plain text (e.g. `## Bounded Context Navigation` instead of `## [Emoji] Bounded Context Navigation`).
 
 ### B. Zero Placeholders
 

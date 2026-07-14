@@ -17,8 +17,9 @@ packages:
   - 'shared/*'
   - 'studio/*'
   - 'tools/*'
+  - 'platform'
   - 'docs'
-  - 'profile'
+  - 'renderer'
 
 catalog:
   '@types/node': '^25.6.0'

@@ -4,16 +4,17 @@ This document serves as the root context router for AI agents operating in the t
 
 ## Repository Entry Points
 
-- [README.md](./README.md): Serves exclusively as the dynamic GitHub Profile view, which is automatically updated by the `@tupynambalucas/profile` workspace generator.
+- [README.md](./README.md): Serves exclusively as the dynamic GitHub Profile view, which is automatically updated by the `@tupynambalucas/renderer` workspace generator.
 - [MONOREPO.md](./MONOREPO.md): The official developer entry point and technical README for the repository.
 
 ## Bounded Contexts
 
 - [docs](./docs/AGENTS.md): Documentation and guides hub.
 - [hub](./hub/AGENTS.md): Developer website client, REST API, and data core library.
-- [profile](./profile/AGENTS.md): GitHub profile stats visualizer and dynamic README generator.
+- [renderer](./renderer/AGENTS.md): Dynamic asset generator and document compilation engine.
 - [studio](./studio/AGENTS.md): Brand visual assets, design tokens, and Penpot editor configurations.
-- [tools](./tools/AGENTS.md): Model Context Protocol gateway, containerized terminals, and remote cache.
+- [platform](./platform/AGENTS.md): Core cluster services, ingress routing, telemetry monitoring, and build cache.
+- [tools](./tools/AGENTS.md): Model Context Protocol gateway, containerized terminals, and LLM worker agents.
 
 ## Global Constraints
 

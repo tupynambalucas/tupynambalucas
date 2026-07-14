@@ -1,0 +1,106 @@
+---
+title: Your First Contribution
+description: A guided walkthrough of making a change, verifying it, and opening a Pull Request.
+---
+
+# Your First Contribution
+
+In this tutorial, we will walk through the exact process of contributing code to the tupynambalucas.dev repository. We will create a feature branch, make a small change, run our automated validations, and create a Pull Request.
+
+## Step 1: Create a Feature Branch
+
+We always start our work from the `develop` branch. First, let's make sure we are on `develop` and up to date:
+
+```bash
+git checkout develop
+git pull origin develop
+```
+
+Now, we will create a new feature branch for our work:
+
+```bash
+git checkout -b feature/tutorial-contribution
+```
+
+Git will output:
+
+```
+Switched to a new branch 'feature/tutorial-contribution'
+```
+
+## Step 2: Make a Code Change
+
+For this exercise, we will add a small comment to one of our configuration files. Open `docs/package.json` in your editor.
+
+At the bottom of the file, add a simple metadata field or comment (if supported) just for testing. Alternatively, open a markdown file and add a whitespace character. For this tutorial, we will edit a markdown file.
+
+Open `docs/README.md` and add the following text at the bottom:
+
+```md
+<!-- This is a test contribution -->
+```
+
+Save the file.
+
+## Step 3: Generate a Changeset
+
+Because our repository uses automated versioning, we need to create a changeset file that describes our modification.
+
+Run the following command:
+
+```bash
+pnpm version:changeset
+```
+
+You will be prompted to select the package that changed. Use the arrow keys to find `@tupynambalucas/docs`, press `Space` to select it, and press `Enter`.
+
+When asked for the bump type, choose `patch`.
+When asked for a summary, type: `test: add tutorial contribution comment`.
+
+The tool will confirm the creation of a temporary markdown file in the `.changeset/` directory.
+
+## Step 4: Commit the Changes
+
+Now we will stage both our modified file and the newly generated changeset file, and commit them.
+
+```bash
+git add docs/README.md .changeset/
+git commit -m "test(docs): add tutorial contribution comment"
+```
+
+Our local Git hooks will automatically intercept the commit, running the selective typechecker and linter.
+
+You should see output similar to this:
+
+```
+✔ Preparing lint-staged...
+✔ Running tasks for staged files...
+✔ Applying modifications...
+✔ Cleaning up...
+[feature/tutorial-contribution 1a2b3c4] test(docs): add tutorial contribution comment
+ 2 files changed, 8 insertions(+)
+```
+
+## Step 5: Open a Pull Request
+
+With our commit safely created and locally validated, we will push our branch to GitHub and open a Pull Request.
+
+```bash
+git push -u origin feature/tutorial-contribution
+```
+
+Next, using the GitHub CLI, we will create the Pull Request targeting the `develop` branch:
+
+```bash
+gh pr create --base develop --title "test: tutorial contribution" --body "Testing the contribution workflow."
+```
+
+The CLI will output the URL of your new Pull Request:
+
+```
+https://github.com/tupynambalucas/tupynambalucas.dev/pull/1
+```
+
+## Conclusion
+
+Well done! We have successfully created a feature branch, made a change, generated a changeset, passed local validation, and opened a Pull Request. We are now ready to tackle real issues and features using this exact workflow.

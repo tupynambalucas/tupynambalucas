@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@tupynambalucas-hub/core": "workspace:*",
-    "@tupynambalucas-studio/assets": "workspace:*",
+    "@tupynambalucas-studio/design": "workspace:*",
     "@gsap/react": "catalog:web-stack",
     "gsap": "catalog:web-stack",
     "react": "catalog:web-stack",

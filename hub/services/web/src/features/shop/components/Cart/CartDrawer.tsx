@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import { useCartItems, useCartActions, useCartTotal } from '@/features/shop/domains/cart';
 import styles from './styles.module.css';
-import { Icon, faTimes, faTrash, faPlus, faMinus } from '@tupynambalucas-studio/assets/icons';
+import { Icon, faTimes, faTrash, faPlus, faMinus } from '@tupynambalucas-studio/design/icons';
 
 interface CartDrawerProps {
   isOpen: boolean;

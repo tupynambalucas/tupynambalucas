@@ -1,0 +1,15 @@
+services:
+  frontend:
+    restart: unless-stopped
+
+  backend:
+    restart: unless-stopped
+
+  exporter:
+    restart: unless-stopped
+
+  valkey:
+    restart: unless-stopped
+
+  aide:
+    restart: unless-stopped

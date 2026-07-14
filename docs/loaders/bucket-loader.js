@@ -9,13 +9,13 @@ module.exports = function (source) {
     return source;
   }
 
-  // Example: "@tupynambalucas-studio/assets/images/farmer.jpg" -> "images/farmer.jpg"
-  const subPath = original.replace(/^@tupynambalucas-studio\/assets\//, '');
+  // Example: "@tupynambalucas-studio/design/images/farmer.jpg" -> "images/farmer.jpg"
+  const subPath = original.replace(/^@tupynambalucas-studio\/design\//, '');
   const firstSegment = subPath.split('/')[0];
   const folderKey = `/${firstSegment}`;
 
   // Load assets manifest
-  const manifestPath = require.resolve('@tupynambalucas-studio/assets/assets-manifest.json');
+  const manifestPath = require.resolve('@tupynambalucas-studio/design/assets-manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const buildFolders = manifest.buckets.assets.docs;
 

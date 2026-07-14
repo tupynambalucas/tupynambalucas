@@ -1,8 +1,8 @@
 @import 'tailwindcss';
-@import '@tupynambalucas-studio/assets/theme.css';
+@import '@tupynambalucas-studio/design/theme.css';
 
 /* 
-  @tupynambalucas-studio/assets/theme.css already includes:
+  @tupynambalucas-studio/design/theme.css already includes:
   - Nunito Font Configuration
   - Brand Color Palette (@theme)
   - Base Typography and Resets (@layer base)

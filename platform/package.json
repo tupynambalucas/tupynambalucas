@@ -1,0 +1,28 @@
+{
+  "name": "@tupynambalucas/platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "Tupynambá Lucas Tools Package",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/platform#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "platform"
+  },
+  "scripts": {
+    "platform:dev:up": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev up -d --build",
+    "platform:dev:down": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev down",
+    "platform:dev:reset": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev down --volumes && docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev up -d --build",
+    "platform:prod:up": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.prod --profile prod up -d --build",
+    "platform:prod:down": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.prod --profile prod down",
+    "platform:prod:reset": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.prod --profile prod down --volumes && docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.prod --profile prod up -d --build",
+    "platform:staging:up": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging up -d --build",
+    "platform:staging:down": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging down",
+    "platform:staging:reset": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging down --volumes && docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging up -d --build"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

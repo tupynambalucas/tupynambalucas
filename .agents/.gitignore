@@ -1,3 +1,6 @@
 plans/
 temp/
 analysis/
+references/
+!skills/**/references
+prints/

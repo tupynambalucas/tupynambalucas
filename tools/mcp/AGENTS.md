@@ -7,7 +7,7 @@ This workspace ([tools/mcp/](./)) implements the Server-Sent Events (SSE) adapte
 ## Local Architecture & Directory Map
 
 - **[gateway/](./gateway)**: Orchestration proxy ([server.ts](./gateway/server.ts)) mapping client connections to downstream tools.
-- **[services/](./services)**: Containerized Model Context Protocol (MCP) servers (GitHub, Playwright Browser, Context7, Docker Hub) and their shared SSE adapter ([sse-adapter.ts](./services/common/sse-adapter.ts)).
+- **[services/](./services)**: Containerized Model Context Protocol (MCP) servers (GitHub, Context7, Docker Hub) and their shared SSE adapter ([sse-adapter.ts](./services/common/sse-adapter.ts)).
 - **[infrastructure/docker/compose.yaml](./infrastructure/docker/compose.yaml)**: Docker Compose orchestration defining internal networks, volumes, and service constraints.
 - **[infrastructure/docker/.env.example](./infrastructure/docker/.env.example)**: Environment template file.
 

@@ -6,8 +6,8 @@ import {
   faCarrot,
   faChartSimple,
   faGear,
-} from '@tupynambalucas-studio/assets/icons';
-import { LogoMarkPositive } from '@tupynambalucas-studio/assets/logos';
+} from '@tupynambalucas-studio/design/icons';
+import { LogoMarkPositive } from '@tupynambalucas-studio/design/logos';
 import { useAuthActions } from '@/domains/auth';
 import { useAdminNavigation } from '../../admin.navigation';
 import type { AdminViewType } from '../../admin.navigation';

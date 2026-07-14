@@ -1,0 +1,121 @@
+name: tupynambalucas-penpot
+
+networks:
+  penpot-net:
+    name: tupynambalucas-penpot-net
+    driver: bridge
+
+services:
+  frontend:
+    profiles: ['dev', 'prod', 'staging']
+    container_name: tupynambalucas-penpot-frontend-${APP_ENV:-prod}
+    image: tupynambalucas-penpot-frontend:${TAG:-latest}
+    build:
+      context: ../../services/frontend
+      dockerfile: Dockerfile
+    ports:
+      - '${PENPOT_FRONTEND_PORT:-9005}:8080'
+    environment:
+      - PENPOT_FLAGS=${PENPOT_FLAGS}
+      - PENPOT_REDIS_URI=${PENPOT_REDIS_URI}
+      - PENPOT_SECRET_KEY=${PENPOT_SECRET_KEY}
+      - PENPOT_BACKEND_URI=${PENPOT_BACKEND_URI}
+      - PENPOT_EXPORTER_URI=${PENPOT_EXPORTER_URI}
+    depends_on:
+      - backend
+      - exporter
+    networks:
+      - penpot-net
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'tupynambalucas.internal:host-gateway'
+
+  backend:
+    profiles: ['dev', 'prod', 'staging']
+    container_name: tupynambalucas-penpot-backend-${APP_ENV:-prod}
+    image: tupynambalucas-penpot-backend:${TAG:-latest}
+    build:
+      context: ../../services/backend
+      dockerfile: Dockerfile
+    environment:
+      - PENPOT_FLAGS=${PENPOT_FLAGS}
+      - PENPOT_REDIS_URI=${PENPOT_REDIS_URI}
+      - PENPOT_SECRET_KEY=${PENPOT_SECRET_KEY}
+      - PENPOT_PUBLIC_URI=${PENPOT_PUBLIC_URI}
+      - PENPOT_DATABASE_URI=${PENPOT_DATABASE_URI}
+      - PENPOT_DATABASE_USERNAME=${PENPOT_DATABASE_USERNAME}
+      - PENPOT_DATABASE_PASSWORD=${PENPOT_DATABASE_PASSWORD}
+      - PENPOT_OBJECTS_STORAGE_BACKEND=${PENPOT_OBJECTS_STORAGE_BACKEND}
+      - PENPOT_OBJECTS_STORAGE_S3_ENDPOINT=${PENPOT_OBJECTS_STORAGE_S3_ENDPOINT}
+      - PENPOT_OBJECTS_STORAGE_S3_BUCKET=${PENPOT_OBJECTS_STORAGE_S3_BUCKET}
+      - PENPOT_OBJECTS_STORAGE_S3_REGION=${PENPOT_OBJECTS_STORAGE_S3_REGION}
+      - PENPOT_OBJECTS_STORAGE_S3_FORCE_PATH_STYLE=${PENPOT_OBJECTS_STORAGE_S3_FORCE_PATH_STYLE}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    depends_on:
+      valkey:
+        condition: service_healthy
+    networks:
+      - penpot-net
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'tupynambalucas.internal:host-gateway'
+
+  exporter:
+    profiles: ['dev', 'prod', 'staging']
+    container_name: tupynambalucas-penpot-exporter-${APP_ENV:-prod}
+    image: tupynambalucas-penpot-exporter:${TAG:-latest}
+    build:
+      context: ../../services/exporter
+      dockerfile: Dockerfile
+    environment:
+      - PENPOT_FLAGS=${PENPOT_FLAGS}
+      - PENPOT_REDIS_URI=${PENPOT_REDIS_URI}
+      - PENPOT_SECRET_KEY=${PENPOT_SECRET_KEY}
+      - PENPOT_PUBLIC_URI=${PENPOT_EXPORTER_PUBLIC_URI}
+    depends_on:
+      valkey:
+        condition: service_healthy
+    networks:
+      - penpot-net
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+      - 'tupynambalucas.internal:host-gateway'
+
+  valkey:
+    profiles: ['dev', 'prod', 'staging']
+    container_name: tupynambalucas-penpot-valkey-${APP_ENV:-prod}
+    image: tupynambalucas-penpot-valkey:${TAG:-latest}
+    build:
+      context: ../../services/valkey
+      dockerfile: Dockerfile
+    volumes:
+      - penpot_valkey_data:/data
+    networks:
+      - penpot-net
+
+  aide:
+    profiles: ['dev', 'prod', 'staging']
+    container_name: tupynambalucas-penpot-aide-${APP_ENV:-prod}
+    image: tupynambalucas-penpot-aide:${TAG:-latest}
+    build:
+      context: ../../services/aide
+      dockerfile: Dockerfile
+    ports:
+      - '${PENPOT_AIDE_PORT_4400:-4400}:4400'
+      - '${PENPOT_AIDE_PORT_4401:-4401}:4401'
+      - '${PENPOT_AIDE_PORT_4402:-4402}:4402'
+      - '${PENPOT_AIDE_PORT_4403:-4403}:4403'
+    environment:
+      - PENPOT_SECRET_KEY=${PENPOT_SECRET_KEY}
+      - PENPOT_MCP_SERVER_HOST=${PENPOT_MCP_SERVER_HOST}
+      - PENPOT_MCP_SERVER_LISTEN_ADDRESS=${PENPOT_MCP_SERVER_LISTEN_ADDRESS}
+      - PENPOT_MCP_PLUGIN_SERVER_HOST=${PENPOT_MCP_PLUGIN_SERVER_HOST}
+      - PENPOT_MCP_REMOTE_MODE=${PENPOT_MCP_REMOTE_MODE}
+      - PENPOT_MCP_SERVER_ADDRESS=${PENPOT_MCP_SERVER_ADDRESS}
+    networks:
+      - penpot-net
+
+volumes:
+  penpot_valkey_data:
+    name: tupynambalucas-penpot-valkey-${APP_ENV:-prod}-data

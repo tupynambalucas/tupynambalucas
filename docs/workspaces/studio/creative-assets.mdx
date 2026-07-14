@@ -31,7 +31,7 @@ Master files transition to the application layers through an optimized pipeline:
 
 #### Cloudflare R2 Asset Synchronizer
 
-To keep our Git repository lightweight, production-ready static assets are not committed directly to the codebase. Instead, they are managed and synchronized bidirectionally with Cloudflare R2 Object Storage using our dedicated CLI synchronizer package `@tupynambalucas-studio/assets/bucket`.
+To keep our Git repository lightweight, production-ready static assets are not committed directly to the codebase. Instead, they are managed and synchronized bidirectionally with Cloudflare R2 Object Storage using our dedicated CLI synchronizer package `@tupynambalucas-studio/design/bucket`.
 
 ##### Dynamic Synchronization & Verification
 
@@ -158,7 +158,7 @@ All logo filenames must follow the pattern `logo-[lockup]-[variant].[ext]` using
 To eliminate duplicate file storage in consuming applications like `@tupynambalucas-hub/web`:
 
 - **In Development**: The Vite dev server intercepts requests starting with `/@studio-assets/` and serves the files dynamically from the local assets package directory on your machine.
-- **In Production (Build-Time Copying)**: The application's build system uses `vite-plugin-static-copy` to automatically replicate files from `node_modules/@tupynambalucas-studio/assets/src/brand/` into the build output `dist/` directory at bundle time.
+- **In Production (Build-Time Copying)**: The application's build system uses `vite-plugin-static-copy` to automatically replicate files from `node_modules/@tupynambalucas-studio/design/src/brand/` into the build output `dist/` directory at bundle time.
 
 ---
 
@@ -166,8 +166,8 @@ To eliminate duplicate file storage in consuming applications like `@tupynambalu
 
 Internal packages access creative assets via strictly defined exports to ensure architectural isolation:
 
-- `@tupynambalucas-studio/assets/icons`: Optimized SVG library and curated Icon component registry.
-- `@tupynambalucas-studio/assets/logos`: Canonical brand logotypes.
-- `@tupynambalucas-studio/assets/brand/*`: Core brand assets (palettes, favicons, banners).
-- `@tupynambalucas-studio/assets/tokens`: Strongly-typed design constants for JS/TS logic.
-- `@tupynambalucas-studio/assets/theme.css`: Zero-runtime Tailwind CSS theme config.
+- `@tupynambalucas-studio/design/icons`: Optimized SVG library and curated Icon component registry.
+- `@tupynambalucas-studio/design/logos`: Canonical brand logotypes.
+- `@tupynambalucas-studio/design/brand/*`: Core brand assets (palettes, favicons, banners).
+- `@tupynambalucas-studio/design/tokens`: Strongly-typed design constants for JS/TS logic.
+- `@tupynambalucas-studio/design/theme.css`: Zero-runtime Tailwind CSS theme config.

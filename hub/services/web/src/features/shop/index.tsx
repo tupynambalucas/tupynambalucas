@@ -1,8 +1,8 @@
 import { Suspense, type FC } from 'react';
 import { useShop } from './hooks/useShop';
 import styles from './styles.module.css';
-import { Icon, faUser, faShoppingCart, faCalendarAlt } from '@tupynambalucas-studio/assets/icons';
-import { LogoHorizontalNegative } from '@tupynambalucas-studio/assets/logos';
+import { Icon, faUser, faShoppingCart, faCalendarAlt } from '@tupynambalucas-studio/design/icons';
+import { LogoHorizontalNegative } from '@tupynambalucas-studio/design/logos';
 import { ProductSearchFilter } from '../admin/components';
 import ProductCard from './components/Product/ProductCard';
 import CartDrawer from './components/Cart/CartDrawer';

@@ -4,7 +4,7 @@ date: 2026-05-05
 tags: [core, architecture, monorepo, instance, portal]
 ---
 
-The foundational release of Elo Orgânico (v0.1.0) establishes the core monorepo architecture, workspace isolation boundaries, and domain foundations for the local community shop and global platform hub.
+The foundational release of tupynambalucas.dev (v0.1.0) establishes the core monorepo architecture, workspace isolation boundaries, and domain foundations for the local community shop and global platform hub.
 
 {/* truncate */}
 
@@ -17,21 +17,21 @@ The foundational release of Elo Orgânico (v0.1.0) establishes the core monorepo
 
 ### Instance Workspace (Community Shop)
 
-- **Layered Backend Architecture**: Implemented the Fastify v5 API server (`@elo-instance/api`) leveraging a strict layered architecture (`Controller -> Service -> Repository -> Model`).
+- **Layered Backend Architecture**: Implemented the Fastify v5 API server (`@tupynambalucas-hub/api`) leveraging a strict layered architecture (`Controller -> Service -> Repository -> Model`).
 - **Domain Implementation**: Completed initial modules for:
   - `auth`: JWT-based session state and credential verification.
   - `product`: Local catalog schema and inventories.
   - `cycle`: Governance structures for community sharing/cooperative agricultural cycles.
-- **Frontend Workspace**: Created `@elo-instance/web` using React 19, featuring styled interfaces with CSS Modules, routing for client views, and integration with the backend API. It features modules for authentication, user dashboard, shop checkout, and local administration.
+- **Frontend Workspace**: Created `@tupynambalucas-hub/web` using React 19, featuring styled interfaces with CSS Modules, routing for client views, and integration with the backend API. It features modules for authentication, user dashboard, shop checkout, and local administration.
 
 ### Portal Workspace (Global SaaS Hub)
 
-- **Base Infrastructure**: Structured the portal workspace skeleton (`@elo-portal/api`, `@elo-portal/web`, and `@elo-portal/core`).
+- **Base Infrastructure**: Structured the portal workspace skeleton (`@tupynambalucas-hub/api`, `@tupynambalucas-hub/web`, and `@tupynambalucas-hub/core`).
 - **Authentication Skeleton**: Implemented the `auth` domain skeleton for portal accounts, establishing the architectural precedent for upcoming global SaaS modules.
 
 ### Studio & Branding Assets
 
-- **Design Tokens**: Standardized colors, spacing, typography, and visual assets in `@elo-studio/assets` to export a unified theme.
+- **Design Tokens**: Standardized colors, spacing, typography, and visual assets in `@tupynambalucas-studio/design` to export a unified theme.
 - **Design Ops Integration**: Deployed a self-hosted Penpot instance to maintain visual strategy designs and design-to-code asset generation.
 
 ### Development Tooling & Context Gateways

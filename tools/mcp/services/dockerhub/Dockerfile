@@ -32,14 +32,8 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-# Install runtime dependencies and tsx for TypeScript execution
-RUN npm install fastify@^5.7.4 @fastify/sse@^0.4.0 tsx@^4.19.3
+RUN npm install -g mcp-proxy
 
-# Copy the TypeScript SSE adapter
-COPY services/common/sse-adapter.ts ./sse-adapter.ts
+EXPOSE 8080
 
-ENV PORT=3004
-ENV MCP_COMMAND=node
-
-# Use a shell entrypoint to construct the MCP_ARGS JSON array dynamically based on env vars
-ENTRYPOINT ["sh", "-c", "if [ -n \"$HUB_USERNAME\" ]; then export MCP_ARGS=\"[\\\"dist/index.js\\\", \\\"--transport=stdio\\\", \\\"--username\\\", \\\"$HUB_USERNAME\\\"]\"; else export MCP_ARGS=\"[\\\"dist/index.js\\\", \\\"--transport=stdio\\\"]\"; fi; exec npx tsx sse-adapter.ts"]
+ENTRYPOINT ["sh", "-c", "if [ -n \"$HUB_USERNAME\" ]; then mcp-proxy --port 8080 -- node dist/index.js --transport=stdio --username \"$HUB_USERNAME\"; else mcp-proxy --port 8080 -- node dist/index.js --transport=stdio; fi"]

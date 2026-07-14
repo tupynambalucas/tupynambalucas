@@ -5,7 +5,7 @@ sidebar_position: 1
 slug: /instance
 ---
 
-O workspace Instance contém todas as aplicações e pacotes relacionados às lojas locais de comunidades. É o foco principal do monorepo Elo Orgânico, fornecendo e-commerce localizado, logística de pedidos, sistemas de pagamento e interfaces administrativas para hubs individuais de comunidades agrícolas.
+O workspace Instance contém todas as aplicações e pacotes relacionados às lojas locais de comunidades. É o foco principal do monorepo tupynambalucas.dev, fornecendo e-commerce localizado, logística de pedidos, sistemas de pagamento e interfaces administrativas para hubs individuais de comunidades agrícolas.
 
 ## Estrutura de Diretórios
 
@@ -22,14 +22,14 @@ instance/
 
 ## Componentes e Arquitetura Core
 
-### `@elo-instance/core` (SSOT do Domínio)
+### `@tupynambalucas-hub/core` (SSOT do Domínio)
 
 Todas as configurações de esquemas, modelos de banco de dados, validadores e regras de negócio core são definidas neste pacote. Ao forçar a API e quaisquer ferramentas secundárias a herdarem definições dessa camada de core, garantimos a paridade estrita do Contexto Delimitado (Bounded Context) e evitamos a duplicação de modelos.
 
 - **Stack Tecnológica**: TypeScript, Mongoose, Zod.
 - **Arquivos Chave**: Definições de esquemas compartilhados para produtos, pedidos, ciclos, usuários e transações.
 
-### `@elo-instance/api` (Motor Fastify 5)
+### `@tupynambalucas-hub/api` (Motor Fastify 5)
 
 Uma API REST de alto desempenho construída com Fastify v5, implementando uma arquitetura de software desacoplada e em camadas.
 
@@ -42,12 +42,12 @@ Uma API REST de alto desempenho construída com Fastify v5, implementando uma ar
   - Todas as operações assíncronas devem ser tratadas explicitamente. Promessas não aguardadas devem ser prefixadas com o operador `void`.
   - Comparações booleanas estritas são aplicadas em todos os controladores da API (`if (value === true)`).
 
-### `@elo-instance/web` (Portal React 19)
+### `@tupynambalucas-hub/web` (Portal React 19)
 
 A vitrine de loja e painel administrativo dos usuários construídos em React 19 e compilados com Vite.
 
 - **Stack Tecnológica**: React 19, TypeScript, Vite, Zustand (gerenciamento de estado), Studio Tokens (integração de tema).
-- **Paridade de Design**: Herda variáveis de tema, cores e constantes de layout diretamente do pacote `@elo-studio/assets`.
+- **Paridade de Design**: Herda variáveis de tema, cores e constantes de layout diretamente do pacote `@tupynambalucas-studio/design`.
 - **Recursos do React 19**: Implementa padrões modernos do React 19, utilizando o gancho `use()` para carregar promessas de recursos e garantindo comparações booleanas estritas em todos os templates JSX.
 
 ## Configuração de Infraestrutura e Banco de Dados

@@ -1,53 +1,42 @@
-# Workspace Context: Tools & Automation
+# Local Context: Developer Automation Tools and Agents Router
 
-This file defines the domain rules, containerized services, and directory structure for the **Tools and AI Agents Workspace** (`tools/`).
-
----
-
-## Tools Navigation
-
-Before editing or analyzing code in this tools context, read the local rules for the specific sub-stack:
-
-- **MCP Ecosystem**: [mcp/AGENTS.md](./mcp/AGENTS.md) — Fastify SSE adapters, Model Context Protocol routing, and browser/git wrappers.
-- **AI Agents**: [agents/AGENTS.md](./agents/AGENTS.md) — Docker-out-of-Docker containerized terminals and shell environments.
-- **Turborepo**: [turborepo/AGENTS.md](./turborepo/AGENTS.md) — Self-hosted Remote Cache server.
-- **Workspace Documentation**: Refer to the tools documentation in [docs/README.md](../docs/README.md).
+This workspace context ([tools/](./)) orchestrates developer helper tools, Model Context Protocol (MCP) integrations, git automation configurations, and containerized AI agent development platforms.
 
 ---
 
-## Workspace Architecture
+## 1. Scoped Workspaces and Entry Points
 
-The Tools workspace manages the infrastructure for development automation, AI integration layers, and developer shell environments.
+AI agents operating within the tools directory must consult the localized specifications of each child workspace before performing modifications:
 
-- **MCP Gateway**: Containerized gateway translating command-line integrations (Context7, GitHub, Playwright) into Model Context Protocol Server-Sent Events (SSE).
-- **Session Containers**: Local developer workspaces mounted with shell agents (Google Antigravity CLI and GitHub Copilot) to ensure environment parity and OAuth persistence.
-- **Turborepo Remote Cache**: Dockerized server storing Turborepo build artifacts to accelerate continuous integration and local builds.
+- **Model Context Protocol Ecosystem (`tools/mcp/`)**:
+  - Context & Setup Reference: [README.md](./mcp/README.md)
+  - Scoped Developer Rules: [AGENTS.md](./mcp/AGENTS.md)
+- **Git and GitHub Automation CLI (`tools/github/`)**:
+  - Context & Setup Reference: [README.md](./github/README.md)
+  - Scoped Developer Rules: [AGENTS.md](./github/AGENTS.md)
+- **AI Agent Terminal Containers (`tools/agents/`)**:
+  - Context & Setup Reference: [README.md](./agents/README.md)
+  - Scoped Developer Rules: [AGENTS.md](./agents/AGENTS.md)
 
 ---
 
-## Tools Guardrails
+## 2. Shared Development Boundaries and Rules
 
-1. **Isolation Policy**: Code in this directory represents automation utilities. Do not import business domain models or schemas from other workspaces.
-2. **DooD Safety**: When executing commands or mapping volumes for Docker-out-of-Docker (DooD), ensure `/var/run/docker.sock` is mounted securely, and container user permissions are aligned to prevent file ownership issues on the host.
+When modifying configurations or scripts inside this bounded context, the following rules apply:
+
+- **Credential Separation**: Never hardcode API keys, access tokens, or personal identifiers. All configuration parameters must be loaded via local environment files (`.env.*`) and bind-mounted into container environments.
+- **Path Mount Parity**: When configuring volumes in docker compose, the monorepo root must be mapped to `/workspace` inside the container. Scripts must resolve relative file mappings based on this path.
+- **Bypassing Build Overhead**: Image layers inside `tools/agents` and `tools/mcp` should remain clean. Dynamic code syncing tools (like Skaffold) or direct terminal bindings should be utilized to test code changes without rebuild latency.
+- **Strict Execution Rules**: Shell scripts must include execution options like `set -euo pipefail` to abort execution immediately on secondary errors.
 
 ---
 
-## Scoped Commands
+## 3. Operations Commands Summary
 
-Run these scripts from the monorepo root to manage the tools:
+Manage the tool environments using the mapped root execution scripts:
 
-- `pnpm mcp:dev:up`: Launches the development MCP gateway and downstream tools adapters in detached Docker containers.
-- `pnpm mcp:dev:down`: Stops the development MCP stack containers.
-- `pnpm mcp:dev:reset`: Prunes development volumes, rebuilds adapters, and restarts the gateway.
-- `pnpm mcp:prod:up`: Launches the production MCP stack with detached containers.
-- `pnpm mcp:prod:down`: Stops the production MCP stack containers.
-- `pnpm mcp:prod:reset`: Prunes production volumes and restarts.
-- `pnpm mcp:staging:up`: Launches the staging MCP stack with detached containers.
-- `pnpm mcp:staging:down`: Stops the staging MCP stack containers.
-- `pnpm mcp:staging:reset`: Prunes staging volumes and restarts.
-- `pnpm agents:up`: Launches development containerized AI terminals.
-- `pnpm agents:down`: Stops the development agent containers.
-- `pnpm agents:reset`: Wipes development agent session caches and rebuilds the containers.
-- `pnpm turborepo:up` / `pnpm turborepo:down`: Manages the development self-hosted remote cache containers.
-- `pnpm antigravity:auth` / `pnpm copilot:auth`: Runs OAuth authorization inside development containers.
-- `pnpm typecheck`: Validates TypeScript type safety across scripts and adapters.
+| Context Subsystem          | Up Command                | Down Command                | Reset Command                |
+| :------------------------- | :------------------------ | :-------------------------- | :--------------------------- |
+| **Model Context Protocol** | `pnpm mcp:dev:up`         | `pnpm mcp:dev:down`         | `pnpm mcp:dev:reset`         |
+| **GitHub CLI Tooling**     | `pnpm github:services:up` | `pnpm github:services:down` | `pnpm github:services:reset` |
+| **AI Agent Containers**    | `pnpm agents:up`          | `pnpm agents:down`          | `pnpm agents:reset`          |

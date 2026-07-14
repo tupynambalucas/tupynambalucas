@@ -1,0 +1,93 @@
+---
+title: Local Development Setup
+description: Follow these steps to get the tupynambalucas.dev monorepo running on your machine.
+---
+
+# Local Development Setup
+
+In this tutorial, we will set up the tupynambalucas.dev monorepo on your local machine. By the end of this lesson, you will have the complete development environment running and ready for you to build features.
+
+## Prerequisites
+
+Before we begin, ensure we have the following installed:
+
+- Node.js version 22
+- PNPM version 11
+- Docker and Docker Compose
+- Git
+
+## Step 1: Clone the Repository
+
+First, we will clone the repository to our local workspace and navigate into it.
+
+```bash
+git clone https://github.com/tupynambalucas/tupynambalucas.dev.git
+cd tupynambalucas.dev
+```
+
+You should see a directory structure containing folders like `docs`, `hub`, `profile`, and `tools`.
+
+## Step 2: Install Dependencies
+
+Next, we need to install the project dependencies. Since this is a monorepo, we will use PNPM to install everything at once.
+
+Run the following command:
+
+```bash
+pnpm install
+```
+
+When it finishes, you will see output similar to this:
+
+```
+Packages: +1245
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+...
+Done in 12.4s
+```
+
+## Step 3: Configure Environment Variables
+
+Now, we need to set up our local environment configuration. We will copy the sample `.env` file to create our active environment variables.
+
+```bash
+cp .env.example .env
+```
+
+## Step 4: Start the Local Infrastructure
+
+With our dependencies installed and environment configured, we will spin up the necessary backend services (like the database) using Docker Compose.
+
+```bash
+pnpm infra:up
+```
+
+Wait a few moments. You should see Docker pulling images and starting the containers.
+
+```
+[+] Running 2/2
+ ✔ Container mongodb  Started
+ ✔ Container db-init  Started
+```
+
+## Step 5: Start the Development Server
+
+Finally, we are ready to start the application. We will use the Turborepo command to run the development servers across all workspaces.
+
+```bash
+pnpm dev
+```
+
+You will see output indicating that various services are starting. Look for lines like:
+
+```
+@tupynambalucas-hub/web: dev:   ➜  Local:   http://localhost:3000/
+@tupynambalucas/docs: dev:      [SUCCESS] Docusaurus website is running at: http://localhost:3001/
+```
+
+Open your browser and navigate to `http://localhost:3000`. You should see the Hub interface loaded successfully.
+
+## Conclusion
+
+Congratulations! We have successfully cloned the repository, installed the dependencies, launched the infrastructure, and started the local development servers. We are now fully equipped to start building and contributing to the project.

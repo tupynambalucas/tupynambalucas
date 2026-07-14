@@ -1,185 +1,167 @@
 ---
-title: Introdução
-description: Introdução e visão geral do projeto.
+title: Introduction
+description: Project introduction and overview.
 sidebar_position: 1
 ---
 
 import DocCardList from '@theme/DocCardList';
 
-# Projeto TupyDocs
+# tupynambalucas.dev Monorepo
 
-Este projeto é uma plataforma de gestão especializada projetada para preencher a lacuna entre produtores orgânicos e consumidores conscientes através de **Ciclos de Compartilhamento Agendados**. Mais do que apenas uma ferramenta de e-commerce, é um sistema de gestão orientado pela comunidade que automatiza a complexa logística de colheitas sazonais e compras em grupo.
-
-_"Tornar a comida local, orgânica e sustentável tão acessível e fácil de comprar quanto qualquer produto industrial comum, sem perder a conexão humana."_
-
-## 1. Visão Geral do Produto e Proposta de Valor
-
-Antes do Elo Orgânico, o processo de compartilhamento era dificultado por:
-
-- **Caos Operacional:** Dependência de planilhas massivas e mensagens de WhatsApp fragmentadas.
-- **Erros Manuais:** Equívocos humanos na consolidação de pedidos e rastreamento de pagamentos.
-- **Atrito de Escalonamento:** Alta sobrecarga administrativa tornava impossível o crescimento da comunidade sem sobrecarga (burnout).
-- **Latência de Pagamento:** Conciliação financeira atrasada devido à verificação manual de transferências bancárias.
-
-Nós transformamos esse processo em um fluxo de trabalho profissional e automatizado:
-
-| Para Consumidores                                                                        | Para Administradores/Fornecedores                                                                 |
-| :--------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
-| **Conveniência:** Uma loja limpa e moderna (`@elo-instance/web`) para navegar e comprar. | **Automação:** Ingestão inteligente de listas de produtos em dados estruturados.                  |
-| **Transparência:** Acesso em tempo real à disponibilidade sazonal e preços.              | **Eficiência:** Consolidação automatizada de pedidos e gestão de estoque via `@elo-instance/api`. |
-| **Velocidade:** Pagamentos Pix instantâneos com conciliação bancária automática.         | **Controle:** Visibilidade total sobre ciclos, logística e saúde financeira.                      |
-
-### Público-Alvo (Personas)
-
-1. **O Coordenador de Comunidade (Admin):** Gerencia ciclos e fornecedores através das funcionalidades administrativas do `@elo-instance/web`.
-2. **O Consumidor Consciente:** Compra produtos sazonais através da interface do `@elo-instance/web`.
-3. **O Fornecedor:** Atua como a ponte entre os agricultores e a comunidade, fornecendo o catálogo sazonal.
-
-## 2. Fluxograma Operacional
-
-A plataforma Elo Orgânico orquestra o seguinte fluxo operacional para uma instância de comunidade:
-
-1. **Configuração do Ciclo:** O administrador define e agenda janelas de compra (ciclos) através da interface administrativa do `@elo-instance/web`. `[ESTÁVEL]`
-2. **Ingestão de Produtos:** Uma lista de produtos em texto puro é processada por um **Parser Inteligente** no frontend. `[WIP - Refinando Lógica]`
-3. **Abertura de Compras:** O catálogo estruturado é habilitado automaticamente para os membros na loja `@elo-instance/web`. `[ESTÁVEL]`
-4. **Execução de Pedidos:** Os membros montam cestas personalizadas e enviam seus pedidos. `[ESTÁVEL]`
-5. **Processamento de Pagamento:** Integração direta com a API do **Banco EFI** para pagamentos via Pix. `[WIP - Fase de Especificação Técnica]`
-6. **Confirmação:** O sistema realiza a conciliação bancária e confirma o pedido automaticamente. `[WIP]`
-
-## 3. Estimativa de Custos e Estratégia de Hospedagem
-
-A estratégia "Self-Hosted" proporciona uma relação custo-benefício altamente favorável e previsível. Propomos duas abordagens principais de hospedagem para a instância.
-
-### Categoria 1: Infraestrutura e Hospedagem
-
-**Opção A: Hetzner Cloud (VPS Fixo)**
-
-- **Estratégia:** Servidor de Alta Performance (Linux VPS) sempre ligado.
-- **Custo Mensal Estimado:** **€5.00 a €7.00** (Fixo).
-- **Banco de Dados & Cache:** Recursos da própria VPS (MongoDB/Redis) sem custo extra.
-
-**Opção B: Google Cloud Run (Serverless)**
-
-- **Estratégia:** Containers Serverless, ligados e desligados sob demanda.
-- **Custo Mensal Estimado:** **Variável** (Frequentemente free tier ou centavos se ocioso).
-- **Banco de Dados & Cache:** DBs Gerenciados (ex. Atlas/Redis Cloud) ou Cloud SQL.
-
-### Categoria 2: Gateway de Pagamento (Pix)
-
-Temos duas opções principais para processamento de pagamentos Pix, ambas oferecendo taxas idênticas por transação, mas diferindo em acessibilidade.
-
-**Opção A: Banco EFI**
-
-- **Taxa Pix:** **1,19%** por transação recebida via API.
-- **Status:** Totalmente acessível para empresas brasileiras.
-
-**Opção B: Stripe**
-
-- **Taxa Pix:** **1,19%** por transação recebida via API.
-- **Status:** Atualmente disponível apenas para convidados (invite-only) no Brasil, exigindo aprovação.
-
-### Categoria 3: Domínio e DNS
-
-- **Custo:** Custo Anual Padrão (Registro e manutenção do domínio). O domínio do projeto será adquirido e gerenciado diretamente através da **Cloudflare** para resolução de DNS segura e roteamento de proxy.
-
-### Conclusão Financeira
-
-Ambas as arquiteturas garantem previsibilidade dos custos de infraestrutura. A opção Hetzner fornece um custo mensal fixo e extremamente baixo com performance consistente, enquanto a abordagem Cloud Run minimiza os custos durante períodos ociosos ao ligar e desligar a instância conforme necessário. Para pagamentos, tanto o Banco EFI quanto a Stripe oferecem taxas competitivas de 1,19% para Pix, embora o Banco EFI seja mais imediatamente acessível.
-
-## 4. Arquitetura e Contexto Delimitado
-
-Utilizamos **PNPM Workspaces** com um layout de **Context-Driven Root** para isolar estritamente nossos domínios de negócio em Contextos Delimitados. A base de código é dividida em **Instância** (operações da comunidade) e **Portal** (camada SaaS global).
-
-Para um detalhamento abrangente da nossa filosofia de contexto, estrutura de diretórios e papéis das aplicações, leia nossos guias arquiteturais dedicados:
-
-<DocCardList
-  items={[
-    {
-      type: 'link',
-      href: '/docs/architecture/bounded-context',
-      label: 'Arquitetura de Contextos Delimitados',
-      description:
-        'Explicação detalhada dos Contextos Delimitados, Estrutura do Monorepo e Papéis das Aplicações no Elo Orgânico.',
-    },
-    {
-      type: 'link',
-      href: '/docs/architecture/overview',
-      label: 'Visão Geral da Arquitetura',
-      description: 'Visão geral abrangente da stack técnica e estratégia do monorepo.',
-    },
-  ]}
-/>
-
-## 5. Foco Estratégico: Maestria em Instância Única
-
-Nossa prioridade atual é a **entrega perfeita de uma instância comunitária independente (`@elo-instance/*`)**. O desenvolvimento do SaaS começará apenas após a aplicação principal estar totalmente operacional.
-
-### A Visão SaaS de Longo Prazo
-
-Embora o foco seja a instância, o objetivo de longo prazo é evoluir para uma Plataforma SaaS Multi-tenant:
-
-- **Escopo do Portal (`@elo-portal/web` & `@elo-portal/api`)**: Um ponto de entrada global único para onboarding e descoberta.
-- **Múltiplos Pares de Instância (`@elo-instance/api` & `@elo-instance/web`)**: Cada comunidade recebe seu próprio par de ambiente isolado.
-- **Bibliotecas Core (`@elo-instance/core` & `@elo-portal/core`)**: Fonte única de verdade (SSOT) específica de domínio para cada escopo.
-
-#### Principais Funcionalidades SaaS
-
-- **Isolamento de Tenant:** Dados e configurações independentes para cada instância de comunidade.
-- **Autogestão do Produtor:** Gestão direta de estoque e preços para os produtores.
-- **Gestão de Assinaturas:** Níveis de serviço gerenciados via `@elo-portal/api`.
-
-#### Evolução Arquitetural
-
-- **Implantação Multi-Instância:** Criação automatizada de containers `@elo-instance/*` por tenant.
-- **Roteamento Dinâmico:** Load balancer global roteando usuários para sua instância de comunidade específica.
-
-<DocCardList
-  items={[
-    {
-      type: 'link',
-      href: '/roadmap',
-      label: 'Arquitetura Core e Estratégia',
-      description:
-        'Arquitetura estratégica do monorepo, configurações de catálogo e metas de isolamento lógico multi-tenant.',
-    },
-  ]}
-/>
-
-## 6. Início Rápido
-
-Certifique-se de ter o **Node.js 22+**, **PNPM 11+** e o **Docker** instalados.
-
-1.  **Instalar Dependências:**
-
-    ```bash
-    pnpm install
-    ```
-
-2.  **Configurar Arquivos de Ambiente:**
-    Cada contexto delimitado e aplicação possui seu próprio arquivo de ambiente. Copie cada `.env.*.example` para o seu respectivo arquivo sem a extensão `.example` e preencha com seus valores locais:
-
-    ```bash
-    # Orquestração da Instance (para o compose)
-    cp instance/infrastructure/docker/.env.example instance/infrastructure/docker/.env
-
-    # Runtime da API da Instance
-    cp instance/services/api/.env.dev.example instance/services/api/.env.dev
-
-    # Variáveis de build da Web da Instance
-    cp instance/services/web/.env.dev.example instance/services/web/.env.dev
-
-    # Configuração local dos bancos de dados
-    cp instance/services/mongodb/.env.example instance/services/mongodb/.env.dev
-    cp instance/services/redis/.env.example instance/services/redis/.env.dev
-    ```
-
-    Repita para `portal/` quando estiver trabalhando no contexto de Portal.
-
-3.  **Inicie a Infraestrutura Local e Aplicações:**
-    Nós fornecemos scripts de orquestração unificados via Turborepo para subir containers Docker e servidores de desenvolvimento local simultaneamente.
-
-    Consulte a [Referência de Comandos](./commands-reference.mdx) para instruções sobre como iniciar a stack (`pnpm instance:dev`), executar validações ou realizar deploys para produção.
+This repository is a monorepo containing a developer profile stats generator, personal website/hub, developer tools, design tokens, and documentation.
 
 ---
 
-_Última Atualização: Junho de 2026_
+## 1. Product Overview & Value Proposition
+
+The monorepo coordinates the developer's personal website (`hub`), automated stats visualizations (`profile`), design systems (`studio`), and automation tools (`tools`).
+
+The primary customer-facing application is the **Developer Hub** (`@tupynambalucas-hub/*`):
+
+| For Visitors                                                        | For the Developer (Admin)                                            |
+| :------------------------------------------------------------------ | :------------------------------------------------------------------- |
+| **Portfolio**: View projects, code architectures, and highlights.   | **Blog Publishing**: Publish technical articles and case studies.    |
+| **Contact Form**: Securely submit messages or consulting queries.   | **Lead Collection**: Manage submissions and dashboard data.          |
+| **Services Catalog**: Request custom software development services. | **Profile Automation**: Automatically update GitHub metrics via Zig. |
+
+---
+
+## 2. Operational Flow
+
+The portfolio website and stats generator operate on a streamlined workflow:
+
+1. **Portfolio Presentation**: Visitors explore the frontend `@tupynambalucas-hub/web`, consuming blog posts and project highlights served by `@tupynambalucas-hub/api`.
+2. **Contact Submission**: Form inputs are validated via Turnstile anti-spam keys, serialized using Zod schemas from `@tupynambalucas-hub/core`, and persisted to a MongoDB instance.
+3. **Profile Statistics Generation**: The `@tupynambalucas/profile` workspace compiles GitHub metrics using a native Zig CLI and dynamically overwrites the root `README.md` file.
+
+---
+
+## 3. Hosting & Deployment Strategy
+
+The monorepo uses Cloudflare and standard VPS environments for zero-maintenance and high-performance operation.
+
+### Infrastructure & Hosting
+
+- **Cloudflare Pages**: The Docusaurus documentation hub (`docs/`) and the developer React SPA frontend (`hub/services/web`) are deployed to Cloudflare Pages for optimized CDN delivery.
+- **Hetzner Cloud VPS / Linux VPS**: The backend Fastify REST API (`hub/services/api`) and MongoDB/Redis compose stacks run on a lightweight VPS instance.
+- **DNS & SSL**: DNS routing and proxy protection are handled globally through Cloudflare.
+
+---
+
+## 4. Architecture & Monorepo Workspaces
+
+We use **PNPM Workspaces** with a **Context-Driven Root** layout to isolate our domains.
+
+For a comprehensive breakdown of our context philosophy, directory structure, and application roles, please read our dedicated architectural guides:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/docs/explanation/bounded-contexts',
+      label: 'Bounded Context Architecture',
+      description:
+        'Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/architecture-overview',
+      label: 'Architecture Overview',
+      description: 'Comprehensive technical stack and monorepo strategy overview.',
+    },
+  ]}
+/>
+
+---
+
+## 5. Standalone Workspaces
+
+Our priority is the deployment and maintenance of:
+
+- **`@tupynambalucas-hub/*`**: Personal React/Fastify hub.
+- **`@tupynambalucas/profile`**: Zig-based GitHub profile stats compiler.
+
+---
+
+## 6. Quick Start
+
+Ensure you have **Node.js 22+**, **PNPM 11+**, **Zig**, and **Docker** installed.
+
+1. **Install Dependencies:**
+
+   ```bash
+   pnpm install
+   ```
+
+2. **Set Up Environment Files:**
+   Each workspace and service has its own environment file. Copy the example templates and add your local parameters:
+
+   ```bash
+   # Hub configuration
+   cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
+   ```
+
+3. **Start Local Infrastructure & Applications:**
+   We provide unified orchestration scripts via Turborepo to spin up Docker containers and local dev servers simultaneously.
+   See [MONOREPO.md](https://github.com/tupynambalucas/tupynambalucas/blob/develop/MONOREPO.md) or the [Command Reference](./reference/commands.mdx) for details on running `pnpm hub:dev`.
+
+---
+
+## 7. Diátaxis Framework
+
+A systematic approach to technical documentation authoring.
+
+Diátaxis is a way of thinking about and doing documentation.
+
+It prescribes approaches to content, architecture and form that emerge from a systematic approach to understanding the needs of documentation users.
+
+Diátaxis identifies four distinct needs, and four corresponding forms of documentation - _tutorials_, _how-to guides_, _technical reference_ and _explanation_. It places them in a systematic relationship, and proposes that documentation should itself be organised around the structures of those needs.
+
+Diátaxis solves problems related to documentation _content_ (what to write), _style_ (how to write it) and _architecture_ (how to organise it).
+
+As well as serving the users of documentation, Diátaxis has value for documentation creators and maintainers. It is light-weight, easy to grasp and straightforward to apply. It doesn’t impose implementation constraints. It brings an active principle of quality to documentation that helps maintainers think effectively about their own work.
+
+### Navigation
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/docs/tutorials/diataxis-start',
+      label: 'Start Here',
+      description: 'The best way to get started with Diátaxis is by applying it.',
+    },
+    {
+      type: 'link',
+      href: '/docs/guides/diataxis/applying-diataxis',
+      label: 'Applying Diátaxis',
+      description: 'Make immediate, concrete sense of the approach.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/diataxis/theory',
+      label: 'Understanding Diátaxis',
+      description: 'Explore the theory and principles more deeply.',
+    },
+  ]}
+/>
+
+Diátaxis is proven in practice. Its principles have been adopted successfully in hundreds of documentation projects.
+
+:::info[Testimonial]
+Diátaxis has allowed us to build a high-quality set of internal documentation that our users love, and our contributors love adding to.
+
+—Greg Frileux, [Vonage](https://vonage.com/)
+:::
+
+:::info[Testimonial]
+At Gatsby we recently reorganized our open-source documentation, and the Diátaxis framework was our go-to resource throughout the project. The four quadrants helped us prioritize the user’s goal for each type of documentation. By restructuring our documentation around the Diátaxis framework, we made it easier for users to discover the resources that they need when they need them.
+
+— [Megan Sullivan](https://hachyderm.io/@meganesulli)
+:::
+
+:::info[Testimonial]
+While redesigning the [Cloudflare developer docs](https://developers.cloudflare.com/), Diátaxis became our north star for information architecture. When we weren’t sure where a new piece of content should fit in, we’d consult the framework. Our documentation is now clearer than it’s ever been, both for readers and contributors.
+
+— [Adam Schwartz](https://github.com/adamschwartz)
+:::

@@ -1,0 +1,40 @@
+{
+  "name": "@tupynambalucas-studio/bucket",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "tupynambalucas.dev Studio Package",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/studio/assets#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "studio/bucket"
+  },
+  "files": [
+    "src"
+  ],
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "bucket": "tsx src/bucket.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "catalog:",
+    "@clack/prompts": "catalog:",
+    "@smithy/node-http-handler": "catalog:",
+    "dotenv": "catalog:shared-stack",
+    "glob": "catalog:",
+    "mime-types": "catalog:"
+  },
+  "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*",
+    "@types/glob": "catalog:",
+    "@types/mime-types": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
-  "description": "Elo Orgânico Knowledge Base Package",
+  "description": "tupynambalucas.dev Knowledge Base Package",
   "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
   "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/docs#readme",
   "repository": {
@@ -33,7 +33,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@tupynambalucas-studio/assets": "workspace:*",
+    "@tupynambalucas-studio/design": "workspace:*",
     "@docusaurus/core": "catalog:docs-stack",
     "@docusaurus/faster": "catalog:docs-stack",
     "@docusaurus/theme-live-codeblock": "catalog:docs-stack",
