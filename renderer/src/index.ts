@@ -109,9 +109,9 @@ async function main(): Promise<void> {
       ? `<picture>
     <source media="(prefers-color-scheme: dark)" srcset="${assetsBaseUrl}/static/header-dark.svg${urlSuffix}#gh-dark-mode-only" />
     <source media="(prefers-color-scheme: light)" srcset="${assetsBaseUrl}/static/header-light.svg${urlSuffix}" />
-    <img alt="Olá! Eu sou Tupynambá Lucas" src="${assetsBaseUrl}/static/header-light.svg${urlSuffix}" width="750" />
+    <img alt="Hi! I'm Tupynambá Lucas" src="${assetsBaseUrl}/static/header-light.svg${urlSuffix}" width="750" />
   </picture>`
-      : `<img alt="Olá! Eu sou Tupynambá Lucas" src="${assetsBaseUrl}/header-light.svg" width="750" />`;
+      : `<img alt="Hi! I'm Tupynambá Lucas" src="${assetsBaseUrl}/header-light.svg" width="750" />`;
 
     const readmeData = {
       name: stats.name,
@@ -164,7 +164,7 @@ async function main(): Promise<void> {
           // 1. Generate Light Mode Preview Document
           const lightReadmeData = {
             ...readmeData,
-            headerImage: `<img alt="Olá! Eu sou Tupynambá Lucas" src="../../cards/header-light.svg" width="750" />`,
+            headerImage: `<img alt="Hi! I'm Tupynambá Lucas" src="../../cards/header-light.svg" width="750" />`,
             overviewImages: `<img alt="${stats.name}'s GitHub Stats" src="../../cards/overview-light.svg" height="200px" />`,
             languagesImages: `<img alt="Languages Used" src="../../cards/languages-light.svg" height="200px" />`,
           };
@@ -177,7 +177,7 @@ async function main(): Promise<void> {
           // 2. Generate Dark Mode Preview Document
           const darkReadmeData = {
             ...readmeData,
-            headerImage: `<img alt="Olá! Eu sou Tupynambá Lucas" src="../../cards/header-dark.svg" width="750" />`,
+            headerImage: `<img alt="Hi! I'm Tupynambá Lucas" src="../../cards/header-dark.svg" width="750" />`,
             overviewImages: `<img alt="${stats.name}'s GitHub Stats" src="../../cards/overview-dark.svg" height="200px" />`,
             languagesImages: `<img alt="Languages Used" src="../../cards/languages-dark.svg" height="200px" />`,
           };
