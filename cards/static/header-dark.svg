@@ -34,9 +34,9 @@
   
   <!-- Dynamic Greeting & Titles -->
   <text x="50%" y="55" text-anchor="middle" class="title">
-    Olá! Eu sou <tspan class="highlight">Tupynambá Lucas</tspan>
+    Hi! I'm <tspan class="highlight">Tupynambá Lucas</tspan>
   </text>
   <text x="50%" y="95" text-anchor="middle" class="subtitle">
-    Desenvolvedor de Software Full-Stack &amp; Arquiteto de Sistemas
+    Full-Stack Software Developer &amp; Systems Architect
   </text>
 </svg>
