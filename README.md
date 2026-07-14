@@ -3,7 +3,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/header-dark.svg?raw=true#gh-dark-mode-only" />
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/header-light.svg?raw=true" />
-    <img alt="Olá! Eu sou Tupynambá Lucas" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/header-light.svg?raw=true" width="750" />
+    <img alt="Hi! I'm Tupynambá Lucas" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/header-light.svg?raw=true" width="750" />
   </picture>
 </div>
 
