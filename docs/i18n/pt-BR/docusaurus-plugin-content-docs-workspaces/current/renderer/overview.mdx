@@ -1,0 +1,52 @@
+---
+title: Visão Geral do Workspace Renderer
+sidebar_label: Visão Geral
+sidebar_position: 1
+slug: /renderer
+---
+
+O workspace Renderer contém o gerador genérico de ativos dinâmicos e o motor de compilação de documentos. Ele é responsável por compilar templates markdown em documentos prontos para produção em todo o monorepo e gerar cartões SVG personalizados e consistentes com a identidade visual.
+
+---
+
+## Estrutura de Diretórios
+
+```text
+renderer/
+├── src/
+│   ├── index.ts                     # Executável principal rodando os pipelines ativos
+│   ├── pipelines/                   # Camada de pipelines (arquitetura SOLID/OCP)
+│   │   ├── types.ts                 # Esquemas e tipos compartilhados de pipelines
+│   │   ├── github-profile.pipeline.ts # Pipeline padrão para compilação do README de perfil
+│   │   └── index.ts                 # Registro central de pipelines ativos
+│   ├── templates/                   # Diretório de templates organizado por domínio
+│   │   ├── cards/                   # Layouts de cartões SVG estáticos e baseados em métricas
+│   │   └── docs/                    # Templates textuais em markdown (ex: README)
+│   ├── renderers/                   # Motores de compilação e layout (stats, cabeçalhos)
+│   └── utils/                       # Utilitários (glob, codificação de fontes, template-fill)
+├── generated/                       # Diretório de pré-visualização local compilado
+│   ├── cards/                       # Cópias planas dos temas de cartões SVG (light/dark)
+│   └── docs/                        # Pré-visualizações de documentos divididos por tema
+├── package.json                     # Dependências e scripts do workspace
+└── tsconfig.json                    # Configuração de compilação do TypeScript
+```
+
+---
+
+## Arquitetura Core e Pipelines
+
+Diferente de um script de geração simples ad-hoc, o Renderer possui uma **Arquitetura de Pipelines** extensível que está em conformidade com o princípio Open/Closed (SOLID).
+
+- **Registro Extensível**: Alvos de compilação independentes (por exemplo, README de perfil do GitHub, manuais de handbook ou especificações de design systems) são registrados dentro de `src/pipelines/index.ts`.
+- **Pré-visualizações Separadas por Tema**: Ao executar a compilação localmente, o gerador grava versões claras (light) e escuras (dark) totalmente renderizadas em `generated/cards/` e `generated/docs/`. Os markdowns de visualização clara referenciam ativos SVG claros, enquanto as visualizações escuras referenciam SVGs escuros, garantindo testes de tema de altíssima fidelidade.
+
+---
+
+## Operações Escopadas
+
+Execute estes scripts a partir do diretório raiz para gerenciar a stack do gerador renderer:
+
+- `pnpm --filter @tupynambalucas/renderer generate`: Executa os pipelines ativos de compilação de documentos localmente, escrevendo as pré-visualizações em `generated/`.
+- `pnpm --filter @tupynambalucas/renderer clean`: Remove todos os arquivos compilados, caches e pastas de build geradas.
+- `pnpm --filter @tupynambalucas/renderer typecheck`: Executa a validação de tipos do compilador TypeScript.
+- `pnpm --filter @tupynambalucas/renderer lint`: Executa as verificações estáticas do ESLint.

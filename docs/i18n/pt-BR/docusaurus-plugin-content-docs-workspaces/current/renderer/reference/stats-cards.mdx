@@ -1,0 +1,48 @@
+---
+title: Geração de Cartões Visuais SVG
+sidebar_label: Cartões SVG
+sidebar_position: 3
+---
+
+O gerador compila cartões visuais SVG personalizados que representam as estatísticas do desenvolvedor, a distribuição de linguagens de programação e cabeçalhos de marca com absoluta fidelidade visual.
+
+---
+
+## Cartões Visuais Gerados
+
+### 1. Cartão de Visão Geral (`overview.svg`)
+
+Exibe as contagens de métricas agregadas (Estrelas, Forks, Contribuições de todos os tempos, Linhas de código alteradas, Visualizações de tráfego e Repositórios com contribuição). Utiliza um loop de atraso de animação CSS onde cada linha é animada sequencialmente com um atraso incremental (`(row_index + 1) * 150` ms).
+
+### 2. Cartão de Linguagens (`languages.svg`)
+
+Exibe as porcentagens de linguagens ordenadas de forma decrescente por tamanho de arquivo.
+
+- **Barra de Progresso**: Acumula tamanhos para mostrar uma barra colorida. A porcentagem da largura é formatada para exatamente 3 casas decimais na marcação do template.
+- **Itens da Lista**: Marcadores de lista individuais que apresentam nome, cor em hexadecimal e porcentagem formatada para exatamente 2 casas decimais.
+
+### 3. Cartão de Cabeçalho (`header.svg`)
+
+Um banner de cabeçalho de marca com estilo personalizado. Ele carrega os design tokens da marca e codifica de forma dinâmica o arquivo binário local da fonte Nunito, incorporando-o como uma string codificada em Base64 dentro da saída vetorial. Isso permite que a tipografia personalizada seja exibida consistentemente dentro do rígido sandbox do GitHub.
+
+---
+
+## Arquitetura de Busca de Dados
+
+Para calcular essas métricas, o motor em TypeScript se comunica com o GitHub através de APIs GraphQL e REST.
+
+### Estratégia de Subdivisão Anual GraphQL
+
+Devido ao limite da API do GitHub de 100 repositórios retornados por requisição, uma estratégia de divisão recursiva é aplicada:
+
+- O motor busca os repositórios e contribuições ano a ano.
+- Se uma consulta retorna exatamente 100 repositórios, o intervalo é dividido por fatores primos (2 ou 3) em sub-intervalos (por exemplo, blocos de 6 ou 3 meses).
+- Esses sub-intervalos são consultados recursivamente até que a resposta caia abaixo do limite de 100 repositórios, evitando a omissão de dados.
+
+### Resiliência de Conexão e Loop de Retentativa da API
+
+Diferente de soluções legadas, o motor moderno de renderização apresenta proteção robusta de rede:
+
+- **Backoff Exponencial**: Se o GitHub estiver compilando as estatísticas ou os limites de taxa (rate limits) forem atingidos, o motor aguarda e tenta novamente usando atrasos exponenciais.
+- **Até 10 Retentativas**: O motor tenta novamente até 10 vezes em caso de falhas de rede ou de API antes de relatar erros.
+- **Proibição de Fallbacks com Clone do Git**: Operações de clone locais do Git (`git clone --bare`) são estritamente proibidas dentro do pacote renderer para garantir tarefas leves de CI/CD e evitar o inchaço dos ambientes de build. Todos os dados são coletados exclusivamente através de conexões de API diretas e seguras.

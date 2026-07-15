@@ -1,0 +1,76 @@
+---
+title: Visão Geral do Workspace Hub
+sidebar_label: Visão Geral
+sidebar_position: 1
+slug: /hub
+---
+
+O workspace Hub contém todas as aplicações e pacotes relacionados ao site pessoal do desenvolvedor. É a vitrine principal do tupynambalucas.dev, fornecendo portfólio profissional, motor de blog, inventário de habilidades técnicas e sistemas de tratamento de formulários de contato.
+
+---
+
+## Estrutura de Diretórios
+
+```text
+hub/
+├── services/
+│   ├── api/          # REST API em Fastify 5
+│   └── web/          # Aplicação de Página Única (SPA) em React 19
+├── packages/
+│   └── core/         # Modelo de Domínio Compartilhado (SSOT)
+```
+
+---
+
+## Componentes Core e Arquitetura
+
+### `@tupynambalucas-hub/core` (SSOT do Domínio)
+
+Todas as configurações de esquemas, validadores e tipos de negócios core são definidas neste pacote. Ao forçar a API REST e o cliente Web a herdarem definições dessa camada core, garantimos a paridade estrita do Bounded Context e evitamos a duplicação de modelos.
+
+- **Stack Tecnológica**: TypeScript, Zod.
+- **Arquivos Chave**: Definições de esquemas compartilhados para posts de blog, projetos, envios de contato e contas de usuário.
+
+### `@tupynambalucas-hub/api` (Motor Fastify 5)
+
+Uma API REST de alto desempenho construída com Fastify v5, implementando uma arquitetura de software desacoplada e em camadas.
+
+- **Fluxo de Design em Camadas**: `Controller ──> Service ──> Repository ──> Model`
+- **Integrações Chave**:
+  - Conexão do Mongoose com o banco de dados MongoDB local/nuvem.
+  - Gerenciadores de cache Redis para limitação de taxa (rate-limiting), armazenamento de sessões e consultas rápidas.
+  - Hooks de validação Zod para requisições recebidas (body, query, params) e respostas enviadas.
+- **Diretrizes Estritas**:
+  - Todas as operações assíncronas devem ser tratadas explicitamente.
+  - Comparações booleanas estritas são aplicadas em todos os controladores da API (`if (value === true)`).
+
+### `@tupynambalucas-hub/web` (Portal React 19)
+
+A interface de portfólio do usuário, frontend do blog e painel administrativo construídos em React 19 e compilados com Vite.
+
+- **Stack Tecnológica**: React 19, TypeScript, Vite, Zustand (gerenciamento de estado), Studio Tokens (integração de tema).
+- **Paridade de Design**: Herda variáveis de tema, cores e constantes de layout diretamente do pacote `@tupynambalucas-studio/design`.
+- **Recursos do React 19**: Implementa padrões modernos do React 19, utilizando o hook `use()` para carregar promessas de recursos e garantindo comparações booleanas estritas em todos os templates JSX.
+
+---
+
+## Configuração do Banco de Dados
+
+Para suportar o armazenamento de formulários de contato e entrega de conteúdo de blog, o ambiente local executa um conjunto de réplicas (replica set) do MongoDB orquestrado por Docker:
+
+- **Nome do Replica Set**: `rs0`
+- **Serviço de Inicialização**: `db-init` inicializa a configuração do replica set (`rs.initiate()`) após o MongoDB estar pronto.
+- **Camada de Cache**: O container do Redis gerencia o armazenamento de chave-valor de alta velocidade e a limitação de taxa.
+
+---
+
+## Scripts do Workspace
+
+Execute estes comandos a partir do diretório raiz do repositório para gerenciar o contexto do Hub:
+
+| Comando          | Ação                                                                                                     |
+| :--------------- | :------------------------------------------------------------------------------------------------------- |
+| `pnpm hub:up`    | Inicializa os containers locais de banco de dados (MongoDB Replica Set) e Redis.                         |
+| `pnpm hub:dev`   | Executa o servidor de API (via `tsx watch`) e o cliente Web (via servidor dev do Vite) concorrentemente. |
+| `pnpm hub:down`  | Interrompe e remove os containers do Docker.                                                             |
+| `pnpm hub:reset` | Remove os volumes do banco de dados e reinicia a infraestrutura.                                         |

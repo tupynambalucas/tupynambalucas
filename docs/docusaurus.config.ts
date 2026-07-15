@@ -283,8 +283,8 @@ const config: Config = {
               to: '/workspaces/hub',
             },
             {
-              label: 'Profile Workspace',
-              to: '/workspaces/profile',
+              label: 'Renderer Workspace',
+              to: '/workspaces/renderer',
             },
             {
               label: 'Studio Workspace',

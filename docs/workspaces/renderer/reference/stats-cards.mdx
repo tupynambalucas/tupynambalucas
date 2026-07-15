@@ -1,0 +1,48 @@
+---
+title: SVG Visual Cards Generation
+sidebar_label: SVG Cards
+sidebar_position: 3
+---
+
+The generator compiles custom SVG visual cards representing developer statistics, languages distribution, and brand headers with absolute visual fidelity.
+
+---
+
+## Generated Visual Cards
+
+### 1. Overview Card (`overview.svg`)
+
+Displays aggregated metric counts (Stars, Forks, All-time Contributions, Lines of Code Changed, Views, and Repositories with Contributions). It uses a CSS animation delay loop where each row animates sequentially with an incrementing delay (`(row_index + 1) * 150` ms).
+
+### 2. Languages Card (`languages.svg`)
+
+Displays language percentages sorted descending by file size.
+
+- **Progress Bar**: Accumulates sizes to show a multi-colored bar. The width percentage is formatted to exactly 3 decimal places in the template markup.
+- **List Items**: Individual list markers featuring name, hex color, and percentage formatted to exactly 2 decimal places.
+
+### 3. Header Card (`header.svg`)
+
+A custom styled brand header banner. It loads brand design tokens and dynamically encodes the variable Nunito brand font binary, embedding it as a Base64-encoded string inside the vector output. This allows the custom styled typography to display consistently within GitHub's strict sandbox.
+
+---
+
+## Data Fetching Architecture
+
+To compute these metrics, the TypeScript engine communicates with GitHub through GraphQL and REST.
+
+### GraphQL Yearly Subdivision Strategy
+
+Due to the GitHub API limit of 100 repositories returned per request, a recursive division strategy is applied:
+
+- The engine fetches repositories and contributions year by year.
+- If a query returns exactly 100 repositories, the range is divided by prime factors (2 or 3) into sub-ranges (e.g., 6-month or 3-month blocks).
+- These sub-ranges are queried recursively until the response falls below the 100-repository threshold, preventing data omission.
+
+### Connection Resilience & API Retry Loop
+
+Unlike legacy solutions, the modern rendering engine features robust network protection:
+
+- **Exponential Backoff**: If GitHub is compiling statistics or rate limits are triggered, the engine waits and retries using exponential delays.
+- **Up to 10 Retries**: The engine retries up to 10 times on network or API failures before reporting errors.
+- **Prohibition of Git Clone Fallbacks**: Local git-clone operations are strictly prohibited inside the renderer package to guarantee lightweight CI/CD tasks and prevent bloating build environments. All data is gathered exclusively through direct, secured API connections.
