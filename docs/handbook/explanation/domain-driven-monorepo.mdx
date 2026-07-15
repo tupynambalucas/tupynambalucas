@@ -1,0 +1,117 @@
+---
+title: Domain-Driven Monorepos
+sidebar_label: Domain-Driven Monorepos
+sidebar_position: 2
+---
+
+### Domain-Driven Monorepo Architecture
+
+The scalability of enterprise software ecosystems often faces two primary bottlenecks: the cognitive complexity of the business domain, and the friction imposed by codebase management infrastructure. As organizations grow, microservices distributed across multiple repositories (multirepos) or monolithic structures lacking clear boundaries tend to incur unsustainable technical debt.
+
+The convergence of Domain-Driven Design (DDD)—specifically the strategic pattern of **Bounded Contexts**—and **Monorepo** architectures offers an elegant solution. By mapping logical business domains directly to physical folder boundaries, we establish an automated governance model that secures code reuse while ensuring independent evolution. This document details how `tupynambalucas.dev` materializes strategic domain-driven design within its monorepo.
+
+---
+
+## 1. Domain-Driven Design (DDD) strategic foundations
+
+DDD aligns a software system's internal code model with the real-world business domains it supports. It rejects the fallacy of a single, unified canonical model across an entire system. Attempting to force a single definition for concepts like "Customer" or "Asset" across different departments leads to bloated, fragile code models.
+
+### 1.1 Concept Polysemy
+
+The phenomenon of polysemy (where a single term has multiple meanings depending on context) is the main catalyst for adopting Bounded Contexts. Forcing a single class or entity to serve multiple business interests violates the Single Responsibility Principle and causes tight coupling.
+
+In our monorepo, the concept of an **"Asset"** has completely different definitions depending on the context:
+
+- **Studio Context (`studio/`)**: An asset is a raw vector source file (Illustrator `.ai`, Blender `.blend`, PSD) or a compiled high-resolution raster image stored in Cloudflare R2.
+- **Renderer Context (`renderer/`)**: An asset is a dynamic, theme-aware, base64-encoded inline font asset or an SVG card compiled dynamically to bypass iframe sandboxes.
+- **Hub Context (`hub/`)**: An asset is a static, public CDN-cached URL serving portfolio content to the user's browser.
+
+Rather than creating a bloated, global `Asset` definition, each context maintains its own specialized representation, completely isolated from others.
+
+### 1.2 The Bounded Context
+
+A Bounded Context defines the explicit boundary inside which a domain model is valid. Inside this boundary, our Ubiquitous Language has precise and indisputable meanings. Within each bounded context in `tupynambalucas.dev`:
+
+- Domain terminologies are highly aligned with technical schemas, variables, and specs.
+- Developers have complete ownership and autonomy over the lifecycle of their context.
+- External contexts are completely shielded from internal implementation changes.
+
+---
+
+## 2. Strategic Mappings in the Monorepo
+
+We categorize our contexts using DDD tactical classifications to prioritize technical investment and architecture:
+
+| Context                    | Strategic Classification | Architectural Approach                                                                                      |
+| :------------------------- | :----------------------- | :---------------------------------------------------------------------------------------------------------- |
+| **Renderer (`renderer/`)** | **Core Domain**          | Proprietary document compilation pipeline built with TypeScript and zero-dependency base64 embedded assets. |
+| **Hub (`hub/`)**           | **Core Domain**          | Personal portfolio web app, Fastify API, and data contract packages with strict schema validations.         |
+| **Studio (`studio/`)**     | **Supporting Domain**    | Brand identity master vault, design tokens library, and R2 bucket command-line synchronizer.                |
+| **Platform (`platform/`)** | **Generic Domain**       | Go-based AgentGateway proxy, OpenTelemetry monitoring collector, and Turborepo cache servers.               |
+
+---
+
+## 3. Physical Workspace Organization (PNPM Workspaces)
+
+While DDD dictates the logical grouping of concepts, our monorepo provides the physical topology. We use **pnpm workspaces** to orchestrate dependencies, establishing a single source of truth for packages while ensuring strict logical separation.
+
+### 3.1 Folder Topology
+
+Our folder layout directly mirrors our Bounded Context map:
+
+```text
+tupynambalucas/
+├── hub/                      # Hub Context (Portfolio Web & API)
+│   ├── services/web/         # Web Application (React)
+│   ├── services/api/         # API Backend (Fastify)
+│   └── packages/core/        # Data validation contracts (Zod)
+├── renderer/                 # Renderer Context (Asset & Document Pipeline)
+├── studio/                   # Studio Context (Design System & Master Assets)
+│   └── assets/               # CSS Tokens, SVG Logos, & CLI Synchronizer
+├── platform/                 # Platform Context (Gateway, OTel, Cache)
+├── tools/                    # Tools Context (AI Agents & MCP Servers)
+└── docs/                     # Docs Hub Context (Docusaurus)
+```
+
+We completely reject the anti-pattern of a global, catch-all `utils/` directory at the root. Such folders invariably degrade into systemic dumping grounds, triggering unnecessary global builds and violating logical boundaries. Any utility must remain encapsulated inside its origin context.
+
+### 3.2 Workspace Dependency Isolation
+
+Workspaces declare internal dependencies explicitly using the `workspace:*` protocol. This prevents the resolving of internal packages through public registries and forces local symlinking. Under pnpm, this hard-linking architecture rejects phantom dependencies, ensuring a package can only import what is explicitly declared inside its own local `package.json`.
+
+---
+
+## 4. Context Mapping & Integration
+
+Bounded Contexts do not operate in absolute isolation; they must communicate through explicit relational patterns.
+
+### 4.1 Shared Kernel (Nucleu Partilhado)
+
+The **Shared Kernel** pattern is utilized when contexts share a stable portion of domain schemas or variables. In our system, **`@tupynambalucas-studio/design`** acts as a Shared Kernel. Both `@tupynambalucas-hub/web` and `@tupynambalucas/renderer` import design tokens and SVG icons directly from this package.
+
+Any change to these tokens triggers immediate build-time verification across both downstream consumer contexts, ensuring systemic visual consistency.
+
+### 4.2 Anti-Corruption Layer (ACL)
+
+When a clean context must consume complex or raw external services, we introduce an **Anti-Corruption Layer (ACL)** to translate external inputs into the consumer's clean domain language.
+
+Our **`AgentGateway`** (under `/platform`) acts as a network-level ACL. Downstream AI agent containers in `tools/` execute complex, non-standard MCP commands. Instead of coupling the agents to raw endpoints, they communicate through the clean, federated `AgentGateway` Go-ingress proxy, which translates and routes payloads seamlessly.
+
+---
+
+## 5. Architectural Layering & Enforcement
+
+We enforce structural modularity dynamically to prevent spaghetti imports and ensure architecture integrity.
+
+### 5.1 Vertical vs. Horizontal Layering
+
+- **Vertical Boundaries**: Dictated by root workspace directories (e.g., code under `hub/` cannot perform direct, deep imports of file systems under `renderer/`).
+- **Horizontal Layering**: Internal architectural layers. For instance, the `@tupynambalucas-hub/web` (UI/Feature layer) is completely decoupled from `@tupynambalucas-hub/core` (Domain model layer), forcing the dependency flow downward.
+
+### 5.2 Automated Boundary Enforcement
+
+Left to social discipline alone, architectural boundaries will eventually decay under release pressure. We enforce boundaries programmatically using:
+
+- **Strict Linting Rules**: Configuring import boundary checkers to block illegal imports across domains.
+- **Dependency Cruising**: Utilizing topologist toolings to audit entire import graphs, blocking circular dependencies, and eliminating dead code.
+- **Type-only Imports**: Enforcing type safety by importing contracts dynamically rather than importing physical class implementations.

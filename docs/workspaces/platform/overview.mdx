@@ -1,0 +1,64 @@
+---
+title: Platform Workspace Overview
+sidebar_label: Overview
+sidebar_position: 1
+slug: /platform
+---
+
+The Platform workspace centralizes and manages the operational, always-running platform utilities supporting local development, continuous integration, and telemetry aggregation.
+
+---
+
+## Architecture Overview
+
+The platform workspace manages three core runtime services:
+
+1. **AgentGateway**: A Go-based federation proxy that acts as the entry point for Model Context Protocol (MCP) clients. It routes and aggregates commands sent to downstream MCP containers.
+2. **otel-collector**: An OpenTelemetry Collector that aggregates telemetry metrics, logs, and distributed traces, exporting them to Grafana Cloud and Sentry.
+3. **turbocache**: A high-performance local cache server that stores Turborepo cache artifacts, drastically speeding up compilation and testing pipelines.
+
+---
+
+## Directory Layout
+
+```text
+platform/
+├── infrastructure/
+│   └── docker/          # Docker Compose configurations (compose.yaml, compose.prod.yaml)
+├── services/
+│   ├── agentgateway/    # Configurations for Go-based AgentGateway
+│   ├── monitor/         # Configuration schemas for the OTLP Collector
+│   └── turbocache/      # Dockerfiles and caching logic
+├── package.json         # Workspace package manifest with platform commands
+└── AGENTS.md            # Scoped developer and AI guidelines
+```
+
+---
+
+## Platform Guardrails
+
+:::info[Service Independence]
+Services in this workspace should expose generic endpoints and avoid tight coupling with specific application logic.
+:::
+
+- **Docker Orchestration**: Always launch services using the scoped commands defined below. Never run container dependencies manually.
+- **Internal Telemetry**: The OpenTelemetry Collector (`otel-collector`) serves as the single entry point for developer telemetry. All runtime platform applications MUST forward stats using OTLP protocols.
+- **Volume Persistence**: Turborepo cache files and OpenTelemetry state directories must map to local host directories to prevent data loss between rebuilds.
+
+---
+
+## Local Operations
+
+All operations are run from the repository root directory:
+
+| Environment     | Action      | Command                       |
+| :-------------- | :---------- | :---------------------------- |
+| **Development** | Start Stack | `pnpm platform:dev:up`        |
+| **Development** | Stop Stack  | `pnpm platform:dev:down`      |
+| **Development** | Reset Data  | `pnpm platform:dev:reset`     |
+| **Production**  | Start Stack | `pnpm platform:prod:up`       |
+| **Production**  | Stop Stack  | `pnpm platform:prod:down`     |
+| **Production**  | Reset Data  | `pnpm platform:prod:reset`    |
+| **Staging**     | Start Stack | `pnpm platform:staging:up`    |
+| **Staging**     | Stop Stack  | `pnpm platform:staging:down`  |
+| **Staging**     | Reset Data  | `pnpm platform:staging:reset` |

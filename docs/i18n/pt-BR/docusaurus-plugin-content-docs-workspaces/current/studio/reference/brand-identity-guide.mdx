@@ -1,0 +1,117 @@
+---
+title: Guia de Identidade de Marca
+sidebar_label: Guia de Identidade de Marca
+sidebar_position: 6
+---
+
+### Guia Abrangente de Identidade de Marca
+
+Este documento estabelece a estrutura oficial de identidade de marca para o monorepo `tupynambalucas.dev`. Ele detalha as bases da marca, a filosofia de design principal, as regras de mensagens e os requisitos visuais padronizados que regem todos os ativos visuais do studio e as interfaces frontend consumidoras.
+
+---
+
+## 1. Fundamentos da Marca
+
+Nossos fundamentos de marca definem o núcleo crítico de quem somos, garantindo que cada decisão técnica e de design esteja estruturalmente alinhada com nossos objetivos de engenharia.
+
+### 1.1 O Coração da Marca
+
+- **Propósito:** Demonstrar práticas modernas de desenvolvimento de software full-stack, utilizando tipagem estática estrita, arquitetura limpa e pipelines automatizados e containerizados.
+- **Visão:** Um ecossistema de desenvolvedores onde a precisão arquitetural, a observabilidade do sistema e a identidade da marca se unem em uma experiência premium unificada.
+- **Missão:** Construir utilitários sólidos de código aberto, plataformas de desenvolvimento e documentação técnica que eduquem, capacitem e inspirem desenvolvedores.
+- **Valores:** Segurança de tipos, disciplina arquitetural, automação robusta, transparência e paridade entre design e código.
+
+### 1.2 Nome da Marca
+
+- **Nome Canônico da Marca:** `tupynambalucas.dev`
+- **Formato:** Rigorosamente em letras minúsculas ao se referir ao domínio web ou aos namespaces de workspace do monorepo. Para referências técnicas, aplicam-se as convenções padrão camelCase ou kebab-case.
+
+### 1.3 Tom de Voz e Essência
+
+- **Tom:** Profissional, preciso, analítico e focado em código. Rejeitamos completamente jargões de marketing, promessas vagas de desempenho e textos de alta pressão comercial.
+- **Alinhamento Pragmático:** Listamos explicitamente as restrições do sistema, compensações arquiteturais e limitações de design dentro de nossos guias para manter a credibilidade técnica.
+
+---
+
+## 2. Sistema de Design de Identidade Visual
+
+Nossa marca segue um sistema de design rigoroso. O layout visual utiliza alinhamentos limpos baseados em grades, formas técnicas estruturais e uma escala de tipografia altamente focada.
+
+### 2.1 Paleta de Cores e Tríade
+
+O esquema de cores utiliza uma paleta padrão focada no desenvolvedor (modo escuro por padrão), apoiada por cores de sistema que representam segurança de tipos, alertas do compilador e hierarquias lógicas.
+
+| Nome da Cor      | Código Hex | Função       | Uso e Significado Estratégico                                                                |
+| :--------------- | :--------- | :----------- | :------------------------------------------------------------------------------------------- |
+| **Deep Indigo**  | `#4C4D9A`  | Principal    | Representa estabilidade do backend, arquitetura focada em lógica e profundidade do sistema.  |
+| **Royal Blue**   | `#2E55A3`  | Secundária   | Representa segurança de tipos, integrações de rede e telemetria contínua.                    |
+| **Dusty Violet** | `#AA77A7`  | Destaque/CTA | Destaca alertas do compilador, gatilhos de interação e links técnicos essenciais.            |
+| **Deep Dark**    | `#0F0F0F`  | Fundo Escuro | Cor de fundo padrão, mimetizando os espaços de trabalho modernos de IDEs de desenvolvimento. |
+| **Light Ice**    | `#F6F6F7`  | Fundo Claro  | Fundo claro básico para materiais impressos de alto contraste ou leitura diurna.             |
+
+---
+
+## 3. Tipografia e Legibilidade
+
+A tipografia é um pilar essencial da nossa marca. Utilizamos uma família tipográfica de peso variável e altamente legível, otimizada para exibição de código e conteúdo técnico.
+
+### 3.1 Fonte Principal da Marca
+
+- **Família de Fontes Principal:** `Nunito`
+- **Formato:** Fonte Variável (container `woff2`).
+- **Pilha de Fallback:** `system-ui, -apple-system, sans-serif`.
+
+### 3.2 Injeção de Fonte em Base64 à Prova de Sandbox
+
+Para garantir que nossos gráficos visuais, cartões de perfil do GitHub e documentos SVG renderizados dinamicamente apareçam com fidelidade absoluta de pixels dentro de quadros HTML isolados (que bloqueiam chamadas externas de fontes via CDN):
+
+- Todos os ativos da fonte variável `Nunito` são codificados em base64 e incorporados diretamente dentro dos cabeçalhos de estilo do SVG.
+- Essa integração de fonte sem dependências externas garante que a tipografia de nossa marca seja renderizada corretamente em qualquer ambiente sandbox.
+
+---
+
+## 4. Padrões e Diretrizes de Ativos de Marca
+
+### 4.1 Variações e Sufixos do Logotipo
+
+Nossas marcas são altamente versáteis, simples e alinhadas vetorialmente. Elas seguem convenções estritas de nomenclatura para facilitar o consumo automatizado pelo empacotador:
+
+- **Logotipo Completo Horizontal:** Logotipo completo combinado com o símbolo da marca (`logo-horizontal-[variante].svg`).
+- **Símbolo / Ícone da Marca:** O ícone geométrico isolado (`logo-mark-[variante].svg`).
+
+#### Categorias de Variantes:
+
+- **`positive`:** Versão escura sólida (cinza escuro ou preto) otimizada para superfícies claras.
+- **`negative`:** Versão branca sólida invertida otimizada para fundos escuros.
+- **`gradient`:** Nossa assinatura visual com transição de cor linear de índigo para violeta.
+
+### 4.2 Política de Armazenamento e Distribuição de Arquivos
+
+- **Arquivos Vetoriais SVG:** Enviados diretamente ao Git dentro de `studio/assets/src/brand/logos/`. SVGs representam elementos de texto leves e podem ser compilados diretamente como componentes React.
+- **Ativos Binários e PNGs:** Ignorados pelo Git para evitar o inchaço do repositório. Eles são sincronizados com o nosso armazenamento de bucket Cloudflare R2 por meio do utilitário de CLI (`pnpm studio:bucket`).
+
+---
+
+## 5. Diretrizes de Implementação e Lançamento
+
+### 5.1 Tokens de Design
+
+Todas as cores, pesos tipográficos, espaçamentos e tempos de microtransição são definidos dentro de nossos arquivos de estilo compatíveis com o Tailwind no pacote studio:
+
+```typescript
+// @tupynambalucas-studio/design/tokens/colors.ts
+export const colors = {
+  indigo: '#4C4D9A',
+  blue: '#2E55A3',
+  violet: '#AA77A7',
+  dark: '#0F0F0F',
+  ice: '#F6F6F7',
+};
+```
+
+Esses tokens regem nosso cliente web, os pipelines do motor de renderização e pacotes de UI, garantindo alinhamento completo com nossos designs no Figma ou Penpot.
+
+### 5.2 Manutenção da Marca
+
+- **Guardião da Marca:** Os pacotes `@tupynambalucas/renderer` e `@tupynambalucas-studio/design` contêm verificações de CI automatizadas para evitar o uso de cores fora da paleta oficial.
+- **Atualizações:** Qualquer alteração visual em paletas ou tipografia deve primeiro ser atualizada dentro da biblioteca de tokens de design antes de ser implantada nos serviços downstream.

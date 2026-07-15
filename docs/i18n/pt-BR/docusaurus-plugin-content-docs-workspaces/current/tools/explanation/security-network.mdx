@@ -1,0 +1,31 @@
+---
+title: Segurança de IA & Redes
+sidebar_label: Segurança & Redes
+sidebar_position: 4
+---
+
+### Infraestrutura Isolada & Roteamento de Rede
+
+A segurança e a previsibilidade do ambiente são mantidas através de redes bridge isoladas do Docker, impedindo o acesso não autorizado entre redes e isolando os processos de agentes em execução do acesso direto ao sistema hospedeiro.
+
+---
+
+## Arquitetura de Rede & Topologias
+
+As ferramentas downstream e os containers de agentes são divididos em redes bridge distintas e isoladas do Docker:
+
+- **`tupynambalucas-agents-net`**: Rede de sandbox dedicada onde os containers dos agentes de IA (por exemplo, terminais Google Antigravity ou CLI do GitHub Copilot) executam comandos. Isso evita que as tarefas acessem outras ferramentas internas diretamente.
+- **`tupynambalucas-mcp-net`**: Rede interna que abriga containers de servidores downstream do Model Context Protocol (MCP) (como as APIs do GitHub, Firecrawl ou Context7).
+- **`tupynambalucas-platform-net`**: Rede global da plataforma que hospeda o gateway de entrada central escrito em Go.
+
+---
+
+## Configuração de Roteamento do AgentGateway
+
+O **AgentGateway** (localizado no workspace `/platform`) atua como o ponto de entrada único para todos os clientes do Model Context Protocol (MCP) e federa as requisições pelas subredes:
+
+- **Proxy de Entrada Baseado em Go**: Um proxy de federação de alto desempenho escrito em Go serve como o ponto de entrada na máquina hospedeira. Ele roteia e agrega comandos enviados para os containers MCP downstream.
+- **Tratamento de CORS & SSE em Nível de Rede**: O gateway intercepta requisições de preflight e injeta os cabeçalhos CORS apropriados globalmente. Ele desativa os limites de tempo de HTTP (timeouts) padrão nos proxies para evitar que as conexões ativas de Server-Sent Events (SSE) caiam durante tarefas de longa duração.
+- **Roteamento de Domínio Interno**: Dentro da stack do MCP, o gateway é apelidado internamente. Containers de agentes rodando em namespaces de rede separados roteiam requisições diretamente através do gateway via ponte de rede da plataforma.
+- **Ponte Hospedeiro-para-Container**: Clientes de desenvolvimento locais se comunicam com o gateway a partir da interface de loopback da máquina hospedeira usando endpoints limpos de API (por exemplo, `/github/sse`, `/firecrawl/sse`).
+- **Mapeamento de Stream stdio Bufferizado**: O wrapper do adaptador executa processos filhos localmente, evitando a fragmentação do stdout. Ao verificar os `id`s de transação JSON-RPC linha por linha, o adaptador resolve requisições HTTP com payloads completos e sem truncamento.
