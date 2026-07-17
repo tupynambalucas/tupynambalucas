@@ -10,6 +10,15 @@ The shared library ensures architectural consistency within each community insta
 - **Type Safety**: Inferred TypeScript types prevent model drift between the community's API (`@tupynambalucas-hub/api`) and its management/shop portal (`@tupynambalucas-hub/web`).
 - **Logical Separation**: This package is **not** shared with the global portal (`www`). Any shared logic required by the portal or future global services will be housed in dedicated packages to ensure strict separation of concerns.
 
+---
+
+## Directory Layout
+
+- **[src/schemas/](./src/schemas/)**: Central Zod schema definitions for request validation and type safety.
+- **[src/types/](./src/types/)**: Shared static TypeScript type mappings and configurations.
+
+---
+
 ### Documentation
 
 Detailed technical documentation is available in our [Knowledge Base](https://tupynambalucas-docs.pages.dev):

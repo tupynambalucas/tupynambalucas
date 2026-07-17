@@ -30,14 +30,16 @@ To prevent LLMs from executing multiple directory search tools, `AGENTS.md` file
 
 ### A. Clickable Relative Directory Links
 
-- Use standard relative path links to point to child directories or source directories:
-  - Example: `[src/domains/](./src/domains/)`
+- Use standard relative path links to point to child directories or source directories (e.g., [src/domains/](./src/domains/)).
 - Ensure the trailing slash `/` is present for directory links.
 
 ### B. Clickable File Links
 
-- Point to configuration files, tsconfig files, or main package manifests:
-  - Example: `[package.json](./package.json)`
+- Point to configuration files, tsconfig files, or main package manifests (e.g., [package.json](./package.json)).
+
+### C. Clickable Link Formatting
+
+- **Do Not Wrap Links in Backticks**: Clickable relative links MUST NEVER be wrapped in backticks (e.g., `[label](path)`). Surrounding a markdown link structure with backticks prevents it from being parsed as a hyperlink, rendering it as literal code text instead.
 
 ---
 
@@ -47,7 +49,7 @@ To ensure high-fidelity parsing by LLMs, all `AGENTS.md` files must adhere to th
 
 ### A. Explicit Relative Links
 
-- Every referenced file, schema, or configuration directory MUST use clickable relative markdown links (e.g. `[tsconfig.json](./tsconfig.json)` or `[src/domains/](./src/domains/)`) to facilitate rapid tool-based navigation.
+- Every referenced file, schema, or configuration directory MUST use clickable relative markdown links (e.g., [tsconfig.json](./tsconfig.json) or [src/domains/](./src/domains/)) to facilitate rapid tool-based navigation.
 - Absolute file system paths (e.g., `/absolute/path/to/project`, `/projects/...`) and external production web URLs (e.g., `https://github.com/...`, `https://docusaurus.io/...`) MUST NEVER be included inside `AGENTS.md` files. Only local localhost-based development urls are permitted inside orchestration command execution examples.
 
 ### B. Imperative, Rule-Based Phrasing

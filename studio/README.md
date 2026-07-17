@@ -4,6 +4,13 @@ This workspace centralizes brand identity management, design assets, and self-ho
 
 ---
 
+## Directory Layout
+
+- **[bucket/](./bucket/)**: Cloudflare R2 Asset Synchronization CLI tool package.
+- **[design/](./design/)**: Brand identity, assets, design system tokens, and Penpot collaborative design editor configuration.
+
+---
+
 ## Workspace Structure
 
 The workspace is organized into the following sub-packages:
@@ -44,10 +51,20 @@ For synchronizing web-ready assets (e.g., icons, logos) directly with Cloudflare
 ```bash
 # Path: studio/bucket/.env.studio.bucket
 
-S3_API=https://your-cloudflare-r2-endpoint.r2.cloudflarestorage.com/your-bucket-name
-CLOUDFLARE_R2_ACCESS_KEY_ID=your_access_key_id
-CLOUDFLARE_R2_SECRET_ACCESS_KEY=your_secret_access_key
-CLOUDFLARE_R2_PUBLIC_URL=https://your-public-cdn-url.r2.dev
+# Cloudflare R2 account identifier
+CLOUDFLARE_R2_ACCOUNT_ID=your_cloudflare_r2_account_id
+
+# Public Web Assets Bucket Configuration (CI/CD and CDN Safe)
+CLOUDFLARE_R2_ASSETS_ACCESS_KEY_ID=your_cloudflare_r2_assets_access_key_id
+CLOUDFLARE_R2_ASSETS_SECRET_ACCESS_KEY=your_cloudflare_r2_assets_secret_access_key
+CLOUDFLARE_R2_ASSETS_BUCKET_NAME=your_cloudflare_r2_assets_bucket_name
+CLOUDFLARE_R2_ASSETS_PUBLIC_URL=your_cloudflare_r2_assets_public_url
+
+# Private Creative/Design Bucket Configuration (Restricted to Designers)
+CLOUDFLARE_R2_CREATIVE_ACCESS_KEY_ID=your_cloudflare_r2_creative_access_key_id
+CLOUDFLARE_R2_CREATIVE_SECRET_ACCESS_KEY=your_cloudflare_r2_creative_secret_access_key
+CLOUDFLARE_R2_CREATIVE_BUCKET_NAME=your_cloudflare_r2_creative_bucket_name
+CLOUDFLARE_R2_CREATIVE_PUBLIC_URL=your_cloudflare_r2_creative_public_url
 ```
 
 ---

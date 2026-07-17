@@ -5,11 +5,11 @@
   "type": "module",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
   "description": "Tupynambá Lucas Tools Package",
-  "license": "https://github.com/tupynambalucas/codecanvas/tree/main#license",
-  "homepage": "https://github.com/tupynambalucas/codecanvas/tree/main/tools/agents#readme",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/tools/agents#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/codecanvas.git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
     "directory": "tools/agents"
   },
   "scripts": {

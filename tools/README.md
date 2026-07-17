@@ -57,7 +57,15 @@ graph TD
 
 ---
 
-## 3. Global Orchestration Scripts
+## 3. Directory Layout
+
+- **[agents/](./agents/)**: Containerized terminal workspaces (Google Antigravity CLI and GitHub Copilot CLI).
+- **[github/](./github/)**: Git and GitHub CLI containerized workspaces and repository automation.
+- **[mcp/](./mcp/)**: Model Context Protocol (MCP) server-sent event (SSE) gateways and downstream adapters.
+
+---
+
+## 4. Global Orchestration Scripts
 
 All operations are run from the monorepo root folder using workspace-scoped package managers:
 
@@ -65,4 +73,4 @@ All operations are run from the monorepo root folder using workspace-scoped pack
 - **Launch GitHub Tools**: `pnpm github:services:up` (Stops: `pnpm github:services:down`)
 - **Launch Agent Workspaces**: `pnpm agents:up` (Stops: `pnpm agents:down`)
 - **Authenticate Agents**: `pnpm antigravity:auth` / `pnpm copilot:auth`
-- **Execute Auto-scripts**: `pnpm github:generate:changelog` / `pnpm github:generate:roadmap`
+- **Execute Auto-scripts**: `pnpm docs:generate:changelog` / `pnpm docs:generate:roadmap`

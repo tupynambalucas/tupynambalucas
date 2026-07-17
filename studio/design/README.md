@@ -4,6 +4,17 @@ This package houses the centralized brand assets, design tokens, and the Penpot 
 
 ---
 
+## Directory Layout
+
+- **[assets/brand/logos/](./assets/brand/logos/)**: Canonical brand visual logo vector resources.
+- **[assets/icons/](./assets/icons/)**: React wrapper icon components generated from raw vector configurations.
+- **[assets/tokens/](./assets/tokens/)**: Global CSS variables, styling setups, and colors.
+- **[creative/](./creative/)**: Graphic raw vectors and creative assets storage.
+- **[infrastructure/docker/](./infrastructure/docker/)**: Multi-profile Docker compose files and setup configurations for Penpot.
+- **[services/](./services/)**: Multi-container service definitions for Valkey, postgres, frontend/backend, and aide assistant.
+
+---
+
 ## Workspace Structure
 
 The package is split into visual identity assets and self-hosted design tool configurations:

@@ -1,6 +1,15 @@
 # Workspace Context: Studio Bucket Synchronizer
 
-This file establishes the localized rules, stack-specific standards, and engineering guardrails for AI agents working within the `@tupynambalucas-studio/bucket` asset synchronization tool (`[studio/bucket/](./)`).
+This file establishes the localized rules, stack-specific standards, and engineering guardrails for AI agents working within the `@tupynambalucas-studio/bucket` asset synchronization tool ([studio/bucket/](./)).
+
+---
+
+## Directory Layout
+
+- **[src/application/](./src/application/)**: Coordinates the main sync sequence by comparing file sizes and MD5 hashes to prevent redundant writes.
+- **[src/config/](./src/config/)**: Loads, parses, and validates the synchronizer variables from `.env.studio.bucket`.
+- **[src/services/](./src/services/)**: S3 storage integrations and glob filesystem discovery implementations.
+- **[src/infrastructure/cli/](./src/infrastructure/cli/)**: Interactive console push/pull commands orchestration.
 
 ---
 

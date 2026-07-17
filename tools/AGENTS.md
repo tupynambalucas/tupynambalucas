@@ -4,7 +4,15 @@ This workspace context ([tools/](./)) orchestrates developer helper tools, Model
 
 ---
 
-## 1. Scoped Workspaces and Entry Points
+## 1. Directory Layout
+
+- **[agents/](./agents/)**: Containerized terminal workspaces (Google Antigravity CLI and GitHub Copilot CLI).
+- **[github/](./github/)**: Git and GitHub CLI containerized workspaces and repository automation.
+- **[mcp/](./mcp/)**: Model Context Protocol (MCP) server-sent event (SSE) gateways and downstream adapters.
+
+---
+
+## 2. Scoped Workspaces and Entry Points
 
 AI agents operating within the tools directory must consult the localized specifications of each child workspace before performing modifications:
 

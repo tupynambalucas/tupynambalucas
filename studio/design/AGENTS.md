@@ -1,17 +1,17 @@
 # Local Context: Studio Design & Penpot Hub
 
-This workspace (`[studio/design/](./)`) configures, hosts, and deploys the self-hosted collaborative design services (Penpot) and manages the shared design assets (icons, brand logos, three.js vectors, and design tokens) under `@tupynambalucas-studio/design`.
+This workspace ([studio/design/](./)) configures, hosts, and deploys the self-hosted collaborative design services (Penpot) and manages the shared design assets (icons, brand logos, three.js vectors, and design tokens) under `@tupynambalucas-studio/design`.
 
 ---
 
 ## Local Architecture & Directory Map
 
-- **`[assets/](./assets/)`**: Centralized design system components, icons, theme configurations, and tokens.
-  - `assets/tokens/`: Color systems, tokens, and CSS properties.
-  - `assets/icons/`: Shared icon components.
-  - `assets/brand/logos/`: Canonical brand logo assets.
-- **`[infrastructure/docker/](./infrastructure/docker/)`**: Centralized Docker Compose files (`compose.yaml`, `compose.override.yaml`, `compose.prod.yaml`) and environment files (`.env.dev`, `.env.prod`, `.env.staging`) for orchestrating the Penpot services.
-- **`[services/](./services/)`**: Custom service configurations and Dockerfiles for `frontend`, `backend`, `exporter`, `valkey`, and `aide`.
+- **[assets/brand/logos/](./assets/brand/logos/)**: Canonical brand visual logo vector resources.
+- **[assets/icons/](./assets/icons/)**: React wrapper icon components generated from raw vector configurations.
+- **[assets/tokens/](./assets/tokens/)**: Global CSS variables, styling setups, and colors.
+- **[creative/](./creative/)**: Graphic raw vectors and creative assets storage.
+- **[infrastructure/docker/](./infrastructure/docker/)**: Multi-profile Docker compose files and setup configurations for Penpot.
+- **[services/](./services/)**: Multi-container service definitions for Valkey, postgres, frontend/backend, and aide assistant.
 
 ---
 
@@ -30,7 +30,7 @@ This workspace (`[studio/design/](./)`) configures, hosts, and deploys the self-
 1. **Volume Mappings**:
    - AI agents MUST ALWAYS ensure that database assets (PostgreSQL) and session volumes are correctly bound to avoid design data loss during container restarts or updates.
 2. **S3 Assets Persistence**:
-   - The Penpot application uses S3-compatible object storage to persist assets and uploads. AI agents MUST verify that S3 configurations (`PENPOT_BUCKET_NAME`, credentials) are loaded correctly from local env properties.
+   - The Penpot application uses S3-compatible object storage to persist assets and uploads. AI agents MUST verify that S3 configurations (`PENPOT_OBJECTS_STORAGE_S3_BUCKET`, credentials) are loaded correctly from local env properties.
 3. **Port Collisions**:
    - Penpot services run on host port `9005` by default. AI agents MUST NEVER change this port in dev compose files to ensure smooth routing.
 

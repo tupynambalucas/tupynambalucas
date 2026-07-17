@@ -1,15 +1,24 @@
 # Model Context Protocol (MCP) Ecosystem
 
-This workspace houses the containerized gateway and backend services for Model Context Protocol (MCP) tooling inside the tupynambalucas.dev infrastructure.
+This workspace houses the containerized downstream backend services for Model Context Protocol
+(MCP) tooling inside the tupynambalucas.dev infrastructure.
 
 ## Architecture Overview
 
-The ecosystem operates on a modern AgentGateway proxy model using federation:
+The ecosystem operates on a federated AgentGateway proxy model:
 
-1.  **AgentGateway:** An official Go-based proxy service (`cr.agentgateway.dev/agentgateway`) that intercepts and federates MCP traffic. It exposes port `8080` for AI clients (like Google Antigravity) and port `15000` for its Web UI Playground.
-2.  **Downstream MCP Servers:** Each MCP container either natively supports HTTP/SSE (like Grafana) or uses `mcp-proxy` to wrap stdio-based CLI binaries and expose them via HTTP/SSE.
-3.  **Federation (Single Endpoint):** Clients don't need to connect to each server individually. The AgentGateway aggregates tools from all upstream servers (GitHub, Context7, DockerHub, Firecrawl, Grafana) and presents them as a single unified MCP endpoint.
-4.  **Isolated Bridge Network:** Services communicate internally over the bridge network `tupynambalucas-mcp-net`. The Gateway also connects to `tupynambalucas-monitor-net` to push OpenTelemetry logs/traces.
+1.  **AgentGateway:** A Go-based proxy service (`cr.agentgateway.dev/agentgateway`) located in the
+    platform workspace at `[platform/services/agentgateway/](../../platform/services/agentgateway/)`
+    that intercepts and federates MCP traffic. It exposes port `8080` for AI clients (like Google
+    Antigravity) and port `15000` for its Web UI Playground.
+2.  **Downstream MCP Servers:** Each MCP container either natively supports HTTP/SSE (like Grafana)
+    or uses `mcp-proxy` to wrap stdio-based CLI binaries and expose them via HTTP/SSE on port `8080`.
+3.  **Federation (Single Endpoint):** Clients connect to the AgentGateway endpoint, which aggregates
+    tools from all downstream backend servers (GitHub, Context7, DockerHub, Firecrawl, Grafana)
+    and presents them as a single unified MCP endpoint.
+4.  **Isolated Bridge Network:** Services communicate internally over the bridge network
+    `tupynambalucas-mcp-net`. The Gateway (orchestrated under `@tupynambalucas/platform`) connects to
+    this network to route request traffic.
 
 ```
                   +-----------------------------------------+
@@ -20,14 +29,16 @@ The ecosystem operates on a modern AgentGateway proxy model using federation:
                   +--------------------|--------------------+
                                        | HTTP / SSE
                                        v Port 8080 (/mcp/http)
-                  +--------------------|--------------------+
-                  |            tupynambalucas-mcp Stack            |
+                  +-----------------------------------------+
+                  |             Platform Stack              |
                   |     +--------------v--------------+     |
-                  |     |       AgentGateway          |     |
-                  |     |     (tupynambalucas-mcp-gateway)  |     |
+                  |     |         AgentGateway        |     |
+                  |     |  (tupynambalucas-agentgateway)|    |
                   |     +--------------+--------------+     |
-                  |                    |                    |
-                  |                    | tupynambalucas-mcp-net    |
+                  +--------------------|--------------------+
+                                       | tupynambalucas-mcp-net
+                  +--------------------v--------------------+
+                  |            tools/mcp Stack              |
                   |      +-------------+-------------+      |
                   |      |                           |      |
                   |      v Port 8080                 v Port 8080
@@ -41,15 +52,21 @@ The ecosystem operates on a modern AgentGateway proxy model using federation:
 
 ## Directory Layout
 
-- `infrastructure/docker/`: Contains the orchestration file (`compose.yaml`) and environment configurations (`.env.*`).
-- `gateway/`: Gateway server configuration (`config.yaml`).
-- `services/`: Containerized setups and Dockerfiles for the downstream servers (GitHub, Context7, DockerHub, Firecrawl, Grafana).
+- **[infrastructure/docker/](./infrastructure/docker/)**: Contains the Docker Compose file
+  ([compose.yaml](./infrastructure/docker/compose.yaml)) and environment profiles (`.env.*`).
+- **[services/](./services)**: Containerized setups and Dockerfiles for the downstream servers
+  (GitHub, Context7, DockerHub, Firecrawl, Grafana).
+
+> [!NOTE]
+> The gateway orchestration and configuration are managed inside the platform workspace under
+> [platform/services/agentgateway/](../../platform/services/agentgateway/) and
+> [platform/infrastructure/docker/](../../platform/infrastructure/docker/).
 
 ---
 
 ## Configuration & Environment Files
 
-Settings are managed via a global environment file in `infrastructure/docker/`.
+Settings are managed via env files located in [infrastructure/docker/](./infrastructure/docker/).
 
 ### Reference Variables
 
@@ -66,17 +83,22 @@ Settings are managed via a global environment file in `infrastructure/docker/`.
 
 Run these scripts from the monorepo root:
 
-- `pnpm mcp:dev:up`: Launches the gateway and all downstream MCP containers in dev mode.
+- `pnpm mcp:dev:up`: Launches the downstream MCP containers in dev mode.
 - `pnpm mcp:dev:down`: Stops and removes the MCP stack.
 - `pnpm mcp:dev:reset`: Prunes volumes, rebuilds the containers, and restarts the environment.
-
-_(Equivalent commands exist for `prod` and `staging` profiles)._
+- `pnpm mcp:prod:up`: Launches the downstream MCP containers in prod mode.
+- `pnpm mcp:prod:down`: Stops and removes the prod MCP stack.
+- `pnpm mcp:prod:reset`: Prunes volumes, rebuilds, and restarts the prod environment.
+- `pnpm mcp:staging:up`: Launches the downstream MCP containers in staging mode.
+- `pnpm mcp:staging:down`: Stops and removes the staging MCP stack.
+- `pnpm mcp:staging:reset`: Prunes volumes, rebuilds, and restarts the staging environment.
 
 ---
 
 ## Client Connection Mapping
 
-For standard IDE extensions or local command-line runners (e.g., Google Antigravity CLI on the host), map the single gateway path inside your `.agents/mcp_config.json`:
+For standard IDE extensions or local command-line runners (e.g., Google Antigravity CLI on the host),
+map the single gateway path inside your `.agents/mcp_config.json`:
 
 ```json
 {

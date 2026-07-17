@@ -69,7 +69,9 @@ For ordered instructions, use lazy numbering (`1.`) for all list items. This all
 
 ### D. File and Directory References
 
-- When mentioning a file path or directory within text, always use inline code syntax and include a relative link using the `file://` scheme or standard markdown relative links.
+- When mentioning a file path or directory as a link, use relative markdown links.
+- **Link Formatting constraint**: NEVER wrap the entire markdown link structure in backticks (e.g., `[file.ts](./file.ts)`). This renders the literal markdown text of the link inside a code inline block, making it unclickable.
+- **Monospace Styling**: If monospace formatting is required for the path or file label, place the backticks inside the brackets: `[`file.ts`](./file.ts)`. For maximum cleanliness, plain links without backticks are preferred.
 - Example: Refer to [extension/packages/core/src/index.ts](../../../../../extension/packages/core/src/index.ts) for details.
 
 ### E. Unordered Lists Formatting
