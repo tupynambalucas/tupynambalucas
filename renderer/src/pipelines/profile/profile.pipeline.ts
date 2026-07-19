@@ -56,22 +56,15 @@ export const githubProfilePipeline: Pipeline = {
     console.info(`Reading static header template from ${staticHeaderSrcPath}...`);
     const headerSvgContent = readFileSync(staticHeaderSrcPath, 'utf8');
 
-    // For local mode, write separate files. For CI mode, we will write/upload the adaptive one.
+    // Write the single header file.
     if (localMode) {
-      console.info(`Writing local light header to ${join(cardsDir, 'github-header-light.svg')}...`);
-      writeFileSync(join(cardsDir, 'github-header-light.svg'), headerSvgContent, 'utf8');
-
-      console.info(`Writing local dark header to ${join(cardsDir, 'github-header-dark.svg')}...`);
-      const darkHeaderSvg = headerSvgContent.replace(
-        /#gh-dark-mode-only:target/g,
-        '#gh-dark-mode-only',
-      );
-      writeFileSync(join(cardsDir, 'github-header-dark.svg'), darkHeaderSvg, 'utf8');
+      console.info(`Writing local header to ${join(cardsDir, 'github-header.svg')}...`);
+      writeFileSync(join(cardsDir, 'github-header.svg'), headerSvgContent, 'utf8');
     } else {
       const staticDir = join(cardsDir, 'static');
       mkdirSync(staticDir, { recursive: true });
       const headerOutPath = join(staticDir, 'github-header.svg');
-      console.info(`Writing production adaptive header to ${headerOutPath}...`);
+      console.info(`Writing production header to ${headerOutPath}...`);
       writeFileSync(headerOutPath, headerSvgContent, 'utf8');
     }
 
@@ -95,11 +88,7 @@ export const githubProfilePipeline: Pipeline = {
 
     // Header image markdown tag
     const headerImage = config.isGitHubAction
-      ? `<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="${assetsBaseUrl}/static/github-header.svg${urlSuffix}#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="${assetsBaseUrl}/static/github-header.svg${urlSuffix}" />
-    <img alt="Tupynambá Lucas" src="${assetsBaseUrl}/static/github-header.svg${urlSuffix}" width="100%" />
-  </picture>`
+      ? `<img alt="Tupynambá Lucas" src="${assetsBaseUrl}/static/github-header.svg${urlSuffix}" width="100%" />`
       : `<img alt="Tupynambá Lucas" src="${assetsBaseUrl}/github-header.svg" width="100%" />`;
 
     const overviewImages = config.isGitHubAction
@@ -165,7 +154,7 @@ export const githubProfilePipeline: Pipeline = {
         // 1. Generate Light Mode Preview Document
         const lightReadmeData = {
           ...readmeData,
-          headerImage: `<img alt="Tupynambá Lucas" src="../../cards/github-header-light.svg" width="100%" />`,
+          headerImage: `<img alt="Tupynambá Lucas" src="../../cards/github-header.svg" width="100%" />`,
           overviewImages: `<img alt="${stats.name}'s GitHub Stats" src="../../cards/overview-light.svg" height="200px" />`,
           languagesImages: `<img alt="Languages Used" src="../../cards/languages-light.svg" height="200px" />`,
         };
@@ -178,7 +167,7 @@ export const githubProfilePipeline: Pipeline = {
         // 2. Generate Dark Mode Preview Document
         const darkReadmeData = {
           ...readmeData,
-          headerImage: `<img alt="Tupynambá Lucas" src="../../cards/github-header-dark.svg" width="100%" />`,
+          headerImage: `<img alt="Tupynambá Lucas" src="../../cards/github-header.svg" width="100%" />`,
           overviewImages: `<img alt="${stats.name}'s GitHub Stats" src="../../cards/overview-dark.svg" height="200px" />`,
           languagesImages: `<img alt="Languages Used" src="../../cards/languages-dark.svg" height="200px" />`,
         };
