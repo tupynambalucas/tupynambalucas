@@ -1,15 +1,16 @@
 <!-- Note: This profile README is dynamically updated by the TypeScript-based generator in the ./renderer workspace -->
+
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/header-dark.svg?raw=true#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/header-light.svg?raw=true" />
-    <img alt="Hi! I'm Tupynambá Lucas" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/header-light.svg?raw=true" width="750" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/github-header.svg?raw=true#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/github-header.svg?raw=true" />
+    <img alt="Tupynambá Lucas" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/github-header.svg?raw=true" width="100%" />
   </picture>
 </div>
 
 <br />
 
-<p align="center">
+<p align="left">
   A <b>Full-Stack Developer</b> with a rare profile that merges over 10 years of programming studies with a deep sensitivity for design and UX/UI. My expertise lies in architecting end-to-end digital solutions, developing high-performance applications with TypeScript, and strategically selecting the optimal database technology — PostgreSQL for relational structures or MongoDB for high-flexibility scenarios — to ensure the final product's scalability and efficiency.
 </p>
 
