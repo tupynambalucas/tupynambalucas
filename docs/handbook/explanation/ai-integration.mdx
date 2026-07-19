@@ -16,8 +16,8 @@ For a high-level view of how AI tools and design systems fit into the global mon
 
 Our AI integration specifically relies on three major pillars:
 
-1. **MCP Ecosystem (`tools/mcp`)**: Exposes the codebase and critical host tools (GitHub, browser, dependencies documentation) to active LLM sessions through Server-Sent Events (SSE) gateways.
-2. **Containerized Developer Terminals (`tools/agents`)**: Self-contained CLI nodes running Google Antigravity CLI (`agy`) and GitHub Copilot CLI in Docker. They communicate with the MCP gateway internally.
+1. **MCP Ecosystem (`cortex/mcp`)**: Exposes the codebase and critical host tools (GitHub, browser, dependencies documentation) to active LLM sessions through Server-Sent Events (SSE) gateways.
+2. **Containerized Developer Terminals (`cortex/agents`)**: Self-contained CLI nodes running Google Antigravity CLI (`agy`) and GitHub Copilot CLI in Docker. They communicate with the MCP gateway internally.
 3. **Design System Automation (`studio/penpot/aide`)**: A self-hosted Penpot instance coupled with the `aide` AI service. This allows design-to-code components and vector asset generation to be automated.
 
 ---
@@ -28,7 +28,7 @@ The MCP ecosystem provides a unified, secure gateway allowing LLM agents to exec
 
 ### Architectural Components
 
-- **Fastify SSE Gateway (`tupynambalucas-mcp-gateway`)**: Exposes internal HTTP endpoints representing each MCP server. It coordinates cross-network routing on port `3005` (host) and port `3000` (internal bridge network).
+- **Fastify Ingress Gateway (`agentgateway`)**: Exposes internal HTTP endpoints representing each MCP server. It coordinates cross-network routing on port `8080` (host and internal bridge network).
 - **Zero-Dependency SSE Adapters**: Standard input/output (stdio) servers are wrapped in custom Fastify adapters (`sse-adapter.ts`) to stream JSON-RPC messages bi-directionally over HTTP Server-Sent Events.
 
 ### Configured Servers
@@ -39,7 +39,7 @@ The MCP ecosystem provides a unified, secure gateway allowing LLM agents to exec
 4.  **Docker Hub MCP Server**: Validates upstream Docker tags and updates container manifests.
 
 :::info[Detailed Configuration]
-For complete server registries, custom Fastify SSE adapter logic, gateway routing, and technical configurations, refer to the **[Tools Workspace Setup Guide](../../workspaces/tools)**.
+For complete server registries, custom Fastify SSE adapter logic, gateway routing, and technical configurations, refer to the **[Cortex Workspace Setup Guide](/workspaces/cortex)**.
 :::
 
 ---
@@ -58,11 +58,11 @@ The agent containers bind-mount crucial developer files to ensure workspace pari
 - **Shared Agent Skills**: Bind-mounted `./skills/` folder propagates context rules (such as `code-expert` and `docusaurus-kb-expert`) to agents.
 
 :::caution[Boot Sequence Requirement]
-The MCP stack must be running before the agents stack is started. Starting the agents before the MCP stack will produce a Docker network resolution error.
+The gateway and MCP stack must be running before the agents stack is started. Starting the agents before the gateway will produce a Docker network resolution error.
 :::
 
 :::info[Detailed Installation]
-For directory bind mount mappings, authentication device-flow persistence instructions, and VS Code task integration configurations, refer to the **[Tools Workspace Setup Guide](../../workspaces/tools)**.
+For directory bind mount mappings, authentication device-flow persistence instructions, and VS Code task integration configurations, refer to the **[Cortex Workspace Setup Guide](/workspaces/cortex)**.
 :::
 
 ---

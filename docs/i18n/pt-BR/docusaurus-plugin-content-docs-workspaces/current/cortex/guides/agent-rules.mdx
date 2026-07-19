@@ -1,0 +1,16 @@
+---
+title: Regras de Engajamento
+sidebar_label: Regras de Engajamento
+sidebar_position: 1
+---
+
+### Regras de Engajamento para Agentes de IA
+
+O workspace define limites rígidos e lógicas de comportamento para agentes de IA através de arquivos de contexto. Essas regras garantem que alterações automáticas respeitem os padrões arquiteturais globais e a estabilidade do código.
+
+#### Convenções Operacionais
+
+- **Núcleo de Domínio Primeiro**: Alterações em esquemas ou modelos de dados compartilhados devem originar-se nos pacotes `core` (Single Source of Truth) antes de serem propagadas para as camadas de aplicação.
+- **Tipagem e Linting Estritos**: É estritamente proibido o uso de `any` ou ignorar regras do ESLint/TypeScript. A validação via `typecheck` é obrigatória após qualquer edição de código.
+- **Minimalismo Tecnológico**: Evite sugerir ou instalar dependências externas a menos que não exista solução viável nativa ou já implementada (Fastify, React, Zustand, Zod).
+- **Documentação Padronizada**: Atualizações de documentação devem adotar um tom sênior e profissional, aproveitando recursos do MDX (como abas e blocos dinâmicos) para gerenciar densidade de informação.

@@ -164,10 +164,15 @@ Relative paths can be used to link to files within the repository.
 [Parent Directory Guide](../README.md)
 ```
 
-#### Rendered Preview
-
 [Contribution Guide](docs/CONTRIBUTING.md)  
 [Parent Directory Guide](../README.md)
+
+### Clickable Link Formatting
+
+To ensure links render correctly as clickable hyperlinks in markdown previewers and are interactive for both humans and AI agents:
+
+- **Do Not Wrap Links in Backticks**: Never surround the entire markdown link structure with backticks (e.g., `[label](path)`). This turns the hyperlink structure into a code literal block, disabling the click capability.
+- **Styling Labels**: If a label (such as a file name or directory name) needs code block formatting, place the backticks inside the brackets: `[`label`](path)`.
 
 ### Section Anchors
 

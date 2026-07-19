@@ -6,10 +6,12 @@ This workspace ([tools/github/](./)) implements isolated Git and GitHub CLI cont
 
 ## Local Architecture & Directory Map
 
-- **[infrastructure/docker/compose.yaml](./infrastructure/docker/compose.yaml)**: Docker Compose orchestration defining the `gh` and `git` interactive service containers.
-- **[services/gh/](./services/gh)**: GitHub CLI container definition, including its [entrypoint.sh](./services/gh/entrypoint.sh) and bash extensions.
-- **[services/git/](./services/git)**: Git CLI container definition and its [entrypoint.sh](./services/git/entrypoint.sh).
-- **[scripts/](./scripts)**: TypeScript scripts for repository management, such as changelog generation.
+- **[infrastructure/docker/](./infrastructure/docker/)**: Contains Docker Compose configuration files and environment templates for launching tooling containers.
+- **[services/gh/](./services/gh/)**: Contains the GitHub CLI container setup, bash extensions, and custom tools.
+- **[services/git/](./services/git/)**: Contains the Git CLI container setup and configurations (including git-flow).
+
+> [!NOTE]
+> Repository automation scripts for generating changelogs and roadmaps are part of the `@tupynambalucas/docs` package context.
 
 ---
 
@@ -29,5 +31,5 @@ Run these scripts from the monorepo root:
 - `pnpm github:services:up`: Boots the `gh` and `git` interactive containers in the background.
 - `pnpm github:services:down`: Stops the running containers.
 - `pnpm github:services:reset`: Stops, removes volumes, and restarts the environment with fresh builds.
-- `pnpm github:generate:changelog`: Runs the changelog generation script.
-- `pnpm github:generate:roadmap`: Runs the roadmap generation script.
+- `pnpm docs:generate:changelog`: Runs the changelog generation script.
+- `pnpm docs:generate:roadmap`: Runs the roadmap generation script.

@@ -4,41 +4,11 @@ networks:
   platform-net:
     name: tupynambalucas-platform-net
     driver: bridge
-  tupynambalucas-mcp-net:
-    name: tupynambalucas-mcp-net
-    driver: bridge
 
 services:
-  agentgateway:
-    profiles: ['dev', 'prod', 'staging']
-    image: cr.agentgateway.dev/agentgateway:v1.3.1
-    container_name: tupynambalucas-mcp-agentgateway-${APP_ENV:-prod}
-    ports:
-      - '${GATEWAY_PORT:-3005}:8080' # Tráfego principal IAs
-      - '15000:15000' # Web UI do AgentGateway
-    volumes:
-      - ../../services/agentgateway/config.yaml:/config.yaml
-    command: ['-f', '/config.yaml']
-    logging:
-      driver: fluentd
-      options:
-        fluentd-address: 'host.docker.internal:24224'
-        tag: 'agentgateway'
-        fluentd-async: 'true'
-    environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otel-collector:4317}
-    networks:
-      platform-net:
-        aliases:
-          - agentgateway-metrics
-      tupynambalucas-mcp-net:
-        aliases:
-          - tupynambalucas.internal.tools.mcp
-
   otel-collector:
-    profiles: ['dev', 'prod', 'staging']
     image: otel/opentelemetry-collector-contrib:latest
-    container_name: tupynambalucas-platform-otel-${APP_ENV}
+    container_name: tupynambalucas-platform-otel
     command: ['--config=/etc/otelcol-contrib/config.yaml']
     volumes:
       - ../../services/monitor/config.yaml:/etc/otelcol-contrib/config.yaml:ro
@@ -53,8 +23,7 @@ services:
       - platform-net
 
   turbocache:
-    profiles: ['dev', 'prod', 'staging']
-    container_name: tupynambalucas-platform-turbocache-${APP_ENV}
+    container_name: tupynambalucas-platform-turbocache
     build:
       context: ../../services/turbocache
       dockerfile: Dockerfile

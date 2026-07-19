@@ -1,0 +1,53 @@
+---
+title: Subsistema de Memória Persistente
+sidebar_label: Subsistema de Memória
+sidebar_position: 2
+---
+
+### Subsistema de Memória Persistente
+
+A camada de memória do Cortex baseia-se em uma instância autohospedada do MongoDB, que utiliza recursos nativos de busca vetorial para proporcionar persistência cognitiva aos agentes de IA.
+
+---
+
+## 1. Modelagem Relacional de Documentos
+
+Para conciliar a flexibilidade de documentos JSON com o mapeamento de relacionamentos, a memória do agente é distribuída em três coleções principais:
+
+### A. `chat_history` (Memória de Curto Prazo)
+
+Rastreia as interações e trocas de mensagens ordenadas por sessões de conversa dos agentes.
+
+- **Objetivo**: Recuperar o contexto imediato da conversa ao retomar interações.
+- **Campos**: Identificadores de sessão, papel do remetente (usuário/assistente), conteúdo e carimbos de data/hora (timestamps).
+
+### B. `entities` (Memória de Longo Prazo)
+
+Representa fatos isolados, preferências do usuário, detalhes de repositórios e conceitos de workspaces.
+
+- **Objetivo**: Funcionar como índice semântico. Cada documento é convertido em um vetor de embedding.
+- **Campos**: Nome da entidade, tipo de classificação, descrição em texto, metadados e o array de float correspondente ao vetor de embedding.
+
+### C. `relations` (Camada de Grafo)
+
+Associa links semânticos direcionados entre as entidades armazenadas.
+
+- **Objetivo**: Gerar um Grafo de Contexto para mapear relações complexas (ex: associar uma `Task` a um `File` específico que ela modifica).
+- **Campos**: ObjectId de origem, ObjectId de destino, tipo de relacionamento (ex: `CONTAINS`, `DEPENDS_ON`) e metadados de ligação.
+
+---
+
+## 2. Busca Vetorial e Fluxo RAG
+
+O processo de recuperação de dados segue uma esteira de injeção para alimentar o agente com contextos ricos:
+
+```text
+[Prompt do Usuário] ──> [Gerar Embedding] ──> [Busca por Similaridade Vetorial] ──> [Recuperar Entidades]
+                                                                                        │
+[Injetar na Janela de Contexto] <── [Formatar Grafo] <── [Buscar Relacionamentos] ──────┘
+```
+
+1. **Geração do Embedding**: O prompt do usuário é processado e convertido em um vetor numérico.
+2. **Busca por Similaridade**: Uma consulta `$vectorSearch` é executada sobre a coleção `entities` para localizar registros semelhantes.
+3. **Hidratação do Grafo**: Para cada entidade retornada, o sistema consulta a coleção `relations` para obter os nós conectados de primeiro grau.
+4. **Injeção de Contexto**: As informações compiladas e os esquemas dos nós conectados são estruturados em blocos de markdown e anexados ao prompt do agente.

@@ -1,16 +1,14 @@
 ---
-title: Workspace Tools (Automação e MCP)
+title: Workspace Tools (Automação do GitHub)
 sidebar_label: Visão Geral
 sidebar_position: 1
 slug: /tools
 ---
 
-O workspace Tools fornece a espinha dorsal de automação para o projeto tupynambalucas.dev. Ele centraliza servidores especializados de Model Context Protocol (MCP) e scripts de infraestrutura projetados para aumentar a produtividade dos desenvolvedores, garantir a paridade de ambiente por meio de compilações Docker multi-stage e permitir fluxos de trabalho de engenharia AI-native seguros e de alto contexto.
+O workspace Tools fornece utilitários de desenvolvimento isolados para controle de versão Git e automação do GitHub CLI. Ao empacotar ferramentas de linha de comando dentro de containers Docker padronizados, garante-se a paridade do ambiente para operações de repositório entre estações locais e pipelines de CI/CD.
 
 Esta seção cobre:
 
-- **Ecossistema MCP**: Servidores de contexto seguros e conteinerizados mapeados através de wrappers Fastify Zero-dependency.
-- **Agentes de IA Conteinerizados**: Executando Antigravity e Copilot dentro de sandboxes padrão de containers Docker.
-- **Segurança de IA e Rede**: Redes bridge isoladas do Docker e roteamento de gateway HTTP Fastify.
-- **Regras de Engajamento**: Convenções comportamentais estritas, diretrizes de código e esquemas de contexto para desenvolvedores de IA.
-- **Manutenção e Lógica**: Comandos padronizados de orquestração, blueprints do Compose e manutenção do repositório.
+- **Containers Git e GitHub CLI**: Ambientes conteinerizados padronizados para execução de tarefas de repositório locais e remotas.
+- **Paridade de Ambiente**: Eliminação de bugs causados por diferença de versão de ferramentas como Git Flow e extensões da CLI do GitHub.
+- **Automação de Fluxos de Trabalho**: Comandos específicos para iniciar, parar e resetar os containers de ferramentas via Docker Compose.

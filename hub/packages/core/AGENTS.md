@@ -6,6 +6,9 @@ This package (`@tupynambalucas-hub/core`) is the Single Source of Truth (SSOT) f
 
 ## Local Architecture & Directory Map
 
+- **[src/schemas/](./src/schemas/)**: Central Zod schema definitions for request validation and type safety.
+- **[src/types/](./src/types/)**: Shared static TypeScript type mappings and configurations.
+
 All codebase symbols and schemas in this library are organized under `src/`:
 
 - **[src/schemas/](./src/schemas/)**: Central Zod schema definitions for requests, responses, and validation rules (e.g. `user.schema.ts`, `product.schema.ts`, `cycle.schema.ts`).

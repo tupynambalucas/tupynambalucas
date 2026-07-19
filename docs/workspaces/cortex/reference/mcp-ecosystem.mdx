@@ -1,0 +1,68 @@
+---
+title: MCP Ecosystem Reference
+sidebar_label: MCP Ecosystem
+sidebar_position: 1
+---
+
+### Model Context Protocol (MCP) Ecosystem
+
+The Cortex workspace houses the containerized MCP ecosystem. It exposes structured development tools and codebase contexts to LLM clients (such as the Antigravity CLI and GitHub Copilot CLI) through a single unified ingress proxy gateway.
+
+---
+
+## 1. Unified Gateway Routing
+
+Instead of coupling client agents directly to individual MCP tool servers, all tool interactions are federated through the Go-based **AgentGateway** proxy.
+
+- **Unified Ingress Endpoint**: The gateway listens on port `8080`. Inside the container bridge network (`tupynambalucas-cortex-net`), agents connect to a single endpoint: `http://agentgateway:8080/mcp/http`.
+- **Downstream Federation**: The gateway acts as a reverse proxy. It intercepts tool calls and delegates them to target containerized MCP servers running in the same network namespace (`mcp-github`, `mcp-context7`, `mcp-browser`).
+- **Host Connectivity**: Development tools running on the host machine loopback interface communicate with the gateway using `http://localhost:8080/mcp/http`.
+
+---
+
+## 2. Zero-Dependency HTTP/SSE Adapters
+
+Standard input/output (stdio) based MCP servers are wrapped in custom TypeScript adapters (`sse-adapter.ts`) running on Fastify. This adapter layer translates stdio streams into standard web protocols:
+
+- **Traditional Server-Sent Events (SSE)**: Establishes a uni-directional stream via `GET /sse` and accepts client messages via `POST /messages`, piping events directly to the underlying subprocess stdin.
+- **Streamable Stateless HTTP (POST /sse)**: Simulates stateless request-response by buffering stdout lines from the child process, extracting JSON-RPC payloads, and resolving the HTTP request only when it captures the specific JSON-RPC response `id` matching the request.
+
+---
+
+## 3. Integrated Context Servers
+
+### A. GitHub MCP Server
+
+Connects the containerized development environment directly to the GitHub API, enabling AI agents to execute Git actions, coordinate branch states, and manage issues.
+
+- **Tools Registry**:
+  - `create_branch`, `list_branches`, `update_pull_request_branch`
+  - `get_commit`, `list_commits`, `get_tag`, `list_tags`
+  - `get_file_contents`, `create_or_update_file`, `delete_file`, `push_files`
+  - `issue_read`, `issue_write`, `list_issues`, `add_issue_comment`
+  - `pull_request_read`, `create_pull_request`, `update_pull_request`, `list_pull_requests`, `merge_pull_request`
+
+### B. Context7 MCP Server
+
+Queries external documentation APIs in real time to fetch syntax specifications and usage guides for core dependencies (React 19, Fastify 5, Three.js) without relying on stale model training data.
+
+- **Tools Registry**:
+  - `resolve-library-id`: Maps a package name to its unique Context7 ID.
+  - `query-docs`: Retrieves updated API sections, guides, and code examples.
+
+### C. Browser MCP Server (Playwright)
+
+A headless Google Chrome instance managed via Playwright, enabling agents to navigate pages, capture screenshots, audit console errors, and perform visual regression tests.
+
+- **Loopback Routing**: Rewrites destination URLs targeting `localhost` or `127.0.0.1` to `host.docker.internal` to route requests successfully from the container bridge back to the host machine.
+- **Tools Registry**:
+  - `browser_navigate`, `browser_click`, `browser_type`, `browser_fill_form`, `browser_select_option`
+  - `browser_take_screenshot`, `browser_snapshot`, `browser_console_messages`, `browser_network_requests`
+  - `browser_evaluate`, `browser_resize`, `browser_close`
+
+### D. Docker Hub MCP Server
+
+Manages interactions with the Docker Hub registry to inspect container metadata and track image tags.
+
+- **Tools Registry**:
+  - `search`, `getRepositoryInfo`, `checkRepository`, `listRepositoryTags`, `getRepositoryTag`

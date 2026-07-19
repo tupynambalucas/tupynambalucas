@@ -20,7 +20,7 @@ O DDD alinha o modelo de código interno de um sistema de software com as áreas
 
 O fenômeno da polissemia (onde um único termo assume significados diferentes dependendo do contexto) é o principal catalisador para a adoção de Bounded Contexts. Forçar uma única classe ou entidade a atender múltiplos interesses de negócios viola o Princípio da Responsabilidade Única e causa acoplamentos severos.
 
-Em nosso monorepo, o conceito de um **"Ativo" (Asset)** possui definições completamente diferentes dependendo do contexto:
+Em nosso monorepo, o concept de um **"Ativo" (Asset)** possui definições completamente diferentes dependendo do contexto:
 
 - **Contexto Studio (`studio/`)**: Um ativo é um arquivo de origem vetorial bruto (Illustrator `.ai`, Blender `.blend`, PSD) ou uma imagem rasterizada compilada de alta resolução armazenada no Cloudflare R2.
 - **Contexto Renderer (`renderer/`)**: Um ativo é um recurso de fonte variável dinâmico, ciente do tema e codificado em base64, ou um cartão SVG compilado dinamicamente para contornar sandboxes de iframes.
@@ -46,14 +46,15 @@ Categorizamos nossos contextos utilizando as classificações táticas do DDD pa
 | :------------------------- | :-------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
 | **Renderer (`renderer/`)** | **Core Domain (Domínio Central)** | Pipeline proprietário de compilação de documentos e geração de gráficos com injeção de fontes em base64 sem dependências externas. |
 | **Hub (`hub/`)**           | **Core Domain (Domínio Central)** | Aplicativo web do portfólio, backend Fastify API e pacotes de contratos com validações rígidas de schemas Zod.                     |
+| **Cortex (`cortex/`)**     | **Supporting Domain (Suporte)**   | Ingress gateway unificado de IA, índices de memória vetorial persistente, adaptadores MCP e terminais de agentes.                  |
 | **Studio (`studio/`)**     | **Supporting Domain (Suporte)**   | Vault central de identidade visual da marca, biblioteca de tokens de design e sincronizador CLI de buckets R2.                     |
-| **Platform (`platform/`)** | **Generic Domain (Genérico)**     | Proxy AgentGateway baseado em Go, coletor de monitoramento OpenTelemetry e servidores de cache Turborepo.                          |
+| **Platform (`platform/`)** | **Generic Domain (Genérico)**     | Coletor de monitoramento OpenTelemetry e servidores de cache Turborepo.                                                            |
 
 ---
 
 ## 3. Organização Física dos Espaços de Trabalho (PNPM Workspaces)
 
-Enquanto o DDD dita o agrupamento lógico de conceitos, o monorepo define a topologia física. Utilizamos **pnpm workspaces** para orquestrar dependências, estabelecendo uma fonte única da verdade para os pacotes ao mesmo tempo que garantimos uma separação lógica estrita.
+While DDD dita o agrupamento lógico de conceitos, o monorepo define a topologia física. Utilizamos **pnpm workspaces** para orquestrar dependências, estabelecendo uma fonte única da verdade para os pacotes ao mesmo tempo que garantimos uma separação lógica estrita.
 
 ### 3.1 Topologia de Pastas
 
@@ -65,15 +66,16 @@ tupynambalucas/
 │   ├── services/web/         # Aplicativo Web (React)
 │   ├── services/api/         # Backend API (Fastify)
 │   └── packages/core/        # Contratos de validação de dados (Zod)
+├── cortex/                   # Contexto Cortex (AI Ingress, Memória, MCP, Agentes)
 ├── renderer/                 # Contexto Renderer (Pipeline de Documentos e Ativos)
 ├── studio/                   # Contexto Studio (Sistema de Design e Ativos Master)
 │   └── assets/               # Tokens CSS, SVG Logos e Sincronizador CLI
-├── platform/                 # Contexto Platform (Gateway, OTel, Cache)
-├── tools/                    # Contexto Tools (Agentes de IA e Servidores MCP)
+├── platform/                 # Contexto Platform (OTel, Cache)
+├── tools/                    # Contexto Tools (Automação do GitHub CLI)
 └── docs/                     # Contexto Docs Hub (Docusaurus)
 ```
 
-Rejeitamos inteiramente o antipadrão de um diretório `utils/` global e genérico na raiz do projeto. Pastas deste tipo invariavelmente degeneram em depósitos sistêmicos de código inútil, disparando builds globais desnecessários e violando limites lógicos. Qualquer utilitário deve permanecer encapsulado em seu contexto de origem.
+We completamente rejeitamos o antipadrão de um diretório `utils/` global e genérico na raiz do projeto. Pastas deste tipo invariavelmente degeneram em depósitos sistêmicos de código inútil, disparando builds globais desnecessários e violando limites lógicos. Qualquer utilitário deve permanecer encapsulado em seu contexto de origem.
 
 ### 3.2 Isolamento de Dependências de Workspaces
 
@@ -83,7 +85,7 @@ Os workspaces declaram dependências internas explicitamente usando o protocolo 
 
 ## 4. Mapeamento e Integração de Contextos (Context Mapping)
 
-Contextos Delimitados não operam em isolamento absoluto; eles devem se comunicar por meio de padrões de relacionamento explícitos.
+Bounded Contexts não operam em isolamento absoluto; eles devem se comunicar por meio de padrões de relacionamento explícitos.
 
 ### 4.1 Shared Kernel (Núcleo Partilhado)
 
@@ -95,7 +97,7 @@ Qualquer alteração nesses tokens aciona validações imediatas em tempo de com
 
 Quando um contexto limpo precisa consumir serviços externos complexos ou brutos, introduzimos uma **Camada Anticorrupção (ACL)** para traduzir as entradas externas na linguagem de domínio limpa do consumidor.
 
-Nosso serviço **`AgentGateway`** (sob o diretório `/platform`) atua como uma ACL a nível de rede. Containers de agentes de IA downstream no diretório `tools/` executam comandos complexos e não padronizados de servidores MCP. Em vez de acoplar os agentes diretamente aos endpoints brutos dos servidores, eles se comunicam através do proxy gateway de entrada Go unificado, que traduz e roteia os payloads de forma limpa.
+Nosso serviço **`AgentGateway`** (sob o diretório `/cortex/gateway`) atua como uma ACL a nível de rede. Containers de agentes de IA downstream no diretório `cortex/agents` executam comandos complexos e não padronizados de servidores MCP. Em vez de acoplar os agentes diretamente aos endpoints brutos dos servidores, eles se comunicam através do proxy gateway de entrada unificado, que traduz e roteia os payloads de forma limpa.
 
 ---
 
@@ -115,3 +117,23 @@ Se deixados apenas à mercê da disciplina social das equipes, as fronteiras arq
 - **Regras Estritas de Linting**: Configuração de verificadores de fronteiras de importação para bloquear importações cruzadas não autorizadas entre domínios.
 - **Análise Topológica de Gráficos (Dependency Cruising)**: Auditoria contínua de todo o grafo de importações, bloqueando dependências circulares e removendo códigos mortos.
 - **Importações Apenas de Tipos (Type-only imports)**: Garantia de acoplamento limpo por meio do consumo dinâmico apenas de contratos de tipos, em vez de importar classes de implementação física de outros serviços.
+
+---
+
+## 6. Padrões de Layout de Contêineres: Flat Services vs. Layered Domains
+
+Quando um Contexto Delimitado (Bounded Context) inclui unidades de implantação em contêineres via Docker, o layout dos diretórios deve ser estruturado para corresponder ao seu alinhamento arquitetural:
+
+### 6.1 Layout de Flat Services (Serviços Planos)
+
+Um layout horizontal onde todos os microsserviços são posicionados dentro de um diretório plano `/services/`.
+
+- **Quando Usar**: Aplicado a workspaces focados em produtos específicos (como [/hub](/docs/explanation/domain-driven-monorepo#31-topologia-de-pastas) e `studio/design`) que representam pilhas tradicionais de aplicações web (Frontend Client, Backend API, Banco de Dados, Cache).
+- **Justificativa**: Os serviços funcionam como componentes equivalentes de uma única aplicação acoplada. Adicionar camadas estruturais adicionais aumentaria a complexidade sem trazer benefícios práticos.
+
+### 6.2 Layout de Layered Domain (Domínios em Camadas)
+
+Um layout vertical onde os serviços são agrupados em diretórios irmãos representando diferentes planos arquiteturais (como `gateway/` para roteamento, `mcp/` para barramento de dados, e `agents/` para contêineres de execução) na raiz do espaço de trabalho.
+
+- **Quando Usar**: Aplicado a workspaces focados em infraestrutura (como `/cortex`) que contêm componentes heterogêneos com ciclos de vida, permissões de sistema e necessidades de deploy independentes.
+- **Justificativa**: Evidencia a hierarquia estrutural de integrações complexas. Permite inicializar partes específicas (como o roteador de rede e o plano de dados) de forma independente das camadas de controle (como contêineres de execução de IAs).

@@ -50,15 +50,11 @@
     "@docusaurus/theme-classic": "catalog:docs-stack",
     "@docusaurus/theme-search-algolia": "catalog:docs-stack",
     "@docusaurus/theme-common": "catalog:docs-stack",
-    "@react-three/drei": "catalog:shared-stack",
-    "@react-three/fiber": "catalog:shared-stack",
     "@mdx-js/react": "catalog:docs-stack",
     "clsx": "catalog:docs-stack",
-    "three": "catalog:shared-stack",
     "prism-react-renderer": "catalog:docs-stack",
     "react": "catalog:web-stack",
     "react-dom": "catalog:web-stack",
-    "three-stdlib": "catalog:shared-stack",
     "gsap": "catalog:web-stack",
     "@gsap/react": "catalog:web-stack"
   },
@@ -69,7 +65,6 @@
     "@tailwindcss/postcss": "catalog:web-stack",
     "@types/node": "catalog:",
     "@types/react": "catalog:web-stack",
-    "@types/three": "catalog:shared-stack",
     "tsx": "catalog:",
     "typescript": "catalog:"
   },

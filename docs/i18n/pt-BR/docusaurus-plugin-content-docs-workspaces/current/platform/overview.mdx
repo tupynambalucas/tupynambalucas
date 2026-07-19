@@ -5,17 +5,16 @@ sidebar_position: 1
 slug: /platform
 ---
 
-O workspace Platform centraliza e gerencia os utilitários operacionais de execução contínua que suportam o ambiente de desenvolvimento local, pipelines de telemetria e agregação de cache de build.
+O workspace Platform gerencia os serviços operacionais de execução contínua que suportam o pipeline de telemetria e o cache de build para o desenvolvimento local e integração contínua.
 
 ---
 
 ## Visão Geral da Arquitetura
 
-O workspace platform gerencia três serviços principais em tempo de execução:
+O workspace platform gerencia dois serviços principais em tempo de execução:
 
-1. **AgentGateway**: Um proxy de federação escrito em Go que atua como o ponto de entrada para clientes do Model Context Protocol (MCP). Ele roteia e agrega comandos enviados para os containers MCP downstream.
-2. **otel-collector**: Um coletor OpenTelemetry que agrega métricas de telemetria, logs e rastros distribuídos, exportando-os para o Grafana Cloud e Sentry.
-3. **turbocache**: Um servidor de cache local de alto desempenho que armazena artefatos de cache do Turborepo, acelerando drasticamente os pipelines de compilação e teste.
+1. **otel-collector**: Um coletor OpenTelemetry que agrega métricas de telemetria, logs e rastros distribuídos, exportando-os para o Grafana Cloud e Sentry.
+2. **turbocache**: Um servidor de cache remoto de alto desempenho que armazena artefatos de cache do Turborepo, acelerando os pipelines de compilação dos desenvolvedores.
 
 ---
 
@@ -24,9 +23,8 @@ O workspace platform gerencia três serviços principais em tempo de execução:
 ```text
 platform/
 ├── infrastructure/
-│   └── docker/          # Configurações do Docker Compose (compose.yaml, compose.prod.yaml)
+│   └── docker/          # Configurações do Docker Compose (compose.yaml)
 ├── services/
-│   ├── agentgateway/    # Configurações para o AgentGateway em Go
 │   ├── monitor/         # Esquemas de configuração para o coletor OTLP
 │   └── turbocache/      # Dockerfiles e lógica de cache
 ├── package.json         # Manifesto do workspace com comandos de plataforma
@@ -51,14 +49,8 @@ Os serviços neste workspace devem expor endpoints genéricos e evitar acoplamen
 
 Todos os comandos devem ser executados a partir do diretório raiz do repositório:
 
-| Ambiente            | Ação          | Comando                       |
-| :------------------ | :------------ | :---------------------------- |
-| **Desenvolvimento** | Iniciar Stack | `pnpm platform:dev:up`        |
-| **Desenvolvimento** | Parar Stack   | `pnpm platform:dev:down`      |
-| **Desenvolvimento** | Resetar Dados | `pnpm platform:dev:reset`     |
-| **Produção**        | Iniciar Stack | `pnpm platform:prod:up`       |
-| **Produção**        | Parar Stack   | `pnpm platform:prod:down`     |
-| **Produção**        | Resetar Dados | `pnpm platform:prod:reset`    |
-| **Staging**         | Iniciar Stack | `pnpm platform:staging:up`    |
-| **Staging**         | Parar Stack   | `pnpm platform:staging:down`  |
-| **Staging**         | Resetar Dados | `pnpm platform:staging:reset` |
+| Ação              | Comando               |
+| :---------------- | :-------------------- |
+| **Iniciar Stack** | `pnpm platform:up`    |
+| **Parar Stack**   | `pnpm platform:down`  |
+| **Resetar Dados** | `pnpm platform:reset` |

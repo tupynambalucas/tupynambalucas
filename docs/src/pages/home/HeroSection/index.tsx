@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
-import BrowserOnly from '@docusaurus/BrowserOnly';
+import LogoSvg from '@tupynambalucas-studio/design/logos/logo-mark-positive.svg';
 import styles from './styles.module.css';
 
 export default function HeroSection(): ReactNode {
@@ -48,13 +48,8 @@ export default function HeroSection(): ReactNode {
           </div>
         </div>
 
-        <div className={styles.threeCanvasContainer}>
-          <BrowserOnly fallback={<div />}>
-            {() => {
-              const ThreeCanvasScene = require('./components/ThreeCanvas').default;
-              return <ThreeCanvasScene />;
-            }}
-          </BrowserOnly>
+        <div className={styles.logoContainer}>
+          <LogoSvg className={styles.heroLogo} />
         </div>
       </div>
       <div className={styles.circleObject}></div>

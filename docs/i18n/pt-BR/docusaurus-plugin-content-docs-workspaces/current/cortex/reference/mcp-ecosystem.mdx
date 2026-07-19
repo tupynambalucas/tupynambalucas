@@ -1,0 +1,68 @@
+---
+title: Referência do Ecossistema MCP
+sidebar_label: Ecossistema MCP
+sidebar_position: 1
+---
+
+### Ecossistema do Model Context Protocol (MCP)
+
+O workspace Cortex abriga o ecossistema de servidores MCP conteinerizados. Ele expõe recursos e contextos estruturados do repositório para clientes de LLM (como as CLIs Antigravity e Copilot) por meio de um único gateway proxy unificado.
+
+---
+
+## 1. Roteamento Unificado de Gateway
+
+Em vez de conectar os agentes clientes diretamente a múltiplos servidores MCP individuais, todas as interações de ferramentas são intermediadas pelo **AgentGateway** escrito em Go.
+
+- **Endpoint de Ingress Único**: O gateway atende na porta `8080`. Na rede bridge interna (`tupynambalucas-cortex-net`), as conexões direcionam-se a um único endereço: `http://agentgateway:8080/mcp/http`.
+- **Federação Downstream**: O gateway atua como proxy reverso, recebendo chamadas de ferramentas e repassando-as para os servidores MCP internos (`mcp-github`, `mcp-context7`, `mcp-browser`).
+- **Conectividade Host**: Execuções na máquina host conectam-se usando `http://localhost:8080/mcp/http`.
+
+---
+
+## 2. Adaptadores HTTP/SSE Zero-Dependency
+
+Servidores MCP baseados em entrada/saída padrão (stdio) são encapsulados por adaptadores em TypeScript (`sse-adapter.ts`) que rodam sobre o Fastify, convertendo streams de stdio para protocolos web:
+
+- **Server-Sent Events (SSE) Tradicional**: Cria um fluxo unidirecional via `GET /sse` e aceita envios via `POST /messages`, roteando payloads para a entrada padrão (stdin) do subprocesso.
+- **Stateless HTTP (POST /sse)**: Simula uma requisição HTTP tradicional baseada em requisição e resposta. O adaptador captura as linhas do processo filho no stdout, filtra respostas JSON-RPC e responde a requisição apenas quando identifica o `id` correspondente.
+
+---
+
+## 3. Servidores de Contexto Integrados
+
+### A. Servidor MCP GitHub
+
+Conecta o ambiente conteinerizado diretamente à API do GitHub, permitindo ações de versionamento Git, controle de branches e comentários em pull requests.
+
+- **Ferramentas de Destaque**:
+  - `create_branch`, `list_branches`, `update_pull_request_branch`
+  - `get_commit`, `list_commits`, `get_tag`, `list_tags`
+  - `get_file_contents`, `create_or_update_file`, `delete_file`, `push_files`
+  - `issue_read`, `issue_write`, `list_issues`, `add_issue_comment`
+  - `pull_request_read`, `create_pull_request`, `update_pull_request`, `list_pull_requests`, `merge_pull_request`
+
+### B. Servidor MCP Context7
+
+Consulta APIs externas de documentação técnica para fornecer informações atualizadas de dependências principais (React 19, Fastify 5, Three.js) e contornar restrições de treinamento de modelos.
+
+- **Ferramentas de Destaque**:
+  - `resolve-library-id`: Traduz um nome de biblioteca para um ID único compatível.
+  - `query-docs`: Retorna seções de guias e métodos de APIs atualizados.
+
+### C. Servidor MCP Browser (Playwright)
+
+Uma instância headless do Chrome gerenciada via Playwright. Permite aos agentes capturar screenshots, auditar erros de console de frontends e inspecionar a árvore de acessibilidade DOM.
+
+- **Roteamento de Loopback**: Converte requisições para `localhost` para `host.docker.internal` a fim de mapear as chamadas de volta para o host do desenvolvedor.
+- **Ferramentas de Destaque**:
+  - `browser_navigate`, `browser_click`, `browser_type`, `browser_fill_form`, `browser_select_option`
+  - `browser_take_screenshot`, `browser_snapshot`, `browser_console_messages`, `browser_network_requests`
+  - `browser_evaluate`, `browser_resize`, `browser_close`
+
+### D. Servidor MCP Docker Hub
+
+Valida imagens no Docker Hub, permitindo verificar tags upstream e metadados de containers.
+
+- **Ferramentas de Destaque**:
+  - `search`, `getRepositoryInfo`, `checkRepository`, `listRepositoryTags`, `getRepositoryTag`

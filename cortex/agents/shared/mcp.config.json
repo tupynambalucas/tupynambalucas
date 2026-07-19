@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "agentgateway": {
+      "url": "http://agentgateway:8080/mcp/http",
+      "lifecycle": "eager"
+    }
+  }
+}

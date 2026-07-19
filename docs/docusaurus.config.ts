@@ -22,7 +22,7 @@ const studioPath = path.dirname(require.resolve('@tupynambalucas-studio/design/p
 const config: Config = {
   title: 'Tupynambá Lucas',
   tagline: 'Documentation for tupynambalucas.dev monorepo',
-  favicon: 'brand/favicons/favicon.ico',
+  favicon: 'brand/logos/logo-mark-blue.svg',
 
   // Set the production url of your site here
   url: 'https://tupynambalucas-docs.pages.dev',
@@ -103,7 +103,9 @@ const config: Config = {
         };
         const buildFolders = manifest.buckets.assets.docs;
         const folderPattern = buildFolders.map((f: string) => f.replace(/^\//, '')).join('|');
-        const matchRegex = new RegExp(`^@tupynambalucas-studio\\/design\\/(${folderPattern})\\/.*`);
+        const matchRegex = new RegExp(
+          `(@tupynambalucas-studio[/\\x5C]design([/\\x5C]assets)?|studio[/\\x5C]design[/\\x5C]assets)[/\\x5C](${folderPattern})[/\\x5C].*`,
+        );
 
         // Heavy/3D assets rule so Webpack can resolve direct imports of .exr/.glb files
         const assetRules = [

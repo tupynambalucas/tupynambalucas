@@ -1,42 +1,22 @@
 ---
-title: Tools (Infraestrutura & MCP)
-sidebar_label: Ferramentas (MCP e Infra)
+title: Tools (Automação do GitHub)
+sidebar_label: Ferramentas (GitHub)
 ---
 
-Esta seção detalha a infraestrutura de gateway proxy, servidores de contexto MCP conteinerizados, sandboxes de agentes de IA e o provisionamento de agentes locais.
+Esta seção detalha o ambiente conteinerizado para controle de versão Git e automação do GitHub CLI.
 
 ## Marcos Concluídos
 
-### Gateway Proxy & Rede
+### Integração de Scripts de Automação
 
-- **Gateway Proxy HTTP em Fastify**: Implantação de um gateway conteinerizado (`elo-mcp-gateway`) rodando em Fastify v5 que intercepta e roteia requisições de clientes locais (como a CLI do Antigravity na porta `3005`) para os containers de contexto correspondentes.
-- **Tratamento de CORS & SSE Streams**: Configuração de headers CORS em nível de rede e desabilitação de timeouts de proxy para assegurar conexões persistentes e estáveis de Server-Sent Events (SSE).
+- **Scripts de Compilação TypeScript**: Integração de utilitários em TypeScript (`generate-changelog.ts` e `generate-roadmap.ts`) rodando sob `tsx` para compilar e atualizar logs e roadmaps diretamente no diretório raiz do repositório.
 
-### Ecossistema MCP Conteinerizado
+### Isolamento de Ferramentas
 
-- **Sandbox de Navegador Headless (Playwright)**: Implantação de container baseado em Debian executando o Google Chrome em modo headless via Playwright, equipado com regras automáticas de reescrita de tráfego que direcionam requisições localhost de volta para a máquina hospedeira (`host.docker.internal`).
-- **Servidores MCP Estruturados**: Configuração de ambientes conteinerizados Alpine/Debian para:
-  - `GitHub MCP`: Controle de versão, gestão de issues e buscas de código.
-  - `Context7 MCP`: Motor de busca de documentações atualizadas (React 19, Fastify 5, Three.js).
-  - `Docker Hub MCP`: Varreduras no registro de imagens de container.
-
-### Scripts de Automação
-
-- **Scripts de Compilação TypeScript**: Desenvolvimento de utilitários em TypeScript (`generate-changelog.ts` e `generate-roadmap.ts`) rodando sob `tsx` para compilar e atualizar logs e roadmaps diretamente no diretório raiz do repositório.
-
-### Agentes de IA Conteinerizados (`tools/agents`)
-
-- **Provisionamento de CLI Baseado em Docker**: Arquitetura e implementação de um novo workspace `tools/agents` que provisiona as CLIs do GitHub Copilot e Google Antigravity como serviços Docker de longa duração, eliminando instalações manuais de CLI no nível da máquina hospedeira (host).
-- **Injeção de Configuração Unificada**: Ambas as CLIs compartilham um único `mcp_config.json` e um diretório unificado `skills/`, injetados via bind mounts na inicialização do container. Nenhuma configuração é embutida nas camadas de imagem.
-- **Armazenamento Persistente de Sessão e Cérebro**: Tokens OAuth, históricos de conversação e dados de tempo de execução são persistidos na máquina hospedeira através de volumes bind-mounted ignorados pelo Git, sobrevivendo a reconstruções de container.
-- **Configurações de TUI sob Controle de Versão**: Os arquivos `settings.json`, `statusline.sh` e `title.sh` da CLI do Antigravity são rastreados no repositório e montados sobre o diretório de execução do container, dando à equipe controle direto sobre o comportamento da CLI sem configurações manuais por máquina.
-- **Roteamento de Rede Interna**: Os containers dos agentes resolvem todos os serviços MCP através do alias customizado do host `elo.internal.tools.mcp:3005`, permitindo que as pilhas de serviços iniciem e parem de forma totalmente independente sem erros de configuração de rede.
-- **Docker-out-of-Docker (DooD)**: Ambos os containers montam o socket do Docker do host, habilitando agentes conteinerizados a orquestrar outras pilhas do monorepo (ex: `pnpm mcp:up`, `pnpm instance:up`) de dentro do container.
-- **Integração de Tarefas do VS Code**: Tarefas registradas no `.vscode/tasks.json` usam prefixos `[Docker]` e `[Host]` para distinguir claramente a execução de CLI baseada em container da execução global na máquina host durante o período de transição de migração.
+- **Containers Git e GitHub CLI**: Implantação de contêineres de serviços (`gh` e `git`) que isolam as credenciais SSH, identidades do autor Git e extensões do GitHub CLI da máquina hospedeira do desenvolvedor.
+- **Automação de Fluxo de Trabalho**: Configuração de scripts no escopo do workspace para iniciar, parar e resetar os contêineres de forma limpa via Docker Compose.
 
 ## Foco Planejado
 
-- **Validação da Pilha de Agentes**: Testes de ponta a ponta da conectividade MCP, persistência de OAuth e integridade de montagem de volumes do workspace a partir de sessões de agentes conteinerizados.
-- **Desativação da CLI do Host**: Após a validação completa da pilha de agentes, remover as instalações globais de CLI da máquina hospedeira e excluir os diretórios legados de configuração `.agents/` e `.github/copilot/`.
-- **Integrações de CI/CD**: Desenvolvimento de validadores de contexto e scripts de verificação (check).
-- **Relatórios Automatizados de Sandbox**: Exposição de painéis de testes em tempo de execução e cobertura para os ambientes locais de agentes.
+- **Sincronização de Credenciais**: Otimizar a injeção segura de tokens PAT nos volumes locais do Docker.
+- **Validação de Pre-commit**: Adicionar verificações automáticas de tipo (type-checking) executadas a partir do container das ferramentas para evitar push de códigos com tipos inválidos.

@@ -14,10 +14,12 @@ The ecosystem provides standardized, isolated tooling for version control and pr
 
 ## Directory Layout
 
-- `infrastructure/docker/`: Contains the orchestration file ([compose.yaml](./infrastructure/docker/compose.yaml)) and global environment configurations for the containers.
-- `services/gh/`: Dockerfile, entrypoint, and bash extensions for the GitHub CLI container.
-- `services/git/`: Dockerfile and entrypoint for the Git CLI container (includes `git-flow`).
-- `scripts/`: TypeScript executable scripts for repository automation.
+- **[infrastructure/docker/](./infrastructure/docker/)**: Contains the orchestration file ([compose.yaml](./infrastructure/docker/compose.yaml)) and global environment configurations for the containers.
+- **[services/gh/](./services/gh/)**: Contains the Dockerfile, entrypoint, and bash extensions for the GitHub CLI container.
+- **[services/git/](./services/git/)**: Contains the Dockerfile and entrypoint for the Git CLI container (includes `git-flow`).
+
+> [!NOTE]
+> Repository automation scripts for generating changelogs and roadmaps are part of the `@tupynambalucas/docs` package context.
 
 ---
 
@@ -50,5 +52,5 @@ Run these scripts from the monorepo root:
 - `pnpm github:services:up`: Launches the `gh` and `git` long-running background containers.
 - `pnpm github:services:down`: Stops and removes the tooling containers.
 - `pnpm github:services:reset`: Removes volumes, rebuilds the containers, and restarts the environment.
-- `pnpm github:generate:changelog`: Executes the TypeScript script to update the repository changelog.
-- `pnpm github:generate:roadmap`: Executes the TypeScript script to generate or update the roadmap documentation.
+- `pnpm docs:generate:changelog`: Executes the script to update the repository changelog.
+- `pnpm docs:generate:roadmap`: Executes the script to generate or update the roadmap documentation.

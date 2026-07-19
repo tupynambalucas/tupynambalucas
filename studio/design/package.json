@@ -31,15 +31,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "penpot:dev:up": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev up -d --build",
-    "penpot:dev:down": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev down",
-    "penpot:dev:reset": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev down --volumes && docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.override.yaml --env-file infrastructure/docker/.env.dev --profile dev up -d --build",
-    "penpot:prod:up": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.prod --profile prod up -d --build",
-    "penpot:prod:down": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.prod --profile prod down",
-    "penpot:prod:reset": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.prod --profile prod down --volumes && docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.prod --profile prod up -d --build",
-    "penpot:staging:up": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging up -d --build",
-    "penpot:staging:down": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging down",
-    "penpot:staging:reset": "docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging down --volumes && docker compose -f infrastructure/docker/compose.yaml -f infrastructure/docker/compose.prod.yaml --env-file infrastructure/docker/.env.staging --profile staging up -d --build"
+    "penpot:up": "docker compose -f infrastructure/docker/compose.yaml up -d --build",
+    "penpot:down": "docker compose -f infrastructure/docker/compose.yaml down",
+    "penpot:reset": "docker compose -f infrastructure/docker/compose.yaml down --volumes && docker compose -f infrastructure/docker/compose.yaml up -d --build"
   },
   "dependencies": {
     "react": "catalog:web-stack",

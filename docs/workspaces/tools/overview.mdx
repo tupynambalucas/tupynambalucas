@@ -1,16 +1,14 @@
 ---
-title: Tools Workspace (Automation & MCP)
+title: Tools Workspace (GitHub Automation)
 sidebar_label: Overview
 sidebar_position: 1
 slug: /tools
 ---
 
-The Tools workspace provides the automation backbone for the tupynambalucas.dev project. It centralizes specialized Model Context Protocol (MCP) servers and infrastructure scripts designed to enhance developer productivity, ensure environment parity through multi-stage Docker builds, and enable secure, high-context AI-native engineering workflows.
+The Tools workspace provides isolated development utilities for Git version control and GitHub CLI automation. By packaging command-line utilities within standardized Docker containers, it guarantees environment parity for repository operations across local developer workstations and CI/CD pipelines.
 
 This section covers:
 
-- **MCP Ecosystem**: Secure, containerized context servers mapped through Zero-dependency Fastify wrappers.
-- **Containerized AI Agents**: Running Antigravity and Copilot inside standard Docker container sandboxes.
-- **AI Security & Network**: Isolated Docker bridge networks and Fastify HTTP gateway routing.
-- **Rules of Engagement**: Strict behavioral conventions, coding guidelines, and context schemas for AI developers.
-- **Maintenance & Logic**: Standardized orchestration commands, compose blueprints, and repository maintenance.
+- **Git and GitHub CLI Containers**: Standardized containerized runtimes for local and remote repository tasks.
+- **Environment Parity**: Elimination of local version mismatch bugs for tools like Git Flow and GitHub CLI extension layers.
+- **Workflow Automation**: Scoped commands for starting, stopping, and resetting tooling containers via Docker Compose.

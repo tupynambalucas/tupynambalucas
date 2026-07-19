@@ -9,15 +9,29 @@ module.exports = function (source) {
     return source;
   }
 
-  // Example: "@tupynambalucas-studio/design/images/farmer.jpg" -> "images/farmer.jpg"
-  const subPath = original.replace(/^@tupynambalucas-studio\/design\//, '');
-  const firstSegment = subPath.split('/')[0];
-  const folderKey = `/${firstSegment}`;
+  // Normalize backslashes to forward slashes first
+  const normalizedOriginal = original.replace(/\\/g, '/');
 
   // Load assets manifest
   const manifestPath = require.resolve('@tupynambalucas-studio/design/assets-manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const buildFolders = manifest.buckets.assets.docs;
+  const folderNames = buildFolders.map((f) => f.replace(/^\//, ''));
+
+  let subPath = normalizedOriginal;
+  let firstSegment = '';
+
+  for (const folder of folderNames) {
+    const searchStr = `/${folder}/`;
+    const index = normalizedOriginal.indexOf(searchStr);
+    if (index !== -1) {
+      subPath = normalizedOriginal.slice(index + 1);
+      firstSegment = folder;
+      break;
+    }
+  }
+
+  const folderKey = `/${firstSegment}`;
 
   let bucketUrl = process.env.CLOUDFLARE_R2_ASSETS_PUBLIC_URL;
 

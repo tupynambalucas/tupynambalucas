@@ -42,18 +42,10 @@ graph TD
 
 ## Directory Structure
 
-- **`src/application/`**:
-  - `sync.orchestrator.ts`: Coordinate the main sync sequence. Compares file sizes and MD5 hashes locally with R2 object size and ETag to avoid redundant uploads and downloads.
-- **`src/config/`**:
-  - `env-config.ts`: Loads, parses, and validates the environment variables from `.env.studio.bucket`.
-- **`src/services/`**:
-  - `bucket-storage.service.ts`: Wrapper for `@aws-sdk/client-s3` to list, upload, and download assets.
-  - `glob-discovery.service.ts`: Uses standard glob patterns to recursively find local files under directory rules.
-- **`src/bucket.interface.ts`**: Standard type contracts, interface definitions, and bucket manifest schemas.
-- **`src/infrastructure/cli/`**:
-  - `push.command.ts`: SOLID encapsulation of the local asset scan and R2 push synchronization flow.
-  - `pull.command.ts`: SOLID encapsulation of the remote metadata check and local pull synchronization flow.
-- **`src/bucket.ts`**: Main CLI interactive entrypoint utilizing `@clack/prompts` and directing operations based on user menu selections.
+- **[src/application/](./src/application/)**: Coordinates the main sync sequence by comparing file sizes and MD5 hashes to prevent redundant writes.
+- **[src/config/](./src/config/)**: Loads, parses, and validates the synchronizer variables from `.env.studio.bucket`.
+- **[src/services/](./src/services/)**: S3 storage integrations and glob filesystem discovery implementations.
+- **[src/infrastructure/cli/](./src/infrastructure/cli/)**: Interactive console push/pull commands orchestration.
 
 ---
 
@@ -74,10 +66,20 @@ Configure the synchronizer using `.env.studio.bucket` in the root of the package
 ```bash
 # Path: studio/bucket/.env.studio.bucket
 
-S3_API=https://your-cloudflare-r2-endpoint.r2.cloudflarestorage.com/your-bucket-name
-CLOUDFLARE_R2_ACCESS_KEY_ID=your_access_key_id
-CLOUDFLARE_R2_SECRET_ACCESS_KEY=your_secret_access_key
-CLOUDFLARE_R2_PUBLIC_URL=https://your-public-cdn-url.r2.dev
+# Cloudflare R2 account identifier
+CLOUDFLARE_R2_ACCOUNT_ID=your_cloudflare_r2_account_id
+
+# Public Web Assets Bucket Configuration (CI/CD and CDN Safe)
+CLOUDFLARE_R2_ASSETS_ACCESS_KEY_ID=your_cloudflare_r2_assets_access_key_id
+CLOUDFLARE_R2_ASSETS_SECRET_ACCESS_KEY=your_cloudflare_r2_assets_secret_access_key
+CLOUDFLARE_R2_ASSETS_BUCKET_NAME=your_cloudflare_r2_assets_bucket_name
+CLOUDFLARE_R2_ASSETS_PUBLIC_URL=your_cloudflare_r2_assets_public_url
+
+# Private Creative/Design Bucket Configuration (Restricted to Designers)
+CLOUDFLARE_R2_CREATIVE_ACCESS_KEY_ID=your_cloudflare_r2_creative_access_key_id
+CLOUDFLARE_R2_CREATIVE_SECRET_ACCESS_KEY=your_cloudflare_r2_creative_secret_access_key
+CLOUDFLARE_R2_CREATIVE_BUCKET_NAME=your_cloudflare_r2_creative_bucket_name
+CLOUDFLARE_R2_CREATIVE_PUBLIC_URL=your_cloudflare_r2_creative_public_url
 ```
 
 ---
