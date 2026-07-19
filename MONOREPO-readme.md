@@ -1,6 +1,6 @@
 # tupynambalucas Monorepo
 
-This repository is a monorepo containing a developer profile generator, design systems, personal developer website (hub), core cluster platform, developer tools, and documentation.
+This repository is a monorepo containing a developer profile generator, design system, personal developer website (hub), core cluster platform, developer tools, and documentation.
 
 ---
 
