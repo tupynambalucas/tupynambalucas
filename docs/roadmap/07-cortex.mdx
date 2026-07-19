@@ -1,0 +1,31 @@
+---
+title: Cortex (AI Workspace)
+sidebar_label: Cortex (AI Hub)
+---
+
+This section outlines the strategic milestones and development timeline for the consolidated Cortex AI processing workspace.
+
+## Completed Milestones
+
+### Workspace Unification
+
+- **AI Stack Consolidation**: Unified the AI ecosystem by co-locating the API Ingress Gateway, Model Context Protocol (MCP) data plane, and agent runtimes under `cortex/`. Removed legacy configurations from `/tools` and `/platform`.
+- **Layered Domain Reorganization**: Removed the redundant `core/` wrapper directory, restructuring the workspace into flat root-level domains: `gateway/`, `memory/`, `mcp/`, and `agents/`.
+- **Gateway Port Alignment**: Remapped container ports and updated internal agent settings to route traffic through the Go-based gateway on port `8080`.
+- **Database Startup Resiliency**: Implemented container healthchecks inside the compose manifest to ensure downstream adapters wait until databases are fully initialized before attempting socket connections.
+
+---
+
+## Planned Focus
+
+### MongoDB Vector RAG Memory Subsystem (High Priority)
+
+- **Database Layout**: Implement a self-hosted MongoDB persistent storage layer split across `chat_history`, `entities`, and `relations` collections.
+- **API & Core Libraries**: Code Mongoose schema validation models and Fastify API endpoints to handle transactional memory storage and `$vectorSearch` similarity queries.
+- **Visual Memory Dashboard**: Build an interactive React + Vite + Tailwind CSS dashboard within `cortex/memory/services/web` to render the Context Graph using React Flow.
+- **Docker-Only Execution**: Package the memory sub-stack so that database, API, and Web dashboard containers build and launch strictly via Docker Compose.
+
+### Validation & Decommissioning
+
+- **E2E Agent Validation**: Validate volume mount integrity, OAuth token persistence, and tool connectivity from within containerized agent terminal shells.
+- **Host CLI Decommission**: Prune legacy configuration folders (`.agents/`, `.github/copilot/`) and decommission host-global agent installations once container environments are certified.

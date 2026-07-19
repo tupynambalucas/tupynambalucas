@@ -1,0 +1,31 @@
+---
+title: Cortex (Workspace de IA)
+sidebar_label: Cortex (IA Hub)
+---
+
+Esta seção descreve os marcos estratégicos e o cronograma de desenvolvimento do workspace unificado de processamento de inteligência artificial Cortex.
+
+## Marcos Concluídos
+
+### Unificação do Workspace
+
+- **Consolidação da Stack de IA**: Unificação do ecossistema de IA através do reposicionamento do API Ingress Gateway, barramento de dados do Model Context Protocol (MCP) e ambientes de execução de agentes sob `cortex/`. Remoção de configurações antigas de `/tools` e `/platform`.
+- **Reorganização de Domínios**: Exclusão do diretório intermediário `core/`, reestruturando o workspace com planos de nível raiz do domínio: `gateway/`, `memory/`, `mcp/` e `agents/`.
+- **Alinhamento de Portas do Gateway**: Mapeamento e atualização das portas e configurações para direcionar todo o tráfego dos agentes clientes através do gateway Go na porta `8080`.
+- **Resiliência na Inicialização do Banco**: Definição de healthchecks nas especificações do Compose para garantir que adaptadores MCP aguardem até que o banco de dados esteja pronto antes de estabelecer conexões.
+
+---
+
+## Foco Planejado
+
+### Subsistema de Memória RAG Vetorial com MongoDB (Prioridade Alta)
+
+- **Modelagem de Banco de Dados**: Implantação de uma camada de banco MongoDB autohospedada dividida nas coleções `chat_history`, `entities` e `relations`.
+- **Bibliotecas Core e APIs**: Desenvolvimento de esquemas Mongoose e rotas Fastify API para gerenciar a escrita e leitura de memórias transacionais e buscas de similaridade via `$vectorSearch`.
+- **Painel Visualizador de Memória**: Construção de um dashboard interativo em React + Vite + Tailwind CSS em `cortex/memory/services/web` para renderizar o Grafo de Contexto usando a biblioteca React Flow.
+- **Execução Exclusiva via Docker**: Empacotamento de toda a stack de memória (banco, api e frontend) para rodar exclusivamente através de contêineres Docker Compose.
+
+### Validação e Desativação de Legados
+
+- **Validação de Ponta a Ponta**: Teste e validação da integridade da montagem do monorepo, persistência de chaves de autenticação OAuth e conexões de ferramentas a partir de sessões ativas dos agentes.
+- **Desativação de CLI Local**: Prune das pastas de dados temporários locais (`.agents/`, `.github/copilot/`) e desativação das CLIs de IA instaladas globalmente no host após certificação total do ambiente.

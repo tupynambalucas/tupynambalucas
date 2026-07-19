@@ -10,8 +10,8 @@ This workspace ([studio/design/](./)) configures, hosts, and deploys the self-ho
 - **[assets/icons/](./assets/icons/)**: React wrapper icon components generated from raw vector configurations.
 - **[assets/tokens/](./assets/tokens/)**: Global CSS variables, styling setups, and colors.
 - **[creative/](./creative/)**: Graphic raw vectors and creative assets storage.
-- **[infrastructure/docker/](./infrastructure/docker/)**: Multi-profile Docker compose files and setup configurations for Penpot.
-- **[services/](./services/)**: Multi-container service definitions for Valkey, postgres, frontend/backend, and aide assistant.
+- **[infrastructure/docker/](./infrastructure/docker/)**: Docker compose files and setup configurations for Penpot.
+- **[penpot/](./penpot/)**: Multi-container service definitions for Valkey, postgres, frontend/backend, and aide assistant.
 
 ---
 
@@ -40,14 +40,8 @@ This workspace ([studio/design/](./)) configures, hosts, and deploys the self-ho
 
 Run these scripts from the monorepo root:
 
-- `pnpm penpot:dev:up`: Builds and runs Penpot local containers in development mode.
-- `pnpm penpot:dev:down`: Stops local development Penpot containers.
-- `pnpm penpot:dev:reset`: Recreates dev compose containers.
-- `pnpm penpot:prod:up`: Runs production profile containers.
-- `pnpm penpot:prod:down`: Stops production profile containers.
-- `pnpm penpot:prod:reset`: Recreates production compose containers.
-- `pnpm penpot:staging:up`: Runs staging profile containers.
-- `pnpm penpot:staging:down`: Stops staging profile containers.
-- `pnpm penpot:staging:reset`: Recreates staging compose containers.
+- `pnpm penpot:up`: Builds and runs Penpot local containers.
+- `pnpm penpot:down`: Stops local Penpot containers.
+- `pnpm penpot:reset`: Recreates Penpot compose containers.
 - `pnpm studio:typecheck`: Validates TypeScript type safety across the studio packages.
 - `pnpm studio:lint`: Runs ESLint verification.

@@ -1,96 +1,96 @@
 ---
-title: Bounded Context
-description: Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles in tupynambalucas.dev.
+title: Contextos Delimitados
+description: Explicação detalhada de Contextos Delimitados (Bounded Contexts), estrutura do monorepo e papéis dos workspaces no tupynambalucas.dev.
 ---
 
-# Bounded Context
+# Contextos Delimitados
 
-We use **PNPM Workspaces** with a **Context-Driven Root** layout to strictly isolate our business domains. This architecture ensures scalability and clear separation of concerns by organizing the codebase into distinct Bounded Contexts at the root.
+Utilizamos **PNPM Workspaces** com um layout de **Raiz Orientada a Contextos** para isolar rigidamente nossos domínios de negócios. Esta arquitetura assegura escalabilidade e separação limpa de conceitos, organizando a base de código em Contextos Delimitados (Bounded Contexts) distintos no nível da raiz.
 
 ---
 
-## Monorepo Structure & Workspace Roles
+## Estrutura do Monorepo e Papéis das Workspaces
 
-The monorepo distinguishes between different core contexts. The following diagram illustrates the workspace contexts, package relationships, and dependency flow:
+O monorepo faz distinções entre diferentes contextos principais. O diagrama a seguir ilustra as conexões de workspaces, relacionamentos de pacotes e fluxo de dependências:
 
 ```mermaid
 graph TD
     direction TB
     Root["tupynambalucas.dev Monorepo"]
     Root --> Hub["Hub Context: /hub"]
+    Root --> Cortex["Cortex Context: /cortex"]
     Root --> Profile["Profile Context: /profile"]
     Root --> Studio["Studio Context: /studio"]
     Root --> Tools["Tools Context: /tools"]
+    Root --> Platform["Platform Context: /platform"]
     Root --> Knowledge["Docs Hub: /docs"]
 
     Hub --> H_Web["Web App: React"]
     Hub --> H_API["API: Fastify"]
     Hub --> H_Core["Core Library"]
 
+    Cortex --> Gateway["Ingress Gateway"]
+    Cortex --> Memory["Vector RAG Memory"]
+    Cortex --> MCP["MCP Adapters"]
+    Cortex --> Agents["Terminal Agents"]
+
     Profile --> P_Zig["Zig CLI Engine"]
 
     Studio --> Tokens["Design Tokens"]
     Studio --> Assets["Brand Assets"]
 
-    Tools --> MCP["MCP Gateway & Adapters"]
-    Tools --> Agents["Terminal Agents Stack"]
-    Tools --> Cache["Turborepo Cache Server"]
-
     H_Web --> Studio
     P_Zig -.-> Tools
-    H_API -.-> Tools
+    H_API -.-> Cortex
 ```
 
-| Directory           | Package Name                    | Role            | Responsibility                                                   |
-| :------------------ | :------------------------------ | :-------------- | :--------------------------------------------------------------- |
-| `hub/services/web`  | `@tupynambalucas-hub/web`       | **Application** | Personal portfolio React client, blog, and admin dashboard.      |
-| `hub/services/api`  | `@tupynambalucas-hub/api`       | **Application** | Fastify REST API serving blog posts and form handlers.           |
-| `hub/packages/core` | `@tupynambalucas-hub/core`      | **Library**     | SSOT for the Hub context (Zod validation, shared schemas).       |
-| `profile/`          | `@tupynambalucas/profile`       | **Application** | Zig CLI application compiling GitHub stats and generating SVGs.  |
-| `studio/assets`     | `@tupynambalucas-studio/design` | **Library**     | Design tokens, logos, SVGs, and S3 sync utilities.               |
-| `tools/`            | `@tupynambalucas-tools/*`       | **Tooling**     | MCP gateway, dockerized developer containers, and cache servers. |
-| `docs/`             | `@tupynambalucas/docs`          | **Docs Hub**    | Authoritative Docusaurus developer portal.                       |
+| Diretório           | Nome do Pacote                  | Papel              | Responsabilidade                                                    |
+| :------------------ | :------------------------------ | :----------------- | :------------------------------------------------------------------ |
+| `hub/services/web`  | `@tupynambalucas-hub/web`       | **Aplicação**      | Cliente React do portfólio pessoal, blog e painel de administração. |
+| `hub/services/api`  | `@tupynambalucas-hub/api`       | **Aplicação**      | Backend Fastify REST API servindo posts de blog e formulários.      |
+| `hub/packages/core` | `@tupynambalucas-hub/core`      | **Biblioteca**     | SSOT para o contexto Hub (validação Zod, esquemas compartilhados).  |
+| `cortex/`           | `@tupynambalucas/cortex`        | **Ferramental**    | Gateway unificado de IA, adaptadores MCP e executores de agentes.   |
+| `profile/`          | `@tupynambalucas/profile`       | **Aplicação**      | Aplicação CLI em Zig compilando métricas do GitHub e gerando SVGs.  |
+| `studio/assets`     | `@tupynambalucas-studio/design` | **Biblioteca**     | Tokens de design, logos, SVGs e utilitários de sincronização.       |
+| `tools/`            | `@tupynambalucas-tools/*`       | **Ferramental**    | Controle de versão Git e automação do GitHub CLI isolados.          |
+| `platform/`         | `@tupynambalucas/platform`      | **Infraestrutura** | Monitoramento de telemetria e servidores de cache Turborepo.        |
+| `docs/`             | `@tupynambalucas/docs`          | **Docs Hub**       | Portal do desenvolvedor Docusaurus autoritativo.                    |
 
 ---
 
-## Bounded Context Philosophy
+## Filosofia de Contextos Delimitados
 
-- **Context Isolation**: Each root directory (`hub/`, `profile/`, `studio/`, `tools/`, `docs/`) represents an isolated workspace context. Types, contracts, and configurations are encapsulated locally, referencing external libraries only through package boundaries.
-- **Strict Decoupling**: Business logic from the Developer Hub (`hub/`) is decoupled from the Profile Stats Compiler (`profile/`).
+- **Isolamento de Contexto**: Cada diretório raiz (`hub/`, `cortex/`, `profile/`, `studio/`, `tools/`, `platform/`, `docs/`) representa um contexto isolado. Tipos, contratos e configurações são encapsulados localmente, referenciando bibliotecas externas apenas por fronteiras de pacotes.
+- **Desacoplamento Estrito**: As regras de negócio do Developer Hub (`hub/`) são completamente desacopladas do compilador de estatísticas do perfil (`profile/`) e do hub de IA (`cortex/`).
 
 ---
 
-## Detailed Context Breakdown
+## Detalhamento de Contextos Específicos
 
-### Hub Context (hub/)
+### Contexto Hub (`hub/`)
 
-Manages personal portfolio frontend pages, blog operations, contact form persistence, and administrator options. For detailed documentation, see the **[Hub Workspace](/workspaces/hub)**.
+Gerencia páginas web do portfólio, operações do blog, formulários de contato e opções do administrador. Para documentação detalhada, consulte o **[Workspace Hub](/workspaces/hub)**.
 
-- **`@tupynambalucas-hub/web`**: React 19 visual client.
-- **`@tupynambalucas-hub/api`**: Fastify 5 REST API backend.
-- **`@tupynambalucas-hub/core`**: Data contracts and verification definitions.
+### Contexto Cortex (`cortex/`)
 
-### Contexto Renderer (renderer/)
+O Bounded Context consolidado de IA. Integra o gateway proxy de API, índices de memória vetorial persistente, adaptadores MCP downstream e terminais de execução de agentes conteinerizados. Para documentação detalhada, consulte o **[Workspace Cortex](/workspaces/cortex)**.
 
-Um motor extensível de compilação de documentos e geração de ativos dinâmicos construído em TypeScript para compilar templates markdown e renderizar gráficos SVG. Para documentação detalhada, consulte o **[Workspace Renderer](/workspaces/renderer)**.
+### Contexto Renderer (`renderer/`)
 
-- **`@tupynambalucas/renderer`**: Compilador de pipelines extensível em TypeScript para renderização de cartões visuais SVG separados por temas.
+Um motor de compilação de documentos e geração de ativos dinâmicos construído em TypeScript para compilar templates markdown e renderizar gráficos SVG. Para documentação detalhada, consulte o **[Workspace Renderer](/workspaces/renderer)**.
 
-### Studio Context (studio/)
+### Contexto Studio (`studio/`)
 
-The single source of truth for visual identity, icons, and shared CSS variables. For detailed documentation, see the **[Studio Workspace](/workspaces/studio)**.
+Fronteira para a identidade visual da marca, ícones e variáveis CSS globais do monorepo. Para documentação detalhada, consulte o **[Workspace Studio](/workspaces/studio)**.
 
-- **Design Tokens**: Standardized CSS color variables and typography constants.
-- **Brand Assets**: Logotypes and icons exported as React components.
+### Contexto Tools (`tools/`)
 
-### Tools Context (tools/)
+O workspace de automação de ferramentas de desenvolvimento, isolando utilitários como Git Flow e GitHub CLI. Para documentação detalhada, consulte o **[Workspace Tools](/workspaces/tools)**.
 
-The developer automation workspace. For detailed documentation, see the **[Tools Workspace](/workspaces/tools)**.
+### Contexto Platform (`platform/`)
 
-- **MCP Gateway**: Fastify gateway proxy serving Model Context Protocol endpoints.
-- **AI Agents**: Containerized development shell environments.
-- **Remote Cache**: Turborepo cache synchronization.
+Orquestra pipelines do OpenTelemetry e servidores de cache Turborepo para acelerar o desenvolvimento local. Para documentação detalhada, consulte o **[Workspace Platform](/workspaces/platform)**.
 
-### Docs Context (docs/)
+### Contexto Docs (`docs/`)
 
-The developer documentation hub. For detailed documentation, see the **[Docs Workspace](/workspaces/docs)**.
+O portal de documentação técnica do desenvolvedor. Para documentação detalhada, consulte o **[Workspace Docs](/workspaces/docs)**.

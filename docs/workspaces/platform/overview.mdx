@@ -5,17 +5,16 @@ sidebar_position: 1
 slug: /platform
 ---
 
-The Platform workspace centralizes and manages the operational, always-running platform utilities supporting local development, continuous integration, and telemetry aggregation.
+The Platform workspace manages the operational backend services that support telemetry aggregation and build caching for local development and CI/CD pipelines.
 
 ---
 
 ## Architecture Overview
 
-The platform workspace manages three core runtime services:
+The platform workspace manages two core runtime services:
 
-1. **AgentGateway**: A Go-based federation proxy that acts as the entry point for Model Context Protocol (MCP) clients. It routes and aggregates commands sent to downstream MCP containers.
-2. **otel-collector**: An OpenTelemetry Collector that aggregates telemetry metrics, logs, and distributed traces, exporting them to Grafana Cloud and Sentry.
-3. **turbocache**: A high-performance local cache server that stores Turborepo cache artifacts, drastically speeding up compilation and testing pipelines.
+1. **otel-collector**: An OpenTelemetry Collector that aggregates telemetry metrics, logs, and distributed traces, exporting them to Sentry and Grafana Cloud.
+2. **turbocache**: A high-performance remote cache server storing Turborepo build and test artifacts to accelerate developer compilation pipelines.
 
 ---
 
@@ -24,9 +23,8 @@ The platform workspace manages three core runtime services:
 ```text
 platform/
 ├── infrastructure/
-│   └── docker/          # Docker Compose configurations (compose.yaml, compose.prod.yaml)
+│   └── docker/          # Docker Compose configurations (compose.yaml)
 ├── services/
-│   ├── agentgateway/    # Configurations for Go-based AgentGateway
 │   ├── monitor/         # Configuration schemas for the OTLP Collector
 │   └── turbocache/      # Dockerfiles and caching logic
 ├── package.json         # Workspace package manifest with platform commands
@@ -51,14 +49,8 @@ Services in this workspace should expose generic endpoints and avoid tight coupl
 
 All operations are run from the repository root directory:
 
-| Environment     | Action      | Command                       |
-| :-------------- | :---------- | :---------------------------- |
-| **Development** | Start Stack | `pnpm platform:dev:up`        |
-| **Development** | Stop Stack  | `pnpm platform:dev:down`      |
-| **Development** | Reset Data  | `pnpm platform:dev:reset`     |
-| **Production**  | Start Stack | `pnpm platform:prod:up`       |
-| **Production**  | Stop Stack  | `pnpm platform:prod:down`     |
-| **Production**  | Reset Data  | `pnpm platform:prod:reset`    |
-| **Staging**     | Start Stack | `pnpm platform:staging:up`    |
-| **Staging**     | Stop Stack  | `pnpm platform:staging:down`  |
-| **Staging**     | Reset Data  | `pnpm platform:staging:reset` |
+| Action          | Command               |
+| :-------------- | :-------------------- |
+| **Start Stack** | `pnpm platform:up`    |
+| **Stop Stack**  | `pnpm platform:down`  |
+| **Reset Data**  | `pnpm platform:reset` |

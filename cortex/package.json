@@ -1,0 +1,30 @@
+{
+  "name": "@tupynambalucas/cortex",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "Tupynambá Lucas Unified AI Cortex Workspace",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/cortex#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "cortex"
+  },
+  "scripts": {
+    "cortex:core:up": "docker compose -f infrastructure/docker/compose.yaml --profile core up -d --build",
+    "cortex:core:down": "docker compose -f infrastructure/docker/compose.yaml --profile core down",
+    "cortex:mcp:up": "docker compose -f infrastructure/docker/compose.yaml --profile mcp up -d --build",
+    "cortex:mcp:down": "docker compose -f infrastructure/docker/compose.yaml --profile mcp down",
+    "cortex:agents:up": "docker compose -f infrastructure/docker/compose.yaml --profile agents up -d --build",
+    "cortex:agents:down": "docker compose -f infrastructure/docker/compose.yaml --profile agents down",
+    "cortex:core:reset": "docker compose -f infrastructure/docker/compose.yaml --profile core down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile core up -d --build",
+    "cortex:mcp:reset": "docker compose -f infrastructure/docker/compose.yaml --profile mcp down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile mcp up -d --build",
+    "cortex:agents:reset": "docker compose -f infrastructure/docker/compose.yaml --profile agents down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile agents up -d --build",
+    "cortex:antigravity:auth": "docker exec -it agent-antigravity agy",
+    "cortex:copilot:auth": "docker exec -it agent-copilot copilot login"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

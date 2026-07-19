@@ -6,10 +6,9 @@ This workspace ([platform/](./)) centralizes and manages the operational, always
 
 ## Local Architecture & Directory Map
 
-- **[services/agentgateway/](./services/agentgateway/)**: Federation proxy for Model Context Protocol (MCP) clients.
 - **[services/monitor/](./services/monitor/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and distributed traces.
 - **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds.
-- **[infrastructure/docker/compose.yaml](./infrastructure/docker/compose.yaml)**: Docker Compose orchestration declaring network topologies, secrets mapping, and runtime profiles (`dev`, `staging`, `prod`).
+- **[infrastructure/docker/compose.yaml](./infrastructure/docker/compose.yaml)**: Docker Compose orchestration declaring network topologies and secrets mapping.
 
 ---
 
@@ -26,8 +25,6 @@ This workspace ([platform/](./)) centralizes and manages the operational, always
 
 Run these scripts from the monorepo root:
 
-- `pnpm platform:dev:up`: Boots development containers in the background.
-- `pnpm platform:dev:down`: Stops and tears down the development stack.
-- `pnpm platform:dev:reset`: Purges development volumes and restarts the stack with clean states.
-- `pnpm platform:prod:up` / `pnpm platform:prod:down` / `pnpm platform:prod:reset`: Orchestrates production profile containers.
-- `pnpm platform:staging:up` / `pnpm platform:staging:down` / `pnpm platform:staging:reset`: Orchestrates staging profile containers.
+- `pnpm platform:up`: Boots platform containers in the background.
+- `pnpm platform:down`: Stops and tears down the platform stack.
+- `pnpm platform:reset`: Purges platform volumes and restarts the stack with clean states.

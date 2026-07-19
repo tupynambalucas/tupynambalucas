@@ -1,9 +1,0 @@
-services:
-  agentgateway:
-    restart: unless-stopped
-
-  otel-collector:
-    restart: unless-stopped
-
-  turbocache:
-    restart: unless-stopped

@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+config:
+  adminAddr: '[::]:15000'
+  statsAddr: '[::]:15001'
+  logging:
+    format: json
+  tracing:
+    otlpEndpoint: http://otel-collector:4317
+    randomSampling: true
+mcp:
+  port: 8080
+  policies:
+    cors:
+      allowOrigins:
+        - http://localhost:15000
+        - http://127.0.0.1:15000
+        - http://localhost:19000
+      allowMethods:
+        - '*'
+        - GET
+        - POST
+      allowHeaders:
+        - '*'
+      exposeHeaders:
+        - Mcp-Session-Id
+      allowCredentials: true
+  targets:
+    - name: github
+      mcp:
+        host: http://mcp-github:8080/mcp
+    - name: context7
+      mcp:
+        host: http://mcp-context7:8080/mcp
+    - name: dockerhub
+      mcp:
+        host: http://mcp-dockerhub:8080/mcp
+    - name: firecrawl
+      mcp:
+        host: http://mcp-firecrawl:8080/mcp
+    - name: grafana
+      mcp:
+        host: http://mcp-grafana:8080/mcp
+    - name: neo4j
+      mcp:
+        host: http://mcp-neo4j:8080/mcp
+  statefulMode: stateless
+  prefixMode: null
+  failureMode: failOpen
+binds: []
+llm:
+  port: 4000
+  models: []
+  providers: []
+  virtualModels: []
+frontendPolicies:
+  http:
+    maxBufferSize: 33554432

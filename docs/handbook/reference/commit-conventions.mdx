@@ -24,14 +24,13 @@ To maintain a clean and automated history, all commits must follow the **[Conven
 
 Use the context or package name as the scope:
 
-- **`instance`**: Changes to the Community Instance apps or core.
-- **`portal`**: Changes to the Global Portal apps or core.
-- **`core`**: Changes to shared domain logic.
+- **`hub`**: Changes to the Developer Hub apps, api, or core.
+- **`cortex`**: Changes to the AI ingress gateway, memory layer, MCP adapters, or agents.
 - **`studio`**: Design tokens, assets, or Penpot configuration.
-- **`tools`**: MCP servers, scripts, or infrastructure.
+- **`tools`**: Git and GitHub CLI automation.
 - **`deps`**: Dependency updates (managed via catalogs).
 
-**Example:** `feat(instance): add Pix payment reconciliation to checkout`
+**Example:** `feat(hub): add Pix payment reconciliation to checkout`
 
 ---
 
@@ -63,23 +62,23 @@ graph TD
 
 ### Selective Workspace Typechecking
 
-Running a full typecheck across all monorepo packages (`pnpm typecheck`) can take several seconds. To keep the commit process fast, we use a custom script located at [precommit-typecheck.ts](file:///D:/projects/elo-organico/tools/scripts/precommit-typecheck.ts).
+Running a full typecheck across all monorepo packages (`pnpm typecheck`) can take several seconds. To keep the commit process fast, we use a custom script located at [precommit-typecheck.ts](file:///D:/projects/tupynambalucas/tools/scripts/precommit-typecheck.ts).
 
 #### How it Works
 
 1. The script inspects the currently staged files using `git diff --cached --name-only`.
 2. It detects the file extensions: if no JavaScript or TypeScript files have changed, it skips typechecking completely.
 3. It maps the changed files to their corresponding monorepo workspaces:
-   - Files in `instance/` $\rightarrow$ typecheck `@tupynambalucas-hub/*` packages.
+   - Files in `hub/` $\rightarrow$ typecheck `@tupynambalucas-hub/*` packages.
+   - Files in `cortex/` $\rightarrow$ typecheck `@tupynambalucas/cortex`.
    - Files in `studio/` $\rightarrow$ typecheck `@tupynambalucas-studio/design`.
-   - Files in `tools/` $\rightarrow$ typecheck `@tupynambalucas/tools`.
+   - Files in `tools/` $\rightarrow$ typecheck `@tupynambalucas-tools/*`.
    - Files in `docs/` $\rightarrow$ typecheck `@tupynambalucas/docs`.
-   - Files in `portal/` $\rightarrow$ typecheck `@tupynambalucas-hub/*`.
-4. If global configuration or root files (e.g. `package.json`, `eslint.config.ts`, `pnpm-workspace.yaml`) are modified, the script runs a full typecheck (excluding `portal` until it is updated).
+4. If global configuration or root files (e.g. `package.json`, `eslint.config.ts`, `pnpm-workspace.yaml`) are modified, the script runs a full typecheck.
 5. It executes the targeted typecheck in parallel using Turborepo filters (e.g., `npx turbo run typecheck --filter=@tupynambalucas-hub/*`).
 
 :::tip[Performance Advantage]
-If you only modify files in the `tools` workspace, only the tools project is typechecked, which takes less than 1.5 seconds. If you only modify documentation (`.md` or `.mdx` files), the typecheck is skipped entirely.
+If you only modify files in the `cortex` workspace, only the cortex project is typechecked, which takes less than 1.5 seconds. If you only modify documentation (`.md` or `.mdx` files), the typecheck is skipped entirely.
 :::
 
 ---
@@ -90,7 +89,7 @@ Once typechecking passes, Husky triggers `lint-staged`, which runs linters and f
 
 #### Configuration
 
-The rules are declared in the root [package.json](file:///D:/projects/elo-organico/package.json):
+The rules are declared in the root [package.json](file:///D:/projects/tupynambalucas/package.json):
 
 ```json
   "lint-staged": {
@@ -104,7 +103,7 @@ The rules are declared in the root [package.json](file:///D:/projects/elo-organi
 ```
 
 :::note[Prettier Integration]
-For JavaScript, TypeScript, and TSX files, we do not run the standalone Prettier CLI. Instead, Prettier runs as an ESLint rule via `eslint-plugin-prettier`. Running `eslint --fix` formats the code according to [shared/config/prettierrc.json](file:///D:/projects/elo-organico/shared/config/prettierrc.json) and checks for code quality issues in a single execution.
+For JavaScript, TypeScript, and TSX files, we do not run the standalone Prettier CLI. Instead, Prettier runs as an ESLint rule via `eslint-plugin-prettier`. Running `eslint --fix` formats the code according to [shared/config/prettierrc.json](file:///D:/projects/tupynambalucas/shared/config/prettierrc.json) and checks for code quality issues in a single execution.
 :::
 
 ---
@@ -113,7 +112,7 @@ For JavaScript, TypeScript, and TSX files, we do not run the standalone Prettier
 
 Local Git hooks can be bypassed (e.g. using `git commit --no-verify`). To prevent unvalidated code from reaching stable branches, we run a Continuous Integration (CI) workflow in GitHub on every push and Pull Request.
 
-The workflow configuration is defined in [.github/workflows/ci.yaml](file:///D:/projects/elo-organico/.github/workflows/ci.yaml):
+The workflow configuration is defined in [.github/workflows/ci.yaml](file:///D:/projects/tupynambalucas/.github/workflows/ci.yaml):
 
 - It installs dependencies using `pnpm install --frozen-lockfile`.
 - It executes the full typecheck suite: `pnpm typecheck --filter=!@tupynambalucas-hub/*`.

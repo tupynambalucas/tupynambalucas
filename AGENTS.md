@@ -9,12 +9,13 @@ This document serves as the root context router for AI agents operating in the t
 
 ## Bounded Contexts
 
+- [cortex](./cortex/AGENTS.md): Unified AI processing hub, persistent memory layers, Model Context Protocol servers, and agent runtimes.
 - [docs](./docs/AGENTS.md): Documentation and guides hub.
 - [hub](./hub/AGENTS.md): Developer website client, REST API, and data core library.
 - [renderer](./renderer/AGENTS.md): Dynamic asset generator and document compilation engine.
 - [studio](./studio/AGENTS.md): Brand visual assets, design tokens, and Penpot editor configurations.
 - [platform](./platform/AGENTS.md): Core cluster services, ingress routing, telemetry monitoring, and build cache.
-- [tools](./tools/AGENTS.md): Model Context Protocol gateway, containerized terminals, and LLM worker agents.
+- [tools](./tools/AGENTS.md): GitHub CLI automation and repository scripts.
 
 ## Global Constraints
 

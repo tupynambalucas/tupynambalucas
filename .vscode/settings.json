@@ -155,9 +155,9 @@
   "less.validate": false,
 
   /* --- Misc --- */
-  // "json.schemaDownload.enable": true,
-  // "yaml.schemaStore.enable": true,
-  // "yaml.kubernetesCRDStore.enable": false,
+  "json.schemaDownload.enable": true,
+  "yaml.schemaStore.enable": true,
+  "yaml.kubernetesCRDStore.enable": false,
 
   /* --- Color Highlight --- */
   "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"]

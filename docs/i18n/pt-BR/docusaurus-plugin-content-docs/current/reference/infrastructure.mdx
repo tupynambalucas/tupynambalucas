@@ -57,20 +57,64 @@ Never inject sensitive keys (such as JWT secrets, database credentials, or email
 
 ---
 
-tupynambalucas.dev utilizes a reverse proxy setup (either **Nginx** or **Traefik**) to handle TLS termination, compression, and request routing.
+## 3. Orquestração de Contêineres e Layouts de Diretórios
 
-- **SSL Certificates:** Managed dynamically via Let's Encrypt using automated ACME challenges.
-- **Port Mapping:** The public ports `80` (HTTP) and `443` (HTTPS) map to the edge web containers, which internally forward requests to the Fastify API or serve the compiled static React assets.
+Os espaços de trabalho (workspaces) que contêm infraestrutura Docker são estruturados de duas
+formas com base em seus domínios operacionais. Consulte
+[Monorepos Orientados a Domínio](/docs/explanation/domain-driven-monorepo#6-padrões-de-layout-de-contêineres-flat-services-vs-layered-domains)
+para a teoria de design por trás desta escolha.
 
-:::info[Zero-Downtime Re-Deploys]
-Docker Compose automatically updates containers with minimal downtime when executing `pnpm hub:prod` with existing containers. To completely eliminate request dropouts, implement a rolling deployment pattern utilizing an upstream load balancer.
+### 3.1. Layout de Flat Services (Serviços Planos)
+
+Os serviços são organizados dentro de uma pasta plana `services/`, com as configurações gerais de
+orquestração localizadas em `infrastructure/`:
+
+- **Esquema de Caminhos**:
+  - `workspace/services/[service-name]/Dockerfile`
+  - `workspace/infrastructure/docker/compose.yaml`
+- **Aplicação**: Utilizado em
+  [hub](/docs/explanation/domain-driven-monorepo#31-topologia-de-pastas) e
+  `studio/design`.
+
+### 3.2. Layout de Layered Domain (Domínios em Camadas)
+
+Os serviços são agrupados em diretórios irmãos representando camadas arquiteturais diretamente na
+raiz do workspace:
+
+- **Esquema de Caminhos**:
+  - `workspace/[domain-layer]/services/[service-name]/Dockerfile`
+  - `workspace/infrastructure/docker/compose.yaml`
+- **Aplicação**: Utilizado em `cortex` (dividido em planos `gateway/`, `mcp/` e `agents/`).
+
+---
+
+## 4. Servidor Proxy Reverso e Roteamento de Requisições
+
+tupynambalucas.dev utiliza uma configuração de proxy reverso (seja **Nginx** ou **Traefik**) para
+tratar a terminação TLS, compressão e roteamento de requisições.
+
+- **Certificados SSL:** Gerenciados dinamicamente via Let's Encrypt usando desafios ACME
+  automatizados.
+- **Mapeamento de Portas:** As portas públicas `80` (HTTP) e `443` (HTTPS) mapeiam para os
+  contêineres de borda web, que internamente encaminham as chamadas para a API Fastify ou servem
+  os ativos estáticos compilados do React.
+
+:::info[Redeploys com Zero Downtime]
+O Docker Compose atualiza automaticamente os contêineres com o mínimo de inatividade ao executar
+`pnpm hub:prod` com contêineres existentes. Para eliminar totalmente quedas de requisição,
+implemente um padrão de deploy rotativo (rolling deployment) utilizando um balanceador de carga.
 :::
 
 ---
 
-## 5. Database Initialization & Schema Migrations
+## 5. Inicialização do Banco de Dados e Migrações de Schema
 
-To avoid manual operational overhead during releases, all database preparation is handled dynamically at the application level.
+Para evitar a necessidade de intervenção operacional manual durante lançamentos, toda a
+preparação do banco de dados é tratada de forma dinâmica a nível de aplicação.
 
-- **Replica Set Configuration:** During local development and initial staging rollouts, the helper container `db-init` automatically ensures the replica set (`rs0`) is established, enabling transaction support.
-- **Data Seeding (`SeedPlugin`):** The Fastify server features a natively integrated seeding plugin. On startup, it triggers an idempotent upsert pattern, creating the default administrator user if it does not exist, without risk of duplicate rows.
+- **Configuração de Replica Set:** Durante o desenvolvimento local e rollouts iniciais em staging,
+  o contêiner auxiliar `db-init` garante automaticamente que o replica set (`rs0`) seja
+  estabelecido, permitindo suporte a transações.
+- **Seeding de Dados (`SeedPlugin`):** O servidor Fastify conta com um plugin de seeding integrado
+  nativamente. Na inicialização, ele dispara um padrão upsert idempotente, criando o usuário
+  administrador padrão se ele não existir, sem risco de duplicação de linhas.

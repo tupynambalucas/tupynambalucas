@@ -46,8 +46,9 @@ We categorize our contexts using DDD tactical classifications to prioritize tech
 | :------------------------- | :----------------------- | :---------------------------------------------------------------------------------------------------------- |
 | **Renderer (`renderer/`)** | **Core Domain**          | Proprietary document compilation pipeline built with TypeScript and zero-dependency base64 embedded assets. |
 | **Hub (`hub/`)**           | **Core Domain**          | Personal portfolio web app, Fastify API, and data contract packages with strict schema validations.         |
+| **Cortex (`cortex/`)**     | **Supporting Domain**    | Unified AI ingress gateway, persistent vector memory indexes, downstream MCP adapters, and agent terminals. |
 | **Studio (`studio/`)**     | **Supporting Domain**    | Brand identity master vault, design tokens library, and R2 bucket command-line synchronizer.                |
-| **Platform (`platform/`)** | **Generic Domain**       | Go-based AgentGateway proxy, OpenTelemetry monitoring collector, and Turborepo cache servers.               |
+| **Platform (`platform/`)** | **Generic Domain**       | OpenTelemetry monitoring collector and Turborepo cache servers.                                             |
 
 ---
 
@@ -65,11 +66,12 @@ tupynambalucas/
 │   ├── services/web/         # Web Application (React)
 │   ├── services/api/         # API Backend (Fastify)
 │   └── packages/core/        # Data validation contracts (Zod)
+├── cortex/                   # Cortex Context (AI Ingress, Memory, MCP, Agents)
 ├── renderer/                 # Renderer Context (Asset & Document Pipeline)
 ├── studio/                   # Studio Context (Design System & Master Assets)
 │   └── assets/               # CSS Tokens, SVG Logos, & CLI Synchronizer
-├── platform/                 # Platform Context (Gateway, OTel, Cache)
-├── tools/                    # Tools Context (AI Agents & MCP Servers)
+├── platform/                 # Platform Context (OTel, Cache)
+├── tools/                    # Tools Context (GitHub Automation CLI)
 └── docs/                     # Docs Hub Context (Docusaurus)
 ```
 
@@ -95,7 +97,7 @@ Any change to these tokens triggers immediate build-time verification across bot
 
 When a clean context must consume complex or raw external services, we introduce an **Anti-Corruption Layer (ACL)** to translate external inputs into the consumer's clean domain language.
 
-Our **`AgentGateway`** (under `/platform`) acts as a network-level ACL. Downstream AI agent containers in `tools/` execute complex, non-standard MCP commands. Instead of coupling the agents to raw endpoints, they communicate through the clean, federated `AgentGateway` Go-ingress proxy, which translates and routes payloads seamlessly.
+Our **`AgentGateway`** (under `/cortex/gateway`) acts as a network-level ACL. Downstream AI agent containers in `cortex/agents` execute complex, non-standard MCP commands. Instead of coupling the agents to raw endpoints, they communicate through the clean, federated `AgentGateway` ingress proxy, which translates and routes payloads seamlessly.
 
 ---
 
@@ -115,3 +117,33 @@ Left to social discipline alone, architectural boundaries will eventually decay 
 - **Strict Linting Rules**: Configuring import boundary checkers to block illegal imports across domains.
 - **Dependency Cruising**: Utilizing topologist toolings to audit entire import graphs, blocking circular dependencies, and eliminating dead code.
 - **Type-only Imports**: Enforcing type safety by importing contracts dynamically rather than importing physical class implementations.
+
+---
+
+## 6. Container Layout Patterns: Flat Services vs. Layered Domains
+
+When a Bounded Context includes containerized deployment units via Docker, the directory layout
+must be structured to match its architectural alignment:
+
+### 6.1 Flat Services Layout
+
+A horizontal layout where all services are placed inside a flat `services/` directory.
+
+- **When to Use**: Applied to product-centric workspaces (e.g.,
+  [/hub](/docs/explanation/domain-driven-monorepo#31-folder-topology) and `studio/design`)
+  that represent standard web application stacks (Frontend Client, Backend API, Database, Cache).
+- **Rationale**: The services function as peer components of a single, highly coupled application.
+  Adding further structural layers would increase cognitive overhead without benefit.
+
+### 6.2 Layered Domain Layout
+
+A vertical layout where services are grouped into sibling directories representing distinct
+architectural planes (e.g., `gateway/` for routing, `mcp/` for data planes, `agents/` for execution
+runtimes) at the root of the workspace.
+
+- **When to Use**: Applied to infrastructure-centric workspaces (e.g., `/cortex`) that
+  contain heterogeneous components with separate lifecycles, permission scopes, and deployment
+  requirements.
+- **Rationale**: Clarifies the structural hierarchy of complex platform integrations. It allows
+  developers to spin up specific layers (such as the gateway and data planes) independently of the
+  control planes (such as execution environments).

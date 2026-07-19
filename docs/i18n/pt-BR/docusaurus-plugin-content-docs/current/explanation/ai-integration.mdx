@@ -1,88 +1,84 @@
 ---
-title: AI Integration
-sidebar_label: AI Integration
+title: Integração de IA
+sidebar_label: Integração de IA
 sidebar_position: 3
 ---
 
-# AI Integration in tupynambalucas.dev
+# Integração de IA no tupynambalucas.dev
 
-The **tupynambalucas.dev** platform is built from the ground up to support AI-native engineering workflows. Rather than treating AI agents as external chat tools, the monorepo provides a containerized infrastructure that mounts code environments directly to LLMs, bridges the design hub to agents via Model Context Protocol (MCP), and guarantees system parity across host and container runtimes.
-
----
-
-## 1. Overview & Architecture
-
-For a high-level view of how AI tools and design systems fit into the global monorepo structure, refer to the **[Technical Architecture Overview](./architecture-overview.mdx)**.
-
-Our AI integration specifically relies on three major pillars:
-
-1. **MCP Ecosystem (`tools/mcp`)**: Exposes the codebase and critical host tools (GitHub, browser, dependencies documentation) to active LLM sessions through Server-Sent Events (SSE) gateways.
-2. **Containerized Developer Terminals (`tools/agents`)**: Self-contained CLI nodes running Google Antigravity CLI (`agy`) and GitHub Copilot CLI in Docker. They communicate with the MCP gateway internally.
-3. **Design System Automation (`studio/penpot/aide`)**: A self-hosted Penpot instance coupled with the `aide` AI service. This allows design-to-code components and vector asset generation to be automated.
+A plataforma **tupynambalucas.dev** é construída desde o início para suportar fluxos de trabalho nativos de IA. Em vez de tratar os agentes como meras ferramentas de chat, o monorepo fornece uma infraestrutura conteinerizada que monta ambientes de código diretamente aos LLMs, conecta o estúdio de design aos agentes via Model Context Protocol (MCP) e garante paridade entre os runtimes do host e do container.
 
 ---
 
-## 2. Model Context Protocol (MCP) Ecosystem
+## 1. Visão Geral e Arquitetura
 
-The MCP ecosystem provides a unified, secure gateway allowing LLM agents to execute actions and fetch context in real time.
+Para uma visão de alto nível de como as ferramentas de IA e os sistemas de design se encaixam no monorepo global, consulte a **[Visão Geral da Arquitetura Técnica](./architecture-overview.mdx)**.
 
-### Architectural Components
+Nossa integração de IA baseia-se em três pilares principais:
 
-- **Fastify SSE Gateway (`tupynambalucas-mcp-gateway`)**: Exposes internal HTTP endpoints representing each MCP server. It coordinates cross-network routing on port `3005` (host) and port `3000` (internal bridge network).
-- **Zero-Dependency SSE Adapters**: Standard input/output (stdio) servers are wrapped in custom Fastify adapters (`sse-adapter.ts`) to stream JSON-RPC messages bi-directionally over HTTP Server-Sent Events.
+1. **Ecossistema MCP (`cortex/mcp`)**: Expõe a base de código e ferramentas cruciais do host (GitHub, navegador, documentações) para sessões ativas de LLM por meio de gateways Server-Sent Events (SSE).
+2. **Terminais de Desenvolvimento Conteinerizados (`cortex/agents`)**: Nós de CLI isolados que rodam a CLI Google Antigravity (`agy`) e a CLI GitHub Copilot em Docker. Eles se comunicam com o gateway MCP internamente.
+3. **Automação do Sistema de Design (`studio/penpot/aide`)**: Uma instância autohospedada do Penpot acoplada ao serviço de IA `aide`, permitindo a automação da geração de componentes e ativos vetoriais.
 
-### Configured Servers
+---
 
-1.  **GitHub MCP Server**: Enables agents to coordinate branches, commits, and pull requests directly from the workspace.
-2.  **Context7 MCP Server**: Queries real-time external documentation for project dependencies (Fastify 5, React 19) to ensure accuracy.
-3.  **Browser MCP Server (Playwright)**: Launches a headless Chrome browser to execute UI audits, capture screenshots, and test frontends.
-4.  **Docker Hub MCP Server**: Validates upstream Docker tags and updates container manifests.
+## 2. Ecossistema do Model Context Protocol (MCP)
 
-:::info[Detailed Configuration]
-For complete server registries, custom Fastify SSE adapter logic, gateway routing, and technical configurations, refer to the **[Tools Workspace Setup Guide](../../workspaces/tools)**.
+O ecossistema MCP fornece um gateway unificado e seguro permitindo que os agentes de IA executem ações e busquem contextos em tempo real.
+
+### Componentes Arquiteturais
+
+- **Fastify Ingress Gateway (`agentgateway`)**: Expõe endpoints HTTP internos representando cada servidor MCP. Ele coordena o roteamento na porta `8080` (host e rede interna).
+- **Adaptadores SSE Zero-Dependency**: Servidores stdio padrão são encapsulados em adaptadores Fastify customizados (`sse-adapter.ts`) para transmitir mensagens JSON-RPC via Server-Sent Events HTTP.
+
+### Servidores Configurados
+
+1. **GitHub MCP Server**: Permite que os agentes gerenciem branches, commits e pull requests diretamente do workspace.
+2. **Context7 MCP Server**: Consulta documentação técnica em tempo real para dependências (React 19, Fastify 5) para garantir exatidão.
+3. **Browser MCP Server (Playwright)**: Inicializa um navegador Chrome headless para executar auditorias de UI, capturar telas e testar frontends.
+4. **Docker Hub MCP Server**: Valida tags do Docker Hub upstream e atualiza manifestos de containers.
+
+:::info[Configuração Detalhada]
+Para registros completos de servidores, lógica de adaptadores Fastify SSE, roteamento e configurações, consulte o **[Guia de Instalação do Workspace Cortex](/workspaces/cortex)**.
 :::
 
 ---
 
-## 3. Containerized AI Agents
+## 3. Agentes de IA Conteinerizados
 
-To avoid complex manual installations and state corruption on developer host systems, we run long-running AI terminals inside dedicated Docker containers.
+Para evitar instalações manuais complexas e corrupção de estado na máquina host, executamos os terminais de IA dentro de containers Docker dedicados de longa duração.
 
-### Parity & Mount Strategy
+### Paridade e Estratégia de Montagem
 
-The agent containers bind-mount crucial developer files to ensure workspace parity without leaking files to global host system directories:
+Os containers dos agentes montam caminhos cruciais do monorepo para garantir a paridade sem expor arquivos a pastas globais do host:
 
-- **Monorepo Working Dir**: Mounted at `/workspace` for zero-latency code generation.
-- **Docker-out-of-Docker (DooD)**: Mounted `/var/run/docker.sock` socket inside containers to compile and test images against the host daemon.
-- **Session Persistence**: Mapped `./copilot/data/` and `./antigravity/data/` persist OAuth credentials, preventing session logouts on container rebuilds.
-- **Shared Agent Skills**: Bind-mounted `./skills/` folder propagates context rules (such as `code-expert` and `docusaurus-kb-expert`) to agents.
+- **Diretório de Trabalho do Monorepo**: Montado em `/workspace` para geração de código com latência zero.
+- **Docker-out-of-Docker (DooD)**: Monta o socket `/var/run/docker.sock` para compilar e testar imagens contra o daemon do host.
+- **Persistência de Sessão**: Mapeia os dados do copilot e antigravity para manter as credenciais de autenticação ativas entre reinicializações de containers.
+- **Habilidades Compartilhadas**: A pasta `./skills/` compartilha as diretrizes contextuais (como `code-expert` e `docusaurus-kb-expert`) com os agentes.
 
-:::caution[Boot Sequence Requirement]
-The MCP stack must be running before the agents stack is started. Starting the agents before the MCP stack will produce a Docker network resolution error.
+:::caution[Requisito de Sequência de Inicialização]
+O gateway e a stack do MCP devem estar em execução antes de iniciar a stack de agentes. Iniciar os agentes antes do gateway produzirá um erro de resolução de rede do Docker.
 :::
 
-:::info[Detailed Installation]
-For directory bind mount mappings, authentication device-flow persistence instructions, and VS Code task integration configurations, refer to the **[Tools Workspace Setup Guide](../../workspaces/tools)**.
+:::info[Instalação Detalhada]
+Para mapeamentos de volumes, persistência de autenticação e tarefas do VS Code, consulte o **[Guia de Instalação do Workspace Cortex](/workspaces/cortex)**.
 :::
 
 ---
 
-## 4. Penpot & Aide AI Integration
+## 4. Integração Penpot & Aide AI
 
-Our self-hosted collaborative design studio integrates the **Aide** AI assistant service to synchronize creative brand assets with the code implementation.
+Nosso estúdio de design colaborativo integra o assistente de IA **Aide** para sincronizar ativos visuais da marca com a implementação no código.
 
-### Communication Bridge
+### Ponte de Comunicação
 
-Aide operates inside the isolated `penpot-net` network via bidirectional WebSockets. It uses Port `4402` to interface with the Penpot Plugin API, allowing AI agents to perform design audits and layer manipulation.
+O Aide opera dentro da rede isolada `penpot-net` via WebSockets bidirecionais. Ele usa a porta `4402` para interagir com a API de Plugins do Penpot, permitindo que agentes executem auditorias de design e manipulação de camadas.
 
-### Code-Design Sync Protocol
+### Protocolo de Sincronização Código-Design
 
-AI design-to-code generation must respect the following rules:
+A geração de código a partir do design deve respeitar as seguintes regras:
 
-- **Token-First Design**: Exported color elements must refer to custom CSS properties defined in `src/tokens/`.
-- **SVG Optimization**: Vector SVGs must be compiled into the central Studio components wrapper registry.
-- **Component Reuse**: Prioritize existing React components in `@tupynambalucas-hub/web` before generating new visual elements.
-
-:::info[Detailed Installation]
-For the detailed installation steps, architecture diagrams, command lists, and mandatory component/token reuse rules, refer to the **[Studio Workspace Setup Guide](../../workspaces/studio)**.
-:::
+- **Design Baseado em Tokens**: Cores e tipografias devem referenciar as propriedades CSS customizadas declaradas em `src/tokens/`.
+- **Otimização de SVGs**: Ativos vetoriais devem ser compilados no registro central de componentes do Studio.
+- **Reuso de Componentes**: Priorize o uso de componentes React existentes em `@tupynambalucas-hub/web` antes de gerar novos elementos visuais.

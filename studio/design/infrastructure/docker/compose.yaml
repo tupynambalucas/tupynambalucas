@@ -7,11 +7,10 @@ networks:
 
 services:
   frontend:
-    profiles: ['dev', 'prod', 'staging']
-    container_name: tupynambalucas-penpot-frontend-${APP_ENV:-prod}
+    container_name: tupynambalucas-penpot-frontend
     image: tupynambalucas-penpot-frontend:${TAG:-latest}
     build:
-      context: ../../services/frontend
+      context: ../../penpot/frontend
       dockerfile: Dockerfile
     ports:
       - '${PENPOT_FRONTEND_PORT:-9005}:8080'
@@ -31,11 +30,10 @@ services:
       - 'tupynambalucas.internal:host-gateway'
 
   backend:
-    profiles: ['dev', 'prod', 'staging']
-    container_name: tupynambalucas-penpot-backend-${APP_ENV:-prod}
+    container_name: tupynambalucas-penpot-backend
     image: tupynambalucas-penpot-backend:${TAG:-latest}
     build:
-      context: ../../services/backend
+      context: ../../penpot/backend
       dockerfile: Dockerfile
     environment:
       - PENPOT_FLAGS=${PENPOT_FLAGS}
@@ -62,11 +60,10 @@ services:
       - 'tupynambalucas.internal:host-gateway'
 
   exporter:
-    profiles: ['dev', 'prod', 'staging']
-    container_name: tupynambalucas-penpot-exporter-${APP_ENV:-prod}
+    container_name: tupynambalucas-penpot-exporter
     image: tupynambalucas-penpot-exporter:${TAG:-latest}
     build:
-      context: ../../services/exporter
+      context: ../../penpot/exporter
       dockerfile: Dockerfile
     environment:
       - PENPOT_FLAGS=${PENPOT_FLAGS}
@@ -83,11 +80,10 @@ services:
       - 'tupynambalucas.internal:host-gateway'
 
   valkey:
-    profiles: ['dev', 'prod', 'staging']
-    container_name: tupynambalucas-penpot-valkey-${APP_ENV:-prod}
+    container_name: tupynambalucas-penpot-valkey
     image: tupynambalucas-penpot-valkey:${TAG:-latest}
     build:
-      context: ../../services/valkey
+      context: ../../penpot/valkey
       dockerfile: Dockerfile
     volumes:
       - penpot_valkey_data:/data
@@ -95,11 +91,10 @@ services:
       - penpot-net
 
   aide:
-    profiles: ['dev', 'prod', 'staging']
-    container_name: tupynambalucas-penpot-aide-${APP_ENV:-prod}
+    container_name: tupynambalucas-penpot-aide
     image: tupynambalucas-penpot-aide:${TAG:-latest}
     build:
-      context: ../../services/aide
+      context: ../../penpot/aide
       dockerfile: Dockerfile
     ports:
       - '${PENPOT_AIDE_PORT_4400:-4400}:4400'
@@ -118,4 +113,4 @@ services:
 
 volumes:
   penpot_valkey_data:
-    name: tupynambalucas-penpot-valkey-${APP_ENV:-prod}-data
+    name: tupynambalucas-penpot-valkey-data

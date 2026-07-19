@@ -9,7 +9,7 @@ import DocCardList from '@theme/DocCardList';
 
 # Workspaces Documentation Hub
 
-Welcome to the **tupynambalucas.dev Workspaces Documentation Hub**. This section provides dedicated deep-dives into the architecture, design, and internal engineering of each specific Bounded Context within the monorepo.
+Welcome to the **tupynambalucas.dev Workspaces Documentation Hub**. This section provides dedicated deep-dives into the architecture, design, and internal engineering of each Bounded Context within the monorepo.
 
 For high-level project architectural decisions and global principles, please refer to the [Architecture Handbook](/docs/explanation/architecture-overview).
 
@@ -29,6 +29,12 @@ Select a workspace below to read its technical documentation and overview:
     },
     {
       type: 'link',
+      href: '/workspaces/cortex',
+      label: 'Cortex Workspace',
+      description: 'Unified AI processing hub: gateway, memory, MCP, and agents.',
+    },
+    {
+      type: 'link',
       href: '/workspaces/renderer',
       label: 'Renderer Workspace',
       description: 'Dynamic asset generator and extensible document compilation engine.',
@@ -43,13 +49,13 @@ Select a workspace below to read its technical documentation and overview:
       type: 'link',
       href: '/workspaces/tools',
       label: 'Tools Workspace',
-      description: 'Infrastructure, AI developer automation, and MCP context servers.',
+      description: 'Isolated Git version control and GitHub CLI automation environments.',
     },
     {
       type: 'link',
       href: '/workspaces/platform',
       label: 'Platform Workspace',
-      description: 'Core cluster services, ingress routing, and build cache.',
+      description: 'OpenTelemetry monitoring collector and Turborepo caching services.',
     },
     {
       type: 'link',

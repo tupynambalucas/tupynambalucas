@@ -10,8 +10,8 @@ This package houses the centralized brand assets, design tokens, and the Penpot 
 - **[assets/icons/](./assets/icons/)**: React wrapper icon components generated from raw vector configurations.
 - **[assets/tokens/](./assets/tokens/)**: Global CSS variables, styling setups, and colors.
 - **[creative/](./creative/)**: Graphic raw vectors and creative assets storage.
-- **[infrastructure/docker/](./infrastructure/docker/)**: Multi-profile Docker compose files and setup configurations for Penpot.
-- **[services/](./services/)**: Multi-container service definitions for Valkey, postgres, frontend/backend, and aide assistant.
+- **[infrastructure/docker/](./infrastructure/docker/)**: Docker compose files and setup configurations for Penpot.
+- **[penpot/](./penpot/)**: Multi-container service definitions for Valkey, postgres, frontend/backend, and aide assistant.
 
 ---
 
@@ -29,7 +29,7 @@ Provides shared assets and visual building blocks used across all client package
 
 All assets are exported via ESM exports defined in `package.json`.
 
-### 2. Penpot Editor Orchestration (`infrastructure/docker/` and `services/`)
+### 2. Penpot Editor Orchestration (`infrastructure/docker/` and `penpot/`)
 
 Configures and runs the self-hosted collaborative designer tool for creating layouts and prototyping:
 
@@ -72,6 +72,5 @@ Manage the design system environment using these scripts from the monorepo root:
 - `pnpm penpot:up`: Builds and runs Penpot local containers.
 - `pnpm penpot:down`: Stops local Penpot containers.
 - `pnpm penpot:reset`: Recreates compose containers.
-- `pnpm penpot:aide:up`: Boots Penpot AI assistant.
 - `pnpm studio:typecheck`: Validates TypeScript type safety across the studio packages.
 - `pnpm studio:lint`: Runs ESLint verification.

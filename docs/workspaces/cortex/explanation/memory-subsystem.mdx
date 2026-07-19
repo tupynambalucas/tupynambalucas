@@ -1,0 +1,53 @@
+---
+title: Persistent Memory Subsystem
+sidebar_label: Memory Subsystem
+sidebar_position: 2
+---
+
+### Persistent Memory Subsystem
+
+The Cortex memory layer is built on a self-hosted MongoDB instance leveraging native Vector Search capabilities to provide cognitive persistence for AI agents.
+
+---
+
+## 1. Relational Document Design
+
+To balance relationship mapping with JSON document flexibility, agent memory is split across three core collections:
+
+### A. `chat_history` (Short-Term Memory)
+
+Tracks linear conversational turns grouped by agent sessions.
+
+- **Purpose**: Restores immediate conversational context when resuming active threads.
+- **Fields**: Session identifiers, sender role (user/assistant), message content, and timestamps.
+
+### B. `entities` (Long-Term Memory)
+
+Represents discrete facts, user preferences, repositories, and workspace concepts.
+
+- **Purpose**: Acts as the semantic index. Each document is mapped to a vector embedding.
+- **Fields**: Entity name, classification type, textual summary, metadata properties, and the float array vector embedding.
+
+### C. `relations` (Graph Layer)
+
+Maps semantic, directional links between stored entities.
+
+- **Purpose**: Creates a Context Graph to track relationships (e.g., matching a `Task` to a specific `File` it modifies).
+- **Fields**: Source entity ObjectId, target entity ObjectId, link type (e.g., `CONTAINS`, `DEPENDS_ON`), and relation metadata.
+
+---
+
+## 2. Vector Search & RAG Flow
+
+The retrieval process follows an injection pipeline to feed high-context data back to the agent:
+
+```text
+[User Prompt] ──> [Generate Embedding] ──> [Vector Similarity Search] ──> [Retrieve Entities]
+                                                                                │
+[Inject to Context Window] <── [Format Context Graph] <── [Fetch Relationships] ┘
+```
+
+1. **Embedding Generation**: The input query is converted to a vector embedding array.
+2. **Similarity Search**: A `$vectorSearch` pipeline query is run against the `entities` collection to locate semantically similar documents.
+3. **Graph Hydration**: For each matching entity, the system queries the `relations` collection to fetch first-degree connected nodes.
+4. **Context Injection**: Stored details and connected node schemas are compiled into markdown strings and injected directly into the LLM system prompt.

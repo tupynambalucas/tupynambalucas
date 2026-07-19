@@ -1,0 +1,47 @@
+---
+title: Maintenance & Operational Logic
+sidebar_label: Maintenance & Logic
+sidebar_position: 2
+---
+
+### Operational Logic and Maintenance
+
+Standardized commands are provided for maintaining the Cortex workspace, managing container lifetimes, and verifying execution health across the AI subsystem.
+
+| Command          | Engineering Responsibility                                                     |
+| :--------------- | :----------------------------------------------------------------------------- |
+| `pnpm typecheck` | Validates TypeScript compiler integrity across active agents and MCP adapters. |
+| `pnpm build`     | Compiles the unified gateway and workspace build dependencies.                 |
+
+---
+
+## 1. Workspace Orchestration
+
+Cortex runs Docker Compose orchestrations defined in the `cortex/infrastructure/docker/` directory. Use the centralized root-level scripts to control service state:
+
+### A. Core Services (Gateway)
+
+- **Start**: `pnpm cortex:core:up`
+- **Stop**: `pnpm cortex:core:down`
+- **Reset**: `pnpm cortex:core:reset` (fully prunes storage volumes and rebuilds containers)
+
+### B. MCP Server Adapters
+
+- **Start**: `pnpm cortex:mcp:up`
+- **Stop**: `pnpm cortex:mcp:down`
+- **Reset**: `pnpm cortex:mcp:reset`
+
+### C. Agent Runtimes
+
+- **Start**: `pnpm cortex:agents:up`
+- **Stop**: `pnpm cortex:agents:down`
+- **Reset**: `pnpm cortex:agents:reset`
+
+---
+
+## 2. Workspace Structure
+
+- `cortex/infrastructure/docker/compose.yaml`: Configures database services, network definitions, and the AgentGateway proxy routing.
+- `cortex/gateway/`: Gateway configurations (e.g., `config.yaml`).
+- `cortex/mcp/`: Individual subdirectories containing multi-stage Dockerfiles and dependency logic for each registered MCP server (e.g., GitHub, Firecrawl, Grafana).
+- `cortex/agents/`: Dockerfiles and setup folders for containerized agent terminal runners (Antigravity, Copilot).
