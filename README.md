@@ -1,6 +1,6 @@
 <!-- Note: This profile README is dynamically updated by the TypeScript-based generator in the ./renderer workspace -->
 
-<div align="center">
+<div display="none" align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/github-header.svg?raw=true#gh-dark-mode-only" />
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/static/github-header.svg?raw=true" />
