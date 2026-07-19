@@ -1,1 +1,1 @@
-../monorepo-readme.md
+[](../MONOREPO-readme.md)
