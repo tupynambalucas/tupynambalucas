@@ -1,0 +1,156 @@
+---
+title: Studio & Ativos Criativos
+sidebar_label: Ativos Criativos
+sidebar_position: 4
+---
+
+### Espaço de Trabalho de Criação & Ativos Centralizado
+
+O pacote `@tupynambalucas-studio/design` serve como o repositório central para todos os designs da marca, arquivos mestre de projetos brutos e ativos compilados prontos para produção.
+
+Para manter uma separação clara entre criação e distribuição, o workspace é dividido em duas raízes principais: o diretório `creative/` e o diretório `assets/`.
+
+---
+
+## 1. Divisão de Diretórios: creative/ vs. assets/
+
+### A. Fontes de Design Brutas (`creative/`)
+
+O diretório `creative/` atua como nosso cofre privado de design. Ele abriga arquivos fonte originais de softwares de produção profissional. Esses arquivos representam o progresso de design em andamento e a história visual da marca.
+
+- **Gráficos Vetoriais:** Arquivos mestre do Adobe Illustrator (`.ai`) para logotipos, exploração de tipografia e esboços de iconografia.
+- **Imagens Digitais:** Fontes do Adobe Photoshop (`.psd`) para ativos rasterizados de alta fidelidade, mockups de dispositivos e material de marketing.
+- **Modelagem 3D:** Cenas mestre do Blender (`.blend`) para componentes tridimensionais da plataforma e visualizações espaciais (ex: `Avokado.blend`).
+- **Edição de Vídeo:** Arquivos de projeto do Adobe Premiere (`.prproj`) para tutoriais e clipes promocionais de vídeo.
+
+_Rastreamento & Armazenamento:_
+
+- **Estratégia do Git:** Este diretório é completamente ignorado no Git para evitar o inchaço do repositório.
+- **Armazenamento em Nuvem:** Sincronizado bidirecionalmente com o bucket privado `tupynambalucas-creative`.
+
+### B. Ativos Prontos para Produção (`assets/`)
+
+O diretório `assets/` contém elementos estáticos finais, otimizados e prontos para a web, que são consumidos diretamente pelas nossas interfaces de cliente (como o `@tupynambalucas/hub`) e pipelines de renderização.
+
+- **Elementos da Marca:** Logotipos vetoriais, favicons, paletas oficiais de cores e PDFs de diretrizes de marca.
+- **Elementos de Interface (UI):** Ícones SVG otimizados (`assets/icons/`) e ilustrações rasterizadas de interface (`assets/images/`).
+- **Modelos 3D:** Modelos GLB otimizados e mapas de ambiente HDRI (`assets/three/`).
+- **Tipografia:** Fontes variáveis prontas para a web e arquivos codificados em base64 (`assets/fonts/`).
+- **Tokens de Estilo:** Variáveis CSS e constantes do TypeScript (`assets/tokens/`).
+
+_Rastreamento & Armazenamento:_
+
+- **Estratégia do Git:** Híbrida. SVGs leves, wrappers de ícones do React, fontes web, folhas de estilo e manifestos JSON são commitados diretamente no Git. Imagens binárias rasterizadas pesadas (como PNGs) e arquivos GLB são ignorados.
+- **Armazenamento em Nuvem:** Os arquivos binários são sincronizados com o bucket público `tupynambalucas-assets` e servidos via CDN.
+
+---
+
+## 2. Pipeline de Produção
+
+A transição dos arquivos mestre de design dentro de `creative/` para os entregáveis de produção dentro de `assets/` segue um fluxo padronizado:
+
+- **Compilação de Ícones SVG:** Os vetores originais são exportados, limpos e empacotados como componentes do React em `assets/icons/`.
+- **Compilação de Ativos 3D:** Os arquivos do Blender são processados e exportados como arquivos GLB otimizados para `assets/three/`.
+- **Exportação de Tokens:** Variáveis de design de marca são compiladas em constantes do TypeScript e propriedades CSS Custom personalizadas em `assets/tokens/`.
+
+#### Sincronizador de Ativos Cloudflare R2
+
+Para manter nosso repositório Git leve, ativos estáticos prontos para produção não são commitados diretamente no código-fonte. Em vez disso, eles são sincronizados através do Cloudflare R2 Object Storage usando nosso pacote de sincronização CLI dedicado `@tupynambalucas-studio/bucket`.
+
+Para obter informações detalhadas sobre nosso ecossistema de buckets, comandos CLI e arquitetura de sincronização, consulte a documentação do [Armazenamento Cloudflare R2 & Sincronizador](/docs/workspaces/studio/reference/spec/cloudflare-storage).
+
+#### Estrutura Completa de Diretórios
+
+Abaixo está o layout completo de diretórios do workspace `studio/`:
+
+```text
+studio/
+├── bucket/                   # Sincronizador CLI do bucket Cloudflare R2
+└── design/                   # Plataforma de design principal e tokens
+    ├── creative/             # Arquivos mestre de alta fidelidade (Ignorado no Git, sincronizado com R2)
+    │   ├── blender/          # Arquivos de origem do Blender (.blend)
+    │   ├── illustrator/      # Fontes do Illustrator (.ai)
+    │   ├── photoshop/        # Fontes do Photoshop (.psd)
+    │   └── premiere/         # Fontes de edição de vídeo do Premiere (.prproj)
+    └── assets/               # Ativos estáticos prontos para produção
+        ├── brand/            # Banners, favicons, logos, manuais e paletas (SVGs no Git)
+        ├── fonts/            # Fontes web (variáveis/codificadas em base64)
+        ├── github/           # Ativos visuais do Github
+        ├── icons/            # Ícones de interface SVG
+        ├── images/           # Imagens rasterizadas e mockups (Ignorado no Git, sincronizado com R2)
+        ├── three/            # Modelos GLB e ambientes HDR (Ignorado/sincronizado)
+        └── tokens/           # Tokens fundamentais do design system (colors.ts, theme.css)
+```
+
+---
+
+### Namespace de Ativos da Marca & Padrões de Nomenclatura
+
+Para manter a consistência, os ativos visuais da marca são organizados sob uma estrutura de diretório `brand/` centralizada e seguem padrões de nomenclatura estritos.
+
+#### Política de Distribuição de Formato & Armazenamento
+
+:::info[Política de Armazenamento de Ativos]
+
+- **Arquivos Vetoriais SVG:** Commitados diretamente no Git dentro de `studio/design/assets/brand/logos/` (e `assets/brand/favicons/`). SVGs são baseados em texto, leves e podem ser compilados como componentes dinâmicos do React.
+- **Arquivos PNG & Binários:** Mantidos fora do Git para evitar o inchaço do repositório. Eles são armazenados sob `studio/design/assets/brand/` e sincronizados com o bucket CDN do Cloudflare R2 via CLI.
+  :::
+
+#### Subpastas do Diretório da Marca
+
+- **`brand/logos/`**: Logotipos vetoriais e rasterizados (ex: `logo-horizontal-positive.svg`, `logo-mark-purple.png`).
+- **`brand/palettes/`**: Arquivos de referência de paleta de cores visuais (ex: `identity-palette.png`).
+- **`brand/favicons/`**: Favicons do aplicativo e ícones de toque móveis (ex: `favicon.ico`, `apple-touch-icon-gradient.png`).
+- **`brand/banners/`**: Banners oficiais da marca e capas de OpenGraph para redes sociais (ex: `banner-github.png`, `og-default.png`).
+- **`brand/guidelines/`**: Guias de estilo, manuais da marca e manuais de referência.
+
+#### Convenções de Nomenclatura de Logos
+
+Todos os nomes de arquivos de logotipo devem seguir o padrão `logo-[lockup]-[variant].[ext]` usando letras minúsculas e hífens:
+
+##### 1. Lockups Base
+
+- **`horizontal`**: Logotipo completo com arranjo de texto horizontal.
+- **`mark`**: Apenas o símbolo/ícone da marca.
+
+##### 2. Variantes
+
+- **`positive`**: Versão monocromática escura (preta ou cinza escuro) otimizada para fundos claros.
+  - _Exemplo:_ `logo-horizontal-positive.svg` (Componente React: `LogoHorizontalPositive`)
+- **`negative`**: Versão monocromática invertida (branca) otimizada para fundos escuros.
+  - _Exemplo:_ `logo-horizontal-negative.svg` (Componente React: `LogoHorizontalNegative`)
+- **`[color]`**: Nomes de cores explícitos em inglês para diferenciar as paletas da marca.
+  - _Exemplo:_ `logo-horizontal-purple.svg` (Componente React: `LogoHorizontalPurple`)
+- **`gradient`**: Uma transição vibrante de mistura de cores assinatura.
+  - _Exemplo:_ `logo-horizontal-gradient.svg` (Componente React: `LogoHorizontalGradient`)
+- **`expressive`**: Iteração de estilo visual artístico para landing pages personalizadas.
+  - _Exemplo:_ `logo-horizontal-expressive.svg`
+- **`multicolor`**: Múltiplos blocos de cores sólidas lado a lado.
+- **`alt`**: Ajustes de layout especializados ou configurações comemorativas.
+
+#### Convenções de Nomenclatura de Favicons
+
+- **Padrão Canônico**: `favicon.ico` (contêiner multi-resolução empacotado para suporte a abas padrão).
+- **Favicons Temáticos**: `favicon-[variant].[ext]` (ex: `favicon-positive.ico`, `favicon-gradient.png`).
+- **Específico de Plataforma**: `apple-touch-icon-[variant].png` (ícones de toque Apple) e `safari-pinned-tab-[variant].svg` (vetores de aba fixada do Safari).
+
+---
+
+#### Resolução de Ativos & Arquitetura Zero-Copy
+
+Para eliminar o armazenamento de arquivos duplicados em aplicações consumidoras como `@tupynambalucas-hub/web`:
+
+- **Em Desenvolvimento**: O servidor de desenvolvimento Vite intercepta requisições que começam com `/@studio-assets/` e serve os arquivos dinamicamente a partir do diretório local do pacote de ativos na sua máquina.
+- **Em Produção (Cópia em Tempo de Build)**: O sistema de build da aplicação usa o `vite-plugin-static-copy` para replicar automaticamente os arquivos de `node_modules/@tupynambalucas-studio/design/assets/brand/` para o diretório de saída de build `dist/` em tempo de empacotamento.
+
+---
+
+#### Exportações com Namespace do Workspace
+
+Pacotes internos acessam ativos criativos através de exportações estritamente definidas para garantir o isolamento arquitetônico:
+
+- `@tupynambalucas-studio/design/icons`: Biblioteca SVG otimizada e registro de componentes Icon com curadoria.
+- `@tupynambalucas-studio/design/logos`: Logotipos canônicos da marca.
+- `@tupynambalucas-studio/design/brand/*`: Ativos fundamentais da marca (paletas, favicons, banners).
+- `@tupynambalucas-studio/design/tokens`: Constantes de design fortemente tipadas para a lógica JS/TS.
+- `@tupynambalucas-studio/design/theme.css`: Configuração de tema Tailwind CSS com zero runtime.

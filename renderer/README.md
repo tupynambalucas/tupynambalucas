@@ -14,30 +14,22 @@ production-grade documents across the monorepo.
 - **[src/config/](./src/config/)**: Environment variable configurations and target constants
   loaded in [env.config.ts](./src/config/env.config.ts).
 - **[src/pipelines/](./src/pipelines/)**: Pipeline modules executing single-responsibility asset
-  compilation processes.
-  - [index.ts](./src/pipelines/index.ts): Registry of all active document generation pipelines.
-  - [types.ts](./src/pipelines/types.ts): Type declarations for pipelines and targets.
+  compilation processes. Discovered and loaded dynamically at runtime.
 - **[src/renderers/](./src/renderers/)**: Engines compiling metadata into layout templates.
-  - [header-card.ts](./src/renderers/header-card.ts): Generates themed brand header SVG cards.
   - [stats-card.ts](./src/renderers/stats-card.ts): Renders user profile metrics into SVG stats
     cards.
 - **[src/schemas/](./src/schemas/)**: Zod validation schemas enforcing configuration and API
   payload shape.
   - [env.schema.ts](./src/schemas/env.schema.ts): Environment variable validation schema.
-  - [githubstats.schema.ts](./src/schemas/githubstats.schema.ts): GitHub API user stats response
-    validation.
-  - [language.schema.ts](./src/schemas/language.schema.ts): Language payload validation.
-  - [repository.schema.ts](./src/schemas/repository.schema.ts): Repository metrics validation.
-- **[src/templates/](./src/templates/)**: Domain-organized visual templates (SVG cards and Markdown docs).
-  - [cards/static/](./src/templates/cards/static/): Contains static brand SVG templates (e.g.,
-    [header.template.svg](./src/templates/cards/static/header.template.svg)).
-  - [cards/stats/](./src/templates/cards/stats/): Contains dynamic stats templates (e.g.,
-    [languages.template.svg](./src/templates/cards/stats/languages.template.svg)).
+  - [githubstats.schema.ts](./src/schemas/githubstats.schema.ts): Consolidated GitHub stats,
+    repository, and language validation schema.
+  - [pipeline.schema.ts](./src/schemas/pipeline.schema.ts): Pipeline execution targets and Zod
+    validation schemas.
+- **[src/templates/](./src/templates/)**: Domain-organized document templates.
   - [docs/](./src/templates/docs/): Markdown templates for generated documents (e.g.,
     [README.template.md](./src/templates/docs/README.template.md)).
+    _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/design` under `studio/design/assets/github/cards/`._
 - **[src/utils/](./src/utils/)**: Common helpers for compilation and formatting.
-  - [font-encoder.ts](./src/utils/font-encoder.ts): Font loader that inlines Nunito variable fonts
-    as base64 strings.
   - [glob.ts](./src/utils/glob.ts): Simple glob matcher helper for filtering items.
   - [template-fill.ts](./src/utils/template-fill.ts): Custom string interpolation parser for
     injecting stats into templates.

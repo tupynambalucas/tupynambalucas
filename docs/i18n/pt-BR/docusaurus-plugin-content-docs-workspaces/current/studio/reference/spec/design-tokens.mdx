@@ -1,0 +1,70 @@
+---
+title: Tokens de Design & Tipografia
+sidebar_label: Tokens de Design
+sidebar_position: 1
+---
+
+### Tokens de Design da Marca & Tipografia
+
+Este documento serve como a única fonte de verdade para as constantes técnicas de design, paletas de cores, regras de tipografia e integrações de folhas de estilo do projeto `tupynambalucas.dev`.
+
+---
+
+## 1. Tokens de Paleta de Cores
+
+O sistema utiliza uma paleta padrão voltada para desenvolvedores com modo escuro por padrão, suportada por cores do sistema que representam tipagem estática, alertas do compilador e hierarquias lógicas.
+
+| Nome da Cor      | Código Hex | Papel Visual      | Significado & Uso Estratégico                                                                |
+| :--------------- | :--------- | :---------------- | :------------------------------------------------------------------------------------------- |
+| **Deep Indigo**  | `#4C4D9A`  | Principal         | Representa estabilidade de backend, arquitetura focada em lógica e profundidade de sistemas. |
+| **Royal Blue**   | `#2E55A3`  | Secundária        | Representa type safety, integrações de rede e telemetria contínua.                           |
+| **Dusty Violet** | `#AA77A7`  | Destaque/CTA      | Destaca alertas do compilador, gatilhos interativos e links técnicos principais.             |
+| **Deep Dark**    | `#0F0F0F`  | Superfície Escura | Cor de fundo padrão, mimetizando workspaces de IDEs de desenvolvimento modernas.             |
+| **Light Ice**    | `#F6F6F7`  | Superfície Clara  | Fundo claro base para alta legibilidade em impressão ou leitura à luz do dia.                |
+
+---
+
+## 2. Especificações de Tipografia
+
+A tipografia é um elemento estrutural crítico da marca. Utilizamos uma família tipográfica de peso variável altamente legível e otimizada para código e conteúdo técnico.
+
+- **Família de Fonte Principal**: `Nunito`
+- **Formato**: Fonte Variável (contêiner `woff2`).
+- **Pilha de Fallback**: `system-ui, -apple-system, sans-serif`.
+
+### Injeção de Fonte Base64
+
+Para garantir que gráficos visuais, cartões do perfil do GitHub e documentos SVG renderizados dinamicamente apareçam com fidelidade de pixel absoluta dentro de frames HTML isolados (que bloqueiam o carregamento de fontes por CDNs externas):
+
+- Todos os ativos da fonte variável `Nunito` são codificados em base64 e embutidos diretamente nos cabeçalhos de estilo dos SVGs.
+- Esta integração de fonte com dependência zero garante que a tipografia da marca seja renderizada corretamente em qualquer ambiente sandbox.
+
+---
+
+## 3. Folhas de Estilo & Exportações
+
+### Tokens de Design em JS/TS
+
+As cores, pesos e grades são definidos na biblioteca de tokens de design para consumo em bases de código TypeScript:
+
+```typescript
+// studio/design/assets/tokens/colors.ts
+export const colors = {
+  indigo: '#4C4D9A',
+  blue: '#2E55A3',
+  violet: '#AA77A7',
+  dark: '#0F0F0F',
+  ice: '#F6F6F7',
+};
+```
+
+Esses tokens governam nosso cliente web, pipelines do motor de renderização e pacotes de UI, garantindo alinhamento total com nossos designs.
+
+### Configuração do Tema CSS
+
+Os pacotes que consomem os ativos importam as folhas de estilo diretamente do pacote de design para carregar as variáveis de fonte personalizadas:
+
+```css
+@import '@tupynambalucas-studio/design/tokens.css';
+@import '@tupynambalucas-studio/design/theme.css';
+```

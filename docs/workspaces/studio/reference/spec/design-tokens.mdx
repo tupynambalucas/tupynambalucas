@@ -1,0 +1,71 @@
+---
+title: Design Tokens & Typography
+sidebar_label: Design Tokens
+sidebar_position: 1
+---
+
+### Brand Design Tokens & Typography
+
+This document serves as the single source of truth for the technical design constants, color
+palettes, typography rules, and stylesheet integrations of the `tupynambalucas.dev` project.
+
+---
+
+## 1. Color Palette Tokens
+
+The system utilizes a developer-first dark mode default palette, supported by system colors representing type safety, compiler alerts, and logical hierarchies.
+
+| Color Name       | Hex Code  | Visual Role   | Meaning & Strategic Use                                                    |
+| :--------------- | :-------- | :------------ | :------------------------------------------------------------------------- |
+| **Deep Indigo**  | `#4C4D9A` | Primary       | Represents backend stability, logic-first architecture, and system depths. |
+| **Royal Blue**   | `#2E55A3` | Secondary     | Represents type safety, network integrations, and continuous telemetry.    |
+| **Dusty Violet** | `#AA77A7` | Accent/CTA    | Highlights compiler alerts, interactive triggers, and key technical links. |
+| **Deep Dark**    | `#0F0F0F` | Surface Dark  | Default background color, mimicking modern developer IDE workspaces.       |
+| **Light Ice**    | `#F6F6F7` | Surface Light | Base light background for high-contrast print or daytime readability.      |
+
+---
+
+## 2. Typography Specifications
+
+Typography is a critical structural element of the brand. We utilize a highly legible, variable-weight type family optimized for code and technical content.
+
+- **Primary Font Family**: `Nunito`
+- **Format**: Variable Font (`woff2` container).
+- **Fallback Stack**: `system-ui, -apple-system, sans-serif`.
+
+### Base64 Font Injection
+
+To ensure visual charts, GitHub Profile cards, and dynamically rendered SVG documents render with absolute pixel fidelity inside sandboxed HTML frames (which block external CDN font fetching):
+
+- All variable `Nunito` font assets are base64-encoded and embedded directly within the SVG style headers.
+- This zero-dependency font integration guarantees that our brand typography renders correctly in any sandboxed environment.
+
+---
+
+## 3. Style Sheets & Exports
+
+### JS/TS Design Tokens
+
+The colors, weights, and grids are defined in the design tokens library for consumption in TypeScript codebases:
+
+```typescript
+// studio/design/assets/tokens/colors.ts
+export const colors = {
+  indigo: '#4C4D9A',
+  blue: '#2E55A3',
+  violet: '#AA77A7',
+  dark: '#0F0F0F',
+  ice: '#F6F6F7',
+};
+```
+
+These tokens govern our web client, renderer engine pipelines, and UI packages, ensuring complete alignment with our designs.
+
+### CSS Theme Configuration
+
+Consuming packages import the stylesheets from the design package to load custom font variables:
+
+```css
+@import '@tupynambalucas-studio/design/tokens.css';
+@import '@tupynambalucas-studio/design/theme.css';
+```

@@ -4,99 +4,82 @@ sidebar_label: Creative Assets
 sidebar_position: 4
 ---
 
-### Centralized Creative Repository
+### Centralized Creative & Asset Workspace
 
-The Studio workspace acts as the master vault for all creative assets of the tupynambalucas.dev brand. It centralizes master files from professional design and production suites, ensuring version-controlled visual evolution and eliminating fragmented asset management.
+The `@tupynambalucas-studio/design` package serves as the core repository for all brand designs, raw project master files, and compiled production-ready assets.
 
-#### Design Tool Integration
+To maintain clean separation between creation and distribution, the workspace is split into two primary roots: the `creative/` directory and the `assets/` directory.
 
-The repository supports multi-tool workflows by maintaining raw source files that serve as the canonical origin for all production-ready assets.
+---
 
-- **Vector Graphics:** Adobe Illustrator (`.ai`) master files for logotypes, typography exploration, and iconography.
-- **Digital Imaging:** Adobe Photoshop (`.psd`) sources for high-fidelity raster assets and marketing material.
-- **3D Engineering:** Blender (`.blend`) master files for platform components and spatial visualizations (e.g., `Avokado.blend`).
-- **Post-Production:** Adobe Premiere (`.prproj`) projects for community tutorials and marketing content.
+## 1. Directory Division: creative/ vs. assets/
 
-#### Creative Asset Management
+### A. Raw Design Sources (`creative/`)
 
-All high-fidelity master files are strictly maintained within the `creative/**` directory structure. This ensures that the entire history of the brand's visual identity is preserved and accessible within the monorepo context.
+The `creative/` directory acts as our private design vault. It houses raw source files from professional production software. These files represent the visual "work-in-progress" and history of the brand design.
 
-#### Production Pipeline
+- **Vector Graphics:** Adobe Illustrator (`.ai`) master files for logotypes, typography exploration, and iconography layouts.
+- **Digital Imaging:** Adobe Photoshop (`.psd`) templates for high-fidelity raster assets, mockups, and marketing collaterals.
+- **3D Modeling:** Blender (`.blend`) master scenes for platform components and spatial visualizations (e.g., `Avokado.blend`).
+- **Video Editing:** Adobe Premiere (`.prproj`) project files for tutorials and marketing video clips.
 
-Master files transition to the application layers through an optimized pipeline:
+_Tracking & Storage:_
 
-- **Icons:** Sources are processed into optimized SVGs in `src/icons/`.
-- **3D Models:** Blender master files are exported to GLB format for runtime rendering.
-- **Tokens:** Visual constants are exported as strongly-typed TypeScript definitions from `src/tokens/`.
+- **Git Strategy:** This directory is completely ignored in Git to prevent repository bloat.
+- **Cloud Storage:** Synchronized bidirectionally with the private `tupynambalucas-creative` bucket.
+
+### B. Production-Ready Assets (`assets/`)
+
+The `assets/` directory contains final, optimized, web-ready static elements consumed directly by our client interfaces (like `@tupynambalucas/hub`) and pipelines.
+
+- **Brand Elements:** Vector logos, favicons, official palettes, and brand guidelines PDFs.
+- **UI Elements:** Optimized SVG icons (`assets/icons/`) and raster UI illustrations (`assets/images/`).
+- **3D Models:** Optimized GLB models and HDRI environment maps (`assets/three/`).
+- **Typography:** Web-safe variable fonts and base64-encoded files (`assets/fonts/`).
+- **Styling Tokens:** CSS stylesheet variables and TypeScript constants (`assets/tokens/`).
+
+_Tracking & Storage:_
+
+- **Git Strategy:** Hybrid. Lightweight SVGs, React icon wrappers, fonts, stylesheets, and JSON manifests are committed to Git. Heavy binary PNGs, images, and GLB files are ignored.
+- **Cloud Storage:** Binary files are synchronized with the public `tupynambalucas-assets` bucket and served via CDN.
+
+---
+
+## 2. Production Pipeline
+
+Transitioning from raw design templates inside `creative/` to compiled deliverables inside `assets/` follows a standardized pipeline:
+
+- **SVG Icon Compilation:** Raw vectors are exported, cleaned, and wrapped as React components inside `assets/icons/`.
+- **3D Assets Compilation:** Blender master files are baked and exported as optimized GLB files into `assets/three/`.
+- **Tokens Export:** Brand design variables are compiled into TypeScript constants and custom properties inside `assets/tokens/`.
 
 #### Cloudflare R2 Asset Synchronizer
 
-To keep our Git repository lightweight, production-ready static assets are not committed directly to the codebase. Instead, they are managed and synchronized bidirectionally with Cloudflare R2 Object Storage using our dedicated CLI synchronizer package `@tupynambalucas-studio/design/bucket`.
+To keep our Git repository lightweight, production-ready static assets are not committed directly to the codebase. Instead, they are synchronized bidirectionally with Cloudflare R2 Object Storage using our dedicated CLI synchronizer package `@tupynambalucas-studio/bucket`.
 
-##### Dynamic Synchronization & Verification
-
-The synchronization engine uses local MD5 hashing and remote ETag validation to guarantee zero redundant operations.
-
-- **Registry Config:** The paths to sync are configured dynamically in `studio/assets/assets-manifest.json`.
-- **Upload/Push:** Scans local assets, validates headers, and pushes new/modified static files to the R2 bucket.
-- **Download/Pull:** Checks remote metadata, compares with local files, and pulls updated resources.
-
-##### Operational Commands
-
-Run the interactive Clack CLI directly from the root of the monorepo:
-
-```bash
-pnpm studio:bucket
-```
-
-From the CLI menu, choose **Push** to upload local changes or **Pull** to download the latest assets.
+For detailed information about our buckets ecosystem, CLI commands, and synchronization architecture, refer to the [Cloudflare R2 Storage & Synchronizer](/docs/workspaces/studio/reference/spec/cloudflare-storage) documentation.
 
 #### Complete Directory Structure
 
-Below is the complete directory layout of the `studio/assets/` workspace:
+Below is the complete directory layout of the `studio/` workspace:
 
 ```text
-studio/assets/
-├── creative/                 # High-fidelity master files (Ignored in Git, synced to tupynambalucas-creative)
-│   ├── blender/              # Blender source files (.blend)
-│   │   └── mockups/          # 3D mockup scenes
-│   ├── illustrator/          # Illustrator sources (.ai)
-│   │   └── logos/            # Vector logo project files
-│   ├── photoshop/            # Photoshop sources (.psd)
-│   │   ├── banners/          # PSD files for promotional banners
-│   │   └── mockups/          # PSD files for device mockups
-│   └── premiere/             # Premiere video edit source files (.prproj)
-└── src/
-    ├── brand/                # Canonical Brand Identity Assets (SVGs in Git, PNGs ignored/synced)
-    │   ├── banners/          # Official brand banners & social OpenGraph covers (Ignored/synced)
-    │   │   ├── banner-github.png
-    │   │   └── og-default.png
-    │   ├── favicons/         # Brand favicons and app touch icons (Ignored/synced)
-    │   │   ├── apple-touch-icon.png
-    │   │   ├── favicon.ico
-    │   │   └── safari-pinned-tab.svg
-    │   ├── guidelines/       # Brand styleguides and PDF booklets (Ignored/synced)
-    │   ├── logos/            # Brand logos (SVGs in Git, PNGs ignored/synced)
-    │   │   ├── logo-*.png
-    │   │   └── logo-*.svg
-    │   └── palettes/         # Brand color palettes (Ignored/synced)
-    │       └── identity-palette.png
-    ├── icons/                # Reusable SVG UI icons (Git-tracked code wrapper)
-    │   └── index.tsx
-    ├── images/               # Product UI raster assets (Ignored in Git, synced to tupynambalucas-assets)
-    │   ├── illustrations/    # Decorative graphics and site artwork
-    │   ├── marketing/        # Landing page promotional campaign assets
-    │   └── mockups/          # Device frames & product preview screenshots (Ignored/synced)
-    │       ├── mockup-desktop-dashboard.png
-    │       └── mockup-mobile-app.png
-    ├── three/                # WebGL/Three.js assets (Ignored in Git, synced to tupynambalucas-assets)
-    │   ├── exr/              # HDRI environments
-    │   └── models/               # Optimized GLB models
-    └── tokens/               # Core design system tokens (Git-tracked code)
-        ├── colors.ts
-        ├── index.ts
-        ├── theme.css
-        └── tokens.css
+studio/
+├── bucket/                   # Cloudflare R2 bucket CLI synchronizer
+└── design/                   # Core design platform and tokens
+    ├── creative/             # High-fidelity master files (Ignored in Git, synced to R2)
+    │   ├── blender/          # Blender source files (.blend)
+    │   ├── illustrator/      # Illustrator sources (.ai)
+    │   ├── photoshop/        # Photoshop sources (.psd)
+    │   └── premiere/         # Premiere video edit sources (.prproj)
+    └── assets/               # Production-ready static assets
+        ├── brand/            # Brand banners, favicons, logos, guidelines, palettes (SVGs in Git)
+        ├── fonts/            # Web fonts (base64-encoded/variable fonts)
+        ├── github/           # Github visual assets
+        ├── icons/            # SVG UI icons
+        ├── images/           # UI raster graphics & mockups (Ignored in Git, synced to R2)
+        ├── three/            # WebGL GLB models & HDR environments (Ignored/synced)
+        └── tokens/           # Design system CSS/TS tokens (colors.ts, theme.css)
 ```
 
 ---
@@ -109,8 +92,8 @@ To maintain consistency, brand visual assets are organized under a centralized `
 
 :::info[Asset Storage Policy]
 
-- **SVG Vector Files:** Committed directly to Git inside `studio/assets/src/brand/logos/` (and `src/brand/favicons/`). SVGs are text-based, lightweight, and can be compiled as dynamic React components.
-- **PNG & Binary Files:** Kept out of Git to prevent repository bloat. They are stored under `studio/assets/src/brand/` and synchronized to the Cloudflare R2 CDN bucket via the CLI.
+- **SVG Vector Files:** Committed directly to Git inside `studio/design/assets/brand/logos/` (and `assets/brand/favicons/`). SVGs are text-based, lightweight, and can be compiled as dynamic React components.
+- **PNG & Binary Files:** Kept out of Git to prevent repository bloat. They are stored under `studio/design/assets/brand/` and synchronized to the Cloudflare R2 CDN bucket via the CLI.
   :::
 
 #### Brand Directory Subfolders
@@ -158,7 +141,7 @@ All logo filenames must follow the pattern `logo-[lockup]-[variant].[ext]` using
 To eliminate duplicate file storage in consuming applications like `@tupynambalucas-hub/web`:
 
 - **In Development**: The Vite dev server intercepts requests starting with `/@studio-assets/` and serves the files dynamically from the local assets package directory on your machine.
-- **In Production (Build-Time Copying)**: The application's build system uses `vite-plugin-static-copy` to automatically replicate files from `node_modules/@tupynambalucas-studio/design/src/brand/` into the build output `dist/` directory at bundle time.
+- **In Production (Build-Time Copying)**: The application's build system uses `vite-plugin-static-copy` to automatically replicate files from `node_modules/@tupynambalucas-studio/design/assets/brand/` into the build output `dist/` directory at bundle time.
 
 ---
 

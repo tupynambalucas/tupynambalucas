@@ -31,9 +31,12 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "penpot:up": "docker compose -f infrastructure/docker/compose.yaml up -d --build",
-    "penpot:down": "docker compose -f infrastructure/docker/compose.yaml down",
-    "penpot:reset": "docker compose -f infrastructure/docker/compose.yaml down --volumes && docker compose -f infrastructure/docker/compose.yaml up -d --build"
+    "penpot:up": "docker compose -f infrastructure/docker/compose.yaml --profile penpot up -d --build",
+    "penpot:down": "docker compose -f infrastructure/docker/compose.yaml --profile penpot down",
+    "penpot:reset": "docker compose -f infrastructure/docker/compose.yaml --profile penpot down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile penpot up -d --build",
+    "memos:up": "docker compose -f infrastructure/docker/compose.yaml --profile memos up -d --build",
+    "memos:down": "docker compose -f infrastructure/docker/compose.yaml --profile memos down",
+    "memos:reset": "docker compose -f infrastructure/docker/compose.yaml --profile memos down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile memos up -d --build"
   },
   "dependencies": {
     "react": "catalog:web-stack",
