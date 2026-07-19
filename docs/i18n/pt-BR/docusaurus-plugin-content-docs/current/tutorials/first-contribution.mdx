@@ -1,40 +1,40 @@
 ---
-title: Your First Contribution
-description: A guided walkthrough of making a change, verifying it, and opening a Pull Request.
+title: Sua Primeira Contribuição
+description: Um passo a passo guiado para fazer uma alteração, verificá-la e abrir um Pull Request.
 ---
 
-# Your First Contribution
+# Sua Primeira Contribuição
 
-In this tutorial, we will walk through the exact process of contributing code to the tupynambalucas.dev repository. We will create a feature branch, make a small change, run our automated validations, and create a Pull Request.
+Neste tutorial, passaremos pelo processo exato de contribuição de código para o repositório tupynambalucas.dev. Criaremos uma branch de funcionalidade (feature branch), faremos uma pequena alteração, executaremos nossas validações automatizadas e criaremos um Pull Request.
 
-## Step 1: Create a Feature Branch
+## Passo 1: Criar uma Branch de Funcionalidade
 
-We always start our work from the `develop` branch. First, let's make sure we are on `develop` and up to date:
+Sempre começamos nosso trabalho a partir da branch `develop`. Primeiro, vamos garantir que estamos na `develop` e atualizados:
 
 ```bash
 git checkout develop
 git pull origin develop
 ```
 
-Now, we will create a new feature branch for our work:
+Agora, criaremos uma nova branch de funcionalidade para o nosso trabalho:
 
 ```bash
 git checkout -b feature/tutorial-contribution
 ```
 
-Git will output:
+O Git retornará:
 
 ```
 Switched to a new branch 'feature/tutorial-contribution'
 ```
 
-## Step 2: Make a Code Change
+## Passo 2: Fazer uma Alteração no Código
 
-For this exercise, we will add a small comment to one of our configuration files. Open `docs/package.json` in your editor.
+Para este exercício, adicionaremos um pequeno comentário em um de nossos arquivos de configuração. Abra `docs/package.json` no seu editor.
 
-At the bottom of the file, add a simple metadata field or comment (if supported) just for testing. Alternatively, open a markdown file and add a whitespace character. For this tutorial, we will edit a markdown file.
+No final do arquivo, adicione um campo simples de metadados ou comentário (se compatível) apenas para teste. Como alternativa, abra um arquivo markdown e adicione um caractere de espaço em branco. Para este tutorial, editaremos um arquivo markdown.
 
-Open `docs/README.md` and add the following text at the bottom:
+Abra `docs/README.md` e adicione o seguinte texto no final:
 
 ```md
 <!-- This is a test contribution -->
@@ -42,35 +42,35 @@ Open `docs/README.md` and add the following text at the bottom:
 
 Save the file.
 
-## Step 3: Generate a Changeset
+## Passo 3: Gerar um Changeset
 
-Because our repository uses automated versioning, we need to create a changeset file that describes our modification.
+Como nosso repositório usa versionamento automatizado, precisamos criar um arquivo de changeset que descreva nossa modificação.
 
-Run the following command:
+Execute o seguinte comando:
 
 ```bash
 pnpm version:changeset
 ```
 
-You will be prompted to select the package that changed. Use the arrow keys to find `@tupynambalucas/docs`, press `Space` to select it, and press `Enter`.
+Você será solicitado a selecionar o pacote que foi alterado. Use as teclas de seta para encontrar `@tupynambalucas/docs`, pressione `Espaço` para selecioná-lo e pressione `Enter`.
 
-When asked for the bump type, choose `patch`.
-When asked for a summary, type: `test: add tutorial contribution comment`.
+Quando for perguntado sobre o tipo de incremento de versão (_bump type_), escolha `patch`.
+Quando for solicitada uma descrição sumária (_summary_), digite: `test: add tutorial contribution comment`.
 
-The tool will confirm the creation of a temporary markdown file in the `.changeset/` directory.
+A ferramenta confirmará a criação de um arquivo markdown temporário no diretório `.changeset/`.
 
-## Step 4: Commit the Changes
+## Passo 4: Commitar as Alterações
 
-Now we will stage both our modified file and the newly generated changeset file, and commit them.
+Agora, adicionaremos tanto o nosso arquivo modificado quanto o arquivo de changeset recém-gerado à stage e faremos o commit deles.
 
 ```bash
 git add docs/README.md .changeset/
 git commit -m "test(docs): add tutorial contribution comment"
 ```
 
-Our local Git hooks will automatically intercept the commit, running the selective typechecker and linter.
+Nossos hooks locais do Git interceptarão o commit automaticamente, executando o verificador de tipos seletivo e o linter.
 
-You should see output similar to this:
+Você deve ver uma saída semelhante a esta:
 
 ```
 ✔ Preparing lint-staged...
@@ -81,26 +81,26 @@ You should see output similar to this:
  2 files changed, 8 insertions(+)
 ```
 
-## Step 5: Open a Pull Request
+## Passo 5: Abrir um Pull Request
 
-With our commit safely created and locally validated, we will push our branch to GitHub and open a Pull Request.
+Com o nosso commit criado de forma segura e validado localmente, enviaremos (push) nossa branch para o GitHub e abriremos um Pull Request.
 
 ```bash
 git push -u origin feature/tutorial-contribution
 ```
 
-Next, using the GitHub CLI, we will create the Pull Request targeting the `develop` branch:
+Em seguida, usando a CLI do GitHub, criaremos o Pull Request direcionado para a branch `develop`:
 
 ```bash
 gh pr create --base develop --title "test: tutorial contribution" --body "Testing the contribution workflow."
 ```
 
-The CLI will output the URL of your new Pull Request:
+A CLI exibirá a URL do seu novo Pull Request:
 
 ```
 https://github.com/tupynambalucas/tupynambalucas.dev/pull/1
 ```
 
-## Conclusion
+## Conclusão
 
-Well done! We have successfully created a feature branch, made a change, generated a changeset, passed local validation, and opened a Pull Request. We are now ready to tackle real issues and features using this exact workflow.
+Muito bem! Criamos com sucesso uma branch de funcionalidade, fizemos uma alteração, geramos um changeset, passamos pela validação local e abrimos um Pull Request. Agora estamos prontos para lidar com problemas (issues) e funcionalidades reais usando exatamente esse fluxo de trabalho.

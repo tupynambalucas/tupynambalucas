@@ -1,37 +1,37 @@
 ---
-title: Single Source of Truth (SSOT)
-description: Decoupling and centralized governance of shared schemas and models in the tupynambalucas.dev monorepo.
+title: Fonte Única da Verdade (SSOT)
+description: Desacoplamento e governança centralizada de esquemas e modelos compartilhados no monorepo tupynambalucas.dev.
 ---
 
-# Single Source of Truth (SSOT)
+# Fonte Única da Verdade (SSOT)
 
-The Single Source of Truth (SSOT) principle ensures that every data structure, schema, and core business rule is defined in exactly one authoritative location, eliminating duplication and synchronization issues across different applications in the monorepo.
-
----
-
-## 1. Architectural Concept & Overview
-
-Single Source of Truth (SSOT) is a fundamental engineering paradigm stating that all system components reference a unique, centralized definition for data models, validation contracts, and constants. This design prevents "split-brain" states where independent packages (such as API backends, message queues, and user interfaces) diverge on property names, data types, or schema boundaries.
-
-By centralizing core schemas, we:
-
-- Ensure complete type safety from database to UI.
-- Enable instantaneous prop and schema updates across all apps on modifications.
-- Reduce code duplication and tooling overhead.
+O princípio da Fonte Única da Verdade (SSOT - Single Source of Truth) garante que cada estrutura de dados, esquema e regra de negócio principal seja definido em exatamente um local autoritativo, eliminando a duplicação e problemas de sincronização entre diferentes aplicações no monorepo.
 
 ---
 
-## 2. Project-Specific Utilization
+## 1. Conceito Arquitetural e Visão Geral
 
-In tupynambalucas.dev, the SSOT principle is implemented natively via our monorepo architecture:
+A Fonte Única da Verdade (SSOT) é um paradigma de engenharia fundamental que estabelece que todos os componentes do sistema devem referenciar uma definição única e centralizada para modelos de dados, contratos de validação e constantes. Esse design evita estados de "cérebro dividido" (split-brain) onde pacotes independentes (como backends de API, filas de mensagens e interfaces de usuário) divergem em nomes de propriedades, tipos de dados ou limites de esquemas.
 
-### A. Centralized Core Libraries
+Ao centralizar os esquemas principais, nós:
 
-The `@tupynambalucas-hub/core` and `@tupynambalucas-hub/core` workspaces serve as the absolute SSOT for their respective bounded contexts. Any schema, interface, or type shared by more than one application (such as backend API and frontend web SPA) must be declared here first, following our **Core First Design** guardrail.
+- Garantimos segurança de tipo (type safety) completa do banco de dados até a UI.
+- Permitimos atualizações instantâneas de propriedades (props) e esquemas em todas as aplicações após modificações.
+- Reduzimos a duplicação de código e a sobrecarga de ferramentas (tooling).
 
-### B. Contract & Type Sharing
+---
 
-Downstream applications like `@tupynambalucas-hub/api` (Fastify) and `@tupynambalucas-hub/web` (React SPA) do not maintain duplicate data transfer object (DTO) interfaces or database models. Instead, they directly import types, interfaces, and classes from the shared core package:
+## 2. Utilização Específica no Projeto
+
+No tupynambalucas.dev, o princípio SSOT é implementado nativamente por meio de nossa arquitetura monorepo:
+
+### A. Bibliotecas Core Centralizadas
+
+Os workspaces `@tupynambalucas-hub/core` e `@tupynambalucas-hub/core` servem como o SSOT absoluto para seus respectivos contextos delimitados. Qualquer esquema, interface ou tipo compartilhado por mais de uma aplicação (como a API do backend e a SPA web do frontend) deve ser declarado aqui primeiro, seguindo nossa diretriz de **Design Direcionado ao Core (Core First Design)**.
+
+### B. Compartilhamento de Contratos e Tipos
+
+Aplicações downstream como `@tupynambalucas-hub/api` (Fastify) e `@tupynambalucas-hub/web` (React SPA) não mantêm interfaces de objetos de transferência de dados (DTO) ou modelos de banco de dados duplicados. Em vez disso, importam diretamente tipos, interfaces e classes do pacote core compartilhado:
 
 ```typescript
 // Core package definition
@@ -51,8 +51,8 @@ export interface ICycle {
 import type { ICycle } from '@tupynambalucas-hub/core';
 ```
 
-### C. Schema Validation Consistency
+### C. Consistência na Validação de Esquemas
 
-Shared validation schemas are declared once using Zod within the core libraries. The backend API consumes these schemas in its controllers to validate incoming HTTP payloads, while the frontend web application uses the identical schemas for client-side form validation.
+Esquemas de validação compartilhados são declarados uma única vez usando Zod dentro das bibliotecas core. A API do backend consome esses esquemas em seus controllers para validar payloads HTTP recebidos, enquanto a aplicação web frontend usa os mesmos esquemas para validação de formulários no lado do cliente.
 
-Modifying a field requires updating a single file in the core workspace, which automatically propagates across the build pipeline during compile-time verification, eliminating manual API contract synchronization.
+A modificação de um campo exige a atualização de apenas um único arquivo no workspace core, o que se propaga automaticamente por todo o pipeline de build durante a verificação em tempo de compilação, eliminando a sincronização manual de contratos de API.

@@ -1,21 +1,21 @@
 ---
-title: Creating a Workspace Feature
-description: Learn how to build a feature that spans across multiple layers in a workspace.
+title: Criando uma Feature no Workspace
+description: Aprenda como construir um recurso que se estende por várias camadas em um workspace.
 ---
 
-# Creating a Workspace Feature
+# Criando uma Feature no Workspace
 
-In this tutorial, we will build a small, vertical feature across the `hub` workspace. We will start by defining the core logic, expose it via the API, and finally consume it in the web frontend.
+Neste tutorial, nós construiremos uma pequena feature vertical no workspace `hub`. Começaremos definindo a lógica central, a exporemos por meio da API e, finalmente, a consumiremos no frontend web.
 
-This will teach us how the different layers (Core, API, Web) interact within our bounded contexts.
+Isso nos ensinará como as diferentes camadas (Core, API, Web) interagem dentro de nossos contextos delimitados.
 
-## Step 1: Define the Core Logic
+## Passo 1: Definir a Lógica Central (Core)
 
-We will start in the Core layer, which holds our domain models and pure functions.
+Começaremos na camada Core, que armazena nossos modelos de domínio e funções puras.
 
-Navigate to `workspaces/hub/packages/core/src/` and create a new file named `greeter.ts`.
+Navegue até `workspaces/hub/packages/core/src/` e crie um novo arquivo chamado `greeter.ts`.
 
-Add the following code:
+Adicione o seguinte código:
 
 ```typescript
 export function getGreeting(name: string): string {
@@ -23,19 +23,19 @@ export function getGreeting(name: string): string {
 }
 ```
 
-Now, let's export it so other packages can use it. Open `workspaces/hub/packages/core/src/index.ts` and add:
+Agora, vamos exportá-lo para que outros pacotes possam usá-lo. Abra `workspaces/hub/packages/core/src/index.ts` e adicione:
 
 ```typescript
 export * from './greeter';
 ```
 
-## Step 2: Expose the Logic in the API
+## Passo 2: Expor a Lógica na API
 
-Next, we will move to the API layer to create an endpoint that uses our new core function.
+Em seguida, passaremos para a camada de API para criar um endpoint que usa nossa nova função core.
 
-Navigate to `workspaces/hub/apps/api/src/routes/` and create a new file named `greet.ts`.
+Navegue até `workspaces/hub/apps/api/src/routes/` e crie um novo arquivo chamado `greet.ts`.
 
-Add the following Fastify route:
+Adicione a seguinte rota do Fastify:
 
 ```typescript
 import { FastifyInstance } from 'fastify';
@@ -50,13 +50,13 @@ export default async function (fastify: FastifyInstance) {
 }
 ```
 
-## Step 3: Consume the API in the Web Frontend
+## Passo 3: Consumir a API no Frontend Web
 
-Finally, we will display this greeting in our React frontend.
+Finalmente, exibiremos esta saudação em nosso frontend React.
 
-Navigate to `workspaces/hub/apps/web/src/components/` and create `GreetingPanel.tsx`.
+Navegue até `workspaces/hub/apps/web/src/components/` e crie o arquivo `GreetingPanel.tsx`.
 
-Add the following React component:
+Adicione o seguinte componente React:
 
 ```tsx
 import React, { useEffect, useState } from 'react';
@@ -79,18 +79,18 @@ export function GreetingPanel() {
 }
 ```
 
-## Step 4: Verify the Feature
+## Passo 4: Verificar o Recurso
 
-Now, we will run the development server to see our feature in action.
+Agora, nós executaremos o servidor de desenvolvimento para ver nosso recurso em ação.
 
 ```bash
 pnpm dev --filter=@tupynambalucas-hub/*
 ```
 
-Open your browser to `http://localhost:3000`. You should see your new component rendering the text:
+Abra seu navegador em `http://localhost:3000`. Você deverá ver seu novo componente renderizando o texto:
 
 `Hello, Explorer! Welcome to the hub.`
 
-## Conclusion
+## Conclusão
 
-Great job! We have successfully implemented a vertical feature by creating pure logic in the Core, serving it through the API, and rendering it in the Web layer. This pattern is the foundation for all feature development in our architecture.
+Bom trabalho! Nós implementamos com sucesso uma feature vertical criando a lógica pura no Core, servindo-a através da API e renderizando-a na camada Web. Esse padrão é a base para todo o desenvolvimento de features em nossa arquitetura.

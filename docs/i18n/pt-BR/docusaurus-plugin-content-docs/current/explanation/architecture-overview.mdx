@@ -1,156 +1,156 @@
 ---
-title: Overview
-description: Comprehensive overview of tupynambalucas.dev's monorepo structure, bounded contexts, and technology stack.
+title: Visão Geral
+description: Visão geral abrangente da estrutura monorepo, contextos delimitados e pilha de tecnologia do tupynambalucas.dev.
 sidebar_position: 1
 ---
 
 import DocCardList from '@theme/DocCardList';
 
-# Technical Architecture
+# Arquitetura Técnica
 
-## 1. Executive Summary
+## 1. Resumo Executivo
 
-tupynambalucas.dev is a personal developer portal, portfolio, blog, and automation engine. The system is built on a **Monorepo** architecture using **PNPM Workspaces** and **Turborepo**, prioritizing high performance, strict typing, and domain isolation through a **Bounded Context** strategy.
+tupynambalucas.dev é um portal de desenvolvedor pessoal, portfólio, blog e motor de automação. O sistema é construído sobre uma arquitetura **Monorepo** usando **PNPM Workspaces** e **Turborepo**, priorizando alto desempenho, tipagem estrita e isolamento de domínio por meio de uma estratégia de **Contexto Delimitado** (Bounded Context).
 
-The architecture is designed to host the developer hub website (`hub`) and the automated stats compiler (`profile`), logically decoupled at the root level.
+A arquitetura é projetada para hospedar o site central do desenvolvedor (`hub`) e o compilador automatizado de estatísticas (`profile`), logicamente desacoplados no nível raiz.
 
 ---
 
-## 2. Monorepo Structure & Bounded Contexts
+## 2. Estrutura Monorepo e Contextos Delimitados
 
-The tupynambalucas.dev codebase is organized into **Domain Contexts** at the root level. For a detailed breakdown of the application roles, context philosophy, and directory structures, please refer to the Bounded Context guide:
+A base de código do tupynambalucas.dev é organizada em **Contextos de Domínio** no nível raiz. Para um detalhamento dos papéis da aplicação, filosofia de contextos e estruturas de diretórios, por favor consulte o guia de Contextos Delimitados:
 
 <DocCardList
   items={[
     {
       type: 'link',
       href: './bounded-contexts',
-      label: 'Bounded Context & Workspace Roles',
+      label: 'Contextos Delimitados e Papéis de Workspace',
       description:
-        'Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles.',
+        'Explicação detalhada sobre Contextos Delimitados, Estrutura Monorepo e Papéis de Workspace.',
     },
   ]}
 />
 
 ---
 
-## 3. Workspace Build & Resolution Strategy
+## 3. Estratégia de Build e Resolução de Workspace
 
-We employ a **Hybrid High-Performance Architecture** optimized by **Turborepo** to manage internal dependencies and task orchestration.
+Empregamos uma **Arquitetura Híbrida de Alto Desempenho** otimizada pelo **Turborepo** para gerenciar dependências internas e orquestração de tarefas.
 
-### 3.1. Task Orchestration (Turborepo)
+### 3.1. Orquestração de Tarefas (Turborepo)
 
-**Turborepo** is the engine behind our monorepo productivity. It handles:
+O **Turborepo** é o motor por trás da nossa produtividade no monorepo. Ele lida com:
 
-- **Dependency Graph:** Automatically identifying which packages need to be built or checked based on local changes.
-- **Infrastructure Coupling:** Orchestrating Docker Compose services as pre-requisites for application development (e.g., `pnpm hub:up` starts databases before the API).
-- **Caching:** Speeding up builds, type-checking, and linting by skipping unchanged modules.
-- **Unified Outputs:** Standardizing build artifacts into `dist/` (for apps and core) and `build/` (for Docusaurus).
+- **Grafo de Dependências:** Identificação automática de quais pacotes precisam ser construídos ou verificados com base em alterações locais.
+- **Acoplamento de Infraestrutura:** Orquestração de serviços do Docker Compose como pré-requisitos para o desenvolvimento da aplicação (por exemplo, `pnpm hub:up` inicia os bancos de dados antes da API).
+- **Cache:** Aceleração de builds, checagem de tipos e linting ao pular módulos não alterados.
+- **Saídas Unificadas:** Padronização de artefatos de build em `dist/` (para aplicativos e core) e `build/` (para Docusaurus).
 
 ---
 
-## 4. Operational Commands
+## 4. Comandos Operacionais
 
-We use a unified CLI interface defined in the root **package.json** to orchestrate and manage the monorepo across all environments (**development**, **staging**, and **production**).
+Usamos uma interface CLI unificada definida no **package.json** raiz para orquestrar e gerenciar o monorepo em todos os ambientes (**desenvolvimento**, **homologação** e **produção**).
 
-For a complete reference list of orchestration scripts, service commands, and dev stack workflows, please refer to the Command Reference:
+Para uma lista de referência completa de scripts de orquestração, comandos de serviços e fluxos de trabalho da pilha de desenvolvimento, por favor consulte a Referência de Comandos:
 
 <DocCardList
   items={[
     {
       type: 'link',
       href: '../reference/commands',
-      label: 'Command Reference',
+      label: 'Referência de Comandos',
       description:
-        'Centralized reference for all CLI commands, scripts, and orchestration workflows.',
+        'Referência centralizada para todos os comandos de CLI, scripts e fluxos de trabalho de orquestração.',
     },
   ]}
 />
 
 ---
 
-## 5. Architectural Principles
+## 5. Princípios Arquiteturais
 
-To ensure extreme maintainability, long-term readability, and clean boundaries across our domain contexts, tupynambalucas.dev follows four foundational architectural principles.
+Para garantir manutenibilidade extrema, legibilidade a longo prazo e limites claros entre nossos contextos de domínio, o tupynambalucas.dev segue quatro princípios arquiteturais fundamentais.
 
-Click on any card below to explore a deep dive into each principle:
+Clique em qualquer cartão abaixo para explorar uma análise aprofundada de cada princípio:
 
 <DocCardList
   items={[
     {
       type: 'link',
       href: '/docs/explanation/principles/solid',
-      label: 'SOLID Principles',
+      label: 'Princípios SOLID',
       description:
-        'Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion.',
+        'Responsabilidade Única, Aberto/Fechado, Substituição de Liskov, Segregação de Interface e Inversão de Dependência.',
     },
     {
       type: 'link',
       href: '/docs/explanation/principles/ssot',
-      label: 'Single Source of Truth (SSOT)',
+      label: 'Fonte Única da Verdade (SSOT)',
       description:
-        'Ensuring that every data element has a single, unambiguous, and authoritative representation.',
+        'Garantindo que cada elemento de dados tenha uma representação única, inequívoca e autoritativa.',
     },
     {
       type: 'link',
       href: '/docs/explanation/principles/inherited-configuration',
-      label: 'Inherited Configuration',
+      label: 'Configuração Herdada',
       description:
-        'Cascading hierarchical settings across workspace contexts to promote reuse and strict defaults.',
+        'Cascateamento de configurações hierárquicas entre contextos do workspace para promover reuso e padrões estritos.',
     },
     {
       type: 'link',
       href: '/docs/explanation/principles/ddd-fsd',
       label: 'DDD & Feature-Sliced Design (FSD)',
       description:
-        'Applying Domain-Driven Design and Feature-Sliced Design principles for modular and scalable codebase organization.',
+        'Aplicando princípios de Domain-Driven Design e Feature-Sliced Design para organização modular e escalável do código-fonte.',
     },
   ]}
 />
 
 ---
 
-## 6. Technology Stack
+## 6. Pilha de Tecnologia
 
-### 6.1. Package Management & Orchestration
+### 6.1. Gerenciamento e Orquestração de Pacotes
 
-- **Runtime**: Node.js 22+ (LTS).
-- **Package Manager**: PNPM v11 (Strict dependency management via symlinks and hard-link content storage).
-- **Dependency Management**: **PNPM Catalogs** (Centralized version control for shared dependencies across the workspace using `catalog:` protocol).
-- **Task Orchestrator**: **Turborepo** (Optimized caching and parallel execution).
-- **Tooling**: TypeScript 6, ESLint 10 (Flat Config), Prettier 3, Vite 8, Zig.
+- **Ambiente de Execução (Runtime)**: Node.js 22+ (LTS).
+- **Gerenciador de Pacotes**: PNPM v11 (Gerenciamento estrito de dependências via symlinks e armazenamento de conteúdo por links físicos/hard-links).
+- **Gerenciamento de Dependências**: **Catálogos do PNPM (PNPM Catalogs)** (Controle de versão centralizado para dependências compartilhadas no workspace usando o protocolo `catalog:`).
+- **Orquestrador de Tarefas**: **Turborepo** (Cache otimizado e execução paralela).
+- **Ferramental (Tooling)**: TypeScript 6, ESLint 10 (Configuração Plana/Flat Config), Prettier 3, Vite 8, Zig.
 
-### 6.2. Backend (API Layer)
+### 6.2. Backend (Camada de API)
 
-- **Framework**: Fastify v5 (Optimized for high throughput).
-- **ORM/ODM**: Mongoose with MongoDB (Replica Set enabled for ACID transactions).
-- **Validation**: Zod (Integrated via domain-specific core packages).
-- **Processing**: BullMQ + Redis for asynchronous tasks.
+- **Framework**: Fastify v5 (Otimizado para alta taxa de transferência/throughput).
+- **ORM/ODM**: Mongoose com MongoDB (com Replica Set ativado para transações ACID).
+- **Validação**: Zod (Integrado através de pacotes core específicos de domínio).
+- **Processamento**: BullMQ + Redis para tarefas assíncronas.
 
-### 6.3. Frontend (UI Layer)
+### 6.3. Frontend (Camada de UI)
 
 - **Framework**: React 19.
-- **State Management**: Zustand (Atomic and performant state using Slices and Selectors).
-- **Styling**: TailwindCSS v4 + CSS Modules for scoped styles.
-- **Animations**: GSAP (High-fidelity interactive feedback).
+- **Gerenciamento de Estado**: Zustand (Estado atômico e performático usando Slices e Selectors).
+- **Estilização**: TailwindCSS v4 + CSS Modules para estilos com escopo local.
+- **Animações**: GSAP (Feedback interativo de alta fidelidade).
 
 ---
 
-## 7. Architectural Patterns
+## 7. Padrões Arquiteturais
 
-### 7.1. Layered Responsibilities (Backend)
+### 7.1. Responsabilidades em Camadas (Backend)
 
-Each domain follows a strict hierarchy to isolate concerns:
+Cada domínio segue uma hierarquia estrita para isolar responsabilidades:
 Controller -> Service -> Repository -> Model
 
-- **Controller**: Handles HTTP I/O, route definitions, and Zod schema validation.
-- **Service**: Orchestrates business rules, complex logic, and cross-model transactions.
-- **Repository**: Abstracts data persistence logic (Repository Pattern) to keep services database-agnostic.
-- **Model**: Defines the Mongoose database structure and data integrity rules.
+- **Controller**: Lida com E/S HTTP (HTTP I/O), definições de rotas e validação de esquemas Zod.
+- **Service**: Orquestra regras de negócio, lógica complexa e transações entre modelos.
+- **Repository**: Abstrai a lógica de persistência de dados (Padrão de Repositório/Repository Pattern) para manter os serviços agnósticos ao banco de dados.
+- **Model**: Define a estrutura do banco de dados Mongoose e as regras de integridade dos dados.
 
-#### Implementation Example (Repository Pattern)
+#### Exemplo de Implementação (Repository Pattern)
 
-To maintain strict typing and decoupling, repositories receive the Mongoose model via dependency injection.
+Para manter a tipagem estrita e o desacoplamento, os repositórios recebem o modelo do Mongoose por meio de injeção de dependência.
 
 ```typescript
 // hub/services/api/src/domains/auth/auth.repository.ts
@@ -170,15 +170,15 @@ export class AuthRepository {
 }
 ```
 
-### 7.2. Frontend State Orchestration (Zustand & FSD)
+### 7.2. Orquestração de Estado no Frontend (Zustand e FSD)
 
-To prevent monolithic stores and unnecessary re-renders in React 19, the frontend adopts a strict **Atomic Selectors Pattern** coupled with **Domain Hooks**:
+Para evitar stores monolíticas e renderizações desnecessárias no React 19, o frontend adota um **Padrão de Seletores Atômicos** (Atomic Selectors Pattern) estrito acoplado a **Hooks de Domínio**:
 
-1. **State vs. Actions Separation**: The Zustand store separates `state` from `actions`. Pure domain logic (like calculations) is extracted out of the store to maintain the **Single Source of Truth** and testability.
-2. **Atomic Selectors**: Monolithic exports (`export const useAuthStore = create(...)`) are wrapped in specific hooks.
-3. **Domain Hooks (`src/domains/*/hooks`)**: Selectors are exposed as individual hooks (e.g., `useAuthUser()`, `useProductActions()`). This ensures that a component only re-renders when the exact slice of state it subscribes to changes.
+1. **Separação de Estado vs. Ações**: A store do Zustand separa o `state` (estado) das `actions` (ações). A lógica pura de domínio (como cálculos) é extraída para fora da store para manter a **Fonte Única da Verdade** (SSOT) e a testabilidade.
+2. **Seletores Atômicos**: Exportações monolíticas (`export const useAuthStore = create(...)`) são envelopadas em hooks específicos.
+3. **Hooks de Domínio (`src/domains/*/hooks`)**: Os seletores são expostos como hooks individuais (por exemplo, `useAuthUser()`, `useProductActions()`). Isso garante que um componente seja renderizado novamente apenas quando a fatia exata do estado que ele assina for alterada.
 
-#### Implementation Example (Zustand Atomic Selectors)
+#### Exemplo de Implementação (Zustand Atomic Selectors)
 
 ```typescript
 // hub/services/web/src/domains/cart/hooks/useCart.ts
@@ -193,55 +193,55 @@ export const useCartTotal = () =>
   useCartStore((state) => state.items.reduce((acc, item) => acc + calculateItemPrice(item), 0));
 ```
 
-### 7.3. Dependency Injection
+### 7.3. Injeção de Dependência
 
-Modular management through Fastify decorators and a centralized registry to decouple components and facilitate testing.
+Gerenciamento modular por meio de decoradores do Fastify e um registro centralizado para desacoplar componentes e facilitar testes.
 
 ---
 
-## 8. Infrastructure & Deployment
+## 8. Infraestrutura e Implantação
 
-Designed for **Self-Hosted Excellence** on Hetzner Cloud, our containerization standards, multi-service Docker Compose topologies, environment variables strategy, and networking standards are managed centrally.
+Projetado para **Excelência Auto-Hospedada** na Hetzner Cloud, nossos padrões de conteinerização, topologias Docker Compose multisserviço, estratégia de variáveis de ambiente e padrões de rede são gerenciados de forma centralizada.
 
-For a comprehensive, deep-dive guide on directory structures, gold-standard Docker Compose blueprints, and advanced multi-service patterns (including the Gateway and Distributed Stack patterns), refer to the dedicated documentation:
+Para um guia completo e aprofundado sobre estruturas de diretórios, modelos de Docker Compose de alto padrão e padrões avançados de multisserviços (incluindo os padrões Gateway e Pilha Distribuída), consulte a documentação dedicada:
 
 <DocCardList
   items={[
     {
       type: 'link',
       href: '../reference/infrastructure',
-      label: 'Infrastructure',
+      label: 'Infraestrutura',
       description:
-        'To keep the tupynambalucas.dev infrastructure, DevOps tooling, and background runtime environments robust, maintainable, and highly modular, this document unifies our self-hosted infrastructure standards, directory conventions, and multi-service Docker topologies.',
+        'Para manter a infraestrutura do tupynambalucas.dev, ferramentas de DevOps e ambientes de execução em segundo plano robustos, fáceis de manter e altamente modulares, este documento unifica nossos padrões de infraestrutura auto-hospedada, convenções de diretório e topologias Docker multisserviço.',
     },
     {
       type: 'link',
       href: '../guides/deployment',
-      label: 'Deployment',
+      label: 'Implantação',
       description:
-        'To ensure high availability, security, and reproducible environments, tupynambalucas.dev utilizes a modern, self-hosted deployment model designed for Hetzner Cloud virtual machines. This guide outlines our deployment strategy, environment synchronization, and operational procedures.',
+        'Para garantir alta disponibilidade, segurança e ambientes reproduzíveis, o tupynambalucas.dev utiliza um modelo de implantação moderno e auto-hospedado projetado para máquinas virtuais Hetzner Cloud. Este guia descreve nossa estratégia de implantação, sincronização de ambiente e procedimentos operacionais.',
     },
   ]}
 />
 
 ---
 
-## 9. Studio & AI Automation (Architecture)
+## 9. Automação de Studio e IA (Arquitetura)
 
-The Studio and Cortex workspaces provide the infrastructure for design-to-code alignment, automation pipelines, and AI-assisted engineering.
+Os workspaces Studio e Cortex fornecem a infraestrutura para alinhamento de design-para-código, pipelines de automação e engenharia assistida por IA.
 
-- **Design Alignment & Assets**: Managed in the **[Studio Workspace](/workspaces/studio)**.
-- **AI Contextual Bridge & Ingress**: Managed in the **[Cortex Workspace](/workspaces/cortex)**.
+- **Alinhamento de Design e Ativos**: Gerenciado no **[Studio Workspace](/workspaces/studio)**.
+- **Ponte Contextual de IA e Entrada**: Gerenciado no **[Cortex Workspace](/workspaces/cortex)**.
 
 ---
 
-## 10. Security Standards
+## 10. Padrões de Segurança
 
-tupynambalucas.dev follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](../reference/security.mdx)** document.
+O tupynambalucas.dev segue uma estratégia de segurança em múltiplas camadas. Para detalhes detalhados de implementação, consulte o documento de **[Arquitetura de Segurança](../reference/security.mdx)**.
 
-- **Bot Protection**: Integration with Cloudflare Turnstile for all authentication entry points.
-- **Brute-Force Mitigation**: IP-based rate limiting and account lockout logic.
-- **Strict Typing**: TypeScript Strict Mode enabled project-wide.
-- **Build Integrity**: Automated build script approvals via `pnpm.onlyBuiltDependencies`.
-- **Data Integrity**: MongoDB Replica Set (`rs0`) for transactional reliability and ACID compliance.
-- **Validation**: Strict Zod validation at every entry point (API requests, Environment variables, internal contracts).
+- **Proteção contra Bots**: Integração com o Cloudflare Turnstile para todos os pontos de entrada de autenticação.
+- **Mitigação de Força Bruta**: Limitação de taxa baseada em IP e lógica de bloqueio de conta.
+- **Tipagem Estrita**: Modo estrito do TypeScript (TypeScript Strict Mode) ativado em todo o projeto.
+- **Integridade de Build**: Aprovações automatizadas de scripts de build via `pnpm.onlyBuiltDependencies`.
+- **Integridade de Dados**: Módulo de Replica Set do MongoDB (`rs0`) para confiabilidade transacional e conformidade com ACID.
+- **Validação**: Validação estrita com Zod em cada ponto de entrada (requisições de API, variáveis de ambiente, contratos internos).

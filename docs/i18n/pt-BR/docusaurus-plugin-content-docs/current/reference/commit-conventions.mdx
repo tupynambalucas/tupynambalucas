@@ -1,96 +1,95 @@
 ---
-title: Commit Conventions & CI
-description: Reference for commit standards, CI hooks, and GitHub Actions architecture.
+title: Convenções de Commit & CI
+description: Referência para padrões de commit, hooks de CI e arquitetura do GitHub Actions.
 ---
 
-# Commit Conventions & CI
+# Convenções de Commit & CI
 
-To maintain a clean and automated history, all commits must follow the **[Conventional Commits](https://www.conventionalcommits.org/)** specification.
+Para manter um histórico limpo e automatizado, todos os commits devem seguir a especificação dos **[Commits Convencionais (Conventional Commits)](https://www.conventionalcommits.org/)**.
 
-**Format:** `<type>(<scope>): <description>`
+**Formato:** `<tipo>(<escopo>): <descrição>`
 
-### Types
+### Tipos
 
-- **feat**: A new feature (correlates with `MINOR` in SemVer).
-- **fix**: A bug fix (correlates with `PATCH` in SemVer).
-- **docs**: Documentation only changes.
-- **style**: Changes that do not affect the meaning of the code (white-space, formatting, etc).
-- **refactor**: A code change that neither fixes a bug nor adds a feature.
-- **perf**: A code change that improves performance.
-- **test**: Adding missing tests or correcting existing tests.
-- **chore**: Changes to the build process or auxiliary tools/libraries.
+- **feat**: Uma nova funcionalidade (correlaciona-se com `MINOR` no SemVer).
+- **fix**: Uma correção de bug (correlaciona-se com `PATCH` no SemVer).
+- **docs**: Alterações apenas na documentação.
+- **style**: Alterações que não afetam o significado do código (espaço em branco, formatação, etc.).
+- **refactor**: Uma alteração de código que não corrige um bug nem adiciona uma funcionalidade.
+- **perf**: Uma alteração de código que melhora o desempenho.
+- **test**: Adição de testes ausentes ou correção de testes existentes.
+- **chore**: Alterações no processo de compilação (build) ou ferramentas/bibliotecas auxiliares.
 
-### Monorepo Scopes
+### Escopos do Monorepo
 
-Use the context or package name as the scope:
+Use o contexto ou o nome do pacote como o escopo:
 
-- **`instance`**: Changes to the Community Instance apps or core.
-- **`portal`**: Changes to the Global Portal apps or core.
-- **`core`**: Changes to shared domain logic.
-- **`studio`**: Design tokens, assets, or Penpot configuration.
-- **`tools`**: MCP servers, scripts, or infrastructure.
-- **`deps`**: Dependency updates (managed via catalogs).
+- **`hub`**: Alterações nos aplicativos, API ou núcleo (core) do Developer Hub.
+- **`cortex`**: Alterações no gateway de entrada da IA (AI ingress gateway), camada de memória, adaptadores MCP ou agentes.
+- **`studio`**: Tokens de design, assets ou configuração do Penpot.
+- **`tools`**: Automação de CLI do Git e GitHub.
+- **`deps`**: Atualizações de dependência (gerenciadas via catálogos).
 
-**Example:** `feat(instance): add Pix payment reconciliation to checkout`
+**Exemplo:** `feat(hub): add Pix payment reconciliation to checkout`
 
 ---
 
-## Commit Validation & CI Hooks
+## Validação de Commit & Hooks de CI
 
-To maintain code quality, styling consistency, and type safety across the **tupynambalucas.dev** monorepo, we use an automated pipeline that checks all changes before they are committed locally and before they are merged in the cloud.
+Para manter a qualidade do código, a consistência de estilo e a segurança de tipos no monorepo **tupynambalucas.dev**, usamos um pipeline automatizado que verifica todas as alterações antes que elas sejam commitadas localmente e antes de serem mescladas na nuvem.
 
-### Local Validation Architecture (Pre-commit)
+### Arquitetura de Validação Local (Pre-commit)
 
-When you execute a `git commit` command, Git automatically intercepts the action and executes a local validation pipeline. If any step in this pipeline fails, the commit is blocked.
+Quando você executa um comando `git commit`, o Git intercepta automaticamente a ação e executa um pipeline de validação local. Se qualquer etapa desse pipeline falhar, o commit é bloqueado.
 
-The local validation executes in two sequential phases:
+A validação local é executada em duas fases sequenciais:
 
 ```mermaid
 graph TD
     direction TD
-    A["Developer Runs 'git commit'"] --> B["Husky pre-commit Hook Triggers"]
-    B --> C["Phase 1: Selective Typecheck (precommit-typecheck.ts)"]
-    C -- "TypeScript Errors Found" --> D["Abort Commit (Block)"]
-    C -- "Type Safety Passed" --> E["Phase 2: Lint & Format (lint-staged)"]
+    A["Desenvolvedor executa 'git commit'"] --> B["Gatilho do Hook pre-commit do Husky"]
+    B --> C["Fase 1: Verificação de Tipos Seletiva (precommit-typecheck.ts)"]
+    C -- "Erros de TypeScript Encontrados" --> D["Abortar Commit (Bloquear)"]
+    C -- "Segurança de Tipos Aprovada" --> E["Fase 2: Lint & Formatação (lint-staged)"]
     E --> F["eslint --fix (JS, TS, TSX)"]
     E --> G["prettier --write (JSON, YAML, MD, MDX)"]
-    F -- "Unfixable Lint Errors" --> D
-    F -- "Passed / Auto-fixed" --> H["Stage Changes & Create Commit"]
+    F -- "Erros de Lint Incorrigíveis" --> D
+    F -- "Aprovado / Auto-corrigido" --> H["Adicionar Alterações à Stage e Criar Commit"]
     G --> H
 ```
 
 ---
 
-### Selective Workspace Typechecking
+### Verificação de Tipos Seletiva de Workspace
 
-Running a full typecheck across all monorepo packages (`pnpm typecheck`) can take several seconds. To keep the commit process fast, we use a custom script located at [precommit-typecheck.ts](file:///D:/projects/elo-organico/tools/scripts/precommit-typecheck.ts).
+Executar uma verificação de tipos completa em todos os pacotes do monorepo (`pnpm typecheck`) pode levar vários segundos. Para manter o processo de commit rápido, usamos um script personalizado localizado em [precommit-typecheck.ts](file:///D:/projects/tupynambalucas/tools/scripts/precommit-typecheck.ts).
 
-#### How it Works
+#### Como Funciona
 
-1. The script inspects the currently staged files using `git diff --cached --name-only`.
-2. It detects the file extensions: if no JavaScript or TypeScript files have changed, it skips typechecking completely.
-3. It maps the changed files to their corresponding monorepo workspaces:
-   - Files in `instance/` $\rightarrow$ typecheck `@tupynambalucas-hub/*` packages.
-   - Files in `studio/` $\rightarrow$ typecheck `@tupynambalucas-studio/design`.
-   - Files in `tools/` $\rightarrow$ typecheck `@tupynambalucas/tools`.
-   - Files in `docs/` $\rightarrow$ typecheck `@tupynambalucas/docs`.
-   - Files in `portal/` $\rightarrow$ typecheck `@tupynambalucas-hub/*`.
-4. If global configuration or root files (e.g. `package.json`, `eslint.config.ts`, `pnpm-workspace.yaml`) are modified, the script runs a full typecheck (excluding `portal` until it is updated).
-5. It executes the targeted typecheck in parallel using Turborepo filters (e.g., `npx turbo run typecheck --filter=@tupynambalucas-hub/*`).
+1. O script inspeciona os arquivos atualmente preparados na stage usando `git diff --cached --name-only`.
+2. Ele detecta as extensões dos arquivos: se nenhum arquivo JavaScript ou TypeScript foi alterado, ele ignora a verificação de tipos completamente.
+3. Ele mapeia os arquivos alterados para seus respectivos workspaces do monorepo:
+   - Arquivos em `hub/` $\rightarrow$ verificação de tipos dos pacotes `@tupynambalucas-hub/*`.
+   - Arquivos em `cortex/` $\rightarrow$ verificação de tipos de `@tupynambalucas/cortex`.
+   - Arquivos em `studio/` $\rightarrow$ verificação de tipos de `@tupynambalucas-studio/design`.
+   - Arquivos em `tools/` $\rightarrow$ verificação de tipos de `@tupynambalucas-tools/*`.
+   - Arquivos em `docs/` $\rightarrow$ verificação de tipos de `@tupynambalucas/docs`.
+4. Se arquivos de configuração global ou da raiz (ex.: `package.json`, `eslint.config.ts`, `pnpm-workspace.yaml`) forem modificados, o script executa uma verificação de tipos completa.
+5. Ele executa a verificação de tipos direcionada em paralelo usando filtros do Turborepo (ex.: `npx turbo run typecheck --filter=@tupynambalucas-hub/*`).
 
-:::tip[Performance Advantage]
-If you only modify files in the `tools` workspace, only the tools project is typechecked, which takes less than 1.5 seconds. If you only modify documentation (`.md` or `.mdx` files), the typecheck is skipped entirely.
+:::tip[Vantagem de Desempenho]
+Se você modificar apenas arquivos no workspace `cortex`, apenas o projeto cortex será verificado, o que leva menos de 1,5 segundos. Se você modificar apenas a documentação (arquivos `.md` ou `.mdx`), a verificação de tipos é totalmente ignorada.
 :::
 
 ---
 
-### Linting and Formatting (lint-staged)
+### Linting e Formatação (lint-staged)
 
-Once typechecking passes, Husky triggers `lint-staged`, which runs linters and formatters only on the staged files.
+Assim que a verificação de tipos é aprovada, o Husky aciona o `lint-staged`, que executa linters e formatadores apenas nos arquivos preparados na stage.
 
-#### Configuration
+#### Configuração
 
-The rules are declared in the root [package.json](file:///D:/projects/elo-organico/package.json):
+As regras são declaradas no [package.json](file:///D:/projects/tupynambalucas/package.json) da raiz:
 
 ```json
   "lint-staged": {
@@ -103,37 +102,37 @@ The rules are declared in the root [package.json](file:///D:/projects/elo-organi
   }
 ```
 
-:::note[Prettier Integration]
-For JavaScript, TypeScript, and TSX files, we do not run the standalone Prettier CLI. Instead, Prettier runs as an ESLint rule via `eslint-plugin-prettier`. Running `eslint --fix` formats the code according to [shared/config/prettierrc.json](file:///D:/projects/elo-organico/shared/config/prettierrc.json) and checks for code quality issues in a single execution.
+:::note[Integração do Prettier]
+Para arquivos JavaScript, TypeScript e TSX, não executamos a CLI do Prettier de forma independente. Em vez disso, o Prettier é executado como uma regra do ESLint via `eslint-plugin-prettier`. Executar `eslint --fix` formata o código de acordo com o [shared/config/prettierrc.json](file:///D:/projects/tupynambalucas/shared/config/prettierrc.json) e verifica problemas de qualidade do código em uma única execução.
 :::
 
 ---
 
-### Remote Validation (GitHub Actions CI)
+### Validação Remota (GitHub Actions CI)
 
-Local Git hooks can be bypassed (e.g. using `git commit --no-verify`). To prevent unvalidated code from reaching stable branches, we run a Continuous Integration (CI) workflow in GitHub on every push and Pull Request.
+Os hooks locais do Git podem ser ignorados (ex.: usando `git commit --no-verify`). Para evitar que código não validado chegue às branches estáveis, executamos um fluxo de trabalho de Integração Contínua (CI) no GitHub a cada push e Pull Request.
 
-The workflow configuration is defined in [.github/workflows/ci.yaml](file:///D:/projects/elo-organico/.github/workflows/ci.yaml):
+A configuração do fluxo de trabalho é definida em [.github/workflows/ci.yaml](file:///D:/projects/tupynambalucas/.github/workflows/ci.yaml):
 
-- It installs dependencies using `pnpm install --frozen-lockfile`.
-- It executes the full typecheck suite: `pnpm typecheck --filter=!@tupynambalucas-hub/*`.
-- It validates code style and quality: `pnpm lint --filter=!@tupynambalucas-hub/*`.
+- Instala dependências usando `pnpm install --frozen-lockfile`.
+- Executa a suíte completa de verificação de tipos: `pnpm typecheck --filter=!@tupynambalucas-hub/*`.
+- Valida o estilo e a qualidade do código: `pnpm lint --filter=!@tupynambalucas-hub/*`.
 
-:::caution[Branch Protection]
-Repository administrators must configure branch protection rules on GitHub for `main` and `develop` branches. Enable the option **Require status checks to pass before merging** and select **Validate Types & Lint** to prevent merging PRs with failing builds.
+:::caution[Proteção de Branch]
+Os administradores do repositório devem configurar regras de proteção de branch no GitHub para as branches `main` e `develop`. Ative a opção **Require status checks to pass before merging** (Exigir que as verificações de status passem antes de mesclar) e selecione **Validate Types & Lint** para evitar a mesclagem de PRs com compilações que falharam.
 :::
 
 ---
 
-To keep our CI/CD pipelines highly maintainable and efficient, we enforce the following architectural rules for all repository workflows:
+Para manter nossos pipelines de CI/CD altamente fáceis de manter e eficientes, impomos as seguintes regras arquiteturais para todos os fluxos de trabalho do repositório:
 
-- **Reusable CI Modules**: Workflows under `.github/workflows/` must not duplicate environment setup logic. Shared behaviors (such as node execution, PNPM installations, and cache configurations) are extracted into independent **GitHub Composite Actions** in `.github/actions/`.
+- **Módulos de CI Reutilizáveis**: Os fluxos de trabalho sob `.github/workflows/` não devem duplicar a lógica de configuração do ambiente. Os comportamentos compartilhados (como execução do node, instalações do PNPM e configurações de cache) são extraídos em **GitHub Composite Actions** independentes em `.github/actions/`.
 
 ---
 
-### Reusable CI Component: `.github/actions/setup-pnpm-env/action.yml` (SRP)
+### Componente de CI Reutilizável: `.github/actions/setup-pnpm-env/action.yml` (SRP)
 
-Instead of duplicating dependencies setups across GitHub workflows, extract them into a composite action:
+Instala Node, PNPM e configura o cache de dependências de forma reutilizável:
 
 ```yaml
 name: 'Setup PNPM Environment'
@@ -167,9 +166,9 @@ runs:
       run: pnpm install
 ```
 
-### Decoupled Script Contract: `sync_repo_secrets_variables.sh` (DIP)
+### Contrato de Script Desacoplado: `sync_repo_secrets_variables.sh` (DIP)
 
-This script depends strictly on environment-injected parameters, completely abstracting physical disk paths on the runner machine:
+Este script depende estritamente de parâmetros injetados no ambiente, abstraindo completamente caminhos de disco físicos na máquina de execução:
 
 ```bash
 #!/usr/bin/env bash
@@ -206,9 +205,9 @@ fi
 log_info "Synchronization completed successfully."
 ```
 
-### Decoupled Orchestrator: `compose.yaml` (DIP & ISP)
+### Orquestrador Desacoplado: `compose.yaml` (DIP & ISP)
 
-The orchestrator maps concrete files to the abstract targets required by the container boundary and injects host-level variables loaded automatically from `.env`:
+O orquestrador mapeia arquivos concretos para os alvos abstratos exigidos pelo limite do container e injeta variáveis de nível de host carregadas automaticamente a partir de `.env`:
 
 ```yaml
 services:
@@ -229,10 +228,10 @@ services:
 
 ---
 
-:::tip[Extensibility Benefits]
-Under this layout, adding a new tooling container (e.g., `sentry-uploader` or `sonar-scanner`) is as simple as dropping a directory under `services/`, establishing its `.env` requirements, and registering it in `/infrastructure/docker/compose.yaml`. The existing core actions, workflows, and configuration directories remain locked and completely secure.
+:::tip[Benefícios de Extensibilidade]
+Sob este layout, adicionar um novo container de ferramentas (ex.: `sentry-uploader` ou `sonar-scanner`) é tão simples quanto soltar um diretório sob `services/`, estabelecer seus requisitos de `.env` e registrá-lo em `/infrastructure/docker/compose.yaml`. As ações principais, fluxos de trabalho e diretórios de configuração existentes permanecem bloqueados e completamente seguros.
 :::
 
 ---
 
-_Adherence to this workflow ensures a clean history and high-quality software distribution._
+_A adesão a este fluxo de trabalho garante um histórico limpo e uma distribuição de software de alta qualidade._

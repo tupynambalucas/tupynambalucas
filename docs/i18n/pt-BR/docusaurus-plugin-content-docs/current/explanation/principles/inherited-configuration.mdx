@@ -1,29 +1,29 @@
 ---
-title: Inherited Configuration
-description: Tooling governance and root-level config inheritance across the tupynambalucas.dev monorepo.
+title: Configuração Herdada
+description: Governança de ferramentas e herança de configuração no nível raiz em todo o monorepo tupynambalucas.dev.
 ---
 
-# Inherited Configuration
+# Configuração Herdada
 
-Inherited Configuration centralizes the governance of tooling and compilation rules at the root of the monorepo, allowing downstream applications to extend shared configurations without duplicating settings.
-
----
-
-## 1. Architectural Concept & Overview
-
-Managing linting, compilation, and formatting individually per package in a monorepo inevitably leads to tooling drift and inconsistent code style. Centralizing tool configurations at the root and having individual workspaces extend them ensures strict, unified code quality guidelines while dramatically reducing workspace configuration boilerplate.
-
-This layout allows us to enforce strict workspace standards (such as Airbnb-level code formatting, strict TypeScript checks, and secure package boundaries) in a single-source configuration file, keeping all apps and packages clean and predictable.
+A Configuração Herdada centraliza a governança das ferramentas e regras de compilação na raiz do monorepo, permitindo que as aplicações subsequentes (downstream) estendam configurações compartilhadas sem duplicar definições.
 
 ---
 
-## 2. Project-Specific Utilization
+## 1. Conceito Arquitetural e Visão Geral
 
-In tupynambalucas.dev, all toolings and configurations are centrally orchestrated from the root:
+Gerenciar o linting, compilação e formatação individualmente por pacote em um monorepo inevitavelmente leva ao desvio de ferramentas (tooling drift) e a um estilo de código inconsistente. Centralizar as configurações de ferramentas na raiz e fazer com que os workspaces individuais as estendam garante diretrizes estritas e unificadas de qualidade de código, reduzindo drasticamente o código repetitivo (boilerplate) de configuração de workspace.
 
-### A. Unified ESLint Governance
+Esse layout nos permite impor padrões estritos de workspace (como formatação de código no padrão Airbnb, verificações estritas do TypeScript e limites de pacotes seguros) em um arquivo de configuração de fonte única, mantendo todos os aplicativos e pacotes limpos e previsíveis.
 
-ESLint 9 (Flat Config) rules are centralized in the monorepo root. Individual packages import and extend this base configuration in their local `eslint.config.js` files, guaranteeing that security boundaries, styling guides, and code quality standards are applied uniformly across all projects:
+---
+
+## 2. Utilização Específica do Projeto
+
+No tupynambalucas.dev, todas as ferramentas e configurações são centralmente orquestradas a partir da raiz:
+
+### A. Governança Unificada do ESLint
+
+As regras do ESLint 9 (Configuração Plana/Flat Config) são centralizadas na raiz do monorepo. Pacotes individuais importam e estendem essa configuração base em seus arquivos `eslint.config.js` locais, garantindo que os limites de segurança, guias de estilo e padrões de qualidade de código sejam aplicados uniformemente em todos os projetos:
 
 ```javascript
 // Local eslint.config.js extending root Flat Config
@@ -40,15 +40,15 @@ export default [
 ];
 ```
 
-### B. Cascading TypeScript Configs
+### B. Configurações em Cascata do TypeScript
 
-Root-level `tsconfig.json` files define the baseline strictness:
+Os arquivos `tsconfig.json` no nível da raiz definem o nível de rigor inicial:
 
 - `strict: true`
 - `noImplicitAny: true`
 - `noFallthroughCasesInSwitch: true`
 
-Workspaces extend these shared settings via the `extends` property, customizing only runtime-specific libraries or target environments (such as Node.js vs. DOM/browser contexts):
+Os workspaces estendem essas configurações compartilhadas por meio da propriedade `extends`, personalizando apenas bibliotecas específicas de tempo de execução ou ambientes de destino (como contextos Node.js vs. DOM/navegador):
 
 ```json
 // instance/apps/web/tsconfig.json
@@ -61,10 +61,10 @@ Workspaces extend these shared settings via the `extends` property, customizing 
 }
 ```
 
-### C. Consolidated Formatting Rules
+### C. Regras de Formatação Consolidadas
 
-Code style is governed globally by a single Prettier configuration file at the monorepo root. Prettier format rules are applied consistently to all TypeScript, JSON, CSS, and Markdown files across the entire workspace structure, ensuring a completely consistent layout without ad-hoc rules.
+O estilo do código é governado globalmente por um único arquivo de configuração do Prettier na raiz do monorepo. As regras de formatação do Prettier são aplicadas de forma consistente a todos os arquivos TypeScript, JSON, CSS e Markdown em toda a estrutura do workspace, garantindo um layout completamente consistente sem regras ad-hoc.
 
-### D. Task Orchestration Governance
+### D. Governança de Orquestração de Tarefas
 
-Turborepo relies on a root-level `turbo.json` file to model the workspace's dependency graph. This unifies task pipeline definitions (such as `build`, `lint`, `typecheck`) and ensures caching optimizations and target task pipelines behave identically in every workspace.
+O Turborepo conta com um arquivo `turbo.json` no nível da raiz para modelar o grafo de dependências do workspace. Isso unifica as definições de pipeline de tarefas (como `build`, `lint`, `typecheck`) e garante que as otimizações de cache e os pipelines de tarefas de destino se comportem de forma idêntica em cada workspace.

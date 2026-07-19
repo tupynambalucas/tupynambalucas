@@ -1,108 +1,108 @@
 ---
-title: Command Reference
-description: Centralized reference for all CLI commands, scripts, and orchestration workflows.
+title: Referência de Comandos
+description: Referência centralizada para todos os comandos CLI, scripts e fluxos de trabalho de orquestração.
 sidebar_position: 2
 ---
 
-# Command Reference
+# Referência de Comandos
 
-This document serves as the **Single Source of Truth** for every CLI command, PNPM script, Docker command, and orchestration instruction used in the tupynambalucas.dev monorepo.
+Este documento serve como a **Única Fonte de Verdade** para cada comando CLI, script PNPM, comando Docker e instrução de orquestração usada no monorepo tupynambalucas.dev.
 
-## Monorepo Orchestration
+## Orquestração do Monorepo
 
-Scripts used to manage dependencies, cleaning, and workspace-wide tasks.
+Scripts usados para gerenciar dependências, limpeza e tarefas em todo o workspace.
 
-- **`pnpm install`**: Installs all dependencies across the monorepo.
-- **`pnpm install --frozen-lockfile`**: Installs dependencies strictly from `pnpm-lock.yaml` (used in CI/CD).
-- **`pnpm project:clear`**: Clears all `node_modules` and build caches using `npkill`.
+- **`pnpm install`**: Instala todas as dependências no monorepo.
+- **`pnpm install --frozen-lockfile`**: Instala dependências estritamente a partir do `pnpm-lock.yaml` (usado no CI/CD).
+- **`pnpm project:clear`**: Limpa todos os `node_modules` e caches de build usando o `npkill`.
 
-### Dependency Management (Catalogs)
+### Gerenciamento de Dependências (Catálogos)
 
-All new dependencies must be added to a catalog (either the default catalog or a specific one) to ensure version consistency across the monorepo.
+Todas as novas dependências devem ser adicionadas a um catálogo (seja o catálogo padrão ou um específico) para garantir a consistência de versão em todo o monorepo.
 
-**Adding to the Root Workspace:**
-Adding a dependency to the root `package.json` requires the `-w` (or `--ignore-workspace-root-check`) flag.
+**Adicionando ao Workspace Raiz:**
+Adicionar uma dependência ao `package.json` da raiz requer a flag `-w` (ou `--ignore-workspace-root-check`).
 
-- **`pnpm add <package> -w --save-catalog`**: Adds a package to the root and saves its version to the default catalog.
-- **`pnpm add <package> -w --save-catalog-name <catalog_name>`**: Adds a package to the root and saves its version to a specific catalog.
+- **`pnpm add <package> -w --save-catalog`**: Adiciona um pacote à raiz e salva sua versão no catálogo padrão.
+- **`pnpm add <package> -w --save-catalog-name <catalog_name>`**: Adiciona um pacote à raiz e salva sua versão em um catálogo específico.
 
-**Adding to a Specific Workspace:**
-Use the `--filter` flag to target a specific workspace package.
+**Adicionando a um Workspace Específico:**
+Use a flag `--filter` para direcionar a um pacote específico do workspace.
 
-- **`pnpm add <package> --filter <workspace> --save-catalog`**: Adds a package to a workspace and saves its version to the default catalog.
-- **`pnpm add <package> --filter <workspace> --save-catalog-name <catalog_name>`**: Adds a package to a workspace and saves its version to a specific catalog.
+- **`pnpm add <package> --filter <workspace> --save-catalog`**: Adiciona um pacote a um workspace e salva sua versão no catálogo padrão.
+- **`pnpm add <package> --filter <workspace> --save-catalog-name <catalog_name>`**: Adiciona um pacote a um workspace e salva sua versão em um catálogo específico.
 
-**Using an Existing Cataloged Package:**
+**Usando um Pacote Catalogado Existente:**
 
-- **`pnpm add <package>@catalog: --filter <workspace>`**: Installs a package that is already defined in the default catalog into a specific workspace.
+- **`pnpm add <package>@catalog: --filter <workspace>`**: Instala um pacote que já está definido no catálogo padrão em um workspace específico.
 
-## Validation & Quality
+## Validação e Qualidade
 
-Scripts to ensure code quality and type safety.
+Scripts para garantir a qualidade do código e segurança de tipos.
 
-- **`pnpm typecheck`**: Runs parallel TypeScript validation across all workspaces via Turborepo.
-- **`pnpm typecheck --filter=@tupynambalucas-hub/*`**: Runs typecheck only for the Instance bounded context.
-- **`pnpm lint`**: Runs ESLint validation across all workspaces.
-- **`pnpm build`**: Compiles a production build for all applications and packages.
-- **`pnpm --filter @tupynambalucas-hub/core build`**: Builds a specific package.
+- **`pnpm typecheck`**: Executa a validação do TypeScript em paralelo em todos os workspaces via Turborepo.
+- **`pnpm typecheck --filter=@tupynambalucas-hub/*`**: Executa o typecheck apenas para o contexto delimitado Instance.
+- **`pnpm lint`**: Executa a validação do ESLint em todos os workspaces.
+- **`pnpm build`**: Compila um build de produção para todas as aplicações e pacotes.
+- **`pnpm --filter @tupynambalucas-hub/core build`**: Compila um pacote específico.
 
-## Instance (Community)
+## Instância (Comunidade)
 
-Commands specific to the `@tupynambalucas-hub/*` bounded context.
+Comandos específicos para o contexto delimitado `@tupynambalucas-hub/*`.
 
-- **`pnpm instance:up`**: Starts local infrastructure (MongoDB Replica Set + Redis) via `compose.dev.yaml`.
-- **`pnpm instance:dev`**: Starts the full development stack (Infrastructure + API on port 3000 + Web on port 5173). Internally calls `instance:up` first.
-- **`pnpm instance:down`**: Stops local infrastructure and forcefully kills ports 3000 and 5173.
-- **`pnpm instance:reset`**: Destroys local infrastructure volumes (wiping the database) and restarts the stack.
-- **`pnpm instance:staging`**: Builds and orchestrates the staging environment using `compose.prod.yaml` and `.env.staging`.
-- **`pnpm instance:staging:down`**: Stops the staging topology.
-- **`pnpm instance:prod`**: Builds and orchestrates the production environment using `compose.prod.yaml` and `.env.prod`.
-- **`pnpm instance:prod:down`**: Stops the production topology.
+- **`pnpm instance:up`**: Inicia a infraestrutura local (Replica Set do MongoDB + Redis) via `compose.dev.yaml`.
+- **`pnpm instance:dev`**: Inicia a stack completa de desenvolvimento (Infraestrutura + API na porta 3000 + Web na porta 5173). Internamente chama `instance:up` primeiro.
+- **`pnpm instance:down`**: Interrompe a infraestrutura local e encerra forçadamente as portas 3000 e 5173.
+- **`pnpm instance:reset`**: Destrói os volumes da infraestrutura local (limpando o banco de dados) e reinicia a stack.
+- **`pnpm instance:staging`**: Compila e orquestra o ambiente de homologação (staging) usando `compose.prod.yaml` and `.env.staging`.
+- **`pnpm instance:staging:down`**: Interrompe a topologia de homologação (staging).
+- **`pnpm instance:prod`**: Compila e orquestra o ambiente de produção usando `compose.prod.yaml` e `.env.prod`.
+- **`pnpm instance:prod:down`**: Interrompe a topologia de produção.
 
-## Portal (Platform)
+## Portal (Plataforma)
 
-Commands specific to the `@tupynambalucas-hub/*` bounded context.
+Comandos específicos para o contexto delimitado `@tupynambalucas-hub/*`.
 
-- **`pnpm portal:up`**: Starts local infrastructure for the portal.
-- **`pnpm portal:dev`**: Starts the full portal development stack (API on port 3001 + Web on port 5174).
-- **`pnpm portal:down`**: Stops local infrastructure and forcefully kills ports 3001 and 5174.
-- **`pnpm portal:reset`**: Destroys local portal infrastructure volumes.
-- **`pnpm portal:staging`**: Builds and orchestrates the portal staging environment.
-- **`pnpm portal:staging:down`**: Stops the portal staging topology.
-- **`pnpm portal:prod`**: Builds and orchestrates the portal production environment.
-- **`pnpm portal:prod:down`**: Stops the portal production topology.
+- **`pnpm portal:up`**: Inicia a infraestrutura local para o portal.
+- **`pnpm portal:dev`**: Inicia a stack completa de desenvolvimento do portal (API na porta 3001 + Web na porta 5174).
+- **`pnpm portal:down`**: Interrompe a infraestrutura local e encerra forçadamente as portas 3001 e 5174.
+- **`pnpm portal:reset`**: Destrói os volumes da infraestrutura local do portal.
+- **`pnpm portal:staging`**: Compila e orquestra o ambiente de homologação (staging) do portal.
+- **`pnpm portal:staging:down`**: Interrompe a topologia de homologação (staging) do portal.
+- **`pnpm portal:prod`**: Compila e orquestra o ambiente de produção do portal.
+- **`pnpm portal:prod:down`**: Interrompe a topologia de produção do portal.
 
-## Documentation
+## Documentação
 
-Commands for the Docusaurus Knowledge Base (`docs/`).
+Comandos para a Base de Conhecimento do Docusaurus (`docs/`).
 
-- **`pnpm docs:dev`**: Starts the local Docusaurus development server with HMR.
-- **`pnpm docs:build`**: Compiles the documentation into static HTML/CSS for production.
+- **`pnpm docs:dev`**: Inicia o servidor local de desenvolvimento do Docusaurus com HMR.
+- **`pnpm docs:build`**: Compila a documentação em HTML/CSS estáticos para produção.
 
-## Studio & Tools
+## Studio & Ferramentas
 
-Commands for design and AI agents.
+Comandos para design e agentes de IA.
 
-- **`pnpm penpot:up`** / **`pnpm penpot:down`**: Starts or stops the self-hosted Penpot Studio.
-- **`pnpm penpot:aide:up`** / **`pnpm penpot:aide:down`**: Starts or stops the Penpot Aide AI Bridge.
+- **`pnpm penpot:up`** / **`pnpm penpot:down`**: Inicia ou interrompe o Penpot Studio auto-hospedado.
+- **`pnpm penpot:aide:up`** / **`pnpm penpot:aide:down`**: Inicia ou interrompe o Penpot Aide AI Bridge.
 
-## Git & Version Control
+## Git e Controle de Versão
 
-Workflows for branching, committing, and releases.
+Fluxos de trabalho para ramificação (branching), commit e lançamentos (releases).
 
-- **`git flow feature start <name>`**: Starts a new feature branch from `develop`.
-- **`git push -u origin feature/<name>`**: Pushes a feature branch to the remote repository.
-- **`gh pr create --base develop --fill --web`**: Creates a Pull Request targeting the `develop` branch.
-- **`gh pr merge --squash --delete-branch`**: Merges a PR using the squash-and-merge strategy.
-- **`git flow hotfix start <name>`** / **`git flow hotfix finish <name>`**: Manages emergency fixes against the `main` branch.
-- **`pnpm version:changeset`**: Generates a changeset file to track version bumps and changelogs.
+- **`git flow feature start <name>`**: Inicia uma nova branch de funcionalidade (feature) a partir de `develop`.
+- **`git push -u origin feature/<name>`**: Envia uma branch de funcionalidade para o repositório remoto.
+- **`gh pr create --base develop --fill --web`**: Cria um Pull Request direcionado para a branch `develop`.
+- **`gh pr merge --squash --delete-branch`**: Mescla um PR usando a estratégia de squash-and-merge.
+- **`git flow hotfix start <name>`** / **`git flow hotfix finish <name>`**: Gerencia correções de emergência em relação à branch `main`.
+- **`pnpm version:changeset`**: Gera um arquivo de changeset para rastrear incrementos de versão e logs de alterações (changelogs).
 
-## Docker & Infrastructure
+## Docker e Infraestrutura
 
-Direct Docker CLI commands for debugging and maintenance.
+Comandos diretos da CLI do Docker para depuração e manutenção.
 
-- **`docker ps --filter "name=elo-instance"`**: Lists running containers for the instance context.
-- **`docker compose -f instance/compose.prod.yaml --env-file instance/.env.prod logs -f`**: Tails the logs of the production stack in real-time.
-- **`docker logs elo-instance-api-prod`**: Inspects logs for a specific container.
-- **`turbo prune`**: Prunes the monorepo workspace for minimal Docker builds.
-- **`pnpm deploy`**: Used inside Dockerfiles to extract only built dependencies for a specific package.
+- **`docker ps --filter "name=elo-instance"`**: Lista os containers em execução para o contexto da instância.
+- **`docker compose -f instance/compose.prod.yaml --env-file instance/.env.prod logs -f`**: Acompanha os logs da stack de produção em tempo real.
+- **`docker logs elo-instance-api-prod`**: Inspeciona os logs de um container específico.
+- **`turbo prune`**: Executa o prune no workspace do monorepo para builds Docker mínimos.
+- **`pnpm deploy`**: Usado dentro de Dockerfiles para extrair apenas as dependências compiladas para um pacote específico.

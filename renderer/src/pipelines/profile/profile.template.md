@@ -1,6 +1,6 @@
 <!-- Note: This profile README is dynamically updated by the TypeScript-based generator in the ./renderer workspace -->
 
-<div align="center">
+<div display="none" align="center">
   {{ headerImage }}
 </div>
 

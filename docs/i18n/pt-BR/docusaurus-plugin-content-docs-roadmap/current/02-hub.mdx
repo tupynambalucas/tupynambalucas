@@ -1,0 +1,30 @@
+---
+title: Developer Hub (tupynambalucas.dev)
+sidebar_label: Developer Hub
+---
+
+Esta seção detalha os marcos e planos para o site pessoal do desenvolvedor, mecanismo de blog, sistemas de contato e painel de administração.
+
+---
+
+## Marcos Concluídos
+
+### Configuração de Arquitetura & Serviços
+
+- **Layout de Workspace Modular**: Estabeleceu uma separação sólida de código dividindo o hub em `services/web` (cliente React), `services/api` (mecanismo Fastify) e `packages/core` (schemas de validação Zod e contratos compartilhados).
+- **Infraestrutura Local Desacoplada**: Inicializou configurações locais em containers para um conjunto de réplicas do MongoDB (`rs0`) e banco de dados Redis para lidar com armazenamento persistente e pipelines de cache.
+
+---
+
+## Foco Planejado
+
+### Portfólio & Vitrine de Desenvolvedor
+
+- **Vitrine Interativa de Projetos**: Construir uma grade visual elegante exibindo trabalhos anteriores, resumos arquitetônicos e links de produção.
+- **Inventário de Habilidades Técnicas**: Projetar uma matriz visual responsiva mapeando competências de programação (TypeScript, React, Zig, Fastify, Docker, Bancos de Dados) utilizando variáveis de estilo dos tokens do studio.
+
+### Sistemas de Conteúdo & Comunicação
+
+- **Mecanismo de Blog do Desenvolvedor**: Programar um mecanismo de conteúdo dinâmico para publicar artigos, tutoriais de tecnologia e estudos de caso de arquitetura.
+- **Formulários de Contato & Pipeline de Serviços**: Implementar formulários estruturados permitindo que os visitantes solicitem serviços de desenvolvimento freelancer ou consultorias, apoiados por camadas anti-spam verificadas do Cloudflare Turnstile e gatilhos de e-mail transacional.
+- **Painel Seguro**: Desenvolver um painel administrativo para gerenciar postagens de blog, visualizar leads de contato recebidos e rastrear análises diretamente do cliente web.
