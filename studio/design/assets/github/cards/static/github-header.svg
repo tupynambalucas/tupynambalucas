@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="gh-dark-mode-only" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1738.67 359.11">
+  <defs>
+    <filter id="outer-glow-1" x="49.56" y="-9.63" width="371" height="370" filterUnits="userSpaceOnUse">
+      <feOffset dx="0" dy="0"/>
+      <feGaussianBlur result="blur" stdDeviation="20"/>
+      <feFlood flood-color="#aa77a7" flood-opacity=".5"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <style>
+      #github-header-background {
+        fill: #0f0f0f;
+      }
+      #github-header-text {
+        fill: #ffffff;
+      }
+      #gh-dark-mode-only:target #github-header-background {
+        fill: #ffffff;
+      }
+      #gh-dark-mode-only:target #github-header-text {
+        fill: #0f0f0f;
+      }
+    </style>
+  </defs>
+  <g id="Github">
+    <g id="github-header">
+      <rect id="github-header-background" y="0" width="1738.67" height="359.11" rx="51.56" ry="51.56"/>
+      <g id="github-header-logo-mark" filter="url(#outer-glow-1)">
+        <circle cx="234.75" cy="175.37" r="125" fill="#2e55a3"/>
+        <polygon points="281.33 175.23 255.39 201.17 267.67 213.45 305.89 175.23 267.95 137.28 255.67 149.57 281.33 175.23" fill="#fff"/>
+        <rect x="301.17" y="150.33" width="17.27" height="17.27" transform="translate(416.46 490.44) rotate(-135)" fill="#fff"/>
+        <polygon points="188.17 175.51 214.11 149.57 201.83 137.28 163.6 175.51 201.55 213.45 213.83 201.17 188.17 175.51" fill="#fff"/>
+        <rect x="151.06" y="183.13" width="17.27" height="17.27" transform="translate(182.37 -56.75) rotate(45)" fill="#fff"/>
+        <rect x="230.44" y="123.78" width="8.62" height="103.17" transform="translate(62.83 -61.92) rotate(17.32)" fill="#fff"/>
+      </g>
+      <text id="github-header-text" transform="translate(444.64 203.98) scale(1.15 1)" font-family="Inter18pt-SemiBold, &apos;Inter 18pt&apos;" font-size="101.76" font-weight="600">
+        <tspan x="0" y="0">End-</tspan>
+        <tspan x="232.25" y="0" letter-spacing="0em">t</tspan>
+        <tspan x="267.18" y="0">o-End Solutions</tspan>
+      </text>
+    </g>
+  </g>
+</svg>

@@ -19,3 +19,6 @@ assets/brand/logos/*.jpg
 assets/brand/logos/*.webp
 
 # Keep studio/assets/ tracked in GitHub
+
+# Memos local storage
+memos/data/

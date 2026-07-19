@@ -1,0 +1,156 @@
+---
+title: Studio & Creative Assets
+sidebar_label: Creative Assets
+sidebar_position: 4
+---
+
+### Centralized Creative & Asset Workspace
+
+The `@tupynambalucas-studio/design` package serves as the core repository for all brand designs, raw project master files, and compiled production-ready assets.
+
+To maintain clean separation between creation and distribution, the workspace is split into two primary roots: the `creative/` directory and the `assets/` directory.
+
+---
+
+## 1. Directory Division: creative/ vs. assets/
+
+### A. Raw Design Sources (`creative/`)
+
+The `creative/` directory acts as our private design vault. It houses raw source files from professional production software. These files represent the visual "work-in-progress" and history of the brand design.
+
+- **Vector Graphics:** Adobe Illustrator (`.ai`) master files for logotypes, typography exploration, and iconography layouts.
+- **Digital Imaging:** Adobe Photoshop (`.psd`) templates for high-fidelity raster assets, mockups, and marketing collaterals.
+- **3D Modeling:** Blender (`.blend`) master scenes for platform components and spatial visualizations (e.g., `Avokado.blend`).
+- **Video Editing:** Adobe Premiere (`.prproj`) project files for tutorials and marketing video clips.
+
+_Tracking & Storage:_
+
+- **Git Strategy:** This directory is completely ignored in Git to prevent repository bloat.
+- **Cloud Storage:** Synchronized bidirectionally with the private `tupynambalucas-creative` bucket.
+
+### B. Production-Ready Assets (`assets/`)
+
+The `assets/` directory contains final, optimized, web-ready static elements consumed directly by our client interfaces (like `@tupynambalucas/hub`) and pipelines.
+
+- **Brand Elements:** Vector logos, favicons, official palettes, and brand guidelines PDFs.
+- **UI Elements:** Optimized SVG icons (`assets/icons/`) and raster UI illustrations (`assets/images/`).
+- **3D Models:** Optimized GLB models and HDRI environment maps (`assets/three/`).
+- **Typography:** Web-safe variable fonts and base64-encoded files (`assets/fonts/`).
+- **Styling Tokens:** CSS stylesheet variables and TypeScript constants (`assets/tokens/`).
+
+_Tracking & Storage:_
+
+- **Git Strategy:** Hybrid. Lightweight SVGs, React icon wrappers, fonts, stylesheets, and JSON manifests are committed to Git. Heavy binary PNGs, images, and GLB files are ignored.
+- **Cloud Storage:** Binary files are synchronized with the public `tupynambalucas-assets` bucket and served via CDN.
+
+---
+
+## 2. Production Pipeline
+
+Transitioning from raw design templates inside `creative/` to compiled deliverables inside `assets/` follows a standardized pipeline:
+
+- **SVG Icon Compilation:** Raw vectors are exported, cleaned, and wrapped as React components inside `assets/icons/`.
+- **3D Assets Compilation:** Blender master files are baked and exported as optimized GLB files into `assets/three/`.
+- **Tokens Export:** Brand design variables are compiled into TypeScript constants and custom properties inside `assets/tokens/`.
+
+#### Cloudflare R2 Asset Synchronizer
+
+To keep our Git repository lightweight, production-ready static assets are not committed directly to the codebase. Instead, they are synchronized bidirectionally with Cloudflare R2 Object Storage using our dedicated CLI synchronizer package `@tupynambalucas-studio/bucket`.
+
+For detailed information about our buckets ecosystem, CLI commands, and synchronization architecture, refer to the [Cloudflare R2 Storage & Synchronizer](/docs/workspaces/studio/reference/spec/cloudflare-storage) documentation.
+
+#### Complete Directory Structure
+
+Below is the complete directory layout of the `studio/` workspace:
+
+```text
+studio/
+├── bucket/                   # Cloudflare R2 bucket CLI synchronizer
+└── design/                   # Core design platform and tokens
+    ├── creative/             # High-fidelity master files (Ignored in Git, synced to R2)
+    │   ├── blender/          # Blender source files (.blend)
+    │   ├── illustrator/      # Illustrator sources (.ai)
+    │   ├── photoshop/        # Photoshop sources (.psd)
+    │   └── premiere/         # Premiere video edit sources (.prproj)
+    └── assets/               # Production-ready static assets
+        ├── brand/            # Brand banners, favicons, logos, guidelines, palettes (SVGs in Git)
+        ├── fonts/            # Web fonts (base64-encoded/variable fonts)
+        ├── github/           # Github visual assets
+        ├── icons/            # SVG UI icons
+        ├── images/           # UI raster graphics & mockups (Ignored in Git, synced to R2)
+        ├── three/            # WebGL GLB models & HDR environments (Ignored/synced)
+        └── tokens/           # Design system CSS/TS tokens (colors.ts, theme.css)
+```
+
+---
+
+### Brand Asset Namespace & Naming Standards
+
+To maintain consistency, brand visual assets are organized under a centralized `brand/` directory structure and follow strict naming patterns.
+
+#### Format & Storage Distribution Policy
+
+:::info[Asset Storage Policy]
+
+- **SVG Vector Files:** Committed directly to Git inside `studio/design/assets/brand/logos/` (and `assets/brand/favicons/`). SVGs are text-based, lightweight, and can be compiled as dynamic React components.
+- **PNG & Binary Files:** Kept out of Git to prevent repository bloat. They are stored under `studio/design/assets/brand/` and synchronized to the Cloudflare R2 CDN bucket via the CLI.
+  :::
+
+#### Brand Directory Subfolders
+
+- **`brand/logos/`**: Vector and raster logotypes (e.g., `logo-horizontal-positive.svg`, `logo-mark-purple.png`).
+- **`brand/palettes/`**: Visual color palette reference files (e.g., `identity-palette.png`).
+- **`brand/favicons/`**: App favicons and mobile touch icons (e.g., `favicon.ico`, `apple-touch-icon-gradient.png`).
+- **`brand/banners/`**: Official brand banners and social OpenGraph covers (e.g., `banner-github.png`, `og-default.png`).
+- **`brand/guidelines/`**: Style guides, brand booklets, and reference manuals.
+
+#### Logo Naming Conventions
+
+All logo filenames must follow the pattern `logo-[lockup]-[variant].[ext]` using lowercase and hyphens:
+
+##### 1. Base Lockups
+
+- **`horizontal`**: Full logo mark with horizontal text lockup.
+- **`mark`**: The brand symbol/icon only.
+
+##### 2. Variants
+
+- **`positive`**: Dark monochrome version (black or dark grey) optimized for light backgrounds.
+  - _Example:_ `logo-horizontal-positive.svg` (React Component: `LogoHorizontalPositive`)
+- **`negative`**: Inverted monochrome version (white) optimized for dark backgrounds.
+  - _Example:_ `logo-horizontal-negative.svg` (React Component: `LogoHorizontalNegative`)
+- **`[color]`**: Explicit English color names to differentiate brand palettes.
+  - _Example:_ `logo-horizontal-purple.svg` (React Component: `LogoHorizontalPurple`)
+- **`gradient`**: A vibrant signature color blend transition.
+  - _Example:_ `logo-horizontal-gradient.svg` (React Component: `LogoHorizontalGradient`)
+- **`expressive`**: Artistic visual style mark for custom landing pages.
+  - _Example:_ `logo-horizontal-expressive.svg`
+- **`multicolor`**: Multiple solid color blocks side-by-side.
+- **`alt`**: Specialized layout adjustments or celebratory configurations.
+
+#### Favicon Naming Conventions
+
+- **Default Canonical**: `favicon.ico` (multi-resolution container packaged for standard tab support).
+- **Themed Favicons**: `favicon-[variant].[ext]` (e.g., `favicon-positive.ico`, `favicon-gradient.png`).
+- **Platform Specific**: `apple-touch-icon-[variant].png` (Apple touch icons) and `safari-pinned-tab-[variant].svg` (Safari pinned tab vectors).
+
+---
+
+#### Asset Resolution & Zero-Copy Architecture
+
+To eliminate duplicate file storage in consuming applications like `@tupynambalucas-hub/web`:
+
+- **In Development**: The Vite dev server intercepts requests starting with `/@studio-assets/` and serves the files dynamically from the local assets package directory on your machine.
+- **In Production (Build-Time Copying)**: The application's build system uses `vite-plugin-static-copy` to automatically replicate files from `node_modules/@tupynambalucas-studio/design/assets/brand/` into the build output `dist/` directory at bundle time.
+
+---
+
+#### Namespaced Workspace Exports
+
+Internal packages access creative assets via strictly defined exports to ensure architectural isolation:
+
+- `@tupynambalucas-studio/design/icons`: Optimized SVG library and curated Icon component registry.
+- `@tupynambalucas-studio/design/logos`: Canonical brand logotypes.
+- `@tupynambalucas-studio/design/brand/*`: Core brand assets (palettes, favicons, banners).
+- `@tupynambalucas-studio/design/tokens`: Strongly-typed design constants for JS/TS logic.
+- `@tupynambalucas-studio/design/theme.css`: Zero-runtime Tailwind CSS theme config.

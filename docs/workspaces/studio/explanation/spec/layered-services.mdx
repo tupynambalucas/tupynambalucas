@@ -1,0 +1,80 @@
+---
+title: Layered Services (Penpot & Memos)
+sidebar_label: Layered Services
+sidebar_position: 3
+---
+
+### Self-Hosted Workspace Infrastructure
+
+The `tupynambalucas.dev` project runs a series of self-hosted layered services configured in `studio/design/infrastructure/docker/compose.yaml` to ensure absolute data sovereignty, collaboration, and automated design-to-code pipelines.
+
+---
+
+## 1. Penpot Design System & Aide Assistant
+
+tupynambalucas.dev utilizes a distributed Penpot stack integrated with Aide, an AI-native engineering assistant.
+
+### A. Infrastructure Architecture
+
+The Penpot environment is orchestrated via a multi-container Docker stack, utilizing cloud-based backends for durability.
+
+- **Orchestration:** Managed via `studio/design/infrastructure/docker/compose.yaml` (Frontend, Backend, Exporter, Valkey, Aide).
+- **Database Layer:** PostgreSQL persistence hosted on Neon.tech for serverless transactional integrity.
+- **Object Storage:** Binary assets are persisted in S3-compatible Cloudflare R2 buckets, ensuring a minimal Git footprint. Refer to the [Cloudflare R2 Storage](/docs/workspaces/studio/reference/spec/cloudflare-storage) specs.
+
+### B. Aide: AI-Native Integration
+
+Aide functions as a Model Context Protocol (MCP) bridge, enabling AI agents to interact directly with the Penpot Plugin API for advanced queries and layout transformations.
+
+- **Protocol:** Bidirectional WebSocket communication between the `@penpot/mcp` server and the Penpot environment.
+- **Security:** Aide operates within the `penpot-net` isolated network, providing a controlled gateway for design manipulation.
+- **Connectivity:** Uses Port 4402 for real-time design audits and synchronization.
+
+### C. Operational Scripts
+
+The AI assistant bridge (Aide) is built directly into the core docker orchestration stack. Running `pnpm penpot:up` boots the entire platform, including the assistant gateway.
+
+| Command            | Technical Responsibility                                                    |
+| :----------------- | :-------------------------------------------------------------------------- |
+| `pnpm penpot:up`   | Initializes Penpot editor services and the Aide bridge at `localhost:9005`. |
+| `pnpm penpot:down` | Shuts down all Penpot editor and Aide helper containers.                    |
+
+### D. Mandatory AI Manipulation Rules
+
+- **Component Reuse:** Always check the existing component library (Penpot) or the UI library (`hub/services/web/src/components`) before creating new elements. Aide must prioritize existing design system tokens and components.
+- **Token-First Logic:** Design-to-code exports must strictly utilize CSS Custom Properties derived from `assets/tokens/` for colors, fonts, and spacing.
+- **SVG Optimization:** Ensure exported SVG code is optimized, follows the project's icon standards, and is integrated via the `@tupynambalucas-studio/design/icons` registry.
+- **Layer Hierarchy:** Maintenance of semantic grouping is mandatory. Elements must be organized into clear pages and frames (e.g., `Layout/Grid`, `Components/Buttons`).
+
+---
+
+## 2. Memos Collaborative Notes
+
+Memos is an open-source, self-hosted memo hub that serves as our collaborative whiteboard and knowledge sharing center for design inspirations.
+
+### A. Infrastructure Architecture
+
+The Memos service is integrated as a lightweight layered service running inside Docker:
+
+- **Orchestration:** Run in Docker via the `memos` service definition inside `studio/design/infrastructure/docker/compose.yaml`.
+- **Database Layer:** Configured to use a dedicated PostgreSQL serverless database hosted on Neon.tech.
+- **Local File Storage:** Image uploads, backups, and configurations are stored locally inside `studio/design/memos/data` (which maps to `/var/opt/memos` inside the container).
+
+### B. Connection Credentials
+
+Memos accesses the database using the connection string defined in the environment variables:
+
+```bash
+MEMOS_DRIVER=postgres
+MEMOS_DSN=postgresql://memos_app:npg_xOmLhI1oHwq3@ep-twilight-morning-acgd3tih-pooler.sa-east-1.aws.neon.tech/memos_db?sslmode=require&channel_binding=require
+```
+
+### C. Operational Script
+
+Memos is automatically started alongside Penpot when executing the compose stack command:
+
+```bash
+pnpm penpot:up
+```
+
+Access the Memos web interface locally at `http://localhost:5230`.

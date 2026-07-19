@@ -15,13 +15,6 @@ export const config = {
   excludeLangs: [],
   excludePrivate: false,
 
-  silent: false,
-  debug: false,
   isGitHubAction: process.env.GITHUB_ACTIONS === 'true',
   maxRetries: 3,
-
-  overviewOutputFile: './profile/generated/overview.svg',
-  languagesOutputFile: './profile/generated/languages.svg',
-  overviewTemplate: undefined,
-  languagesTemplate: undefined,
 };

@@ -10,10 +10,19 @@ interface RenderOptions {
   config: Config;
   defaultOverviewTemplatePath: string;
   defaultLanguagesTemplatePath: string;
+  overviewOutputFile: string;
+  languagesOutputFile: string;
 }
 
 export function renderStatsCards(options: RenderOptions): void {
-  const { stats, config, defaultOverviewTemplatePath, defaultLanguagesTemplatePath } = options;
+  const {
+    stats,
+    config,
+    defaultOverviewTemplatePath,
+    defaultLanguagesTemplatePath,
+    overviewOutputFile,
+    languagesOutputFile,
+  } = options;
 
   let totalStars = 0;
   let totalForks = 0;
@@ -72,7 +81,7 @@ export function renderStatsCards(options: RenderOptions): void {
     stats.review_contributions;
 
   // 1. Render Overview Card
-  const overviewTemplatePath = config.overviewTemplate ?? defaultOverviewTemplatePath;
+  const overviewTemplatePath = defaultOverviewTemplatePath;
   console.info(`Reading overview template from ${overviewTemplatePath}...`);
   const overviewTemplate = readFileSync(overviewTemplatePath, 'utf8');
 
@@ -87,7 +96,7 @@ export function renderStatsCards(options: RenderOptions): void {
   };
 
   const overviewSvg = fillTemplate(overviewTemplate, overviewData);
-  const overviewOutPath = config.overviewOutputFile;
+  const overviewOutPath = overviewOutputFile;
   const outDir = dirname(overviewOutPath);
   mkdirSync(outDir, { recursive: true });
 
@@ -135,11 +144,11 @@ export function renderStatsCards(options: RenderOptions): void {
   ></path></svg>
   <span class="lang">${lang.name}</span>
   <span class="percent">${percentStr}%</span>
-</li>`;
+ </li>`;
     })
     .join('\n');
 
-  const languagesTemplatePath = config.languagesTemplate ?? defaultLanguagesTemplatePath;
+  const languagesTemplatePath = defaultLanguagesTemplatePath;
   console.info(`Reading languages template from ${languagesTemplatePath}...`);
   const languagesTemplate = readFileSync(languagesTemplatePath, 'utf8');
 
@@ -148,7 +157,7 @@ export function renderStatsCards(options: RenderOptions): void {
     lang_list: langListItems,
   });
 
-  const languagesOutPath = config.languagesOutputFile;
+  const languagesOutPath = languagesOutputFile;
   const langOutDir = dirname(languagesOutPath);
   mkdirSync(langOutDir, { recursive: true });
 

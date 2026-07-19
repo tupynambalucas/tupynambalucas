@@ -1,5 +1,4 @@
-import type { Repository } from '../schemas/repository.schema.js';
-import type { GitHubStats } from '../schemas/githubstats.schema.js';
+import type { Repository, GitHubStats } from '../schemas/githubstats.schema.js';
 
 // Helper function to sleep for a specified duration in milliseconds
 const sleep = (ms: number): Promise<void> =>

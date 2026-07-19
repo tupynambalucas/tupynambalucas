@@ -1,1 +1,2 @@
-FROM penpotapp/mcp:latest
+ARG PENPOT_VERSION
+FROM penpotapp/mcp:${PENPOT_VERSION}

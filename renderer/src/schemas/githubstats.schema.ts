@@ -1,5 +1,24 @@
 import { z } from 'zod';
-import { RepositorySchema } from './repository.schema';
+
+export const LanguageSchema = z.object({
+  name: z.string(),
+  size: z.number(),
+  color: z.string().nullable().optional(),
+});
+
+export type Language = z.infer<typeof LanguageSchema>;
+
+export const RepositorySchema = z.object({
+  name: z.string(),
+  stars: z.number(),
+  forks: z.number(),
+  languages: z.array(LanguageSchema).nullable().optional(),
+  lines_changed: z.number().default(0),
+  views: z.number().default(0),
+  private: z.boolean(),
+});
+
+export type Repository = z.infer<typeof RepositorySchema>;
 
 export const GitHubStatsSchema = z.object({
   user: z.string(),
