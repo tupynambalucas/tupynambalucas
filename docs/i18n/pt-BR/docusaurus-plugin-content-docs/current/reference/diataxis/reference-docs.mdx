@@ -1,106 +1,93 @@
 ---
 id: reference-docs
-title: Reference
+title: Referência
+sidebar_position: 3
 ---
 
-# Reference
+# Referência
 
-Reference guides are **technical descriptions** of the machinery and how to operate it. Reference material is **information-oriented**.
-
----
-
-Reference material contains _propositional or theoretical_ knowledge that a user looks to in their _work_.
-
-The only purpose of a reference guide is to describe, as succinctly as possible, and in an orderly
-way. Whereas the content of tutorials and how-to guides are led by needs of the user, reference
-material is led by the product it describes.
-
-In the case of software, reference guides describe the software itself - APIs, classes, functions
-and so on - and how to use them.
-
-Your users need reference material because they need truth and certainty - firm platforms on which to stand while
-they work. Good technical reference is essential to provide users with the confidence to do their work.
+Guias de referência são **descrições técnicas** do maquinário e como operá-lo. O material de referência é **voltado para a informação**.
 
 ---
 
-## Reference as description
+O material de referência contém conhecimento _proposicional ou teórico_ que um usuário consulta em seu _trabalho_.
 
-Reference material describes the machinery. It should be **austere**. One hardly _reads_ reference material;
-one _consults_ it.
+O único propósito de um guia de referência é descrever, da forma mais sucinta possível e de maneira ordenada. Enquanto o conteúdo dos tutoriais e guias de como fazer é liderado pelas necessidades do usuário, o material de referência é liderado pelo produto que ele descreve.
 
-There should be no doubt or ambiguity in reference; it should be wholly authoritative.
+No caso do software, os guias de referência descrevem o próprio software — APIs, classes, funções e assim por diante — e como utilizá-los.
 
-Reference material is like a map. A map tells you what you need to know about the territory,
-without having to go out and check the territory for yourself; a reference guide serves the same
-purpose for the product and its internal machinery.
-
-Although reference should not attempt to show how to perform tasks, it can and often needs to
-include a description of how something works or the correct way to use it.
-
-Some reference material (such as API documentation) can be generated automatically by the software
-it describes, which is a powerful way of ensuring that it remains faithfully accurate to the code.
+Seus usuários precisam de material de referência porque precisam de verdade e certeza — plataformas firmes sobre as quais se apoiar enquanto trabalham. Uma boa referência técnica é essencial para fornecer aos usuários a confiança necessária para realizar seu trabalho.
 
 ---
 
-## Key principles
+## Referência como descrição
 
-### Describe and only describe
+O material de referência descreve o maquinário. Ele deve ser **austero**. Quase não se _lê_ material de referência; a gente o _consulta_.
 
-_Neutral description_ is the key imperative of technical reference.
+Não deve haver dúvida ou ambiguidade na referência; ela deve ser totalmente autoritativa.
 
-Unfortunately one of the hardest things to do is to describe something neutrally. It’s not a natural way of communicating. What’s natural on the other hand is to explain, instruct, discuss, opine, and all these things run counter to the needs of technical reference, which instead demands accuracy, precision, completeness and clarity.
+O material de referência é como um mapa. Um mapa diz o que você precisa saber sobre o território, sem ter que sair e verificar o território por si mesmo; um guia de referência serve ao mesmo propósito para o produto e seu maquinário interno.
 
-It can be tempting to introduce instruction and explanation, simply because description can seem too inadequate to be useful, and because we do indeed need these other things. Instead, link to how-to guides, explanation and introductory tutorials.
+Embora a referência não deva tentar mostrar como realizar tarefas, ela pode e muitas vezes precisa incluir uma descrição de como algo funciona ou a maneira correta de usá-lo.
 
-### Adopt standard patterns
-
-**Reference material is useful when it is consistent.** Standard patterns are what allow us to use reference material effectively. Your job is to place the material that your user needs where they expect to find it, in a format that they are familiar with.
-
-There are many opportunities in writing to delight your readers with your extensive vocabulary and command of multiple styles, but reference material is definitely not one of them.
-
-### Respect the structure of the machinery
-
-The way a map corresponds to the territory it represents helps us use the former to find our way
-through the latter. It should be the same with documentation: **the structure of the documentation**
-**should mirror the structure of the product**, so that the user can work their way through them
-at the same time.
-
-It doesn’t mean forcing the documentation into an unnatural structure. What’s important is that the
-logical, conceptual arrangement of and relations within the code should help make sense of the
-documentation.
-
-### Provide examples
-
-**Examples** are valuable ways of providing illustration that helps readers understand reference, while avoiding the risk of becoming distracted from the job of describing. For example, an example of usage of a command can be a succinct way of illustrating it and its context, without falling into the trap of trying to explain or instruct.
+Alguns materiais de referência (como a documentação de API) podem ser gerados automaticamente pelo software que descrevem, o que é uma maneira poderosa de garantir que ele permaneça fielmente fiel ao código.
 
 ---
 
-## The language of reference guides
+## Princípios fundamentais
 
-Django’s default logging configuration inherits Python’s defaults. It’s available as `django.utils.log.DEFAULT_LOGGING` and defined in `django/utils/log.py`
+### Descreva e apenas descreva
 
-State facts about the machinery and its behaviour.
+_Descrição neutra_ é o imperativo fundamental da referência técnica.
 
-Sub-commands are: a, b, c, d, e, f.
+Infelizmente, uma das coisas mais difíceis de fazer é descrever algo de forma neutra. Não é uma forma natural de se comunicar. O que é natural, por outro lado, é explicar, instruir, discutir, opinar, e todas essas coisas vão contra as necessidades da referência técnica, que exige precisão, exatidão, completude e clareza.
 
-List commands, options, operations, features, flags, limitations, error messages, etc.
+Pode ser tentador introduzir instruções e explicações, simplesmente porque a descrição pode parecer inadequada para ser útil e porque realmente precisamos dessas outras coisas. Em vez disso, faça links para guias de como fazer, explicações e tutoriais introdutórios.
 
-You must use a. You must not apply b unless c. Never d.
+### Adote padrões estabelecidos
 
-Provide warnings where appropriate.
+**O material de referência é útil quando é consistente.** Padrões estabelecidos são o que nos permite usar o material de referência de forma eficaz. Seu trabalho é colocar o material de que seu usuário precisa onde ele espera encontrá-lo, em um formato com o qual ele esteja familiarizado.
+
+Existem muitas oportunidades na escrita para encantar seus leitores com seu extenso vocabulário e domínio de múltiplos estilos, mas o material de referência definitivamente não é uma delas.
+
+### Respeite a estrutura do maquinário
+
+A forma como um mapa corresponde ao território que representa nos ajuda a usar o primeiro para encontrar nosso caminho através do segundo. Deve ser o mesmo com a documentação: **a estrutura da documentação deve espelhar a estrutura do produto**, para que o usuário possa trabalhar em ambos ao mesmo tempo.
+
+Isso não significa forçar a documentação a uma estrutura não natural. O que é importante é que a organização conceitual lógica e as relações dentro do código ajudem a dar sentido à documentação.
+
+### Forneça exemplos
+
+**Exemplos** são formas valiosas de fornecer ilustrações que ajudam os leitores a entender a referência, evitando o risco de se distrair do trabalho de descrição. Por exemplo, um exemplo de uso de um comando pode ser uma maneira sucinta de ilustrá-lo e seu contexto, sem cair na armadilha de tentar explicar ou instruir.
 
 ---
 
-## Applied to food and cooking
+## A linguagem dos guias de referência
 
-You might check the information on a packet of food, in order to help you make a decision about what to do.
+A configuração de logging padrão do Django herda os padrões do Python. Está disponível como `django.utils.log.DEFAULT_LOGGING` e definida em `django/utils/log.py`.
 
-When you’re looking for information - relevant facts - you do not want to be confronted by opinions, speculation, instructions or interpretation.
+Declare fatos sobre o maquinário e seu comportamento.
 
-You also expect that information to be presented in standard ways, so that you - when you need to know about something’s nutritional properties, how it should be stored, its ingredients, what health implications it might have - can find them quickly, and know you can rely on them.
+Os subcomandos são: a, b, c, d, e, f.
 
-So you expect to see for example: _May contain traces of wheat_. Or: _Net weight: 1000g_.
+Liste comandos, opções, operações, recursos, flags, limitações, mensagens de erro, etc.
 
-You will certainly not expect to find for example recipes or marketing claims mixed up with this information; that could be literally dangerous.
+Você deve usar a. Você não deve aplicar b a menos que c. Nunca d.
 
-The way reference material is presented on food products is so important that it’s usually governed by law, and the same kind of seriousness should apply to all reference documentation.
+Forneça avisos onde for apropriado.
+
+---
+
+## Aplicado a comida e culinária
+
+Você pode verificar as informações em uma embalagem de alimento para ajudá-lo a tomar uma decisão sobre o que fazer.
+
+Quando você está procurando por informações — fatos relevantes —, você não quer ser confrontado com opiniões, especulações, instruções ou interpretações.
+
+Você também espera que essas informações sejam apresentadas de maneiras padronizadas, para que você — quando precisar saber sobre as propriedades nutricionais de algo, como deve ser armazenado, seus ingredientes, quais implicações para a saúde pode ter — possa encontrá-las rapidamente e saber que pode confiar nelas.
+
+Portanto, você espera ver, por exemplo: _Pode conter traços de trigo_. Ou: _Peso líquido: 1000g_.
+
+Você certamente não esperará encontrar, por exemplo, receitas ou alegações de marketing misturadas com essas informações; isso poderia ser literalmente perigoso.
+
+A forma como o material de referência é apresentado nos produtos alimentícios é tão importante que geralmente é regulada por lei, e o mesmo tipo de seriedade deve ser aplicado a toda a documentação de referência.

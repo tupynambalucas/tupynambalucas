@@ -1,43 +1,43 @@
 ---
-title: Local Development Setup
-description: Follow these steps to get the tupynambalucas.dev monorepo running on your machine.
+title: Configuração de Desenvolvimento Local
+description: Siga estes passos para colocar o monorepo tupynambalucas.dev para rodar na sua máquina local.
 ---
 
-# Local Development Setup
+# Configuração de Desenvolvimento Local
 
-In this tutorial, we will set up the tupynambalucas.dev monorepo on your local machine. By the end of this lesson, you will have the complete development environment running and ready for you to build features.
+Neste tutorial, nós configuraremos o monorepo tupynambalucas.dev em sua máquina local. Ao final desta lição, você terá o ambiente de desenvolvimento completo rodando e pronto para você construir novos recursos.
 
-## Prerequisites
+## Pré-requisitos
 
-Before we begin, ensure we have the following installed:
+Antes de começarmos, certifique-se de ter os seguintes itens instalados:
 
-- Node.js version 22
-- PNPM version 11
-- Docker and Docker Compose
+- Node.js versão 22
+- PNPM versão 11
+- Docker e Docker Compose
 - Git
 
-## Step 1: Clone the Repository
+## Passo 1: Clonar o Repositório
 
-First, we will clone the repository to our local workspace and navigate into it.
+Primeiro, nós clonaremos o repositório em nosso espaço de trabalho local e navegaremos até ele.
 
 ```bash
 git clone https://github.com/tupynambalucas/tupynambalucas.dev.git
 cd tupynambalucas.dev
 ```
 
-You should see a directory structure containing folders like `docs`, `hub`, `profile`, and `tools`.
+Você deverá ver uma estrutura de diretórios contendo pastas como `docs`, `hub`, `cortex`, `profile` e `tools`.
 
-## Step 2: Install Dependencies
+## Passo 2: Instalar Dependências
 
-Next, we need to install the project dependencies. Since this is a monorepo, we will use PNPM to install everything at once.
+Em seguida, precisamos instalar as dependências do projeto. Como este é um monorepo, usaremos o PNPM para instalar tudo de uma vez.
 
-Run the following command:
+Execute o seguinte comando:
 
 ```bash
 pnpm install
 ```
 
-When it finishes, you will see output similar to this:
+Quando terminar, você verá uma saída semelhante a esta:
 
 ```
 Packages: +1245
@@ -47,23 +47,23 @@ Packages are hard linked from the content-addressable store to the virtual store
 Done in 12.4s
 ```
 
-## Step 3: Configure Environment Variables
+## Passo 3: Configurar Variáveis de Ambiente
 
-Now, we need to set up our local environment configuration. We will copy the sample `.env` file to create our active environment variables.
+Agora, precisamos configurar nossa variável de ambiente local. Copiaremos o arquivo `.env.example` de amostra para criar nossas variáveis de ambiente ativas.
 
 ```bash
 cp .env.example .env
 ```
 
-## Step 4: Start the Local Infrastructure
+## Passo 4: Iniciar a Infraestrutura Local
 
-With our dependencies installed and environment configured, we will spin up the necessary backend services (like the database) using Docker Compose.
+Com nossas dependências instaladas e ambiente configurado, inicializaremos os serviços de backend necessários (como o banco de dados) usando o Docker Compose.
 
 ```bash
 pnpm infra:up
 ```
 
-Wait a few moments. You should see Docker pulling images and starting the containers.
+Aguarde alguns instantes. Você deverá ver o Docker baixando as imagens e iniciando os containers.
 
 ```
 [+] Running 2/2
@@ -71,23 +71,23 @@ Wait a few moments. You should see Docker pulling images and starting the contai
  ✔ Container db-init  Started
 ```
 
-## Step 5: Start the Development Server
+## Passo 5: Iniciar o Servidor de Desenvolvimento
 
-Finally, we are ready to start the application. We will use the Turborepo command to run the development servers across all workspaces.
+Finalmente, estamos prontos para iniciar a aplicação. Usaremos o comando do Turborepo para executar os servidores de desenvolvimento em todos os workspaces.
 
 ```bash
 pnpm dev
 ```
 
-You will see output indicating that various services are starting. Look for lines like:
+Você verá a saída indicando que vários serviços estão iniciando. Procure por linhas como:
 
 ```
 @tupynambalucas-hub/web: dev:   ➜  Local:   http://localhost:3000/
 @tupynambalucas/docs: dev:      [SUCCESS] Docusaurus website is running at: http://localhost:3001/
 ```
 
-Open your browser and navigate to `http://localhost:3000`. You should see the Hub interface loaded successfully.
+Abra seu navegador e navegue até `http://localhost:3000`. Você deverá ver a interface do Hub carregada com sucesso.
 
-## Conclusion
+## Conclusão
 
-Congratulations! We have successfully cloned the repository, installed the dependencies, launched the infrastructure, and started the local development servers. We are now fully equipped to start building and contributing to the project.
+Parabéns! Nós clonamos o repositório com sucesso, instalamos as dependências, iniciamos a infraestrutura e rodamos os servidores de desenvolvimento local. Agora estamos totalmente equipados para começar a construir e contribuir com o projeto.

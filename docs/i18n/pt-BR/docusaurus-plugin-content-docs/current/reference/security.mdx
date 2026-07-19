@@ -1,99 +1,99 @@
 ---
-title: Security
-description: Comprehensive overview of security measures, bot protection, and brute-force mitigation in tupynambalucas.dev.
+title: Segurança
+description: Visão geral abrangente das medidas de segurança, proteção contra bots e mitigação de força bruta no tupynambalucas.dev.
 sidebar_position: 4
 ---
 
-# Security Architecture
+# Arquitetura de Segurança
 
-tupynambalucas.dev implements a multi-layered security strategy to protect community data and ensure the integrity of sharing cycles. Our approach combines industry-standard protocols with specialized bot protection and brute-force mitigation.
-
----
-
-## 1. Bot Protection (Cloudflare Turnstile)
-
-To prevent automated registrations and login attempts, we utilize **Cloudflare Turnstile**. Unlike traditional CAPTCHAs, Turnstile provides a privacy-focused, non-intrusive verification experience.
-
-### 1.1. Client-Side Integration (React 19)
-
-The `AuthFeature` utilizes the `@marsidev/react-turnstile` component in **Managed Mode**.
-
-- **Managed Mode**: Displays a smart checkbox that verifies the user is human.
-- **State Management**: The submit button remains disabled until a valid `turnstileToken` is emitted by the widget.
-- **Isolation**: Each form (Login/Register) maintains its own Turnstile instance via unique React keys to ensure fresh validation on mode toggle.
-
-### 1.2. Server-Side Validation (Fastify 5)
-
-The API does not trust client-side state alone.
-
-- **Verification**: The `AuthService` performs a secure POST request to `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
-- **IP Validation**: The client's IP address is passed to Cloudflare to detect proxy-based botnets.
-- **Mandatory DTOs**: The `LoginDTOSchema` and `RegisterDTOSchema` in `@tupynambalucas-hub/core` strictly require the `turnstileToken`.
+tupynambalucas.dev implementa uma estratégia de segurança em múltiplas camadas para proteger os dados da comunidade e garantir a integridade dos ciclos de compartilhamento. Nossa abordagem combina protocolos padrão da indústria com proteção especializada contra bots e mitigação de força bruta.
 
 ---
 
-## 2. Brute-Force Mitigation
+## 1. Proteção contra Bots (Cloudflare Turnstile)
 
-We protect our authentication endpoints from dictionary attacks and automated guessing through two primary mechanisms.
+Para evitar registros e tentativas de login automatizados, utilizamos o **Cloudflare Turnstile**. Ao contrário dos CAPTCHAs tradicionais, o Turnstile oferece uma experiência de verificação focada na privacidade e não intrusiva.
 
-### 2.1. Rate Limiting
+### 1.1. Integração no Lado do Cliente (React 19)
 
-Utilizing `@fastify/rate-limit`, we apply context-specific limits to sensitive routes.
+A `AuthFeature` utiliza o componente `@marsidev/react-turnstile` no **Modo Gerenciado (Managed Mode)**.
 
-- **Global Policy**: A base limit of 100 requests per minute per IP for general API usage.
-- **Strict Auth Policy**: Routes `/api/auth/login` and `/api/auth/register` are limited to **5 attempts per minute per IP**.
-- **Return Code**: Exceeding these limits triggers a `429 (Too Many Requests)` response.
+- **Modo Gerenciado**: Exibe uma caixa de seleção inteligente que verifica se o usuário é humano.
+- **Gerenciamento de Estado**: O botão de envio permanece desativado até que um `turnstileToken` válido seja emitido pelo widget.
+- **Isolamento**: Cada formulário (Login/Registrar) mantém sua própria instância do Turnstile por meio de chaves exclusivas do React, garantindo uma nova validação na alternância de modo.
 
-### 2.2. Account Lockout Logic
+### 1.2. Validação no Lado do Servidor (Fastify 5)
 
-To prevent targeted attacks against specific user accounts:
+A API não confia apenas no estado do lado do cliente.
 
-- **Max Attempts**: After **5 consecutive failed attempts**, the account is locked.
-- **Lock Duration**: The account remains inaccessible for **15 minutes** (`lockUntil`).
-- **Persistence**: Lockout state is stored directly in the Mongoose `User` model (`loginAttempts`, `lockUntil`).
-
----
-
-## 3. Data Protection & Obfuscation
-
-### 3.1. User Enumeration Prevention
-
-The API is designed to leak as little information as possible about the system's state to unauthenticated users.
-
-- **Generic Errors**: Both "User Not Found" and "Invalid Password" return a unified `INVALID_CREDENTIALS` error code.
-- **Uniform Response Time**: Cryptographic comparisons (Bcrypt) are performed even if the user identifier doesn't exist, preventing timing attacks.
-
-### 3.2. Secure Communication
-
-- **JWT (HS256)**: All authenticated requests require a JSON Web Token signed with a strong symmetric secret.
-- **CSRF Protection**: `@fastify/csrf-protection` is enabled, requiring a `CSRF-Token` header for all state-changing requests (POST, PUT, DELETE).
-- **HTTP-Only Cookies**: Session tokens are stored in signed, HTTP-only cookies to mitigate XSS-based token theft.
+- **Verificação**: O `AuthService` realiza uma requisição POST segura para `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
+- **Validação de IP**: O endereço IP do cliente é enviado ao Cloudflare para detectar redes de bots baseadas em proxies.
+- **DTOs Obrigatórios**: O `LoginDTOSchema` e o `RegisterDTOSchema` no `@tupynambalucas-hub/core` exigem estritamente o `turnstileToken`.
 
 ---
 
-## 4. Environment Requirements
+## 2. Mitigação de Força Bruta
 
-The following security keys are mandatory for the **Instance** stack to operate. Each variable lives in the env file owned by the responsible application, following the project's **Bounded Context** isolation principle.
+Protegemos nossos endpoints de autenticação contra ataques de dicionário e adivinhação automatizada por meio de dois mecanismos principais.
+
+### 2.1. Limitação de Taxa (Rate Limiting)
+
+Utilizando o `@fastify/rate-limit`, aplicamos limites específicos do contexto a rotas sensíveis.
+
+- **Política Global**: Um limite base de 100 requisições por minuto por IP para uso geral da API.
+- **Política Estrita de Autenticação**: As rotas `/api/auth/login` e `/api/auth/register` são limitadas a **5 tentativas por minuto por IP**.
+- **Código de Retorno**: Exceder esses limites aciona uma resposta `429 (Too Many Requests)`.
+
+### 2.2. Lógica de Bloqueio de Conta
+
+Para evitar ataques direcionados a contas de usuários específicas:
+
+- **Tentativas Máximas**: Após **5 tentativas consecutivas com falha**, a conta é bloqueada.
+- **Duração do Bloqueio**: A conta permanece inacessível por **15 minutos** (`lockUntil`).
+- **Persistência**: O estado de bloqueio é armazenado diretamente no modelo `User` do Mongoose (`loginAttempts`, `lockUntil`).
+
+---
+
+## 3. Proteção de Dados e Ofuscação
+
+### 3.1. Prevenção de Enumeração de Usuários
+
+A API foi projetada para vazar o mínimo de informações possível sobre o estado do sistema para usuários não autenticados.
+
+- **Erros Genéricos**: Tanto "Usuário Não Encontrado" quanto "Senha Inválida" retornam um código de erro unificado `INVALID_CREDENTIALS`.
+- **Tempo de Resposta Uniforme**: Comparações criptográficas (Bcrypt) são executadas mesmo que o identificador do usuário não exista, evitando ataques de temporização (_timing attacks_).
+
+### 3.2. Comunicação Segura
+
+- **JWT (HS256)**: Todas as requisições autenticadas exigem um JSON Web Token assinado com um segredo simétrico forte.
+- **Proteção CSRF**: O `@fastify/csrf-protection` está ativado, exigindo um cabeçalho `CSRF-Token` para todas as requisições de alteração de estado (POST, PUT, DELETE).
+- **Cookies HTTP-Only**: Os tokens de sessão são armazenados em cookies assinados e HTTP-only para mitigar o roubo de tokens baseado em XSS.
+
+---
+
+## 4. Requisitos de Ambiente
+
+As seguintes chaves de segurança são obrigatórias para o funcionamento da stack da **Instância**. Cada variável reside no arquivo env pertencente à aplicação responsável, seguindo o princípio de isolamento de **Contexto Delimitado (Bounded Context)** do projeto.
 
 ### 4.1. API (`instance/apps/api/.env.*`)
 
-| Variable               | Purpose                                                                                                    | Environments       |
-| :--------------------- | :--------------------------------------------------------------------------------------------------------- | :----------------- |
-| `TURNSTILE_SECRET_KEY` | Server-side Cloudflare Turnstile token verification.                                                       | dev, prod, staging |
-| `JWT_SECRET`           | Signing and verifying JSON Web Tokens.                                                                     | dev, prod, staging |
-| `SESSION_SECRET`       | Encrypting signed HTTP-only session cookies.                                                               | dev, prod, staging |
-| `MONGO_URI`            | MongoDB connection string. Dev uses local Replica Set; prod/staging uses MongoDB Atlas (`mongodb+srv://`). | dev, prod, staging |
+| Variável               | Propósito                                                                                                          | Ambientes          |
+| :--------------------- | :----------------------------------------------------------------------------------------------------------------- | :----------------- |
+| `TURNSTILE_SECRET_KEY` | Verificação do token do Cloudflare Turnstile no lado do servidor.                                                  | dev, prod, staging |
+| `JWT_SECRET`           | Assinatura e verificação de JSON Web Tokens.                                                                       | dev, prod, staging |
+| `SESSION_SECRET`       | Criptografia de cookies de sessão assinados HTTP-only.                                                             | dev, prod, staging |
+| `MONGO_URI`            | String de conexão do MongoDB. O dev usa o Replica Set local; prod/staging usam o MongoDB Atlas (`mongodb+srv://`). | dev, prod, staging |
 
 ### 4.2. Web (`instance/apps/web/.env.*` / Docker `ARG`)
 
-| Variable                  | Purpose                                             | Injection Method                                                                                                                                       |
-| :------------------------ | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `VITE_TURNSTILE_SITE_KEY` | Public site key for rendering the Turnstile widget. | Local dev: read from `.env.dev` by Vite (`--mode dev`). Production: injected as Docker `ARG` during image build — baked statically into the JS bundle. |
+| Variável                  | Propósito                                                    | Método de Injeção                                                                                                                                                    |
+| :------------------------ | :----------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `VITE_TURNSTILE_SITE_KEY` | Chave pública do site para renderizar o widget do Turnstile. | Dev local: lida de `.env.dev` pelo Vite (`--mode dev`). Produção: injetada como `ARG` do Docker durante a compilação da imagem — gravada estaticamente no bundle JS. |
 
 :::warning
-**Important:** `VITE_TURNSTILE_SITE_KEY` is a **public** key (safe to embed in client bundles). The `TURNSTILE_SECRET_KEY` is **private** and must only ever exist in the API environment, never in the Web app or committed to version control.
+**Importante:** `VITE_TURNSTILE_SITE_KEY` é uma chave **pública** (segura para ser incorporada em bundles do cliente). A `TURNSTILE_SECRET_KEY` é **privada** e só deve existir no ambiente da API, nunca no aplicativo Web ou commitada no controle de versão.
 :::
 
 ---
 
-_Last Updated: June 2026_
+_Última Atualização: Junho de 2026_

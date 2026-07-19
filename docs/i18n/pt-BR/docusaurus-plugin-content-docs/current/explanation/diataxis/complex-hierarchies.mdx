@@ -1,258 +1,258 @@
 ---
 id: complex-hierarchies
-title: Diátaxis in complex hierarchies
+title: Diátaxis em hierarquias complexas
+sidebar_position: 6
 ---
 
-# Diátaxis in complex hierarchies
+# Diátaxis em hierarquias complexas
 
-## Structure of documentation content
+## Estrutura do conteúdo da documentação
 
-The application of Diátaxis to most documentation is fairly straightforward.
-The product that defines the domain of concern has clear boundaries, and it’s
-possible to come up with an arrangement of documentation contents that looks - for example - like this:
+A aplicação do Diátaxis na maioria das documentações é bastante direta.
+O produto que define o domínio de interesse possui limites claros, e é
+possível propor um arranjo de conteúdos de documentação que se pareça - por exemplo - com isto:
 
 ```
-Home                      <- landing page
-    Tutorial              <- landing page
-        Part 1
-        Part 2
-        Part 3
-    How-to guides         <- landing page
-        Install
-        Deploy
-        Scale
-    Reference             <- landing page
-        Command-line tool
-        Available endpoints
+Início                    <- página de destino
+    Tutorial              <- página de destino
+        Parte 1
+        Parte 2
+        Parte 3
+    Guias de como fazer   <- página de destino
+        Instalar
+        Implantar
+        Escalar
+    Referência            <- página de destino
+        Ferramenta de linha de comando
+        Endpoints disponíveis
         API
-    Explanation           <- landing page
-        Best practice recommendations
-        Security overview
-        Performance
+    Explicação            <- página de destino
+        Recomendações de boas práticas
+        Visão geral de segurança
+        Desempenho
 ```
 
-In each case, a landing page contains an overview of the contents within. The
-tutorial for example describes what the tutorial has to offer, providing
-context for it.
+Em cada caso, uma página de destino contém uma visão geral do conteúdo nela contido. O
+tutorial, por exemplo, descreve o que o tutorial tem a oferecer, fornecendo
+contexto para ele.
 
-### Adding a layer of hierarchy
+### Adicionando uma camada de hierarquia
 
-Even very large documentation sets can use this effectively, though after a
-while some grouping of content within sections might be wise. This can be done
-by adding another layer of hierarchy - for example to be able to address
-different installation options separately:
+Mesmo conjuntos de documentação muito grandes podem usar isso de forma eficaz, embora, depois de um
+tempo, possa ser aconselhável agrupar o conteúdo em seções. Isso pode ser feito
+adicionando outra camada de hierarquia - por exemplo, para poder abordar
+diferentes opções de instalação separadamente:
 
 ```
-Home                      <- landing page
-    Tutorial              <- landing page
-        Part 1
-        Part 2
-        Part 3
-    How-to guides         <- landing page
-        Install           <- landing page
-            Local installation
+Início                    <- página de destino
+    Tutorial              <- página de destino
+        Parte 1
+        Parte 2
+        Parte 3
+    Guias de como fazer   <- página de destino
+        Instalar           <- página de destino
+            Instalação local
             Docker
-            Virtual machine
-            Linux container
-        Deploy
-        Scale
-    Reference             <- landing page
-        Command-line tool
-        Available endpoints
+            Máquina virtual
+            Contêiner Linux
+        Implantar
+        Escalar
+    Referência            <- página de destino
+        Ferramenta de linha de comando
+        Endpoints disponíveis
         API
-    Explanation           <- landing page
-        Best practice recommendations
-        Security overview
-        Performance
+    Explicação            <- página de destino
+        Recomendações de boas práticas
+        Visão geral de segurança
+        Desempenho
 ```
 
-## Contents pages
+## Páginas de conteúdo
 
-Contents pages - typically a home page and any landing pages - provide an overview of the material they encompass.
+Páginas de conteúdo - normalmente uma página inicial e quaisquer páginas de destino - fornecem uma visão geral do material que abrangem.
 
-There is an art to creating a good contents page. The experience they give the users deserves careful consideration.
+Existe uma arte em criar uma boa página de conteúdo. A experiência que elas proporcionam aos usuários merece consideração cuidadosa.
 
-### The problem of lists
+### O problema das listas
 
-Lists longer than a few items are very hard for humans to read, unless they
-have an inherent mechanical order - numerical, or alphabetical. _Seven items_
-_seems to be a comfortable general limit._ If you find that you’re looking at
-lists longer than that in your tables of contents, you probably need to find a way to
-break them up into small ones.
+Listas com mais de alguns itens são muito difíceis de ler para os humanos, a menos que
+tenham uma ordem mecânica inerente - numérica ou alfabética. _Sete itens_
+_parecem ser um limite geral confortável._ Se você perceber que está olhando para
+listas mais longas que isso em seus sumários, provavelmente precisará encontrar uma maneira de
+dividi-las em listas menores.
 
-As always, what matters most is **the experience of the reader**. Diátaxis works
-because it fits user needs well - if your execution of Diátaxis leads you to
-formats that seem uncomfortable or ugly, then you need to use it
-differently.
+Como sempre, o que mais importa é **a experiência do leitor**. O Diátaxis funciona
+porque atende bem às necessidades do usuário - se a sua execução do Diátaxis levar a
+formatos que pareçam desconfortáveis ou feios, você precisará usá-lo
+de forma diferente.
 
-### Overviews and introductory text
+### Visões gerais e textos introdutórios
 
-**The content of a landing page itself should read like an overview.**
+**O próprio conteúdo de uma página de destino deve ser lido como uma visão geral.**
 
-That is, it should not simply present lists of other content, it should
-introduce them. _Remember that you are always authoring for a human user, not_
-_fulfilling the demands of a scheme._
+Ou seja, ela não deve simplesmente apresentar listas de outros conteúdos, deve
+apresentá-los. _Lembre-se de que você está sempre escrevendo para um usuário humano, não_
+_cumprindo as exigências de um esquema._
 
-Headings and snippets of introductory text catch the eye and provide context;
-for example, a **how-to landing page**:
+Cabeçalhos e trechos de texto introdutório chamam a atenção e fornecem contexto;
+por exemplo, uma **página de destino de como fazer**:
 
 ```
-How to guides
-=============
+Guias de como fazer
+===================
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Installation guides
+Guias de instalação
 -------------------
 
 Pellentesque malesuada, ipsum ac mollis pellentesque, risus
 nunc ornare odio, et imperdiet dui mi et dui. Phasellus vel
 porta turpis. In feugiat ultricies ipsum.
 
-* Local installation       |
-* Docker                   |  links to
-* Virtual machines         |  the guides
-* Linux containers         |
+* Instalação local          |
+* Docker                    |  links para
+* Máquinas virtuais         |  os guias
+* Contêineres Linux         |
 
-Deployment and scaling
------------------------
+Implantação e escalonamento
+---------------------------
 
 Morbi sed scelerisque ligula. In dictum lacus quis felis
 facilisisvulputate. Quisque lacinia condimentum ipsum
 laoreet tempus.
 
-* Deploy an instance       |  links to
-* Scale your application   |  the guides
+* Implantar uma instância   |  links para
+* Escalar sua aplicação     |  os guias
 ```
 
-## Two-dimensional problems
+## Problemas bidimensionais
 
-A more difficult problem is when the structure outlined by Diátaxis meets
-another structure - often, a structure of topic areas within the
-documentation, or when documentation encounters very different user-types.
+Um mais difícil problema é quando a estrutura delineada pelo Diátaxis encontra
+outra estrutura - frequentemente, uma estrutura de áreas temáticas dentro da
+documentação, ou quando a documentação encontra tipos de usuários muito diferentes.
 
-For example we might have a product that is used on land, sea and air, and
-though the same product, is used quite differently in each case. And it could
-be that a user who uses it on land is very unlikely to use it at sea.
+Por exemplo, podemos ter um produto que é usado na terra, no mar e no ar e,
+embora seja o mesmo produto, é usado de forma bastante diferente em cada caso. E pode ser
+que um usuário que o utilize na terra tenha pouca probabilidade de usá-lo no mar.
 
-Or, the product documentation addresses the needs of:
+Ou a documentação do produto atende às necessidades de:
 
-- users
+- usuários
 
-- developers who build other products around it
+- desenvolvedores que criam outros produtos ao redor dele
 
-- the contributors who help maintain it.
+- os contribuidores que ajudam a mantê-lo.
 
-The same product, but very different concerns.
+O mesmo produto, mas preocupações muito diferentes.
 
-A final example: a product that can be deployed on different public clouds,
-with each public cloud presenting quite different workflows, commands, APIs,
-GUIs, constraints and so on. Even though it’s the same product, as far as the
-users in each case are concerned, what they need to know and do is very
-different - what they need is documentation not for _product_,
-but
+Um exemplo final: um produto que pode ser implantado em diferentes nuvens públicas,
+com cada nuvem pública apresentando fluxos de trabalho, comandos, APIs,
+interfaces gráficas (GUIs), restrições e assim por diante bastante diferentes. Embora seja o mesmo produto,
+no que diz respeito aos usuários em cada caso, o que eles precisam saber e fazer é muito
+diferente - o que eles precisam é de documentação não para o _produto_,
+mas para
 
-- _product-on-public-cloud-one_
+- _produto-na-nuvem-pública-um_
 
-- _product-on-public-cloud-two_
+- _produto-na-nuvem-pública-dois_
 
-- and so on…
+- e assim por diante…
 
-So, we _could_ decide on an overall structure that does this:
+Então, poderíamos decidir por uma estrutura geral que faça isso:
 
 ```
 tutorial
-    for users on land
+    para usuários na terra
         [...]
-    for users at sea
+    para usuários no mar
         [...]
-    for users in the air
+    para usuários no ar
         [...]
-[and then so on for how-to guides, reference and explanation]
+[e assim por diante para guias de como fazer, referência e explicação]
 ```
 
-or maybe instead this:
+ou talvez, em vez disso, isto:
 
 ```
-for users on land
+para usuários na terra
     tutorial
         [...]
-    how-to guides
+    guias de como fazer
         [...]
-    reference
+    referência
         [...]
-    explanation
+    explicação
         [...]
-for users at sea
-    [tutorial, how-to, reference, explanation sections]
-for users in the air
-    [tutorial, how-to, reference, explanation sections]
+para usuários no mar
+    [seções de tutorial, como fazer, referência e explicação]
+para usuários no ar
+    [seções de tutorial, como fazer, referência e explicação]
 ```
 
-Which is better? There seems to be a lot of repetition in either cases. What
-about the material that can be shared between land, sea and air?
+Qual é o melhor? Parece haver muita repetição em ambos os casos. E quanto ao
+material que pode ser compartilhado entre terra, mar e ar?
 
-### What _is_ the problem?
+### Qual _é_ o problema?
 
-Firstly, the problem is in no way limited to Diátaxis - there would be the
-difficulty of managing documentation in any case. However, Diátaxis certainly
-helps reveal the problem, as it does in many cases. It brings it into focus
-and demands that it be addressed.
+Primeiramente, o problema não está de forma alguma limitado ao Diátaxis - haveria a
+dificuldade de gerenciar a documentação de qualquer maneira. No entanto, o Diátaxis certamente
+ajuda a revelar o problema, como faz em muitos casos. Ele o traz para o foco
+e exige que seja abordado.
 
-Secondly, the question highlights a common misunderstanding. Diátaxis is not a
-scheme into which documentation must be placed - four boxes. It posits four
-different kinds of documentation, around which documentation should be
-structured, but this does not mean that there must be simply four divisions
-of documentation in the hierarchy, one for each of those categories.
+Em segundo lugar, a questão destaca um mal-entendido comum. O Diátaxis não é um
+esquema no qual a documentação deva ser inserida - quatro caixas. Ele propõe quatro
+tipos diferentes de documentação, em torno dos quais a documentação deve ser
+estruturada, mas isso não significa que deva haver simplesmente quatro divisões
+de documentação na hierarquia, uma para cada uma dessas categorias.
 
-## Diátaxis as an approach
+## Diátaxis como uma abordagem
 
-Diátaxis can be neatly represented in a diagram - but it is not
-the _same_ as that diagram.
+O Diátaxis pode ser representado de forma limpa em um diagrama - mas ele não é
+o _mesmo_ que esse diagrama.
 
-It should be understood as an approach, a way of working with documentation,
-that identifies four different needs and uses them to author and structure
-documentation effectively.
+Ele deve ser entendido como uma abordagem, uma forma de trabalhar com documentação,
+que identifica quatro necessidades diferentes e as utiliza para redigir e estruturar
+a documentação de forma eficaz.
 
-This will _tend_ towards a clear, explicit, structural division into the four
-categories - but that is a typical outcome of the good practice, not its
-end.
+Isso _tenderá_ a uma divisão estrutural clara e explícita nas quatro
+categorias - mas esse é um resultado típico de uma boa prática, não o seu
+fim.
 
-## User-first thinking
+## Pensamento voltado ao usuário
 
-**Diátaxis is underpinned by attention to user needs**, and once again it’s that
-concern that must direct us.
+**O Diátaxis é fundamentado na atenção às necessidades do usuário**, e mais uma vez é essa
+preocupação que deve nos direcionar.
 
-What we must document is the product _as it is for the user_, the product as
-it is in their hands and minds. (Sadly for the creators of products, how they
-conceive them is much less relevant.)
+O que devemos documentar é o produto _como ele é para o usuário_, o produto como
+ele está em suas mãos e mentes. (Infelizmente para os criadores de produtos, como eles
+os concebem é muito menos relevante.)
 
-Is the product on land, sea and air effectively three different products,
-perhaps for three different users?
+O produto na terra, no mar e no ar são efetivamente três produtos diferentes,
+talvez para três usuários diferentes?
 
-In that case, let that be the starting point for thinking about it.
+Nesse caso, que esse seja o ponto de partida para pensar sobre isso.
 
-If the documentation needs to meet the needs of users, developers and
-contributors, how do _they_ see the product? Should we assume that a
-developer who incorporates it into other products will typically need a good
-understanding of how it’s used, and that a contributor needs to know what
-a developer knows too?
+Se a documentação precisa atender às necessidades de usuários, desenvolvedores e
+contribuidores, como _eles_ veem o produto? Devemos assumir que um
+desenvolvedor que o incorpora em outros produtos normalmente precisará de uma boa
+compreensão de como ele é usado, e que um contribuidor precisa saber o que
+um desenvolvedor sabe também?
 
-Then perhaps it makes sense to be freer with the structure, in some parts
-(say, the tutorial) allowing the developer-facing content to follow on from
-the user-facing material, while completely separating the contributors’ how-to
-guides from both.
+Then, talvez faça sentido ser mais livre com a estrutura, em algumas partes
+(digamos, o tutorial) permitindo que o conteúdo voltado para o desenvolvedor siga o
+material voltado para o usuário, enquanto separa completamente os guias de como fazer
+dos contribuidores de ambos.
 
-And so on. If the structure is not [the simple, uncomplicated structure we
-began with](/docs/explanation/diataxis/complex-hierarchies#basic-structure), that’s not a problem - as long as there _is_
-arrangement according to Diátaxis principles, that documentation does not
-muddle up its different forms and purposes.
+E assim por diante. Se a estrutura não for [a estrutura simples e descomplicada com a qual começamos](/docs/explanation/diataxis/complex-hierarchies#estrutura-do-conteúdo-da-documentação), isso não é um problema - contanto que haja um
+arranjo de acordo com os princípios do Diátaxis, de modo que a documentação não
+confunda suas diferentes formas e propósitos.
 
-### Let documentation be complex if necessary
+### Deixe a documentação ser complexa se necessário
 
-Documentation should be as complex as it needs to be. It will sometimes
-have complex structures.
+A documentação deve ser tão complexa quanto necessário. Ela às vezes
+terá estruturas complexas.
 
-But, even complex structures can be made
-straightforward to navigate as long as they are logical and incorporate
-patterns that fit the needs of users.
+But, mesmo estruturas complexas podem se tornar
+fáceis de navegar, desde que sejam lógicas e incorporem
+padrões que se ajustem às necessidades dos usuários.

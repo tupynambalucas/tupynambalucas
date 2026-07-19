@@ -1,67 +1,66 @@
 ---
 title: DDD & Feature-Sliced Design (FSD)
-description: Leveraging Domain-Driven Design (DDD) Bounded Contexts and Feature-Sliced Design (FSD) in tupynambalucas.dev frontends.
+description: Combinando contextos delimitados do Domain-Driven Design (DDD) e a modularidade do Feature-Sliced Design (FSD) no frontend do projeto tupynambalucas.dev.
 ---
 
 # Domain-Driven Design (DDD) & Feature-Sliced Design (FSD)
 
-The frontend architecture blends Domain-Driven Design (DDD) bounded contexts with Feature-Sliced Design (FSD) modularity to achieve scalable, robust, and decoupled applications.
+A arquitetura do frontend combina contextos delimitados de Domain-Driven Design (DDD) com a modularidade de Feature-Sliced Design (FSD) para alcançar aplicações escaláveis, robustas e desacopladas.
 
 ---
 
-## 1. Architectural Concept & Overview
+## 1. Conceito Arquitetônico & Visão Geral
 
 ### Domain-Driven Design (DDD)
 
-Domain-Driven Design (DDD) organizes complex business logic into isolated, domain-centric modules called **Bounded Contexts**, where each domain owns its model integrity and vocabulary. This avoids tight coupling between different areas of the application and keeps models focused.
+O Domain-Driven Design (DDD) organiza a lógica de negócios complexa em módulos isolados e centrados no domínio, chamados **Contextos Delimitados** (Bounded Contexts), onde cada domínio possui a integridade de seu modelo e vocabulário. Isso evita o acoplamento forte entre diferentes áreas da aplicação e mantém os modelos focados.
 
 ### Feature-Sliced Design (FSD)
 
-Feature-Sliced Design (FSD) is a modern architectural methodology designed specifically for frontend applications. It segregates code into a standardized hierarchy of layers, slices, and segments, establishing strict unidirectional dependency flows, preventing circular imports, and ensuring high modularity.
+O Feature-Sliced Design (FSD) é uma metodologia arquitetônica moderna projetada especificamente para aplicações frontend. Ele segrega o código em uma hierarquia padronizada de camadas, fatias (slices) e segmentos, estabelecendo fluxos de dependência unidirecionais estritos, evitando importações circulares e garantindo alta modularidade.
 
-By combining DDD context segregation with FSD layer separation, our applications remain maintainable even as team sizes and feature sets grow.
+Ao combinar a segregação de contexto do DDD com a separação de camadas do FSD, nossas aplicações permanecem fáceis de manter, mesmo à medida que o tamanho das equipes e os conjuntos de recursos crescem.
 
 ---
 
-## 2. Project-Specific Utilization
+## 2. Utilização Específica do Projeto
 
-In tupynambalucas.dev, the combination of DDD and FSD governs both the folder structure and the import rules:
+No tupynambalucas.dev, a combinação de DDD e FSD governa tanto a estrutura de pastas quanto as regras de importação:
 
-### A. Bounded Context Segregation
+### A. Segregação de Contexto Delimitado
 
-The monorepo is split into distinct contexts (`instance/` and `portal/`) at the root level. These boundaries ensure that community operations (Instance) and global SaaS onboarding workflows (Portal) remain structurally and logically independent. Shared design tokens or brand assets are imported exclusively from the `@tupynambalucas-studio/design` workspace.
+O monorepo é dividido em contextos distintos (`instance/` e `portal/`) no nível raiz. Esses limites garantem que as operações da comunidade (Instance) e os fluxos de trabalho de integração global de SaaS (Portal) permaneçam estrutural e logicamente independentes. Tokens de design compartilhados ou ativos de marca são importados exclusivamente do workspace `@tupynambalucas-studio/design`.
 
-### B. Frontend Layer Hierarchy (FSD)
+### B. Hierarquia de Camadas de Frontend (FSD)
 
-Inside each frontend React application, the codebase is structured into strict architectural layers:
+Dentro de cada aplicação React de frontend, a base de código é estruturada em camadas arquitetônicas estritas:
 
 ```
 src/
-├── domains/              <-- Global Domains layer (e.g., auth, product, cycle)
+├── domains/              <-- Camada de Domínios Globais (ex: auth, product, cycle)
 │   └── auth/
 │       ├── hooks/
 │       └── auth.store.ts
-├── features/             <-- User workflows and interactive modules (e.g., shop, admin)
+├── features/             <-- Fluxos de trabalho do usuário e módulos interativos (ex: shop, admin)
 │   ├── shop/
-│   │   ├── domains/      <-- Feature-specific private domains (e.g., cart)
+│   │   ├── domains/      <-- Domínios privados específicos de feature (ex: cart)
 │   │   └── components/
 │   └── admin/
-└── shared/               <-- Reusable agnostic utilities and common components
-    └── ui/               <-- Buttons, Modals, Loaders, Input components
+└── shared/               <-- Utilitários reutilizáveis agnósticos e componentes comuns
+    └── ui/               <-- Botões, Modais, Loaders, componentes de Input
 ```
 
-- **Global Domains (`src/domains`)**: Represent core business concepts (e.g., `auth`, `product`, `cycle`). This layer houses domain-specific Zustand state stores, Axios API clients, and domain orchestration hooks.
-- **Features (`src/features`)**: House user workflows and interactive app modules (e.g., `admin`, `shop`). Features orchestrate multiple underlying domains to deliver high-level application flows, but remain strictly isolated from other features.
-- **Feature-Specific Private Domains (`src/features/*/domains`)**: Dedicated sub-domains enclosed inside a specific feature (such as a private `cart` domain inside the `shop` feature). This keeps the global namespace clean and prevents global domain pollution.
-- **Shared UI Layer (`src/shared/ui`)**: Features reusable, domain-agnostic UI building blocks (such as loaders, buttons, inputs, and modals) which contain zero business logic.
+- **Domínios Globais (`src/domains`)**: Representam conceitos de negócios centrais (ex: `auth`, `product`, `cycle`). Esta camada abriga stores de estado do Zustand específicos do domínio, clientes de API do Axios e hooks de orquestração de domínio.
+- **Features (`src/features`)**: Abrigam fluxos de trabalho do usuário e módulos interativos de aplicativos (ex: `admin`, `shop`). As features orquestram múltiplos domínios subjacentes para entregar fluxos de aplicação de alto nível, mas permanecem estritamente isoladas de outras features.
+- **Domínios Privados Específicos de Feature (`src/features/*/domains`)**: Domínios dedicados contidos dentro de uma feature específica (como um domínio privado `cart` dentro da feature `shop`). Isso mantém o namespace global limpo e evita a poluição do domínio global.
+- **Camada de UI Compartilhada (`src/shared/ui`)**: Apresenta blocos de construção de UI reutilizáveis e agnósticos de domínio (como loaders, botões, inputs e modais) que contêm zero lógica de negócios.
 
 ---
 
-## 3. Strict Import Boundaries
+## 3. Limites Estritos de Importação
 
-To maintain long-term scalability, we enforce strict unidirectional import boundaries:
+Para manter a escalabilidade de longo prazo, impomos limites estritos de importação unidirecional:
 
-1. **Unidirectional Flow**: Code can only import from layers located below it in the hierarchy:
-   `Features` -> `Domains` -> `Shared`
-2. **No Upward Imports**: Global domains or shared components are strictly forbidden from importing from features.
-3. **No Feature Cross-Imports**: Feature modules cannot import from other feature modules directly; they can only collaborate through high-level page orchestration or by subscribing to shared global domains.
+1. **Fluxo Unidirecional**: O código só pode importar de camadas localizadas abaixo dele na hierarquia: `Features` -> `Domains` -> `Shared`.
+2. **Sem Importações para Cima**: Domínios globais ou componentes compartilhados são estritamente proibidos de importar de features.
+3. **Sem Importações Cruzadas de Features**: Módulos de feature não podem importar diretamente de outros módulos de feature; eles só podem colaborar por meio de orquestração de páginas de alto nível ou assinando domínios globais compartilhados.

@@ -1,52 +1,52 @@
 ---
-title: SOLID Principles
-description: In-depth analysis of the five SOLID design principles applied across the Fastify backend and React frontend.
+title: Princípios SOLID
+description: Análise aprofundada dos cinco princípios de design SOLID aplicados no backend Fastify e no frontend React.
 ---
 
-# SOLID Principles
+# Princípios SOLID
 
-The SOLID design principles guide the object-oriented and functional structure of both the Fastify backend and React frontend to maintain highly modular, testable, and robust systems.
+Os princípios de design SOLID guiam a estrutura orientada a objetos e funcional tanto do backend Fastify quanto do frontend React para manter sistemas altamente modulares, testáveis e robustos.
 
 ---
 
-## 1. Single Responsibility Principle (SRP)
+## 1. Princípio da Responsabilidade Única (SRP)
 
-### Concept & Overview
+### Conceito e Visão Geral
 
-A module, class, or function should have one, and only one, reason to change, meaning it must encapsulate a single well-defined task. SRP reduces coupling and guarantees that a change in one system requirement only affects a single isolated module.
+Um módulo, classe ou função deve ter um, e apenas um, motivo para mudar, o que significa que ele deve encapsular uma única tarefa bem definida. O SRP reduz o acoplamento e garante que uma alteração em um requisito do sistema afete apenas um único módulo isolado.
 
-### Project-Specific Utilization
+### Utilização Específica no Projeto
 
-#### Backend (Fastify API)
+#### Backend (API Fastify)
 
-We enforce a strict layered architecture:
+Impomos uma arquitetura em camadas estrita:
 `Controller` -> `Service` -> `Repository` -> `Model`
 
-- **Controllers** only handle raw request/response routing, payload parsing, and Zod validation.
-- **Services** exclusively orchestrate business rules, transaction boundaries, and integrations.
-- **Repositories** handle raw database queries and mutations.
-- **Models** define Mongoose schema definitions and validation structures.
+- **Controllers** lidam apenas com o roteamento bruto de requisição/resposta, análise de payload e validação Zod.
+- **Services** orquestram exclusivamente regras de negócio, limites de transação e integrações.
+- **Repositories** lidam com consultas e mutações brutas no banco de dados.
+- **Models** definem definições de esquemas Mongoose e estruturas de validação.
 
-#### Frontend (React Web App)
+#### Frontend (Aplicativo Web React)
 
-React components are decoupled from state management and async fetching:
+Componentes React são desacoplados do gerenciamento de estado e da busca assíncrona de dados (async fetching):
 
-- **Zustand stores** are restricted to state mutations and raw action triggers.
-- **Custom React hooks** (`src/domains/*/hooks`) handle state selectors and trigger actions, keeping React UI components strictly focused on rendering.
+- **Stores do Zustand** são restritas a mutações de estado e gatilhos de ações brutas.
+- **Hooks customizados do React** (`src/domains/*/hooks`) lidam com seletores de estado e acionamento de ações, mantendo os componentes de interface (UI) do React estritamente focados na renderização.
 
 ---
 
-## 2. Open/Closed Principle (OCP)
+## 2. Princípio do Aberto/Fechado (OCP)
 
-### Concept & Overview
+### Conceito e Visão Geral
 
-Software modules should be open for extension but closed for modification. New features or behaviors should be added by extending code (e.g., through inheritance, composition, or plugins), not by altering existing, verified logic.
+Módulos de software devem estar abertos para extensão, mas fechados para modificação. Novos recursos ou comportamentos devem ser adicionados estendendo o código (por exemplo, através de herança, composição ou plugins), e não alterando a lógica existente e já verificada.
 
-### Project-Specific Utilization
+### Utilização Específica no Projeto
 
-#### Backend (Fastify API)
+#### Backend (API Fastify)
 
-Fastify's plugin and decorator ecosystem is an ideal implementation of OCP. We extend Fastify's core features (like adding authentication, logging, or database clients) by registering plugins using `fastify-plugin` without altering the main server bootstrapper:
+O ecossistema de plugins e decoradores do Fastify é uma implementação ideal do OCP. Estendemos os recursos principais do Fastify (como adicionar autenticação, logging ou clientes de banco de dados) registrando plugins usando `fastify-plugin` sem alterar o inicializador principal do servidor:
 
 ```typescript
 // Registering a core authentication decorator securely
@@ -60,9 +60,9 @@ export default fp(async (fastify) => {
 });
 ```
 
-#### Frontend (React Web App)
+#### Frontend (Aplicativo Web React)
 
-We rely extensively on **React Component Composition** instead of bloating single components with conditional flags. Generic UI elements (tables, dialogs, cards) accept layout customizers via children properties or typed render functions, avoiding complex internal if-else logic:
+Dependemos amplamente da **Composição de Componentes React** em vez de inflar componentes individuais com flags condicionais. Elementos de UI genéricos (tabelas, diálogos, cartões) aceitam customizadores de layout por meio de propriedades `children` ou funções de renderização tipadas, evitando lógicas internas complexas de if-else:
 
 ```tsx
 // Open to extension via composition, closed to modification
@@ -85,17 +85,17 @@ export const PremiumCard = ({ title, children, actions }: CardProps) => (
 
 ---
 
-## 3. Liskov Substitution Principle (LSP)
+## 3. Princípio da Substituição de Liskov (LSP)
 
-### Concept & Overview
+### Conceito e Visão Geral
 
-Subtypes must be completely substitutable for their base types without altering the correctness, behavior, or invariants of the application. If a service depends on an interface, any class implementing that interface must be swappable without breaking client code.
+Subtipos devem ser completamente substituíveis por seus tipos de base sem alterar a correção, o comportamento ou os invariantes da aplicação. Se um serviço depende de uma interface, qualquer classe que implemente essa interface deve ser intercambiável sem quebrar o código cliente.
 
-### Project-Specific Utilization
+### Utilização Específica no Projeto
 
-#### File Storage Adapters
+#### Adaptadores de Armazenamento de Arquivos
 
-All external adapters, cache stores, and database models are designed against strict, unified interfaces. For example, our file upload managers implement a shared, typed contract:
+Todos os adaptadores externos, stores de cache e modelos de banco de dados são projetados com base em interfaces estritas e unificadas. Por exemplo, nossos gerenciadores de upload de arquivos implementam um contrato compartilhado e tipado:
 
 ```typescript
 export interface IFileStorageAdapter {
@@ -104,21 +104,21 @@ export interface IFileStorageAdapter {
 }
 ```
 
-In development, we inject a `LocalDiskStorageAdapter` that writes to `tmp/`. In production and staging, we inject a `CloudflareR2StorageAdapter` or `S3StorageAdapter`. Both adapters implement `IFileStorageAdapter` perfectly. The consuming service (e.g., `ProductImageService`) remains 100% oblivious to the actual underlying system, and we can swap them out seamlessly without breaking service logic.
+No desenvolvimento, injetamos um `LocalDiskStorageAdapter` que grava em `tmp/`. Em produção e homologação, injetamos um `CloudflareR2StorageAdapter` ou `S3StorageAdapter`. Ambos os adaptadores implementam `IFileStorageAdapter` perfeitamente. O serviço de consumo (por exemplo, `ProductImageService`) permanece 100% alheio ao sistema subjacente real, e podemos trocá-los perfeitamente sem quebrar a lógica do serviço.
 
 ---
 
-## 4. Interface Segregation Principle (ISP)
+## 4. Princípio da Segregação de Interface (ISP)
 
-### Concept & Overview
+### Conceito e Visão Geral
 
-Clients should not be forced to depend on interfaces or methods they do not utilize. Lean, specific interfaces are always superior to a single, general-purpose monolithic contract.
+Os clientes não devem ser forçados a depender de interfaces ou métodos que não utilizam. Interfaces enxutas e específicas são sempre superiores a um único contrato monolítico de propósito geral.
 
-### Project-Specific Utilization
+### Utilização Específica no Projeto
 
-#### Typed Sub-contracts
+#### Subcontratos Tipados
 
-We avoid exposing large, monolithic models or database documents directly to layers that do not need them. Instead, we declare precise sub-interfaces and Zod schemas inside the `@tupynambalucas-hub/core` library:
+Evitamos expor modelos grandes e monolíticos ou documentos de banco de dados diretamente para camadas que não precisam deles. Em vez disso, declaramos subinterfaces precisas e esquemas Zod dentro da biblioteca `@tupynambalucas-hub/core` os quais:
 
 ```typescript
 // Monolithic database representation (Internal only)
@@ -145,21 +145,21 @@ export interface ICreateUserDTO {
 }
 ```
 
-Consuming modules, such as frontend header components, only import and rely on the narrow `IUserPublicSession` rather than the bloated database document, ensuring that changing password hash rules does not trigger refactoring on client views.
+Módulos consumidores, como componentes de cabeçalho do frontend, importam e dependem apenas da interface estreita `IUserPublicSession` em vez do documento de banco de dados inflado, garantindo que a alteração de regras de hash de senha não exija refatoração nas visualizações do cliente.
 
 ---
 
-## 5. Dependency Inversion Principle (DIP)
+## 5. Princípio da Inversão de Dependência (DIP)
 
-### Concept & Overview
+### Conceito e Visão Geral
 
-High-level modules must not depend directly on low-level modules; both must depend on abstractions (e.g., interfaces or abstract classes). Details must depend on abstractions, not the other way around.
+Módulos de alto nível não devem depender diretamente de módulos de baixo nível; ambos devem depender de abstrações (por exemplo, interfaces ou classes abstratas). Detalhes devem depender de abstrações, e não o contrário.
 
-### Project-Specific Utilization
+### Utilização Específica no Projeto
 
-#### Backend (Dependency Injection)
+#### Backend (Injeção de Dependência)
 
-Services never instantiate repositories, databases, or third-party SDKs directly inside their constructors. Instead, dependencies are passed to services via constructor injection:
+Os serviços nunca instanciam repositórios, bancos de dados ou SDKs de terceiros diretamente dentro de seus construtores. Em vez disso, as dependências são passadas para os serviços via injeção no construtor (constructor injection):
 
 ```typescript
 import type { Model } from 'mongoose';
@@ -175,8 +175,8 @@ export class AuthRepository {
 }
 ```
 
-This decoupling allows us to easily inject mocked Mongoose models in our unit tests, completely isolating the database from our test suites.
+Esse desacoplamento nos permite injetar facilmente modelos mockados do Mongoose em nossos testes unitários, isolando completamente o banco de dados de nossas suítes de testes.
 
-#### Frontend (Service Abstractions)
+#### Frontend (Abstrações de Serviço)
 
-React components do not directly call Axios endpoints or access `localStorage`. Instead, they interact with custom domain hooks and select methods from Zustand stores. The concrete implementation of the HTTP client and browser persistence is hidden behind the domain layer's abstraction, allowing us to change the network library (e.g., swapping Axios for Fetch) without touching our UI components.
+Os componentes React não chamam diretamente endpoints do Axios ou acessam o `localStorage`. Em vez disso, eles interagem com hooks personalizados de domínio e selecionam métodos das stores do Zustand. A implementação concreta do cliente HTTP e da persistência no navegador fica oculta por trás da abstração da camada de domínio, permitindo-nos alterar a biblioteca de rede (por exemplo, trocando Axios por Fetch) sem tocar em nossos componentes de UI.

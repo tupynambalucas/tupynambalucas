@@ -20,7 +20,7 @@ O ambiente Penpot é orquestrado via uma stack do Docker multi-container, utiliz
 
 - **Orquestração:** Gerenciada via `studio/design/infrastructure/docker/compose.yaml` (Frontend, Backend, Exporter, Valkey, Aide).
 - **Camada de Banco de Dados:** Persistência do PostgreSQL hospedada no Neon.tech para integridade transacional sem servidor (serverless).
-- **Armazenamento de Objetos:** Ativos binários são persistidos em buckets compatíveis com S3 do Cloudflare R2, garantindo um footprint mínimo no Git. Consulte as especificações de [Armazenamento Cloudflare R2](/docs/workspaces/studio/reference/spec/cloudflare-storage).
+- **Armazenamento de Objetos:** Ativos binários são persistidos em buckets compatíveis com S3 do Cloudflare R2, garantindo um footprint mínimo no Git. Consulte as especificações de [Armazenamento Cloudflare R2](/workspaces/studio/reference/spec/cloudflare-storage).
 
 ### B. Aide: Integração Nativa de IA
 
