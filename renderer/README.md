@@ -36,9 +36,9 @@ production-grade documents across the monorepo.
 - **[src/index.ts](./src/index.ts)**: Central coordination entrypoint coordinating data fetching,
   rendering, and pipeline writes.
 - **[generated/cards/](./generated/cards/)**: Vector SVG card outputs generated for light and dark
-  themes.
+  themes, alongside the shared brand `github-header.svg`.
 - **[generated/docs/](./generated/docs/)**: Markdown preview files generated for light and dark
-  themes.
+  themes, both embedding the shared header.
 
 ---
 

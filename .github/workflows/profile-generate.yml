@@ -33,8 +33,20 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Clean Generated Branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin generated:generated || true
+          git checkout generated || git checkout --orphan generated
+          git rm -rf . || true
+          git commit --allow-empty -m "chore: clear generated assets [skip ci]"
+          git push origin generated
+          git checkout -
+
       - name: Run Profile Generator
         run: pnpm --filter @tupynambalucas/renderer generate
         env:
           PROFILE_GH_PAT: ${{ secrets.PROFILE_GH_PAT }}
           GITHUB_ACTIONS: 'true'
+
