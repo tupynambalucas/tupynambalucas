@@ -5,7 +5,7 @@ This document serves as the root context router for AI agents operating in the t
 ## Repository Entry Points
 
 - [README.md](./README.md): Serves exclusively as the dynamic GitHub Profile view, which is automatically updated by the `@tupynambalucas/renderer` workspace generator.
-- [.github/README.md](./.github/README.md): The official developer entry point and repository landing page README, ensuring `/README.md` is reserved exclusively for the GitHub profile view.
+- [MONOREPO.readme.md](./MONOREPO.readme.md): The official developer entry point and technical README for the repository.
 
 ## Bounded Contexts
 

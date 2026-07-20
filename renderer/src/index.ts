@@ -14,7 +14,7 @@ async function main(): Promise<void> {
   try {
     const config = ConfigSchema.parse(rawConfig);
 
-    console.info('Starting Profile Stats Generator...');
+    console.info('Starting Renderer Document Generator...');
 
     const stats = await getGitHubStats({
       token: config.githubToken,
@@ -53,6 +53,13 @@ async function main(): Promise<void> {
       const pipeline = module.default;
 
       if (pipeline && typeof pipeline.run === 'function') {
+        // Dynamically override target branches in CI/CD based on the resolved targetBranch
+        if (config.isGitHubAction) {
+          for (const target of pipeline.targets) {
+            target.ciBranches = [config.targetBranch];
+          }
+        }
+
         console.info(`\n--- Running Pipeline: ${pipeline.name} (${pipeline.id}) ---`);
         await pipeline.run(stats, config, workspaceRoot);
         executedCount++;
