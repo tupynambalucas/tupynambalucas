@@ -1,0 +1,374 @@
+---
+title: Configuração de Orquestração Local
+description: Como configurar o Rancher Desktop para Docker Compose, configurar o Minikube para testes locais de Kubernetes, configurar o OpenLens e gerenciar manifestos do workspace.
+---
+
+# Configuração de Orquestração Local
+
+Este guia detalha o ambiente de dupla orquestração utilizado no monorepo. O desenvolvimento local utiliza duas pipelines de containers especializadas:
+
+- **Docker Compose via Rancher Desktop**: Utilizado para codificação local de alta velocidade, testes de banco de dados e fluxos de trabalho gerais do desenvolvedor.
+- **Kubernetes via Minikube**: Utilizado para validar configurações, roteamento, descoberta de serviços e políticas de ambiente semelhantes às de produção.
+
+---
+
+## Requisitos de Ferramental
+
+Para executar e gerenciar o ambiente de orquestração local, você deve instalar as ferramentas adequadas dependendo da abordagem de sua preferência.
+
+### Abordagem 1: Configuração Nativa no Windows (Rancher Desktop e Minikube locais)
+
+Recomendada para início rápido e menor consumo de recursos.
+
+Instale as seguintes ferramentas em sua máquina Windows:
+
+- **Rancher Desktop**: Motor de containers local que fornece a CLI do Docker.
+- **Minikube**: Gerencia o cluster Kubernetes local no host Windows.
+- **kubectl**: Ferramenta de linha de comando do Kubernetes.
+- **Skaffold**: Automatiza o pipeline de compilação e implantação.
+- **OpenLens**: Cliente visual para monitoramento do cluster.
+
+Execute este comando no PowerShell para instalar a stack nativa:
+
+```powershell
+winget install RancherDesktop.RancherDesktop Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+```
+
+### Abordagem 2: Configuração via VM VirtualBox
+
+Recomendada para isolamento de sistema operacional equivalente ao de produção ou testes rápidos locais baseados em máquina virtual. Isso minimiza as dependências no host Windows (sem necessidade de Rancher Desktop no Windows).
+
+Dependendo do seu objetivo, você pode configurar isso de duas maneiras:
+
+#### Maneira A: Configuração Rápida de VM Local (Driver VirtualBox do Minikube)
+
+Ideal para testes padrão de desenvolvimento local. O Minikube cria e gerencia de forma automática sua própria VM otimizada (`minikube-iso`) dentro do VirtualBox.
+
+- **Ferramentas do Host Windows**: VirtualBox, Minikube CLI, kubectl, Skaffold, OpenLens.
+- **Comando de Instalação (PowerShell)**:
+  ```powershell
+  winget install Oracle.VirtualBox Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+  ```
+
+#### Maneira B: Configuração de VM Equivalente à Produção (ISO Manual do Ubuntu Server LTS)
+
+Ideal para simular ambientes de servidores de produção reais.
+
+- **Ferramentas do Host Windows**: VirtualBox, kubectl, Skaffold, OpenLens (sem necessidade de Minikube ou Rancher Desktop no Windows).
+- **Comando de Instalação (PowerShell)**:
+  ```powershell
+  winget install Oracle.VirtualBox Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+  ```
+- **Instalador da VM**: Baixe a [ISO de instalação manual do Ubuntu Server LTS oficial](https://ubuntu.com/download/server#manual-install-tab) e execute nosso script dentro da VM.
+
+:::warning[Evite Executar o Skaffold via Docker]
+Embora você possa executar o Skaffold dentro de um container usando `docker run gcr.io/k8s-skaffold/skaffold:latest`, fazer isso exige montar o socket do Docker, montar seu kubeconfig e remapear o host do API server do Kubernetes para `host.docker.internal`. Além disso, a sincronização de arquivos em tempo real (`pnpm k8s:dev`) frequentemente falha ao propagar eventos do sistema de arquivos através da barreira do container. Por esse motivo, a instalação do binário nativo do Skaffold localmente é fortemente recomendada.
+:::
+
+---
+
+## 1. Configuração do Docker Compose e Rancher Desktop
+
+Para ciclos rápidos de feedback, executamos microservices e bancos de dados de suporte usando o Docker Compose.
+
+### Configuração do Rancher Desktop
+
+Para garantir a compatibilidade com o Docker Compose e nossas ferramentas CLI, configure o Rancher Desktop com o container engine Moby:
+
+1. Abra as **Configurações do Rancher Desktop**.
+2. Navegue até **Virtual Machine** \> **Container Engine**.
+3. Selecione **moby (dockerd)**. Não utilize o containerd.
+4. Vá para **Application Settings** \> **Path Management** e garanta que **Automatic** esteja ativado para configurar os caminhos binários padrão de `docker` e `docker compose`.
+
+### Execução de Scripts do Workspace
+
+Em vez de executar comandos Docker Compose longos manualmente, use os filtros e scripts Turborepo predefinidos no root [package.json](file:///D:/projects/tupynambalucas/package.json):
+
+- **Iniciar Serviços da Plataforma**: `pnpm platform:up`
+- **Parar Serviços da Plataforma**: `pnpm platform:down`
+- **Resetar Estado da Plataforma**: `pnpm platform:reset` (deleta volumes)
+- **Iniciar Stack Cortex**: `pnpm cortex:core:up` ou `pnpm cortex:mcp:up`
+- **Parar Stack Cortex**: `pnpm cortex:core:down` ou `pnpm cortex:mcp:down`
+
+---
+
+## 2. Configuração de Cluster Local Minikube
+
+Quando for necessário testar políticas de rede, resolução de DNS entre namespaces ou configurações de ingress do Traefik, você deve implantar os workspaces no Minikube.
+
+### Criando o Cluster
+
+Crie um perfil dedicado do Minikube chamado `tupynambalucas` usando o driver Docker (que se monta ao daemon ativo do Rancher Desktop):
+
+```bash
+minikube start -p tupynambalucas --driver=docker --kubernetes-version=v1.30.0
+```
+
+:::note[Drivers no Windows]
+Se o seu projeto exigir isolamento total do hypervisor, você poderá usar os drivers Hyper-V ou VirtualBox em seu lugar:
+
+- **Usando Hyper-V**:
+  ```powershell
+  minikube start -p tupynambalucas --driver=hyperv --kubernetes-version=v1.30.0
+  ```
+- **Usando VirtualBox (Gerenciamento Automático de VM)**:
+  O Minikube criará e inicializará de forma automática uma VM Linux leve (`minikube-iso`) no VirtualBox.
+  ```powershell
+  minikube start -p tupynambalucas --driver=virtualbox --kubernetes-version=v1.30.0
+  ```
+  :::
+
+### Acessando o Dashboard Web
+
+O Minikube fornece uma interface gráfica baseada na web para monitorar as cargas de trabalho. Inicie o dashboard executando:
+
+```bash
+minikube dashboard -p tupynambalucas
+```
+
+Isso abrirá automaticamente o navegador padrão na página do dashboard. Mantenha essa janela do terminal aberta enquanto interage com ele.
+
+---
+
+## 3. Visualizando o Cluster com OpenLens
+
+Para monitorar o consumo de recursos, inspecionar logs e gerenciar namespaces de forma visual, utilizamos o **OpenLens**.
+
+### Configurando o OpenLens para Conectar
+
+O OpenLens lê automaticamente as configurações padrão do kubeconfig localizadas em `~/.kube/config`. Para registrar o contexto do seu perfil Minikube:
+
+1. Defina o contexto ativo para o perfil do Minikube no seu terminal:
+   ```bash
+   kubectl config use-context tupynambalucas
+   ```
+2. Abra o **OpenLens**.
+3. Localize o menu suspenso do cluster no canto superior esquerdo.
+4. Selecione o contexto do cluster chamado **tupynambalucas**.
+5. Uma vez selecionado, o OpenLens se conectará ao control plane do Minikube, permitindo visualizar pods, deployments, services e logs.
+
+---
+
+## 4. Ingress e Roteamento de Domínio Local
+
+Como o Minikube roda dentro de um container ou VM, seus serviços (e o Ingress controller) não são expostos automaticamente na rede loopback do host (`127.0.0.1`).
+
+### Passo 1: Habilitar o Addon Ingress
+
+Habilite o Nginx Ingress controller no perfil do Minikube:
+
+```bash
+minikube addons enable ingress -p tupynambalucas
+```
+
+### Passo 2: Iniciar o Túnel de Rede
+
+No Windows, você deve iniciar um túnel de rede em uma sessão de terminal separada e persistente. Isso roteia o tráfego da interface de rede do host para o Ingress controller do cluster:
+
+```bash
+minikube tunnel -p tupynambalucas
+```
+
+:::warning[Tempo de Vida do Túnel]
+Mantenha este comando em execução. Se fechar a sessão de terminal, você não conseguirá acessar domínios `.localhost` do seu navegador da web ou de clientes de API locais.
+:::
+
+### Passo 3: Mapeamento de Domínio
+
+Os domínios locais têm o sufixo `.localhost` (ex: `gateway.localhost`, `turbocache.localhost`). Os navegadores da web resolvem automaticamente domínios `*.localhost` para `127.0.0.1`, o qual o túnel ativo encaminha para o ingress do Minikube.
+
+---
+
+## 5. Estrutura de Diretórios para Manifestos Kubernetes
+
+No monorepo, as configurações de Kubernetes são colocadas nos contextos delimitados correspondentes sob um diretório `infrastructure/kubernetes`.
+
+### Padrão de Layout do Workspace
+
+Para qualquer workspace, siga esta estrutura de organização de infraestrutura:
+
+```
+<workspace>/
+├── src/
+├── package.json
+└── infrastructure/
+    ├── docker/
+    │   └── compose.yaml
+    └── kubernetes/
+        ├── namespace.yaml
+        ├── deployment.yaml
+        └── service.yaml
+```
+
+Por exemplo, ativos visuais principais ou configurações de banco de dados em `studio/design/` devem ser colocados em `studio/design/infrastructure/kubernetes/`.
+
+---
+
+## 6. Orquestração Profissional com Skaffold
+
+Em vez de compilar manualmente cada imagem Docker e aplicar os manifestos Kubernetes um por um, usamos o **Skaffold** para orquestrar todo o processo de desenvolvimento.
+
+O Skaffold gerencia:
+
+- **Compilações Concorrentes**: Compila todas as imagens de serviço necessárias em paralelo diretamente dentro do daemon Docker do Minikube.
+- **Tagging Dinâmico**: Atualiza automaticamente as tags de imagem dentro de seus manifestos Kubernetes para corresponder à assinatura da compilação atual.
+- **Desenvolvimento Contínuo**: Monitora arquivos e sincroniza alterações de código para containers de Pod ativos em tempo real, sem a necessidade de recompilar o container por completo.
+
+### Preparando o Ambiente do Terminal
+
+Para evitar compilar imagens no host e enviá-las para registros externos, redirecione sua sessão de terminal para compilar imagens diretamente dentro do daemon Docker interno do Minikube:
+
+- **PowerShell (Windows)**:
+  ```powershell
+  minikube -p tupynambalucas docker-env | Invoke-Expression
+  ```
+- **Bash / Git Bash**:
+  ```bash
+  eval $(minikube -p tupynambalucas docker-env)
+  ```
+
+### Iniciando o Cluster e os Workspaces
+
+Fornecemos scripts simplificados no root `package.json` para gerenciar o ciclo de vida:
+
+1. **Implantar e Executar em Segundo Plano**:
+   Para compilar todas as imagens e implantar todos os componentes do platform e do cortex no Minikube:
+
+   ```bash
+   pnpm k8s:up
+   ```
+
+2. **Modo de Desenvolvimento Contínuo (Live Hot-Reloading)**:
+   Para executar o Skaffold em modo de desenvolvimento, monitorando alterações no código-fonte e recarregando automaticamente o código dentro dos pods em execução:
+
+   ```bash
+   pnpm k8s:dev
+   ```
+
+3. **Parar e Limpar**:
+   Para destruir todos os recursos, namespaces e cargas de trabalho implantados pelo Skaffold:
+   ```bash
+   pnpm k8s:down
+   ```
+
+---
+
+## 7. Verificando e Acessando Serviços
+
+Depois de implantado, você pode verificar seu cluster usando ferramentas de CLI, painéis e endpoints de ingress:
+
+1. **Verificar o Status do Pod**:
+
+   ```bash
+   kubectl get pods -A
+   ```
+
+   Ou use o **OpenLens** para visualizar os namespaces ativos.
+
+2. **Acessando Endpoints Locais**:
+   Certifique-se de que o `minikube tunnel -p tupynambalucas` esteja sendo executado em um terminal separado. Navegue para:
+   - `http://gateway.localhost/` para acessar a API do Agent Gateway.
+   - `http://gateway-admin.localhost/` para visualizar a interface de administração do Agent Gateway.
+   - `http://turbocache.localhost/` para acessar o serviço de cache de compilação remoto.
+
+---
+
+## 8. Comunicação entre Serviços (Service-to-Service) com o Traefik
+
+Por padrão, os serviços do Kubernetes se comunicam diretamente usando nomes do CoreDNS (por exemplo, `http://mcp-github:8080/mcp` dentro do mesmo namespace ou `http://otel-collector.platform.svc.cluster.local:4317` entre namespaces). Isso ignora quaisquer gateways de API.
+
+No entanto, se você deseja que o **Traefik** intercepte, roteie, equilibre a carga ou aplique middlewares (como limitação de taxa, rastreamento ou manipulação de cabeçalho) à comunicação entre serviços, você pode configurar o Traefik como um **API Gateway Interno**.
+
+### Passo 1: Instalando o Traefik no Minikube
+
+Se você estiver usando o Traefik como seu controlador de ingress principal:
+
+1. Desative o controlador de ingress Nginx padrão no seu perfil do Minikube:
+   ```bash
+   minikube addons disable ingress -p tupynambalucas
+   ```
+2. Instale o Traefik usando o Helm:
+   ```bash
+   helm repo add traefik https://traefik.github.io/charts
+   helm repo update
+   helm install traefik traefik/traefik -n kube-system
+   ```
+
+### Passo 2: Definindo IngressRoutes Internos ou Regras de Ingress
+
+Para rotear o tráfego interno, use o recurso personalizado `IngressRoute` do Traefik. Isso permite configurar regras de roteamento usando hosts internos.
+
+Crie um arquivo de manifesto chamado `internal-routing.yaml` na pasta de infraestrutura do seu workspace (ex: `cortex/infrastructure/kubernetes/internal-routing.yaml`):
+
+```yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: internal-mcp-routing
+  namespace: cortex
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`mcp-github.cortex.internal`)
+      kind: Rule
+      services:
+        - name: mcp-github
+          port: 8080
+      middlewares:
+        - name: internal-request-header
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: internal-request-header
+  namespace: cortex
+spec:
+  headers:
+    customRequestHeaders:
+      X-Internal-Source: 'AgentGateway'
+```
+
+### Passo 3: Roteando o Tráfego Através do Gateway
+
+Quando um serviço (como o `agentgateway`) precisar se comunicar com o `mcp-github` por meio do Traefik:
+
+1. Em vez de enviar a requisição para `http://mcp-github:8080/mcp`, aponte a configuração do cliente para o IP ou DNS do Serviço do Traefik no cluster:
+   `http://traefik.kube-system.svc.cluster.local/mcp`
+2. Inclua o cabeçalho Host interno correspondente na requisição HTTP:
+   `Host: mcp-github.cortex.internal`
+
+Isso força o tráfego a passar pelo mecanismo de proxy do Traefik, que aplica o middleware `internal-request-header` e registra os detalhes da requisição para o OpenTelemetry antes de roteá-la para o pod de destino.
+
+---
+
+## Apêndice: Configuração Padronizada em VM Ubuntu Server LTS
+
+Se você preferir executar seu ambiente Kubernetes dentro de uma Máquina Virtual dedicada e independente do **Ubuntu Server LTS** no VirtualBox (em vez de rodar diretamente no host Windows), você pode padronizar a instalação de todas as dependências necessárias (Docker, kubectl, Minikube e Skaffold) usando nosso script de configuração unificado.
+
+### Passo 1: Provisionando a VM
+
+1. Crie uma nova Máquina Virtual no VirtualBox utilizando a ISO baixada do Ubuntu Server LTS.
+2. Aloque pelo menos 2 CPUs, 4GB de RAM e 20GB de espaço em disco.
+3. Configure a Rede da VM:
+   - Adicione uma segunda placa de rede configurada como **Placa de Rede Host-Only** (para que o Windows host consiga se comunicar com a VM).
+4. Conclua a instalação do Ubuntu Server, configure o SSH, inicie a VM e faça login.
+
+### Passo 2: Executando o Script de Configuração
+
+Transfira e execute nosso script de configuração padronizado dentro da VM Ubuntu:
+
+1. Copie o script do monorepo: `tools/scripts/setup-ubuntu-k8s.sh` para a VM (ou baixe diretamente via curl).
+2. Execute o script no shell da VM:
+   ```bash
+   chmod +x setup-ubuntu-k8s.sh
+   ./setup-ubuntu-k8s.sh
+   ```
+3. Assim que concluído, recarregue suas permissões de grupo:
+   ```bash
+   newgrp docker
+   ```
+4. Inicie o cluster Minikube dentro da VM:
+   ```bash
+   minikube start --driver=docker
+   ```

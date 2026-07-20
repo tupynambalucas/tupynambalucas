@@ -10,7 +10,7 @@ and documentation.
 
 The project is organized into bounded contexts:
 
-### 1. [@tupynambalucas-hub/](./hub/README.md) (`hub/`)
+### 1. [@tupynambalucas-hub/](../hub/README.md) (`hub/`)
 
 This is the personal developer portal. It serves as the primary website, hosting:
 
@@ -23,12 +23,12 @@ This is the personal developer portal. It serves as the primary website, hosting
 - **`@tupynambalucas-hub/api`**: Fastify API (`hub/services/api`).
 - **`@tupynambalucas-hub/core`**: Shared core library (`hub/packages/core`).
 
-### 2. [@tupynambalucas/renderer](./renderer/README.md) (`renderer/`)
+### 2. [@tupynambalucas/renderer](../renderer/README.md) (`renderer/`)
 
 A generic dynamic asset generator and document compilation engine that supports Tailwind CSS design
 tokens and compiles custom repository READMEs.
 
-### 3. [@tupynambalucas-studio/](./studio/README.md) (`studio/`)
+### 3. [@tupynambalucas-studio/](../studio/README.md) (`studio/`)
 
 Manages design resources, brand identity assets, and design-to-code pipelines.
 
@@ -37,7 +37,7 @@ Manages design resources, brand identity assets, and design-to-code pipelines.
 - **`@tupynambalucas-studio/bucket`**: Command-line asset synchronization script for Cloudflare
   R2 object storage.
 
-### 4. [@tupynambalucas/cortex](./cortex/README.md) (`cortex/`)
+### 4. [@tupynambalucas/cortex](../cortex/README.md) (`cortex/`)
 
 Unified Bounded Context for the artificial intelligence architecture, consolidating the gateway
 ingress, persistent memory databases, Model Context Protocol (MCP) data plane integrations, and
@@ -48,20 +48,20 @@ control plane agent runtimes.
 - **`mcp/`**: Model Context Protocol server specifications and service Dockerfiles.
 - **`agents/`**: Control plane agent CLI installation scripts and state folders.
 
-### 5. [@tupynambalucas/platform](./platform/README.md) (`platform/`)
+### 5. [@tupynambalucas/platform](../platform/README.md) (`platform/`)
 
 Core cluster platform services orchestrating telemetry aggregation and build caching.
 
 - **`monitor`**: OpenTelemetry Collector aggregating metrics, logs, and distributed traces.
 - **`turbocache`**: Turborepo build caching service optimizing compilation workflows.
 
-### 6. [@tupynambalucas-tools/](./tools/README.md) (`tools/`)
+### 6. [@tupynambalucas-tools/](../tools/README.md) (`tools/`)
 
 Developer automation scripts and git version control hooks.
 
 - **`@tupynambalucas-tools/github`**: Local git hooks and automated repository sanity checkers.
 
-### 7. [@tupynambalucas/docs](./docs/README.md) (`docs/`)
+### 7. [@tupynambalucas/docs](../docs/README.md) (`docs/`)
 
 Centralized technical reference manual and project handbook, built with Docusaurus v3.
 

@@ -11,10 +11,11 @@ O workspace Platform gerencia os serviços operacionais de execução contínua 
 
 ## Visão Geral da Arquitetura
 
-O workspace platform gerencia dois serviços principais em tempo de execução:
+O workspace platform gerencia três serviços principais em tempo de execução:
 
-1. **otel-collector**: Um coletor OpenTelemetry que agrega métricas de telemetria, logs e rastros distribuídos, exportando-os para o Grafana Cloud e Sentry.
-2. **turbocache**: Um servidor de cache remoto de alto desempenho que armazena artefatos de cache do Turborepo, acelerando os pipelines de compilação dos desenvolvedores.
+1. **traefik**: O controlador de ingress do cluster e API Gateway, lidando com o ingress de clientes externos e roteamento interno de serviço para serviço.
+2. **otel-collector**: Um coletor OpenTelemetry que agrega métricas de telemetria, logs e rastros distribuídos, exportando-os para o Grafana Cloud e Sentry.
+3. **turbocache**: Um servidor de cache remoto de alto desempenho que armazena artefatos de cache do Turborepo, acelerando os pipelines de compilação dos desenvolvedores.
 
 ---
 
@@ -23,7 +24,8 @@ O workspace platform gerencia dois serviços principais em tempo de execução:
 ```text
 platform/
 ├── infrastructure/
-│   └── docker/          # Configurações do Docker Compose (compose.yaml)
+│   ├── docker/          # Configurações do Docker Compose (compose.yaml)
+│   └── kubernetes/      # Manifestos Kubernetes (traefik, otel, turbocache)
 ├── services/
 │   ├── monitor/         # Esquemas de configuração para o coletor OTLP
 │   └── turbocache/      # Dockerfiles e lógica de cache

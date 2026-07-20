@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-copilot
+  namespace: cortex
+  labels:
+    app: agent-copilot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent-copilot
+  template:
+    metadata:
+      labels:
+        app: agent-copilot
+    spec:
+      containers:
+        - name: agent-copilot
+          image: agent-copilot:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - bash
+            - -c
+            - 'mkdir -p /root/.copilot && cp /workspace/cortex/agents/shared/mcp.config.json /root/.copilot/mcp-config.json || true && exec tail -f /dev/null'
+          env:
+            - name: COPILOT_HOME
+              value: '/root/.copilot'
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: GITHUB_TOKEN
+                  optional: true
+          volumeMounts:
+            - name: workspace-vol
+              mountPath: /workspace
+            - name: skills-vol
+              mountPath: /workspace/.agents/skills
+            - name: copilot-data
+              mountPath: /root/.copilot
+            - name: gh-config
+              mountPath: /root/.config/gh
+            - name: ssh-keys
+              mountPath: /root/.ssh
+              readOnly: true
+            - name: gitconfig
+              mountPath: /root/.gitconfig
+              subPath: .gitconfig
+              readOnly: true
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: workspace-vol
+          hostPath:
+            path: /workspace
+            type: Directory
+        - name: skills-vol
+          hostPath:
+            path: /workspace/cortex/agents/skills
+            type: Directory
+        - name: copilot-data
+          hostPath:
+            path: /workspace/cortex/data/copilot
+            type: DirectoryOrCreate
+        - name: gh-config
+          hostPath:
+            path: /workspace/cortex/data/copilot/gh-config
+            type: DirectoryOrCreate
+        - name: ssh-keys
+          hostPath:
+            path: /hosthome/.ssh
+            type: DirectoryOrCreate
+        - name: gitconfig
+          hostPath:
+            path: /hosthome
+            type: DirectoryOrCreate
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-antigravity
+  namespace: cortex
+  labels:
+    app: agent-antigravity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent-antigravity
+  template:
+    metadata:
+      labels:
+        app: agent-antigravity
+    spec:
+      containers:
+        - name: agent-antigravity
+          image: agent-antigravity:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - bash
+            - -c
+            - 'mkdir -p /root/.gemini/config && cp /workspace/cortex/agents/shared/mcp.config.json /root/.gemini/config/mcp_config.json || true && exec tail -f /dev/null'
+          env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: GEMINI_API_KEY
+                  optional: true
+          volumeMounts:
+            - name: workspace-vol
+              mountPath: /workspace
+            - name: skills-vol
+              mountPath: /workspace/.agents/skills
+            - name: antigravity-data
+              mountPath: /root/.gemini
+            - name: ssh-keys
+              mountPath: /root/.ssh
+              readOnly: true
+            - name: gitconfig
+              mountPath: /root/.gitconfig
+              subPath: .gitconfig
+              readOnly: true
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: workspace-vol
+          hostPath:
+            path: /workspace
+            type: Directory
+        - name: skills-vol
+          hostPath:
+            path: /workspace/cortex/agents/skills
+            type: Directory
+        - name: antigravity-data
+          hostPath:
+            path: /workspace/cortex/data/antigravity
+            type: DirectoryOrCreate
+        - name: ssh-keys
+          hostPath:
+            path: /hosthome/.ssh
+            type: DirectoryOrCreate
+        - name: gitconfig
+          hostPath:
+            path: /hosthome
+            type: DirectoryOrCreate
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket

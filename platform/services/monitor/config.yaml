@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=none
 receivers:
   otlp:
     protocols:

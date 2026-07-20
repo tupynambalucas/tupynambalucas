@@ -11,10 +11,11 @@ The Platform workspace manages the operational backend services that support tel
 
 ## Architecture Overview
 
-The platform workspace manages two core runtime services:
+The platform workspace manages three core runtime services:
 
-1. **otel-collector**: An OpenTelemetry Collector that aggregates telemetry metrics, logs, and distributed traces, exporting them to Sentry and Grafana Cloud.
-2. **turbocache**: A high-performance remote cache server storing Turborepo build and test artifacts to accelerate developer compilation pipelines.
+1. **traefik**: The cluster ingress controller and API Gateway, handling external client ingress and internal service-to-service routing.
+2. **otel-collector**: An OpenTelemetry Collector that aggregates telemetry metrics, logs, and distributed traces, exporting them to Sentry and Grafana Cloud.
+3. **turbocache**: A high-performance remote cache server storing Turborepo build and test artifacts to accelerate developer compilation pipelines.
 
 ---
 
@@ -23,7 +24,8 @@ The platform workspace manages two core runtime services:
 ```text
 platform/
 ├── infrastructure/
-│   └── docker/          # Docker Compose configurations (compose.yaml)
+│   ├── docker/          # Docker Compose configurations (compose.yaml)
+│   └── kubernetes/      # Kubernetes manifests (traefik, otel, turbocache)
 ├── services/
 │   ├── monitor/         # Configuration schemas for the OTLP Collector
 │   └── turbocache/      # Dockerfiles and caching logic

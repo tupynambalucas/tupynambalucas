@@ -46,8 +46,6 @@ services:
       context: ../../mcp/github
     environment:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
-    volumes:
-      - ../../mcp/github/instructions.md:/app/instructions.md:ro
     networks:
       - cortex-net
 
@@ -58,8 +56,6 @@ services:
       context: ../../mcp/context7
     environment:
       - CONTEXT7_API_KEY=${CONTEXT7_API_KEY}
-    volumes:
-      - ../../mcp/context7/instructions.md:/app/instructions.md:ro
     networks:
       - cortex-net
 
@@ -71,8 +67,6 @@ services:
     environment:
       - HUB_PAT_TOKEN=${DOCKERHUB_PAT_TOKEN}
       - HUB_USERNAME=${DOCKERHUB_USERNAME}
-    volumes:
-      - ../../mcp/dockerhub/instructions.md:/app/instructions.md:ro
     networks:
       - cortex-net
 
@@ -83,8 +77,6 @@ services:
       context: ../../mcp/firecrawl
     environment:
       - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
-    volumes:
-      - ../../mcp/firecrawl/instructions.md:/app/instructions.md:ro
     networks:
       - cortex-net
 
@@ -96,8 +88,6 @@ services:
     environment:
       - GRAFANA_URL=${GRAFANA_CLOUD_URL}
       - GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_SERVICE_ACCOUNT_TOKEN}
-    volumes:
-      - ../../mcp/grafana/instructions.md:/app/instructions.md:ro
     networks:
       - cortex-net
 

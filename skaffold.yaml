@@ -1,0 +1,50 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: tupynambalucas-dev
+build:
+  local:
+    concurrency: 0
+  artifacts:
+    - image: turbocache
+      context: platform/services/turbocache
+      docker:
+        dockerfile: Dockerfile
+    - image: mcp-github
+      context: cortex/mcp/github
+      docker:
+        dockerfile: Dockerfile
+    - image: mcp-context7
+      context: cortex/mcp/context7
+      docker:
+        dockerfile: Dockerfile
+    - image: mcp-dockerhub
+      context: cortex/mcp/dockerhub
+      docker:
+        dockerfile: Dockerfile
+    - image: mcp-firecrawl
+      context: cortex/mcp/firecrawl
+      docker:
+        dockerfile: Dockerfile
+    - image: mcp-grafana
+      context: cortex/mcp/grafana
+      docker:
+        dockerfile: Dockerfile
+    - image: agent-copilot
+      context: cortex/agents/copilot
+      docker:
+        dockerfile: Dockerfile
+    - image: agent-antigravity
+      context: cortex/agents/antigravity
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - platform/infrastructure/kubernetes/namespace.yaml
+    - platform/infrastructure/kubernetes/traefik.yaml
+    - platform/infrastructure/kubernetes/otel-collector.yaml
+    - platform/infrastructure/kubernetes/turbocache.yaml
+    - cortex/infrastructure/kubernetes/namespace.yaml
+    - cortex/infrastructure/kubernetes/agentgateway.yaml
+    - cortex/infrastructure/kubernetes/mcp-servers.yaml
+    - cortex/infrastructure/kubernetes/agents.yaml
