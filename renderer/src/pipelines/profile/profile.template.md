@@ -1,8 +1,6 @@
 <!-- Note: This profile README is dynamically updated by the TypeScript-based generator in the ./renderer workspace -->
 
-{{ headerImage }}
-
-A **Full-Stack Developer** with a rare profile that merges over 10 years of programming studies with a deep sensitivity for design and UX/UI. My expertise lies in architecting end-to-end digital solutions, developing high-performance applications with TypeScript, and strategically selecting the optimal database technology — PostgreSQL for relational structures or MongoDB for high-flexibility scenarios — to ensure the final product's scalability and efficiency.
+**Senior Full-Stack Engineer** building production systems in TypeScript from end to end. I design domain-driven monorepos orchestrated by Turborepo with strict catalog-managed dependencies, ship high-performance APIs on Fastify with MongoDB replica sets and Redis-backed job queues, and craft interactive frontends with React 19, Three.js, and GSAP. My infrastructure runs on Docker and Kubernetes with Traefik ingress, OpenTelemetry-instrumented observability pipelines exporting to Grafana Cloud, and multi-environment promotion from dev to production. I architect AI-native toolchains — self-hosted MCP gateway federations, containerized agent runtimes, and vector memory layers — turning autonomous workflows into first-class infrastructure. Every repository I own ships with automated CI/CD, Conventional Commits, and security hardened by design.
 
 <p align="center">
   {{ overviewImages }}&nbsp;&nbsp;{{ languagesImages }}
