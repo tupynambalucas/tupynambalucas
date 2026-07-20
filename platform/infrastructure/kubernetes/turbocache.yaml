@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: turbocache-pvc
+  namespace: platform
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: turbocache
+  namespace: platform
+  labels:
+    app: turbocache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: turbocache
+  template:
+    metadata:
+      labels:
+        app: turbocache
+    spec:
+      containers:
+        - name: turbocache
+          image: turbocache:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: STORAGE_PROVIDER
+              value: 'local'
+            - name: STORAGE_PATH
+              value: '/data'
+            - name: STORAGE_PATH_USE_TMP_FOLDER
+              value: 'false'
+            - name: TURBO_TOKEN
+              value: 'secret_turbo_token'
+            - name: AUTH_MODE
+              value: 'secret'
+            - name: LOG_LEVEL
+              value: 'info'
+            - name: ENABLE_STATUS_LOG
+              value: 'true'
+            - name: LOG_MODE
+              value: 'console'
+            - name: HTTP2
+              value: 'false'
+            - name: READ_ONLY
+              value: 'false'
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /data
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: turbocache-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: turbocache
+  namespace: platform
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: turbocache
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: turbocache-ingress
+  namespace: platform
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: turbocache.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: turbocache
+                port:
+                  number: 3000

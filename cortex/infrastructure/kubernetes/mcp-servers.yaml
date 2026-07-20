@@ -1,0 +1,236 @@
+# MCP GitHub Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-github
+  namespace: cortex
+  labels:
+    app: mcp-github
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-github
+  template:
+    metadata:
+      labels:
+        app: mcp-github
+    spec:
+      containers:
+        - name: mcp-github
+          image: mcp-github:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GITHUB_PERSONAL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: GITHUB_PERSONAL_ACCESS_TOKEN
+                  optional: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-github
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-github
+---
+# MCP Context7 Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-context7
+  namespace: cortex
+  labels:
+    app: mcp-context7
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-context7
+  template:
+    metadata:
+      labels:
+        app: mcp-context7
+    spec:
+      containers:
+        - name: mcp-context7
+          image: mcp-context7:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: CONTEXT7_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: CONTEXT7_API_KEY
+                  optional: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-context7
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-context7
+---
+# MCP DockerHub Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-dockerhub
+  namespace: cortex
+  labels:
+    app: mcp-dockerhub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-dockerhub
+  template:
+    metadata:
+      labels:
+        app: mcp-dockerhub
+    spec:
+      containers:
+        - name: mcp-dockerhub
+          image: mcp-dockerhub:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: HUB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: DOCKERHUB_USERNAME
+                  optional: true
+            - name: HUB_PAT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: DOCKERHUB_PAT_TOKEN
+                  optional: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-dockerhub
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-dockerhub
+---
+# MCP Firecrawl Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-firecrawl
+  namespace: cortex
+  labels:
+    app: mcp-firecrawl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-firecrawl
+  template:
+    metadata:
+      labels:
+        app: mcp-firecrawl
+    spec:
+      containers:
+        - name: mcp-firecrawl
+          image: mcp-firecrawl:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: FIRECRAWL_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: FIRECRAWL_API_KEY
+                  optional: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-firecrawl
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-firecrawl
+---
+# MCP Grafana Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-grafana
+  namespace: cortex
+  labels:
+    app: mcp-grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-grafana
+  template:
+    metadata:
+      labels:
+        app: mcp-grafana
+    spec:
+      containers:
+        - name: mcp-grafana
+          image: mcp-grafana:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GRAFANA_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: GRAFANA_CLOUD_URL
+                  optional: true
+            - name: GRAFANA_SERVICE_ACCOUNT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: mcp-secrets
+                  key: GRAFANA_SERVICE_ACCOUNT_TOKEN
+                  optional: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-grafana
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-grafana

@@ -15,32 +15,6 @@
 
   /* --- Schemas --- */
 
-  /* --- JSON Schemas --- */
-  "json.schemas": [
-    {
-      "fileMatch": ["package.json", "**/package.json"],
-      "url": "./.vscode/schemas/schema-package.json"
-    },
-    {
-      "fileMatch": ["tsconfig.json", "**/tsconfig.json", "**/tsconfig.*.json"],
-      "url": "./.vscode/schemas/schema-tsconfig.json"
-    },
-    {
-      "fileMatch": [".prettierrc", "**/prettierrc.json"],
-      "url": "./.vscode/schemas/schema-prettierrc.json"
-    },
-    {
-      "fileMatch": [".changeset/config.json"],
-      "url": "./.vscode/schemas/schema-changesets.json"
-    }
-  ],
-
-  /* --- YAML Schemas --- */
-  "yaml.schemas": {
-    ".vscode/schemas/schema-docker-compose.json": ["**/compose.yaml", "**/*compose*.yaml"],
-    ".vscode/schemas/schema-pnpm-workspace.json": ["pnpm-workspace.yaml"]
-  },
-
   /* --- Eslint Config --- */
   "eslint.useFlatConfig": true,
   "eslint.workingDirectories": [{ "mode": "auto" }],
@@ -128,6 +102,13 @@
   "yaml.format.singleQuote": false,
   "yaml.format.bracketSpacing": true,
   "yaml.format.proseWrap": "preserve",
+  "yaml.schemas": {
+    "kubernetes": [
+      "platform/infrastructure/kubernetes/*.yaml",
+      "cortex/infrastructure/kubernetes/*.yaml",
+      "studio/design/infrastructure/kubernetes/*.yaml"
+    ]
+  },
 
   /* --- Markdown Preview Enhanced --- */
   "markdown-preview-enhanced.codeBlockTheme": "auto.css",
