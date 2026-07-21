@@ -14,71 +14,80 @@ This guide details the dual-orchestration environment used in the monorepo. Loca
 
 ## Tooling Prerequisites
 
-To run and manage the local orchestration environment, you must install the appropriate tools depending on your preferred approach.
+To run and manage the local orchestration environment, you must install the appropriate tools depending on the environment you want to run.
 
-### Approach 1: Native Windows Setup (Local Rancher Desktop & Minikube)
+### 1. Docker Compose Environment (Docker Engine in WSL2 / Desktop)
 
-Best for quick start and low resource usage.
+For high-velocity local microservice coding and database testing:
 
-Install the following tools on your Windows machine:
-
-- **Rancher Desktop**: Local container engine providing the Docker CLI.
-- **Minikube**: Manages the local Kubernetes cluster on the Windows host.
-- **kubectl**: Kubernetes command-line tool.
-- **Skaffold**: Automates the build and deploy pipeline.
-- **OpenLens**: Visual cluster monitoring client.
-
-Run this command in PowerShell to install the native stack:
-
-```powershell
-winget install RancherDesktop.RancherDesktop Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
-```
-
-### Approach 2: VirtualBox VM Setup
-
-Best for production-equivalent OS isolation or rapid local VM-based testing. This minimizes Windows host dependencies (no Rancher Desktop required on Windows).
-
-Depending on your goal, you can set this up in one of two ways:
-
-#### Way A: Rapid Local VM Setup (Minikube VirtualBox Driver)
-
-Ideal for standard local development testing. Minikube automatically provisions and manages its own optimized VM (`minikube-iso`) inside VirtualBox.
-
-- **Windows Host Tools**: VirtualBox, Minikube CLI, kubectl, Skaffold, OpenLens.
-- **Install command (PowerShell)**:
+- **Docker Engine in WSL2 (Ultraleve - Recommended)**: Native `dockerd` running directly inside WSL2 Ubuntu without Desktop GUI overhead. Exposes `tcp://localhost:2375` to allow Windows PowerShell/Git Bash to run `docker` and `docker compose` commands directly.
+- **Rancher Desktop / Docker Desktop (GUI Alternative)**: If using a Desktop GUI app, you **must disable Kubernetes** in the settings (`Settings -> Kubernetes -> Enable Kubernetes = unchecked`). This prevents internal Kubernetes engines (such as K3s) from interfering with the `kubectl` context (`tupynambalucas`) managed by Minikube.
+- **Install command (PowerShell - CLI Option)**:
   ```powershell
-  winget install Oracle.VirtualBox Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+  winget install Docker.DockerCLI Docker.DockerCompose
   ```
 
-#### Way B: Production-equivalent VM Setup (Manual Ubuntu Server LTS ISO)
+### 2. Kubernetes Environment (Minikube via VirtualBox)
 
-Ideal for simulating actual production server environments.
+For local Kubernetes testing, routing validation, and deployment pipelines. Our workflow leverages two complementary strategies:
 
-- **Windows Host Tools**: VirtualBox, kubectl, Skaffold, OpenLens (no Minikube or Rancher Desktop required on Windows).
+- **Approach A (Automated Local Dev)**: Uses host-installed `minikube`, `kubectl`, and `skaffold` with the `virtualbox` driver for live hot-reloading and instant full-stack cluster deployment.
+- **Approach B (Production Staging Simulation)**: Runs 100% inside an isolated VirtualBox Ubuntu VM simulating cloud production hosts without requiring Kubernetes tooling on the Windows host.
+
+Install the following tools on your Windows host:
+
+- **Oracle VirtualBox**: The hypervisor hosting our Kubernetes nodes.
+- **kubectl**: _Optional on host for Approach B._ Minikube bundles its own version of `kubectl` (accessible via `minikube kubectl --`). However, installing the native client is highly recommended for automatic integration with tools like OpenLens and Skaffold.
+- **Skaffold**: _Required on host for Approach A._ Automates build and deploy pipelines. If using Approach B, Skaffold runs entirely inside the VM and is not needed on the host.
+- **OpenLens**: Visual cluster monitoring client.
 - **Install command (PowerShell)**:
   ```powershell
+  # Omit Kubernetes.kubectl or Google.Skaffold if using Approach B exclusively
   winget install Oracle.VirtualBox Kubernetes.kubectl Google.Skaffold Lens.OpenLens
   ```
-- **VM Installer**: Download the official [Ubuntu Server LTS manual install ISO](https://ubuntu.com/download/server#manual-install-tab) and run our script inside the VM.
+
+Depending on your goals, choose one or both of the following VM deployment approaches:
+
+- **Approach A: Local VM Development (Minikube ISO)**
+  Minikube automatically provisions and manages its own optimized VM inside VirtualBox.
+  - **Extra Host Tool**: Requires Minikube CLI on the Windows host.
+  - **Install command (PowerShell)**:
+    ```powershell
+    winget install Kubernetes.minikube
+    ```
+
+- **Approach B: Production Staging Simulation (Ubuntu Server LTS VM)**
+  A manually provisioned Ubuntu Server LTS VM in VirtualBox where Minikube runs inside the VM (simulating actual cloud production hosts).
+  - **No local Minikube CLI required on Windows.** All Kubernetes runtime dependencies are self-contained inside the VM.
+  - **VM Installer**: Official [Ubuntu Server LTS manual install ISO](https://ubuntu.com/download/server#manual-install-tab).
 
 :::warning[Avoid Running Skaffold via Docker]
-Although you can run Skaffold inside a container using `docker run gcr.io/k8s-skaffold/skaffold:latest`, doing so requires mounting the Docker socket, mounting your kubeconfig, and remapping the Kubernetes API server host to `host.docker.internal`. Furthermore, live file synchronization (`pnpm k8s:dev`) often fails to propagate file system events across the container boundary. For this reason, installing the native Skaffold binary locally is strongly recommended.
+Although you can run Skaffold inside a container using `docker run gcr.io/k8s-skaffold/skaffold:latest`, doing so requires mounting the Docker socket, mounting your kubeconfig, and remapping the Kubernetes API server host to `host.docker.internal`. Furthermore, live file synchronization (`pnpm k8s:dev`) often fails to propagate file system events across the container boundary. For this reason, installing the native Skaffold binary locally (or running it inside the Linux VM) is strongly recommended.
 :::
 
 ---
 
-## 1. Docker Compose and Rancher Desktop Setup
+## 1. Docker Compose and Container Engine Setup
 
 For fast feedback loops, we run microservices and backing databases using Docker Compose.
 
-### Rancher Desktop Configuration
+### Option A: Docker Engine in WSL2 (Ultraleve - Recommended)
 
-To ensure compatibility with Docker Compose and our CLI tools, configure Rancher Desktop with the Moby container engine:
+To run Docker Compose without heavy Desktop GUI applications:
 
-1. Open **Rancher Desktop Settings**.
-2. Navigate to **Virtual Machine** \> **Container Engine**.
-3. Select **moby (dockerd)**. Do not use containerd.
-4. Go to **Application Settings** \> **Path Management** and ensure **Automatic** is enabled to configure standard `docker` and `docker compose` binary paths.
+1. **Enable systemd in WSL2**: Inside Ubuntu WSL, add `systemd=true` to `/etc/wsl.conf`.
+2. **Install Docker Engine**: Install `docker-ce` and `docker-compose-plugin` from the official Docker repository.
+3. **Expose TCP Socket**: Edit `/etc/docker/daemon.json` to expose `"tcp://127.0.0.1:2375"` and create a systemd override.
+4. **Connect Windows CLI**: On Windows, install `Docker.DockerCLI` and set `DOCKER_HOST="tcp://localhost:2375"`.
+
+### Option B: Rancher Desktop / Docker Desktop Configuration
+
+If you prefer using a Desktop GUI application:
+
+1. Open **Settings**.
+2. Navigate to **Kubernetes** and **uncheck "Enable Kubernetes"**.
+3. Under **Container Engine**, select **moby (dockerd)**. Do not use containerd.
+4. Ensure path management is enabled for standard `docker` and `docker compose` binaries.
 
 ### Workspace Script Execution
 
@@ -96,47 +105,106 @@ Instead of running verbose Docker Compose commands manually, use the predefined 
 
 When you need to test network policies, cross-namespace DNS resolution, or Traefik ingress configurations, you must deploy the workspaces to Minikube.
 
-### Creating the Cluster
+### Approach A: Local VM Development (VirtualBox Driver)
 
-Create a dedicated Minikube profile named `tupynambalucas` using the Docker driver (which mounts to the active Rancher Desktop daemon):
+Minikube automatically creates and boots a lightweight Linux VM (`minikube-iso`) in VirtualBox.
 
-```bash
-minikube start -p tupynambalucas --driver=docker --kubernetes-version=v1.30.0
+#### Creating the Cluster
+
+Create a dedicated Minikube profile named `tupynambalucas` using the `virtualbox` driver:
+
+```powershell
+minikube start -p tupynambalucas --driver=virtualbox --kubernetes-version=v1.30.0
 ```
 
-:::note[Windows Drivers]
-If your project requires complete hypervisor isolation, you can use the Hyper-V or VirtualBox drivers instead:
+#### Manual ISO Acquisition & Cache Configuration (Optional/Offline)
 
-- **Using Hyper-V**:
-  ```powershell
-  minikube start -p tupynambalucas --driver=hyperv --kubernetes-version=v1.30.0
-  ```
-- **Using VirtualBox (Automatic VM Management)**:
-  Minikube will automatically create and boot a lightweight Linux VM (`minikube-iso`) in VirtualBox.
-  ```powershell
-  minikube start -p tupynambalucas --driver=virtualbox --kubernetes-version=v1.30.0
-  ```
-  :::
+If your environment has restricted internet access, or if you prefer to manually manage the Minikube ISO, you can acquire and configure it as follows:
+
+1. **Acquire the ISO**:
+   Download the official Minikube ISO matching your target Kubernetes version from the Google Cloud Storage bucket or GitHub Releases:
+   - **GCS Release URL**: `https://storage.googleapis.com/minikube/iso/minikube-v1.30.0.iso`
+   - **GitHub Releases**: [Kubernetes Minikube Releases](https://github.com/kubernetes/minikube/releases)
+
+2. **Configure the ISO Location**:
+   You can point Minikube to your downloaded ISO using one of the following methods:
+
+   - **Option 1: CLI Flag (One-time run)**
+     Pass the path using the `file://` scheme to the `--iso-url` flag:
+     ```powershell
+     minikube start -p tupynambalucas --driver=virtualbox --kubernetes-version=v1.30.0 --iso-url=file://C:/path/to/minikube-v1.30.0.iso
+     ```
+   - **Option 2: Persistent Minikube Config (Recommended)**
+     Configure the ISO path globally so it is automatically used for every start:
+
+     ```powershell
+     minikube config set iso-url file://C:/path/to/minikube-v1.30.0.iso
+     ```
+
+   - **Option 3: Direct Local Cache Injection (No config changes)**
+     Place the downloaded `.iso` file directly in Minikube's default cache subdirectory. Minikube checks this location before attempting to download:
+     - **Windows Path**: `%USERPROFILE%\.minikube\cache\iso\minikube-v1.30.0.iso`
+     - **Unix Path**: `~/.minikube/cache/iso/minikube-v1.30.0.iso`
+
+### Approach B: Production Staging Simulation (Ubuntu Server LTS VM)
+
+This approach simulates a production server VM running Kubernetes.
+
+#### Step 1: Provisioning the VM
+
+1. Create a new VM in VirtualBox using the downloaded Ubuntu Server LTS ISO.
+2. Allocate at least 2 CPUs, 4GB RAM, and 20GB of disk space.
+3. Configure the VM Network:
+   - Add a second adapter configured as a **Host-Only Adapter** (so your Windows host can communicate with the VM).
+4. Finish installing Ubuntu Server, set up SSH, boot the VM, and log in.
+
+#### Step 2: Running the Setup Script
+
+Transfer and run our standardized configuration script inside the Ubuntu VM:
+
+1. Copy the script from the monorepo: `tools/scripts/setup-ubuntu-k8s.sh` to the VM (or download it directly).
+2. Execute the script in the VM shell:
+   ```bash
+   chmod +x setup-ubuntu-k8s.sh
+   ./setup-ubuntu-k8s.sh
+   ```
+3. Once completed, refresh your group permissions:
+   ```bash
+   newgrp docker
+   ```
+
+#### Step 3: Starting the Cluster Inside the VM
+
+To allow external connections (like kubectl or OpenLens from the Windows host), retrieve the Host-Only IP address of the VM (e.g. `192.168.56.101` using `ip a`) and pass it via the `--apiserver-ips` flag:
+
+```bash
+minikube start --driver=docker --apiserver-ips=<VM_HOST_ONLY_IP>
+```
 
 ### Accessing the Web Dashboard
 
-Minikube provides a web-based user interface to monitor workloads. Start the dashboard by running:
+Minikube provides a web-based user interface to monitor workloads.
 
-```bash
-minikube dashboard -p tupynambalucas
-```
+- **For Approach A**: Run directly on your Windows host:
+  ```bash
+  minikube dashboard -p tupynambalucas
+  ```
+- **For Approach B**: Run inside the Ubuntu VM shell:
+  ```bash
+  minikube dashboard
+  ```
 
-This will automatically open your default web browser to the dashboard page. Keep this terminal window open while you interact with it.
+This will automatically open the web browser (or output a URL) to the dashboard page. Keep this terminal window open while you interact with it.
 
 ---
 
 ## 3. Visualizing the Cluster with OpenLens
 
-To monitor resource consumption, inspect logs, and manage namespaces visually, we use **OpenLens**.
+To monitor resource consumption, inspect logs, and manage namespaces visually, we use **OpenLens** on the Windows host.
 
-### Configuring OpenLens to Connect
+### Connecting to Approach A (Local VM)
 
-OpenLens automatically reads standard kubeconfig configurations located at `~/.kube/config`. To register your Minikube profile context:
+OpenLens automatically reads standard kubeconfig configurations located at `~/.kube/config`.
 
 1. Set the active context to the Minikube profile in your terminal:
    ```bash
@@ -145,37 +213,58 @@ OpenLens automatically reads standard kubeconfig configurations located at `~/.k
 2. Open **OpenLens**.
 3. Locate the cluster dropdown in the top-left corner.
 4. Select the cluster context named **tupynambalucas**.
-5. Once selected, OpenLens will connect to the Minikube control plane, allowing you to view pods, deployments, services, and logs.
+
+### Connecting to Approach B (Ubuntu VM)
+
+To connect the host's OpenLens or kubectl to Minikube running inside the Ubuntu VM:
+
+1. Copy the VM's `~/.kube/config` contents to your Windows host `~/.kube/config`.
+2. Copy the client certificates and keys (usually at `~/.minikube/ca.crt`, `~/.minikube/profiles/minikube/client.crt`, and `~/.minikube/profiles/minikube/client.key` inside the VM) to your Windows host.
+3. Edit the copied `config` file on your Windows host to point the `server` IP address to the VM's Host-Only IP (e.g., `https://<VM_HOST_ONLY_IP>:8443`) and update the file paths for the certificates to their local Windows paths.
 
 ---
 
 ## 4. Ingress and Local Domain Routing
 
-Because Minikube runs inside a container or VM, its services (and the Ingress controller) are not automatically exposed on the host loopback network (`127.0.0.1`).
+Because Minikube runs inside a VM, its services (and the Ingress controller) are not automatically exposed on the host loopback network (`127.0.0.1`).
 
 ### Step 1: Enable the Ingress Addon
 
-Enable the Nginx Ingress controller inside the Minikube profile:
-
-```bash
-minikube addons enable ingress -p tupynambalucas
-```
+- **For Approach A (Host)**:
+  ```bash
+  minikube addons enable ingress -p tupynambalucas
+  ```
+- **For Approach B (Inside VM)**:
+  ```bash
+  minikube addons enable ingress
+  ```
 
 ### Step 2: Start the Network Tunnel
 
-On Windows, you must start a network tunnel in a separate, persistent terminal session. This routes traffic from the host network interface into the cluster's ingress controller:
-
-```bash
-minikube tunnel -p tupynambalucas
-```
+- **For Approach A (Host)**:
+  On Windows, you must start a network tunnel in a separate, persistent terminal session. This routes traffic from the host network interface into the cluster's ingress controller:
+  ```bash
+  minikube tunnel -p tupynambalucas
+  ```
+- **For Approach B (Inside VM)**:
+  Start the tunnel inside the Ubuntu VM shell:
+  ```bash
+  minikube tunnel
+  ```
 
 :::warning[Tunnel Lifespan]
-Keep this command running. If you close the terminal session, you will not be able to access `.localhost` domains from your web browser or local API clients.
+Keep this command running. If you close the terminal session, you will not be able to access local domains from your web browser or local API clients.
 :::
 
 ### Step 3: Domain Mapping
 
-Local domains suffix with `.localhost` (e.g., `gateway.localhost`, `turbocache.localhost`). Web browsers automatically resolve `*.localhost` domains to `127.0.0.1`, which the running tunnel routes into the Minikube ingress.
+Local domains suffix with `.localhost` (e.g., `gateway.localhost`, `turbocache.localhost`).
+
+- **For Approach A**: Web browsers automatically resolve `*.localhost` domains to `127.0.0.1`, which the running tunnel routes into the Minikube ingress.
+- **For Approach B**: Since the tunnel runs inside the VM, you must manually map the domains in your Windows host `hosts` file (`C:\Windows\System32\drivers\etc\hosts`) to point to the VM's Host-Only IP address:
+  ```text
+  <VM_HOST_ONLY_IP> gateway.localhost turbocache.localhost gateway-admin.localhost
+  ```
 
 ---
 
@@ -214,7 +303,7 @@ Skaffold handles:
 - **Dynamic Tagging**: Automatically updating image tags inside your Kubernetes manifests to match the current build signature.
 - **Continuous Development**: Watching files and syncing code changes to active Pod containers in real time without triggering full container rebuilds.
 
-### Preparing the Terminal Environment
+### Preparing the Terminal Environment (Approach A)
 
 To prevent building images on the host and pushing them to external registries, redirect your terminal session to build images directly inside the Minikube internal Docker daemon:
 
@@ -230,6 +319,9 @@ To prevent building images on the host and pushing them to external registries, 
 ### Launching the Cluster and Workspaces
 
 We provide simplified scripts in the root `package.json` to manage the lifecycle:
+
+- **For Approach A**: Run these commands from the Windows host terminal.
+- **For Approach B**: Run these commands from within the cloned repository inside the Ubuntu VM.
 
 1. **Deploy and Run in the Background**:
    To build all images and deploy all platform and cortex components to Minikube:
@@ -258,15 +350,13 @@ We provide simplified scripts in the root `package.json` to manage the lifecycle
 Once deployed, you can verify your cluster using CLI tools, dashboards, and ingress endpoints:
 
 1. **Verify Pod Status**:
-
-   ```bash
-   kubectl get pods -A
-   ```
+   - **For Approach A**: Run on the Windows host: `kubectl get pods -A`
+   - **For Approach B**: Run inside the Ubuntu VM: `kubectl get pods -A`
 
    Or use **OpenLens** to view the active namespaces.
 
 2. **Accessing Local Endpoints**:
-   Ensure `minikube tunnel -p tupynambalucas` is running in a separate terminal. Navigate to:
+   Ensure the network tunnel is running. Navigate to:
    - `http://gateway.localhost/` to access the Agent Gateway API.
    - `http://gateway-admin.localhost/` to view the Agent Gateway administration UI.
    - `http://turbocache.localhost/` to access the remote build cache service.
@@ -284,9 +374,14 @@ However, if you want **Traefik** to intercept, route, load-balance, or apply mid
 If you are using Traefik as your main ingress controller:
 
 1. Disable the default Nginx ingress controller in your Minikube profile:
-   ```bash
-   minikube addons disable ingress -p tupynambalucas
-   ```
+   - **Approach A (Host)**:
+     ```bash
+     minikube addons disable ingress -p tupynambalucas
+     ```
+   - **Approach B (Inside VM)**:
+     ```bash
+     minikube addons disable ingress
+     ```
 2. Install Traefik using Helm:
    ```bash
    helm repo add traefik https://traefik.github.io/charts
@@ -339,36 +434,3 @@ When a service (like `agentgateway`) needs to communicate with `mcp-github` thro
    `Host: mcp-github.cortex.internal`
 
 This forces the traffic through the Traefik proxy engine, which applies the `internal-request-header` middleware and logs the request details for OpenTelemetry before routing it to the destination pod.
-
----
-
-## Appendix: Standardized Ubuntu Server LTS VM Setup
-
-If you prefer to run your Kubernetes environment inside a dedicated standalone **Ubuntu Server LTS** Virtual Machine in VirtualBox (instead of running directly on your Windows host), you can standardize the installation of all required dependencies (Docker, kubectl, Minikube, and Skaffold) using our unified setup script.
-
-### Step 1: Provisioning the VM
-
-1. Create a new Virtual Machine in VirtualBox using your downloaded Ubuntu Server LTS ISO.
-2. Allocate at least 2 CPUs, 4GB RAM, and 20GB of disk space.
-3. Configure the VM Network:
-   - Add a second adapter configured as a **Host-Only Adapter** (so your Windows host can communicate with the VM).
-4. Finish installing Ubuntu Server, set up SSH, boot the VM, and log in.
-
-### Step 2: Running the Setup Script
-
-Transfer and run our standardized configuration script inside the Ubuntu VM:
-
-1. Copy the script from the monorepo: `tools/scripts/setup-ubuntu-k8s.sh` to the VM (or curl it directly).
-2. Execute the script in the VM shell:
-   ```bash
-   chmod +x setup-ubuntu-k8s.sh
-   ./setup-ubuntu-k8s.sh
-   ```
-3. Once completed, refresh your group permissions:
-   ```bash
-   newgrp docker
-   ```
-4. Start your Minikube cluster inside the VM:
-   ```bash
-   minikube start --driver=docker
-   ```

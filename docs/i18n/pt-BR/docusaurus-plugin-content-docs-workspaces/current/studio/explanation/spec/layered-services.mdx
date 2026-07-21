@@ -64,9 +64,9 @@ O serviço Memos é integrado como um serviço em camadas leve rodando dentro do
 
 O Memos acessa o banco de dados utilizando a string de conexão definida nas variáveis de ambiente:
 
-```bash
+```env
 MEMOS_DRIVER=postgres
-MEMOS_DSN=postgresql://memos_app:npg_xOmLhI1oHwq3@ep-twilight-morning-acgd3tih-pooler.sa-east-1.aws.neon.tech/memos_db?sslmode=require&channel_binding=require
+MEMOS_DSN=postgresql://your_db_user:your_db_password@your_db_host/your_db_name?sslmode=require
 ```
 
 ### C. Script Operacional

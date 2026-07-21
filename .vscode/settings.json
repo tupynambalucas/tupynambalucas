@@ -141,7 +141,8 @@
   "yaml.kubernetesCRDStore.enable": false,
 
   /* --- Color Highlight --- */
-  "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"]
+  "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"],
+  "terminal.integrated.env.windows": {}
 
   /* --- GitHub Copilot Chat Configuration --- */
 }
