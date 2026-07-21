@@ -6,8 +6,8 @@ This workspace context ([tools/](./)) orchestrates developer helper tools, git a
 
 ## 1. Directory Layout
 
-- **[github/](./github/)**: Git and GitHub CLI containerized workspaces and
-  repository automation.
+- **[github/](./github/)**: Git and GitHub CLI containerized workspaces and repository automation.
+- **[provisioner/](./provisioner/)**: Workstation bootstrapping, WSL2 configuration and local dev environment setup.
 
 ---
 
@@ -19,9 +19,13 @@ AI agents operating within the tools directory must consult the localized specif
   - Context & Setup Reference: [README.md](./github/README.md)
   - Scoped Developer Rules: [AGENTS.md](./github/AGENTS.md)
 
+- **Workstation Provisioner CLI (`tools/provisioner/`)**:
+  - Context & Setup Reference: [README.md](./provisioner/README.md)
+  - Scoped Developer Rules: [AGENTS.md](./provisioner/AGENTS.md)
+
 ---
 
-## 2. Shared Development Boundaries and Rules
+## 3. Shared Development Boundaries and Rules
 
 When modifying configurations or scripts inside this bounded context, the following rules apply:
 
@@ -31,10 +35,11 @@ When modifying configurations or scripts inside this bounded context, the follow
 
 ---
 
-## 3. Operations Commands Summary
+## 4. Operations Commands Summary
 
 Manage the tool environments using the mapped root execution scripts:
 
-| Context Subsystem      | Up Command                | Down Command                | Reset Command                |
-| :--------------------- | :------------------------ | :-------------------------- | :--------------------------- |
-| **GitHub CLI Tooling** | `pnpm github:services:up` | `pnpm github:services:down` | `pnpm github:services:reset` |
+| Context Subsystem           | Up Command                | Down Command                | Reset Command                |
+| :-------------------------- | :------------------------ | :-------------------------- | :--------------------------- |
+| **GitHub CLI Tooling**      | `pnpm github:services:up` | `pnpm github:services:down` | `pnpm github:services:reset` |
+| **Workstation Provisioner** | `pnpm provision`          | -                           | -                            |

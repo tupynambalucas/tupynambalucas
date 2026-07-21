@@ -1,0 +1,9 @@
+# Compiled output
+dist/
+
+# Node dependencies
+node_modules/
+
+# Local configurations (keep .example.json, ignore actual credentials)
+src/config/*.config.json
+!src/config/*.config.example.json

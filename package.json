@@ -73,6 +73,7 @@
     "cortex:antigravity:auth": "pnpm --filter @tupynambalucas/cortex cortex:antigravity:auth",
     "cortex:copilot:auth": "pnpm --filter @tupynambalucas/cortex cortex:copilot:auth",
     "// Tools Context": "---------------------------------------------",
+    "provision": "pnpm --filter @tupynambalucas-tools/provisioner start",
     "tools:lint": "turbo run lint --filter=@tupynambalucas-tools/*",
     "tools:typecheck": "turbo run typecheck --filter=@tupynambalucas-tools/*",
     "// Tools Github": "---------------------------------------------",
