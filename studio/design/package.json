@@ -31,12 +31,12 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "penpot:up": "docker compose -f infrastructure/docker/compose.yaml --profile penpot up -d",
-    "penpot:down": "docker compose -f infrastructure/docker/compose.yaml --profile penpot down",
-    "penpot:reset": "docker compose -f infrastructure/docker/compose.yaml --profile penpot down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile penpot up -d",
-    "memos:up": "docker compose -f infrastructure/docker/compose.yaml --profile memos up -d",
-    "memos:down": "docker compose -f infrastructure/docker/compose.yaml --profile memos down",
-    "memos:reset": "docker compose -f infrastructure/docker/compose.yaml --profile memos down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile memos up -d"
+    "penpot:up": "podman compose -f infrastructure/docker/compose.yaml --profile penpot up -d",
+    "penpot:down": "podman compose -f infrastructure/docker/compose.yaml --profile penpot down",
+    "penpot:reset": "podman compose -f infrastructure/docker/compose.yaml --profile penpot down --volumes && podman compose -f infrastructure/docker/compose.yaml --profile penpot up -d",
+    "memos:up": "podman compose -f infrastructure/docker/compose.yaml --profile memos up -d",
+    "memos:down": "podman compose -f infrastructure/docker/compose.yaml --profile memos down",
+    "memos:reset": "podman compose -f infrastructure/docker/compose.yaml --profile memos down --volumes && podman compose -f infrastructure/docker/compose.yaml --profile memos up -d"
   },
   "dependencies": {
     "react": "catalog:web-stack",

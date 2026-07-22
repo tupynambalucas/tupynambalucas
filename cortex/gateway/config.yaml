@@ -40,9 +40,6 @@ mcp:
     - name: grafana
       mcp:
         host: http://mcp-grafana:8080/mcp
-    - name: neo4j
-      mcp:
-        host: http://mcp-neo4j:8080/mcp
   statefulMode: stateless
   prefixMode: null
   failureMode: failOpen

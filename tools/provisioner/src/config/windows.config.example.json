@@ -1,6 +1,7 @@
 {
-  "wsl": {
-    "username": "your-username",
-    "password": "your-secure-password"
+  "podman": {
+    "machineName": "podman-machine-default",
+    "cpus": 2,
+    "memory": 2048
   }
 }

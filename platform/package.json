@@ -13,9 +13,9 @@
     "directory": "platform"
   },
   "scripts": {
-    "platform:up": "docker compose -f infrastructure/docker/compose.yaml up -d --build",
-    "platform:down": "docker compose -f infrastructure/docker/compose.yaml down",
-    "platform:reset": "docker compose -f infrastructure/docker/compose.yaml down --volumes && docker compose -f infrastructure/docker/compose.yaml up -d --build"
+    "platform:up": "podman compose -f infrastructure/docker/compose.yaml up -d --build",
+    "platform:down": "podman compose -f infrastructure/docker/compose.yaml down",
+    "platform:reset": "podman compose -f infrastructure/docker/compose.yaml down --volumes && podman compose -f infrastructure/docker/compose.yaml up -d --build"
   },
   "dependencies": {},
   "devDependencies": {}

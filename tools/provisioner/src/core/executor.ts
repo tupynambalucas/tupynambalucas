@@ -2,24 +2,22 @@ import { spawn } from 'node:child_process';
 
 export class PowerShellExecutor {
   /**
-   * Executes a PowerShell script as Administrator using the standard Windows "Start-Process -Verb RunAs" method.
-   * By using the "-Wait" parameter, the parent process waits until the elevated child process finishes.
+   * Executes a PowerShell script as Administrator using Windows Shell.Application COM object.
    */
   public static executeAsAdmin(scriptPath: string): Promise<boolean> {
     return new Promise((resolve) => {
-      // Escape paths for PowerShell strings
-      const command = `Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File \`"${scriptPath}\`"" -Verb RunAs -Wait`;
+      const cleanPath = scriptPath.replace(/'/g, "''");
+      const psCommand = `$sh = New-Object -ComObject Shell.Application; $sh.ShellExecute('powershell.exe', '-NoProfile -ExecutionPolicy Bypass -File "${cleanPath}"', '', 'runas', 1)`;
 
       const child = spawn(
         'powershell.exe',
-        ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', command],
+        ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', psCommand],
         {
           stdio: 'inherit',
         },
       );
 
       child.on('close', (code) => {
-        // Resolves true if the spawning delegate executed without critical errors
         resolve(code === 0);
       });
 
@@ -29,4 +27,5 @@ export class PowerShellExecutor {
     });
   }
 }
+
 export default PowerShellExecutor;
