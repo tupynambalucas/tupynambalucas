@@ -11,7 +11,7 @@ export interface WorkspaceInfo {
 export const MONOREPO_OVERVIEW: WorkspaceInfo = {
   id: 'root',
   name: 'tupynambalucas.dev Architecture',
-  path: '/',
+  path: '/workspaces/intro',
   description:
     'A high-performance, strictly-typed monorepo built on PNPM Workspaces and Turborepo. This architecture enforces strict domain isolation while sharing critical core logic.',
   stack: ['PNPM v11', 'Turborepo', 'TypeScript 6', 'ESLint 10', 'Zig'],
@@ -35,10 +35,58 @@ export const MONOREPO_OVERVIEW: WorkspaceInfo = {
 };
 
 export const WORKSPACES: Record<string, WorkspaceInfo> = {
+  cortex: {
+    id: 'cortex',
+    name: 'Cortex Context',
+    path: '/workspaces/cortex/overview',
+    description:
+      'Unified AI processing hub, persistent memory layers, Model Context Protocol servers, and agent runtimes.',
+    stack: ['TypeScript', 'Fastify', 'MongoDB Vector', 'MCP', 'Docker'],
+    responsibilities: [
+      'AI Agent Ingress Gateway',
+      'Vector RAG Subsystem',
+      'Model Context Protocol Servers',
+      'Control Plane Agents',
+    ],
+    ptBR: {
+      name: 'Contexto do Cortex',
+      description:
+        'Hub unificado de processamento de IA, camadas de memória persistente, servidores MCP e runtimes de agentes.',
+      responsibilities: [
+        'Gateway de Ingress para Agentes de IA',
+        'Subsistema Vector RAG',
+        'Servidores Model Context Protocol',
+        'Agentes de Control Plane',
+      ],
+    },
+  },
+  docs: {
+    id: 'docs',
+    name: 'Docs Hub',
+    path: '/workspaces/docs/overview',
+    description: 'Centralized technical documentation and engineering masterplan.',
+    stack: ['Docusaurus v3', 'MDX', 'Mermaid.js', 'TypeScript'],
+    responsibilities: [
+      'Engineering Architecture Docs',
+      'Product Roadmap & Vision',
+      'Internal Developer Portal',
+      'Diátaxis Framework Integration',
+    ],
+    ptBR: {
+      name: 'Hub de Documentação',
+      description: 'Documentação técnica centralizada e plano mestre de engenharia.',
+      responsibilities: [
+        'Docs de Arquitetura de Engenharia',
+        'Roadmap e Visão do Produto',
+        'Portal Interno do Desenvolvedor',
+        'Integração com Framework Diátaxis',
+      ],
+    },
+  },
   hub: {
     id: 'hub',
     name: 'Hub Context',
-    path: '/workspaces/hub',
+    path: '/workspaces/hub/overview',
     description:
       'Manages personal portfolio frontend pages, blog operations, contact form persistence, and administrator options.',
     stack: ['React 19', 'Fastify v5', 'MongoDB', 'Zustand', 'TailwindCSS v4'],
@@ -58,33 +106,78 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
       ],
     },
   },
-  profile: {
-    id: 'profile',
-    name: 'Profile Context',
-    path: '/workspaces/profile',
+  platform: {
+    id: 'platform',
+    name: 'Platform Context',
+    path: '/workspaces/platform/overview',
     description:
-      'A standalone statistics compiler CLI implemented in Zig that fetches metrics from GitHub API and generates SVG charts.',
-    stack: ['Zig', 'GitHub API (GraphQL)', 'GitHub Actions'],
+      'Core cluster platform services orchestrating telemetry aggregation and build caching.',
+    stack: ['OpenTelemetry', 'Turborepo', 'Docker'],
     responsibilities: [
-      'GitHub API metrics compilation',
-      'SVG visual chart rendering',
-      'Dynamic profile README injector',
+      'Telemetry Collection & Tracing',
+      'Distributed Build Caching',
+      'Cluster Observability',
     ],
     ptBR: {
-      name: 'Contexto de Perfil',
+      name: 'Contexto da Plataforma',
       description:
-        'Um compilador CLI de estatísticas implementado em Zig que consome dados do GitHub e gera SVG cards.',
+        'Serviços core de plataforma do cluster orquestrando agregação de telemetria e cache de build.',
       responsibilities: [
-        'Compilação de métricas do GitHub',
-        'Renderização de gráficos SVG',
-        'Injeção dinâmica no README do perfil',
+        'Coleta de Telemetria e Tracing',
+        'Cache de Build Distribuído',
+        'Observabilidade do Cluster',
+      ],
+    },
+  },
+  renderer: {
+    id: 'renderer',
+    name: 'Renderer Context',
+    path: '/workspaces/renderer/overview',
+    description:
+      'A generic dynamic asset generator and document compilation engine supporting design tokens.',
+    stack: ['TypeScript', 'TailwindCSS v4', 'Node.js'],
+    responsibilities: [
+      'Dynamic Asset Generation',
+      'README Document Compilation',
+      'Token Integration & Processing',
+    ],
+    ptBR: {
+      name: 'Contexto do Renderer',
+      description:
+        'Motor genérico de geração de ativos dinâmicos e compilação de documentos com suporte a design tokens.',
+      responsibilities: [
+        'Geração de Ativos Dinâmicos',
+        'Compilação de Documentos README',
+        'Processamento e Integração de Tokens',
+      ],
+    },
+  },
+  shared: {
+    id: 'shared',
+    name: 'Shared Context',
+    path: '/workspaces/shared/overview',
+    description: 'Shared utilities, constants, types, and cross-workspace specifications.',
+    stack: ['TypeScript', 'Zod'],
+    responsibilities: [
+      'Cross-workspace Shared Types',
+      'Common Utilities & Helpers',
+      'Shared Data Contracts',
+    ],
+    ptBR: {
+      name: 'Contexto Compartilhado',
+      description:
+        'Utilitários, constantes, tipos e especificações compartilhadas entre contextos.',
+      responsibilities: [
+        'Tipos Compartilhados entre Workspaces',
+        'Utilitários e Helpers Comuns',
+        'Contratos de Dados Compartilhados',
       ],
     },
   },
   studio: {
     id: 'studio',
     name: 'Studio Context',
-    path: '/workspaces/studio',
+    path: '/workspaces/studio/overview',
     description:
       'The single source of truth for visual identity, shared tokens, and UI consistency.',
     stack: ['TailwindCSS v4', 'PostCSS', 'Style Dictionary'],
@@ -107,7 +200,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   tools: {
     id: 'tools',
     name: 'Tools Context',
-    path: '/workspaces/tools',
+    path: '/workspaces/tools/overview',
     description: 'Infrastructure orchestration hub and technical automation backbone.',
     stack: ['Model Context Protocol (MCP)', 'Docker', 'Shell Scripts'],
     responsibilities: [
@@ -122,27 +215,6 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
         'Servidores de Contexto para Agentes de IA',
         'Configuração de Ambiente de Desenvolvimento',
         'Automação de Pipelines CI/CD',
-      ],
-    },
-  },
-  knowledge: {
-    id: 'knowledge',
-    name: 'Docs Hub',
-    path: '/workspaces/docs',
-    description: 'Centralized technical documentation and engineering masterplan.',
-    stack: ['Docusaurus v3', 'MDX', 'Mermaid.js'],
-    responsibilities: [
-      'Engineering Architecture Docs',
-      'Product Roadmap & Vision',
-      'Internal Developer Portal',
-    ],
-    ptBR: {
-      name: 'Hub de Documentação',
-      description: 'Documentação técnica centralizada e plano mestre de engenharia.',
-      responsibilities: [
-        'Docs de Arquitetura de Engenharia',
-        'Roadmap e Visão do Produto',
-        'Portal Interno do Desenvolvedor',
       ],
     },
   },

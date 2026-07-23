@@ -14,11 +14,22 @@ Cortex organizes the AI ecosystem into three distinct functional planes:
 
 2. **Data Plane & Memory Layer ([mcp/](./mcp/) & [memory/](./memory/))**:
    - Implements document-native Vector RAG memory databases (MongoDB) and tools integrations.
-   - Downstream MCP server adapters expose specific resources and tools (GitHub, Docker Hub, Grafana, Context7, Firecrawl).
+   - Downstream MCP server adapters expose specific resources and tools (Firecrawl, GitHub, Grafana, Playwright).
 
 3. **Control Plane Agent Plane ([agents/](./agents/))**:
    - Operates containerized terminal runtimes (Google Antigravity CLI and GitHub Copilot CLI).
    - Downstream agents execute operations against the mapped repository workspace using tools.
+
+---
+
+## Model Context Protocol (MCP) Integrations
+
+The Cortex data plane incorporates containerized MCP server adapters. Each adapter includes documentation detailing available tools and environment variables:
+
+- **[Firecrawl MCP](./mcp/firecrawl/README.md)**: Web scraping, web searching, document parsing, and autonomous research tools.
+- **[GitHub MCP](./mcp/github/README.md)**: Repository, pull request, issue, branch, commit, and Copilot management tools.
+- **[Grafana MCP](./mcp/grafana/README.md)**: Observability, metrics (Prometheus), logs (Loki), traces (Tempo), and continuous profiling (Pyroscope) tools.
+- **[Playwright MCP](./mcp/playwright/README.md)**: Headless browser automation and accessibility snapshot tools using Chromium.
 
 ---
 
@@ -46,7 +57,7 @@ pnpm cortex:core:up
 
 ### 2. Model Context Protocol Services
 
-To start the Neo4j database and all MCP adapters:
+To start all MCP adapters:
 
 ```bash
 pnpm cortex:mcp:up

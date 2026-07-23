@@ -66,6 +66,23 @@ services:
     networks:
       - cortex-net
 
+  mcp-playwright:
+    profiles: ['mcp', 'agents']
+    container_name: tupynambalucas-cortex-mcp-playwright
+    build:
+      context: ../../mcp/playwright
+    environment:
+      - PLAYWRIGHT_MCP_PORT=${PLAYWRIGHT_MCP_PORT:-8080}
+      - PLAYWRIGHT_MCP_HOST=${PLAYWRIGHT_MCP_HOST:-0.0.0.0}
+      - PLAYWRIGHT_MCP_BROWSER=${PLAYWRIGHT_MCP_BROWSER:-chromium}
+      - PLAYWRIGHT_MCP_HEADLESS=${PLAYWRIGHT_MCP_HEADLESS:-true}
+      - PLAYWRIGHT_MCP_NO_SANDBOX=${PLAYWRIGHT_MCP_NO_SANDBOX:-true}
+      - PLAYWRIGHT_MCP_ALLOWED_HOSTS=${PLAYWRIGHT_MCP_ALLOWED_HOSTS:-*}
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    networks:
+      - cortex-net
+
   # ==========================================
   # AI AGENT RUNTIMES (Control Plane)
   # ==========================================

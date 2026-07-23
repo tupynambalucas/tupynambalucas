@@ -43,6 +43,9 @@ mcp:
     - name: grafana
       mcp:
         host: http://mcp-grafana:8080/mcp
+    - name: playwright
+      mcp:
+        host: http://mcp-playwright:8080/mcp
   statefulMode: stateless
   prefixMode: null
   failureMode: failOpen
