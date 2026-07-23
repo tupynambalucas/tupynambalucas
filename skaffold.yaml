@@ -14,14 +14,6 @@ build:
       context: cortex/mcp/github
       docker:
         dockerfile: Dockerfile
-    - image: mcp-context7
-      context: cortex/mcp/context7
-      docker:
-        dockerfile: Dockerfile
-    - image: mcp-dockerhub
-      context: cortex/mcp/dockerhub
-      docker:
-        dockerfile: Dockerfile
     - image: mcp-firecrawl
       context: cortex/mcp/firecrawl
       docker:

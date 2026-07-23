@@ -5,6 +5,9 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .codeHeader {
@@ -13,6 +16,7 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  box-sizing: border-box;
 }
 
 .dots {
@@ -36,20 +40,26 @@
 .codeContent {
   padding: 1.5rem;
   flex-grow: 1;
-  overflow: hidden;
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .codeContent pre {
   margin: 0;
   background: transparent;
   padding: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .codeContent code {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.5;
+  font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+  line-height: 1.4;
   color: #d4d4d4;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .terminalOverlay {
@@ -73,4 +83,21 @@
 
 .success {
   color: var(--color-success);
+}
+
+@media (max-width: 768px) {
+  .codeContent {
+    padding: 1rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .terminalOverlay {
+    bottom: 0.5rem;
+    right: 0.5rem;
+    left: 0.5rem;
+    max-width: calc(100% - 1rem);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.65rem;
+    box-sizing: border-box;
+  }
 }

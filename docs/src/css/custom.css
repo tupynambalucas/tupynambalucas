@@ -77,12 +77,16 @@
 html,
 body {
   background-color: var(--ifm-footer-background-color);
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 /* Main wrapper should have the light background to ensure content area remains light */
 .main-wrapper {
   background-color: var(--ifm-background-color);
   min-height: calc(100vh - var(--ifm-navbar-height));
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Ensure #__docusaurus also matches the footer color */

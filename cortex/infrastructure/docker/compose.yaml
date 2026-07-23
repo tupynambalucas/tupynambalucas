@@ -24,6 +24,8 @@ services:
     command: ['-f', '/config.yaml']
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otel-collector:4317}
+      - CONTEXT7_API_KEY=${CONTEXT7_API_KEY}
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
     networks:
       cortex-net:
       platform-net:
@@ -40,27 +42,6 @@ services:
       context: ../../mcp/github
     environment:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
-    networks:
-      - cortex-net
-
-  mcp-context7:
-    profiles: ['mcp', 'agents']
-    container_name: tupynambalucas-cortex-mcp-context7
-    build:
-      context: ../../mcp/context7
-    environment:
-      - CONTEXT7_API_KEY=${CONTEXT7_API_KEY}
-    networks:
-      - cortex-net
-
-  mcp-dockerhub:
-    profiles: ['mcp', 'agents']
-    container_name: tupynambalucas-cortex-mcp-dockerhub
-    build:
-      context: ../../mcp/dockerhub
-    environment:
-      - HUB_PAT_TOKEN=${DOCKERHUB_PAT_TOKEN}
-      - HUB_USERNAME=${DOCKERHUB_USERNAME}
     networks:
       - cortex-net
 

@@ -1,11 +1,5 @@
-FROM node:20-alpine
-
-# Copy the pre-compiled Go binary from the official image
-COPY --from=ghcr.io/github/github-mcp-server:latest /server/github-mcp-server /server/github-mcp-server
-
-# Install the community proxy
-RUN npm install -g mcp-proxy
+FROM ghcr.io/github/github-mcp-server:latest
 
 EXPOSE 8080
 
-ENTRYPOINT ["mcp-proxy", "--port", "8080", "--", "/server/github-mcp-server", "stdio"]
+ENTRYPOINT ["/server/github-mcp-server", "http", "--listen-host", "0.0.0.0", "--port", "8080"]

@@ -36,10 +36,10 @@ data:
             host: http://mcp-github:8080/mcp
         - name: context7
           mcp:
-            host: http://mcp-context7:8080/mcp
-        - name: dockerhub
-          mcp:
-            host: http://mcp-dockerhub:8080/mcp
+            host: https://mcp.context7.com/mcp
+          policies:
+            backendAuth:
+              key: "$CONTEXT7_API_KEY"
         - name: firecrawl
           mcp:
             host: http://mcp-firecrawl:8080/mcp

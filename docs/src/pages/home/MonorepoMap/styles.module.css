@@ -181,3 +181,44 @@
     padding: 1.5rem;
   }
 }
+
+@media (max-width: 768px) {
+  .monorepoSection {
+    padding: 2.5rem 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .container {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .header h2 {
+    font-size: 1.6rem;
+    word-break: break-word;
+  }
+
+  .header p {
+    font-size: 0.75rem;
+  }
+
+  .detailsPanel {
+    padding: 1.25rem;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .detailsContent h3 {
+    font-size: 1.3rem;
+  }
+
+  .diagramWrapper {
+    padding: 0.75rem;
+    min-height: auto;
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
+  }
+}

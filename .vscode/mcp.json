@@ -5,9 +5,6 @@
     },
     "context7": {
       "url": "http://localhost:3005/context7/sse"
-    },
-    "dockerhub": {
-      "url": "http://localhost:3005/dockerhub/sse"
     }
   }
 }

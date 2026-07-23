@@ -157,3 +157,51 @@
     align-items: center;
   }
 }
+
+@media (max-width: 768px) {
+  .section {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .container {
+    width: 100%;
+    padding: 3rem 1rem;
+    gap: 2.5rem;
+    box-sizing: border-box;
+  }
+
+  .imageContainer {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .content h1 {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .timelineItem {
+    min-height: auto;
+  }
+
+  .timelineContent {
+    padding-bottom: 2rem;
+  }
+
+  .timelineContent h2 {
+    font-size: 1.25rem;
+  }
+
+  .timelineContent p {
+    font-size: 0.875rem;
+  }
+}
