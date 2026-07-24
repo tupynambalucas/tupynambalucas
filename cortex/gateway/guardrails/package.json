@@ -1,0 +1,20 @@
+{
+  "name": "@tupynambalucas/cortex-mcp-guardrails",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AgentGateway ExtMCP gRPC policy server for MCP tool mutation and guardrails",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc -w"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "catalog:api-stack",
+    "@grpc/proto-loader": "catalog:api-stack"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@tupynambalucas-cortex-memory/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fastify/cors": "catalog:api-stack",
+    "@fastify/sse": "catalog:api-stack",
+    "@tupynambalucas-cortex-memory/core": "workspace:*",
+    "fastify": "catalog:api-stack",
+    "fastify-plugin": "catalog:api-stack",
+    "mongoose": "catalog:api-stack",
+    "zod": "catalog:shared-stack"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "rimraf": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

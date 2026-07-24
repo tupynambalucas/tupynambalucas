@@ -1,4 +1,4 @@
-# GitHub MCP Integration
+# Local Context: GitHub MCP Integration
 
 This directory contains the containerized GitHub Model Context Protocol (MCP) server integration for the AI Cortex subsystem.
 
@@ -12,7 +12,16 @@ The GitHub MCP service provides integrations with the GitHub REST and GraphQL AP
 
 ---
 
-## 2. Environment Variables
+## 2. Operational & Security Guardrails
+
+- **Authentication**: A valid `GITHUB_PERSONAL_ACCESS_TOKEN` MUST be mapped into container environment variables.
+- **Branch Strategy**: Agents MUST create dedicated feature or fix branches before performing commit operations. Direct pushes to `main` or `master` branches are forbidden unless explicitly instructed.
+- **Pull Request Creation**: PR titles MUST follow Conventional Commits (e.g. `feat:`, `fix:`, `docs:`) and include detailed body summaries.
+- **Idempotency**: Avoid duplicate issue or PR creation by performing lookup searches (`github_search_issues`, `github_list_pull_requests`) prior to creation.
+
+---
+
+## 3. Environment Variables
 
 The GitHub MCP server supports configuration via the following environment variables:
 
@@ -27,9 +36,9 @@ The GitHub MCP server supports configuration via the following environment varia
 
 ---
 
-## 3. Available Tools
+## 4. Available Tools
 
-The GitHub MCP server exposes the following 45 API automation tools:
+The GitHub MCP server exposes 45 API automation tools:
 
 - `github_add_comment_to_pending_review`: Adds a comment to a pending pull request review.
 - `github_add_issue_comment`: Adds a comment to a specific issue.

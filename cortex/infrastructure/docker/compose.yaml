@@ -8,12 +8,16 @@ networks:
     name: tupynambalucas-platform-net
     external: true
 
+volumes:
+  mongodb_memory_data:
+    name: tupynambalucas-cortex-mongodb-data
+
 services:
   # ==========================================
   # CORE INGRESS GATEWAY (agentgateway)
   # ==========================================
   agentgateway:
-    profiles: ['core', 'mcp', 'agents']
+    profiles: ['core']
     image: cr.agentgateway.dev/agentgateway:v1.3.1
     container_name: tupynambalucas-cortex-gateway
     ports:
@@ -32,11 +36,82 @@ services:
         aliases:
           - agentgateway-metrics
 
+  mcp-guardrails:
+    profiles: ['core']
+    container_name: tupynambalucas-cortex-mcp-guardrails
+    build:
+      context: ../../../
+      dockerfile: cortex/gateway/guardrails/Dockerfile
+    volumes:
+      - ../../mcp:/mcp:ro
+    environment:
+      - GUARDRAILS_PORT=9001
+      - GUARDRAILS_HOST=0.0.0.0
+      - MCP_DIR=/mcp
+    networks:
+      - cortex-net
+
+  # ==========================================
+  # CORE MEMORY SUBSYSTEM
+  # ==========================================
+  mongodb-db:
+    profiles: ['core']
+    image: mongo:7.0
+    container_name: tupynambalucas-cortex-mongodb-db
+    restart: unless-stopped
+    volumes:
+      - mongodb_memory_data:/data/db
+    ports:
+      - '27017:27017'
+    networks:
+      - cortex-net
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  memory-api:
+    profiles: ['core']
+    container_name: tupynambalucas-cortex-memory-api
+    build:
+      context: ../../../
+      dockerfile: cortex/memory/services/api/Dockerfile
+    environment:
+      - PORT=3006
+      - HOST=0.0.0.0
+      - MONGODB_URI=mongodb://mongodb-db:27017/cortex_memory
+      - DOCS_DIR=/app/docs
+    ports:
+      - '3006:3006'
+    volumes:
+      - ../../../docs:/app/docs:ro
+    depends_on:
+      mongodb-db:
+        condition: service_healthy
+    networks:
+      - cortex-net
+
+  memory-web:
+    profiles: ['web']
+    container_name: tupynambalucas-cortex-memory-web
+    build:
+      context: ../../../
+      dockerfile: cortex/memory/services/web/Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:3006/api/memory
+    ports:
+      - '9006:9006'
+    depends_on:
+      - memory-api
+    networks:
+      - cortex-net
+
   # ==========================================
   # MCP DATA PLANE SERVICES
   # ==========================================
   mcp-github:
-    profiles: ['mcp', 'agents']
+    profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-github
     build:
       context: ../../mcp/github
@@ -46,7 +121,7 @@ services:
       - cortex-net
 
   mcp-firecrawl:
-    profiles: ['mcp', 'agents']
+    profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-firecrawl
     build:
       context: ../../mcp/firecrawl
@@ -56,7 +131,7 @@ services:
       - cortex-net
 
   mcp-grafana:
-    profiles: ['mcp', 'agents']
+    profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-grafana
     build:
       context: ../../mcp/grafana
@@ -67,7 +142,7 @@ services:
       - cortex-net
 
   mcp-playwright:
-    profiles: ['mcp', 'agents']
+    profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-playwright
     build:
       context: ../../mcp/playwright

@@ -37,8 +37,7 @@
 **/.DS_Store
 **/Thumbs.db
 
-# Documentation (not needed in production images)
-docs/
+# Documentation
 README.md
 CHANGELOG.md
 LICENSE.md

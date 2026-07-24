@@ -1,0 +1,30 @@
+{
+  "name": "@tupynambalucas-cortex-memory/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "start": "vite preview --port 9006",
+    "preview": "vite preview --port 9006",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tupynambalucas-cortex-memory/core": "workspace:*",
+    "axios": "catalog:shared-stack",
+    "lucide-react": "catalog:web-stack",
+    "react": "catalog:web-stack",
+    "react-dom": "catalog:web-stack",
+    "zustand": "catalog:web-stack"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:web-stack",
+    "@types/react-dom": "catalog:web-stack",
+    "@vitejs/plugin-react": "catalog:web-stack",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:web-stack"
+  }
+}

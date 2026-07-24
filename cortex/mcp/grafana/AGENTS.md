@@ -1,4 +1,4 @@
-# Grafana MCP Integration
+# Local Context: Grafana MCP Integration
 
 This directory contains the containerized Grafana Model Context Protocol (MCP) server integration for the AI Cortex subsystem.
 
@@ -12,7 +12,15 @@ The Grafana MCP service provides observability integrations with Grafana instanc
 
 ---
 
-## 2. Environment Variables
+## 2. Operational & Security Guardrails
+
+- **Read-Only Default**: Agents MUST prioritize read-only query tools (`grafana_query_prometheus`, `grafana_query_loki_logs`, `grafana_tempo_get-trace`) before executing destructive or state-changing operations.
+- **Log Query Limits**: LogQL queries (`grafana_query_loki_logs`) MUST specify reasonable time ranges and limit parameters to prevent memory exhaustion on log streams.
+- **Dashboard Integrity**: Dashboard JSON modifications (`grafana_update_dashboard`) MUST be validated against schema structures before submission.
+
+---
+
+## 3. Environment Variables
 
 The Grafana MCP server supports configuration via the following environment variables:
 
@@ -25,9 +33,9 @@ The Grafana MCP server supports configuration via the following environment vari
 
 ---
 
-## 3. Available Tools
+## 4. Available Tools
 
-The Grafana MCP server exposes the following 74 observability and telemetry tools:
+The Grafana MCP server exposes 74 observability tools:
 
 - `grafana_add_activity_to_incident`: Adds timeline activity notes to a Grafana Incident.
 - `grafana_alerting_manage_routing`: Configures notification policies and alert routes.

@@ -13,18 +13,24 @@
     "directory": "cortex"
   },
   "scripts": {
-    "cortex:core:up": "podman compose -f infrastructure/docker/compose.yaml --profile core up -d --build",
-    "cortex:core:down": "podman compose -f infrastructure/docker/compose.yaml --profile core down",
-    "cortex:mcp:up": "podman compose -f infrastructure/docker/compose.yaml --profile mcp up -d --build",
-    "cortex:mcp:down": "podman compose -f infrastructure/docker/compose.yaml --profile mcp down",
-    "cortex:agents:up": "podman compose -f infrastructure/docker/compose.yaml --profile agents up -d --build",
-    "cortex:agents:down": "podman compose -f infrastructure/docker/compose.yaml --profile agents down",
-    "cortex:core:reset": "podman compose -f infrastructure/docker/compose.yaml --profile core down --volumes && podman compose -f infrastructure/docker/compose.yaml --profile core up -d --build",
-    "cortex:mcp:reset": "podman compose -f infrastructure/docker/compose.yaml --profile mcp down --volumes && podman compose -f infrastructure/docker/compose.yaml --profile mcp up -d --build",
-    "cortex:agents:reset": "podman compose -f infrastructure/docker/compose.yaml --profile agents down --volumes && podman compose -f infrastructure/docker/compose.yaml --profile agents up -d --build",
+    "typecheck": "tsc -b",
+    "lint": "eslint . --ext .ts",
+    "cortex:core:up": "docker compose -f infrastructure/docker/compose.yaml --profile core up -d --build",
+    "cortex:core:down": "docker compose -f infrastructure/docker/compose.yaml --profile core down",
+    "cortex:core:reset": "docker compose -f infrastructure/docker/compose.yaml --profile core down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile core up -d --build",
+    "cortex:agents:up": "docker compose -f infrastructure/docker/compose.yaml --profile agents up -d --build",
+    "cortex:agents:down": "docker compose -f infrastructure/docker/compose.yaml --profile agents down",
+    "cortex:agents:reset": "docker compose -f infrastructure/docker/compose.yaml --profile agents down --volumes && docker compose -f infrastructure/docker/compose.yaml --profile agents up -d --build",
+    "memory:dev": "kill-port 3006 9006 && turbo run dev --filter=@tupynambalucas-cortex-memory/*",
+    "memory:build": "turbo run build --filter=@tupynambalucas-cortex-memory/*",
+    "memory:start": "turbo run start --filter=@tupynambalucas-cortex-memory/*",
+    "memory:preview": "turbo run preview --filter=@tupynambalucas-cortex-memory/*",
     "cortex:antigravity:auth": "podman exec -it agent-antigravity agy",
     "cortex:copilot:auth": "podman exec -it agent-copilot copilot login"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "@grpc/grpc-js": "catalog:api-stack",
+    "@grpc/proto-loader": "catalog:api-stack"
+  }
 }

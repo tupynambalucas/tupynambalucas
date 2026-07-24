@@ -1,4 +1,4 @@
-# Firecrawl MCP Integration
+# Local Context: Firecrawl MCP Integration
 
 This directory contains the containerized Firecrawl Model Context Protocol (MCP) server integration for the AI Cortex subsystem.
 
@@ -12,7 +12,15 @@ The Firecrawl MCP service provides web scraping, crawling, searching, and autono
 
 ---
 
-## 2. Environment Variables
+## 2. Operational & Security Guardrails
+
+- **API Token Requirement**: A valid `FIRECRAWL_API_KEY` MUST be provided via environment configuration.
+- **Scrape & Crawl Scoping**: Agents MUST prefer targeted `firecrawl_scrape` over full site `firecrawl_crawl` to minimize token consumption and rate limits.
+- **Structured Data Extraction**: Use `firecrawl_extract` when schema-conforming JSON payload extraction is required from web sources.
+
+---
+
+## 3. Environment Variables
 
 The Firecrawl MCP server supports configuration via the following environment variables:
 
@@ -29,7 +37,7 @@ The Firecrawl MCP server supports configuration via the following environment va
 
 ---
 
-## 3. Available Tools
+## 4. Available Tools
 
 The Firecrawl MCP server exposes the following web scraping and intelligence tools:
 

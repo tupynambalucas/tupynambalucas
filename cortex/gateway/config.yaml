@@ -24,6 +24,14 @@ mcp:
       exposeHeaders:
         - Mcp-Session-Id
       allowCredentials: true
+    mcpGuardrails:
+      processors:
+        - kind: remote
+          host: mcp-guardrails:9001
+          failureMode: failOpen
+          methods:
+            tools/call: request
+            tools/list: response
   targets:
     - name: github
       mcp:

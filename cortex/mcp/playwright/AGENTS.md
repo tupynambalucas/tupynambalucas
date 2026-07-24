@@ -1,4 +1,4 @@
-# Playwright MCP Integration
+# Local Context: Playwright MCP Integration
 
 This directory contains the containerized Playwright Model Context Protocol (MCP) server integration for the AI Cortex subsystem.
 
@@ -6,7 +6,7 @@ This directory contains the containerized Playwright Model Context Protocol (MCP
 
 ## 1. Overview
 
-The Playwright MCP service provides headless browser automation capabilities using the ultra-lightweight `chromium-headless-shell` binary. It enables AI agents connected through the API gateway to interact with web applications, extract structured accessibility snapshots, and perform web UI interactions.
+The Playwright MCP service provides headless browser automation capabilities using the `chromium-headless-shell` binary. It enables AI agents connected through the API gateway to interact with web applications, extract structural accessibility snapshots, and execute web UI interactions.
 
 - Docker Container Configuration: [Dockerfile](./Dockerfile)
 
@@ -14,10 +14,10 @@ The Playwright MCP service provides headless browser automation capabilities usi
 
 ## 2. Transport Protocol and Networking
 
-The Playwright MCP server supports both **Streamable HTTP** (default) and **Legacy SSE (Server-Sent Events)**:
+The Playwright MCP server supports both Streamable HTTP (default) and Legacy SSE (Server-Sent Events):
 
-- **Streamable HTTP Endpoint (Default)**: `POST /mcp` (or any URL path not starting with `/sse`)
-- **Legacy SSE Endpoint**: `GET /sse` (with `POST /messages`)
+- Streamable HTTP Endpoint (Default): `POST /mcp`
+- Legacy SSE Endpoint: `GET /sse` (with `POST /messages`)
 
 In `agentgateway` configuration ([config.yaml](../../gateway/config.yaml)), target the Streamable HTTP endpoint:
 
@@ -27,13 +27,18 @@ In `agentgateway` configuration ([config.yaml](../../gateway/config.yaml)), targ
     host: http://mcp-playwright:8080/mcp
 ```
 
-### DNS Rebinding Protection
+---
 
-By default, Playwright MCP restricts incoming HTTP requests based on the `Host` header. To allow cross-container requests from `agentgateway` inside Docker networks, `PLAYWRIGHT_MCP_ALLOWED_HOSTS=*` MUST be configured.
+## 3. Operational & Networking Guardrails
+
+- **Local Host Application Resolution**: When navigating to local development applications running on the host machine (e.g., `@docs` dev server or local web apps), agents MUST substitute `localhost` or `127.0.0.1` with `host.docker.internal`. For example, use `http://host.docker.internal:3000` instead of `http://localhost:3000`.
+- **DNS Rebinding Protection**: `PLAYWRIGHT_MCP_ALLOWED_HOSTS=*` MUST be configured in container environments to allow cross-container requests from `agentgateway`.
+- **Headless Execution**: All browser interactions MUST run in headless mode (`PLAYWRIGHT_MCP_HEADLESS=true`) with container sandboxing disabled (`PLAYWRIGHT_MCP_NO_SANDBOX=true`).
+- **Resource Cleanup**: Agents MUST close inactive browser sessions using `browser_close` to prevent container memory leaks.
 
 ---
 
-## 3. Environment Variables
+## 4. Environment Variables
 
 The Playwright MCP server supports configuration via the following environment variables:
 
@@ -56,9 +61,9 @@ The Playwright MCP server supports configuration via the following environment v
 
 ---
 
-## 4. Available Tools
+## 5. Available Tools
 
-The Playwright MCP server exposes the following 23 browser automation tools:
+The Playwright MCP server exposes 23 browser automation tools:
 
 - `browser_click`: Performs click operations on target DOM elements.
 - `browser_close`: Closes the current browser page session.
@@ -71,7 +76,7 @@ The Playwright MCP server exposes the following 23 browser automation tools:
 - `browser_find`: Searches the accessibility tree for matching text or regex.
 - `browser_handle_dialog`: Accepts or dismisses JavaScript dialogs.
 - `browser_hover`: Moves mouse cursor over specified target elements.
-- `browser_navigate`: Navigates to a target URL.
+- `browser_navigate`: Navigates to a target URL. Note: Use `host.docker.internal` for local host apps.
 - `browser_navigate_back`: Navigates back in browser history.
 - `browser_network_request`: Fetches details for a specific network request.
 - `browser_network_requests`: Lists network requests captured during the session.

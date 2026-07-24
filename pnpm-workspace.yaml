@@ -21,6 +21,9 @@ packages:
   - 'docs'
   - 'renderer'
   - 'cortex'
+  - 'cortex/gateway/guardrails'
+  - 'cortex/memory/packages/*'
+  - 'cortex/memory/services/*'
 
 catalog:
   '@types/node': '^25.6.0'
@@ -81,6 +84,8 @@ catalogs:
     '@marsidev/react-turnstile': '^1.5.2'
     # Dev Dependencies
     '@vitejs/plugin-react-swc': '^4.2.3'
+    '@vitejs/plugin-react': '^4.3.4'
+    'lucide-react': '^0.475.0'
     '@tailwindcss/vite': '^4.1.18'
     '@types/react': '^19.2.13'
     '@types/react-dom': '^19.2.3'
@@ -120,6 +125,8 @@ catalogs:
   api-stack:
     # Dependencies
     '@fastify/cookie': '^11.0.2'
+    '@grpc/grpc-js': '^1.12.6'
+    '@grpc/proto-loader': '^0.7.13'
     '@fastify/cors': '^11.2.0'
     '@fastify/csrf-protection': '^7.1.0'
     '@fastify/env': '^6.0.0'
@@ -156,6 +163,7 @@ allowBuilds:
   'core-js': true
   'esbuild': true
   'msgpackr-extract': true
+  protobufjs: true
   'sharp': true
   'unrs-resolver': true
   'workerd': true
