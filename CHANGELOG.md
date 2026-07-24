@@ -6,7 +6,7 @@ All updates, improvements, and new features of tupynambalucas.dev documented in 
 
 The foundational release of tupynambalucas.dev (v0.1.0) establishes the core monorepo architecture, workspace isolation boundaries, and domain foundations for the local community shop and global platform hub.
 
-{/_ truncate _/}
+{/* truncate */}
 
 ### Monorepo Architecture & Bounded Contexts
 
