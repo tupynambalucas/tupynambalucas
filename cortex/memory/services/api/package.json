@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/index.js",
     "typecheck": "tsc --noEmit"
   },
@@ -21,6 +21,7 @@
     "zod": "catalog:shared-stack"
   },
   "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:",
     "tsx": "catalog:",

@@ -1,16 +1,14 @@
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { IngestionService } from './ingestion.service.js';
+import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { IngestionService } from './ingestion.service.js';
 
-export function ingestionController(fastify: FastifyInstance): Promise<void> {
-  const service = new IngestionService();
+export class IngestionController {
+  constructor(private readonly ingestionService: IngestionService) {}
 
-  fastify.post('/ingest/docs', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const result = await service.syncDocs();
-    return reply.send({
+  public syncDocs = async (_req: FastifyRequest, reply: FastifyReply): Promise<void> => {
+    const result = await this.ingestionService.syncDocs();
+    void reply.send({
       message: 'Docs ingestion synchronization complete',
       ...result,
     });
-  });
-
-  return Promise.resolve();
+  };
 }

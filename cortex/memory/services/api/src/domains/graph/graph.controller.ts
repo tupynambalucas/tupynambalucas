@@ -1,15 +1,11 @@
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { GraphService } from './graph.service.js';
-import { GraphRepository } from './graph.repository.js';
+import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { GraphService } from './graph.service.js';
 
-export function graphController(fastify: FastifyInstance): Promise<void> {
-  const repository = new GraphRepository();
-  const service = new GraphService(repository);
+export class GraphController {
+  constructor(private readonly graphService: GraphService) {}
 
-  fastify.get('/graph', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const graphData = await service.fetchGraphData();
-    return reply.send(graphData);
-  });
-
-  return Promise.resolve();
+  public fetchGraphData = async (_req: FastifyRequest, reply: FastifyReply): Promise<void> => {
+    const graphData = await this.graphService.fetchGraphData();
+    void reply.send(graphData);
+  };
 }

@@ -1,0 +1,29 @@
+.card {
+  background-color: var(--color-background-shade);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 0.5rem 1.5rem var(--color-shadow-dense);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border-dark);
+  padding-bottom: 0.75rem;
+}
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-title-light);
+  margin: 0;
+}
+
+.cardSubtitle {
+  font-size: 0.75rem;
+  color: var(--color-label-dark);
+  margin-top: 0.125rem;
+}

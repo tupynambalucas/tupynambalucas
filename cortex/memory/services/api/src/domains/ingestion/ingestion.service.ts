@@ -7,7 +7,30 @@ export class IngestionService {
   private docsDir: string;
 
   constructor() {
-    this.docsDir = process.env.DOCS_DIR ?? path.resolve(__dirname, '../../../../../../docs');
+    this.docsDir = this.resolveDocsDir();
+  }
+
+  private resolveDocsDir(): string {
+    if (process.env.DOCS_DIR && fs.existsSync(process.env.DOCS_DIR)) {
+      return process.env.DOCS_DIR;
+    }
+
+    const candidates = [
+      path.resolve(process.cwd(), 'docs'),
+      path.resolve(process.cwd(), '../docs'),
+      path.resolve(process.cwd(), '../../docs'),
+      path.resolve(process.cwd(), '../../../docs'),
+      path.resolve(process.cwd(), '../../../../docs'),
+      path.resolve(process.cwd(), '../../../../../docs'),
+    ];
+
+    for (const cand of candidates) {
+      if (fs.existsSync(cand)) {
+        return cand;
+      }
+    }
+
+    return process.env.DOCS_DIR ?? path.resolve(process.cwd(), 'docs');
   }
 
   async syncDocs(): Promise<{ processedFiles: number; chunksCreated: number }> {
@@ -25,9 +48,7 @@ export class IngestionService {
       try {
         const content = fs.readFileSync(file, 'utf-8');
         const hash = crypto.createHash('sha256').update(content).digest('hex');
-        const relPath = path
-          .relative(path.resolve(__dirname, '../../../../../../'), file)
-          .replace(/\\/g, '/');
+        const relPath = path.relative(this.docsDir, file).replace(/\\/g, '/');
 
         // Check if file already exists with same hash
         const existing = await EntityModel.findOne({

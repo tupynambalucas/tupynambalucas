@@ -1,7 +1,8 @@
 FROM node:22-alpine AS builder
 WORKDIR /workspace
+ENV CI=true
 
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
 COPY shared/config/package.json ./shared/config/
 COPY cortex/gateway/guardrails/package.json ./cortex/gateway/guardrails/
 
@@ -11,15 +12,14 @@ COPY shared/config ./shared/config
 COPY cortex/gateway/guardrails ./cortex/gateway/guardrails
 
 RUN pnpm --filter @tupynambalucas/cortex-mcp-guardrails build
+RUN pnpm --filter @tupynambalucas/cortex-mcp-guardrails deploy --legacy --prod /out
 
 FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /workspace/cortex/gateway/guardrails/dist ./dist
-COPY --from=builder /workspace/cortex/gateway/guardrails/node_modules ./node_modules
-COPY --from=builder /workspace/cortex/gateway/guardrails/proto ./proto
+COPY --from=builder /out ./
 
 EXPOSE 9001
 

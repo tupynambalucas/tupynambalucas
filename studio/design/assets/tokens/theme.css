@@ -2,7 +2,7 @@
 @import './tokens.css';
 
 /**
- * Elo Organico - Full Theme (Tokens + Global Resets)
+ * Tupynambalucas - Full Theme (Tokens + Global Resets)
  * Centralized in @studio to ensure consistency across the monorepo.
  * This file is suitable for standard React applications where Tailwind's 
  * Preflight and global element resets are desired.

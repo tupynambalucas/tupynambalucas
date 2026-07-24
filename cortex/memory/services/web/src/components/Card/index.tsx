@@ -1,6 +1,7 @@
 import React from 'react';
+import styles from './styles.module.css';
 
-interface CardProps {
+export interface CardProps {
   title?: string;
   subtitle?: string;
   action?: React.ReactNode;
@@ -19,14 +20,12 @@ export const Card: React.FC<CardProps> = ({
   const hasSubtitle = subtitle != null && subtitle !== '';
 
   return (
-    <div className={`bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg ${className}`}>
+    <div className={`${styles.card} ${className}`.trim()}>
       {hasHeader ? (
-        <div className="flex items-center justify-between mb-4 border-b border-slate-800/80 pb-3">
+        <div className={styles.cardHeader}>
           <div>
-            {title != null ? (
-              <h3 className="text-base font-semibold text-slate-100">{title}</h3>
-            ) : null}
-            {hasSubtitle ? <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p> : null}
+            {title != null ? <h3 className={styles.cardTitle}>{title}</h3> : null}
+            {hasSubtitle ? <p className={styles.cardSubtitle}>{subtitle}</p> : null}
           </div>
           {action != null ? <div>{action}</div> : null}
         </div>
@@ -35,3 +34,5 @@ export const Card: React.FC<CardProps> = ({
     </div>
   );
 };
+
+export default Card;

@@ -1,12 +1,10 @@
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { ChatService } from './chat.service.js';
-import { ChatRepository } from './chat.repository.js';
+import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { ChatService } from './chat.service.js';
 
-export function chatController(fastify: FastifyInstance): Promise<void> {
-  const repository = new ChatRepository();
-  const service = new ChatService(repository);
+export class ChatController {
+  constructor(private readonly chatService: ChatService) {}
 
-  fastify.post('/chat', async (req: FastifyRequest, reply: FastifyReply) => {
+  public storeMessage = async (req: FastifyRequest, reply: FastifyReply): Promise<void> => {
     const body = req.body as {
       conversationId?: string;
       agentId?: string;
@@ -20,26 +18,26 @@ export function chatController(fastify: FastifyInstance): Promise<void> {
       body.role == null ||
       body.content == null
     ) {
-      return reply.status(400).send({ error: 'Missing required fields' });
+      void reply.status(400).send({ error: 'Missing required fields' });
+      return;
     }
 
-    const session = await service.storeMessage({
+    const session = await this.chatService.storeMessage({
       conversationId: body.conversationId,
       agentId: body.agentId,
       role: body.role,
       content: body.content,
     });
-    return reply.status(201).send(session);
-  });
+    void reply.status(201).send(session);
+  };
 
-  fastify.get('/chat/:conversationId', async (req: FastifyRequest, reply: FastifyReply) => {
+  public fetchSession = async (req: FastifyRequest, reply: FastifyReply): Promise<void> => {
     const { conversationId } = req.params as { conversationId: string };
-    const session = await service.fetchSession(conversationId);
+    const session = await this.chatService.fetchSession(conversationId);
     if (!session) {
-      return reply.status(404).send({ error: 'Session not found' });
+      void reply.status(404).send({ error: 'Session not found' });
+      return;
     }
-    return reply.send(session);
-  });
-
-  return Promise.resolve();
+    void reply.send(session);
+  };
 }

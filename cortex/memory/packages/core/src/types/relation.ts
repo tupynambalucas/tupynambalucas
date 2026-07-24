@@ -7,17 +7,21 @@ export interface MemoryRelation {
   metadata?: Record<string, unknown>;
 }
 
+export interface GraphNode {
+  id: string;
+  label: string;
+  type: string;
+  workspace?: string;
+}
+
+export interface GraphEdge {
+  id: string;
+  source: string;
+  target: string;
+  label: string;
+}
+
 export interface GraphDataDTO {
-  nodes: Array<{
-    id: string;
-    label: string;
-    type: string;
-    workspace?: string;
-  }>;
-  edges: Array<{
-    id: string;
-    source: string;
-    target: string;
-    label: string;
-  }>;
+  nodes: GraphNode[];
+  edges: GraphEdge[];
 }

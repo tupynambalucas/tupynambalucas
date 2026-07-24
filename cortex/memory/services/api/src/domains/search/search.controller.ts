@@ -1,31 +1,29 @@
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { SearchService } from './search.service.js';
-import { SearchRepository } from './search.repository.js';
+import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { SearchService } from './search.service.js';
 import { SearchQueryDTOSchema, MemoryEntitySchema } from '@tupynambalucas-cortex-memory/core';
 
-export function searchController(fastify: FastifyInstance): Promise<void> {
-  const repository = new SearchRepository();
-  const service = new SearchService(repository);
+export class SearchController {
+  constructor(private readonly searchService: SearchService) {}
 
-  fastify.post('/search', async (req: FastifyRequest, reply: FastifyReply) => {
+  public search = async (req: FastifyRequest, reply: FastifyReply): Promise<void> => {
     const parseResult = SearchQueryDTOSchema.safeParse(req.body);
     if (!parseResult.success) {
-      return reply.status(400).send({ error: parseResult.error.format() });
+      void reply.status(400).send({ error: parseResult.error.format() });
+      return;
     }
 
-    const results = await service.search(parseResult.data);
-    return reply.send({ results });
-  });
+    const results = await this.searchService.search(parseResult.data);
+    void reply.send({ results });
+  };
 
-  fastify.post('/entities', async (req: FastifyRequest, reply: FastifyReply) => {
+  public storeEntity = async (req: FastifyRequest, reply: FastifyReply): Promise<void> => {
     const parseResult = MemoryEntitySchema.safeParse(req.body);
     if (!parseResult.success) {
-      return reply.status(400).send({ error: parseResult.error.format() });
+      void reply.status(400).send({ error: parseResult.error.format() });
+      return;
     }
 
-    const created = await service.storeEntity(parseResult.data);
-    return reply.status(201).send(created);
-  });
-
-  return Promise.resolve();
+    const created = await this.searchService.storeEntity(parseResult.data);
+    void reply.status(201).send(created);
+  };
 }

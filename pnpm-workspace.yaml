@@ -81,6 +81,7 @@ catalogs:
     'i18next': '^25.8.4'
     'react-datepicker': '^9.1.0'
     'zustand': '^5.0.11'
+    'react-force-graph-2d': '^1.26.0'
     '@marsidev/react-turnstile': '^1.5.2'
     # Dev Dependencies
     '@vitejs/plugin-react-swc': '^4.2.3'

@@ -5,26 +5,33 @@
   "type": "module",
   "scripts": {
     "clean": "rimraf dist tsconfig.tsbuildinfo",
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "vite --mode dev",
+    "build": "tsc -p tsconfig.build.json && vite build",
     "start": "vite preview --port 9006",
     "preview": "vite preview --port 9006",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@tupynambalucas-cortex-memory/core": "workspace:*",
+    "@tupynambalucas-studio/design": "workspace:*",
     "axios": "catalog:shared-stack",
     "lucide-react": "catalog:web-stack",
     "react": "catalog:web-stack",
     "react-dom": "catalog:web-stack",
+    "react-force-graph-2d": "catalog:web-stack",
     "zustand": "catalog:web-stack"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "catalog:web-stack",
+    "@tupynambalucas-shared/config": "workspace:*",
+    "@types/node": "catalog:",
     "@types/react": "catalog:web-stack",
     "@types/react-dom": "catalog:web-stack",
-    "@vitejs/plugin-react": "catalog:web-stack",
+    "@vitejs/plugin-react-swc": "catalog:web-stack",
     "rimraf": "catalog:",
+    "tailwindcss": "catalog:shared-stack",
     "typescript": "catalog:",
-    "vite": "catalog:web-stack"
+    "vite": "catalog:web-stack",
+    "vite-plugin-svgr": "catalog:web-stack"
   }
 }

@@ -1,8 +1,9 @@
 import fp from 'fastify-plugin';
 import mongoose from 'mongoose';
+import type { FastifyInstance } from 'fastify';
 
-export default fp(async (fastify) => {
-  const mongoUri = process.env.MONGODB_URI ?? 'mongodb://mongodb-db:27017/cortex_memory';
+const mongodbPlugin = async (fastify: FastifyInstance): Promise<void> => {
+  const mongoUri = process.env.MONGODB_URI ?? 'mongodb://127.0.0.1:27017/cortex_memory';
 
   try {
     await mongoose.connect(mongoUri);
@@ -16,4 +17,6 @@ export default fp(async (fastify) => {
     fastify.log.error(err, 'Failed to connect to MongoDB memory database');
     process.exit(1);
   }
-});
+};
+
+export default fp(mongodbPlugin);
