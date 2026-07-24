@@ -2,7 +2,8 @@ import cors from '@fastify/cors';
 import fp from 'fastify-plugin';
 import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 
-import mongodbPlugin from './mongodbPlugin.js';
+import envConfig from '../config/envConfig.js';
+import mongoosePlugin from './mongoosePlugin.js';
 import apiPlugin from './apiPlugin.js';
 
 import { ChatRepository } from '../domains/chat/chat.repository.js';
@@ -21,11 +22,13 @@ import { SearchService } from '../domains/search/search.service.js';
 import { SearchController } from '../domains/search/search.controller.js';
 
 const registryPlugin: FastifyPluginAsync = async function (server: FastifyInstance): Promise<void> {
+  await server.register(envConfig);
+
   await server.register(cors, {
     origin: '*',
   });
 
-  await server.register(mongodbPlugin);
+  await server.register(mongoosePlugin);
 
   // Instantiate repositories
   const chatRepository = new ChatRepository();
@@ -52,7 +55,7 @@ const registryPlugin: FastifyPluginAsync = async function (server: FastifyInstan
   server.decorate('ingestionService', ingestionService);
 
   // Healthcheck endpoint
-  server.get('/healthz', async () => {
+  server.get('/healthz', () => {
     return { status: 'ok', timestamp: new Date().toISOString() };
   });
 

@@ -8,7 +8,15 @@ const EntitySchema = new Schema<EntityDocument>(
     name: { type: String, required: true, index: true },
     type: {
       type: String,
-      enum: ['doc_chunk', 'chat_message', 'workspace_spec', 'code_snippet'],
+      enum: [
+        'workspace',
+        'doc_file',
+        'doc_chunk',
+        'chat_message',
+        'workspace_spec',
+        'code_snippet',
+        'concept',
+      ],
       required: true,
       index: true,
     },

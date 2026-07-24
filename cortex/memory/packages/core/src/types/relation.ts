@@ -1,3 +1,12 @@
+export const RelationTypes = {
+  BELONGS_TO: 'BELONGS_TO',
+  REFERENCES: 'REFERENCES',
+  DEPENDS_ON: 'DEPENDS_ON',
+  NAVIGATES_TO: 'NAVIGATES_TO',
+} as const;
+
+export type RelationType = (typeof RelationTypes)[keyof typeof RelationTypes];
+
 export interface MemoryRelation {
   id?: string;
   fromId: string;

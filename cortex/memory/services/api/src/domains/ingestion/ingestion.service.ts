@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import crypto from 'crypto';
 import { EntityModel } from '../../models/entity.model.js';
+import { RelationModel } from '../../models/relation.model.js';
 
 export class IngestionService {
   private docsDir: string;
@@ -33,61 +34,176 @@ export class IngestionService {
     return process.env.DOCS_DIR ?? path.resolve(process.cwd(), 'docs');
   }
 
-  async syncDocs(): Promise<{ processedFiles: number; chunksCreated: number }> {
+  async resetDatabase(): Promise<void> {
+    await EntityModel.deleteMany({});
+    await RelationModel.deleteMany({});
+  }
+
+  async syncDocs(): Promise<{
+    processedFiles: number;
+    chunksCreated: number;
+    edgesCreated: number;
+  }> {
     let processedFiles = 0;
     let chunksCreated = 0;
+    let edgesCreated = 0;
 
     if (!fs.existsSync(this.docsDir)) {
       console.warn(`Docs directory not found at ${this.docsDir}`);
-      return { processedFiles, chunksCreated };
+      return { processedFiles, chunksCreated, edgesCreated };
+    }
+
+    // Perform fresh graph initialization
+    await this.resetDatabase();
+
+    const knownWorkspaces = [
+      'cortex',
+      'docs',
+      'hub',
+      'platform',
+      'renderer',
+      'shared',
+      'studio',
+      'tools',
+      'handbook',
+    ];
+    const workspaceNodeMap = new Map<string, string>();
+    const docFileNodeMap = new Map<string, string>();
+
+    // 1. Create Workspace Root Nodes
+    for (const ws of knownWorkspaces) {
+      const wsNode = await EntityModel.create({
+        name: `workspace:${ws}`,
+        type: 'workspace',
+        content: `Workspace bounded context: ${ws}`,
+        embedding: this.generateEmbedding(ws),
+        metadata: {
+          workspace: ws,
+          updatedAt: new Date().toISOString(),
+        },
+      });
+      workspaceNodeMap.set(ws, wsNode._id.toString());
     }
 
     const files = this.findMdxFiles(this.docsDir);
 
+    // 2. Process File Nodes & Chunks
     for (const file of files) {
       try {
         const content = fs.readFileSync(file, 'utf-8');
         const hash = crypto.createHash('sha256').update(content).digest('hex');
         const relPath = path.relative(this.docsDir, file).replace(/\\/g, '/');
 
-        // Check if file already exists with same hash
-        const existing = await EntityModel.findOne({
-          'metadata.filePath': relPath,
-          'metadata.contentHash': hash,
+        // Determine workspace
+        let wsName = 'docs';
+        if (relPath.startsWith('handbook/')) {
+          wsName = 'handbook';
+        } else if (relPath.startsWith('workspaces/')) {
+          const parts = relPath.split('/');
+          if (parts[1] && knownWorkspaces.includes(parts[1])) {
+            wsName = parts[1];
+          }
+        }
+
+        const wsId = workspaceNodeMap.get(wsName) ?? workspaceNodeMap.get('docs')!;
+
+        // Create Doc File Node
+        const docFileNode = await EntityModel.create({
+          name: relPath,
+          type: 'doc_file',
+          content: content.slice(0, 500),
+          embedding: this.generateEmbedding(relPath),
+          metadata: {
+            filePath: relPath,
+            workspace: wsName,
+            contentHash: hash,
+            updatedAt: new Date().toISOString(),
+          },
         });
 
-        if (existing) continue;
+        const docFileId = docFileNode._id.toString();
+        docFileNodeMap.set(relPath, docFileId);
 
-        // Delete previous chunks of this file
-        await EntityModel.deleteMany({ 'metadata.filePath': relPath });
+        // Edge: Doc File -> Workspace (BELONGS_TO)
+        await RelationModel.create({
+          fromId: docFileId,
+          toId: wsId,
+          relationType: 'BELONGS_TO',
+          weight: 1.0,
+        });
+        edgesCreated++;
 
-        // Split into chunks by section headers
+        // Process Chunks
         const chunks = this.chunkMarkdown(content);
         processedFiles++;
 
         for (const [idx, chunk] of chunks.entries()) {
           const embedding = this.generateEmbedding(chunk.text);
-          await EntityModel.create({
+          const chunkNode = await EntityModel.create({
             name: `${path.basename(file)}#${chunk.heading || idx + 1}`,
             type: 'doc_chunk',
             content: chunk.text,
             embedding,
             metadata: {
               filePath: relPath,
-              workspace: 'docs',
+              workspace: wsName,
               section: chunk.heading,
               contentHash: hash,
               updatedAt: new Date().toISOString(),
             },
           });
+
+          const chunkId = chunkNode._id.toString();
           chunksCreated++;
+
+          // Edge: Chunk -> Doc File (BELONGS_TO)
+          await RelationModel.create({
+            fromId: chunkId,
+            toId: docFileId,
+            relationType: 'BELONGS_TO',
+            weight: 1.0,
+          });
+          edgesCreated++;
         }
       } catch (err) {
         console.error(`Failed to ingest file ${file}:`, err);
       }
     }
 
-    return { processedFiles, chunksCreated };
+    // 3. Cross-Link File & Workspace References (REFERENCES & DEPENDS_ON Edges)
+    for (const file of files) {
+      const content = fs.readFileSync(file, 'utf-8');
+      const relPath = path.relative(this.docsDir, file).replace(/\\/g, '/');
+      const docFileId = docFileNodeMap.get(relPath);
+
+      if (!docFileId) continue;
+
+      // Extract markdown links & workspace cross references
+      for (const targetWs of knownWorkspaces) {
+        if (content.toLowerCase().includes(targetWs) && workspaceNodeMap.has(targetWs)) {
+          const targetWsId = workspaceNodeMap.get(targetWs)!;
+
+          // Check if link already exists
+          const existing = await RelationModel.findOne({
+            fromId: docFileId,
+            toId: targetWsId,
+            relationType: 'REFERENCES',
+          });
+
+          if (!existing) {
+            await RelationModel.create({
+              fromId: docFileId,
+              toId: targetWsId,
+              relationType: 'REFERENCES',
+              weight: 0.8,
+            });
+            edgesCreated++;
+          }
+        }
+      }
+    }
+
+    return { processedFiles, chunksCreated, edgesCreated };
   }
 
   private findMdxFiles(dir: string): string[] {

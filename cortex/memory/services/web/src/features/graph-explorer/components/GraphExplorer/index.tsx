@@ -54,14 +54,18 @@ export const GraphExplorer: React.FC = () => {
 
   const getNodeColor = (type: string) => {
     switch (type) {
+      case 'workspace':
+        return '#AA77A7';
+      case 'doc_file':
+        return '#E2A53C';
       case 'doc_chunk':
         return '#4C4D9A';
       case 'chat_message':
         return '#2E55A3';
-      case 'workspace':
-        return '#AA77A7';
+      case 'concept':
+        return '#10B981';
       default:
-        return '#E2A53C';
+        return '#7E7E86';
     }
   };
 
@@ -99,7 +103,7 @@ export const GraphExplorer: React.FC = () => {
 
           <div className={styles.filterGroup}>
             <Filter className={styles.filterIcon} />
-            {['all', 'doc_chunk', 'workspace', 'chat_message'].map((type) => (
+            {['all', 'workspace', 'doc_file', 'doc_chunk', 'chat_message'].map((type) => (
               <button
                 key={type}
                 onClick={() => setFilterType(type)}
@@ -162,6 +166,9 @@ export const GraphExplorer: React.FC = () => {
                 nodeRelSize={6}
                 linkDirectionalParticles={2}
                 linkDirectionalParticleSpeed={0.006}
+                linkDirectionalArrowLength={4}
+                linkDirectionalArrowRelPos={1}
+                linkLabel={(link) => (link as { label?: string }).label ?? ''}
                 linkColor={() => '#2A2A30'}
                 onNodeClick={(node) => {
                   const original = rawNodes.find((n) => n.id === node.id);
@@ -172,21 +179,23 @@ export const GraphExplorer: React.FC = () => {
                   const fontSize = 12 / globalScale;
                   ctx.font = `${fontSize}px Nunito, sans-serif`;
                   const isSelected = selectedNode?.id === node.id;
+                  const isWorkspace = node.type === 'workspace';
 
-                  // Node Circle Glow
+                  // Node Circle Glow & Size
+                  const radius = isWorkspace ? 8 : isSelected ? 7 : 5;
                   ctx.beginPath();
-                  ctx.arc(node.x ?? 0, node.y ?? 0, isSelected ? 8 : 5, 0, 2 * Math.PI, false);
+                  ctx.arc(node.x ?? 0, node.y ?? 0, radius, 0, 2 * Math.PI, false);
                   ctx.fillStyle = isSelected ? '#AA77A7' : getNodeColor(node.type);
                   ctx.fill();
 
-                  if (isSelected) {
+                  if (isSelected || isWorkspace) {
                     ctx.lineWidth = 2 / globalScale;
-                    ctx.strokeStyle = '#ffffff';
+                    ctx.strokeStyle = isWorkspace ? '#AA77A7' : '#ffffff';
                     ctx.stroke();
                   }
 
                   // Label Text
-                  if (globalScale > 1.2 || isSelected) {
+                  if (globalScale > 1.2 || isSelected || isWorkspace) {
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.fillStyle = '#f6f6f7';

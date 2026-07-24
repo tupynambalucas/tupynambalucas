@@ -1,4 +1,11 @@
-export type EntityType = 'doc_chunk' | 'chat_message' | 'workspace_spec' | 'code_snippet';
+export type EntityType =
+  | 'workspace'
+  | 'doc_file'
+  | 'doc_chunk'
+  | 'chat_message'
+  | 'workspace_spec'
+  | 'code_snippet'
+  | 'concept';
 
 export interface EntityMetadata {
   filePath?: string;

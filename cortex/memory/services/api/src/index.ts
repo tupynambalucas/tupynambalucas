@@ -3,13 +3,14 @@ import registryPlugin from './plugins/registryPlugin.js';
 
 const fastify = Fastify({
   logger: true,
+  pluginTimeout: 30000,
 });
 
 async function main(): Promise<void> {
   await fastify.register(registryPlugin);
 
-  const port = Number(process.env.PORT ?? 3006);
-  const host = process.env.HOST ?? '0.0.0.0';
+  const port = fastify.config.PORT;
+  const host = fastify.config.HOST;
 
   try {
     await fastify.listen({ port, host });
