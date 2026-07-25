@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-cortex-memory/core",
+  "name": "@tupynambalucas-cortex/memory-core",
   "version": "0.1.0",
   "private": true,
   "type": "module",

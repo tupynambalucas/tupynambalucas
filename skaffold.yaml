@@ -11,15 +11,15 @@ build:
       docker:
         dockerfile: Dockerfile
     - image: mcp-github
-      context: cortex/mcp/github
+      context: cortex/mcp/services/github
       docker:
         dockerfile: Dockerfile
     - image: mcp-firecrawl
-      context: cortex/mcp/firecrawl
+      context: cortex/mcp/services/firecrawl
       docker:
         dockerfile: Dockerfile
     - image: mcp-grafana
-      context: cortex/mcp/grafana
+      context: cortex/mcp/services/grafana
       docker:
         dockerfile: Dockerfile
     - image: agent-copilot

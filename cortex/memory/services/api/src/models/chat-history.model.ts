@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document } from 'mongoose';
-import type { ChatHistorySession } from '@tupynambalucas-cortex-memory/core';
+import type { ChatHistorySession } from '@tupynambalucas-cortex/memory-core';
 
 export interface IChatMessageDocument {
   role: 'user' | 'assistant' | 'system';

@@ -19,7 +19,7 @@ The Playwright MCP server supports both Streamable HTTP (default) and Legacy SSE
 - Streamable HTTP Endpoint (Default): `POST /mcp`
 - Legacy SSE Endpoint: `GET /sse` (with `POST /messages`)
 
-In `agentgateway` configuration ([config.yaml](../../gateway/config.yaml)), target the Streamable HTTP endpoint:
+In `agentgateway` configuration ([config.yaml](../../../gateway/config.yaml)), target the Streamable HTTP endpoint:
 
 ```yaml
 - name: playwright

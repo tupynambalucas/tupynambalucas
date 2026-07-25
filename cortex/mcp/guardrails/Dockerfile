@@ -4,15 +4,15 @@ ENV CI=true
 
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
 COPY shared/config/package.json ./shared/config/
-COPY cortex/gateway/guardrails/package.json ./cortex/gateway/guardrails/
+COPY cortex/mcp/guardrails/package.json ./cortex/mcp/guardrails/
 
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 COPY shared/config ./shared/config
-COPY cortex/gateway/guardrails ./cortex/gateway/guardrails
+COPY cortex/mcp/guardrails ./cortex/mcp/guardrails
 
-RUN pnpm --filter @tupynambalucas/cortex-mcp-guardrails build
-RUN pnpm --filter @tupynambalucas/cortex-mcp-guardrails deploy --legacy --prod /out
+RUN pnpm --filter @tupynambalucas-cortex/mcp-guardrails build
+RUN pnpm --filter @tupynambalucas-cortex/mcp-guardrails deploy --legacy --prod /out
 
 FROM node:22-alpine AS runner
 WORKDIR /app

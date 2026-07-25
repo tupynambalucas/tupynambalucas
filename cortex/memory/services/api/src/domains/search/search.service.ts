@@ -3,7 +3,7 @@ import type {
   SearchQueryDTO,
   SearchResultDTO,
   MemoryEntity,
-} from '@tupynambalucas-cortex-memory/core';
+} from '@tupynambalucas-cortex/memory-core';
 
 export class SearchService {
   constructor(private readonly repository: SearchRepository) {}

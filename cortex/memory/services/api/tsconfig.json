@@ -4,7 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "paths": {
-      "@tupynambalucas-cortex-memory/core": ["../../packages/core/src/index.ts"]
+      "@tupynambalucas-cortex/memory-core": ["../../packages/core/src/index.ts"]
     }
   },
   "include": ["src"],

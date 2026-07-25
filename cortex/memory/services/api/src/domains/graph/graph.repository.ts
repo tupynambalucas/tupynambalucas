@@ -1,6 +1,6 @@
 import { RelationModel } from '../../models/relation.model.js';
 import { EntityModel } from '../../models/entity.model.js';
-import type { GraphDataDTO } from '@tupynambalucas-cortex-memory/core';
+import type { GraphDataDTO } from '@tupynambalucas-cortex/memory-core';
 
 export class GraphRepository {
   async getGraphData(): Promise<GraphDataDTO> {

@@ -41,7 +41,7 @@ services:
     container_name: tupynambalucas-cortex-mcp-guardrails
     build:
       context: ../../../
-      dockerfile: cortex/gateway/guardrails/Dockerfile
+      dockerfile: cortex/mcp/guardrails/Dockerfile
     volumes:
       - ../../mcp:/mcp:ro
     environment:
@@ -141,7 +141,7 @@ services:
     profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-github
     build:
-      context: ../../mcp/github
+      context: ../../mcp/services/github
     environment:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
     networks:
@@ -151,7 +151,7 @@ services:
     profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-firecrawl
     build:
-      context: ../../mcp/firecrawl
+      context: ../../mcp/services/firecrawl
     environment:
       - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
     networks:
@@ -161,7 +161,7 @@ services:
     profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-grafana
     build:
-      context: ../../mcp/grafana
+      context: ../../mcp/services/grafana
     environment:
       - GRAFANA_URL=${GRAFANA_CLOUD_URL}
       - GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_SERVICE_ACCOUNT_TOKEN}
@@ -172,7 +172,7 @@ services:
     profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-playwright
     build:
-      context: ../../mcp/playwright
+      context: ../../mcp/services/playwright
     environment:
       - PLAYWRIGHT_MCP_PORT=${PLAYWRIGHT_MCP_PORT:-8080}
       - PLAYWRIGHT_MCP_HOST=${PLAYWRIGHT_MCP_HOST:-0.0.0.0}

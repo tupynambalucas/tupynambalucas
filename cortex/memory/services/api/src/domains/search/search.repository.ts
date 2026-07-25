@@ -1,5 +1,5 @@
 import { EntityModel } from '../../models/entity.model.js';
-import type { MemoryEntity, SearchResultDTO } from '@tupynambalucas-cortex-memory/core';
+import type { MemoryEntity, SearchResultDTO } from '@tupynambalucas-cortex/memory-core';
 
 export class SearchRepository {
   async insertEntity(entity: MemoryEntity): Promise<MemoryEntity> {

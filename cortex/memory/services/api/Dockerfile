@@ -13,9 +13,9 @@ COPY shared/config ./shared/config
 COPY cortex/memory/packages/core ./cortex/memory/packages/core
 COPY cortex/memory/services/api ./cortex/memory/services/api
 
-RUN pnpm --filter @tupynambalucas-cortex-memory/core build
-RUN pnpm --filter @tupynambalucas-cortex-memory/api build
-RUN pnpm --filter @tupynambalucas-cortex-memory/api deploy --legacy --prod /out
+RUN pnpm --filter @tupynambalucas-cortex/memory-core build
+RUN pnpm --filter @tupynambalucas-cortex/memory-api build
+RUN pnpm --filter @tupynambalucas-cortex/memory-api deploy --legacy --prod /out
 
 FROM node:22-alpine AS runner
 WORKDIR /app

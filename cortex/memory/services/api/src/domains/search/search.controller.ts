@@ -1,6 +1,6 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import type { SearchService } from './search.service.js';
-import { SearchQueryDTOSchema, MemoryEntitySchema } from '@tupynambalucas-cortex-memory/core';
+import { SearchQueryDTOSchema, MemoryEntitySchema } from '@tupynambalucas-cortex/memory-core';
 
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}

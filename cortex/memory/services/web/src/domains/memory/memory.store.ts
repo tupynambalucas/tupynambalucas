@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GraphDataDTO, SearchResultDTO, GraphNode } from '@tupynambalucas-cortex-memory/core';
+import type { GraphDataDTO, SearchResultDTO, GraphNode } from '@tupynambalucas-cortex/memory-core';
 import { memoryApi, type ChatMessage } from './memory.api';
 
 interface MemoryState {

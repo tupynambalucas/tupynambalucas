@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { GraphDataDTO, SearchResultDTO } from '@tupynambalucas-cortex-memory/core';
+import type { GraphDataDTO, SearchResultDTO } from '@tupynambalucas-cortex/memory-core';
 
 const API_BASE =
   (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:3006/api/memory';

@@ -17,8 +17,8 @@ COPY studio/design ./studio/design
 COPY cortex/memory/packages/core ./cortex/memory/packages/core
 COPY cortex/memory/services/web ./cortex/memory/services/web
 
-RUN pnpm --filter @tupynambalucas-cortex-memory/core build
-RUN pnpm --filter @tupynambalucas-cortex-memory/web build
+RUN pnpm --filter @tupynambalucas-cortex/memory-core build
+RUN pnpm --filter @tupynambalucas-cortex/memory-web build
 
 FROM nginx:alpine
 COPY --from=builder /workspace/cortex/memory/services/web/dist /usr/share/nginx/html

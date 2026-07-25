@@ -20,8 +20,7 @@ packages:
   - 'platform'
   - 'docs'
   - 'renderer'
-  - 'cortex'
-  - 'cortex/gateway/guardrails'
+  - 'cortex/mcp/guardrails'
   - 'cortex/memory/packages/*'
   - 'cortex/memory/services/*'
 

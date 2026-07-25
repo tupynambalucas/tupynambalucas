@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document } from 'mongoose';
-import type { MemoryRelation } from '@tupynambalucas-cortex-memory/core';
+import type { MemoryRelation } from '@tupynambalucas-cortex/memory-core';
 
 export interface RelationDocument extends Omit<MemoryRelation, 'id'>, Document {}
 

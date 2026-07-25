@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-cortex-memory/web",
+  "name": "@tupynambalucas-cortex/memory-web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tupynambalucas-cortex-memory/core": "workspace:*",
+    "@tupynambalucas-cortex/memory-core": "workspace:*",
     "@tupynambalucas-studio/design": "workspace:*",
     "axios": "catalog:shared-stack",
     "lucide-react": "catalog:web-stack",

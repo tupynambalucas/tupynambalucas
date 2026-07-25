@@ -10,7 +10,7 @@
       "@components/*": ["./src/components/*"],
       "@features/*": ["./src/features/*"],
       "@domains/*": ["./src/domains/*"],
-      "@tupynambalucas-cortex-memory/core": ["../../packages/core/src/index.ts"]
+      "@tupynambalucas-cortex/memory-core": ["../../packages/core/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/types/**/*.d.ts", "vite.config.ts"],

@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-cortex-memory/api",
+  "name": "@tupynambalucas-cortex/memory-api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -15,7 +15,7 @@
     "@fastify/cors": "catalog:api-stack",
     "@fastify/env": "catalog:api-stack",
     "@fastify/sse": "catalog:api-stack",
-    "@tupynambalucas-cortex-memory/core": "workspace:*",
+    "@tupynambalucas-cortex/memory-core": "workspace:*",
     "fastify": "catalog:api-stack",
     "fastify-plugin": "catalog:api-stack",
     "mongoose": "catalog:api-stack",
