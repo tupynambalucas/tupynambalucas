@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@tupynambalucas-cortex/memory-core": "workspace:*",
-    "@tupynambalucas-studio/design": "workspace:*",
+    "@tupynambalucas-studio/assets": "workspace:*",
     "axios": "catalog:shared-stack",
     "lucide-react": "catalog:web-stack",
     "react": "catalog:web-stack",

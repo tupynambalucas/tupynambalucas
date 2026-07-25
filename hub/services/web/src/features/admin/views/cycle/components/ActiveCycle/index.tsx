@@ -11,7 +11,7 @@ import {
   faTrash,
   faPen,
   faCircle,
-} from '@tupynambalucas-studio/design/icons';
+} from '@tupynambalucas-studio/assets/icons';
 import type { IProduct } from '@tupynambalucas-hub/core';
 import { AdminContainer, ProductSearchFilter } from '../../../../components';
 

@@ -1,9 +1,11 @@
+@import '@tupynambalucas-studio/assets/tokens.css' layer(theme);
+
 .monorepoSection {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-height: calc(100vh - var(--ifm-navbar-height));
+  min-height: calc(100vh - var(--ifm-navbar-height));
   background-color: var(--color-background-dark);
   background-image:
     linear-gradient(rgba(76, 77, 154, 0.05) 0.0625rem, transparent 0.0625rem),
@@ -17,7 +19,7 @@
 
 .container {
   width: 90%;
-  max-width: 64rem;
+  max-width: 76rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,7 +27,7 @@
 
 .header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .header h2 {
@@ -33,16 +35,17 @@
   font-family: var(--font-sans);
   font-weight: 900;
   text-transform: uppercase;
-  font-size: 2.2rem;
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  margin-bottom: 0.35rem;
   letter-spacing: 0.05em;
 }
 
 .header p {
   color: white;
-  opacity: 0.7;
+  opacity: 0.75;
   font-family: var(--font-mono);
   font-size: 0.85rem;
+  margin: 0;
 }
 
 /* Workspace Selector Buttons Bar */
@@ -50,8 +53,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+  gap: 0.6rem;
+  margin-bottom: 1.75rem;
   width: 100%;
 }
 
@@ -61,9 +64,9 @@
   border-radius: 0.5rem;
   color: rgba(255, 255, 255, 0.8);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 0.65rem 1.25rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   backdrop-filter: blur(0.25rem);
@@ -88,23 +91,30 @@
   transform: translateY(-0.0625rem);
 }
 
-/* Main Details Panel */
+/* Main Details Panel (2-Column Grid) */
 .detailsPanel {
   width: 100%;
   background: rgba(255, 255, 255, 0.03);
   border: 0.0625rem solid rgba(76, 77, 154, 0.3);
   border-radius: 0.875rem;
-  padding: 2.25rem;
+  padding: 2rem;
   box-shadow:
     inset 0 0 2rem rgba(0, 0, 0, 0.3),
     0 0.625rem 1.875rem rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(0.5rem);
   box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
 }
 
-.detailsContent {
+/* Left Column */
+.leftCol {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .panelHeader {
@@ -126,7 +136,7 @@
   border: 0.0625rem solid rgba(76, 77, 154, 0.3);
 }
 
-.detailsContent h3 {
+.leftCol h3 {
   color: var(--color-identity-secondary);
   font-size: 1.75rem;
   margin: 0;
@@ -142,8 +152,55 @@
   margin-bottom: 1.5rem;
 }
 
+.actionSection {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.docButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, rgba(76, 77, 154, 0.4) 0%, rgba(120, 100, 220, 0.3) 100%);
+  border: 0.0625rem solid var(--color-identity-secondary);
+  border-radius: 0.5rem;
+  color: #ffffff !important;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.75rem 1.4rem;
+  text-decoration: none !important;
+  transition: all 0.25s ease-in-out;
+  box-shadow: 0 0.25rem 0.9375rem rgba(76, 77, 154, 0.3);
+}
+
+.docButton:hover {
+  background: linear-gradient(135deg, rgba(76, 77, 154, 0.6) 0%, rgba(120, 100, 220, 0.5) 100%);
+  border-color: #ffffff;
+  color: #ffffff !important;
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.375rem 1.25rem rgba(76, 77, 154, 0.5);
+}
+
+.arrow {
+  transition: transform 0.2s ease-in-out;
+  font-size: 1rem;
+}
+
+.docButton:hover .arrow {
+  transform: translateX(0.25rem);
+}
+
+/* Right Column */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
 .metadataSection {
-  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .metadataSection h4 {
@@ -152,24 +209,24 @@
   color: var(--color-identity-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 0.6rem;
-  border-bottom: 0.0625rem solid rgba(76, 77, 154, 0.15);
+  margin-bottom: 0.5rem;
+  border-bottom: 0.0625rem solid rgba(76, 77, 154, 0.2);
   padding-bottom: 0.3rem;
 }
 
 .tagGrid {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .techTag {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  background: rgba(76, 77, 154, 0.15);
+  background: rgba(76, 77, 154, 0.18);
   border: 0.0625rem solid var(--color-identity-primary);
   color: var(--color-body-light);
-  padding: 0.2rem 0.65rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 50rem;
 }
 
@@ -180,9 +237,9 @@
 }
 
 .responsibilityList li {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 0.85rem;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.4rem;
   padding-left: 1.2rem;
   position: relative;
   line-height: 1.4;
@@ -197,82 +254,19 @@
   font-weight: bold;
 }
 
-/* Action Button Section */
-.actionSection {
-  margin-top: 2rem;
-  padding-top: 1.25rem;
-  border-top: 0.0625rem solid rgba(76, 77, 154, 0.2);
-  display: flex;
-  justify-content: flex-end;
-}
-
-.docButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: linear-gradient(135deg, rgba(76, 77, 154, 0.4) 0%, rgba(120, 100, 220, 0.3) 100%);
-  border: 0.0625rem solid var(--color-identity-secondary);
-  border-radius: 0.5rem;
-  color: #ffffff;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 0.75rem 1.5rem;
-  text-decoration: none;
-  transition: all 0.25s ease-in-out;
-  box-shadow: 0 0.25rem 0.9375rem rgba(76, 77, 154, 0.3);
-}
-
-.docButton:hover {
-  background: linear-gradient(135deg, rgba(76, 77, 154, 0.6) 0%, rgba(120, 100, 220, 0.5) 100%);
-  border-color: #ffffff;
-  color: #ffffff;
-  text-decoration: none;
-  transform: translateY(-0.125rem);
-  box-shadow: 0 0.375rem 1.25rem rgba(76, 77, 154, 0.5);
-}
-
-.arrow {
-  transition: transform 0.2s ease-in-out;
-  font-size: 1rem;
-}
-
-.docButton:hover .arrow {
-  transform: translateX(0.25rem);
-}
-
-@media (max-width: 768px) {
-  .monorepoSection {
-    padding: 2.5rem 1rem;
-  }
-
-  .container {
-    width: 100%;
-  }
-
-  .header h2 {
-    font-size: 1.6rem;
-  }
-
-  .workspaceSelector {
-    gap: 0.5rem;
-  }
-
-  .selectorButton {
-    font-size: 0.75rem;
-    padding: 0.5rem 0.9rem;
-  }
-
+@media (max-width: 900px) {
   .detailsPanel {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     padding: 1.5rem;
   }
 
-  .detailsContent h3 {
+  .leftCol h3 {
     font-size: 1.4rem;
   }
 
   .actionSection {
-    justify-content: center;
+    margin-top: 1rem;
   }
 
   .docButton {

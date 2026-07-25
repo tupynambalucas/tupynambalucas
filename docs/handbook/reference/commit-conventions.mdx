@@ -71,7 +71,7 @@ Running a full typecheck across all monorepo packages (`pnpm typecheck`) can tak
 3. It maps the changed files to their corresponding monorepo workspaces:
    - Files in `hub/` $\rightarrow$ typecheck `@tupynambalucas-hub/*` packages.
    - Files in `cortex/` $\rightarrow$ typecheck `@tupynambalucas/cortex`.
-   - Files in `studio/` $\rightarrow$ typecheck `@tupynambalucas-studio/design`.
+   - Files in `studio/` $\rightarrow$ typecheck `@tupynambalucas-studio/assets`.
    - Files in `tools/` $\rightarrow$ typecheck `@tupynambalucas-tools/*`.
    - Files in `docs/` $\rightarrow$ typecheck `@tupynambalucas/docs`.
 4. If global configuration or root files (e.g. `package.json`, `eslint.config.ts`, `pnpm-workspace.yaml`) are modified, the script runs a full typecheck.

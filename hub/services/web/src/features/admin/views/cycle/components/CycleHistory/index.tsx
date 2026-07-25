@@ -5,7 +5,7 @@ import {
   faCalendarAlt,
   faChevronLeft,
   faChevronRight,
-} from '@tupynambalucas-studio/design/icons';
+} from '@tupynambalucas-studio/assets/icons';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { IProduct, CycleResponse } from '@tupynambalucas-hub/core';

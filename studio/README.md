@@ -1,90 +1,29 @@
 # Design Studio Workspace
 
-This workspace centralizes brand identity management, design assets, and self-hosted collaborative design tools for the project.
+The `studio/` directory houses brand identity management, design system assets, asset synchronization pipelines, and self-hosted collaborative design infrastructure.
 
 ---
 
-## Directory Layout
+## Directory Overview
 
-- **[bucket/](./bucket/)**: Cloudflare R2 Asset Synchronization CLI tool package.
-- **[design/](./design/)**: Brand identity, assets, design system tokens, and Penpot collaborative design editor configuration.
-
----
-
-## Workspace Structure
-
-The workspace is organized into the following sub-packages:
-
-### 1. [Design Assets & Penpot Config](./design/README.md) (`studio/design/`)
-
-Centralized design system assets (brand logos, icons, styling tokens) and self-hosted docker configurations for the Penpot collaborative UI/UX vector-based design editor.
-
-- **Detailed Guide:** Refer to the [Design & Penpot README](./design/README.md).
-
-### 2. [Cloudflare R2 Asset Sync](./bucket/README.md) (`studio/bucket/`)
-
-TypeScript command-line asset synchronization tool that replicates local design assets to and from Cloudflare R2 object storage.
-
-- **Detailed Guide:** Refer to the [Bucket Synchronizer README](./bucket/README.md).
+- **[assets/](./assets/)**: Brand identity, design system tokens, React icons, and styling themes (`@tupynambalucas-studio/assets`) ([assets/README.md](./assets/README.md)).
+- **[bucket/](./bucket/)**: Cloudflare R2 asset synchronization CLI package (`@tupynambalucas-studio/bucket`) ([bucket/README.md](./bucket/README.md)).
+- **[creative/](./creative/)**: Raw creative design files, master graphics, and vector source assets.
+- **[infrastructure/](./infrastructure/)**: Podman/Docker Compose orchestration for Penpot v2 design editor and Memos.
+- **[AGENTS.md](./AGENTS.md)**: AI agent domain router context.
 
 ---
 
-## Configuration
+## Service Infrastructure
 
-### Core Design Platform (Penpot)
+Penpot and Memos infrastructure services are defined in `studio/infrastructure/docker/compose.yaml`.
 
-Before running the collaborative design services, you must configure a `.env` file under `studio/design/infrastructure/docker/`:
+### Operations & Commands
 
-```bash
-# Path: studio/design/infrastructure/docker/.env
+Execute these scripts from the monorepo root:
 
-# PENPOT Main Configuration
-PENPOT_SECRET_KEY=generate_a_secure_random_string
-PENPOT_REDIS_URI=redis://valkey/0
-PENPOT_FLAGS=disable-email-verification disable-secure-session-cookies
-```
-
-### R2 Asset Sync System (Assets Bucket)
-
-For synchronizing web-ready assets (e.g., icons, logos) directly with Cloudflare R2, configure the environment variables in `studio/bucket/.env.studio.bucket`:
-
-```bash
-# Path: studio/bucket/.env.studio.bucket
-
-# Cloudflare R2 account identifier
-CLOUDFLARE_R2_ACCOUNT_ID=your_cloudflare_r2_account_id
-
-# Public Web Assets Bucket Configuration (CI/CD and CDN Safe)
-CLOUDFLARE_R2_ASSETS_ACCESS_KEY_ID=your_cloudflare_r2_assets_access_key_id
-CLOUDFLARE_R2_ASSETS_SECRET_ACCESS_KEY=your_cloudflare_r2_assets_secret_access_key
-CLOUDFLARE_R2_ASSETS_BUCKET_NAME=your_cloudflare_r2_assets_bucket_name
-CLOUDFLARE_R2_ASSETS_PUBLIC_URL=your_cloudflare_r2_assets_public_url
-
-# Private Creative/Design Bucket Configuration (Restricted to Designers)
-CLOUDFLARE_R2_CREATIVE_ACCESS_KEY_ID=your_cloudflare_r2_creative_access_key_id
-CLOUDFLARE_R2_CREATIVE_SECRET_ACCESS_KEY=your_cloudflare_r2_creative_secret_access_key
-CLOUDFLARE_R2_CREATIVE_BUCKET_NAME=your_cloudflare_r2_creative_bucket_name
-CLOUDFLARE_R2_CREATIVE_PUBLIC_URL=your_cloudflare_r2_creative_public_url
-```
-
----
-
-## Operations & Scripts
-
-Manage the design tools using standardized scripts from the monorepo root:
-
-### Collaborative Editor (Penpot)
-
-- `pnpm penpot:up`: Launch Penpot collaborative editor at `http://localhost:9005`.
-- `pnpm penpot:down`: Shutdown core docker containers.
-- `pnpm penpot:update`: Pull latest Penpot images and restart.
-- `pnpm penpot:reset`: Force complete container and database volume recreation.
-
-### AI Automation Helpers
-
-- `pnpm penpot:aide:up`: Launch Penpot AI assistant (aide) integration.
-- `pnpm penpot:aide:down`: Stop the Penpot AI assistant container.
-
-### Cloudflare R2 Asset Sync
-
-- `pnpm studio:bucket`: Launch the interactive R2 synchronization menu (Push/Pull/Exit).
+- `pnpm penpot:up`: Launches Penpot collaborative design editor at `http://localhost:9005`.
+- `pnpm penpot:down`: Stops Penpot containers.
+- `pnpm penpot:reset`: Resets Penpot database volumes and containers.
+- `pnpm memos:up`: Launches Memos note-taking service.
+- `pnpm studio:bucket`: Runs the Cloudflare R2 asset synchronization CLI menu.

@@ -1,0 +1,21 @@
+# Build & Runtime
+node_modules/
+dist/
+*.tsbuildinfo
+.turbo/
+
+# Ignore raw creative project files (Blender, Illustrator, Photoshop, Premiere)
+creative/
+
+# Ignore Studio local development binary assets (managed via Cloudflare R2 bucket)
+assets/src/images/
+assets/src/three/
+
+# Ignore brand binaries while keeping SVGs tracked
+assets/src/brand/palettes/
+assets/src/brand/guidelines/
+assets/src/brand/favicons/
+!assets/src/brand/favicons/*.svg
+assets/src/brand/logos/*.png
+assets/src/brand/logos/*.jpg
+assets/src/brand/logos/*.webp

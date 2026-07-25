@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { AdminContainer } from '../../components';
-import { faChartSimple } from '@tupynambalucas-studio/design/icons';
+import { faChartSimple } from '@tupynambalucas-studio/assets/icons';
 
 const ReportsView: FC = () => {
   return (

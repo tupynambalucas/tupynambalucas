@@ -4,7 +4,7 @@
       "name": "tupynambalucas-assets",
       "push": ["/images", "/three", "/brand", "/fonts"],
       "pull": ["/images", "/three", "/brand", "/fonts"],
-      "docs": ["/three", "/images", "/brand", "/fonts"],
+      "docs": ["/images", "/brand", "/fonts"],
       "web": ["/images", "/brand", "/three", "/fonts"]
     },
     "creative": {

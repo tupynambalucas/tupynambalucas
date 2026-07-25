@@ -1,55 +1,92 @@
 import type { ReactNode } from 'react';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
-import LogoSvg from '@tupynambalucas-studio/design/logos/logo-mark-positive.svg';
 import styles from './styles.module.css';
 
 export default function HeroSection(): ReactNode {
   return (
     <section className={styles.section}>
       <div className={styles.container}>
-        <div className={styles.content}>
-          <div>
-            <div>
-              <h1>
-                <Translate id="homepage.hero.title" description="Main hero title on the homepage">
-                  {'Technical Architecture\n'}
-                </Translate>
-                <br />
-                <Translate id="homepage.hero.subtitle" description="Secondary hero title">
-                  tupynambalucas.dev
-                </Translate>
-              </h1>
-              <p>
-                <Translate
-                  id="homepage.hero.text.primary"
-                  description="First line of the introductory paragraph"
-                >
-                  {
-                    'High-performance, strictly-typed monorepo engineering for personal portfolio, stats, and automation.\n'
-                  }
-                </Translate>
-                <br />
-                <Translate
-                  id="homepage.hero.text.secondary"
-                  description="Second line of the introductory paragraph"
-                >
-                  Built with Fastify, React 19, and WebGPU for maximum efficiency and AI-native
-                  development.
-                </Translate>
-              </p>
-            </div>
+        {/* Left Column: Documentation Hub Intro */}
+        <div className={styles.leftColumn}>
+          <div className={styles.badge}>
+            <Translate id="homepage.hero.badge">tupynambalucas.dev Ecosystem</Translate>
+          </div>
 
-            <Link to="/docs/intro">
-              <Translate id="homepage.button.docs" description="Label for the documentation button">
-                Explore Architecture
-              </Translate>
+          <h1 className={styles.title}>
+            <Translate id="homepage.hero.title">Centralized Engineering Documentation</Translate>
+          </h1>
+
+          <p className={styles.description}>
+            <Translate id="homepage.hero.text.primary">
+              Welcome to the central documentation hub for the tupynambalucas.dev monorepo. This
+              platform serves as the single source of truth for my personal website, engineering
+              services, dynamic asset engines, and production-grade developer workspaces.
+            </Translate>
+          </p>
+
+          <div className={styles.actions}>
+            <Link to="/docs/intro" className={styles.primaryBtn}>
+              <Translate id="homepage.button.docs">Explore Architecture</Translate>
+            </Link>
+            <Link to="/workspaces" className={styles.secondaryBtn}>
+              <Translate id="homepage.button.workspaces">Workspaces</Translate>
+            </Link>
+            <Link
+              to="https://github.com/tupynambalucas/tupynambalucas"
+              className={styles.tertiaryBtn}
+            >
+              <Translate id="homepage.button.github">GitHub Monorepo</Translate>
             </Link>
           </div>
         </div>
 
-        <div className={styles.logoContainer}>
-          <LogoSvg className={styles.heroLogo} />
+        {/* Right Column: Architect Profile Card */}
+        <div className={styles.rightColumn}>
+          <div className={styles.profileCard}>
+            <div className={styles.profileHeader}>
+              <div className={styles.profileBadge}>
+                <Translate id="homepage.profile.badge">The Architect</Translate>
+              </div>
+              <h2 className={styles.profileTitle}>Tupynambá Lucas</h2>
+              <span className={styles.profileSubtitle}>Senior Full-Stack Engineer</span>
+            </div>
+
+            <p className={styles.profileText}>
+              <Translate id="homepage.profile.bio">
+                Senior Full-Stack Engineer with over 10 years of experience and studies in software
+                development, building production systems in TypeScript from end to end. I make
+                architectural decisions driven by requirements, not by trends — selecting the right
+                database, framework, or protocol for each problem. My current expertise runs deep in
+                MongoDB replica sets with ACID transactions, but I reach for PostgreSQL or Redis
+                when the domain calls for it. I design domain-driven monorepos orchestrated by
+                Turborepo with strict catalog-managed dependencies, ship high-performance APIs on
+                Fastify with Redis-backed job queues, and craft interactive frontends with React 19,
+                Three.js, and GSAP. My infrastructure runs on Docker and Kubernetes with Traefik
+                ingress, OpenTelemetry-instrumented observability pipelines exporting to Grafana
+                Cloud, and multi-environment promotion from dev to production. I architect AI-native
+                toolchains — self-hosted MCP gateway federations, containerized agent runtimes, and
+                vector memory layers — turning autonomous workflows into first-class infrastructure.
+                Every repository I own ships with automated CI/CD, Conventional Commits, and
+                security hardened by design.
+              </Translate>
+            </p>
+
+            <div className={styles.techGrid}>
+              <div className={styles.techItem}>
+                <span className={styles.techLabel}>Code</span>
+                <span className={styles.techValue}>TypeScript, Node.js, Go</span>
+              </div>
+              <div className={styles.techItem}>
+                <span className={styles.techLabel}>Data</span>
+                <span className={styles.techValue}>MongoDB, PostgreSQL, Redis</span>
+              </div>
+              <div className={styles.techItem}>
+                <span className={styles.techLabel}>AI & Infra</span>
+                <span className={styles.techValue}>MCP, Docker, Kubernetes</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles.circleObject}></div>

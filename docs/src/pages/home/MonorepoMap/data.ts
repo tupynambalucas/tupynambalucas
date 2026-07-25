@@ -38,7 +38,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   cortex: {
     id: 'cortex',
     name: 'Cortex Context',
-    path: '/workspaces/cortex/overview',
+    path: '/workspaces/cortex',
     description:
       'Unified AI processing hub, persistent memory layers, Model Context Protocol servers, and agent runtimes.',
     stack: ['TypeScript', 'Fastify', 'MongoDB Vector', 'MCP', 'Docker'],
@@ -63,7 +63,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   docs: {
     id: 'docs',
     name: 'Docs Hub',
-    path: '/workspaces/docs/overview',
+    path: '/workspaces/docs',
     description: 'Centralized technical documentation and engineering masterplan.',
     stack: ['Docusaurus v3', 'MDX', 'Mermaid.js', 'TypeScript'],
     responsibilities: [
@@ -86,7 +86,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   hub: {
     id: 'hub',
     name: 'Hub Context',
-    path: '/workspaces/hub/overview',
+    path: '/workspaces/hub',
     description:
       'Manages personal portfolio frontend pages, blog operations, contact form persistence, and administrator options.',
     stack: ['React 19', 'Fastify v5', 'MongoDB', 'Zustand', 'TailwindCSS v4'],
@@ -109,7 +109,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   platform: {
     id: 'platform',
     name: 'Platform Context',
-    path: '/workspaces/platform/overview',
+    path: '/workspaces/platform',
     description:
       'Core cluster platform services orchestrating telemetry aggregation and build caching.',
     stack: ['OpenTelemetry', 'Turborepo', 'Docker'],
@@ -132,7 +132,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   renderer: {
     id: 'renderer',
     name: 'Renderer Context',
-    path: '/workspaces/renderer/overview',
+    path: '/workspaces/renderer',
     description:
       'A generic dynamic asset generator and document compilation engine supporting design tokens.',
     stack: ['TypeScript', 'TailwindCSS v4', 'Node.js'],
@@ -155,7 +155,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   shared: {
     id: 'shared',
     name: 'Shared Context',
-    path: '/workspaces/shared/overview',
+    path: '/workspaces/shared',
     description: 'Shared utilities, constants, types, and cross-workspace specifications.',
     stack: ['TypeScript', 'Zod'],
     responsibilities: [
@@ -177,7 +177,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   studio: {
     id: 'studio',
     name: 'Studio Context',
-    path: '/workspaces/studio/overview',
+    path: '/workspaces/studio',
     description:
       'The single source of truth for visual identity, shared tokens, and UI consistency.',
     stack: ['TailwindCSS v4', 'PostCSS', 'Style Dictionary'],
@@ -200,7 +200,7 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
   tools: {
     id: 'tools',
     name: 'Tools Context',
-    path: '/workspaces/tools/overview',
+    path: '/workspaces/tools',
     description: 'Infrastructure orchestration hub and technical automation backbone.',
     stack: ['Model Context Protocol (MCP)', 'Docker', 'Shell Scripts'],
     responsibilities: [

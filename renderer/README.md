@@ -28,7 +28,7 @@ production-grade documents across the monorepo.
 - **[src/templates/](./src/templates/)**: Domain-organized document templates.
   - [docs/](./src/templates/docs/): Markdown templates for generated documents (e.g.,
     [README.template.md](./src/templates/docs/README.template.md)).
-    _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/design` under `studio/design/assets/github/cards/`._
+    _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/assets` under `studio/design/assets/github/cards/`._
 - **[src/utils/](./src/utils/)**: Common helpers for compilation and formatting.
   - [glob.ts](./src/utils/glob.ts): Simple glob matcher helper for filtering items.
   - [template-fill.ts](./src/utils/template-fill.ts): Custom string interpolation parser for
@@ -68,7 +68,7 @@ This ensures that custom text styles render with pixel-perfect brand fidelity on
 
 ### 3. Native Design System Binding
 
-Colors and font primitives are resolved directly from `@tupynambalucas-studio/design` tokens. This
+Colors and font primitives are resolved directly from `@tupynambalucas-studio/assets` tokens. This
 makes our SVGs completely responsive to design system changes.
 
 ---

@@ -1,0 +1,48 @@
+{
+  "name": "@tupynambalucas-studio/assets",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "description": "tupynambalucas.dev Studio Design Assets Package",
+  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/studio/assets#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
+    "directory": "studio/assets"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./assets-manifest.json": "./src/assets-manifest.json",
+    "./assets.d.ts": "./src/assets.d.ts",
+    "./icons": "./src/icons/index.tsx",
+    "./logos": "./src/brand/logos/index.ts",
+    "./logos/*": "./src/brand/logos/*",
+    "./three/*": "./src/three/*",
+    "./images/*": "./src/images/*",
+    "./brand/*": "./src/brand/*",
+    "./fonts/*": "./src/fonts/*",
+    "./github/*": "./src/github/*",
+    "./tokens": "./src/tokens/index.ts",
+    "./tokens.css": "./src/tokens/tokens.css",
+    "./theme.css": "./src/tokens/theme.css",
+    "./*": "./src/*"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "react": "catalog:web-stack",
+    "react-dom": "catalog:web-stack",
+    "react-icons": "catalog:studio-stack"
+  },
+  "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*",
+    "@types/react": "catalog:web-stack",
+    "@types/react-dom": "catalog:web-stack",
+    "tailwindcss": "catalog:shared-stack",
+    "typescript": "catalog:"
+  }
+}

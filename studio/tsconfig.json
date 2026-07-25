@@ -1,4 +1,4 @@
 {
   "files": [],
-  "references": [{ "path": "./design" }, { "path": "./bucket" }]
+  "references": [{ "path": "./assets" }, { "path": "./bucket" }]
 }

@@ -1,6 +1,6 @@
 import { resolve, join, basename, dirname } from 'path';
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { brandColors } from '@tupynambalucas-studio/design/tokens';
+import { brandColors } from '@tupynambalucas-studio/assets/tokens';
 import { fillTemplate } from '../../utils/template-fill.js';
 import { renderStatsCards } from '../../renderers/stats-card.js';
 import { uploadFileContents } from '../../clients/github.js';

@@ -89,7 +89,7 @@ Bounded Contexts do not operate in absolute isolation; they must communicate thr
 
 ### 4.1 Shared Kernel (Nucleu Partilhado)
 
-The **Shared Kernel** pattern is utilized when contexts share a stable portion of domain schemas or variables. In our system, **`@tupynambalucas-studio/design`** acts as a Shared Kernel. Both `@tupynambalucas-hub/web` and `@tupynambalucas/renderer` import design tokens and SVG icons directly from this package.
+The **Shared Kernel** pattern is utilized when contexts share a stable portion of domain schemas or variables. In our system, **`@tupynambalucas-studio/assets`** acts as a Shared Kernel. Both `@tupynambalucas-hub/web` and `@tupynambalucas/renderer` import design tokens and SVG icons directly from this package.
 
 Any change to these tokens triggers immediate build-time verification across both downstream consumer contexts, ensuring systemic visual consistency.
 

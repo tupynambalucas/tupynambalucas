@@ -89,7 +89,7 @@ Bounded Contexts não operam em isolamento absoluto; eles devem se comunicar por
 
 ### 4.1 Shared Kernel (Núcleo Partilhado)
 
-O padrão de **Shared Kernel** é utilizado quando os contextos compartilham uma parte estável de esquemas de domínio ou variáveis de design. Em nosso sistema, o pacote **`@tupynambalucas-studio/design`** atua como nosso Shared Kernel. Tanto o `@tupynambalucas-hub/web` quanto o `@tupynambalucas/renderer` importam os tokens de estilo CSS e ícones SVG diretamente deste pacote.
+O padrão de **Shared Kernel** é utilizado quando os contextos compartilham uma parte estável de esquemas de domínio ou variáveis de design. Em nosso sistema, o pacote **`@tupynambalucas-studio/assets`** atua como nosso Shared Kernel. Tanto o `@tupynambalucas-hub/web` quanto o `@tupynambalucas/renderer` importam os tokens de estilo CSS e ícones SVG diretamente deste pacote.
 
 Qualquer alteração nesses tokens aciona validações imediatas em tempo de compilação em ambos os contextos downstream consumidores, garantindo consistência visual sistêmica.
 

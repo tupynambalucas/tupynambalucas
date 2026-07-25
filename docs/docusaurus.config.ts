@@ -15,7 +15,29 @@ interface WebpackMock {
 }
 
 const webpack = require('webpack') as unknown as WebpackMock;
-const studioPath = path.dirname(require.resolve('@tupynambalucas-studio/design/package.json'));
+const studioPath = path.dirname(require.resolve('@tupynambalucas-studio/assets/package.json'));
+const studioSrcPath = path.join(studioPath, 'src');
+const staticPath = path.join(__dirname, 'static');
+
+const itemsToSync = [
+  'brand',
+  'fonts',
+  'icons',
+  'images',
+  'three',
+  'tokens',
+  'assets-manifest.json',
+];
+if (fs.existsSync(staticPath) === false) {
+  fs.mkdirSync(staticPath, { recursive: true });
+}
+for (const item of itemsToSync) {
+  const src = path.join(studioSrcPath, item);
+  const dest = path.join(staticPath, item);
+  if (fs.existsSync(src) === true) {
+    fs.cpSync(src, dest, { recursive: true, force: true });
+  }
+}
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -42,7 +64,7 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  staticDirectories: [path.join(studioPath, 'assets')],
+  staticDirectories: ['static'],
 
   customFields: {
     studioPath,
@@ -97,14 +119,14 @@ const config: Config = {
 
         const hasBucketUrl = bucketUrl !== undefined && bucketUrl !== '';
 
-        const manifestPath = require.resolve('@tupynambalucas-studio/design/assets-manifest.json');
+        const manifestPath = require.resolve('@tupynambalucas-studio/assets/assets-manifest.json');
         const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as {
           buckets: { assets: { docs: string[] } };
         };
         const buildFolders = manifest.buckets.assets.docs;
         const folderPattern = buildFolders.map((f: string) => f.replace(/^\//, '')).join('|');
         const matchRegex = new RegExp(
-          `(@tupynambalucas-studio[/\\x5C]design([/\\x5C]assets)?|studio[/\\x5C]design[/\\x5C]assets)[/\\x5C](${folderPattern})[/\\x5C].*`,
+          `(@tupynambalucas-studio[/\\x5C](assets|design)|studio[/\\x5C](assets|design))[/\\x5C](src[/\\x5C])?(${folderPattern})[/\\x5C].*`,
         );
 
         // Heavy/3D assets rule so Webpack can resolve direct imports of .exr/.glb files

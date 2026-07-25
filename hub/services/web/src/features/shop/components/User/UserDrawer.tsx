@@ -8,7 +8,7 @@ import {
   faList,
   faUser,
   faArrowRightFromBracket,
-} from '@tupynambalucas-studio/design/icons';
+} from '@tupynambalucas-studio/assets/icons';
 
 interface UserDrawerProps {
   isOpen: boolean;

@@ -4,7 +4,6 @@ import styles from './home/styles.module.css';
 import LandingSection from './home/HeroSection';
 import MonorepoSection from './home/MonorepoMap';
 import FromSoilSection from './home/TechnicalFoundation';
-import TupynambaSection from './home/ArchitectProfile';
 
 export default function HomePage(): ReactNode {
   return (
@@ -16,7 +15,6 @@ export default function HomePage(): ReactNode {
         <LandingSection />
         <MonorepoSection />
         <FromSoilSection />
-        <TupynambaSection />
       </main>
     </Layout>
   );

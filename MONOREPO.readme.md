@@ -32,7 +32,7 @@ tokens and compiles custom repository READMEs.
 
 Manages design resources, brand identity assets, and design-to-code pipelines.
 
-- **`@tupynambalucas-studio/design`**: Brand colors, icons, tokens, assets, and Penpot editor
+- **`@tupynambalucas-studio/assets`**: Brand colors, icons, tokens, assets, and Penpot editor
   docker configuration.
 - **`@tupynambalucas-studio/bucket`**: Command-line asset synchronization script for Cloudflare
   R2 object storage.
@@ -112,7 +112,7 @@ graph TD
         Core["@tupynambalucas-hub/core"]
     end
     subgraph Studio_Context ["studio/"]
-        Design["@tupynambalucas-studio/design"]
+        Design["@tupynambalucas-studio/assets"]
         Bucket["@tupynambalucas-studio/bucket"]
     end
     subgraph Cortex_Context ["cortex/"]

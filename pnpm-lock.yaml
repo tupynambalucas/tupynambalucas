@@ -731,9 +731,9 @@ importers:
       '@tupynambalucas-cortex/memory-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@tupynambalucas-studio/design':
+      '@tupynambalucas-studio/assets':
         specifier: workspace:*
-        version: link:../../../../studio/design
+        version: link:../../../../studio/assets
       axios:
         specifier: catalog:shared-stack
         version: 1.18.1
@@ -843,9 +843,9 @@ importers:
       '@mdx-js/react':
         specifier: catalog:docs-stack
         version: 3.1.1(@types/react@19.2.17)(react@19.2.7)
-      '@tupynambalucas-studio/design':
+      '@tupynambalucas-studio/assets':
         specifier: workspace:*
-        version: link:../studio/design
+        version: link:../studio/assets
       clsx:
         specifier: catalog:docs-stack
         version: 2.1.1
@@ -1020,9 +1020,9 @@ importers:
       '@tupynambalucas-hub/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@tupynambalucas-studio/design':
+      '@tupynambalucas-studio/assets':
         specifier: workspace:*
-        version: link:../../../studio/design
+        version: link:../../../studio/assets
       axios:
         specifier: catalog:shared-stack
         version: 1.18.1
@@ -1092,9 +1092,9 @@ importers:
 
   renderer:
     dependencies:
-      '@tupynambalucas-studio/design':
+      '@tupynambalucas-studio/assets':
         specifier: workspace:*
-        version: link:../studio/design
+        version: link:../studio/assets
       dotenv:
         specifier: catalog:shared-stack
         version: 17.4.2
@@ -1123,6 +1123,34 @@ importers:
       husky:
         specifier: 'catalog:'
         version: 9.1.7
+
+  studio/assets:
+    dependencies:
+      react:
+        specifier: catalog:web-stack
+        version: 19.2.7
+      react-dom:
+        specifier: catalog:web-stack
+        version: 19.2.7(react@19.2.7)
+      react-icons:
+        specifier: catalog:studio-stack
+        version: 5.7.0(react@19.2.7)
+    devDependencies:
+      '@tupynambalucas-shared/config':
+        specifier: workspace:*
+        version: link:../../shared/config
+      '@types/react':
+        specifier: catalog:web-stack
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: catalog:web-stack
+        version: 19.2.3(@types/react@19.2.17)
+      tailwindcss:
+        specifier: catalog:shared-stack
+        version: 4.3.3
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
 
   studio/bucket:
     dependencies:
@@ -1154,34 +1182,6 @@ importers:
       '@types/mime-types':
         specifier: 'catalog:'
         version: 2.1.4
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  studio/design:
-    dependencies:
-      react:
-        specifier: catalog:web-stack
-        version: 19.2.7
-      react-dom:
-        specifier: catalog:web-stack
-        version: 19.2.7(react@19.2.7)
-      react-icons:
-        specifier: catalog:studio-stack
-        version: 5.7.0(react@19.2.7)
-    devDependencies:
-      '@tupynambalucas-shared/config':
-        specifier: workspace:*
-        version: link:../../shared/config
-      '@types/react':
-        specifier: catalog:web-stack
-        version: 19.2.17
-      '@types/react-dom':
-        specifier: catalog:web-stack
-        version: 19.2.3(@types/react@19.2.17)
-      tailwindcss:
-        specifier: catalog:shared-stack
-        version: 4.3.3
       typescript:
         specifier: 'catalog:'
         version: 6.0.3

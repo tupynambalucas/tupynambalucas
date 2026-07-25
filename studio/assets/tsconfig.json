@@ -3,9 +3,9 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "paths": {
-      "@assets/*": ["./assets/*"]
+      "@assets/*": ["./src/*"]
     }
   },
-  "include": ["assets/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

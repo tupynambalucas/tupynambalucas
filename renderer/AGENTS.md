@@ -27,7 +27,7 @@ markdown templates into production-grade documents across the monorepo.
 - **[src/templates/](./src/templates/)**: Domain-organized document templates.
   - [docs/](./src/templates/docs/): Markdown templates for generated documents (e.g.,
     [README.template.md](./src/templates/docs/README.template.md)).
-    _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/design` under `studio/design/assets/github/cards/`._
+    _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/assets` under `studio/design/assets/github/cards/`._
 - **[src/utils/](./src/utils/)**: Common helpers for compilation and formatting.
   - [glob.ts](./src/utils/glob.ts): Simple glob matcher helper for filtering items.
   - [template-fill.ts](./src/utils/template-fill.ts):
@@ -99,7 +99,7 @@ export const customPipeline: Pipeline = {
 3. **Template Consistent Naming**: All source files under the templates directory MUST use the
    `*.template.*` suffix pattern to distinguish static templates from compiled output.
 4. **Design Token Consumption**: Text style and layout colors MUST be bound directly to the central
-   brand design system tokens from `@tupynambalucas-studio/design`.
+   brand design system tokens from `@tupynambalucas-studio/assets`.
 5. **Base64 Font Inlining**: To guarantee rendering consistency under GitHub's SVG image sandbox,
    the variable Nunito brand font file MUST be encoded and inlined directly inside the generated
    SVGs using base64 data URIs.

@@ -55,15 +55,25 @@ export default function MonorepoMap() {
           })}
         </div>
 
-        {/* Dynamic Summary Panel */}
+        {/* Dynamic Summary Panel (2-Column Split) */}
         <div className={styles.detailsPanel}>
-          <div className={styles.detailsContent}>
+          <div className={styles.leftCol}>
             <div className={styles.panelHeader}>
               <span className={styles.pathTag}>{selectedWorkspace.path}</span>
               <h3>{selectedWorkspace.name}</h3>
             </div>
+
             <p className={styles.description}>{selectedWorkspace.description}</p>
 
+            <div className={styles.actionSection}>
+              <Link to={selectedWorkspace.path} className={styles.docButton}>
+                <Translate id="homepage.monorepo.viewDocs">View Workspace Documentation</Translate>
+                <span className={styles.arrow}>→</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className={styles.rightCol}>
             <div className={styles.metadataSection}>
               <h4>
                 <Translate id="homepage.monorepo.techstack">Tech Stack</Translate>
@@ -86,13 +96,6 @@ export default function MonorepoMap() {
                   <li key={resp}>{resp}</li>
                 ))}
               </ul>
-            </div>
-
-            <div className={styles.actionSection}>
-              <Link to={selectedWorkspace.path} className={styles.docButton}>
-                <Translate id="homepage.monorepo.viewDocs">View Workspace Documentation</Translate>
-                <span className={styles.arrow}>→</span>
-              </Link>
             </div>
           </div>
         </div>

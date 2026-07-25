@@ -6,25 +6,34 @@
   "homepage.description": {
     "message": "Documentação técnica para o monorepo de alta performance e tipagem estrita para compartilhamento orgânico."
   },
+  "homepage.hero.badge": {
+    "message": "Ecossistema tupynambalucas.dev"
+  },
   "homepage.hero.title": {
-    "message": "Engenharia para\n",
+    "message": "Documentação Centralizada de Engenharia",
     "description": "Main hero title on the homepage"
   },
-  "homepage.hero.subtitle": {
-    "message": "Sustentabilidade.",
-    "description": "Secondary hero title"
-  },
   "homepage.hero.text.primary": {
-    "message": "Arquitetura de monorepo de alta performance e tipagem estrita para ciclos de compartilhamento orgânico comunitário.\n",
+    "message": "Bem-vindo ao hub central de documentação do monorepo tupynambalucas.dev. Esta plataforma serve como a fonte única de verdade para meu site pessoal, serviços de engenharia, motores de ativos dinâmicos e workspaces de desenvolvimento em nível de produção.",
     "description": "First line of the introductory paragraph"
-  },
-  "homepage.hero.text.secondary": {
-    "message": "Construído para escalabilidade, segurança e colaboração fluida com IA.",
-    "description": "Second line of the introductory paragraph"
   },
   "homepage.button.docs": {
     "message": "Explorar Arquitetura",
     "description": "Label for the documentation button"
+  },
+  "homepage.button.workspaces": {
+    "message": "Workspaces",
+    "description": "Label for the workspaces button"
+  },
+  "homepage.button.github": {
+    "message": "Monorepo GitHub",
+    "description": "Label for the github button"
+  },
+  "homepage.profile.badge": {
+    "message": "O Arquiteto"
+  },
+  "homepage.profile.bio": {
+    "message": "Engenheiro Full-Stack Sênior com mais de 10 anos de experiência e estudos em desenvolvimento de software, construindo sistemas de produção em TypeScript de ponta a ponta. Tomo decisões arquitetônicas guiadas por requisitos, não por tendências — selecionando o banco de dados, framework ou protocolo correto para cada problema. Minha especialidade atual inclui conjuntos de réplicas MongoDB com transações ACID, mas utilizo PostgreSQL ou Redis quando o domínio exige. Projeto monorepos orientados a domínio orquestrados por Turborepo com dependências estritas gerenciadas por catálogo, entrego APIs de alta performance em Fastify com filas de tarefas respaldadas por Redis e construo frontends interativos com React 19, Three.js e GSAP. Minha infraestrutura roda em Docker e Kubernetes com ingress Traefik, pipelines de observabilidade instrumentadas com OpenTelemetry exportando para Grafana Cloud e promoção multi-ambiente de desenvolvimento para produção. Arquiteturo ferramentas nativas de IA — federações de gateways MCP auto-hospedados, runtimes de agentes conteinerizados e camadas de memória vetorial — transformando fluxos autônomos em infraestrutura de primeira classe. Cada repositório de minha autoria é entregue com CI/CD automatizado, Commit Convenções e segurança fortalecida por design."
   },
   "homepage.why.title": {
     "message": "Por que o tupynambalucas.dev?"

@@ -1,18 +1,18 @@
 # Local Context: Cortex Memory Subsystem
 
-This workspace (`cortex/memory`) contains the self-hosted MongoDB Vector RAG memory subsystem, providing episodic chat history, documentation knowledge RAG, and relational associative memory planes for AI agents.
+This workspace context ([memory/](./)) orchestrates the self-hosted MongoDB Vector RAG memory subsystem, providing episodic chat history, documentation knowledge RAG, and relational associative memory planes for AI agents.
 
 ---
 
-## Local Architecture
+## 1. Local Architecture
 
-- **[packages/core/](./packages/core/)**: Shared models, TypeScript interfaces, and Zod schemas (`@tupynambalucas-cortex/memory-core`).
-- **[services/api/](./services/api/)**: Fastify API backend service executing MongoDB 7.0 `$vectorSearch` and REST endpoints (`@tupynambalucas-cortex/memory-api`).
-- **[services/web/](./services/web/)**: Vite + React + Tailwind CSS dashboard built using Feature-Sliced Design (`@tupynambalucas-cortex/memory-web`).
+- **[packages/core/](./packages/core/)**: Shared models, TypeScript interfaces, and Zod schemas (`@tupynambalucas-cortex/memory-core`) router context ([core/AGENTS.md](./packages/core/AGENTS.md)).
+- **[services/api/](./services/api/)**: Fastify API backend service executing MongoDB 7.0 `$vectorSearch` and REST endpoints (`@tupynambalucas-cortex/memory-api`) router context ([api/AGENTS.md](./services/api/AGENTS.md)).
+- **[services/web/](./services/web/)**: Vite + React + Tailwind CSS dashboard built using Feature-Sliced Design (`@tupynambalucas-cortex/memory-web`) router context ([web/AGENTS.md](./services/web/AGENTS.md)).
 
 ---
 
-## Architectural Principles
+## 2. Architectural Principles
 
 1. **Domain-Driven Design (DDD)**: Logic is partitioned into Bounded Contexts.
 2. **Feature-Sliced Design (FSD)**: Frontend layers strictly enforce `Features` -> `Domains` -> `Shared` unidirectional imports.
@@ -22,7 +22,7 @@ This workspace (`cortex/memory`) contains the self-hosted MongoDB Vector RAG mem
 
 ---
 
-## Scoped Operations
+## 3. Scoped Operations
 
 Run these scripts from root or workspace filters:
 

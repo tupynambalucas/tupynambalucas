@@ -21,7 +21,7 @@
   "dependencies": {
     "zod": "catalog:shared-stack",
     "dotenv": "catalog:shared-stack",
-    "@tupynambalucas-studio/design": "workspace:*"
+    "@tupynambalucas-studio/assets": "workspace:*"
   },
   "devDependencies": {
     "@tupynambalucas-shared/config": "workspace:*",
