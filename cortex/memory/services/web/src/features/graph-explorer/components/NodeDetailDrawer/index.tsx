@@ -18,7 +18,7 @@ export const NodeDetailDrawer: React.FC = () => {
               <FileText className={styles.fileIcon} />
               <span>Node Inspector</span>
             </div>
-            <button onClick={() => setSelectedNode(null)} className={styles.closeBtn}>
+            <button type="button" onClick={() => setSelectedNode(null)} className={styles.closeBtn}>
               <X className={styles.closeIcon} />
             </button>
           </div>
@@ -58,7 +58,7 @@ export const NodeDetailDrawer: React.FC = () => {
           </div>
         </div>
 
-        <button onClick={() => setSelectedNode(null)} className={styles.closeBtnFull}>
+        <button type="button" onClick={() => setSelectedNode(null)} className={styles.closeBtnFull}>
           Close Inspector
         </button>
       </div>

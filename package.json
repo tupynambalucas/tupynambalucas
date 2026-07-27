@@ -11,11 +11,6 @@
   },
   "packageManager": "pnpm@11.9.0",
   "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "^24.18.0",
-      "onFail": "download"
-    },
     "packageManager": {
       "name": "pnpm",
       "version": "11.9.0"
@@ -66,7 +61,7 @@
     "memos:down": "podman compose -f studio/infrastructure/docker/compose.yaml --profile memos down",
     "memos:reset": "podman compose -f studio/infrastructure/docker/compose.yaml --profile memos down --volumes && podman compose -f studio/infrastructure/docker/compose.yaml --profile memos up -d",
     "// Cortex Context": "---------------------------------------------",
-    "cortex:typecheck": "tsc -b cortex/tsconfig.json",
+    "cortex:typecheck": "turbo run typecheck --filter=@tupynambalucas-cortex/*",
     "cortex:lint": "turbo run lint --filter=@tupynambalucas-cortex/*",
     "cortex:core:up": "docker compose -f cortex/infrastructure/docker/compose.yaml --profile core up -d --build",
     "cortex:core:down": "docker compose -f cortex/infrastructure/docker/compose.yaml --profile core down",

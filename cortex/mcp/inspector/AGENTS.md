@@ -7,12 +7,12 @@ This workspace directory ([inspector/](./)) configures the containerized Model C
 ## 1. Directory Layout
 
 - **[Dockerfile](./Dockerfile)**: Container build definition running `@modelcontextprotocol/inspector` on Alpine Node.js.
-- **[mcp.json](./mcp.json)**: Dynamic configuration manifest defining target custom MCP servers (`memory`).
+- **[mcp.json](./mcp.json)**: Configuration manifest defining target MCP servers over `cortex-net` (`http://mcp-memory:8080/mcp`).
 
 ---
 
 ## 2. Operational Guardrails
 
 - **Centralized Inspection**: Provides unified UI access on port `6274` and proxy port `6277` for registered Cortex MCP services.
-- **Host Resolution**: Targets point to host development applications via `host.docker.internal` (`http://host.docker.internal:9007/mcp`) enabled by `extra_hosts` in [compose.yaml](../../infrastructure/docker/compose.yaml).
-- **Development Profile**: Assigned to profile `core` in [compose.yaml](../../infrastructure/docker/compose.yaml).
+- **Unified Docker Compose Execution**: Started alongside core infrastructure (`pnpm cortex:core:up`). Connects directly to `mcp-memory` over container network `cortex-net` (`http://mcp-memory:8080/mcp`).
+- **Container Hot-Reloading**: `mcp-memory` runs with target `builder` and volume-mounted `src/` directory in [compose.yaml](../../infrastructure/docker/compose.yaml), hot-reloading code changes instantly in container.

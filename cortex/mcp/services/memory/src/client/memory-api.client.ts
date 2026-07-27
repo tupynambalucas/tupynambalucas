@@ -7,7 +7,7 @@ export class MemoryApiClient {
     this.baseUrl = config.MEMORY_API_URL;
   }
 
-  async searchKnowledge(query: string, limit = 5, minScore = 0.7) {
+  async searchKnowledge(query: string, limit = 5, minScore = 0.7): Promise<unknown> {
     const res = await fetch(`${this.baseUrl}/api/search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -18,10 +18,14 @@ export class MemoryApiClient {
       throw new Error(`Memory API search failed with status ${res.status}`);
     }
 
-    return res.json();
+    return (await res.json()) as unknown;
   }
 
-  async storeEpisodic(sessionId: string, role: 'user' | 'assistant' | 'system', content: string) {
+  async storeEpisodic(
+    sessionId: string,
+    role: 'user' | 'assistant' | 'system',
+    content: string,
+  ): Promise<unknown> {
     const res = await fetch(`${this.baseUrl}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -32,10 +36,10 @@ export class MemoryApiClient {
       throw new Error(`Memory API chat store failed with status ${res.status}`);
     }
 
-    return res.json();
+    return (await res.json()) as unknown;
   }
 
-  async queryGraph(entityId: string, maxDepth = 2) {
+  async queryGraph(entityId: string, maxDepth = 2): Promise<unknown> {
     const res = await fetch(
       `${this.baseUrl}/api/graph?entityId=${encodeURIComponent(entityId)}&maxDepth=${maxDepth}`,
     );
@@ -44,10 +48,10 @@ export class MemoryApiClient {
       throw new Error(`Memory API graph query failed with status ${res.status}`);
     }
 
-    return res.json();
+    return (await res.json()) as unknown;
   }
 
-  async ingestDocument(title: string, content: string, source?: string) {
+  async ingestDocument(title: string, content: string, source?: string): Promise<unknown> {
     const res = await fetch(`${this.baseUrl}/api/ingest`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -58,7 +62,7 @@ export class MemoryApiClient {
       throw new Error(`Memory API ingest failed with status ${res.status}`);
     }
 
-    return res.json();
+    return (await res.json()) as unknown;
   }
 }
 

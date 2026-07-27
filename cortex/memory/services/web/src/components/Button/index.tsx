@@ -16,7 +16,7 @@ export const Button: React.FC<ButtonProps> = ({
   const combinedClass = `${styles.button} ${styles[variant]} ${styles[size]} ${className}`.trim();
 
   return (
-    <button className={combinedClass} {...props}>
+    <button type={props.type ?? 'button'} className={combinedClass} {...props}>
       {children}
     </button>
   );

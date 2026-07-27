@@ -35,5 +35,5 @@ fastify.listen({ port: config.PORT, host: '0.0.0.0' }, (err) => {
     fastify.log.error(err);
     process.exit(1);
   }
-  console.log(`Cortex Memory MCP Server listening on port ${config.PORT}`);
+  fastify.log.info(`Cortex Memory MCP Server listening on port ${config.PORT}`);
 });

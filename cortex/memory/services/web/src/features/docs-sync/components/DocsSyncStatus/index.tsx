@@ -23,6 +23,7 @@ export const DocsSyncStatus: React.FC = () => {
         </div>
 
         <button
+          type="button"
           onClick={() => void triggerDocsSync()}
           disabled={isSyncingDocs}
           className={styles.syncBtn}

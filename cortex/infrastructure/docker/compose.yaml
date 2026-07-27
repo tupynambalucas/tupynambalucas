@@ -169,7 +169,7 @@ services:
       - cortex-net
 
   mcp-memory:
-    profiles: ['memory']
+    profiles: ['core', 'memory']
     container_name: tupynambalucas-cortex-mcp-memory
     build:
       context: ../../../
@@ -182,7 +182,9 @@ services:
     networks:
       - cortex-net
     depends_on:
-      - memory-api
+      memory-api:
+        condition: service_started
+        required: false
 
   mcp-playwright:
     profiles: ['core']

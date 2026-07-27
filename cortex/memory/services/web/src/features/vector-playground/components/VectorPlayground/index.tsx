@@ -54,6 +54,7 @@ export const VectorPlayground: React.FC = () => {
         </span>
         {presets.map((preset) => (
           <button
+            type="button"
             key={preset}
             onClick={() => handlePresetClick(preset)}
             className={styles.presetPill}
@@ -71,10 +72,13 @@ export const VectorPlayground: React.FC = () => {
         </div>
       ) : (
         <div className={styles.resultsList}>
-          {searchResults.map((item, idx) => {
+          {searchResults.map((item) => {
             const matchScorePct = (item.score * 100).toFixed(1);
             return (
-              <div key={item.entity.id ?? idx} className={styles.resultCard}>
+              <div
+                key={item.entity.id ?? `${item.entity.name}-${item.score}`}
+                className={styles.resultCard}
+              >
                 <div className={styles.cardHeader}>
                   <span className={styles.entityName}>
                     <FileCode className={styles.fileCodeIcon} />

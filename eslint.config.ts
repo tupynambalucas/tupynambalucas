@@ -56,6 +56,10 @@ export default defineConfig([
             'shared/*/tsconfig.json',
             'studio/*/tsconfig.json',
             'tools/*/tsconfig.json',
+            'cortex/mcp/guardrails/tsconfig.json',
+            'cortex/mcp/services/*/tsconfig.json',
+            'cortex/memory/packages/*/tsconfig.json',
+            'cortex/memory/services/*/tsconfig.json',
           ],
         },
         node: {
@@ -170,7 +174,7 @@ export default defineConfig([
   // ========================================================================
   {
     name: 'monorepo/domain-core',
-    files: ['**/packages/core/**/*.{ts,tsx}'],
+    files: ['**/core/**/*.{ts,tsx}', '**/packages/core/**/*.{ts,tsx}'],
     ignores: ['**/*.md/**', '**/*.mdx/**'],
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -192,7 +196,12 @@ export default defineConfig([
   // ========================================================================
   {
     name: 'monorepo/domain-api',
-    files: ['**/services/api/**/*.{ts,tsx}'],
+    files: [
+      '**/api/**/*.{ts,tsx}',
+      '**/services/api/**/*.{ts,tsx}',
+      'cortex/mcp/services/**/*.{ts,tsx}',
+      'cortex/mcp/guardrails/**/*.{ts,tsx}',
+    ],
     rules: {
       '@typescript-eslint/no-misused-promises': [
         'error',
@@ -210,7 +219,7 @@ export default defineConfig([
   // ========================================================================
   {
     name: 'monorepo/domain-web',
-    files: ['**/services/web/**/*.{ts,tsx}'],
+    files: ['**/web/**/*.{ts,tsx}', '**/services/web/**/*.{ts,tsx}'],
     ignores: ['**/*.md/**', '**/*.mdx/**'],
     plugins: {
       '@eslint-react': eslintReact,

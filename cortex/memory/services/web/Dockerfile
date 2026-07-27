@@ -4,7 +4,7 @@ ENV CI=true
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY shared/config/package.json ./shared/config/
 COPY studio/assets/package.json ./studio/assets/
 COPY cortex/memory/packages/core/package.json ./cortex/memory/packages/core/

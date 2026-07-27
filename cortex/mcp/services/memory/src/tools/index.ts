@@ -13,8 +13,8 @@ export const allTools = [
 ];
 
 export function registerToolHandlers(server: Server) {
-  server.setRequestHandler(ListToolsRequestSchema, async () => {
-    return { tools: allTools };
+  server.setRequestHandler(ListToolsRequestSchema, () => {
+    return Promise.resolve({ tools: allTools });
   });
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {

@@ -80,6 +80,7 @@ export const GraphExplorer: React.FC = () => {
             </p>
           </div>
           <button
+            type="button"
             onClick={() => void fetchGraph()}
             className={styles.refreshBtn}
             title="Refresh Graph"
@@ -105,6 +106,7 @@ export const GraphExplorer: React.FC = () => {
             <Filter className={styles.filterIcon} />
             {['all', 'workspace', 'doc_file', 'doc_chunk', 'chat_message'].map((type) => (
               <button
+                type="button"
                 key={type}
                 onClick={() => setFilterType(type)}
                 className={`${styles.filterBtn} ${
@@ -119,6 +121,7 @@ export const GraphExplorer: React.FC = () => {
           {/* View Mode Toggle */}
           <div className={styles.viewModeToggle}>
             <button
+              type="button"
               onClick={() => setViewMode('canvas')}
               className={`${styles.toggleBtn} ${
                 viewMode === 'canvas' ? styles.toggleBtnActive : ''
@@ -127,6 +130,7 @@ export const GraphExplorer: React.FC = () => {
               2D Graph
             </button>
             <button
+              type="button"
               onClick={() => setViewMode('grid')}
               className={`${styles.toggleBtn} ${viewMode === 'grid' ? styles.toggleBtnActive : ''}`}
             >

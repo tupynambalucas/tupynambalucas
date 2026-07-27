@@ -9,7 +9,8 @@
     "build": "tsc -p tsconfig.build.json && vite build",
     "start": "vite preview --port 9006",
     "preview": "vite preview --port 9006",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@tupynambalucas-cortex/memory-core": "workspace:*",

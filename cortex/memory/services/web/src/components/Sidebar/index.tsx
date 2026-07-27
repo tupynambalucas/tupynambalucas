@@ -38,6 +38,7 @@ export const Sidebar: React.FC = () => {
           <span className={styles.navSectionLabel}>Panels Navigation</span>
 
           <button
+            type="button"
             onClick={() => setActiveTab('graph')}
             className={`${styles.navItem} ${activeTab === 'graph' ? styles.activeNavItem : ''}`}
           >
@@ -46,6 +47,7 @@ export const Sidebar: React.FC = () => {
           </button>
 
           <button
+            type="button"
             onClick={() => setActiveTab('vector')}
             className={`${styles.navItem} ${activeTab === 'vector' ? styles.activeNavItem : ''}`}
           >
@@ -54,6 +56,7 @@ export const Sidebar: React.FC = () => {
           </button>
 
           <button
+            type="button"
             onClick={() => setActiveTab('chat')}
             className={`${styles.navItem} ${activeTab === 'chat' ? styles.activeNavItem : ''}`}
           >
@@ -98,6 +101,7 @@ export const Sidebar: React.FC = () => {
             <div className={styles.docsSyncHeader}>
               <span>Docs Ingestion</span>
               <button
+                type="button"
                 onClick={() => void triggerDocsSync()}
                 disabled={isSyncingDocs}
                 className={styles.syncBtnMini}
