@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "./mcp/guardrails" },
+    { "path": "./mcp/services/memory" },
     { "path": "./memory/packages/core" },
     { "path": "./memory/services/api" },
     { "path": "./memory/services/web" }

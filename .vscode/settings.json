@@ -16,7 +16,6 @@
   /* --- Schemas --- */
 
   /* --- Eslint Config --- */
-  "eslint.useFlatConfig": true,
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "eslint.options": {
     "cache": true,
@@ -35,18 +34,6 @@
     "other": true,
     "comments": false,
     "strings": true
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnSave": false
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnSave": false
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnSave": false
   },
 
   "[mdx]": {

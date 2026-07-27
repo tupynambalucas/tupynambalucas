@@ -54,6 +54,9 @@ mcp:
     - name: playwright
       mcp:
         host: http://mcp-playwright:8080/mcp
+    - name: memory
+      mcp:
+        host: http://mcp-memory:8080/mcp
   statefulMode: stateless
   prefixMode: null
   failureMode: failOpen

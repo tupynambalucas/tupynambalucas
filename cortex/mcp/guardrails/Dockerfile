@@ -2,7 +2,7 @@ FROM node:22-alpine AS builder
 WORKDIR /workspace
 ENV CI=true
 
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY shared/config/package.json ./shared/config/
 COPY cortex/mcp/guardrails/package.json ./cortex/mcp/guardrails/
 

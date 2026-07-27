@@ -27,6 +27,5 @@ This workspace context ([memory/](./)) orchestrates the self-hosted MongoDB Vect
 Run these scripts from root or workspace filters:
 
 - `pnpm --filter @tupynambalucas-cortex/memory-core build`: Compiles shared TypeScript types.
-- `pnpm --filter @tupynambalucas-cortex/memory-api dev`: Runs Fastify API in development mode.
-- `pnpm --filter @tupynambalucas-cortex/memory-web dev`: Starts Vite dev server for the memory dashboard at `http://localhost:9006`.
+- `pnpm cortex:memory:dev`: Runs memory API (`:3006`), web dashboard (`:9006`), and MCP memory service (`:9007`) with embedded MCP Inspector UI concurrently in development mode.
 - `pnpm cortex:core:up`: Boots central control plane including `agentgateway`, `mcp-guardrails`, `mongodb-db`, `memory-api`, and `memory-web`.

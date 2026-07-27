@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "memory": {
+      "type": "streamable-http",
+      "url": "http://host.docker.internal:9007/mcp"
+    }
+  }
+}

@@ -7,11 +7,13 @@ This workspace context ([mcp/](./)) orchestrates the Model Context Protocol (MCP
 ## 1. Directory Layout
 
 - **[guardrails/](./guardrails/)**: Standalone gRPC ExtMCP policy processor for AgentGateway payload validation, tool description enrichment, and host URL mutation ([guardrails/AGENTS.md](./guardrails/AGENTS.md)).
+- **[inspector/](./inspector/)**: Containerized developer interface for dynamic MCP tool server inspection and debugging ([inspector/AGENTS.md](./inspector/AGENTS.md)).
 - **[services/](./services/)**: Containerized downstream MCP tool server adapters:
   - **[Context7 MCP](./services/context7/AGENTS.md)**: Real-time framework documentation and code snippet search tools.
   - **[Firecrawl MCP](./services/firecrawl/AGENTS.md)**: Web scraping, search, document parsing, and autonomous research tools.
   - **[GitHub MCP](./services/github/AGENTS.md)**: Repository, pull request, issue, branch, commit, and Copilot management tools.
   - **[Grafana MCP](./services/grafana/AGENTS.md)**: Observability, metrics (Prometheus), logs (Loki), traces (Tempo), and continuous profiling (Pyroscope) tools.
+  - **[Memory MCP](./services/memory/AGENTS.md)**: RAG vector search, episodic chat history, entity graph, and document ingestion tools.
   - **[Playwright MCP](./services/playwright/AGENTS.md)**: Headless browser automation and accessibility snapshot tools using Chromium.
 
 ---

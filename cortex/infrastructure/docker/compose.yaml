@@ -168,6 +168,22 @@ services:
     networks:
       - cortex-net
 
+  mcp-memory:
+    profiles: ['memory']
+    container_name: tupynambalucas-cortex-mcp-memory
+    build:
+      context: ../../../
+      dockerfile: cortex/mcp/services/memory/Dockerfile
+    environment:
+      - PORT=8080
+      - MEMORY_API_URL=http://memory-api:3006
+    ports:
+      - '9007:8080'
+    networks:
+      - cortex-net
+    depends_on:
+      - memory-api
+
   mcp-playwright:
     profiles: ['core']
     container_name: tupynambalucas-cortex-mcp-playwright
@@ -180,6 +196,24 @@ services:
       - PLAYWRIGHT_MCP_HEADLESS=${PLAYWRIGHT_MCP_HEADLESS:-true}
       - PLAYWRIGHT_MCP_NO_SANDBOX=${PLAYWRIGHT_MCP_NO_SANDBOX:-true}
       - PLAYWRIGHT_MCP_ALLOWED_HOSTS=${PLAYWRIGHT_MCP_ALLOWED_HOSTS:-*}
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    networks:
+      - cortex-net
+
+  mcp-inspector:
+    profiles: ['core']
+    container_name: tupynambalucas-cortex-mcp-inspector
+    build:
+      context: ../../../
+      dockerfile: cortex/mcp/inspector/Dockerfile
+    ports:
+      - '6274:6274'
+      - '6277:6277'
+    environment:
+      - HOST=0.0.0.0
+      - MCP_AUTO_OPEN_ENABLED=false
+      - DANGEROUSLY_OMIT_AUTH=true
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     networks:

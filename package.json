@@ -11,6 +11,11 @@
   },
   "packageManager": "pnpm@11.9.0",
   "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.18.0",
+      "onFail": "download"
+    },
     "packageManager": {
       "name": "pnpm",
       "version": "11.9.0"
@@ -69,10 +74,10 @@
     "cortex:memory:up": "docker compose -f cortex/infrastructure/docker/compose.yaml --profile memory up -d --build",
     "cortex:memory:down": "docker compose -f cortex/infrastructure/docker/compose.yaml --profile memory down",
     "cortex:memory:reset": "docker compose -f cortex/infrastructure/docker/compose.yaml --profile memory down --volumes && docker compose -f cortex/infrastructure/docker/compose.yaml --profile memory up -d --build",
-    "cortex:memory:dev": "kill-port 3006 9006 && turbo run dev --filter=@tupynambalucas-cortex/memory-*",
-    "cortex:memory:build": "turbo run build --filter=@tupynambalucas-cortex/memory-*",
-    "cortex:memory:start": "turbo run start --filter=@tupynambalucas-cortex/memory-*",
-    "cortex:memory:preview": "turbo run preview --filter=@tupynambalucas-cortex/memory-*",
+    "cortex:memory:dev": "kill-port 3006 9006 9007 && turbo run dev --filter=@tupynambalucas-cortex/memory-* --filter=@tupynambalucas-cortex/mcp-memory",
+    "cortex:memory:build": "turbo run build --filter=@tupynambalucas-cortex/memory-* --filter=@tupynambalucas-cortex/mcp-memory",
+    "cortex:memory:start": "turbo run start --filter=@tupynambalucas-cortex/memory-* --filter=@tupynambalucas-cortex/mcp-memory",
+    "cortex:memory:preview": "turbo run preview --filter=@tupynambalucas-cortex/memory-* --filter=@tupynambalucas-cortex/mcp-memory",
     "cortex:agents:up": "docker compose -f cortex/infrastructure/docker/compose.yaml --profile agents up -d --build",
     "cortex:agents:down": "docker compose -f cortex/infrastructure/docker/compose.yaml --profile agents down",
     "cortex:agents:reset": "docker compose -f cortex/infrastructure/docker/compose.yaml --profile agents down --volumes && docker compose -f cortex/infrastructure/docker/compose.yaml --profile agents up -d --build",
@@ -109,21 +114,19 @@
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
     "@changesets/cli": "catalog:",
     "@clack/prompts": "catalog:",
-    "@eslint/compat": "catalog:tooling-stack",
+    "@eslint-react/eslint-plugin": "catalog:web-stack",
     "@eslint/js": "catalog:tooling-stack",
+    "@tupynambalucas-shared/config": "workspace:*",
     "@types/node": "catalog:",
     "@typescript-eslint/eslint-plugin": "catalog:tooling-stack",
     "eslint": "catalog:tooling-stack",
     "eslint-config-prettier": "catalog:tooling-stack",
     "eslint-import-resolver-typescript": "catalog:tooling-stack",
-    "eslint-plugin-import": "catalog:tooling-stack",
+    "eslint-plugin-import-x": "catalog:tooling-stack",
     "eslint-plugin-mdx": "catalog:tooling-stack",
     "eslint-plugin-prettier": "catalog:tooling-stack",
-    "eslint-plugin-react": "catalog:web-stack",
-    "eslint-plugin-react-hooks": "catalog:web-stack",
     "eslint-plugin-react-refresh": "catalog:web-stack",
     "husky": "catalog:",
     "kill-port": "catalog:",

@@ -88,7 +88,7 @@ export const ValidateStep: React.FC<ValidateStepProps> = ({
           <div className={styles.dangerContent}>
             <div className={styles.failedPreview}>
               {failedLines.slice(0, 3).map((fail, fIdx) => (
-                // eslint-disable-next-line react/no-array-index-key
+                // eslint-disable-next-line @eslint-react/no-array-index-key
                 <div key={`fail-${fIdx}`}>• {fail.text}</div>
               ))}
               {failedLines.length > 3 && (
