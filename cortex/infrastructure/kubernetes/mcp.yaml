@@ -1,0 +1,352 @@
+# MCP Guardrails Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-guardrails
+  namespace: cortex
+  labels:
+    app: mcp-guardrails
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-guardrails
+  template:
+    metadata:
+      labels:
+        app: mcp-guardrails
+    spec:
+      containers:
+        - name: mcp-guardrails
+          image: tupynambalucas-cortex-mcp-guardrails:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9001
+          env:
+            - name: GUARDRAILS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: GUARDRAILS_PORT
+                  optional: true
+            - name: GUARDRAILS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: GUARDRAILS_HOST
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-guardrails
+  namespace: cortex
+spec:
+  ports:
+    - port: 9001
+      targetPort: 9001
+  selector:
+    app: mcp-guardrails
+---
+# MCP Memory Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-memory
+  namespace: cortex
+  labels:
+    app: mcp-memory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-memory
+  template:
+    metadata:
+      labels:
+        app: mcp-memory
+    spec:
+      containers:
+        - name: mcp-memory
+          image: tupynambalucas-cortex-mcp-memory:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MCP_MEMORY_PORT
+                  optional: true
+            - name: MEMORY_API_URL
+              value: 'http://memory-api:3006'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-memory
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-memory
+---
+# MCP GitHub Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-github
+  namespace: cortex
+  labels:
+    app: mcp-github
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-github
+  template:
+    metadata:
+      labels:
+        app: mcp-github
+    spec:
+      containers:
+        - name: mcp-github
+          image: mcp-github:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GITHUB_PERSONAL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: GITHUB_PERSONAL_ACCESS_TOKEN
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-github
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-github
+---
+# MCP Firecrawl Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-firecrawl
+  namespace: cortex
+  labels:
+    app: mcp-firecrawl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-firecrawl
+  template:
+    metadata:
+      labels:
+        app: mcp-firecrawl
+    spec:
+      containers:
+        - name: mcp-firecrawl
+          image: mcp-firecrawl:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: FIRECRAWL_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: FIRECRAWL_API_KEY
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-firecrawl
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-firecrawl
+---
+# MCP Grafana Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-grafana
+  namespace: cortex
+  labels:
+    app: mcp-grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-grafana
+  template:
+    metadata:
+      labels:
+        app: mcp-grafana
+    spec:
+      containers:
+        - name: mcp-grafana
+          image: mcp-grafana:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GRAFANA_URL
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: GRAFANA_CLOUD_URL
+                  optional: true
+            - name: GRAFANA_SERVICE_ACCOUNT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: GRAFANA_SERVICE_ACCOUNT_TOKEN
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-grafana
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-grafana
+---
+# MCP Inspector Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-inspector
+  namespace: cortex
+  labels:
+    app: mcp-inspector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-inspector
+  template:
+    metadata:
+      labels:
+        app: mcp-inspector
+    spec:
+      containers:
+        - name: mcp-inspector
+          image: tupynambalucas-cortex-mcp-inspector:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6274
+            - containerPort: 6277
+          env:
+            - name: DANGEROUSLY_BIND_ALL_INTERFACES
+              value: 'true'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-inspector
+  namespace: cortex
+spec:
+  ports:
+    - name: client
+      port: 6274
+      targetPort: 6274
+    - name: server
+      port: 6277
+      targetPort: 6277
+  selector:
+    app: mcp-inspector
+---
+# MCP Playwright Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-playwright
+  namespace: cortex
+  labels:
+    app: mcp-playwright
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-playwright
+  template:
+    metadata:
+      labels:
+        app: mcp-playwright
+    spec:
+      containers:
+        - name: mcp-playwright
+          image: mcp-playwright:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_PORT
+                  optional: true
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_HOST
+                  optional: true
+            - name: BROWSER
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_BROWSER
+                  optional: true
+            - name: HEADLESS
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_HEADLESS
+                  optional: true
+            - name: NO_SANDBOX
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_NO_SANDBOX
+                  optional: true
+            - name: ALLOWED_HOSTS
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_ALLOWED_HOSTS
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-playwright
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-playwright

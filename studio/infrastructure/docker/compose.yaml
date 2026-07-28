@@ -10,8 +10,7 @@ networks:
 
 services:
   frontend:
-    profiles:
-      - penpot
+    profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-frontend
     image: penpotapp/frontend:${PENPOT_VERSION:-latest}
     ports:
@@ -32,8 +31,7 @@ services:
       - 'tupynambalucas.internal:host-gateway'
 
   backend:
-    profiles:
-      - penpot
+    profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-backend
     image: penpotapp/backend:${PENPOT_VERSION:-latest}
     environment:
@@ -61,8 +59,7 @@ services:
       - 'tupynambalucas.internal:host-gateway'
 
   exporter:
-    profiles:
-      - penpot
+    profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-exporter
     image: penpotapp/exporter:${PENPOT_VERSION:-latest}
     environment:
@@ -80,8 +77,7 @@ services:
       - 'tupynambalucas.internal:host-gateway'
 
   valkey:
-    profiles:
-      - penpot
+    profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-valkey
     image: valkey/valkey:latest
     volumes:
@@ -96,8 +92,7 @@ services:
       - penpot-net
 
   aide:
-    profiles:
-      - penpot
+    profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-aide
     image: penpotapp/mcp:${PENPOT_VERSION:-latest}
     ports:
@@ -116,8 +111,7 @@ services:
       - penpot-net
 
   memos:
-    profiles:
-      - memos
+    profiles: ['core', 'memos']
     container_name: tupynambalucas-memos
     image: neosmemo/memos:stable
     ports:

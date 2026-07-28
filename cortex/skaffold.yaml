@@ -1,0 +1,80 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: cortex-dev
+build:
+  local:
+    push: false
+    useDockerCLI: true
+    concurrency: 0
+  artifacts:
+    - image: tupynambalucas-cortex-gateway
+      context: ..
+      docker:
+        dockerfile: cortex/gateway/Dockerfile
+    - image: tupynambalucas-cortex-mcp-guardrails
+      context: ..
+      docker:
+        dockerfile: cortex/mcp/guardrails/Dockerfile
+      sync:
+        infer:
+          - 'cortex/mcp/guardrails/src/**/*.ts'
+    - image: tupynambalucas-cortex-memory-api
+      context: ..
+      docker:
+        dockerfile: cortex/memory/services/api/Dockerfile
+      sync:
+        manual:
+          - src: 'cortex/memory/services/api/src/**/*.ts'
+            dest: /app/src
+            strip: 'cortex/memory/services/api/src/'
+    - image: tupynambalucas-cortex-memory-web
+      context: ..
+      docker:
+        dockerfile: cortex/memory/services/web/Dockerfile
+      sync:
+        manual:
+          - src: 'cortex/memory/services/web/src/**/*'
+            dest: /app/src
+            strip: 'cortex/memory/services/web/src/'
+    - image: tupynambalucas-cortex-mcp-memory
+      context: ..
+      docker:
+        dockerfile: cortex/mcp/services/memory/Dockerfile
+      sync:
+        infer:
+          - 'cortex/mcp/services/memory/src/**/*.ts'
+    - image: tupynambalucas-cortex-mcp-inspector
+      context: ..
+      docker:
+        dockerfile: cortex/mcp/inspector/Dockerfile
+    - image: mcp-github
+      context: ..
+      docker:
+        dockerfile: cortex/mcp/services/github/Dockerfile
+    - image: mcp-firecrawl
+      context: ..
+      docker:
+        dockerfile: cortex/mcp/services/firecrawl/Dockerfile
+    - image: mcp-grafana
+      context: ..
+      docker:
+        dockerfile: cortex/mcp/services/grafana/Dockerfile
+    - image: mcp-playwright
+      context: ..
+      docker:
+        dockerfile: cortex/mcp/services/playwright/Dockerfile
+    - image: agent-copilot
+      context: ..
+      docker:
+        dockerfile: cortex/agents/copilot/Dockerfile
+    - image: agent-antigravity
+      context: ..
+      docker:
+        dockerfile: cortex/agents/antigravity/Dockerfile
+manifests:
+  kustomize:
+    paths:
+      - infrastructure/kubernetes
+    buildArgs:
+      - --load-restrictor=LoadRestrictionsNone

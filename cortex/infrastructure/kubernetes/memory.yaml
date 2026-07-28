@@ -1,0 +1,150 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-db
+  namespace: cortex
+  labels:
+    app: mongodb-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-db
+  template:
+    metadata:
+      labels:
+        app: mongodb-db
+    spec:
+      containers:
+        - name: mongodb-db
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_ROOT_USERNAME
+                  optional: true
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_ROOT_PASSWORD
+                  optional: true
+            - name: MONGO_INITDB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_DATABASE
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-db
+  namespace: cortex
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongodb-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-api
+  namespace: cortex
+  labels:
+    app: memory-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-api
+  template:
+    metadata:
+      labels:
+        app: memory-api
+    spec:
+      containers:
+        - name: memory-api
+          image: tupynambalucas-cortex-memory-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3006
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_API_PORT
+                  optional: true
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_API_HOST
+                  optional: true
+            - name: NODE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: NODE_ENV
+                  optional: true
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MONGODB_URI
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memory-api
+  namespace: cortex
+spec:
+  ports:
+    - port: 3006
+      targetPort: 3006
+  selector:
+    app: memory-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-web
+  namespace: cortex
+  labels:
+    app: memory-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-web
+  template:
+    metadata:
+      labels:
+        app: memory-web
+    spec:
+      containers:
+        - name: memory-web
+          image: tupynambalucas-cortex-memory-web:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9006
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memory-web
+  namespace: cortex
+spec:
+  ports:
+    - port: 9006
+      targetPort: 9006
+  selector:
+    app: memory-web

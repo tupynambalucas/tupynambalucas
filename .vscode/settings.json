@@ -90,9 +90,18 @@
   "yaml.format.bracketSpacing": true,
   "yaml.format.proseWrap": "preserve",
   "yaml.schemas": {
+    "https://json.schemastore.org/kustomization.json": [
+      "cortex/infrastructure/kubernetes/kustomization.yaml",
+      "**/kustomization.yaml",
+      "**/kustomization.yml"
+    ],
     "kubernetes": [
       "platform/infrastructure/kubernetes/*.yaml",
-      "cortex/infrastructure/kubernetes/*.yaml",
+      "cortex/infrastructure/kubernetes/namespace.yaml",
+      "cortex/infrastructure/kubernetes/gateway.yaml",
+      "cortex/infrastructure/kubernetes/memory.yaml",
+      "cortex/infrastructure/kubernetes/mcp.yaml",
+      "cortex/infrastructure/kubernetes/agents.yaml",
       "studio/design/infrastructure/kubernetes/*.yaml"
     ]
   },
@@ -129,7 +138,8 @@
 
   /* --- Color Highlight --- */
   "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"],
-  "terminal.integrated.env.windows": {}
+  "terminal.integrated.env.windows": {},
+  "yaml.disableSchemaDetection": []
 
   /* --- GitHub Copilot Chat Configuration --- */
 }

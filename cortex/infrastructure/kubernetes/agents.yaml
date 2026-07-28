@@ -29,7 +29,7 @@ spec:
             - name: GITHUB_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: mcp-secrets
+                  name: cortex-secrets
                   key: GITHUB_TOKEN
                   optional: true
           volumeMounts:
@@ -109,7 +109,7 @@ spec:
             - name: GEMINI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: mcp-secrets
+                  name: cortex-secrets
                   key: GEMINI_API_KEY
                   optional: true
           volumeMounts:

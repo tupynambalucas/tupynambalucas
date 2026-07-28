@@ -1,0 +1,18 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: platform-dev
+build:
+  local:
+    push: false
+    useDockerCLI: true
+    concurrency: 0
+  artifacts:
+    - image: turbocache
+      context: ..
+      docker:
+        dockerfile: platform/services/turbocache/Dockerfile
+deploy:
+  docker:
+    images:
+      - turbocache

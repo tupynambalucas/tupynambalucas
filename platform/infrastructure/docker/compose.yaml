@@ -7,6 +7,7 @@ networks:
 
 services:
   otel-collector:
+    profiles: ['core']
     image: otel/opentelemetry-collector-contrib:latest
     container_name: tupynambalucas-platform-otel
     command: ['--config=/etc/otelcol-contrib/config.yaml']
@@ -23,6 +24,7 @@ services:
       - platform-net
 
   turbocache:
+    profiles: ['core']
     container_name: tupynambalucas-platform-turbocache
     build:
       context: ../../services/turbocache

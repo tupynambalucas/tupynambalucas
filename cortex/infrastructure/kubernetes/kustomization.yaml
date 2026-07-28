@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: cortex
+
+resources:
+  - namespace.yaml
+  - gateway.yaml
+  - memory.yaml
+  - mcp.yaml
+  - agents.yaml
+
+secretGenerator:
+  - name: cortex-secrets
+    envs:
+      - ../.env

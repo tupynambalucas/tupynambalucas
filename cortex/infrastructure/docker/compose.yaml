@@ -18,14 +18,13 @@ services:
   # ==========================================
   agentgateway:
     profiles: ['core']
-    image: cr.agentgateway.dev/agentgateway:v1.3.1
+    build:
+      context: ../..
+      dockerfile: cortex/gateway/Dockerfile
     container_name: tupynambalucas-cortex-gateway
     ports:
       - '${GATEWAY_PORT:-8080}:8080' # Main traffic
       - '15000:15000' # Web UI
-    volumes:
-      - ../../gateway/config.yaml:/config.yaml
-    command: ['-f', '/config.yaml']
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otel-collector:4317}
       - CONTEXT7_API_KEY=${CONTEXT7_API_KEY}
@@ -37,7 +36,7 @@ services:
           - agentgateway-metrics
 
   mcp-guardrails:
-    profiles: ['core']
+    profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-guardrails
     build:
       context: ../../../
@@ -96,7 +95,7 @@ services:
       - cortex-net
 
   memory-api:
-    profiles: ['memory']
+    profiles: ['core', 'memory']
     container_name: tupynambalucas-cortex-memory-api
     build:
       context: ../../../
@@ -120,7 +119,7 @@ services:
       - cortex-net
 
   memory-web:
-    profiles: ['memory']
+    profiles: ['core', 'memory']
     container_name: tupynambalucas-cortex-memory-web
     build:
       context: ../../../
@@ -138,7 +137,7 @@ services:
   # MCP DATA PLANE SERVICES
   # ==========================================
   mcp-github:
-    profiles: ['core']
+    profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-github
     build:
       context: ../../mcp/services/github
@@ -148,7 +147,7 @@ services:
       - cortex-net
 
   mcp-firecrawl:
-    profiles: ['core']
+    profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-firecrawl
     build:
       context: ../../mcp/services/firecrawl
@@ -158,7 +157,7 @@ services:
       - cortex-net
 
   mcp-grafana:
-    profiles: ['core']
+    profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-grafana
     build:
       context: ../../mcp/services/grafana
@@ -169,7 +168,7 @@ services:
       - cortex-net
 
   mcp-memory:
-    profiles: ['core', 'memory']
+    profiles: ['core', 'memory', 'mcp']
     container_name: tupynambalucas-cortex-mcp-memory
     build:
       context: ../../../
@@ -187,7 +186,7 @@ services:
         required: false
 
   mcp-playwright:
-    profiles: ['core']
+    profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-playwright
     build:
       context: ../../mcp/services/playwright
@@ -204,7 +203,7 @@ services:
       - cortex-net
 
   mcp-inspector:
-    profiles: ['core']
+    profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-inspector
     build:
       context: ../../../
