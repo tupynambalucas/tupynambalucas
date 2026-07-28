@@ -72,9 +72,47 @@ build:
       context: ..
       docker:
         dockerfile: cortex/agents/antigravity/Dockerfile
-manifests:
-  kustomize:
-    paths:
-      - infrastructure/kubernetes
-    buildArgs:
-      - --load-restrictor=LoadRestrictionsNone
+deploy:
+  docker:
+    images:
+      - tupynambalucas-cortex-gateway
+      - tupynambalucas-cortex-mcp-guardrails
+      - tupynambalucas-cortex-memory-api
+      - tupynambalucas-cortex-memory-web
+      - tupynambalucas-cortex-mcp-memory
+      - tupynambalucas-cortex-mcp-inspector
+      - mcp-github
+      - mcp-firecrawl
+      - mcp-grafana
+      - mcp-playwright
+portForward:
+  - resourceType: container
+    resourceName: tupynambalucas-cortex-gateway
+    port: 8080
+    localPort: 8080
+  - resourceType: container
+    resourceName: tupynambalucas-cortex-gateway
+    port: 15000
+    localPort: 15000
+  - resourceType: container
+    resourceName: tupynambalucas-cortex-memory-api
+    port: 3006
+    localPort: 3006
+  - resourceType: container
+    resourceName: tupynambalucas-cortex-memory-web
+    port: 9006
+    localPort: 9006
+  - resourceType: container
+    resourceName: tupynambalucas-cortex-mcp-inspector
+    port: 6274
+    localPort: 6274
+profiles:
+  - name: k8s
+    manifests:
+      kustomize:
+        paths:
+          - infrastructure/kubernetes
+        buildArgs:
+          - --load-restrictor=LoadRestrictionsNone
+    deploy:
+      kubectl: {}

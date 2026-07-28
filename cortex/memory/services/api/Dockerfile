@@ -20,7 +20,10 @@ RUN pnpm --filter @tupynambalucas-cortex/memory-api deploy --legacy --prod /out
 FROM node:22-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
+ENV PORT=3006
+ENV HOST=0.0.0.0
+ENV MONGODB_URI=mongodb://cortex_admin:cortex_password_dev@mongodb-db:27017/cortex_memory?authSource=admin
 
 COPY --from=builder /out ./
 COPY docs ./docs

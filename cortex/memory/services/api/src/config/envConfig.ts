@@ -17,7 +17,7 @@ const envConfig = async (server: FastifyInstance): Promise<void> => {
   await server.register(fastifyEnv, {
     confKey: 'config',
     schema,
-    dotenv: false,
+    dotenv: true,
   });
 };
 

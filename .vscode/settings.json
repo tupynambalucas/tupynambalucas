@@ -138,7 +138,6 @@
 
   /* --- Color Highlight --- */
   "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"],
-  "terminal.integrated.env.windows": {},
   "yaml.disableSchemaDetection": []
 
   /* --- GitHub Copilot Chat Configuration --- */

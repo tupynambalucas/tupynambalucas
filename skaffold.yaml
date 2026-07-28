@@ -20,3 +20,5 @@ manifests:
     - platform/infrastructure/kubernetes/traefik.yaml
     - platform/infrastructure/kubernetes/otel-collector.yaml
     - platform/infrastructure/kubernetes/turbocache.yaml
+deploy:
+  kubectl: {}

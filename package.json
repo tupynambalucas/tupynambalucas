@@ -9,11 +9,11 @@
     "type": "git",
     "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
   },
-  "packageManager": "pnpm@11.9.0",
+  "packageManager": "pnpm@11.17.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "11.9.0"
+      "version": "11.17.0"
     }
   },
   "scripts": {
@@ -51,9 +51,15 @@
     "studio:lint": "turbo run lint --filter=@tupynambalucas-studio/*",
     "studio:typecheck": "turbo run typecheck --filter=@tupynambalucas-studio/*",
     "studio:bucket": "pnpm --filter @tupynambalucas-studio/bucket bucket",
-    "// Cortex Context": "---------------------------------------------",
+    "// Cortex Context (Docker Compose)": "---------------------------------------------",
+    "cortex:up": "podman compose -f cortex/infrastructure/docker/compose.yaml --env-file cortex/infrastructure/.env --profile core --profile mcp up -d",
+    "cortex:down": "podman compose -f cortex/infrastructure/docker/compose.yaml --env-file cortex/infrastructure/.env --profile core --profile mcp down --remove-orphans",
+    "cortex:reset": "pnpm cortex:down && pnpm cortex:up",
+    "cortex:logs": "podman compose -f cortex/infrastructure/docker/compose.yaml --env-file cortex/infrastructure/.env logs -f",
+    "// Cortex Context (Skaffold Hot-Reload)": "---------------------------------------------",
     "cortex:dev": "skaffold dev --module cortex-dev",
-    "cortex:down": "skaffold delete --module cortex-dev",
+    "cortex:clean": "skaffold delete --module cortex-dev",
+    "cortex:stop": "pnpm cortex:clean || true && pnpm cortex:down",
     "cortex:typecheck": "turbo run typecheck --filter=@tupynambalucas-cortex/*",
     "cortex:lint": "turbo run lint --filter=@tupynambalucas-cortex/*",
     "// Tools Context": "---------------------------------------------",

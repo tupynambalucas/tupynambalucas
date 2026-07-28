@@ -6,7 +6,7 @@ networks:
     driver: bridge
   platform-net:
     name: tupynambalucas-platform-net
-    external: true
+    driver: bridge
 
 volumes:
   mongodb_memory_data:
@@ -19,7 +19,7 @@ services:
   agentgateway:
     profiles: ['core']
     build:
-      context: ../..
+      context: ../../../
       dockerfile: cortex/gateway/Dockerfile
     container_name: tupynambalucas-cortex-gateway
     ports:
@@ -31,6 +31,8 @@ services:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
     networks:
       cortex-net:
+        aliases:
+          - agentgateway
       platform-net:
         aliases:
           - agentgateway-metrics
@@ -48,7 +50,9 @@ services:
       - GUARDRAILS_HOST=0.0.0.0
       - MCP_DIR=/mcp
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mcp-guardrails
 
   # ==========================================
   # CORE MEMORY SUBSYSTEM
@@ -70,7 +74,9 @@ services:
     ports:
       - '${MEMORY_MONGO_PORT:-27018}:27017'
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mongodb-db
     healthcheck:
       test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping').ok"]
       interval: 10s
@@ -92,7 +98,9 @@ services:
       mongodb-db:
         condition: service_healthy
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mongodb-init
 
   memory-api:
     profiles: ['core', 'memory']
@@ -116,7 +124,9 @@ services:
       mongodb-init:
         condition: service_completed_successfully
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - memory-api
 
   memory-web:
     profiles: ['core', 'memory']
@@ -131,7 +141,9 @@ services:
     depends_on:
       - memory-api
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - memory-web
 
   # ==========================================
   # MCP DATA PLANE SERVICES
@@ -140,32 +152,41 @@ services:
     profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-github
     build:
-      context: ../../mcp/services/github
+      context: ../../../
+      dockerfile: cortex/mcp/services/github/Dockerfile
     environment:
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mcp-github
 
   mcp-firecrawl:
     profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-firecrawl
     build:
-      context: ../../mcp/services/firecrawl
+      context: ../../../
+      dockerfile: cortex/mcp/services/firecrawl/Dockerfile
     environment:
       - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mcp-firecrawl
 
   mcp-grafana:
     profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-grafana
     build:
-      context: ../../mcp/services/grafana
+      context: ../../../
+      dockerfile: cortex/mcp/services/grafana/Dockerfile
     environment:
       - GRAFANA_URL=${GRAFANA_CLOUD_URL}
       - GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_SERVICE_ACCOUNT_TOKEN}
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mcp-grafana
 
   mcp-memory:
     profiles: ['core', 'memory', 'mcp']
@@ -179,7 +200,9 @@ services:
     ports:
       - '9007:8080'
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mcp-memory
     depends_on:
       memory-api:
         condition: service_started
@@ -189,7 +212,8 @@ services:
     profiles: ['core', 'mcp']
     container_name: tupynambalucas-cortex-mcp-playwright
     build:
-      context: ../../mcp/services/playwright
+      context: ../../../
+      dockerfile: cortex/mcp/services/playwright/Dockerfile
     environment:
       - PLAYWRIGHT_MCP_PORT=${PLAYWRIGHT_MCP_PORT:-8080}
       - PLAYWRIGHT_MCP_HOST=${PLAYWRIGHT_MCP_HOST:-0.0.0.0}
@@ -200,7 +224,9 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mcp-playwright
 
   mcp-inspector:
     profiles: ['core', 'mcp']
@@ -218,7 +244,9 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - mcp-inspector
 
   # ==========================================
   # AI AGENT RUNTIMES (Control Plane)
@@ -227,7 +255,8 @@ services:
     profiles: ['agents']
     container_name: agent-copilot
     build:
-      context: ../../agents/copilot
+      context: ../../../
+      dockerfile: cortex/agents/copilot/Dockerfile
     restart: always
     environment:
       - COPILOT_HOME=/root/.copilot
@@ -243,7 +272,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /workspace
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - agent-copilot
     extra_hosts:
       - 'tupynambalucas.internal.tools.mcp:host-gateway'
     command: >
@@ -257,7 +288,8 @@ services:
     profiles: ['agents']
     container_name: agent-antigravity
     build:
-      context: ../../agents/antigravity
+      context: ../../../
+      dockerfile: cortex/agents/antigravity/Dockerfile
     restart: always
     environment:
       - GEMINI_API_KEY=${GEMINI_API_KEY}
@@ -271,7 +303,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /workspace
     networks:
-      - cortex-net
+      cortex-net:
+        aliases:
+          - agent-antigravity
     extra_hosts:
       - 'tupynambalucas.internal.tools.mcp:host-gateway'
     command: >
