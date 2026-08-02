@@ -16,7 +16,7 @@
       }
     },
     "context7-mcp-host": {
-      "command": "npx",
+      "command": "pnx",
       "args": ["-y", "@upstash/context7-mcp", "--api-key", "$CONTEXT7_API_KEY"]
     }
   }
