@@ -15,6 +15,7 @@ mcp:
         - http://localhost:15000
         - http://127.0.0.1:15000
         - http://localhost:19000
+        - http://gateway.localhost:15000
       allowMethods:
         - '*'
         - GET
