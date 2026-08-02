@@ -57,7 +57,7 @@ spec:
             type: Directory
         - name: skills-vol
           hostPath:
-            path: /workspace/cortex/agents/skills
+            path: /workspace/.agents/skills
             type: Directory
         - name: copilot-data
           hostPath:
@@ -135,7 +135,7 @@ spec:
             type: Directory
         - name: skills-vol
           hostPath:
-            path: /workspace/cortex/agents/skills
+            path: /workspace/.agents/skills
             type: Directory
         - name: antigravity-data
           hostPath:

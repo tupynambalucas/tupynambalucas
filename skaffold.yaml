@@ -9,16 +9,3 @@ requires:
     configs: ['platform-dev']
   - path: studio/skaffold.yaml
     configs: ['studio-dev']
-manifests:
-  kustomize:
-    paths:
-      - cortex/infrastructure/kubernetes
-    buildArgs:
-      - --load-restrictor=LoadRestrictionsNone
-  rawYaml:
-    - platform/infrastructure/kubernetes/namespace.yaml
-    - platform/infrastructure/kubernetes/traefik.yaml
-    - platform/infrastructure/kubernetes/otel-collector.yaml
-    - platform/infrastructure/kubernetes/turbocache.yaml
-deploy:
-  kubectl: {}

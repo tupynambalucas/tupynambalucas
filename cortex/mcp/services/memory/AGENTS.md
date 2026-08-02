@@ -20,7 +20,7 @@ This workspace directory ([memory/](./)) contains the dedicated Model Context Pr
 
 - **Single Source of Truth**: Data contracts and Zod schemas inherit from `@tupynambalucas-cortex/memory-core`.
 - **Domain Decoupling**: AI agents call domain tools (`memory_search_knowledge`) instead of raw database queries.
-- **Port Allocation**: Host development mode uses port `9007` (`MCP_MEMORY_PORT`), avoiding port `8080` which is reserved for the AgentGateway ingress proxy (`agentgateway`). Containerized execution maps host port `9007` to internal container port `8080`.
+- **Port Allocation**: Host development mode uses port `9007` (`MEMORY_MCP_PORT`), avoiding port `8080` which is reserved for the AgentGateway ingress proxy (`agentgateway`). Containerized execution maps host port `8080` to internal container port `8080`.
 - **Gateway Target**: Registered in AgentGateway (`gateway/config.yaml`) under target `memory` (`http://mcp-memory:8080/mcp`).
 - **Service Parity**: Uses dual TSConfig (`tsconfig.json` for hot-reload dev, `tsconfig.build.json` for production builds).
 

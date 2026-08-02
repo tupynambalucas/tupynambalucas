@@ -22,6 +22,8 @@ services:
       context: ../../../
       dockerfile: cortex/gateway/Dockerfile
     container_name: tupynambalucas-cortex-gateway
+    volumes:
+      - ../../gateway/config.yaml:/config.yaml
     ports:
       - '${GATEWAY_PORT:-8080}:8080' # Main traffic
       - '15000:15000' # Web UI
@@ -29,6 +31,7 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otel-collector:4317}
       - CONTEXT7_API_KEY=${CONTEXT7_API_KEY}
       - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY}
     networks:
       cortex-net:
         aliases:

@@ -41,6 +41,12 @@ spec:
                   name: cortex-secrets
                   key: GITHUB_PERSONAL_ACCESS_TOKEN
                   optional: true
+            - name: FIRECRAWL_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: FIRECRAWL_API_KEY
+                  optional: true
 ---
 apiVersion: v1
 kind: Service

@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
         - name: mcp-memory
-          image: tupynambalucas-cortex-mcp-memory:latest
+          image: mcp-memory:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -77,7 +77,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: cortex-secrets
-                  key: MCP_MEMORY_PORT
+                  key: MEMORY_MCP_PORT
                   optional: true
             - name: MEMORY_API_URL
               value: 'http://memory-api:3006'

@@ -3,15 +3,26 @@ kind: Config
 metadata:
   name: cortex-dev
 build:
+  platforms: ['linux/amd64']
   local:
     push: false
     useDockerCLI: true
+    useBuildkit: false
+    tryImportMissing: true
     concurrency: 0
   artifacts:
     - image: tupynambalucas-cortex-gateway
       context: ..
       docker:
         dockerfile: cortex/gateway/Dockerfile
+        buildArgs:
+          GITHUB_PERSONAL_ACCESS_TOKEN: '{{.GITHUB_PERSONAL_ACCESS_TOKEN}}'
+          CONTEXT7_API_KEY: '{{.CONTEXT7_API_KEY}}'
+          FIRECRAWL_API_KEY: '{{.FIRECRAWL_API_KEY}}'
+      sync:
+        manual:
+          - src: 'cortex/gateway/config.yaml'
+            dest: /config.yaml
     - image: tupynambalucas-cortex-mcp-guardrails
       context: ..
       docker:
@@ -37,7 +48,7 @@ build:
           - src: 'cortex/memory/services/web/src/**/*'
             dest: /app/src
             strip: 'cortex/memory/services/web/src/'
-    - image: tupynambalucas-cortex-mcp-memory
+    - image: mcp-memory
       context: ..
       docker:
         dockerfile: cortex/mcp/services/memory/Dockerfile
@@ -52,14 +63,21 @@ build:
       context: ..
       docker:
         dockerfile: cortex/mcp/services/github/Dockerfile
+        buildArgs:
+          GITHUB_PERSONAL_ACCESS_TOKEN: '{{.GITHUB_PERSONAL_ACCESS_TOKEN}}'
     - image: mcp-firecrawl
       context: ..
       docker:
         dockerfile: cortex/mcp/services/firecrawl/Dockerfile
+        buildArgs:
+          FIRECRAWL_API_KEY: '{{.FIRECRAWL_API_KEY}}'
     - image: mcp-grafana
       context: ..
       docker:
         dockerfile: cortex/mcp/services/grafana/Dockerfile
+        buildArgs:
+          GRAFANA_URL: '{{.GRAFANA_CLOUD_URL}}'
+          GRAFANA_SERVICE_ACCOUNT_TOKEN: '{{.GRAFANA_SERVICE_ACCOUNT_TOKEN}}'
     - image: mcp-playwright
       context: ..
       docker:
@@ -72,47 +90,37 @@ build:
       context: ..
       docker:
         dockerfile: cortex/agents/antigravity/Dockerfile
+manifests:
+  kustomize:
+    paths:
+      - infrastructure/kubernetes
+    buildArgs:
+      - --load-restrictor=LoadRestrictionsNone
 deploy:
-  docker:
-    images:
-      - tupynambalucas-cortex-gateway
-      - tupynambalucas-cortex-mcp-guardrails
-      - tupynambalucas-cortex-memory-api
-      - tupynambalucas-cortex-memory-web
-      - tupynambalucas-cortex-mcp-memory
-      - tupynambalucas-cortex-mcp-inspector
-      - mcp-github
-      - mcp-firecrawl
-      - mcp-grafana
-      - mcp-playwright
+  kubectl: {}
 portForward:
-  - resourceType: container
-    resourceName: tupynambalucas-cortex-gateway
+  - resourceType: service
+    resourceName: agentgateway
+    namespace: cortex
     port: 8080
     localPort: 8080
-  - resourceType: container
-    resourceName: tupynambalucas-cortex-gateway
+  - resourceType: service
+    resourceName: agentgateway
+    namespace: cortex
     port: 15000
     localPort: 15000
-  - resourceType: container
-    resourceName: tupynambalucas-cortex-memory-api
+  - resourceType: service
+    resourceName: memory-api
+    namespace: cortex
     port: 3006
     localPort: 3006
-  - resourceType: container
-    resourceName: tupynambalucas-cortex-memory-web
+  - resourceType: service
+    resourceName: memory-web
+    namespace: cortex
     port: 9006
     localPort: 9006
-  - resourceType: container
-    resourceName: tupynambalucas-cortex-mcp-inspector
+  - resourceType: service
+    resourceName: mcp-inspector
+    namespace: cortex
     port: 6274
     localPort: 6274
-profiles:
-  - name: k8s
-    manifests:
-      kustomize:
-        paths:
-          - infrastructure/kubernetes
-        buildArgs:
-          - --load-restrictor=LoadRestrictionsNone
-    deploy:
-      kubectl: {}

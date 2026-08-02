@@ -3,6 +3,23 @@
     "agentgateway": {
       "url": "http://localhost:8080/mcp/http",
       "lifecycle": "eager"
+    },
+    "podman-mcp-host": {
+      "command": "pnx",
+      "args": ["-y", "podman-mcp-server@latest"]
+    },
+    "firecrawl-mcp-host": {
+      "command": "pnx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-6fa6ba67f76b4344ad499197c59817f6"
+      }
+    },
+    "context7-mcp-host": {
+      "serverUrl": "https://mcp.context7.com/mcp",
+      "headers": {
+        "Authorization": "Bearer ctx7sk-6d017dd6-d128-4a5c-8e10-284f01d777bd"
+      }
     }
   }
 }
