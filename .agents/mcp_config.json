@@ -12,14 +12,12 @@
       "command": "pnx",
       "args": ["-y", "firecrawl-mcp"],
       "env": {
-        "FIRECRAWL_API_KEY": "fc-6fa6ba67f76b4344ad499197c59817f6"
+        "FIRECRAWL_API_KEY": "$FIRECRAWL_API_KEY"
       }
     },
     "context7-mcp-host": {
-      "serverUrl": "https://mcp.context7.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ctx7sk-6d017dd6-d128-4a5c-8e10-284f01d777bd"
-      }
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp", "--api-key", "$CONTEXT7_API_KEY"]
     }
   }
 }
