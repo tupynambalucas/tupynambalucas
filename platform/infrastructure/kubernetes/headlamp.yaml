@@ -65,7 +65,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: headlamp.localhost
+    - host: headlamp.local.tupynambalucas.dev
       http:
         paths:
           - path: /

@@ -20,6 +20,14 @@ rules:
       - list
       - watch
   - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
       - networking.k8s.io
     resources:
       - ingresses
@@ -91,7 +99,7 @@ spec:
       port: 80
       targetPort: 80
     - name: admin
-      port: 8080
+      port: 8082
       targetPort: 8080
   selector:
     app: traefik
@@ -104,7 +112,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: traefik.localhost
+    - host: traefik.local.tupynambalucas.dev
       http:
         paths:
           - path: /
@@ -113,4 +121,4 @@ spec:
               service:
                 name: traefik
                 port:
-                  number: 8080
+                  number: 8082

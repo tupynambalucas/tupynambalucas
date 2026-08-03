@@ -92,7 +92,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: gateway.localhost
+    - host: gateway.local.tupynambalucas.dev
       http:
         paths:
           - path: /
@@ -102,7 +102,7 @@ spec:
                 name: agentgateway
                 port:
                   number: 8080
-    - host: gateway-admin.localhost
+    - host: gateway-admin.local.tupynambalucas.dev
       http:
         paths:
           - path: /

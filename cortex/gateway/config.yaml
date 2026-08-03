@@ -15,7 +15,19 @@ mcp:
         - http://localhost:15000
         - http://127.0.0.1:15000
         - http://localhost:19000
-        - http://gateway.localhost:15000
+        - http://gateway.local.tupynambalucas.dev:15000
+        - http://gateway-admin.local.tupynambalucas.dev:15000
+        - http://localhost:6274
+        - http://localhost:9006
+        - http://localhost:5173
+        - http://localhost:3000
+        - http://localhost:3002
+        - http://localhost:8080
+        - http://gateway.local.tupynambalucas.dev
+        - http://gateway-admin.local.tupynambalucas.dev
+        - http://memory.local.tupynambalucas.dev
+        - http://turbocache.local.tupynambalucas.dev
+        - http://headlamp.local.tupynambalucas.dev
       allowMethods:
         - '*'
         - GET

@@ -23,5 +23,7 @@ manifests:
   kustomize:
     paths:
       - infrastructure/kubernetes
+    buildArgs:
+      - --load-restrictor=LoadRestrictionsNone
 deploy:
   kubectl: {}
