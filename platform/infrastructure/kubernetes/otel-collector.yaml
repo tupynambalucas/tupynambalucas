@@ -101,7 +101,7 @@ spec:
               containerPort: 24224
           envFrom:
             - secretRef:
-                name: otel-collector-secrets
+                name: platform-secrets
                 optional: true
       volumes:
         - name: config-volume

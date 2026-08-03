@@ -28,6 +28,8 @@ This workspace directory ([memory/](./)) contains the dedicated Model Context Pr
 
 ## 3. Scoped Operations
 
-- `pnpm cortex:memory:dev`: Runs complete memory stack (API, Web UI, MCP server, and MCP Inspector) concurrently in development mode.
-- `pnpm --filter @tupynambalucas-cortex/mcp-memory dev`: Direct package development server with embedded MCP Inspector.
+- `pnpm cortex:dev`: Starts the entire Cortex development suite (including memory services) inside
+  the local Kubernetes cluster.
+- `pnpm --filter @tupynambalucas-cortex/mcp-memory dev`: Direct package development server with
+  embedded MCP Inspector.
 - `pnpm --filter @tupynambalucas-cortex/mcp-memory build`: Compile production distribution.

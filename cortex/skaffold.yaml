@@ -2,6 +2,9 @@ apiVersion: skaffold/v4beta11
 kind: Config
 metadata:
   name: cortex-dev
+requires:
+  - configs: ['platform-dev']
+    path: ../platform/skaffold.yaml
 build:
   platforms: ['linux/amd64']
   local:
@@ -15,10 +18,6 @@ build:
       context: ..
       docker:
         dockerfile: cortex/gateway/Dockerfile
-        buildArgs:
-          GITHUB_PERSONAL_ACCESS_TOKEN: '{{.GITHUB_PERSONAL_ACCESS_TOKEN}}'
-          CONTEXT7_API_KEY: '{{.CONTEXT7_API_KEY}}'
-          FIRECRAWL_API_KEY: '{{.FIRECRAWL_API_KEY}}'
       sync:
         manual:
           - src: 'cortex/gateway/config.yaml'
@@ -47,21 +46,14 @@ build:
       context: ..
       docker:
         dockerfile: cortex/mcp/services/github/Dockerfile
-        buildArgs:
-          GITHUB_PERSONAL_ACCESS_TOKEN: '{{.GITHUB_PERSONAL_ACCESS_TOKEN}}'
     - image: mcp-firecrawl
       context: ..
       docker:
         dockerfile: cortex/mcp/services/firecrawl/Dockerfile
-        buildArgs:
-          FIRECRAWL_API_KEY: '{{.FIRECRAWL_API_KEY}}'
     - image: mcp-grafana
       context: ..
       docker:
         dockerfile: cortex/mcp/services/grafana/Dockerfile
-        buildArgs:
-          GRAFANA_URL: '{{.GRAFANA_CLOUD_URL}}'
-          GRAFANA_SERVICE_ACCOUNT_TOKEN: '{{.GRAFANA_SERVICE_ACCOUNT_TOKEN}}'
     - image: mcp-playwright
       context: ..
       docker:

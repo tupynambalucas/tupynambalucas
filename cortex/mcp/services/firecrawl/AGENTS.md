@@ -14,9 +14,17 @@ The Firecrawl MCP service provides web scraping, crawling, searching, and autono
 
 ## 2. Operational & Security Guardrails
 
+- **Local Host Application Resolution**: When scraping local development applications running on the
+  host machine, agents MUST substitute `localhost` or `127.0.0.1` with `host.docker.internal` and
+  use the correct service port. Do not query the user for these URLs:
+  - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
+  - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
+  - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
 - **API Token Requirement**: A valid `FIRECRAWL_API_KEY` MUST be provided via environment configuration.
-- **Scrape & Crawl Scoping**: Agents MUST prefer targeted `firecrawl_scrape` over full site `firecrawl_crawl` to minimize token consumption and rate limits.
-- **Structured Data Extraction**: Use `firecrawl_extract` when schema-conforming JSON payload extraction is required from web sources.
+- **Scrape & Crawl Scoping**: Agents MUST prefer targeted `firecrawl_scrape` over full site
+  `firecrawl_crawl` to minimize token consumption and rate limits.
+- **Structured Data Extraction**: Use `firecrawl_extract` when schema-conforming JSON payload
+  extraction is required from web sources.
 
 ---
 

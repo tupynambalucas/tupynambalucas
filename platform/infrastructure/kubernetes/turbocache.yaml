@@ -35,25 +35,65 @@ spec:
             - containerPort: 3000
           env:
             - name: STORAGE_PROVIDER
-              value: 'local'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: STORAGE_PROVIDER
+                  optional: true
             - name: STORAGE_PATH
-              value: '/data'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: STORAGE_PATH
+                  optional: true
             - name: STORAGE_PATH_USE_TMP_FOLDER
-              value: 'false'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: STORAGE_PATH_USE_TMP_FOLDER
+                  optional: true
             - name: TURBO_TOKEN
-              value: 'secret_turbo_token'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: TURBO_TOKEN
+                  optional: true
             - name: AUTH_MODE
-              value: 'secret'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: AUTH_MODE
+                  optional: true
             - name: LOG_LEVEL
-              value: 'info'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: LOG_LEVEL
+                  optional: true
             - name: ENABLE_STATUS_LOG
-              value: 'true'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: ENABLE_STATUS_LOG
+                  optional: true
             - name: LOG_MODE
-              value: 'console'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: LOG_MODE
+                  optional: true
             - name: HTTP2
-              value: 'false'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: HTTP2
+                  optional: true
             - name: READ_ONLY
-              value: 'false'
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: READ_ONLY
+                  optional: true
           volumeMounts:
             - name: cache-volume
               mountPath: /data

@@ -80,7 +80,11 @@ spec:
                   key: MEMORY_MCP_PORT
                   optional: true
             - name: MEMORY_API_URL
-              value: 'http://memory-api:3006'
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_API_URL
+                  optional: true
 ---
 apiVersion: v1
 kind: Service
@@ -259,7 +263,11 @@ spec:
             - containerPort: 6277
           env:
             - name: DANGEROUSLY_BIND_ALL_INTERFACES
-              value: 'true'
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: DANGEROUSLY_BIND_ALL_INTERFACES
+                  optional: true
 ---
 apiVersion: v1
 kind: Service

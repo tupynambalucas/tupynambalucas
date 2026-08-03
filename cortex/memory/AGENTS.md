@@ -18,7 +18,9 @@ This workspace context ([memory/](./)) orchestrates the self-hosted MongoDB Vect
 2. **Feature-Sliced Design (FSD)**: Frontend layers strictly enforce `Features` -> `Domains` -> `Shared` unidirectional imports.
 3. **SOLID Principles**: Controllers handle routing, Services execute business rules, Repositories mutate MongoDB models.
 4. **Single Source of Truth (SSOT)**: Data types and schemas are centralized in [packages/core/](./packages/core/).
-5. **Centralized Container Orchestration**: Integrated directly into the central [compose.yaml](../infrastructure/docker/compose.yaml) under the `core` profile.
+5. **Centralized Container Orchestration**: Handled via Docker Compose
+   ([compose.yaml](../infrastructure/docker/compose.yaml)) or Kubernetes deployment manifests
+   ([kubernetes/](../infrastructure/kubernetes/)) using Skaffold.
 
 ---
 
@@ -27,5 +29,6 @@ This workspace context ([memory/](./)) orchestrates the self-hosted MongoDB Vect
 Run these scripts from root or workspace filters:
 
 - `pnpm --filter @tupynambalucas-cortex/memory-core build`: Compiles shared TypeScript types.
-- `pnpm cortex:memory:dev`: Runs memory API (`:3006`), web dashboard (`:9006`), and MCP memory service (`:9007`) with embedded MCP Inspector UI concurrently in development mode.
-- `pnpm cortex:core:up`: Boots central control plane including `agentgateway`, `mcp-guardrails`, `mongodb-db`, `memory-api`, and `memory-web`.
+- `pnpm cortex:dev`: Starts the entire Cortex development suite (including memory services) inside
+  the local Kubernetes cluster.
+- `pnpm cortex:up`: Boots central control plane standalone containers using Docker Compose/Podman.

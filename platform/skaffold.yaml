@@ -15,11 +15,13 @@ build:
       context: ..
       docker:
         dockerfile: platform/services/turbocache/Dockerfile
+    - image: headlamp
+      context: ..
+      docker:
+        dockerfile: platform/services/headlamp/Dockerfile
 manifests:
-  rawYaml:
-    - infrastructure/kubernetes/namespace.yaml
-    - infrastructure/kubernetes/traefik.yaml
-    - infrastructure/kubernetes/otel-collector.yaml
-    - infrastructure/kubernetes/turbocache.yaml
+  kustomize:
+    paths:
+      - infrastructure/kubernetes
 deploy:
   kubectl: {}

@@ -18,6 +18,11 @@ The `mcp/` directory houses the Model Context Protocol (MCP) data plane subsyste
 
 ## Operational Workflow
 
-1. **Policy Enforcement**: Tool invocations pass through the ExtMCP guardrail server ([guardrails/](./guardrails/)) before reaching backend adapters.
-2. **Container Networking**: MCP server containers run inside the `cortex-net` Docker network orchestrated via [compose.yaml](../infrastructure/docker/compose.yaml).
-3. **Gateway Registration**: Services are exposed to AI agents via `agentgateway` endpoints configured in [config.yaml](../gateway/config.yaml).
+1. **Policy Enforcement**: Tool invocations pass through the ExtMCP guardrail server
+   ([guardrails/](./guardrails/)) before reaching backend adapters.
+2. **Container Networking**: MCP server containers run either inside the `cortex` namespace within
+   the local Kubernetes cluster (orchestrated via [skaffold.yaml](../../skaffold.yaml)) or inside
+   the `cortex-net` bridge network in Docker Compose/Podman environments (orchestrated via
+   [compose.yaml](../infrastructure/docker/compose.yaml)).
+3. **Gateway Registration**: Services are exposed to AI agents via `agentgateway` endpoints
+   configured in [config.yaml](../gateway/config.yaml).

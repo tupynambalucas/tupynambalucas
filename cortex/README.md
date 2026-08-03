@@ -18,33 +18,27 @@ Cortex organizes the AI ecosystem into modular sub-domains following Domain-Driv
 
 ## Development Setup & Operations
 
-All services are orchestrated via Docker Compose profiles. Centralized configuration parameters are managed inside the [infrastructure/docker/.env](./infrastructure/docker/.env) file.
+Cortex services can be orchestrated using either Docker Compose (via Podman/Docker) for local standalone execution or Kubernetes (via Minikube and Skaffold) for developer environments. Centralized configuration parameters are managed inside the [cortex/infrastructure/.env](./infrastructure/.env) file.
 
-### 1. Core Services
+### 1. Kubernetes & Skaffold (Hot-Reload Dev Cycle)
 
-To build and start the core services (gateway and memory database):
-
-```bash
-pnpm cortex:core:up
-```
-
-### 2. Model Context Protocol Services
-
-To start all MCP adapters:
+To build, deploy, and automatically sync changes (hot-reload) to the local Kubernetes cluster:
 
 ```bash
-pnpm cortex:mcp:up
+pnpm cortex:dev
 ```
 
-### 3. Agent Runtime Environment
+This commands spins up all gatekeepers, databases, memory services, and MCP server adapters in the `cortex` namespace.
 
-To run the containerized agent CLI runtimes:
+### 2. Standalone Containers (Docker Compose / Podman)
+
+To build and start the standalone container ecosystem:
 
 ```bash
-pnpm cortex:agents:up
+pnpm cortex:up
 ```
 
-For authentication, run:
+To view logs or stop the environment:
 
-- Antigravity CLI: `pnpm cortex:antigravity:auth`
-- Copilot CLI: `pnpm cortex:copilot:auth`
+- View active logs: `pnpm cortex:logs`
+- Tear down the stack: `pnpm cortex:down`

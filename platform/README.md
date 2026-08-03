@@ -1,30 +1,43 @@
-# Monorepo Platform Infrastructure
+# Monorepo Platform Services Workspace
 
-This workspace houses the containerized platform services that power the local development environment, telemetry pipelines, and Turborepo build caching for `tupynambalucas.dev`.
+Platform is the Bounded Context for the operational, always-running platform utilities supporting local development, telemetry aggregation, build caching, and cluster visualization for `tupynambalucas.dev`.
 
-## Architecture Overview
+---
 
-The platform workspace manages two core runtime services:
+## Bounded Context Architecture
 
-1. **otel-collector**: An OpenTelemetry Collector that aggregates telemetry metrics, logs, and
-   distributed traces, exporting them to Grafana Cloud and Sentry.
-2. **turbocache**: A high-performance local cache server that stores Turborepo cache artifacts,
-   drastically speeding up compilation and testing pipelines.
+Platform organizes the system-wide utility services into modular domains:
 
-## Directory Layout
+1. **[services/headlamp/](./services/headlamp/)**: Tokenless Kubernetes Web UI dashboard for cluster-wide visualization ([services/headlamp/README.md](./services/headlamp/README.md)).
+2. **[services/monitor/](./services/monitor/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and traces ([services/monitor/README.md](./services/monitor/README.md)).
+3. **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds ([services/turbocache/README.md](./services/turbocache/README.md)).
+4. **[infrastructure/](./infrastructure/)**: Centralized Docker compose profiles and Kubernetes deployment manifests ([infrastructure/README.md](./infrastructure/README.md)).
 
-- **[infrastructure/docker/](./infrastructure/docker/)**: Contains the Docker Compose
-  configuration ([compose.yaml](./infrastructure/docker/compose.yaml)) and environment files
-  ([.env](./infrastructure/docker/.env)).
-- **[services/monitor/](./services/monitor/)**: Contains configuration schemas and routing logic for the OTLP Collector.
-- **[services/turbocache/](./services/turbocache/)**: Contains build rules and Dockerfiles for compilation cache.
+---
 
-## Local Operations
+## Development Setup & Operations
 
-Commands must be run from the repository root directory:
+Platform services can be orchestrated using either Docker Compose (via Podman/Docker) for local standalone execution or Kubernetes (via Minikube and Skaffold) for developer environments. Centralized configuration parameters are managed inside the [platform/infrastructure/.env](./infrastructure/.env) file.
 
-| Action      | Command               |
-| :---------- | :-------------------- |
-| Start Stack | `pnpm platform:up`    |
-| Stop Stack  | `pnpm platform:down`  |
-| Reset Data  | `pnpm platform:reset` |
+### 1. Kubernetes & Skaffold (Hot-Reload Dev Cycle)
+
+To build, deploy, and automatically sync changes to the local Kubernetes cluster:
+
+```bash
+pnpm platform:dev
+```
+
+This command spins up the telemetry gateway, build caches, Ingress proxies, and dashboard interfaces in the `platform` namespace.
+
+### 2. Standalone Containers (Docker Compose / Podman)
+
+To build and start the standalone container ecosystem:
+
+```bash
+pnpm platform:up
+```
+
+To view logs or stop the environment:
+
+- View active logs: `pnpm platform:logs`
+- Tear down the stack: `pnpm platform:down`

@@ -25,7 +25,11 @@ spec:
             - 'mkdir -p /root/.copilot && cp /workspace/cortex/agents/shared/mcp.config.json /root/.copilot/mcp-config.json || true && exec tail -f /dev/null'
           env:
             - name: COPILOT_HOME
-              value: '/root/.copilot'
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: COPILOT_HOME
+                  optional: true
             - name: GITHUB_TOKEN
               valueFrom:
                 secretKeyRef:

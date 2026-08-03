@@ -31,10 +31,19 @@ In `agentgateway` configuration ([config.yaml](../../../gateway/config.yaml)), t
 
 ## 3. Operational & Networking Guardrails
 
-- **Local Host Application Resolution**: When navigating to local development applications running on the host machine (e.g., `@docs` dev server or local web apps), agents MUST substitute `localhost` or `127.0.0.1` with `host.docker.internal`. For example, use `http://host.docker.internal:3000` instead of `http://localhost:3000`.
-- **DNS Rebinding Protection**: `PLAYWRIGHT_MCP_ALLOWED_HOSTS=*` MUST be configured in container environments to allow cross-container requests from `agentgateway`.
-- **Headless Execution**: All browser interactions MUST run in headless mode (`PLAYWRIGHT_MCP_HEADLESS=true`) with container sandboxing disabled (`PLAYWRIGHT_MCP_NO_SANDBOX=true`).
-- **Resource Cleanup**: Agents MUST close inactive browser sessions using `browser_close` to prevent container memory leaks.
+- **Local Host Application Resolution**: When navigating to local development applications running on
+  the host machine, agents MUST substitute `localhost` or `127.0.0.1` with `host.docker.internal` and
+  use the correct service port. Do not query the user for these URLs:
+  - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
+  - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
+  - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
+- **DNS Rebinding Protection**: `PLAYWRIGHT_MCP_ALLOWED_HOSTS=*` MUST be configured in container
+  environments to allow cross-container requests from `agentgateway`.
+- **Headless Execution**: All browser interactions MUST run in headless mode
+  (`PLAYWRIGHT_MCP_HEADLESS=true`) with container sandboxing disabled
+  (`PLAYWRIGHT_MCP_NO_SANDBOX=true`).
+- **Resource Cleanup**: Agents MUST close inactive browser sessions using `browser_close` to prevent
+  container memory leaks.
 
 ---
 

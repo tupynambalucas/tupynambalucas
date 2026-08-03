@@ -21,7 +21,10 @@ services:
       - SENTRY_OTLP_ENDPOINT=${SENTRY_OTLP_ENDPOINT}
       - SENTRY_AUTH_HEADER=${SENTRY_AUTH_HEADER}
     networks:
-      - platform-net
+      platform-net:
+        aliases:
+          - otel-collector
+          - otel-collector.platform.svc.cluster.local
 
   turbocache:
     profiles: ['core']

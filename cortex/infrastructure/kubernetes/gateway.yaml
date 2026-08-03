@@ -28,7 +28,11 @@ spec:
               containerPort: 15001
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: 'http://otel-collector.platform.svc.cluster.local:4317'
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: OTEL_EXPORTER_OTLP_ENDPOINT
+                  optional: true
             - name: CONTEXT7_API_KEY
               valueFrom:
                 secretKeyRef:

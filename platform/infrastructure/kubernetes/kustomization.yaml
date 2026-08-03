@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: platform
+
+resources:
+  - namespace.yaml
+  - traefik.yaml
+  - otel-collector.yaml
+  - turbocache.yaml
+  - headlamp.yaml
+
+secretGenerator:
+  - name: platform-secrets
+    envs:
+      - ../.env

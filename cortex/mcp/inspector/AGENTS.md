@@ -13,6 +13,9 @@ This workspace directory ([inspector/](./)) configures the containerized Model C
 
 ## 2. Operational Guardrails
 
-- **Centralized Inspection**: Provides unified UI access on port `6274` and proxy port `6277` for registered Cortex MCP services.
-- **Unified Docker Compose Execution**: Started alongside core infrastructure (`pnpm cortex:core:up`). Connects directly to `mcp-memory` over container network `cortex-net` (`http://mcp-memory:8080/mcp`).
-- **Container Hot-Reloading**: `mcp-memory` runs with target `builder` and volume-mounted `src/` directory in [compose.yaml](../../infrastructure/docker/compose.yaml), hot-reloading code changes instantly in container.
+- **Centralized Inspection**: Provides unified UI access on port `6274` and proxy port `6277` for
+  registered Cortex MCP services.
+- **Service Execution**: Started alongside core infrastructure (via `pnpm cortex:up` or
+  `pnpm cortex:dev`). Connects to `mcp-memory` inside the container network.
+- **Container Hot-Reloading**: In Docker Compose, services run with volume mounts mapping code
+  changes dynamically.

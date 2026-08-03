@@ -16,10 +16,20 @@ This workspace context ([cortex/](./)) orchestrates the unified artificial intel
 
 ## 2. Operational & Container Networking Guardrails
 
-- **Local Host Application Resolution**: When containerized MCP tools (such as Playwright MCP) access local development applications running on the host machine (e.g., `@docs` dev server or local web applications), agents MUST use `http://host.docker.internal:<port>` instead of `http://localhost:<port>`.
-- **Credential Separation**: Never hardcode API keys, access tokens, or personal identifiers. All configuration parameters MUST be loaded via local environment files ([.env](./infrastructure/docker/.env)) and bind-mounted or mapped into container environments.
-- **Path Mount Parity**: When configuring volumes in Docker compose, the monorepo root MUST be mapped to `/workspace` inside agent containers. Scripts must resolve relative file mappings based on this path.
-- **Strict Execution Rules**: Shell scripts MUST include execution options like `set -euo pipefail` to abort execution immediately on errors.
+- **Local Host Application Resolution**: When containerized MCP tools (such as Playwright MCP or
+  Firecrawl MCP) access local development applications running on the host machine, agents MUST
+  automatically resolve them using `http://host.docker.internal:<port>`. Do not ask the user for the
+  URL.
+  - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
+  - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
+  - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
+- **Credential Separation**: Never hardcode API keys, access tokens, or personal identifiers. All
+  configuration parameters MUST be loaded via local environment files
+  ([.env](./infrastructure/.env)) and mapped into container environments.
+- **Path Mount Parity**: When configuring volumes, the monorepo root MUST be mapped to `/workspace`
+  inside agent containers. Scripts must resolve relative file mappings based on this path.
+- **Strict Execution Rules**: Shell scripts MUST include execution options like `set -euo pipefail`
+  to abort execution immediately on errors.
 
 ---
 
@@ -27,7 +37,7 @@ This workspace context ([cortex/](./)) orchestrates the unified artificial intel
 
 Manage the Cortex environments using the mapped root execution scripts:
 
-| Context Subsystem              | Up Command              | Down Command              | Reset Command              |
-| :----------------------------- | :---------------------- | :------------------------ | :------------------------- |
-| **Core Infrastructure & MCPs** | `pnpm cortex:core:up`   | `pnpm cortex:core:down`   | `pnpm cortex:core:reset`   |
-| **AI Agent Containers**        | `pnpm cortex:agents:up` | `pnpm cortex:agents:down` | `pnpm cortex:agents:reset` |
+| Platform / Subsystem        | Up / Dev Command  | Down / Clean Command | Reset Command       |
+| :-------------------------- | :---------------- | :------------------- | :------------------ |
+| **Docker Compose (Podman)** | `pnpm cortex:up`  | `pnpm cortex:down`   | `pnpm cortex:reset` |
+| **Kubernetes (Skaffold)**   | `pnpm cortex:dev` | `pnpm cortex:clean`  | `pnpm cortex:stop`  |

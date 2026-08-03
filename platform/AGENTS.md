@@ -1,30 +1,39 @@
-# Local Context: Monorepo Platform Infrastructure
+# Local Context: Monorepo Platform Infrastructure Router
 
-This workspace ([platform/](./)) centralizes and manages the operational, always-running platform utilities supporting local development, continuous integration, and telemetry aggregation.
-
----
-
-## Local Architecture & Directory Map
-
-- **[services/monitor/](./services/monitor/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and distributed traces.
-- **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds.
-- **[infrastructure/docker/compose.yaml](./infrastructure/docker/compose.yaml)**: Docker Compose orchestration declaring network topologies and secrets mapping.
+This workspace context ([platform/](./)) centralizes and manages the operational, always-running platform utilities supporting local development, continuous integration, telemetry aggregation, and cluster monitoring.
 
 ---
 
-## Platform Guardrails
+## 1. Directory Layout
 
-1. **Service Independence**: Services in this workspace should expose generic endpoints and avoid tight coupling with specific application logic.
-2. **Docker Orchestration**: Always launch services using the scoped commands defined below. Never run container dependencies manually.
-3. **Internal Telemetry**: The OpenTelemetry Collector (`otel-collector`) serves as the single entry point for developer telemetry. All runtime platform applications MUST forward stats using OTLP protocols.
-4. **Volume Persistence**: Turborepo cache files and OpenTelemetry state directories must map to local host directories to prevent data loss between rebuilds.
+- **[services/headlamp/](./services/headlamp/)**: Tokenless Kubernetes Web UI dashboard for cluster-wide visualization ([services/headlamp/AGENTS.md](./services/headlamp/AGENTS.md)).
+- **[services/monitor/](./services/monitor/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and traces ([services/monitor/AGENTS.md](./services/monitor/AGENTS.md)).
+- **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds ([services/turbocache/AGENTS.md](./services/turbocache/AGENTS.md)).
+- **[infrastructure/](./infrastructure/)**: System orchestration, Docker compose, and Kubernetes infrastructure router context ([infrastructure/AGENTS.md](./infrastructure/AGENTS.md)).
 
 ---
 
-## Scoped Commands
+## 2. Operational & Container Networking Guardrails
 
-Run these scripts from the monorepo root:
+- **Credential Separation**: Never hardcode API keys, access tokens, or personal identifiers. All
+  configuration parameters MUST be loaded via local environment files
+  ([.env](./infrastructure/.env)) and mapped into container environments via `platform-secrets`
+  in Kubernetes or `--env-file` in Docker Compose.
+- **Service Independence**: Services in this workspace should expose generic endpoints and avoid
+  tight coupling with specific application logic.
+- **Internal Telemetry**: The OpenTelemetry Collector (`otel-collector`) serves as the single entry
+  point for developer telemetry. All runtime platform applications MUST forward stats using OTLP
+  protocols.
+- **Volume Persistence**: Turborepo cache files and OpenTelemetry state directories must map to
+  local host directories to prevent data loss between rebuilds.
 
-- `pnpm platform:up`: Boots platform containers in the background.
-- `pnpm platform:down`: Stops and tears down the platform stack.
-- `pnpm platform:reset`: Purges platform volumes and restarts the stack with clean states.
+---
+
+## 3. Operations Commands Summary
+
+Manage the Platform environments using the mapped root execution scripts:
+
+| Platform / Subsystem        | Up / Dev Command    | Down / Clean Command  | Reset Command         |
+| :-------------------------- | :------------------ | :-------------------- | :-------------------- |
+| **Docker Compose (Podman)** | `pnpm platform:up`  | `pnpm platform:down`  | `pnpm platform:reset` |
+| **Kubernetes (Skaffold)**   | `pnpm platform:dev` | `pnpm platform:clean` | `pnpm platform:stop`  |

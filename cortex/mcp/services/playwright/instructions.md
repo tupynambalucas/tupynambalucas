@@ -8,8 +8,13 @@ The Playwright MCP server provides headless browser automation using Chromium. U
 
 ## 2. Environment & Network Routing Rules
 
-- **Local Host Server Resolution**: When navigating to local development applications running on the developer's host machine (e.g., `@docs` dev server or local web applications), ALWAYS substitute `localhost` or `127.0.0.1` with `host.docker.internal`.
-- **Target URL Syntax**: Use `http://host.docker.internal:3000` instead of `http://localhost:3000`.
+- **Local Host Server Resolution**: When navigating to local development applications running on the
+  developer's host machine, ALWAYS substitute `localhost` or `127.0.0.1` with `host.docker.internal`.
+- **Automatic Target URL Mapping**: Agents MUST automatically resolve and navigate to local
+  applications using the following mapping. Do not query the user for URLs:
+  - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
+  - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
+  - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
 
 ---
 
