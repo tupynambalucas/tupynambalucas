@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # Command Reference
 
-This document serves as the **Single Source of Truth** for every CLI command, PNPM script, Docker command, and orchestration instruction used in the tupynambalucas.dev monorepo.
+This document serves as the **Single Source of Truth** for every CLI command, PNPM script, container command, and orchestration instruction used in the tupynambalucas.dev monorepo.
 
 ## Monorepo Orchestration
 
@@ -36,55 +36,95 @@ Use the `--filter` flag to target a specific workspace package.
 
 - **`pnpm add <package>@catalog: --filter <workspace>`**: Installs a package that is already defined in the default catalog into a specific workspace.
 
+---
+
 ## Validation & Quality
 
 Scripts to ensure code quality and type safety.
 
 - **`pnpm typecheck`**: Runs parallel TypeScript validation across all workspaces via Turborepo.
-- **`pnpm typecheck --filter=@tupynambalucas-hub/*`**: Runs typecheck only for the Instance bounded context.
 - **`pnpm lint`**: Runs ESLint validation across all workspaces.
 - **`pnpm build`**: Compiles a production build for all applications and packages.
-- **`pnpm --filter @tupynambalucas-hub/core build`**: Builds a specific package.
+- **`pnpm format:check`**: Checks formatting across the entire monorepo.
+- **`pnpm format:write`**: Automatically fixes formatting issues across all files.
 
-## Instance (Community)
+---
 
-Commands specific to the `@tupynambalucas-hub/*` bounded context.
+## Kubernetes Cluster Management (Minikube)
 
-- **`pnpm instance:up`**: Starts local infrastructure (MongoDB Replica Set + Redis) via `compose.dev.yaml`.
-- **`pnpm instance:dev`**: Starts the full development stack (Infrastructure + API on port 3000 + Web on port 5173). Internally calls `instance:up` first.
-- **`pnpm instance:down`**: Stops local infrastructure and forcefully kills ports 3000 and 5173.
-- **`pnpm instance:reset`**: Destroys local infrastructure volumes (wiping the database) and restarts the stack.
-- **`pnpm instance:staging`**: Builds and orchestrates the staging environment using `compose.prod.yaml` and `.env.staging`.
-- **`pnpm instance:staging:down`**: Stops the staging topology.
-- **`pnpm instance:prod`**: Builds and orchestrates the production environment using `compose.prod.yaml` and `.env.prod`.
-- **`pnpm instance:prod:down`**: Stops the production topology.
+Commands to control the local development Kubernetes cluster.
 
-## Portal (Platform)
+- **`pnpm minikube:up`**: Starts the local Minikube cluster using the Podman driver and configures automatic mounting of the project directory.
+- **`pnpm minikube:tunnel`**: Starts the Minikube network tunnel to resolve LoadBalancer IP allocations.
+- **`pnpm minikube:status`**: Checks the status of the local Minikube cluster.
+- **`pnpm minikube:mount`**: Mounts the project workspace directory into the Minikube node.
 
-Commands specific to the `@tupynambalucas-hub/*` bounded context.
+---
 
-- **`pnpm portal:up`**: Starts local infrastructure for the portal.
-- **`pnpm portal:dev`**: Starts the full portal development stack (API on port 3001 + Web on port 5174).
-- **`pnpm portal:down`**: Stops local infrastructure and forcefully kills ports 3001 and 5174.
-- **`pnpm portal:reset`**: Destroys local portal infrastructure volumes.
-- **`pnpm portal:staging`**: Builds and orchestrates the portal staging environment.
-- **`pnpm portal:staging:down`**: Stops the portal staging topology.
-- **`pnpm portal:prod`**: Builds and orchestrates the portal production environment.
-- **`pnpm portal:prod:down`**: Stops the portal production topology.
+## Kubernetes Deployments (Skaffold)
+
+Commands to build, deploy, and hot-reload components within the Kubernetes cluster.
+
+- **`pnpm k8s:dev`**: Deploys the entire stack (cortex, platform, studio) to the cluster with hot-reloading enabled.
+- **`pnpm k8s:up`**: Runs a one-time build and deployment of the entire stack to the cluster.
+- **`pnpm k8s:down`**: Deletes all deployed resources from the cluster.
+- **`pnpm platform:dev`**: Deploys only platform services with hot-reloading.
+- **`pnpm platform:down`**: Deletes platform services from the cluster.
+- **`pnpm cortex:dev`**: Deploys only Cortex AI services to the cluster with hot-reloading.
+- **`pnpm cortex:clean`**: Deletes Cortex services from the cluster.
+- **`pnpm cortex:stop`**: Tears down both Kubernetes and Podman Compose instances for Cortex.
+
+---
+
+## Developer Hub
+
+Commands for the Developer Hub (`hub/`) bounded context.
+
+- **`pnpm hub:dev`**: Starts local development servers (API on port 3006 and Web on port 5173).
+- **`pnpm hub:up`**: Starts local backing infrastructure (MongoDB) via Podman Compose.
+- **`pnpm hub:down`**: Stops local infrastructure.
+- **`pnpm hub:reset`**: Deletes persistent database volumes and restarts Hub infrastructure.
+- **`pnpm hub:staging`**: Launches the Hub staging environment using the staging compose profile.
+- **`pnpm hub:prod`**: Launches the Hub production environment.
+- **`pnpm hub:staging:down`**: Stops the Hub staging stack.
+- **`pnpm hub:prod:down`**: Stops the Hub production stack.
+
+---
+
+## Cortex (Podman Compose Mode)
+
+Commands for running the Cortex AI stack locally via Podman Compose.
+
+- **`pnpm cortex:up`**: Starts the Cortex services (gateway, guardrails, memory API, and MCP services) via Podman Compose.
+- **`pnpm cortex:down`**: Stops Cortex containers and cleans up orphan network bridges.
+- **`pnpm cortex:reset`**: Stops and restarts the Cortex Compose environment.
+- **`pnpm cortex:logs`**: Streams real-time logs from Cortex containers.
+
+---
+
+## Studio & Renderer
+
+Commands for asset generation, design systems, and rendering.
+
+- **`pnpm studio:dev`**: Deploys the Studio workspace to Kubernetes via Skaffold.
+- **`pnpm studio:down`**: Deletes the Studio deployment from the cluster.
+- **`pnpm studio:bucket`**: Syncs Cloudflare R2 bucket visual assets.
+- **`pnpm renderer:clean`**: Cleans compiled assets inside the renderer workspace.
+- **`pnpm renderer:generate`**: Recompiles dynamic profile components and README templates.
+
+---
 
 ## Documentation
 
 Commands for the Docusaurus Knowledge Base (`docs/`).
 
-- **`pnpm docs:dev`**: Starts the local Docusaurus development server with HMR.
+- **`pnpm docs:dev`**: Starts the local English Docusaurus development server (port 3002) with HMR.
+- **`pnpm docs:dev:pt`**: Starts the Docusaurus server in Brazilian Portuguese (`pt-BR`).
 - **`pnpm docs:build`**: Compiles the documentation into static HTML/CSS for production.
+- **`pnpm docs:preview`**: Builds and serves a production preview of the documentation.
+- **`pnpm docs:down`**: Forcefully kills the documentation web server port.
 
-## Studio & Tools
-
-Commands for design and AI agents.
-
-- **`pnpm penpot:up`** / **`pnpm penpot:down`**: Starts or stops the self-hosted Penpot Studio.
-- **`pnpm penpot:aide:up`** / **`pnpm penpot:aide:down`**: Starts or stops the Penpot Aide AI Bridge.
+---
 
 ## Git & Version Control
 
@@ -96,13 +136,5 @@ Workflows for branching, committing, and releases.
 - **`gh pr merge --squash --delete-branch`**: Merges a PR using the squash-and-merge strategy.
 - **`git flow hotfix start <name>`** / **`git flow hotfix finish <name>`**: Manages emergency fixes against the `main` branch.
 - **`pnpm version:changeset`**: Generates a changeset file to track version bumps and changelogs.
-
-## Docker & Infrastructure
-
-Direct Docker CLI commands for debugging and maintenance.
-
-- **`docker ps --filter "name=elo-instance"`**: Lists running containers for the instance context.
-- **`docker compose -f instance/compose.prod.yaml --env-file instance/.env.prod logs -f`**: Tails the logs of the production stack in real-time.
-- **`docker logs elo-instance-api-prod`**: Inspects logs for a specific container.
-- **`turbo prune`**: Prunes the monorepo workspace for minimal Docker builds.
-- **`pnpm deploy`**: Used inside Dockerfiles to extract only built dependencies for a specific package.
+- **`pnpm version:bump`**: Bumps packages version based on changesets.
+- **`pnpm version:publish`**: Publishes all updated packages to registries.

@@ -4,20 +4,9 @@
       "url": "http://localhost:8080/mcp/http",
       "lifecycle": "eager"
     },
-    "podman-mcp-host": {
+    "podman-mcp": {
       "command": "pnx",
       "args": ["-y", "podman-mcp-server@latest"]
-    },
-    "firecrawl-mcp-host": {
-      "command": "pnx",
-      "args": ["-y", "firecrawl-mcp"],
-      "env": {
-        "FIRECRAWL_API_KEY": "$FIRECRAWL_API_KEY"
-      }
-    },
-    "context7-mcp-host": {
-      "command": "pnx",
-      "args": ["-y", "@upstash/context7-mcp", "--api-key", "$CONTEXT7_API_KEY"]
     }
   }
 }

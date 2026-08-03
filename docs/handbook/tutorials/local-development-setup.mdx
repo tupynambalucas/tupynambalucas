@@ -9,27 +9,33 @@ In this tutorial, we will set up the tupynambalucas.dev monorepo on your local m
 
 ## Prerequisites
 
-Before we begin, ensure we have the following installed:
+Before we begin, ensure you have the following installed:
 
 - Node.js version 22
 - PNPM version 11
-- Docker and Docker Compose
+- Podman Desktop + Podman CLI + Compose Extension (instead of Docker)
+- Minikube and kubectl (for Kubernetes cluster mode)
+- Skaffold (for Kubernetes deployment pipelines and hot-reloading)
 - Git
+
+---
 
 ## Step 1: Clone the Repository
 
-First, we will clone the repository to our local workspace and navigate into it.
+First, clone the repository to your local workspace and navigate into it.
 
 ```bash
-git clone https://github.com/tupynambalucas/tupynambalucas.dev.git
-cd tupynambalucas.dev
+git clone https://github.com/tupynambalucas/tupynambalucas.git
+cd tupynambalucas
 ```
 
-You should see a directory structure containing folders like `docs`, `hub`, `cortex`, `profile`, and `tools`.
+You should see a directory structure containing folders like `docs`, `hub`, `cortex`, `profile`, `studio`, `platform`, and `tools`.
+
+---
 
 ## Step 2: Install Dependencies
 
-Next, we need to install the project dependencies. Since this is a monorepo, we will use PNPM to install everything at once.
+Next, install the project dependencies. Since this is a monorepo, we use PNPM to install everything at once.
 
 Run the following command:
 
@@ -37,57 +43,85 @@ Run the following command:
 pnpm install
 ```
 
-When it finishes, you will see output similar to this:
+When it finishes, you will see output confirming dependencies are linked to the content-addressable store.
 
-```
-Packages: +1245
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages are hard linked from the content-addressable store to the virtual store.
-...
-Done in 12.4s
-```
+---
 
 ## Step 3: Configure Environment Variables
 
-Now, we need to set up our local environment configuration. We will copy the sample `.env` file to create our active environment variables.
+Each workspace manages its own local configuration. Copy the template `.env.example` files to create the active environment files:
 
 ```bash
-cp .env.example .env
+# Set up Cortex environment variables
+cp cortex/infrastructure/.env.example cortex/infrastructure/.env
+
+# Set up Hub environment variables
+cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
 ```
 
-## Step 4: Start the Local Infrastructure
+:::info[Open and Edit Configuration]
+Open the newly created `.env` files and add any required tokens (e.g., `GITHUB_PERSONAL_ACCESS_TOKEN`, `FIRECRAWL_API_KEY`) to access cloud services.
+:::
 
-With our dependencies installed and environment configured, we will spin up the necessary backend services (like the database) using Docker Compose.
+---
+
+## Step 4: Configure Podman Machine
+
+Before starting any container workloads, initialize and start the default Podman machine:
 
 ```bash
-pnpm infra:up
+podman machine init
+podman machine start
 ```
 
-Wait a few moments. You should see Docker pulling images and starting the containers.
-
-```
-[+] Running 2/2
- ✔ Container mongodb  Started
- ✔ Container db-init  Started
-```
-
-## Step 5: Start the Development Server
-
-Finally, we are ready to start the application. We will use the Turborepo command to run the development servers across all workspaces.
+Verify that the container engine is active:
 
 ```bash
-pnpm dev
+podman info
 ```
 
-You will see output indicating that various services are starting. Look for lines like:
+---
 
-```
-@tupynambalucas-hub/web: dev:   ➜  Local:   http://localhost:3000/
-@tupynambalucas/docs: dev:      [SUCCESS] Docusaurus website is running at: http://localhost:3001/
-```
+## Step 5: Start the Infrastructure
 
-Open your browser and navigate to `http://localhost:3000`. You should see the Hub interface loaded successfully.
+You can choose between two orchestration pipelines based on your current task:
+
+### Option A: Podman Compose Mode (Fast Local Development)
+
+This is the recommended approach for rapid iteration, frontend coding, and microservice debugging.
+
+1. **Start Backing Infrastructure**:
+   ```bash
+   pnpm cortex:up
+   ```
+2. **Start Development Server**:
+   ```bash
+   pnpm hub:dev
+   ```
+
+Navigate to `http://localhost:5173` to access the Hub interface, and `http://localhost:3002` for the documentation site.
+
+### Option B: Kubernetes Mode (Skaffold + Minikube)
+
+This approach is required for testing Kubernetes manifests, ingress controllers, telemetry configs, or service integrations.
+
+1. **Start the Minikube Cluster**:
+   ```bash
+   pnpm minikube:up
+   ```
+2. **Start the Network Tunnel** (in a separate terminal):
+   ```bash
+   pnpm minikube:tunnel
+   ```
+3. **Deploy with Skaffold Dev Mode (Hot-Reloading)**:
+   ```bash
+   pnpm k8s:dev
+   ```
+
+Skaffold will build your images, deploy the manifests, stream container logs, and automatically port-forward services to your local machine (e.g., `agentgateway` to `http://localhost:8080/mcp/http`).
+
+---
 
 ## Conclusion
 
-Congratulations! We have successfully cloned the repository, installed the dependencies, launched the infrastructure, and started the local development servers. We are now fully equipped to start building and contributing to the project.
+Congratulations! You have successfully cloned the repository, configured environment variables, started Podman, and launched the local development server. You are now fully equipped to start building and contributing to the project.

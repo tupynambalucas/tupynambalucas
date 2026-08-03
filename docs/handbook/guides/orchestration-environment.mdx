@@ -41,39 +41,20 @@ Our project scripts explicitly invoke `podman compose` and `podman exec` directl
 
 ---
 
-### 2. Kubernetes Environment (Minikube via VirtualBox or Podman)
+### 2. Kubernetes Environment (Minikube via Podman)
 
-For local Kubernetes testing, routing validation, and deployment pipelines. Our workflow leverages two complementary strategies:
-
-- **Approach A (Automated Local Dev)**: Uses host-installed `minikube`, `kubectl`, and `skaffold` with the `virtualbox` or `podman` driver for live hot-reloading and instant full-stack cluster deployment.
-- **Approach B (Production Staging Simulation)**: Runs 100% inside an isolated VirtualBox Ubuntu VM simulating cloud production hosts without requiring Kubernetes tooling on the Windows host.
+For local Kubernetes testing, routing validation, and deployment pipelines, we use host-installed `minikube`, `kubectl`, and `skaffold` with the `podman` driver for live hot-reloading and cluster deployment.
 
 Install the following tools on your Windows host:
 
-- **Oracle VirtualBox**: The hypervisor hosting our Kubernetes nodes.
-- **kubectl**: Minikube bundles its own version of `kubectl` (accessible via `minikube kubectl --`). However, installing the native client is highly recommended for automatic integration with tools like OpenLens and Skaffold.
-- **Skaffold**: _Required on host for Approach A._ Automates build and deploy pipelines. If using Approach B, Skaffold runs entirely inside the VM and is not needed on the host.
+- **kubectl**: CLI tool for executing commands against Kubernetes clusters.
+- **Skaffold**: Automates build and deploy pipelines with hot-reloading capabilities.
 - **OpenLens**: Visual cluster monitoring client.
+- **Minikube CLI**: Provisions local Kubernetes cluster nodes inside Podman.
 - **Install command (PowerShell)**:
   ```powershell
-  # Omit Kubernetes.kubectl or Google.Skaffold if using Approach B exclusively
-  winget install Oracle.VirtualBox Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+  winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
   ```
-
-Depending on your goals, choose one or both of the following VM deployment approaches:
-
-- **Approach A: Local VM Development (Minikube ISO)**
-  Minikube automatically provisions and manages its own optimized VM inside VirtualBox.
-  - **Extra Host Tool**: Requires Minikube CLI on the Windows host.
-  - **Install command (PowerShell)**:
-    ```powershell
-    winget install Kubernetes.minikube
-    ```
-
-- **Approach B: Production Staging Simulation (Ubuntu Server LTS VM)**
-  A manually provisioned Ubuntu Server LTS VM in VirtualBox where Minikube runs inside the VM (simulating actual cloud production hosts).
-  - **No local Minikube CLI required on Windows.** All Kubernetes runtime dependencies are self-contained inside the VM.
-  - **VM Installer**: Official [Ubuntu Server LTS manual install ISO](https://ubuntu.com/download/server#manual-install-tab).
 
 :::warning[Avoid Running Skaffold via Containers]
 Although you can run Skaffold inside a container, doing so requires mounting container sockets and remapping internal hosts. Furthermore, live file synchronization (`pnpm k8s:dev`) often fails to propagate file system events across container boundaries. For this reason, installing the native Skaffold binary locally is strongly recommended.
@@ -101,11 +82,13 @@ For fast feedback loops, we run microservices and backing databases using Podman
 
 Instead of running verbose Podman Compose commands manually, use the predefined Turborepo filters and scripts in the root [package.json](file:///D:/projects/tupynambalucas/package.json):
 
-- **Start Platform Services**: `pnpm platform:up`
-- **Stop Platform Services**: `pnpm platform:down`
-- **Reset Platform State**: `pnpm platform:reset` (deletes volumes)
-- **Start Cortex Stack**: `pnpm cortex:core:up` or `pnpm cortex:mcp:up`
-- **Stop Cortex Stack**: `pnpm cortex:core:down` or `pnpm cortex:mcp:down`
+- **Start Hub Backing Services**: `pnpm hub:up`
+- **Stop Hub Backing Services**: `pnpm hub:down`
+- **Reset Hub Backing Services**: `pnpm hub:reset` (deletes volumes)
+- **Start Cortex Stack**: `pnpm cortex:up`
+- **Stop Cortex Stack**: `pnpm cortex:down`
+- **Reset Cortex Stack**: `pnpm cortex:reset`
+- **Stream Cortex Logs**: `pnpm cortex:logs`
 
 ---
 
@@ -113,79 +96,51 @@ Instead of running verbose Podman Compose commands manually, use the predefined 
 
 When you need to test network policies, cross-namespace DNS resolution, or Traefik ingress configurations, you must deploy the workspaces to Minikube.
 
-### Approach A: Local VM Development (VirtualBox Driver)
+### Creating the Cluster
 
-Minikube automatically creates and boots a lightweight Linux VM (`minikube-iso`) in VirtualBox.
+To start the default Minikube cluster using the Podman driver and configure the local host mounting required by AI agents:
 
-#### Creating the Cluster
-
-Create a dedicated Minikube profile named `tupynambalucas` using the `virtualbox` driver:
-
-```powershell
-minikube start -p tupynambalucas --driver=virtualbox --kubernetes-version=v1.30.0
+```bash
+pnpm minikube:up
 ```
 
-#### Manual ISO Acquisition & Cache Configuration (Optional/Offline)
+This executes:
 
-If your environment has restricted internet access, or if you prefer to manually manage the Minikube ISO, you can acquire and configure it as follows:
+```bash
+minikube start --driver=podman --mount --mount-string ".:/workspace"
+```
 
-1. **Acquire the ISO**:
-   Download the official Minikube ISO matching your target Kubernetes version from the Google Cloud Storage bucket or GitHub Releases:
-   - **GCS Release URL**: `https://storage.googleapis.com/minikube/iso/minikube-v1.30.0.iso`
-   - **GitHub Releases**: [Kubernetes Minikube Releases](https://github.com/kubernetes/minikube/releases)
+:::info[Minikube Tunnel]
+Since some services in our cluster (like Traefik) use LoadBalancer IPs, you must open a network tunnel in a separate, persistent administrative terminal window:
 
-2. **Configure the ISO Location**:
-   You can point Minikube to your downloaded ISO using one of the following methods:
+```bash
+pnpm minikube:tunnel
+```
 
-   - **Option 1: CLI Flag (One-time run)**
-     Pass the path using the `file://` scheme to the `--iso-url` flag:
-     ```powershell
-     minikube start -p tupynambalucas --driver=virtualbox --kubernetes-version=v1.30.0 --iso-url=file://C:/path/to/minikube-v1.30.0.iso
-     ```
-   - **Option 2: Persistent Minikube Config (Recommended)**
-     Configure the ISO path globally so it is automatically used for every start:
-
-     ```powershell
-     minikube config set iso-url file://C:/path/to/minikube-v1.30.0.iso
-     ```
-
-   - **Option 3: Direct Local Cache Injection (No config changes)**
-     Place the downloaded `.iso` file directly in Minikube's default cache subdirectory. Minikube checks this location before attempting to download:
-     - **Windows Path**: `%USERPROFILE%\.minikube\cache\iso\minikube-v1.30.0.iso`
-     - **Unix Path**: `~/.minikube/cache/iso/minikube-v1.30.0.iso`
+:::
 
 ---
 
-## 3. Visualizing the Cluster with OpenLens
+## 3. Visualizing the Cluster
 
-To monitor resource consumption, inspect logs, and manage namespaces visually, we use **OpenLens** on the Windows host.
-
-### Connecting to Approach A (Local VM)
-
-OpenLens automatically reads standard kubeconfig configurations located at `~/.kube/config`.
+To monitor resource consumption, inspect logs, and manage namespaces visually, we use **OpenLens** or **Podman Desktop** on the Windows host.
 
 1. Set the active context to the Minikube profile in your terminal:
    ```bash
-   kubectl config use-context tupynambalucas
+   kubectl config use-context minikube
    ```
 2. Open **OpenLens** or **Podman Desktop**.
-3. Select the cluster context named **tupynambalucas**.
+3. Select the cluster context named **minikube**.
 
 ---
 
 ## 4. Professional Orchestration with Skaffold
 
-Instead of manually building each container image and applying Kubernetes manifests one by one, we use **Skaffold** to orchestrate the entire development process.
-
-Skaffold handles:
-
-- **Concurrent Builds**: Building all required service images in parallel.
-- **Dynamic Tagging**: Automatically updating image tags inside your Kubernetes manifests to match the current build signature.
-- **Continuous Development**: Watching files and syncing code changes to active Pod containers in real time without triggering full container rebuilds.
+We use **Skaffold** to automate the build, deployment, and live hot-reloading pipelines.
 
 ### Launching the Cluster and Workspaces
 
-We provide simplified scripts in the root [package.json](file:///D:/projects/tupynambalucas/package.json) to manage the lifecycle:
+We provide simplified scripts in the root `package.json` to manage the lifecycle:
 
 1. **Deploy and Run in the Background**:
    To build all images and deploy all platform and cortex components to Minikube:
@@ -201,8 +156,68 @@ We provide simplified scripts in the root [package.json](file:///D:/projects/tup
    pnpm k8s:dev
    ```
 
-3. **Stop and Clean Up**:
+3. **Workspace Module Isolation**:
+   You can deploy specific workspaces independently to save resources:
+   - **Deploy Cortex Only**: `pnpm cortex:dev`
+   - **Deploy Platform Only**: `pnpm platform:dev`
+   - **Deploy Studio Only**: `pnpm studio:dev`
+
+4. **Stop and Clean Up**:
    To tear down all resources, namespaces, and workloads deployed by Skaffold:
    ```bash
    pnpm k8s:down
    ```
+
+### Local Port Forwarding
+
+Skaffold automatically sets up port-forwarding tunnels targeting Kubernetes **Services** inside the cluster rather than ephemeral Pods. This guarantees stable local port mappings that survive container restarts.
+
+| Service              | Local Port | Namespace | Purpose                   |
+| :------------------- | :--------- | :-------- | :------------------------ |
+| `agentgateway`       | `8080`     | `cortex`  | Unified MCP Ingress       |
+| `agentgateway admin` | `15000`    | `cortex`  | Gateway Management Web UI |
+| `memory-api`         | `3006`     | `cortex`  | Memory Service REST API   |
+| `memory-web`         | `9006`     | `cortex`  | Memory Service Frontend   |
+| `mcp-inspector`      | `6274`     | `cortex`  | MCP Inspector Sandbox     |
+
+---
+
+## 5. Antigravity CLI Connectivity
+
+The **Antigravity CLI** connects to the Cortex ingress proxy (`agentgateway`) using the endpoint defined in `.agents/mcp_config.json`:
+
+```json
+"agentgateway": {
+  "url": "http://localhost:8080/mcp/http",
+  "lifecycle": "eager"
+}
+```
+
+Because of our standardized local port mappings, this client configuration **remains unchanged** across both deployment modes:
+
+- **Compose Mode**: Podman Compose maps container port `8080` directly to host port `8080`.
+- **Kubernetes Mode**: Skaffold port-forwards the `agentgateway` Service to `localhost:8080`.
+
+The `agentgateway` intercepts the incoming JSON-RPC payload, runs it through configured CEL guardrails (via `mcp-guardrails` on port `9001`), and routes it to the target microservice based on targets defined in `cortex/gateway/config.yaml`.
+
+---
+
+## 6. Environment Variable Management
+
+Each workspace context manages its own environment files under `<workspace>/infrastructure/.env`.
+
+Skaffold uses `dotenv-cli` scripts to inject these values as build environment configurations, which are then bundled into Kubernetes secrets via Kustomize:
+
+```yaml
+# infrastructure/kubernetes/kustomization.yaml
+secretGenerator:
+  - name: cortex-secrets
+    envs:
+      - ../.env
+```
+
+:::warning[Kubernetes Service Environment Variable Collision]
+Kubernetes automatically injects environment variables for every active Service in the same namespace. If a Service is named `mcp-memory`, Kubernetes sets the environment variable `MCP_MEMORY_PORT` inside every container to its connection URI (e.g. `tcp://10.103.79.15:8080`).
+
+If your application attempts to parse `process.env.MCP_MEMORY_PORT` as a port number, it will yield `NaN` and crash. To prevent this collision, always prefix or rename application-specific port environment variables (e.g., use `MEMORY_MCP_PORT` instead of `MCP_MEMORY_PORT`).
+:::

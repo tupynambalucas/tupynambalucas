@@ -43,7 +43,7 @@ We employ a **Hybrid High-Performance Architecture** optimized by **Turborepo** 
 **Turborepo** is the engine behind our monorepo productivity. It handles:
 
 - **Dependency Graph:** Automatically identifying which packages need to be built or checked based on local changes.
-- **Infrastructure Coupling:** Orchestrating Docker Compose services as pre-requisites for application development (e.g., `pnpm hub:up` starts databases before the API).
+- **Infrastructure Coupling:** Orchestrating backing services as pre-requisites for application development (e.g., `pnpm hub:up` or `pnpm cortex:up` starts databases/backing services before the API).
 - **Caching:** Speeding up builds, type-checking, and linting by skipping unchanged modules.
 - **Unified Outputs:** Standardizing build artifacts into `dist/` (for apps and core) and `build/` (for Docusaurus).
 

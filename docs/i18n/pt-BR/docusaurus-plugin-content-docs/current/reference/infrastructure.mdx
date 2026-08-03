@@ -1,27 +1,46 @@
-The architecture is built on the standalone dev/staging/production promotion model:
+---
+title: Referência de Infraestrutura
+description: Referência técnica de arquitetura, layouts de diretórios, configuração de containers e roteamento.
+sidebar_position: 3
+---
 
-- **Staging (Homologação):** Mirror of the production stack. Runs on a dedicated subdomain connected to a staging database cluster. Used to validate new feature sets and schema migrations.
-- **Production (Produção):** The authoritative client-facing environment. Fully locked down and optimized for performance.
+# Referência de Infraestrutura
+
+Este documento detalha os padrões de design de infraestrutura, estratégias de containerização e arquiteturas de roteamento usadas nos workspaces do monorepo.
+
+---
+
+## 1. Modelo de Promoção de Ambiente
+
+A arquitetura é construída sob um modelo modular de promoção de ambiente (dev/staging/production):
+
+- **Local Dev:** Gerenciado via **Podman Compose** (para iteração rápida de microsserviços) ou **Skaffold + Minikube** (para validação de integração no Kubernetes).
+- **Staging (Homologação):** Espelho da stack de produção. Roda sob um subdomínio dedicado conectado a um cluster de banco de dados de homologação. Usado para validar novos conjuntos de funcionalidades e migrações de esquemas.
+- **Production (Produção):** O ambiente autoritativo voltado ao cliente. Totalmente protegido e otimizado para performance.
 
 ```mermaid
 graph TD
     direction TB
     subgraph Local_Dev
         Code["Developer Local Machine"]
+        LocalCompose["podman compose -f compose.yaml"]
+        LocalK8s["skaffold dev --module <name>"]
     end
     subgraph Staging_Env
-        StgCompose["docker compose -f compose.prod.yaml --env-file .env.staging"]
+        StgCompose["podman compose -f compose.yaml -f compose.prod.yaml --env-file .env.staging"]
         StgAPI["@tupynambalucas-hub/api (Staging)"]
         StgWeb["@tupynambalucas-hub/web (Staging)"]
         StgDB[("MongoDB (Staging)")]
     end
     subgraph Prod_Env
-        ProdCompose["docker compose -f compose.prod.yaml --env-file .env.prod"]
+        ProdCompose["podman compose -f compose.yaml -f compose.prod.yaml --env-file .env.prod"]
         ProdAPI["@tupynambalucas-hub/api (Prod)"]
         ProdWeb["@tupynambalucas-hub/web (Prod)"]
         ProdDB[("MongoDB (Prod)")]
     end
 
+    Code -->|Testes Locais| LocalCompose
+    Code -->|Testes K8s Locais| LocalK8s
     Code -->|git push develop| Staging_Env
     Code -->|git push main| Prod_Env
 
@@ -36,13 +55,13 @@ graph TD
 
 ---
 
-## 2. Build-Time Compilation & Image Packaging
+## 2. Compilação em Tempo de Build & Empacotamento de Imagens
 
-Our frontend and backend deployment units are fully containerized using optimized Dockerfiles.
+Nossas unidades de implantação de frontend e backend são totalmente containerizadas usando Dockerfiles otimizados.
 
-### 2.1. Frontend Build Arg Injection
+### 2.1. Injeção de Argumentos de Build no Frontend
 
-Vite statically bakes public environment variables (prefixed with `VITE_`) into the JavaScript bundles during the compilation phase. For this reason, these parameters must be supplied as Docker build arguments during image generation:
+O Vite insere variáveis de ambiente públicas (prefixadas com `VITE_`) estaticamente nos pacotes JavaScript durante a fase de compilação. Por esse motivo, estes parâmetros devem ser fornecidos como argumentos de build do Docker durante a geração da imagem:
 
 ```dockerfile
 # Inside Frontend Dockerfile
@@ -51,70 +70,60 @@ ENV VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY
 RUN pnpm build
 ```
 
-:::warning[Security Boundary]
-Never inject sensitive keys (such as JWT secrets, database credentials, or email credentials) into the frontend build. Frontend environments are fully public. All secrets must be kept strictly on the backend API layer and injected at runtime.
+:::warning[Limite de Segurança]
+Nunca injete chaves sensíveis (como segredos JWT, credenciais de banco de dados ou credenciais de e-mail) no build do frontend. Os ambientes de frontend são totalmente públicos. Todos os segredos devem ser mantidos estritamente na camada da API do backend e injetados em tempo de execução.
 :::
 
 ---
 
-## 3. Orquestração de Contêineres e Layouts de Diretórios
+## 3. Orquestração de Containers & Layouts de Diretórios
 
-Os espaços de trabalho (workspaces) que contêm infraestrutura Docker são estruturados de duas
-formas com base em seus domínios operacionais. Consulte
-[Monorepos Orientados a Domínio](/docs/explanation/domain-driven-monorepo#6-padrões-de-layout-de-contêineres-flat-services-vs-layered-domains)
-para a teoria de design por trás desta escolha.
+Os workspaces contendo configurações do Docker e do Kubernetes são estruturados de uma de duas maneiras com base em seus domínios operacionais. Consulte [Monorepos Orientados a Domínio](/docs/explanation/domain-driven-monorepo) para a teoria de design por trás desta escolha.
 
-### 3.1. Layout de Flat Services (Serviços Planos)
+### 3.1. Layout de Serviços Planos (Flat Services)
 
-Os serviços são organizados dentro de uma pasta plana `services/`, com as configurações gerais de
-orquestração localizadas em `infrastructure/`:
+Os serviços são colocados dentro de uma pasta plana `services/`, com configurações gerais de orquestração localizadas em `infrastructure/`:
 
-- **Esquema de Caminhos**:
+- **Esquema de Caminho**:
   - `workspace/services/[service-name]/Dockerfile`
   - `workspace/infrastructure/docker/compose.yaml`
-- **Aplicação**: Utilizado em
-  [hub](/docs/explanation/domain-driven-monorepo#31-topologia-de-pastas) e
-  `studio/design`.
+- **Aplicação**: Usado em `hub` e `studio`.
 
-### 3.2. Layout de Layered Domain (Domínios em Camadas)
+### 3.2. Layout de Domínio em Camadas (Layered Domain)
 
-Os serviços são agrupados em diretórios irmãos representando camadas arquiteturais diretamente na
-raiz do workspace:
+Os serviços são agrupados em pastas que representam camadas arquitetônicas distintas diretamente na raiz do workspace:
 
-- **Esquema de Caminhos**:
+- **Esquema de Caminho**:
   - `workspace/[domain-layer]/services/[service-name]/Dockerfile`
   - `workspace/infrastructure/docker/compose.yaml`
-- **Aplicação**: Utilizado em `cortex` (dividido em planos `gateway/`, `mcp/` e `agents/`).
+- **Aplicação**: Usado em `cortex` (separando as camadas de `gateway/`, `mcp/` e `agents/`).
+
+### 3.3. Layout de Manifestos Kubernetes
+
+Workspaces que suportam implantação em Kubernetes usam uma estrutura de diretórios baseada no Kustomize que espelha sua organização em camadas:
+
+- **Esquema de Caminho**:
+  - `workspace/infrastructure/kubernetes/kustomization.yaml` (Agregador)
+  - `workspace/infrastructure/kubernetes/namespace.yaml` (Namespace Isolado)
+  - `workspace/infrastructure/kubernetes/[service].yaml` (Deployments + Services)
+- **Aplicação**: Usado em `cortex` (canônico) e `platform`.
 
 ---
 
-## 4. Servidor Proxy Reverso e Roteamento de Requisições
+## 4. Proxy Reverso & Roteamento de Requisições
 
-tupynambalucas.dev utiliza uma configuração de proxy reverso (seja **Nginx** ou **Traefik**) para
-tratar a terminação TLS, compressão e roteamento de requisições.
+tupynambalucas.dev utiliza uma configuração de proxy reverso para lidar com terminação TLS, compressão e roteamento de requisições.
 
-- **Certificados SSL:** Gerenciados dinamicamente via Let's Encrypt usando desafios ACME
-  automatizados.
-- **Mapeamento de Portas:** As portas públicas `80` (HTTP) e `443` (HTTPS) mapeiam para os
-  contêineres de borda web, que internamente encaminham as chamadas para a API Fastify ou servem
-  os ativos estáticos compilados do React.
-
-:::info[Redeploys com Zero Downtime]
-O Docker Compose atualiza automaticamente os contêineres com o mínimo de inatividade ao executar
-`pnpm hub:prod` com contêineres existentes. Para eliminar totalmente quedas de requisição,
-implemente um padrão de deploy rotativo (rolling deployment) utilizando um balanceador de carga.
-:::
+- **Certificados SSL:** Gerenciados dinamicamente via Let's Encrypt usando desafios ACME automatizados.
+- **Mapeamento de Portas:** As portas públicas `80` (HTTP) e `443` (HTTPS) mapeiam para os containers web de borda, que internamente encaminham as requisições para a API Fastify ou servem os assets React estáticos compilados.
+- **MCP Gateway Ingress (`agentgateway`):** Atua como o ponto de entrada unificado para clientes MCP (baseados em SSE) e requisições LLM, direcionando-as internamente para o microsserviço ou servidor MCP correto.
+- **Ingress do Kubernetes:** No modo Kubernetes, o Traefik roteia requisições HTTP/gRPC de entrada usando recursos de `Ingress` mapeados para os Serviços de destino.
 
 ---
 
-## 5. Inicialização do Banco de Dados e Migrações de Schema
+## 5. Inicialização de Banco de Dados & Migrações de Esquema
 
-Para evitar a necessidade de intervenção operacional manual durante lançamentos, toda a
-preparação do banco de dados é tratada de forma dinâmica a nível de aplicação.
+Para evitar sobrecarga operacional manual durante as releases, toda a preparação do banco de dados é tratada de forma dinâmica a nível de aplicação.
 
-- **Configuração de Replica Set:** Durante o desenvolvimento local e rollouts iniciais em staging,
-  o contêiner auxiliar `db-init` garante automaticamente que o replica set (`rs0`) seja
-  estabelecido, permitindo suporte a transações.
-- **Seeding de Dados (`SeedPlugin`):** O servidor Fastify conta com um plugin de seeding integrado
-  nativamente. Na inicialização, ele dispara um padrão upsert idempotente, criando o usuário
-  administrador padrão se ele não existir, sem risco de duplicação de linhas.
+- **Configuração de Replica Set:** Durante o desenvolvimento local e implantações iniciais em staging, o container auxiliar `db-init` garante automaticamente que o replica set (`rs0`) seja estabelecido, habilitando o suporte a transações.
+- **Semeamento de Dados (`SeedPlugin`):** O servidor Fastify possui um plugin de semeamento integrado nativamente. Na inicialização, ele aciona um padrão upsert idempotente, criando o usuário administrador padrão se ele não existir, sem risco de linhas duplicadas.

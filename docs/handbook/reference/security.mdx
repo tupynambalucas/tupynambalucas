@@ -73,9 +73,9 @@ The API is designed to leak as little information as possible about the system's
 
 ## 4. Environment Requirements
 
-The following security keys are mandatory for the **Instance** stack to operate. Each variable lives in the env file owned by the responsible application, following the project's **Bounded Context** isolation principle.
+The following security keys are mandatory for the **Hub** stack to operate. Each variable lives in the env file owned by the responsible application, following the project's **Bounded Context** isolation principle.
 
-### 4.1. API (`instance/apps/api/.env.*`)
+### 4.1. API (`hub/services/api/.env.*`)
 
 | Variable               | Purpose                                                                                                    | Environments       |
 | :--------------------- | :--------------------------------------------------------------------------------------------------------- | :----------------- |
@@ -84,7 +84,7 @@ The following security keys are mandatory for the **Instance** stack to operate.
 | `SESSION_SECRET`       | Encrypting signed HTTP-only session cookies.                                                               | dev, prod, staging |
 | `MONGO_URI`            | MongoDB connection string. Dev uses local Replica Set; prod/staging uses MongoDB Atlas (`mongodb+srv://`). | dev, prod, staging |
 
-### 4.2. Web (`instance/apps/web/.env.*` / Docker `ARG`)
+### 4.2. Web (`hub/services/web/.env.*` / Docker `ARG`)
 
 | Variable                  | Purpose                                             | Injection Method                                                                                                                                       |
 | :------------------------ | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |

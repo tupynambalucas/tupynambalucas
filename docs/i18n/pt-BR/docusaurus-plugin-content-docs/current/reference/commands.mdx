@@ -6,103 +6,135 @@ sidebar_position: 2
 
 # Referência de Comandos
 
-Este documento serve como a **Única Fonte de Verdade** para cada comando CLI, script PNPM, comando Docker e instrução de orquestração usada no monorepo tupynambalucas.dev.
+Este documento serve como a **Fonte Única de Verdade** (Single Source of Truth) para cada comando CLI, script PNPM, comando de container e instrução de orquestração utilizada no monorepo tupynambalucas.dev.
 
 ## Orquestração do Monorepo
 
 Scripts usados para gerenciar dependências, limpeza e tarefas em todo o workspace.
 
 - **`pnpm install`**: Instala todas as dependências no monorepo.
-- **`pnpm install --frozen-lockfile`**: Instala dependências estritamente a partir do `pnpm-lock.yaml` (usado no CI/CD).
-- **`pnpm project:clear`**: Limpa todos os `node_modules` e caches de build usando o `npkill`.
+- **`pnpm install --frozen-lockfile`**: Instala as dependências estritamente a partir do `pnpm-lock.yaml` (usado em CI/CD).
+- **`pnpm project:clear`**: Limpa todos os diretórios `node_modules` e caches de build usando o `npkill`.
 
-### Gerenciamento de Dependências (Catálogos)
+### Gerenciamento de Dependências (Catalogs)
 
 Todas as novas dependências devem ser adicionadas a um catálogo (seja o catálogo padrão ou um específico) para garantir a consistência de versão em todo o monorepo.
 
 **Adicionando ao Workspace Raiz:**
-Adicionar uma dependência ao `package.json` da raiz requer a flag `-w` (ou `--ignore-workspace-root-check`).
+Adicionar uma dependência ao `package.json` raiz requer a flag `-w` (ou `--ignore-workspace-root-check`).
 
 - **`pnpm add <package> -w --save-catalog`**: Adiciona um pacote à raiz e salva sua versão no catálogo padrão.
 - **`pnpm add <package> -w --save-catalog-name <catalog_name>`**: Adiciona um pacote à raiz e salva sua versão em um catálogo específico.
 
 **Adicionando a um Workspace Específico:**
-Use a flag `--filter` para direcionar a um pacote específico do workspace.
+Use a flag `--filter` para direcionar a um pacote de workspace específico.
 
 - **`pnpm add <package> --filter <workspace> --save-catalog`**: Adiciona um pacote a um workspace e salva sua versão no catálogo padrão.
 - **`pnpm add <package> --filter <workspace> --save-catalog-name <catalog_name>`**: Adiciona um pacote a um workspace e salva sua versão em um catálogo específico.
 
-**Usando um Pacote Catalogado Existente:**
+**Usando um Pacote já Definido no Catálogo:**
 
 - **`pnpm add <package>@catalog: --filter <workspace>`**: Instala um pacote que já está definido no catálogo padrão em um workspace específico.
 
+---
+
 ## Validação e Qualidade
 
-Scripts para garantir a qualidade do código e segurança de tipos.
+Scripts para garantir a qualidade do código e a segurança de tipos.
 
 - **`pnpm typecheck`**: Executa a validação do TypeScript em paralelo em todos os workspaces via Turborepo.
-- **`pnpm typecheck --filter=@tupynambalucas-hub/*`**: Executa o typecheck apenas para o contexto delimitado Instance.
 - **`pnpm lint`**: Executa a validação do ESLint em todos os workspaces.
 - **`pnpm build`**: Compila um build de produção para todas as aplicações e pacotes.
-- **`pnpm --filter @tupynambalucas-hub/core build`**: Compila um pacote específico.
+- **`pnpm format:check`**: Verifica a formatação em todo o monorepo.
+- **`pnpm format:write`**: Corrige automaticamente problemas de formatação em todos os arquivos.
 
-## Instância (Comunidade)
+---
 
-Comandos específicos para o contexto delimitado `@tupynambalucas-hub/*`.
+## Gerenciamento de Cluster Kubernetes (Minikube)
 
-- **`pnpm instance:up`**: Inicia a infraestrutura local (Replica Set do MongoDB + Redis) via `compose.dev.yaml`.
-- **`pnpm instance:dev`**: Inicia a stack completa de desenvolvimento (Infraestrutura + API na porta 3000 + Web na porta 5173). Internamente chama `instance:up` primeiro.
-- **`pnpm instance:down`**: Interrompe a infraestrutura local e encerra forçadamente as portas 3000 e 5173.
-- **`pnpm instance:reset`**: Destrói os volumes da infraestrutura local (limpando o banco de dados) e reinicia a stack.
-- **`pnpm instance:staging`**: Compila e orquestra o ambiente de homologação (staging) usando `compose.prod.yaml` and `.env.staging`.
-- **`pnpm instance:staging:down`**: Interrompe a topologia de homologação (staging).
-- **`pnpm instance:prod`**: Compila e orquestra o ambiente de produção usando `compose.prod.yaml` e `.env.prod`.
-- **`pnpm instance:prod:down`**: Interrompe a topologia de produção.
+Comandos para controlar o cluster Kubernetes de desenvolvimento local.
 
-## Portal (Plataforma)
+- **`pnpm minikube:up`**: Inicia o cluster Minikube local usando o driver do Podman e configura a montagem automática do diretório do projeto.
+- **`pnpm minikube:tunnel`**: Inicia o túnel de rede do Minikube para resolver alocações de IP do tipo LoadBalancer.
+- **`pnpm minikube:status`**: Verifica o status do cluster Minikube local.
+- **`pnpm minikube:mount`**: Monta o diretório de workspace do projeto dentro do nó do Minikube.
 
-Comandos específicos para o contexto delimitado `@tupynambalucas-hub/*`.
+---
 
-- **`pnpm portal:up`**: Inicia a infraestrutura local para o portal.
-- **`pnpm portal:dev`**: Inicia a stack completa de desenvolvimento do portal (API na porta 3001 + Web na porta 5174).
-- **`pnpm portal:down`**: Interrompe a infraestrutura local e encerra forçadamente as portas 3001 e 5174.
-- **`pnpm portal:reset`**: Destrói os volumes da infraestrutura local do portal.
-- **`pnpm portal:staging`**: Compila e orquestra o ambiente de homologação (staging) do portal.
-- **`pnpm portal:staging:down`**: Interrompe a topologia de homologação (staging) do portal.
-- **`pnpm portal:prod`**: Compila e orquestra o ambiente de produção do portal.
-- **`pnpm portal:prod:down`**: Interrompe a topologia de produção do portal.
+## Implantações no Kubernetes (Skaffold)
+
+Comandos para build, deploy e hot-reload de componentes dentro do cluster Kubernetes.
+
+- **`pnpm k8s:dev`**: Implanta a stack completa (cortex, platform, studio) no cluster com o hot-reloading ativado.
+- **`pnpm k8s:up`**: Executa um build e implantação única da stack completa no cluster.
+- **`pnpm k8s:down`**: Exclui todos os recursos implantados do cluster.
+- **`pnpm platform:dev`**: Implanta apenas os serviços de plataforma com hot-reloading.
+- **`pnpm platform:down`**: Exclui os serviços de plataforma do cluster.
+- **`pnpm cortex:dev`**: Implanta apenas os serviços de IA do Cortex no cluster com hot-reloading.
+- **`pnpm cortex:clean`**: Exclui os serviços do Cortex do cluster.
+- **`pnpm cortex:stop`**: Remove as instâncias do Kubernetes e do Podman Compose para o Cortex.
+
+---
+
+## Developer Hub
+
+Comandos para o contexto delimitado do Developer Hub (`hub/`).
+
+- **`pnpm hub:dev`**: Inicia os servidores de desenvolvimento local (API na porta 3006 e Web na porta 5173).
+- **`pnpm hub:up`**: Inicia a infraestrutura de suporte local (MongoDB) via Podman Compose.
+- **`pnpm hub:down`**: Para a infraestrutura local.
+- **`pnpm hub:reset`**: Exclui os volumes persistentes do banco de dados e reinicia a infraestrutura do Hub.
+- **`pnpm hub:staging`**: Inicia o ambiente de staging do Hub usando o perfil de compose correspondente.
+- **`pnpm hub:prod`**: Inicia o ambiente de produção do Hub.
+- **`pnpm hub:staging:down`**: Para a stack de staging do Hub.
+- **`pnpm hub:prod:down`**: Para a stack de produção do Hub.
+
+---
+
+## Cortex (Modo Podman Compose)
+
+Comandos para rodar a stack de IA do Cortex localmente via Podman Compose.
+
+- **`pnpm cortex:up`**: Inicia os serviços do Cortex (gateway, guardrails, memory API e serviços MCP) via Podman Compose.
+- **`pnpm cortex:down`**: Para os containers do Cortex e limpa pontes de rede órfãs.
+- **`pnpm cortex:reset`**: Para e reinicia o ambiente do Cortex Compose.
+- **`pnpm cortex:logs`**: Transmite os logs em tempo real dos containers do Cortex.
+
+---
+
+## Studio e Renderer
+
+Comandos para geração de assets, design systems e renderização.
+
+- **`pnpm studio:dev`**: Implanta o workspace do Studio no Kubernetes via Skaffold.
+- **`pnpm studio:down`**: Exclui a implantação do Studio do cluster.
+- **`pnpm studio:bucket`**: Sincroniza os assets visuais do bucket Cloudflare R2.
+- **`pnpm renderer:clean`**: Limpa os assets compilados no workspace do renderer.
+- **`pnpm renderer:generate`**: Recompila componentes dinâmicos do perfil e templates do README.
+
+---
 
 ## Documentação
 
-Comandos para a Base de Conhecimento do Docusaurus (`docs/`).
+Comandos para o Docusaurus Knowledge Base (`docs/`).
 
-- **`pnpm docs:dev`**: Inicia o servidor local de desenvolvimento do Docusaurus com HMR.
+- **`pnpm docs:dev`**: Inicia o servidor local de desenvolvimento do Docusaurus em inglês (porta 3002) com HMR.
+- **`pnpm docs:dev:pt`**: Inicia o servidor do Docusaurus em português do Brasil (`pt-BR`).
 - **`pnpm docs:build`**: Compila a documentação em HTML/CSS estáticos para produção.
+- **`pnpm docs:preview`**: Compila e serve uma pré-visualização de produção da documentação.
+- **`pnpm docs:down`**: Encerra o servidor de documentação na porta correspondente.
 
-## Studio & Ferramentas
-
-Comandos para design e agentes de IA.
-
-- **`pnpm penpot:up`** / **`pnpm penpot:down`**: Inicia ou interrompe o Penpot Studio auto-hospedado.
-- **`pnpm penpot:aide:up`** / **`pnpm penpot:aide:down`**: Inicia ou interrompe o Penpot Aide AI Bridge.
+---
 
 ## Git e Controle de Versão
 
-Fluxos de trabalho para ramificação (branching), commit e lançamentos (releases).
+Fluxos de trabalho para ramificação (branching), commit e releases.
 
-- **`git flow feature start <name>`**: Inicia uma nova branch de funcionalidade (feature) a partir de `develop`.
-- **`git push -u origin feature/<name>`**: Envia uma branch de funcionalidade para o repositório remoto.
-- **`gh pr create --base develop --fill --web`**: Cria um Pull Request direcionado para a branch `develop`.
+- **`git flow feature start <name>`**: Inicia uma nova ramificação de feature a partir de `develop`.
+- **`git push -u origin feature/<name>`**: Envia uma ramificação de feature para o repositório remoto.
+- **`gh pr create --base develop --fill --web`**: Cria um Pull Request direcionado à ramificação `develop`.
 - **`gh pr merge --squash --delete-branch`**: Mescla um PR usando a estratégia de squash-and-merge.
-- **`git flow hotfix start <name>`** / **`git flow hotfix finish <name>`**: Gerencia correções de emergência em relação à branch `main`.
-- **`pnpm version:changeset`**: Gera um arquivo de changeset para rastrear incrementos de versão e logs de alterações (changelogs).
-
-## Docker e Infraestrutura
-
-Comandos diretos da CLI do Docker para depuração e manutenção.
-
-- **`docker ps --filter "name=elo-instance"`**: Lista os containers em execução para o contexto da instância.
-- **`docker compose -f instance/compose.prod.yaml --env-file instance/.env.prod logs -f`**: Acompanha os logs da stack de produção em tempo real.
-- **`docker logs elo-instance-api-prod`**: Inspeciona os logs de um container específico.
-- **`turbo prune`**: Executa o prune no workspace do monorepo para builds Docker mínimos.
-- **`pnpm deploy`**: Usado dentro de Dockerfiles para extrair apenas as dependências compiladas para um pacote específico.
+- **`git flow hotfix start <name>`** / **`git flow hotfix finish <name>`**: Gerencia correções de emergência contra a ramificação `main`.
+- **`pnpm version:changeset`**: Gera um arquivo de changeset para rastrear incrementos de versão e logs de alteração.
+- **`pnpm version:bump`**: Atualiza a versão dos pacotes com base nos changesets.
+- **`pnpm version:publish`**: Publica todos os pacotes atualizados nos registros.

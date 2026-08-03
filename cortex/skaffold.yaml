@@ -27,34 +27,18 @@ build:
       context: ..
       docker:
         dockerfile: cortex/mcp/guardrails/Dockerfile
-      sync:
-        infer:
-          - 'cortex/mcp/guardrails/src/**/*.ts'
     - image: tupynambalucas-cortex-memory-api
       context: ..
       docker:
         dockerfile: cortex/memory/services/api/Dockerfile
-      sync:
-        manual:
-          - src: 'cortex/memory/services/api/src/**/*.ts'
-            dest: /app/src
-            strip: 'cortex/memory/services/api/src/'
     - image: tupynambalucas-cortex-memory-web
       context: ..
       docker:
         dockerfile: cortex/memory/services/web/Dockerfile
-      sync:
-        manual:
-          - src: 'cortex/memory/services/web/src/**/*'
-            dest: /app/src
-            strip: 'cortex/memory/services/web/src/'
     - image: mcp-memory
       context: ..
       docker:
         dockerfile: cortex/mcp/services/memory/Dockerfile
-      sync:
-        infer:
-          - 'cortex/mcp/services/memory/src/**/*.ts'
     - image: tupynambalucas-cortex-mcp-inspector
       context: ..
       docker:

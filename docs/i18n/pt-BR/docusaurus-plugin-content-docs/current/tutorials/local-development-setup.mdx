@@ -1,35 +1,41 @@
 ---
-title: Configuração de Desenvolvimento Local
-description: Siga estes passos para colocar o monorepo tupynambalucas.dev para rodar na sua máquina local.
+title: Configuração do Desenvolvimento Local
+description: Siga estes passos para rodar o monorepo tupynambalucas.dev na sua máquina.
 ---
 
-# Configuração de Desenvolvimento Local
+# Configuração do Desenvolvimento Local
 
-Neste tutorial, nós configuraremos o monorepo tupynambalucas.dev em sua máquina local. Ao final desta lição, você terá o ambiente de desenvolvimento completo rodando e pronto para você construir novos recursos.
+Neste tutorial, configuraremos o monorepo tupynambalucas.dev na sua máquina local. Ao final desta lição, você terá o ambiente de desenvolvimento completo rodando e pronto para você construir novas funcionalidades.
 
 ## Pré-requisitos
 
-Antes de começarmos, certifique-se de ter os seguintes itens instalados:
+Antes de começarmos, garanta que você possui os seguintes itens instalados:
 
 - Node.js versão 22
 - PNPM versão 11
-- Docker e Docker Compose
+- Podman Desktop + Podman CLI + Extensão Compose (em vez de Docker)
+- Minikube e kubectl (para o modo cluster Kubernetes)
+- Skaffold (para pipelines de implantação do Kubernetes e recarregamento dinâmico/hot-reload)
 - Git
+
+---
 
 ## Passo 1: Clonar o Repositório
 
-Primeiro, nós clonaremos o repositório em nosso espaço de trabalho local e navegaremos até ele.
+Primeiro, clone o repositório em seu workspace local e navegue para dentro dele.
 
 ```bash
-git clone https://github.com/tupynambalucas/tupynambalucas.dev.git
-cd tupynambalucas.dev
+git clone https://github.com/tupynambalucas/tupynambalucas.git
+cd tupynambalucas
 ```
 
-Você deverá ver uma estrutura de diretórios contendo pastas como `docs`, `hub`, `cortex`, `profile` e `tools`.
+Você deve ver uma estrutura de diretórios contendo pastas como `docs`, `hub`, `cortex`, `profile`, `studio`, `platform` e `tools`.
+
+---
 
 ## Passo 2: Instalar Dependências
 
-Em seguida, precisamos instalar as dependências do projeto. Como este é um monorepo, usaremos o PNPM para instalar tudo de uma vez.
+Em seguida, instale as dependências do projeto. Como este é um monorepo, usamos o PNPM para instalar tudo de uma vez.
 
 Execute o seguinte comando:
 
@@ -37,57 +43,85 @@ Execute o seguinte comando:
 pnpm install
 ```
 
-Quando terminar, você verá uma saída semelhante a esta:
+Quando o comando for finalizado, você verá uma saída confirmando que as dependências foram vinculadas ao content-addressable store.
 
-```
-Packages: +1245
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages are hard linked from the content-addressable store to the virtual store.
-...
-Done in 12.4s
-```
+---
 
 ## Passo 3: Configurar Variáveis de Ambiente
 
-Agora, precisamos configurar nossa variável de ambiente local. Copiaremos o arquivo `.env.example` de amostra para criar nossas variáveis de ambiente ativas.
+Cada workspace gerencia suas próprias configurações locais. Copie os arquivos de modelo `.env.example` para criar os arquivos de ambiente ativos:
 
 ```bash
-cp .env.example .env
+# Configura as variáveis de ambiente do Cortex
+cp cortex/infrastructure/.env.example cortex/infrastructure/.env
+
+# Configura as variáveis de ambiente do Hub
+cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
 ```
 
-## Passo 4: Iniciar a Infraestrutura Local
+:::info[Abra e Edite a Configuração]
+Abra os arquivos `.env` recém-criados e adicione os tokens necessários (como `GITHUB_PERSONAL_ACCESS_TOKEN`, `FIRECRAWL_API_KEY`) para acessar os serviços de nuvem.
+:::
 
-Com nossas dependências instaladas e ambiente configurado, inicializaremos os serviços de backend necessários (como o banco de dados) usando o Docker Compose.
+---
+
+## Passo 4: Configurar a Máquina Podman
+
+Antes de iniciar qualquer carga de trabalho de container, inicialize e inicie a máquina Podman padrão:
 
 ```bash
-pnpm infra:up
+podman machine init
+podman machine start
 ```
 
-Aguarde alguns instantes. Você deverá ver o Docker baixando as imagens e iniciando os containers.
-
-```
-[+] Running 2/2
- ✔ Container mongodb  Started
- ✔ Container db-init  Started
-```
-
-## Passo 5: Iniciar o Servidor de Desenvolvimento
-
-Finalmente, estamos prontos para iniciar a aplicação. Usaremos o comando do Turborepo para executar os servidores de desenvolvimento em todos os workspaces.
+Verifique se a engine de container está ativa:
 
 ```bash
-pnpm dev
+podman info
 ```
 
-Você verá a saída indicando que vários serviços estão iniciando. Procure por linhas como:
+---
 
-```
-@tupynambalucas-hub/web: dev:   ➜  Local:   http://localhost:3000/
-@tupynambalucas/docs: dev:      [SUCCESS] Docusaurus website is running at: http://localhost:3001/
-```
+## Passo 5: Iniciar a Infraestrutura
 
-Abra seu navegador e navegue até `http://localhost:3000`. Você deverá ver a interface do Hub carregada com sucesso.
+Você pode escolher entre duas pipelines de orquestração de acordo com sua tarefa atual:
+
+### Opção A: Modo Podman Compose (Desenvolvimento Local Rápido)
+
+Esta é a abordagem recomendada para iterações rápidas, codificação de frontend e depuração de microserviços.
+
+1. **Iniciar Infraestrutura de Suporte**:
+   ```bash
+   pnpm cortex:up
+   ```
+2. **Iniciar Servidor de Desenvolvimento**:
+   ```bash
+   pnpm hub:dev
+   ```
+
+Acesse `http://localhost:5173` para a interface do Hub e `http://localhost:3002` para o site de documentação.
+
+### Opção B: Modo Kubernetes (Skaffold + Minikube)
+
+Esta abordagem é necessária para testar manifestos Kubernetes, controllers de ingress, configurações de telemetria ou integrações de serviços.
+
+1. **Iniciar o Cluster Minikube**:
+   ```bash
+   pnpm minikube:up
+   ```
+2. **Iniciar o Túnel de Rede** (em um terminal separado):
+   ```bash
+   pnpm minikube:tunnel
+   ```
+3. **Implantar com Skaffold em Modo Dev (Hot-Reloading)**:
+   ```bash
+   pnpm k8s:dev
+   ```
+
+O Skaffold fará o build de suas imagens, implantará os manifestos, transmitirá os logs dos containers e direcionará portas de serviços automaticamente para a sua máquina local (como o `agentgateway` em `http://localhost:8080/mcp/http`).
+
+---
 
 ## Conclusão
 
-Parabéns! Nós clonamos o repositório com sucesso, instalamos as dependências, iniciamos a infraestrutura e rodamos os servidores de desenvolvimento local. Agora estamos totalmente equipados para começar a construir e contribuir com o projeto.
+Parabéns! Você clonou com sucesso o repositório, configurou as variáveis de ambiente, iniciou o Podman e lançou o servidor de desenvolvimento local. Agora você está totalmente equipado para começar a construir e contribuir com o projeto.

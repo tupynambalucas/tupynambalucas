@@ -5,10 +5,86 @@ description: Step-by-step deployment sequences for staging and production.
 
 # How to Deploy
 
-This guide outlines the deployment command sequences to release tupynambalucas.dev.
-
-Deployments are executed directly on the host machine using our unified root CLI scripts.
-
-Check the [Command Reference](../reference/commands.mdx) for more start/stop scenarios.
+This guide outlines the deployment command sequences to release tupynambalucas.dev across staging and production environments.
 
 ---
+
+## 1. Containerized Environments (Podman Compose)
+
+The primary Developer Hub applications (`hub/`) are deployed using containerized topologies.
+
+### 1.1. Staging Deployment
+
+The staging environment mirrors production, running on separate ports or subdomains to validate changes before final release.
+
+1. **Navigate to the root workspace.**
+2. **Ensure your environment file is configured** at `hub/infrastructure/docker/.env.staging`.
+3. **Execute the staging build and deployment script**:
+   ```bash
+   pnpm hub:staging
+   ```
+4. **Inspect logs to verify startup**:
+   ```bash
+   podman compose -f hub/infrastructure/docker/compose.yaml -f hub/infrastructure/docker/compose.prod.yaml --env-file hub/infrastructure/docker/.env.staging logs -f
+   ```
+5. **To tear down the staging environment**:
+   ```bash
+   pnpm hub:staging:down
+   ```
+
+### 1.2. Production Deployment
+
+The production environment is the live, client-facing system.
+
+1. **Navigate to the root workspace.**
+2. **Ensure your environment file is configured** at `hub/infrastructure/docker/.env.prod`.
+3. **Execute the production build and deployment script**:
+   ```bash
+   pnpm hub:prod
+   ```
+4. **Inspect production logs**:
+   ```bash
+   podman compose -f hub/infrastructure/docker/compose.yaml -f hub/infrastructure/docker/compose.prod.yaml --env-file hub/infrastructure/docker/.env.prod logs -f
+   ```
+5. **To tear down the production environment**:
+   ```bash
+   pnpm hub:prod:down
+   ```
+
+---
+
+## 2. Kubernetes Environments (Skaffold)
+
+For workspaces running in Kubernetes (like `cortex` and `platform`), deployments are managed via Skaffold.
+
+### 2.1. One-Time Deployments
+
+To compile all workspace images and apply their Kubernetes manifests directly to the active cluster context:
+
+```bash
+pnpm k8s:up
+```
+
+This builds the containers using the local engine cache, hydrates the image tags inside the manifests, and applies them to the cluster.
+
+### 2.2. Continuous Integration / Development
+
+For active cluster testing with live logs and automatic redeploys:
+
+```bash
+pnpm k8s:dev
+```
+
+### 2.3. Terminating Cluster Deployments
+
+To delete all deployed resources and namespace allocations from the cluster:
+
+```bash
+pnpm k8s:down
+```
+
+---
+
+## 3. General Commands Reference
+
+For a complete reference of infrastructure commands, compose targets, and validation scripts, see the [Command Reference](../reference/commands.mdx).

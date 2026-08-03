@@ -1,14 +1,90 @@
 ---
-title: Como Implantar
-description: Sequências de implantação passo a passo para homologação e produção.
+title: Como Implantar (Deploy)
+description: Sequências passo a passo de implantação para ambientes de staging e produção.
 ---
 
-# Como Implantar
+# Como Implantar (Deploy)
 
-Este guia descreve as sequências de comandos de implantação para publicar o tupynambalucas.dev.
-
-As implantações são executadas diretamente na máquina hospedeira usando nossos scripts de CLI de raiz unificados.
-
-Consulte a [Referência de Comandos](../reference/commands.mdx) para mais cenários de inicialização/parada.
+Este guia descreve as sequências de comandos de implantação para lançar o tupynambalucas.dev nos ambientes de staging e produção.
 
 ---
+
+## 1. Ambientes Containerizados (Podman Compose)
+
+As principais aplicações do Developer Hub (`hub/`) são implantadas usando topologias de containers.
+
+### 1.1. Implantação em Staging (Homologação)
+
+O ambiente de staging espelha a produção, rodando em portas ou subdomínios separados para validar as alterações antes do lançamento final.
+
+1. **Navegue até a raiz do workspace.**
+2. **Garanta que seu arquivo de ambiente está configurado** em `hub/infrastructure/docker/.env.staging`.
+3. **Execute o script de compilação e deploy de staging**:
+   ```bash
+   pnpm hub:staging
+   ```
+4. **Inspecione os logs para verificar a inicialização**:
+   ```bash
+   podman compose -f hub/infrastructure/docker/compose.yaml -f hub/infrastructure/docker/compose.prod.yaml --env-file hub/infrastructure/docker/.env.staging logs -f
+   ```
+5. **Para parar o ambiente de staging**:
+   ```bash
+   pnpm hub:staging:down
+   ```
+
+### 1.2. Implantação em Produção
+
+O ambiente de produção é o sistema ao vivo voltado para os clientes finais.
+
+1. **Navegue até a raiz do workspace.**
+2. **Garanta que seu arquivo de ambiente está configurado** em `hub/infrastructure/docker/.env.prod`.
+3. **Execute o script de compilação e deploy de produção**:
+   ```bash
+   pnpm hub:prod
+   ```
+4. **Inspecione os logs de produção**:
+   ```bash
+   podman compose -f hub/infrastructure/docker/compose.yaml -f hub/infrastructure/docker/compose.prod.yaml --env-file hub/infrastructure/docker/.env.prod logs -f
+   ```
+5. **Para parar o ambiente de produção**:
+   ```bash
+   pnpm hub:prod:down
+   ```
+
+---
+
+## 2. Ambientes Kubernetes (Skaffold)
+
+Para os workspaces que rodam em Kubernetes (como o `cortex` e a `platform`), as implantações são gerenciadas via Skaffold.
+
+### 2.1. Implantações de Execução Única (One-Time)
+
+Para compilar todas as imagens de workspaces e aplicar seus manifestos Kubernetes diretamente ao contexto do cluster ativo:
+
+```bash
+pnpm k8s:up
+```
+
+Isso constrói os containers usando o cache da engine local, atualiza as tags das imagens nos manifestos e os aplica ao cluster.
+
+### 2.2. Integração / Desenvolvimento Contínuo
+
+Para testes ativos no cluster com logs em tempo real e re-deploys automáticos:
+
+```bash
+pnpm k8s:dev
+```
+
+### 2.3. Terminando as Implantações do Cluster
+
+Para excluir todos os recursos implantados e alocações de namespaces do cluster:
+
+```bash
+pnpm k8s:down
+```
+
+---
+
+## 3. Referência Geral de Comandos
+
+Para obter uma referência completa de comandos de infraestrutura, alvos de compose e scripts de validação, consulte a [Referência de Comandos](../reference/commands.mdx).

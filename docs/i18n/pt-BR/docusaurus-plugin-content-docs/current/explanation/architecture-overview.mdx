@@ -43,7 +43,7 @@ Empregamos uma **Arquitetura Híbrida de Alto Desempenho** otimizada pelo **Turb
 O **Turborepo** é o motor por trás da nossa produtividade no monorepo. Ele lida com:
 
 - **Grafo de Dependências:** Identificação automática de quais pacotes precisam ser construídos ou verificados com base em alterações locais.
-- **Acoplamento de Infraestrutura:** Orquestração de serviços do Docker Compose como pré-requisitos para o desenvolvimento da aplicação (por exemplo, `pnpm hub:up` inicia os bancos de dados antes da API).
+- **Acoplamento de Infraestrutura:** Orquestração de serviços de suporte como pré-requisitos para o desenvolvimento da aplicação (por exemplo, `pnpm hub:up` ou `pnpm cortex:up` inicia bancos de dados/serviços de suporte antes da API).
 - **Cache:** Aceleração de builds, checagem de tipos e linting ao pular módulos não alterados.
 - **Saídas Unificadas:** Padronização de artefatos de build em `dist/` (para aplicativos e core) e `build/` (para Docusaurus).
 

@@ -73,9 +73,9 @@ A API foi projetada para vazar o mínimo de informações possível sobre o esta
 
 ## 4. Requisitos de Ambiente
 
-As seguintes chaves de segurança são obrigatórias para o funcionamento da stack da **Instância**. Cada variável reside no arquivo env pertencente à aplicação responsável, seguindo o princípio de isolamento de **Contexto Delimitado (Bounded Context)** do projeto.
+As seguintes chaves de segurança são obrigatórias para o funcionamento da stack do **Hub**. Cada variável reside no arquivo env pertencente à aplicação responsável, seguindo o princípio de isolamento de **Contexto Delimitado (Bounded Context)** do projeto.
 
-### 4.1. API (`instance/apps/api/.env.*`)
+### 4.1. API (`hub/services/api/.env.*`)
 
 | Variável               | Propósito                                                                                                          | Ambientes          |
 | :--------------------- | :----------------------------------------------------------------------------------------------------------------- | :----------------- |
@@ -84,7 +84,7 @@ As seguintes chaves de segurança são obrigatórias para o funcionamento da sta
 | `SESSION_SECRET`       | Criptografia de cookies de sessão assinados HTTP-only.                                                             | dev, prod, staging |
 | `MONGO_URI`            | String de conexão do MongoDB. O dev usa o Replica Set local; prod/staging usam o MongoDB Atlas (`mongodb+srv://`). | dev, prod, staging |
 
-### 4.2. Web (`instance/apps/web/.env.*` / Docker `ARG`)
+### 4.2. Web (`hub/services/web/.env.*` / Docker `ARG`)
 
 | Variável                  | Propósito                                                    | Método de Injeção                                                                                                                                                    |
 | :------------------------ | :----------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

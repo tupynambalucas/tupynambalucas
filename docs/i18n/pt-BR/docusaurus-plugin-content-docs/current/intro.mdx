@@ -85,7 +85,7 @@ Nossa prioridade é a implantação e manutenção de:
 
 ## 6. Início Rápido
 
-Certifique-se de ter o **Node.js 22+**, **PNPM 11+**, **Zig** e **Docker** instalados.
+Certifique-se de ter o **Node.js 22+**, **PNPM 11+**, **Zig**, **Podman** (com a extensão Compose), **Minikube** e **Skaffold** instalados.
 
 1. **Instalar Dependências:**
 
@@ -97,13 +97,16 @@ Certifique-se de ter o **Node.js 22+**, **PNPM 11+**, **Zig** e **Docker** insta
    Cada workspace e serviço tem seu próprio arquivo de ambiente. Copie os modelos de exemplo e adicione seus parâmetros locais:
 
    ```bash
+   # Configuração do Cortex
+   cp cortex/infrastructure/.env.example cortex/infrastructure/.env
+
    # Configuração do Hub
    cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
    ```
 
 3. **Iniciar Infraestrutura Local & Aplicações:**
-   Fornecemos scripts de orquestração unificados via Turborepo para inicializar containers Docker e servidores de desenvolvimento local simultaneamente.
-   Consulte [MONOREPO.readme.md](https://github.com/tupynambalucas/tupynambalucas/blob/develop/MONOREPO.readme.md) ou a [Referência de Comandos](./reference/commands.mdx) para obter detalhes sobre a execução do `pnpm hub:dev`.
+   Fornecemos scripts de orquestração unificados via Turborepo e Skaffold. Você pode rodar no modo Podman Compose (`pnpm cortex:up` e `pnpm hub:dev`) ou no modo Kubernetes (`pnpm minikube:up` e `pnpm k8s:dev`).
+   Consulte [MONOREPO.readme.md](https://github.com/tupynambalucas/tupynambalucas/blob/develop/MONOREPO.readme.md) ou a [Referência de Comandos](./reference/commands.mdx) para obter detalhes.
 
 ---
 

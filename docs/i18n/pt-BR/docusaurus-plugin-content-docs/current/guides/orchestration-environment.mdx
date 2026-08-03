@@ -1,179 +1,223 @@
 ---
-title: Configuração de Orquestração Local
-description: Como configurar o Podman Desktop, configurar o Podman Compose, configurar o Minikube para testes locais de Kubernetes e gerenciar manifestos de workspace com Skaffold.
+title: Configuração da Orquestração Local
+description: Como configurar o Podman Desktop, configurar o Podman Compose, configurar o Minikube para testes locais do Kubernetes e gerenciar manifestos de workspace com o Skaffold.
 ---
 
-# Configuração de Orquestração Local
+# Configuração da Orquestração Local
 
-Este guia detalha o ambiente de orquestração dupla utilizado no monorepo. O desenvolvimento local utiliza duas pipelines de containers especializadas:
+Este guia detalha o ambiente de dupla orquestração utilizado no monorepo. O desenvolvimento local utiliza duas pipelines de containers especializadas:
 
-- **Podman Compose via Podman Desktop**: Utilizado para desenvolvimento local de alta velocidade, testes de banco de dados e fluxos gerais de desenvolvedor usando containers sem daemon.
-- **Kubernetes via Minikube & Skaffold**: Utilizado para validar configurações, roteamento, descoberta de serviços e políticas de ambiente semelhantes à produção com recarregamento automático (hot-reloading).
+- **Podman Compose via Podman Desktop**: Usado para codificação local rápida, testes de banco de dados e fluxos de trabalho gerais do desenvolvedor usando containers daemonless.
+- **Kubernetes via Minikube & Skaffold**: Usado para validar configurações, roteamento, descoberta de serviços e políticas de ambiente semelhantes à produção com recarregamento dinâmico automático (hot-reloading).
 
 ---
 
-## Pré-requisitos de Ferramentas
+## Pré-requisitos de Ferramental
 
-Para executar e gerenciar o ambiente de orquestração local, instale as ferramentas apropriadas em sua máquina.
+Para rodar e gerenciar o ambiente de orquestração local, instale as ferramentas apropriadas em sua máquina.
 
 ### 1. Podman Container Engine & Podman Desktop
 
-Para desenvolvimento local de microsserviços e testes de banco de dados:
+Para codificação local rápida de microsserviços e testes de banco de dados:
 
-- **Podman Desktop**: Interface gráfica e suíte de gerenciamento para máquinas Podman sem daemon rodando sobre o WSL2 no Windows.
+- **Podman Desktop**: Interface gráfica e gerenciador de máquinas Podman daemonless rodando sob WSL2 no Windows.
 - **Podman CLI & Podman Compose**: Ferramentas CLI para gerenciamento de containers e pods.
 - **Comando de instalação (PowerShell)**:
   ```powershell
   winget install RedHat.Podman-Desktop RedHat.Podman
   ```
 
-#### Extensões Necessárias no Podman Desktop
+#### Extensões Necessárias do Podman Desktop
 
-Dentro do Podman Desktop (**Settings -> Extensions**), certifique-se de que as seguintes extensões estejam instaladas e habilitadas:
+Dentro do Podman Desktop (**Settings -> Extensions**), garanta que as seguintes extensões estão instaladas e ativas:
 
 1. **Podman Extension**: Extensão principal para gerenciar máquinas Podman, imagens, containers e volumes.
-2. **Compose Extension**: Necessária para interpretar e executar fluxos de trabalho do `podman compose` para desenvolvimento multi-container.
+2. **Compose Extension**: Necessária para analisar e executar fluxos de trabalho do `podman compose` para desenvolvimento multi-container.
 3. **Kubectl CLI Extension**: Integra controles de cluster `kubectl` e alternância de contexto do Kubernetes diretamente dentro do Podman Desktop.
 
-:::info[Política de Não Utilização de Aliases]
-Os scripts do nosso projeto invocam explicitamente `podman compose` e `podman exec` diretamente no [package.json](file:///D:/projects/tupynambalucas/package.json). Não crie aliases no shell (como `alias docker=podman`). O uso de comandos `podman` explícitos garante execução reprodutível em todas as estações de trabalho de desenvolvedores e pipelines de CI.
+:::info[Política de Sem Aliases de Shell]
+Os scripts do nosso projeto invocam explicitamente o `podman compose` e o `podman exec` diretamente no [package.json](file:///D:/projects/tupynambalucas/package.json). Não crie aliases de shell (como `alias docker=podman`). O uso de comandos `podman` explícitos garante execução reproduzível em todas as estações de trabalho de desenvolvedores e pipelines de CI.
 :::
 
 ---
 
-### 2. Ambiente Kubernetes (Minikube via VirtualBox ou Podman)
+### 2. Ambiente Kubernetes (Minikube via Podman)
 
-Para testes locais de Kubernetes, validação de roteamento e pipelines de implantação. Nosso fluxo de trabalho aproveita duas estratégias complementares:
+Para testes locais de Kubernetes, validação de roteamento e pipelines de implantação, usamos o `minikube`, `kubectl` e `skaffold` instalados na máquina host com o driver `podman` para deploy e hot-reloading em tempo real.
 
-- **Abordagem A (Desenvolvimento Local Automatizado)**: Utiliza `minikube`, `kubectl` e `skaffold` instalados no host com o driver `virtualbox` ou `podman` para recarregamento automático em tempo real e implantação rápida do cluster.
-- **Abordagem B (Simulação de Staging de Produção)**: Executa 100% dentro de uma VM Ubuntu isolada no VirtualBox simulando hosts de produção em nuvem sem exigir ferramentas de Kubernetes no host Windows.
+Instale as seguintes ferramentas na sua máquina host Windows:
 
-Instale as seguintes ferramentas no seu host Windows:
-
-- **Oracle VirtualBox**: O hipervisor que hospeda nossos nós de Kubernetes.
-- **kubectl**: O Minikube inclui sua própria versão do `kubectl` (acessível via `minikube kubectl --`). No entanto, instalar o cliente nativo é altamente recomendado para integração automática com ferramentas como OpenLens e Skaffold.
-- **Skaffold**: _Obrigatório no host para a Abordagem A._ Automatiza pipelines de build e deploy. Se usar a Abordagem B, o Skaffold roda inteiramente dentro da VM.
-- **OpenLens**: Cliente visual para monitoramento de clusters.
+- **kubectl**: Ferramenta CLI para executar comandos nos clusters Kubernetes.
+- **Skaffold**: Automatiza as pipelines de compilação e deploy com suporte a hot-reloading.
+- **OpenLens**: Cliente visual para monitoramento do cluster.
+- **Minikube CLI**: Provisiona nós de clusters Kubernetes locais dentro do Podman.
 - **Comando de instalação (PowerShell)**:
   ```powershell
-  # Omita Kubernetes.kubectl ou Google.Skaffold se usar exclusivamente a Abordagem B
-  winget install Oracle.VirtualBox Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+  winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
   ```
 
-Dependendo dos seus objetivos, escolha uma ou ambas as abordagens de implantação de VM:
-
-- **Abordagem A: Desenvolvimento em VM Local (Minikube ISO)**
-  O Minikube cria e inicializa automaticamente sua própria VM otimizada no VirtualBox.
-  - **Ferramenta Extra no Host**: Requer a CLI do Minikube no host Windows.
-  - **Comando de instalação (PowerShell)**:
-    ```powershell
-    winget install Kubernetes.minikube
-    ```
-
-- **Abordagem B: Simulação de Staging de Produção (VM Ubuntu Server LTS)**
-  Uma VM Ubuntu Server LTS criada manualmente no VirtualBox onde o Minikube roda dentro da VM (simulando servidores de produção na nuvem).
-  - **Sem necessidade da CLI local do Minikube no Windows.** Todas as dependências do Kubernetes são contidas na VM.
-  - **Instalador da VM**: ISO oficial de [instalação manual do Ubuntu Server LTS](https://ubuntu.com/download/server#manual-install-tab).
-
 :::warning[Evite Executar o Skaffold via Containers]
-Embora seja possível executar o Skaffold dentro de um container, isso exige o mapeamento de sockets de container e remapeamento de hosts internos. Além disso, a sincronização de arquivos em tempo real (`pnpm k8s:dev`) frequentemente falha em propagar eventos do sistema de arquivos através das fronteiras do container. Por este motivo, instalar o binário nativo do Skaffold localmente é altamente recomendado.
+Embora você possa rodar o Skaffold dentro de um container, fazer isso requer a montagem de sockets de containers e o mapeamento de hosts internos. Além disso, a sincronização de arquivos em tempo real (`pnpm k8s:dev`) frequentemente falha ao propagar eventos de sistema de arquivos através dos limites dos containers. Por esse motivo, a instalação do binário nativo do Skaffold localmente é fortemente recomendada.
 :::
 
 ---
 
-## 1. Configuração do Container Engine Podman Compose
+## 1. Configuração do Podman Compose Container Engine
 
-Para ciclos rápidos de feedback, executamos microsserviços e bancos de dados de suporte usando Podman Compose.
+Para loops de feedback rápidos, rodamos microsserviços e bancos de dados de suporte usando o Podman Compose.
 
-### Configuração da Podman Machine
+### Configuração da Máquina Podman
 
-1. Inicialize e inicie a Podman machine padrão:
+1. Inicialize e inicie a máquina Podman padrão:
    ```powershell
    podman machine init
    podman machine start
    ```
-2. Verifique o status do engine Podman:
+2. Verifique o status da máquina Podman:
    ```powershell
    podman info
    ```
 
 ### Execução de Scripts do Workspace
 
-Em vez de executar comandos extensos do Podman Compose manualmente, utilize os filtros do Turborepo e scripts predefinidos no [package.json](file:///D:/projects/tupynambalucas/package.json) raiz:
+Em vez de rodar comandos longos e manuais do Podman Compose, use os filtros e scripts do Turborepo definidos no [package.json](file:///D:/projects/tupynambalucas/package.json) raiz:
 
-- **Iniciar Serviços da Plataforma**: `pnpm platform:up`
-- **Parar Serviços da Plataforma**: `pnpm platform:down`
-- **Resetar Estado da Plataforma**: `pnpm platform:reset` (deleta volumes)
-- **Iniciar Stack Cortex**: `pnpm cortex:core:up` ou `pnpm cortex:mcp:up`
-- **Parar Stack Cortex**: `pnpm cortex:core:down` ou `pnpm cortex:mcp:down`
+- **Iniciar Serviços do Hub**: `pnpm hub:up`
+- **Parar Serviços do Hub**: `pnpm hub:down`
+- **Resetar Serviços do Hub**: `pnpm hub:reset` (deleta volumes)
+- **Iniciar Stack do Cortex**: `pnpm cortex:up`
+- **Parar Stack do Cortex**: `pnpm cortex:down`
+- **Resetar Stack do Cortex**: `pnpm cortex:reset`
+- **Visualizar Logs do Cortex**: `pnpm cortex:logs`
 
 ---
 
 ## 2. Configuração do Cluster Local Minikube
 
-Quando você precisar testar políticas de rede, resolução DNS entre namespaces ou configurações do Ingress Traefik, você deve implantar os workspaces no Minikube.
+Quando for necessário testar políticas de rede, resolução de DNS entre namespaces ou configurações de ingress do Traefik, você deve implantar os workspaces no Minikube.
 
-### Abordagem A: Desenvolvimento em VM Local (Driver VirtualBox)
+### Criando o Cluster
 
-O Minikube cria e inicializa automaticamente uma VM Linux leve (`minikube-iso`) no VirtualBox.
+Para iniciar o cluster Minikube padrão usando o driver do Podman e configurar a montagem local necessária para os agentes de IA:
 
-#### Criando o Cluster
-
-Crie um perfil dedicado no Minikube chamado `tupynambalucas` usando o driver `virtualbox`:
-
-```powershell
-minikube start -p tupynambalucas --driver=virtualbox --kubernetes-version=v1.30.0
+```bash
+pnpm minikube:up
 ```
+
+Isso executa:
+
+```bash
+minikube start --driver=podman --mount --mount-string ".:/workspace"
+```
+
+:::info[Túnel do Minikube]
+Como alguns serviços em nosso cluster (como o Traefik) usam IPs do tipo LoadBalancer, você deve abrir um túnel de rede em uma janela separada e persistente de terminal com privilégios de administrador:
+
+```bash
+pnpm minikube:tunnel
+```
+
+:::
 
 ---
 
-## 3. Visualizando o Cluster com OpenLens
+## 3. Visualizando o Cluster
 
-Para monitorar o consumo de recursos, inspecionar logs e gerenciar namespaces visualmente, utilizamos o **OpenLens** no host Windows.
+Para monitorar o consumo de recursos, inspecionar logs e gerenciar namespaces de forma visual, usamos o **OpenLens** ou o **Podman Desktop** no host Windows.
 
-### Conectando à Abordagem A (VM Local)
-
-O OpenLens lê automaticamente as configurações padrão do kubeconfig localizadas em `~/.kube/config`.
-
-1. Defina o contexto ativo para o perfil do Minikube no seu terminal:
+1. Defina o contexto ativo para o perfil do Minikube em seu terminal:
    ```bash
-   kubectl config use-context tupynambalucas
+   kubectl config use-context minikube
    ```
 2. Abra o **OpenLens** ou o **Podman Desktop**.
-3. Selecione o contexto de cluster chamado **tupynambalucas**.
+3. Selecione o contexto do cluster com o nome **minikube**.
 
 ---
 
 ## 4. Orquestração Profissional com Skaffold
 
-Em vez de compilar cada imagem de container manualmente e aplicar manifestos do Kubernetes um a um, usamos o **Skaffold** para orquestrar todo o processo de desenvolvimento.
-
-O Skaffold cuida de:
-
-- **Builds Concorrentes**: Compilação em paralelo de todas as imagens de serviço necessárias.
-- **Tagging Dinâmico**: Atualização automática das tags de imagem nos seus manifestos do Kubernetes para coincidir com a assinatura do build atual.
-- **Desenvolvimento Contínuo**: Monitoramento de arquivos e sincronização de alterações de código para os Pods ativos em tempo real, sem disparar recompilações completas de container.
+Usamos o **Skaffold** para automatizar as pipelines de build, deploy e hot-reloading dinâmico.
 
 ### Inicializando o Cluster e Workspaces
 
-Fornecemos scripts simplificados no [package.json](file:///D:/projects/tupynambalucas/package.json) raiz para gerenciar o ciclo de vida:
+Fornecemos scripts simplificados no `package.json` raiz para gerenciar o ciclo de vida:
 
 1. **Implantar e Executar em Segundo Plano**:
-   Para compilar todas as imagens e implantar todos os componentes da plataforma e do cortex no Minikube:
+   Para construir todas as imagens e implantar todos os componentes de plataforma e cortex no Minikube:
 
    ```bash
    pnpm k8s:up
    ```
 
 2. **Modo de Desenvolvimento Contínuo (Live Hot-Reloading)**:
-   Para executar o Skaffold em modo de desenvolvimento, monitorando alterações no código-fonte e aplicando hot-reloading automaticamente nos pods em execução:
+   Para rodar o Skaffold em modo de desenvolvimento, assistindo alterações no código-fonte e atualizando-as automaticamente dentro dos pods em execução:
 
    ```bash
    pnpm k8s:dev
    ```
 
-3. **Parar e Limpar**:
-   Para remover todos os recursos, namespaces e cargas de trabalho implantadas pelo Skaffold:
+3. **Isolamento de Módulos de Workspace**:
+   Você pode implantar workspaces específicos de forma independente para economizar recursos:
+   - **Implantar Apenas o Cortex**: `pnpm cortex:dev`
+   - **Implantar Apenas a Plataforma**: `pnpm platform:dev`
+   - **Implantar Apenas o Studio**: `pnpm studio:dev`
+
+4. **Parar e Limpar**:
+   Para remover todos os recursos, namespaces e cargas de trabalho implantados pelo Skaffold:
    ```bash
    pnpm k8s:down
    ```
+
+### Redirecionamento de Portas Locais
+
+O Skaffold configura automaticamente túneis de redirecionamento de portas (port-forward) direcionados a **Serviços** Kubernetes no cluster, em vez de Pods efêmeros. Isso garante mapeamentos locais estáveis de portas que sobrevivem a reinicializações de containers.
+
+| Serviço              | Porta Local | Namespace | Propósito                                 |
+| :------------------- | :---------- | :-------- | :---------------------------------------- |
+| `agentgateway`       | `8080`      | `cortex`  | Ingress unificado de MCP                  |
+| `agentgateway admin` | `15000`     | `cortex`  | Interface Web de gerenciamento do Gateway |
+| `memory-api`         | `3006`      | `cortex`  | API REST do serviço de memória            |
+| `memory-web`         | `9006`      | `cortex`  | Frontend do serviço de memória            |
+| `mcp-inspector`      | `6274`      | `cortex`  | Sandbox do MCP Inspector                  |
+
+---
+
+## 5. Conectividade do Antigravity CLI
+
+O **Antigravity CLI** se conecta ao proxy de ingress do Cortex (`agentgateway`) utilizando o endpoint definido em `.agents/mcp_config.json`:
+
+```json
+"agentgateway": {
+  "url": "http://localhost:8080/mcp/http",
+  "lifecycle": "eager"
+}
+```
+
+Devido aos nossos mapeamentos padronizados de portas locais, esta configuração de cliente **permanece inalterada** em ambos os modos de implantação:
+
+- **Modo Compose**: O Podman Compose mapeia a porta `8080` do container diretamente para a porta `8080` do host.
+- **Modo Kubernetes**: O Skaffold faz o port-forward do serviço `agentgateway` para `localhost:8080`.
+
+O `agentgateway` intercepta o payload JSON-RPC de entrada, executa regras CEL de proteção configuradas (via `mcp-guardrails` na porta `9001`) e roteia a chamada para o microsserviço de destino com base nas configurações de targets declaradas em `cortex/gateway/config.yaml`.
+
+---
+
+## 6. Gerenciamento de Variáveis de Ambiente
+
+Cada contexto de workspace gerencia seus próprios arquivos de ambiente em `<workspace>/infrastructure/.env`.
+
+O Skaffold usa scripts `dotenv-cli` para injetar esses valores como configurações de ambiente de build, que são empacotadas em segredos do Kubernetes via Kustomize:
+
+```yaml
+# infrastructure/kubernetes/kustomization.yaml
+secretGenerator:
+  - name: cortex-secrets
+    envs:
+      - ../.env
+```
+
+:::warning[Colisão de Variáveis de Ambiente de Serviços Kubernetes]
+O Kubernetes injeta automaticamente variáveis de ambiente para cada Serviço ativo no mesmo namespace. Se um Serviço for nomeado `mcp-memory`, o Kubernetes configurará a variável de ambiente `MCP_MEMORY_PORT` dentro de cada container para seu URI de conexão (ex: `tcp://10.103.79.15:8080`).
+
+Se sua aplicação tentar ler e converter `process.env.MCP_MEMORY_PORT` em um número de porta, ela retornará `NaN` e falhará. Para evitar essa colisão, sempre adicione um prefixo ou altere o nome das variáveis de ambiente de porta específicas de sua aplicação (ex: use `MEMORY_MCP_PORT` em vez de `MCP_MEMORY_PORT`).
+:::

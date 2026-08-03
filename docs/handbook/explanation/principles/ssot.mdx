@@ -35,7 +35,7 @@ Downstream applications like `@tupynambalucas-hub/api` (Fastify) and `@tupynamba
 
 ```typescript
 // Core package definition
-// instance/packages/core/src/domains/cycle/cycle.types.ts
+// hub/packages/core/src/domains/cycle/cycle.types.ts
 export interface ICycle {
   id: string;
   name: string;
@@ -47,7 +47,7 @@ export interface ICycle {
 
 ```typescript
 // Consumed directly in downstream API
-// instance/apps/api/src/domains/cycle/cycle.service.ts
+// hub/services/api/src/domains/cycle/cycle.service.ts
 import type { ICycle } from '@tupynambalucas-hub/core';
 ```
 

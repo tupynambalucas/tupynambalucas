@@ -53,7 +53,7 @@ To avoid complex manual installations and state corruption on developer host sys
 The agent containers bind-mount crucial developer files to ensure workspace parity without leaking files to global host system directories:
 
 - **Monorepo Working Dir**: Mounted at `/workspace` for zero-latency code generation.
-- **Docker-out-of-Docker (DooD)**: Mounted `/var/run/docker.sock` socket inside containers to compile and test images against the host daemon.
+- **Docker-out-of-Docker (DooD)**: Mounted `/var/run/docker.sock` socket inside containers to compile and test images against the host daemon. In Podman environments, the host's Podman socket (typically `/run/user/1000/podman/podman.sock` for rootless execution, or `/var/run/podman/podman.sock`) is mounted or emulated to provide Docker-compatible CLI access.
 - **Session Persistence**: Mapped `./copilot/data/` and `./antigravity/data/` persist OAuth credentials, preventing session logouts on container rebuilds.
 - **Shared Agent Skills**: Bind-mounted `./skills/` folder propagates context rules (such as `code-expert` and `docusaurus-kb-expert`) to agents.
 

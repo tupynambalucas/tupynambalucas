@@ -53,7 +53,7 @@ Para evitar instalações manuais complexas e corrupção de estado na máquina 
 Os containers dos agentes montam caminhos cruciais do monorepo para garantir a paridade sem expor arquivos a pastas globais do host:
 
 - **Diretório de Trabalho do Monorepo**: Montado em `/workspace` para geração de código com latência zero.
-- **Docker-out-of-Docker (DooD)**: Monta o socket `/var/run/docker.sock` para compilar e testar imagens contra o daemon do host.
+- **Docker-out-of-Docker (DooD)**: Monta o socket `/var/run/docker.sock` para compilar e testar imagens contra o daemon do host. Em ambientes Podman, o socket do host (geralmente `/run/user/1000/podman/podman.sock` para execução rootless ou `/var/run/podman/podman.sock`) é montado ou emulado para fornecer compatibilidade com a CLI do Docker.
 - **Persistência de Sessão**: Mapeia os dados do copilot e antigravity para manter as credenciais de autenticação ativas entre reinicializações de containers.
 - **Habilidades Compartilhadas**: A pasta `./skills/` compartilha as diretrizes contextuais (como `code-expert` e `docusaurus-kb-expert`) com os agentes.
 

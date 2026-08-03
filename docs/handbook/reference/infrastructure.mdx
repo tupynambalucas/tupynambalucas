@@ -1,5 +1,20 @@
-The architecture is built on the standalone dev/staging/production promotion model:
+---
+title: Infrastructure Reference
+description: Technical architecture, directory layouts, container configuration, and routing reference.
+sidebar_position: 3
+---
 
+# Infrastructure Reference
+
+This document details the infrastructure design patterns, containerization strategies, and routing architectures used across the monorepo workspaces.
+
+---
+
+## 1. Environment Promotion Model
+
+The architecture is built on a modular dev/staging/production promotion model:
+
+- **Local Dev:** Handled via either **Podman Compose** (for fast microservice iteration) or **Skaffold + Minikube** (for Kubernetes integration validation).
 - **Staging (Homologação):** Mirror of the production stack. Runs on a dedicated subdomain connected to a staging database cluster. Used to validate new feature sets and schema migrations.
 - **Production (Produção):** The authoritative client-facing environment. Fully locked down and optimized for performance.
 
@@ -8,20 +23,24 @@ graph TD
     direction TB
     subgraph Local_Dev
         Code["Developer Local Machine"]
+        LocalCompose["podman compose -f compose.yaml"]
+        LocalK8s["skaffold dev --module <name>"]
     end
     subgraph Staging_Env
-        StgCompose["docker compose -f compose.prod.yaml --env-file .env.staging"]
+        StgCompose["podman compose -f compose.yaml -f compose.prod.yaml --env-file .env.staging"]
         StgAPI["@tupynambalucas-hub/api (Staging)"]
         StgWeb["@tupynambalucas-hub/web (Staging)"]
         StgDB[("MongoDB (Staging)")]
     end
     subgraph Prod_Env
-        ProdCompose["docker compose -f compose.prod.yaml --env-file .env.prod"]
+        ProdCompose["podman compose -f compose.yaml -f compose.prod.yaml --env-file .env.prod"]
         ProdAPI["@tupynambalucas-hub/api (Prod)"]
         ProdWeb["@tupynambalucas-hub/web (Prod)"]
         ProdDB[("MongoDB (Prod)")]
     end
 
+    Code -->|Local Testing| LocalCompose
+    Code -->|Local K8s Testing| LocalK8s
     Code -->|git push develop| Staging_Env
     Code -->|git push main| Prod_Env
 
@@ -59,60 +78,52 @@ Never inject sensitive keys (such as JWT secrets, database credentials, or email
 
 ## 3. Container Orchestration & Directory Layouts
 
-Workspaces containing Docker configurations are structured in one of two ways based on their
-operational domains. Refer to
-[Domain-Driven Monorepos](/docs/explanation/domain-driven-monorepo#6-container-layout-patterns-flat-services-vs-layered-domains)
-for the design theory behind this choice.
+Workspaces containing Docker and Kubernetes configurations are structured in one of two ways based on their operational domains. Refer to [Domain-Driven Monorepos](/docs/explanation/domain-driven-monorepo) for the design theory behind this choice.
 
 ### 3.1. Flat Services Layout
 
-Services are placed inside a flat `services/` folder, with general orchestration configurations
-inside `infrastructure/`:
+Services are placed inside a flat `services/` folder, with general orchestration configurations inside `infrastructure/`:
 
 - **Path Schema**:
   - `workspace/services/[service-name]/Dockerfile`
   - `workspace/infrastructure/docker/compose.yaml`
-- **Application**: Used in
-  [hub](/docs/explanation/domain-driven-monorepo#31-folder-topology) and
-  `studio/design`.
+- **Application**: Used in `hub` and `studio`.
 
 ### 3.2. Layered Domain Layout
 
-Services are grouped into folders representing distinct architectural layers directly at the root
-of the workspace:
+Services are grouped into folders representing distinct architectural layers directly at the root of the workspace:
 
 - **Path Schema**:
   - `workspace/[domain-layer]/services/[service-name]/Dockerfile`
   - `workspace/infrastructure/docker/compose.yaml`
 - **Application**: Used in `cortex` (separating `gateway/`, `mcp/`, and `agents/` planes).
 
+### 3.3. Kubernetes Manifest Layout
+
+Workspaces that support Kubernetes deployment use a Kustomize-based directory layout mirroring their layered structure:
+
+- **Path Schema**:
+  - `workspace/infrastructure/kubernetes/kustomization.yaml` (Aggregator)
+  - `workspace/infrastructure/kubernetes/namespace.yaml` (Isolated Namespace)
+  - `workspace/infrastructure/kubernetes/[service].yaml` (Deployments + Services)
+- **Application**: Used in `cortex` (canonical) and `platform`.
+
 ---
 
 ## 4. Reverse Proxy & Request Routing
 
-tupynambalucas.dev utilizes a reverse proxy setup (either **Nginx** or **Traefik**) to handle TLS
-termination, compression, and request routing.
+tupynambalucas.dev utilizes a reverse proxy setup to handle TLS termination, compression, and request routing.
 
 - **SSL Certificates:** Managed dynamically via Let's Encrypt using automated ACME challenges.
-- **Port Mapping:** The public ports `80` (HTTP) and `443` (HTTPS) map to the edge web containers,
-  which internally forward requests to the Fastify API or serve the compiled static React assets.
-
-:::info[Zero-Downtime Re-Deploys]
-Docker Compose automatically updates containers with minimal downtime when executing `pnpm hub:prod`
-with existing containers. To completely eliminate request dropouts, implement a rolling
-deployment pattern utilizing an upstream load balancer.
-:::
+- **Port Mapping:** The public ports `80` (HTTP) and `443` (HTTPS) map to the edge web containers, which internally forward requests to the Fastify API or serve the compiled static React assets.
+- **MCP Gateway Ingress (`agentgateway`):** Acts as the unified entry point for MCP clients (SSE-based) and LLM requests, proxying them internally to the correct microservice or MCP server.
+- **Kubernetes Ingress:** In Kubernetes mode, Traefik routes inbound HTTP/gRPC requests using `Ingress` resources mapped to target Services.
 
 ---
 
 ## 5. Database Initialization & Schema Migrations
 
-To avoid manual operational overhead during releases, all database preparation is handled
-dynamically at the application level.
+To avoid manual operational overhead during releases, all database preparation is handled dynamically at the application level.
 
-- **Replica Set Configuration:** During local development and initial staging rollouts, the helper
-  container `db-init` automatically ensures the replica set (`rs0`) is established, enabling
-  transaction support.
-- **Data Seeding (`SeedPlugin`):** The Fastify server features a natively integrated seeding
-  plugin. On startup, it triggers an idempotent upsert pattern, creating the default administrator
-  user if it does not exist, without risk of duplicate rows.
+- **Replica Set Configuration:** During local development and initial staging rollouts, the helper container `db-init` automatically ensures the replica set (`rs0`) is established, enabling transaction support.
+- **Data Seeding (`SeedPlugin`):** The Fastify server features a natively integrated seeding plugin. On startup, it triggers an idempotent upsert pattern, creating the default administrator user if it does not exist, without risk of duplicate rows.
