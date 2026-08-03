@@ -91,6 +91,11 @@ metadata:
   namespace: cortex
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - gateway.local.tupynambalucas.dev
+        - gateway-admin.local.tupynambalucas.dev
+      secretName: local-tls-secret
   rules:
     - host: gateway.local.tupynambalucas.dev
       http:

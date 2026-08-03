@@ -9,6 +9,7 @@ resources:
   - memory.yaml
   - mcp.yaml
   - agents.yaml
+  - certmanager.yaml
 
 secretGenerator:
   - name: cortex-secrets

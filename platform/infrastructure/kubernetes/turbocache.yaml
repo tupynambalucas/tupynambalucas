@@ -121,6 +121,10 @@ metadata:
   namespace: platform
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - turbocache.local.tupynambalucas.dev
+      secretName: local-tls-secret
   rules:
     - host: turbocache.local.tupynambalucas.dev
       http:

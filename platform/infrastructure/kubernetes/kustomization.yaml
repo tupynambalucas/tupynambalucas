@@ -1,16 +1,23 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: platform
-
 resources:
   - namespace.yaml
   - traefik.yaml
   - otel-collector.yaml
   - turbocache.yaml
   - headlamp.yaml
+  - certmanager.yaml
 
 secretGenerator:
   - name: platform-secrets
+    namespace: platform
     envs:
       - ../.env
+  - name: cloudflare-api-token-secret
+    namespace: cert-manager
+    envs:
+      - ../.env
+
+generatorOptions:
+  disableNameSuffixHash: true

@@ -64,6 +64,10 @@ metadata:
   namespace: platform
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - headlamp.local.tupynambalucas.dev
+      secretName: local-tls-secret
   rules:
     - host: headlamp.local.tupynambalucas.dev
       http:

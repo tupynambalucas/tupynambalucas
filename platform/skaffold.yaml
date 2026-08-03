@@ -26,4 +26,47 @@ manifests:
     buildArgs:
       - --load-restrictor=LoadRestrictionsNone
 deploy:
-  kubectl: {}
+  kubectl:
+    hooks:
+      before:
+        - host:
+            command:
+              - kubectl
+              - apply
+              - -f
+              - https://github.com/cert-manager/cert-manager/releases/download/v1.15.0/cert-manager.yaml
+        - host:
+            command:
+              - kubectl
+              - wait
+              - --for=condition=Established
+              - --timeout=60s
+              - crd/certificates.cert-manager.io
+              - crd/clusterissuers.cert-manager.io
+        - host:
+            command:
+              - kubectl
+              - rollout
+              - status
+              - -n
+              - cert-manager
+              - deployment/cert-manager-webhook
+              - --timeout=60s
+        - host:
+            command:
+              - kubectl
+              - rollout
+              - status
+              - -n
+              - cert-manager
+              - deployment/cert-manager
+              - --timeout=60s
+        - host:
+            command:
+              - kubectl
+              - rollout
+              - status
+              - -n
+              - cert-manager
+              - deployment/cert-manager-cainjector
+              - --timeout=60s

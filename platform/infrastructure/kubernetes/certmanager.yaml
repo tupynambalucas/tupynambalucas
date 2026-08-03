@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=none
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-cloudflare-dns
+spec:
+  acme:
+    email: admin@tupynambalucas.dev
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-production-account-key
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token-secret
+              key: CLOUDFLARE_API_TOKEN
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-local-tupynambalucas-dev
+  namespace: platform
+spec:
+  secretName: local-tls-secret
+  issuerRef:
+    name: letsencrypt-cloudflare-dns
+    kind: ClusterIssuer
+  commonName: '*.local.tupynambalucas.dev'
+  dnsNames:
+    - '*.local.tupynambalucas.dev'
