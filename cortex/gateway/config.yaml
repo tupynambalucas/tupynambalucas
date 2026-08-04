@@ -30,12 +30,22 @@ mcp:
         - https://gateway.local.tupynambalucas.dev
         - https://gateway-admin.local.tupynambalucas.dev
         - http://memory.local.tupynambalucas.dev
+        - https://memory.local.tupynambalucas.dev
         - http://turbocache.local.tupynambalucas.dev
+        - https://turbocache.local.tupynambalucas.dev
         - http://headlamp.local.tupynambalucas.dev
+        - https://headlamp.local.tupynambalucas.dev
+        - http://grafana.local.tupynambalucas.dev
+        - https://grafana.local.tupynambalucas.dev
+        - http://traefik.local.tupynambalucas.dev
+        - https://traefik.local.tupynambalucas.dev
       allowMethods:
         - '*'
         - GET
         - POST
+        - OPTIONS
+        - PUT
+        - DELETE
       allowHeaders:
         - '*'
       exposeHeaders:

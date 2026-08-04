@@ -18,6 +18,10 @@ build:
       context: ..
       docker:
         dockerfile: cortex/gateway/Dockerfile
+      sync:
+        manual:
+          - src: 'cortex/gateway/config.yaml'
+            dest: '/config.yaml'
     - image: tupynambalucas-cortex-mcp-guardrails
       context: ..
       docker:
@@ -38,6 +42,10 @@ build:
       context: ..
       docker:
         dockerfile: cortex/mcp/inspector/Dockerfile
+      sync:
+        manual:
+          - src: 'cortex/mcp/inspector/mcp.json'
+            dest: '/app/mcp.json'
     - image: mcp-github
       context: ..
       docker:
@@ -54,14 +62,6 @@ build:
       context: ..
       docker:
         dockerfile: cortex/mcp/services/playwright/Dockerfile
-    - image: agent-copilot
-      context: ..
-      docker:
-        dockerfile: cortex/agents/copilot/Dockerfile
-    - image: agent-antigravity
-      context: ..
-      docker:
-        dockerfile: cortex/agents/antigravity/Dockerfile
 manifests:
   kustomize:
     paths:

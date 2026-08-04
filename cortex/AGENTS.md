@@ -9,7 +9,6 @@ This workspace context ([cortex/](./)) orchestrates the unified artificial intel
 - **[gateway/](./gateway/)**: The system API ingress gateway router context ([gateway/AGENTS.md](./gateway/AGENTS.md)).
 - **[memory/](./memory/)**: Self-hosted MongoDB Vector RAG memory subsystem router context ([memory/AGENTS.md](./memory/AGENTS.md)).
 - **[mcp/](./mcp/)**: Model Context Protocol (MCP) data plane, policy guardrails, and tool service adapters router context ([mcp/AGENTS.md](./mcp/AGENTS.md)).
-- **[agents/](./agents/)**: Containerized control plane agent terminal workspaces router context ([agents/AGENTS.md](./agents/AGENTS.md)).
 - **[infrastructure/](./infrastructure/)**: System orchestration, Docker compose, and Kubernetes infrastructure router context ([infrastructure/AGENTS.md](./infrastructure/AGENTS.md)).
 
 ---

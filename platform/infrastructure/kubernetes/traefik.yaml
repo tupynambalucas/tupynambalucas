@@ -87,20 +87,25 @@ spec:
           image: traefik:v3.1
           args:
             - --log.level=DEBUG
+            - --api.dashboard=true
             - --api.insecure=true
             - --providers.kubernetesingress=true
+            - --entrypoints.traefik.address=:8082
             - --entrypoints.web.address=:80
             - --entrypoints.web.http.redirections.entryPoint.to=websecure
             - --entrypoints.web.http.redirections.entryPoint.scheme=https
             - --entrypoints.websecure.address=:443
             - --entrypoints.websecure.http.tls=true
+            - --entrypoints.mcp.address=:8080
           ports:
             - name: web
               containerPort: 80
             - name: websecure
               containerPort: 443
-            - name: admin
+            - name: mcp
               containerPort: 8080
+            - name: admin
+              containerPort: 8082
 ---
 apiVersion: v1
 kind: Service
@@ -116,9 +121,12 @@ spec:
     - name: websecure
       port: 443
       targetPort: 443
+    - name: mcp
+      port: 8080
+      targetPort: 8080
     - name: admin
       port: 8082
-      targetPort: 8080
+      targetPort: 8082
   selector:
     app: traefik
 ---

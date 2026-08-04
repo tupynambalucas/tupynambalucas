@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "memory": {
+    "agentgateway": {
       "type": "streamable-http",
-      "url": "http://mcp-memory:8080/mcp"
+      "url": "http://agentgateway:8080/mcp/http"
     }
   }
 }

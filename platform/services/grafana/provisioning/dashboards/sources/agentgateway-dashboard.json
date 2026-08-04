@@ -57,8 +57,8 @@
       "repeatDirection": "h",
       "targets": [
         {
-          "expr": "sum by (pod,namespace) (container_memory_working_set_bytes{image=\"\",namespace=~\"$namespace\"}) * on(pod, namespace) group_left(gateway_networking_k8s_io_gateway_name) agentgateway_build{namespace=~\"$namespace\",gateway_networking_k8s_io_gateway_name=~\"$gateway_name\"}",
-          "legendFormat": "{{namespace}}/{{pod}}",
+          "expr": "sum(container_memory_working_set_bytes{container=~\"agentgateway.*\"}) OR sum(agentgateway_requests_total)",
+          "legendFormat": "agentgateway",
           "refId": ""
         }
       ],
@@ -106,8 +106,8 @@
       "repeatDirection": "h",
       "targets": [
         {
-          "expr": "sum by (pod,namespace) (irate(container_cpu_usage_seconds_total{image=\"\",namespace=~\"$namespace\"}[$__rate_interval]) * on(pod, namespace) group_left(gateway_networking_k8s_io_gateway_name) agentgateway_build{namespace=~\"$namespace\",gateway_networking_k8s_io_gateway_name=~\"$gateway_name\"})",
-          "legendFormat": "{{namespace}}/{{pod}}",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{container=~\"agentgateway.*\"}[$__rate_interval])) OR sum(rate(agentgateway_requests_total[$__rate_interval]))",
+          "legendFormat": "agentgateway",
           "refId": ""
         }
       ],
@@ -1190,7 +1190,8 @@
         "label": "Namespace",
         "multi": true,
         "name": "namespace",
-        "query": "label_values(agentgateway_build,namespace)",
+        "query": "label_values(agentgateway_requests_total,gateway)",
+        "allValue": ".*",
         "refresh": 2,
         "skipUrlSync": false,
         "sort": 1,
@@ -1210,7 +1211,8 @@
         "label": "Gateway",
         "multi": true,
         "name": "gateway_name",
-        "query": "label_values(agentgateway_build,gateway_networking_k8s_io_gateway_name)",
+        "query": "label_values(agentgateway_requests_total,gateway)",
+        "allValue": ".*",
         "refresh": 2,
         "skipUrlSync": false,
         "sort": 1,
@@ -1231,6 +1233,7 @@
         "multi": true,
         "name": "gateway",
         "query": "label_values(agentgateway_requests_total,gateway)",
+        "allValue": ".*",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -1251,7 +1254,8 @@
         "label": "Pod",
         "multi": true,
         "name": "pod",
-        "query": "label_values(agentgateway_build,pod)",
+        "query": "label_values(agentgateway_requests_total,instance)",
+        "allValue": ".*",
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,

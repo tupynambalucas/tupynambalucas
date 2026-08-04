@@ -28,6 +28,10 @@ spec:
                   name: platform-secrets
                   key: GRAFANA_ADMIN_PASSWORD
                   optional: true
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: 'true'
+            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+              value: 'Admin'
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana

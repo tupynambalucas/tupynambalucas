@@ -23,6 +23,10 @@ build:
       context: services/grafana
       docker:
         dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'provisioning/**/*'
+            dest: '/etc/grafana/provisioning'
 manifests:
   kustomize:
     paths:

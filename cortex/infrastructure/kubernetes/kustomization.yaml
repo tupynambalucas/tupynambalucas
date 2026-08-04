@@ -8,7 +8,6 @@ resources:
   - gateway.yaml
   - memory.yaml
   - mcp.yaml
-  - agents.yaml
   - certmanager.yaml
 
 secretGenerator:

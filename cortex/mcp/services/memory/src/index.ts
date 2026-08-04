@@ -27,6 +27,7 @@ const transport = new StreamableHTTPServerTransport({
 await mcpServer.connect(transport);
 
 fastify.all('/mcp', async (req, reply) => {
+  reply.hijack();
   await transport.handleRequest(req.raw, reply.raw, req.body);
 });
 

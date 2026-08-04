@@ -10,5 +10,4 @@ scrape_configs:
   - job_name: 'agentgateway'
     scrape_interval: 15s
     static_configs:
-      - targets: ['agentgateway-metrics:15001']
       - targets: ['agentgateway-metrics.cortex.svc.cluster.local:15001']
