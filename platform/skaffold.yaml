@@ -19,6 +19,10 @@ build:
       context: ..
       docker:
         dockerfile: platform/services/headlamp/Dockerfile
+    - image: tupynambalucas-platform-grafana
+      context: services/grafana
+      docker:
+        dockerfile: Dockerfile
 manifests:
   kustomize:
     paths:

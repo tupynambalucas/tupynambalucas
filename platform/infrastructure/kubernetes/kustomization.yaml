@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization.json
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -8,6 +7,8 @@ resources:
   - turbocache.yaml
   - headlamp.yaml
   - certmanager.yaml
+  - grafana.yaml
+  - prometheus.yaml
 
 secretGenerator:
   - name: platform-secrets
@@ -18,6 +19,16 @@ secretGenerator:
     namespace: cert-manager
     envs:
       - ../.env
+
+configMapGenerator:
+  - name: prometheus-config
+    namespace: platform
+    files:
+      - prometheus.yml=../../services/prometheus/config.yaml
+  - name: otel-collector-config
+    namespace: platform
+    files:
+      - config.yaml=../../services/otpl/config.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

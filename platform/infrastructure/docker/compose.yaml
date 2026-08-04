@@ -12,14 +12,12 @@ services:
     container_name: tupynambalucas-platform-otel
     command: ['--config=/etc/otelcol-contrib/config.yaml']
     volumes:
-      - ../../services/monitor/config.yaml:/etc/otelcol-contrib/config.yaml:ro
+      - ../../services/otpl/config.yaml:/etc/otelcol-contrib/config.yaml:ro
     ports:
       - '24224:24224'
     environment:
       - GRAFANA_CLOUD_OTLP_ENDPOINT=${GRAFANA_CLOUD_OTLP_ENDPOINT}
       - GRAFANA_CLOUD_TOKEN=${GRAFANA_CLOUD_TOKEN}
-      - SENTRY_OTLP_ENDPOINT=${SENTRY_OTLP_ENDPOINT}
-      - SENTRY_AUTH_HEADER=${SENTRY_AUTH_HEADER}
     networks:
       platform-net:
         aliases:
@@ -47,5 +45,34 @@ services:
       - READ_ONLY=${READ_ONLY}
     volumes:
       - ../data/cache:/data
+    networks:
+      - platform-net
+
+  prometheus:
+    profiles: ['core']
+    container_name: tupynambalucas-platform-prometheus
+    build:
+      context: ../../services/prometheus
+      dockerfile: Dockerfile
+    ports:
+      - '9090:9090'
+    networks:
+      platform-net:
+        aliases:
+          - prometheus
+          - prometheus.platform.svc.cluster.local
+
+  grafana:
+    profiles: ['core']
+    container_name: tupynambalucas-platform-grafana
+    build:
+      context: ../../services/grafana
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+    volumes:
+      - ../data/grafana:/var/lib/grafana
     networks:
       - platform-net

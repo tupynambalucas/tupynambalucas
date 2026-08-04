@@ -17,6 +17,8 @@ mcp:
         - http://localhost:19000
         - http://gateway.local.tupynambalucas.dev:15000
         - http://gateway-admin.local.tupynambalucas.dev:15000
+        - https://gateway.local.tupynambalucas.dev:15000
+        - https://gateway-admin.local.tupynambalucas.dev:15000
         - http://localhost:6274
         - http://localhost:9006
         - http://localhost:5173
@@ -25,6 +27,8 @@ mcp:
         - http://localhost:8080
         - http://gateway.local.tupynambalucas.dev
         - http://gateway-admin.local.tupynambalucas.dev
+        - https://gateway.local.tupynambalucas.dev
+        - https://gateway-admin.local.tupynambalucas.dev
         - http://memory.local.tupynambalucas.dev
         - http://turbocache.local.tupynambalucas.dev
         - http://headlamp.local.tupynambalucas.dev

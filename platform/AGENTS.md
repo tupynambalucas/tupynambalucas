@@ -6,8 +6,10 @@ This workspace context ([platform/](./)) centralizes and manages the operational
 
 ## 1. Directory Layout
 
+- **[services/grafana/](./services/grafana/)**: Local Grafana instance for infrastructure monitoring and metric visualization ([services/grafana/AGENTS.md](./services/grafana/AGENTS.md)).
 - **[services/headlamp/](./services/headlamp/)**: Tokenless Kubernetes Web UI dashboard for cluster-wide visualization ([services/headlamp/AGENTS.md](./services/headlamp/AGENTS.md)).
-- **[services/monitor/](./services/monitor/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and traces ([services/monitor/AGENTS.md](./services/monitor/AGENTS.md)).
+- **[services/otpl/](./services/otpl/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and traces ([services/otpl/AGENTS.md](./services/otpl/AGENTS.md)).
+- **[services/prometheus/](./services/prometheus/)**: Local Prometheus metrics collection and storage server ([services/prometheus/AGENTS.md](./services/prometheus/AGENTS.md)).
 - **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds ([services/turbocache/AGENTS.md](./services/turbocache/AGENTS.md)).
 - **[infrastructure/](./infrastructure/)**: System orchestration, Docker compose, and Kubernetes infrastructure router context ([infrastructure/AGENTS.md](./infrastructure/AGENTS.md)).
 

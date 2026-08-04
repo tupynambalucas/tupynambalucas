@@ -8,10 +8,12 @@ Platform is the Bounded Context for the operational, always-running platform uti
 
 Platform organizes the system-wide utility services into modular domains:
 
-1. **[services/headlamp/](./services/headlamp/)**: Tokenless Kubernetes Web UI dashboard for cluster-wide visualization ([services/headlamp/README.md](./services/headlamp/README.md)).
-2. **[services/monitor/](./services/monitor/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and traces ([services/monitor/README.md](./services/monitor/README.md)).
-3. **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds ([services/turbocache/README.md](./services/turbocache/README.md)).
-4. **[infrastructure/](./infrastructure/)**: Centralized Docker compose profiles and Kubernetes deployment manifests ([infrastructure/README.md](./infrastructure/README.md)).
+1. **[services/grafana/](./services/grafana/)**: Local Grafana instance for infrastructure monitoring and metric visualization ([services/grafana/README.md](./services/grafana/README.md)).
+2. **[services/headlamp/](./services/headlamp/)**: Tokenless Kubernetes Web UI dashboard for cluster-wide visualization ([services/headlamp/README.md](./services/headlamp/README.md)).
+3. **[services/otpl/](./services/otpl/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and traces ([services/otpl/README.md](./services/otpl/README.md)).
+4. **[services/prometheus/](./services/prometheus/)**: Local Prometheus metrics collection and storage server ([services/prometheus/README.md](./services/prometheus/README.md)).
+5. **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds ([services/turbocache/README.md](./services/turbocache/README.md)).
+6. **[infrastructure/](./infrastructure/)**: Centralized Docker compose profiles and Kubernetes deployment manifests ([infrastructure/README.md](./infrastructure/README.md)).
 
 ---
 

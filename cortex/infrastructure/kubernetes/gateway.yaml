@@ -110,6 +110,13 @@ spec:
     - host: gateway-admin.local.tupynambalucas.dev
       http:
         paths:
+          - path: /mcp
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
           - path: /
             pathType: Prefix
             backend:

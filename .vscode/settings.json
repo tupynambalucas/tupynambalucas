@@ -91,22 +91,14 @@
   "yaml.format.proseWrap": "preserve",
   "yaml.schemas": {
     "https://json.schemastore.org/kustomization.json": [
-      "cortex/infrastructure/kubernetes/kustomization.yaml",
       "**/kustomization.yaml",
       "**/kustomization.yml"
     ],
     "kubernetes": [
-      "platform/infrastructure/kubernetes/namespace.yaml",
-      "platform/infrastructure/kubernetes/traefik.yaml",
-      "platform/infrastructure/kubernetes/otel-collector.yaml",
-      "platform/infrastructure/kubernetes/turbocache.yaml",
-      "platform/infrastructure/kubernetes/headlamp.yaml",
-      "cortex/infrastructure/kubernetes/namespace.yaml",
-      "cortex/infrastructure/kubernetes/gateway.yaml",
-      "cortex/infrastructure/kubernetes/memory.yaml",
-      "cortex/infrastructure/kubernetes/mcp.yaml",
-      "cortex/infrastructure/kubernetes/agents.yaml",
-      "studio/design/infrastructure/kubernetes/*.yaml"
+      "**/kubernetes/*.yaml",
+      "**/kubernetes/*.yml",
+      "**/kubernetes/**/*.yaml",
+      "**/kubernetes/**/*.yml"
     ]
   },
 
@@ -138,7 +130,7 @@
   /* --- Misc --- */
   "json.schemaDownload.enable": true,
   "yaml.schemaStore.enable": true,
-  "yaml.kubernetesCRDStore.enable": false,
+  "yaml.kubernetesCRDStore.enable": true,
 
   /* --- Color Highlight --- */
   "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"],

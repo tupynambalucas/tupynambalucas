@@ -184,12 +184,13 @@ services:
       context: ../../../
       dockerfile: cortex/mcp/services/grafana/Dockerfile
     environment:
-      - GRAFANA_URL=${GRAFANA_CLOUD_URL}
+      - GRAFANA_URL=${GRAFANA_URL:-http://grafana:3000}
       - GRAFANA_SERVICE_ACCOUNT_TOKEN=${GRAFANA_SERVICE_ACCOUNT_TOKEN}
     networks:
       cortex-net:
         aliases:
           - mcp-grafana
+      platform-net:
 
   mcp-memory:
     profiles: ['core', 'memory', 'mcp']
