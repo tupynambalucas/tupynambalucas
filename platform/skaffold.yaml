@@ -12,29 +12,29 @@ build:
     concurrency: 0
   artifacts:
     - image: turbocache
-      context: ..
+      context: services/turbocache
       docker:
-        dockerfile: platform/services/turbocache/Dockerfile
+        dockerfile: Dockerfile
     - image: headlamp
-      context: ..
+      context: services/headlamp
       docker:
-        dockerfile: platform/services/headlamp/Dockerfile
+        dockerfile: Dockerfile
     - image: otel-collector
-      context: ..
+      context: services/otel-collector
       docker:
-        dockerfile: platform/services/otel-collector/Dockerfile
+        dockerfile: Dockerfile
     - image: prometheus
-      context: ..
+      context: services/prometheus
       docker:
-        dockerfile: platform/services/prometheus/Dockerfile
+        dockerfile: Dockerfile
     - image: loki
-      context: ..
+      context: services/loki
       docker:
-        dockerfile: platform/services/loki/Dockerfile
+        dockerfile: Dockerfile
     - image: tempo
-      context: ..
+      context: services/tempo
       docker:
-        dockerfile: platform/services/tempo/Dockerfile
+        dockerfile: Dockerfile
     - image: tupynambalucas-platform-grafana
       context: services/grafana
       docker:

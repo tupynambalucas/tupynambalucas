@@ -21,7 +21,7 @@ receivers:
 
 exporters:
   # Exportador de logs para Grafana Loki
-  loki:
+  otlphttp/loki:
     endpoint: 'http://loki:3100/loki/api/v1/push'
 
   # Exportador de traces diretamente para Grafana Tempo (via OTLP HTTP)
@@ -52,7 +52,7 @@ service:
     logs:
       receivers: [otlp, fluentforward]
       processors: [resource/fluentd, batch]
-      exporters: [loki, debug]
+      exporters: [otlphttp/loki, debug]
 
     traces:
       receivers: [otlp]
