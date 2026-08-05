@@ -6,9 +6,9 @@ spec:
   acme:
     email: admin@tupynambalucas.dev
     # Use staging server to avoid production rate limits (429) in local dev
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-staging-account-key
+      name: letsencrypt-production-account-key
     solvers:
       - dns01:
           cloudflare:

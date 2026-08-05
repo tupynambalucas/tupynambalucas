@@ -11,7 +11,7 @@ The `mcp/` directory houses the Model Context Protocol (MCP) data plane subsyste
   - **[context7/](./services/context7/)**: Context7 documentation and code search tools.
   - **[firecrawl/](./services/firecrawl/)**: Web scraping, crawling, and autonomous web research.
   - **[github/](./services/github/)**: GitHub REST/GraphQL API integration for repository and issue management.
-  - **[grafana/](./services/grafana/)**: Observability tools for Prometheus metrics, Loki logs, Tempo traces, and Pyroscope profiles.
+  - **[grafana/](./services/grafana/)**: Observability tools for VictoriaMetrics metrics, Loki logs, Tempo traces, and Pyroscope profiles.
   - **[playwright/](./services/playwright/)**: Headless Chromium browser automation and accessibility snapshots.
 
 ---

@@ -2,54 +2,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus
+  name: loki
   namespace: platform
   labels:
-    app: prometheus
+    app: loki
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prometheus
+      app: loki
   template:
     metadata:
       labels:
-        app: prometheus
+        app: loki
     spec:
       containers:
-        - name: prometheus
-          image: prometheus
+        - name: loki
+          image: loki
           imagePullPolicy: IfNotPresent
-          args:
-            - --config.file=/etc/prometheus/prometheus.yml
-            - --storage.tsdb.path=/prometheus
-            - --web.enable-lifecycle
           ports:
-            - containerPort: 9090
+            - containerPort: 3100
           volumeMounts:
-            - name: prometheus-storage
-              mountPath: /prometheus
+            - name: loki-data
+              mountPath: /tmp/loki
       volumes:
-        - name: prometheus-storage
+        - name: loki-data
           persistentVolumeClaim:
-            claimName: prometheus-pvc
+            claimName: loki-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: prometheus
+  name: loki
   namespace: platform
 spec:
   ports:
-    - port: 9090
-      targetPort: 9090
+    - port: 3100
+      targetPort: 3100
   selector:
-    app: prometheus
+    app: loki
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: prometheus-pvc
+  name: loki-pvc
   namespace: platform
 spec:
   accessModes:

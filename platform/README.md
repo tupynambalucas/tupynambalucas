@@ -10,10 +10,12 @@ Platform organizes the system-wide utility services into modular domains:
 
 1. **[services/grafana/](./services/grafana/)**: Local Grafana instance for infrastructure monitoring and metric visualization ([services/grafana/README.md](./services/grafana/README.md)).
 2. **[services/headlamp/](./services/headlamp/)**: Tokenless Kubernetes Web UI dashboard for cluster-wide visualization ([services/headlamp/README.md](./services/headlamp/README.md)).
-3. **[services/otpl/](./services/otpl/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and traces ([services/otpl/README.md](./services/otpl/README.md)).
-4. **[services/prometheus/](./services/prometheus/)**: Local Prometheus metrics collection and storage server ([services/prometheus/README.md](./services/prometheus/README.md)).
-5. **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds ([services/turbocache/README.md](./services/turbocache/README.md)).
-6. **[infrastructure/](./infrastructure/)**: Centralized Docker compose profiles and Kubernetes deployment manifests ([infrastructure/README.md](./infrastructure/README.md)).
+3. **[services/otel-collector/](./services/otel-collector/)**: Edge OpenTelemetry Collector configuration for aggregating logs, metrics, and traces ([services/otel-collector/README.md](./services/otel-collector/README.md)).
+4. **[services/prometheus/](./services/prometheus/)**: Prometheus server for metric collection and PromQL storage ([services/prometheus/README.md](./services/prometheus/README.md)).
+5. **[services/loki/](./services/loki/)**: Grafana Loki log aggregation server ([services/loki/README.md](./services/loki/README.md)).
+6. **[services/tempo/](./services/tempo/)**: Grafana Tempo distributed trace storage server ([services/tempo/README.md](./services/tempo/README.md)).
+7. **[services/turbocache/](./services/turbocache/)**: High-performance containerized Remote Cache service for Turborepo builds ([services/turbocache/README.md](./services/turbocache/README.md)).
+8. **[infrastructure/](./infrastructure/)**: Centralized Docker compose profiles and Kubernetes deployment manifests ([infrastructure/README.md](./infrastructure/README.md)).
 
 ---
 

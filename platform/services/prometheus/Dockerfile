@@ -1,3 +1,5 @@
-FROM prom/prometheus:v2.54.1
+FROM prom/prometheus:v2.53.0
 
-COPY config.yaml /etc/prometheus/prometheus.yml
+COPY prometheus.yml /etc/prometheus/prometheus.yml
+
+EXPOSE 9090

@@ -1,0 +1,60 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+  # Scrapes agentgateway metrics endpoint
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'agentgateway'
+          scrape_interval: 15s
+          static_configs:
+            - targets: ['agentgateway-metrics.cortex.svc.cluster.local:15001']
+
+  # Receptor Fluentd for container logs
+  fluentforward:
+    endpoint: 0.0.0.0:24224
+
+exporters:
+  # Exportador de logs para Grafana Loki
+  loki:
+    endpoint: 'http://loki:3100/loki/api/v1/push'
+
+  # Exportador de traces diretamente para Grafana Tempo (via OTLP HTTP)
+  otlphttp/tempo:
+    endpoint: 'http://tempo:4318'
+
+  debug:
+    verbosity: detailed
+
+processors:
+  batch:
+    send_batch_size: 8192
+    timeout: 1s
+
+  resource/fluentd:
+    attributes:
+      - key: service.name
+        value: agentgateway
+        action: insert
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp, prometheus]
+      processors: [batch]
+      exporters: [debug]
+
+    logs:
+      receivers: [otlp, fluentforward]
+      processors: [resource/fluentd, batch]
+      exporters: [loki, debug]
+
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlphttp/tempo, debug]

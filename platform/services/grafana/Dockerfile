@@ -1,6 +1,19 @@
-FROM grafana/grafana:11.1.0
+# --- Dev Profile ---
+FROM grafana/grafana:latest AS dev
 
-ENV CACHE_BUST=1
+USER root
+COPY ./src/ /etc/grafana
+RUN chown -R 472:0 /etc/grafana && \
+    find /etc/grafana -type d -exec chmod 777 {} + && \
+    find /etc/grafana -type f -exec chmod 666 {} +
+USER 472
 
-COPY provisioning /etc/grafana/provisioning
+# --- Prod Profile ---
+FROM grafana/grafana:latest AS prod
 
+USER root
+COPY ./src/ /etc/grafana
+RUN chown -R 472:0 /etc/grafana && \
+    find /etc/grafana -type d -exec chmod 550 {} + && \
+    find /etc/grafana -type f -exec chmod 440 {} +
+USER 472

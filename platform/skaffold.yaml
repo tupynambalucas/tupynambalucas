@@ -19,14 +19,32 @@ build:
       context: ..
       docker:
         dockerfile: platform/services/headlamp/Dockerfile
+    - image: otel-collector
+      context: ..
+      docker:
+        dockerfile: platform/services/otel-collector/Dockerfile
+    - image: prometheus
+      context: ..
+      docker:
+        dockerfile: platform/services/prometheus/Dockerfile
+    - image: loki
+      context: ..
+      docker:
+        dockerfile: platform/services/loki/Dockerfile
+    - image: tempo
+      context: ..
+      docker:
+        dockerfile: platform/services/tempo/Dockerfile
     - image: tupynambalucas-platform-grafana
       context: services/grafana
       docker:
         dockerfile: Dockerfile
+        target: dev
       sync:
         manual:
-          - src: 'provisioning/**/*'
-            dest: '/etc/grafana/provisioning'
+          - src: 'src/**/*'
+            dest: '/etc/grafana'
+            strip: 'src'
 manifests:
   kustomize:
     paths:
@@ -78,3 +96,14 @@ deploy:
               - cert-manager
               - deployment/cert-manager-cainjector
               - --timeout=60s
+
+profiles:
+  - name: prod
+    build:
+      artifacts:
+        - image: tupynambalucas-platform-grafana
+          context: services/grafana
+          docker:
+            dockerfile: Dockerfile
+            target: prod
+          sync: {}

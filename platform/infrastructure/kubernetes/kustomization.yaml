@@ -9,6 +9,8 @@ resources:
   - certmanager.yaml
   - grafana.yaml
   - prometheus.yaml
+  - loki.yaml
+  - tempo.yaml
 
 secretGenerator:
   - name: platform-secrets
@@ -21,14 +23,10 @@ secretGenerator:
       - ../.env
 
 configMapGenerator:
-  - name: prometheus-config
-    namespace: platform
-    files:
-      - prometheus.yml=../../services/prometheus/config.yaml
   - name: otel-collector-config
     namespace: platform
     files:
-      - config.yaml=../../services/otpl/config.yaml
+      - config.yaml=../../services/otel-collector/config.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
         - name: otel-collector
-          image: otel/opentelemetry-collector-contrib:latest
+          image: otel-collector
+          imagePullPolicy: IfNotPresent
           command: ['/otelcol-contrib', '--config=/etc/otelcol-contrib/config.yaml']
           volumeMounts:
             - name: config-volume

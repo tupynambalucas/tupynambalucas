@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: tupynambalucas-platform-grafana:latest
+          image: tupynambalucas-platform-grafana
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000

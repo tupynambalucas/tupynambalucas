@@ -8,11 +8,13 @@ networks:
 services:
   otel-collector:
     profiles: ['core']
-    image: otel/opentelemetry-collector-contrib:latest
     container_name: tupynambalucas-platform-otel
+    build:
+      context: ../../services/otel-collector
+      dockerfile: Dockerfile
     command: ['--config=/etc/otelcol-contrib/config.yaml']
     volumes:
-      - ../../services/otpl/config.yaml:/etc/otelcol-contrib/config.yaml:ro
+      - ../../services/otel-collector/config.yaml:/etc/otelcol-contrib/config.yaml:ro
     ports:
       - '24224:24224'
     environment:
@@ -61,6 +63,35 @@ services:
         aliases:
           - prometheus
           - prometheus.platform.svc.cluster.local
+
+  loki:
+    profiles: ['core']
+    container_name: tupynambalucas-platform-loki
+    build:
+      context: ../../services/loki
+      dockerfile: Dockerfile
+    ports:
+      - '3100:3100'
+    networks:
+      platform-net:
+        aliases:
+          - loki
+          - loki.platform.svc.cluster.local
+
+  tempo:
+    profiles: ['core']
+    container_name: tupynambalucas-platform-tempo
+    build:
+      context: ../../services/tempo
+      dockerfile: Dockerfile
+    ports:
+      - '3200:3200'
+      - '4318:4318'
+    networks:
+      platform-net:
+        aliases:
+          - tempo
+          - tempo.platform.svc.cluster.local
 
   grafana:
     profiles: ['core']
