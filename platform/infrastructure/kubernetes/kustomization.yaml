@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - traefik.yaml
-  - otel-collector.yaml
+  - otelcol.yaml
   - turbocache.yaml
   - headlamp.yaml
   - certmanager.yaml
@@ -21,12 +21,6 @@ secretGenerator:
     namespace: cert-manager
     envs:
       - ../.env
-
-configMapGenerator:
-  - name: otel-collector-config
-    namespace: platform
-    files:
-      - config.yaml=../../services/otel-collector/config.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

@@ -19,14 +19,24 @@ build:
       context: services/headlamp
       docker:
         dockerfile: Dockerfile
-    - image: otel-collector
-      context: services/otel-collector
+    - image: otelcol-contrib
+      context: services/otelcol
       docker:
         dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*'
+            dest: '/etc/otelcol-contrib'
+            strip: 'src'
     - image: prometheus
       context: services/prometheus
       docker:
         dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*'
+            dest: '/etc/prometheus'
+            strip: 'src'
     - image: loki
       context: services/loki
       docker:
