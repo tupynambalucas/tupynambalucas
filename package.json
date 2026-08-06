@@ -74,7 +74,7 @@
     "platform:down": "podman compose -f platform/infrastructure/docker/compose.yaml --env-file platform/infrastructure/.env --profile core down --remove-orphans",
     "platform:reset": "pnpm platform:down && pnpm platform:up",
     "platform:logs": "podman compose -f platform/infrastructure/docker/compose.yaml --env-file platform/infrastructure/.env logs -f",
-    "platform:dev": "dotenv -e platform/infrastructure/.env -- skaffold dev --module platform-dev --no-prune=false --check-cluster-node-platforms=false",
+    "platform:dev": "dotenv -e platform/infrastructure/.env -- skaffold dev --module platform-dev --no-prune=false --check-cluster-node-platforms=false --cache-artifacts=false",
     "platform:clean": "skaffold delete --module platform-dev && podman builder prune -f && podman volume prune -f",
     "platform:stop": "pnpm platform:clean || true && pnpm platform:down",
     "// Kubernetes Context": "----------------------------------------",

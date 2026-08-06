@@ -7,7 +7,7 @@ build:
   local:
     push: false
     useDockerCLI: true
-    useBuildkit: false
+    useBuildkit: true
     tryImportMissing: true
     concurrency: 0
   artifacts:
@@ -19,6 +19,12 @@ build:
       context: services/headlamp
       docker:
         dockerfile: Dockerfile
+        target: dev
+      sync:
+        manual:
+          - src: 'src/**/*'
+            dest: '/home/headlamp'
+            strip: 'src'
     - image: otelcol-contrib
       context: services/otelcol
       docker:
@@ -112,6 +118,12 @@ profiles:
     build:
       artifacts:
         - image: tupynambalucas-platform-grafana
+          context: services/grafana
+          docker:
+            dockerfile: Dockerfile
+            target: prod
+          sync: {}
+        - image: headlamp
           context: services/grafana
           docker:
             dockerfile: Dockerfile

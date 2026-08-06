@@ -11,3 +11,4 @@ spec:
   commonName: '*.local.tupynambalucas.dev'
   dnsNames:
     - '*.local.tupynambalucas.dev'
+    - 'local.tupynambalucas.dev'

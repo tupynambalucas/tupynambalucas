@@ -33,12 +33,28 @@ receivers:
             - source_labels: [__name__]
               regex: '(container_cpu_usage_seconds_total|container_cpu_cfs_throttled_seconds_total|container_memory_working_set_bytes|container_memory_usage_bytes|container_fs_usage_bytes|container_fs_limit_bytes|container_fs_reads_bytes_total|container_fs_writes_bytes_total|container_network_receive_bytes_total|container_network_transmit_bytes_total|container_network_receive_errors_total|container_network_transmit_errors_total)'
               action: keep
-            # Normalização de labels para Grafana e FreeLens
+            # Normalização de labels (pod, namespace, container) para FreeLens e Grafana
+            - source_labels: [container_label_io_kubernetes_pod_name]
+              target_label: pod
+              regex: (.+)
+              action: replace
             - source_labels: [pod_name]
               target_label: pod
               regex: (.+)
               action: replace
+            - source_labels: [container_label_io_kubernetes_pod_namespace]
+              target_label: namespace
+              regex: (.+)
+              action: replace
+            - source_labels: [container_label_io_kubernetes_container_name]
+              target_label: container
+              regex: (.+)
+              action: replace
             - source_labels: [container_name]
+              target_label: container
+              regex: (.+)
+              action: replace
+            - source_labels: [name]
               target_label: container
               regex: (.+)
               action: replace
@@ -67,6 +83,14 @@ receivers:
               regex: (.+)
               target_label: __metrics_path__
               replacement: /api/v1/nodes/$${1}/proxy/metrics
+            - source_labels: [__meta_kubernetes_node_name]
+              target_label: node
+              regex: (.+)
+              action: replace
+            - source_labels: [__meta_kubernetes_node_name]
+              target_label: instance
+              regex: (.+)
+              action: replace
           metric_relabel_configs:
             # MANTÉM APENAS métricas essenciais do Nó e Volumes/Disco
             - source_labels: [__name__]
