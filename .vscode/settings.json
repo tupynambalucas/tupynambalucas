@@ -99,6 +99,10 @@
       "**/kubernetes/*.yml",
       "**/kubernetes/**/*.yaml",
       "**/kubernetes/**/*.yml"
+    ],
+    "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.30.0-standalone-strict/all.json": [
+      "**/platform/infrastructure/kubernetes/prometheus.yaml",
+      "**/platform/infrastructure/kubernetes/loki.yaml"
     ]
   },
 
