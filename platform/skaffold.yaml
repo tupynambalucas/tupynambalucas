@@ -31,8 +31,8 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: 'src/**/*'
-            dest: '/etc/otelcol-contrib'
+          - src: 'src/collector-config.yaml'
+            dest: '/otelcol/collector-config.yaml'
             strip: 'src'
     - image: prometheus
       context: services/prometheus

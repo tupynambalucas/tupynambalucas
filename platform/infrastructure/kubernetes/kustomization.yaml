@@ -9,6 +9,7 @@ resources:
   - certmanager.yaml
   - grafana.yaml
   - prometheus.yaml
+  - kubestatemetrics.yaml
   - loki.yaml
   - tempo.yaml
 

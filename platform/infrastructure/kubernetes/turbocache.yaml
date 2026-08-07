@@ -124,9 +124,20 @@ spec:
   tls:
     - hosts:
         - turbocache.local.tupynambalucas.dev
+        - turbocache.lan.tupynambalucas.dev
       secretName: local-tls-secret
   rules:
     - host: turbocache.local.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: turbocache
+                port:
+                  number: 3000
+    - host: turbocache.lan.tupynambalucas.dev
       http:
         paths:
           - path: /

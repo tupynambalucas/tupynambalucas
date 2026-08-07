@@ -63,9 +63,20 @@ spec:
   tls:
     - hosts:
         - grafana.local.tupynambalucas.dev
+        - grafana.lan.tupynambalucas.dev
       secretName: local-tls-secret
   rules:
     - host: grafana.local.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000
+    - host: grafana.lan.tupynambalucas.dev
       http:
         paths:
           - path: /

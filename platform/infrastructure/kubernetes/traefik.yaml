@@ -140,9 +140,20 @@ spec:
   tls:
     - hosts:
         - traefik.local.tupynambalucas.dev
+        - traefik.lan.tupynambalucas.dev
       secretName: local-tls-secret
   rules:
     - host: traefik.local.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik
+                port:
+                  number: 8082
+    - host: traefik.lan.tupynambalucas.dev
       http:
         paths:
           - path: /

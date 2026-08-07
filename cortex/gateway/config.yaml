@@ -29,16 +29,26 @@ mcp:
         - http://gateway-admin.local.tupynambalucas.dev
         - https://gateway.local.tupynambalucas.dev
         - https://gateway-admin.local.tupynambalucas.dev
+        - http://gateway.lan.tupynambalucas.dev
+        - http://gateway-admin.lan.tupynambalucas.dev
+        - https://gateway.lan.tupynambalucas.dev
+        - https://gateway-admin.lan.tupynambalucas.dev
         - http://memory.local.tupynambalucas.dev
         - https://memory.local.tupynambalucas.dev
         - http://turbocache.local.tupynambalucas.dev
         - https://turbocache.local.tupynambalucas.dev
         - http://headlamp.local.tupynambalucas.dev
         - https://headlamp.local.tupynambalucas.dev
+        - http://headlamp.lan.tupynambalucas.dev
+        - https://headlamp.lan.tupynambalucas.dev
         - http://grafana.local.tupynambalucas.dev
         - https://grafana.local.tupynambalucas.dev
+        - http://grafana.lan.tupynambalucas.dev
+        - https://grafana.lan.tupynambalucas.dev
         - http://traefik.local.tupynambalucas.dev
         - https://traefik.local.tupynambalucas.dev
+        - http://traefik.lan.tupynambalucas.dev
+        - https://traefik.lan.tupynambalucas.dev
       allowMethods:
         - '*'
         - GET

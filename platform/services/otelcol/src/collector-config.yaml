@@ -97,6 +97,12 @@ receivers:
               regex: '(node_cpu_seconds_total|node_memory_MemTotal_bytes|node_memory_MemAvailable_bytes|node_memory_WorkingSet_bytes|kubelet_volume_stats_used_bytes|kubelet_volume_stats_capacity_bytes|kubelet_volume_stats_available_bytes)'
               action: keep
 
+        # Coleta de métricas de estado de objetos do Cluster (kube-state-metrics)
+        - job_name: 'kube-state-metrics'
+          scrape_interval: 15s
+          static_configs:
+            - targets: ['kube-state-metrics.platform.svc.cluster.local:8080']
+
   fluentforward:
     endpoint: 0.0.0.0:24224
 

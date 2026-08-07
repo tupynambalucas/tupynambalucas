@@ -49,7 +49,7 @@ spec:
           image: headlamp
           imagePullPolicy: IfNotPresent
           args:
-            - '-kubeconfig=/home/headlamp/.kube/config'
+            - '-kubeconfig=/home/headlamp/.kube/config/config.yaml'
             - '-in-cluster'
           ports:
             - containerPort: 4466
@@ -76,9 +76,20 @@ spec:
   tls:
     - hosts:
         - headlamp.local.tupynambalucas.dev
+        - headlamp.lan.tupynambalucas.dev
       secretName: local-tls-secret
   rules:
     - host: headlamp.local.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: headlamp
+                port:
+                  number: 80
+    - host: headlamp.lan.tupynambalucas.dev
       http:
         paths:
           - path: /

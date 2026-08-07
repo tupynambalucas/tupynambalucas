@@ -8,7 +8,6 @@ spec:
   issuerRef:
     name: letsencrypt-cloudflare-dns
     kind: ClusterIssuer
-  commonName: '*.local.tupynambalucas.dev'
+  commonName: '*.lan.tupynambalucas.dev'
   dnsNames:
-    - '*.local.tupynambalucas.dev'
-    - 'local.tupynambalucas.dev'
+    - '*.lan.tupynambalucas.dev'

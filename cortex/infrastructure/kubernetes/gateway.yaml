@@ -98,6 +98,8 @@ spec:
     - hosts:
         - gateway.local.tupynambalucas.dev
         - gateway-admin.local.tupynambalucas.dev
+        - gateway.lan.tupynambalucas.dev
+        - gateway-admin.lan.tupynambalucas.dev
       secretName: local-tls-secret
   rules:
     - host: gateway.local.tupynambalucas.dev
@@ -110,7 +112,34 @@ spec:
                 name: agentgateway
                 port:
                   number: 8080
+    - host: gateway.lan.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
     - host: gateway-admin.local.tupynambalucas.dev
+      http:
+        paths:
+          - path: /mcp
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 15000
+    - host: gateway-admin.lan.tupynambalucas.dev
       http:
         paths:
           - path: /mcp
