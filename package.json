@@ -82,7 +82,7 @@
     "minikube:tunnel": "minikube tunnel",
     "minikube:status": "minikube status",
     "minikube:mount": "minikube mount .:/workspace",
-    "k8s:dev": "skaffold dev --check-cluster-node-platforms=false",
+    "k8s:dev": "skaffold dev --no-prune=false --check-cluster-node-platforms=false --cache-artifacts=false",
     "k8s:up": "skaffold run --check-cluster-node-platforms=false",
     "k8s:down": "skaffold delete",
     "// CI/CD & Quality": "-------------------------------------------------",
