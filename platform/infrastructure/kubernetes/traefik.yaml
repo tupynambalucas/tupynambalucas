@@ -92,8 +92,6 @@ spec:
             - --providers.kubernetesingress=true
             - --entrypoints.traefik.address=:8082
             - --entrypoints.web.address=:80
-            - --entrypoints.web.http.redirections.entryPoint.to=websecure
-            - --entrypoints.web.http.redirections.entryPoint.scheme=https
             - --entrypoints.websecure.address=:443
             - --entrypoints.websecure.http.tls=true
             - --entrypoints.mcp.address=:8080
@@ -137,23 +135,8 @@ metadata:
   namespace: platform
 spec:
   ingressClassName: traefik
-  tls:
-    - hosts:
-        - traefik.local.tupynambalucas.dev
-        - traefik.lan.tupynambalucas.dev
-      secretName: local-tls-secret
   rules:
-    - host: traefik.local.tupynambalucas.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: traefik
-                port:
-                  number: 8082
-    - host: traefik.lan.tupynambalucas.dev
+    - host: traefik-dev.tupynambalucas.dev
       http:
         paths:
           - path: /

@@ -38,7 +38,10 @@ skaffold.env
 **/.DS_Store
 **/Thumbs.db
 
-# Documentation
-README.md
-CHANGELOG.md
-LICENSE.md
+# Documentation and Non-Code Folders (Never trigger Docker/Skaffold builds)
+docs/
+.agents/
+.github/
+.system_generated/
+**/*.md
+**/*.mdx

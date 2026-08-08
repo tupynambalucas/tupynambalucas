@@ -73,23 +73,8 @@ metadata:
   namespace: platform
 spec:
   ingressClassName: traefik
-  tls:
-    - hosts:
-        - headlamp.local.tupynambalucas.dev
-        - headlamp.lan.tupynambalucas.dev
-      secretName: local-tls-secret
   rules:
-    - host: headlamp.local.tupynambalucas.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: headlamp
-                port:
-                  number: 80
-    - host: headlamp.lan.tupynambalucas.dev
+    - host: headlamp-dev.tupynambalucas.dev
       http:
         paths:
           - path: /

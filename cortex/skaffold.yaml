@@ -15,13 +15,13 @@ build:
     concurrency: 0
   artifacts:
     - image: tupynambalucas-cortex-gateway
-      context: ..
+      context: gateway
       docker:
-        dockerfile: cortex/gateway/Dockerfile
+        dockerfile: Dockerfile
       sync:
         manual:
-          - src: 'cortex/gateway/config.yaml'
-            dest: '/config.yaml'
+          - src: 'config.yaml'
+            dest: '/config/config.yaml'
     - image: tupynambalucas-cortex-mcp-guardrails
       context: ..
       docker:

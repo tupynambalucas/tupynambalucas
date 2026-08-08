@@ -1,7 +1,7 @@
-FROM cr.agentgateway.dev/agentgateway:v1.3.1
+FROM cr.agentgateway.dev/agentgateway:latest
 
 ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://otel-collector:4317"
 
-COPY cortex/gateway/config.yaml /config.yaml
+COPY ./config.yaml /config/
 
-CMD ["-f", "/config.yaml"]
+CMD ["-f", "/config/config.yaml"]

@@ -17,11 +17,14 @@ spec:
     spec:
       containers:
         - name: agentgateway
-          image: tupynambalucas-cortex-gateway:latest
+          image: tupynambalucas-cortex-gateway
           imagePullPolicy: IfNotPresent
+          args:
+            - '-f'
+            - '/config/config.yaml'
           ports:
             - name: traffic
-              containerPort: 8080
+              containerPort: 443
             - name: admin
               containerPort: 15000
             - name: stats
@@ -51,6 +54,13 @@ spec:
                   name: cortex-secrets
                   key: FIRECRAWL_API_KEY
                   optional: true
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: agentgateway-config
 ---
 apiVersion: v1
 kind: Service
@@ -61,7 +71,7 @@ spec:
   ports:
     - name: traffic
       port: 8080
-      targetPort: 8080
+      targetPort: 443
     - name: admin
       port: 15000
       targetPort: 15000
@@ -91,38 +101,11 @@ metadata:
   namespace: cortex
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web, websecure, mcp
-    traefik.ingress.kubernetes.io/router.tls: 'true'
+    traefik.ingress.kubernetes.io/custom-response-headers: 'Access-Control-Allow-Origin: *||Access-Control-Expose-Headers: Mcp-Session-Id||Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE||Access-Control-Allow-Headers: *||Access-Control-Allow-Credentials: true'
 spec:
   ingressClassName: traefik
-  tls:
-    - hosts:
-        - gateway.local.tupynambalucas.dev
-        - gateway-admin.local.tupynambalucas.dev
-        - gateway.lan.tupynambalucas.dev
-        - gateway-admin.lan.tupynambalucas.dev
-      secretName: local-tls-secret
   rules:
-    - host: gateway.local.tupynambalucas.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
-    - host: gateway.lan.tupynambalucas.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
-    - host: gateway-admin.local.tupynambalucas.dev
+    - host: agentgateway-dev.tupynambalucas.dev
       http:
         paths:
           - path: /mcp
@@ -139,9 +122,16 @@ spec:
                 name: agentgateway
                 port:
                   number: 15000
-    - host: gateway-admin.lan.tupynambalucas.dev
+    - host: agentgateway-mcp-dev.tupynambalucas.dev
       http:
         paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
           - path: /mcp
             pathType: Prefix
             backend:
@@ -149,31 +139,8 @@ spec:
                 name: agentgateway
                 port:
                   number: 8080
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 15000
     - host: localhost
       http:
-        paths:
-          - path: /mcp
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 15000
-    - http:
         paths:
           - path: /mcp
             pathType: Prefix

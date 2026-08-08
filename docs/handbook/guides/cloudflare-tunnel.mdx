@@ -1,0 +1,89 @@
+---
+title: Cloudflare Tunnel & Access Setup
+description: How to configure Cloudflare Tunnel (cloudflared) and Cloudflare Zero Trust Access policies for secure ingress routing in Kubernetes.
+---
+
+# Cloudflare Tunnel & Access Setup
+
+This guide details how to configure **Cloudflare Tunnel** (`cloudflared`) and **Cloudflare Zero Trust Access** to expose local and remote Kubernetes development environments securely over browser-trusted HTTPS without modifying `/etc/hosts` or opening incoming router ports.
+
+---
+
+## Architecture Overview
+
+Public ingress traffic is routed through Cloudflare's global edge network directly into the cluster via an encrypted QUIC tunnel:
+
+```mermaid
+graph TD
+    Client["Browser / AI Agent"] -->|HTTPS 443| Edge["Cloudflare Edge (Managed TLS)"]
+    Edge -->|Encrypted QUIC Tunnel| TunnelPod["cloudflared Pod (platform)"]
+    TunnelPod -->|HTTP 80| Traefik["Traefik Ingress Controller (platform)"]
+    Traefik -->|Ingress Host Matching| Services["Cluster Services (cortex & platform)"]
+```
+
+---
+
+## 1. Creating the Cloudflare Tunnel
+
+1. Log in to the [Cloudflare Zero Trust Dashboard](https://one.dash.cloudflare.com/).
+2. Navigate to **Networks** -\> **Tunnels** and click **Add a Tunnel**.
+3. Select **Cloudflared** as the connector type and name the tunnel `tupynambalucas-minikube`.
+4. Select **Docker** as the environment type and copy the generated `TUNNEL_TOKEN` (a base64-encoded string).
+
+---
+
+## 2. Public Hostname Routes
+
+In the **Public Hostnames** tab of your tunnel configuration, register the following routes pointing to the internal Traefik Ingress Controller Service (`http://traefik.platform.svc.cluster.local:80`):
+
+| Subdomain              | Domain               | Service Type | Service URL                             | Path   |
+| :--------------------- | :------------------- | :----------- | :-------------------------------------- | :----- |
+| `agentgateway-dev`     | `tupynambalucas.dev` | `HTTP`       | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `agentgateway-mcp-dev` | `tupynambalucas.dev` | `HTTP`       | `traefik.platform.svc.cluster.local:80` | `/mcp` |
+| `grafana-dev`          | `tupynambalucas.dev` | `HTTP`       | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `headlamp-dev`         | `tupynambalucas.dev` | `HTTP`       | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `traefik-dev`          | `tupynambalucas.dev` | `HTTP`       | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `turbocache-dev`       | `tupynambalucas.dev` | `HTTP`       | `traefik.platform.svc.cluster.local:80` | `/`    |
+
+:::tip[Single Wildcard Hostname Alternative]
+Instead of creating individual public hostnames, you can register a single wildcard public hostname `*.development` pointing to `http://traefik.platform.svc.cluster.local:80`.
+:::
+
+---
+
+## 3. Configuring Cluster Secrets & Deployment
+
+1. Add the tunnel token to your platform environment file (`platform/infrastructure/.env`):
+   ```env
+   CLOUDFLARE_TUNNEL_TOKEN=eyJ2Ijoi...
+   ```
+2. The `cloudflared` deployment in `platform/infrastructure/kubernetes/cloudflared.yaml` reads this secret and connects automatically:
+   ```bash
+   pnpm k8s:up
+   ```
+3. Verify that the tunnel pod is connected:
+   ```bash
+   kubectl get pods -n platform -l app=cloudflared
+   kubectl logs -n platform -l app=cloudflared --tail=20
+   ```
+
+---
+
+## 4. Cloudflare Zero Trust Access Policies
+
+To protect development endpoints from unauthorized public access:
+
+### Web User Interfaces (Grafana, Headlamp, Traefik, AgentGateway Admin)
+
+1. In Cloudflare Zero Trust, navigate to **Access** -\> **Applications** -\> **Add an Application** -\> **Self-hosted**.
+2. Assign the public domain (e.g., `grafana.development.tupynambalucas.dev`).
+3. Add an **Allow** policy restricting access to authorized developer email addresses via **One-Time PIN (OTP)**.
+
+### AI Agent & MCP Ingress (`agentgateway-mcp-dev.tupynambalucas.dev`)
+
+:::warning[Preventing Login Redirects for Automated Clients]
+AI agents (such as Antigravity, Cursor, and CLI tools) communicate via JSON-RPC / SSE streams and cannot process interactive web browser login redirects.
+:::
+
+1. For `agentgateway-mcp-dev.tupynambalucas.dev`, configure an Access Policy with **Action: Bypass** or assign a **Service Token** and set the tunnel path to `/mcp`.
+2. This ensures non-browser clients can exchange payloads directly while internal security is enforced via AgentGateway CEL guardrails and API tokens.

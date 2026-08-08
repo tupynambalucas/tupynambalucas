@@ -19,11 +19,11 @@ services:
   agentgateway:
     profiles: ['core']
     build:
-      context: ../../../
-      dockerfile: cortex/gateway/Dockerfile
+      context: ../../gateway
+      dockerfile: Dockerfile
     container_name: tupynambalucas-cortex-gateway
     volumes:
-      - ../../gateway/config.yaml:/config.yaml
+      - ../../gateway/config.yaml:/config/config.yaml
     ports:
       - '${GATEWAY_PORT:-8080}:8080' # Main traffic
       - '15000:15000' # Web UI

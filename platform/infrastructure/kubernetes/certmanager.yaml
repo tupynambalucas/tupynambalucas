@@ -5,7 +5,7 @@ metadata:
 spec:
   acme:
     email: admin@tupynambalucas.dev
-    # Production Let's Encrypt server for 100% trusted HTTPS on any LAN device without installing CAs
+    # Production Let's Encrypt server for 100% trusted HTTPS when deployed to public cluster
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-production-account-key
@@ -15,17 +15,3 @@ spec:
             apiTokenSecretRef:
               name: cloudflare-api-token-secret
               key: CLOUDFLARE_API_TOKEN
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: wildcard-local-tupynambalucas-dev
-  namespace: platform
-spec:
-  secretName: local-tls-secret
-  issuerRef:
-    name: letsencrypt-cloudflare-dns
-    kind: ClusterIssuer
-  commonName: '*.lan.tupynambalucas.dev'
-  dnsNames:
-    - '*.lan.tupynambalucas.dev'

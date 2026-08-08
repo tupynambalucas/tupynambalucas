@@ -184,19 +184,19 @@ O Skaffold configura automaticamente túneis de redirecionamento de portas (port
 
 ## 5. Conectividade do Antigravity CLI
 
-O **Antigravity CLI** se conecta ao proxy de ingress do Cortex (`agentgateway`) utilizando o endpoint definido em `.agents/mcp_config.json`:
+O **Antigravity CLI** se conecta ao proxy de ingress do Cortex (`agentgateway`) utilizando o endpoint do Cloudflare Tunnel definido em `.agents/mcp_config.json`:
 
 ```json
 "agentgateway": {
-  "url": "http://localhost:8080/mcp/http",
+  "url": "https://agentgateway-mcp-dev.tupynambalucas.dev",
   "lifecycle": "eager"
 }
 ```
 
-Devido aos nossos mapeamentos padronizados de portas locais, esta configuração de cliente **permanece inalterada** em ambos os modos de implantação:
+Esta configuração de cliente permite a descoberta e execução transparente de ferramentas MCP em ambientes locais e estações de desenvolvimento remotas em qualquer rede:
 
-- **Modo Compose**: O Podman Compose mapeia a porta `8080` do container diretamente para a porta `8080` do host.
-- **Modo Kubernetes**: O Skaffold faz o port-forward do serviço `agentgateway` para `localhost:8080`.
+- **Modo Cloudflare Tunnel**: O tráfego flui com segurança via `cloudflared` para o serviço `agentgateway` no Minikube, sem necessidade de redirecionamento de portas locais ou alteração de arquivos `/etc/hosts`.
+- **Modo de Fallback Local**: Para desenvolvimento offline, o Skaffold faz o port-forward do serviço `agentgateway` para `localhost:8080`.
 
 O `agentgateway` intercepta o payload JSON-RPC de entrada, executa regras CEL de proteção configuradas (via `mcp-guardrails` na porta `9001`) e roteia a chamada para o microsserviço de destino com base nas configurações de targets declaradas em `cortex/gateway/config.yaml`.
 

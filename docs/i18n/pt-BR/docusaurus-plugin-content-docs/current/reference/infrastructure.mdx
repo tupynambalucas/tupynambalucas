@@ -112,12 +112,47 @@ Workspaces que suportam implantação em Kubernetes usam uma estrutura de diret�
 
 ## 4. Proxy Reverso & Roteamento de Requisições
 
-tupynambalucas.dev utiliza uma configuração de proxy reverso para lidar com terminação TLS, compressão e roteamento de requisições.
+tupynambalucas.dev utiliza uma arquitetura de proxy reverso da borda ao cluster para lidar com terminação TLS, segurança Zero Trust e roteamento de requisições entre contextos delimitados.
 
-- **Certificados SSL:** Gerenciados dinamicamente via Let's Encrypt usando desafios ACME automatizados.
-- **Mapeamento de Portas:** As portas públicas `80` (HTTP) e `443` (HTTPS) mapeiam para os containers web de borda, que internamente encaminham as requisições para a API Fastify ou servem os assets React estáticos compilados.
-- **MCP Gateway Ingress (`agentgateway`):** Atua como o ponto de entrada unificado para clientes MCP (baseados em SSE) e requisições LLM, direcionando-as internamente para o microsserviço ou servidor MCP correto.
-- **Ingress do Kubernetes:** No modo Kubernetes, o Traefik roteia requisições HTTP/gRPC de entrada usando recursos de `Ingress` mapeados para os Serviços de destino.
+### 4.1. Topologia de Túnel Cloudflare & Borda
+
+O acesso público a ambientes de desenvolvimento local e remoto em Kubernetes é fornecido via **Cloudflare Tunnel** (`cloudflared`) integrado ao **Cloudflare Zero Trust**:
+
+```mermaid
+graph TD
+    Client["Navegador / Agente de IA"] -->|HTTPS 443| Edge["Borda Cloudflare (Terminação TLS)"]
+    Edge -->|Túnel Criptografado QUIC| TunnelPod["Pod cloudflared (platform)"]
+    TunnelPod -->|HTTP 80| Traefik["Traefik Ingress Controller (platform)"]
+    Traefik -->|Roteamento de Serviço| Gateway["agentgateway (cortex)"]
+    Traefik -->|Roteamento de Serviço| Grafana["grafana (platform)"]
+    Traefik -->|Roteamento de Serviço| Headlamp["headlamp (platform)"]
+    Traefik -->|Roteamento de Serviço| TurboCache["turbocache (platform)"]
+```
+
+- **Terminação TLS na Borda:** A borda da Cloudflare realiza a terminação de HTTPS público para `*-dev.tupynambalucas.dev` usando certificados SSL/TLS wildcard de nível único (`*.tupynambalucas.dev`).
+- **Transporte de Túnel Criptografado:** O tráfego flui da borda da Cloudflare para o cluster via uma conexão criptografada QUIC gerenciada pelo deployment do `cloudflared` no namespace `platform`.
+- **Traefik Ingress Controller:** O `cloudflared` encaminha requisições internamente para o Traefik na porta 80 (`http://traefik.platform.svc.cluster.local:80`), que roteia payloads HTTP/gRPC para os Serviços de destino com base em recursos `Ingress` padrão do Kubernetes.
+
+### 4.2. Esquema Autoritativo de Domínios de Desenvolvimento
+
+Todos os serviços de desenvolvimento adotam uma estrutura de subdomínios com hífen de nível único (`*-dev.tupynambalucas.dev`) para garantir 100% de compatibilidade com certificados gratuitos do Universal SSL:
+
+| Domínio Host                              | Serviço de Destino   | Namespace  | Finalidade                                       |
+| :---------------------------------------- | :------------------- | :--------- | :----------------------------------------------- |
+| `agentgateway-dev.tupynambalucas.dev`     | `agentgateway:15000` | `cortex`   | Painel Admin e Plano de Controle do AgentGateway |
+| `agentgateway-mcp-dev.tupynambalucas.dev` | `agentgateway:8080`  | `cortex`   | Endpoint Direto de Ingress MCP (`/mcp`)          |
+| `grafana-dev.tupynambalucas.dev`          | `grafana:3000`       | `platform` | Dashboard de Observabilidade Grafana             |
+| `headlamp-dev.tupynambalucas.dev`         | `headlamp:80`        | `platform` | Dashboard de Kubernetes Headlamp                 |
+| `traefik-dev.tupynambalucas.dev`          | `traefik:8082`       | `platform` | Dashboard do Traefik Ingress Controller          |
+| `turbocache-dev.tupynambalucas.dev`       | `turbocache:3000`    | `platform` | Servidor de Remote Cache do Turborepo            |
+| `docs.tupynambalucas.dev`                 | Cloudflare Pages     | Externo    | Central de Documentação Técnica Docusaurus       |
+
+### 4.3. Políticas do Cloudflare Access & Zero Trust
+
+Para proteger os endpoints de desenvolvimento expostos via Cloudflare Tunnel:
+
+- **Dashboards Web (Grafana, Headlamp, Traefik, AgentGateway Admin):** Protegidos por políticas de **E-mail / One-Time PIN (OTP)** do Cloudflare Access. Apenas endereços de e-mail de desenvolvedores autorizados recebem os PINs de autenticação.
+- **Endpoints de IA & MCP (`agentgateway-mcp-dev.tupynambalucas.dev`):** Configurados com uma política do tipo **Bypass** ou autenticação por Service Token no Cloudflare Zero Trust com rota do túnel direcionada para `/mcp`. Isso permite que clientes automatizados (como agentes de IA, ferramentas CLI e pipelines) troquem payloads JSON-RPC / SSE sem serem interrompidos por redirecionamentos interativos de login web. A segurança interna é aplicada diretamente pelas guardrails CEL do AgentGateway e tokens de API.
 
 ---
 

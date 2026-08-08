@@ -12,6 +12,7 @@ resources:
   - kubestatemetrics.yaml
   - loki.yaml
   - tempo.yaml
+  - cloudflared.yaml
 
 secretGenerator:
   - name: platform-secrets

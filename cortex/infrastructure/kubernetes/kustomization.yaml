@@ -8,9 +8,13 @@ resources:
   - gateway.yaml
   - memory.yaml
   - mcp.yaml
-  - certmanager.yaml
 
 secretGenerator:
   - name: cortex-secrets
     envs:
       - ../.env
+
+configMapGenerator:
+  - name: agentgateway-config
+    files:
+      - config.yaml=../../gateway/config.yaml

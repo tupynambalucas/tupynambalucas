@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "agentgateway": {
-      "url": "https://gateway.local.tupynambalucas.dev/mcp",
+      "url": "https://agentgateway-mcp-dev.tupynambalucas.dev/mcp",
       "lifecycle": "eager"
     },
     "podman-mcp": {
