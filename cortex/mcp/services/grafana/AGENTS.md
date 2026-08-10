@@ -6,9 +6,10 @@ This directory contains the containerized Grafana Model Context Protocol (MCP) s
 
 ## 1. Overview
 
-The Grafana MCP service provides observability integrations with Grafana instances, Loki log aggregators, Prometheus metrics collectors, Tempo distributed tracing, and Pyroscope profiling.
+The Grafana MCP service provides observability integrations with Grafana instances, Loki log aggregators, Prometheus / VictoriaMetrics metrics, Tempo distributed tracing, and Pyroscope continuous profiling.
 
 - Docker Container Configuration: [Dockerfile](./Dockerfile)
+- Context Instructions: [instructions.md](./instructions.md)
 
 ---
 
@@ -17,25 +18,21 @@ The Grafana MCP service provides observability integrations with Grafana instanc
 - **Read-Only Default**: Agents MUST prioritize read-only query tools (`grafana_query_prometheus`, `grafana_query_loki_logs`, `grafana_tempo_get-trace`) before executing destructive or state-changing operations.
 - **Log Query Limits**: LogQL queries (`grafana_query_loki_logs`) MUST specify reasonable time ranges and limit parameters to prevent memory exhaustion on log streams.
 - **Dashboard Integrity**: Dashboard JSON modifications (`grafana_update_dashboard`) MUST be validated against schema structures before submission.
+- **Platform DNS Routing**: In Kubernetes, connects to Grafana via internal cluster DNS `http://grafana.platform.svc.cluster.local:3000`.
 
 ---
 
 ## 3. Environment Variables
 
-The Grafana MCP server supports configuration via the following environment variables:
-
 | Environment Variable            | Description                                                |
 | :------------------------------ | :--------------------------------------------------------- |
 | `GRAFANA_URL`                   | Base URL of the target Grafana instance.                   |
 | `GRAFANA_SERVICE_ACCOUNT_TOKEN` | Service Account Token used for Grafana API authentication. |
-| `GRAFANA_API_KEY`               | Legacy API Key used for Grafana authentication.            |
 | `GRAFANA_ORG_ID`                | Organization Identifier in Grafana (default: `1`).         |
 
 ---
 
 ## 4. Available Tools
-
-The Grafana MCP server exposes 74 observability tools:
 
 - `grafana_add_activity_to_incident`: Adds timeline activity notes to a Grafana Incident.
 - `grafana_alerting_manage_routing`: Configures notification policies and alert routes.
@@ -98,14 +95,6 @@ The Grafana MCP server exposes 74 observability tools:
 - `grafana_search_folders`: Searches dashboard folders.
 - `grafana_search_plugin_information`: Searches available plugins in catalog.
 - `grafana_suggest_loki_alloy_label_config`: Suggests OpenTelemetry/Alloy log ingestion config.
-- `grafana_tempo_docs-config`: Retrieves documentation on Tempo trace configuration.
-- `grafana_tempo_docs-traceql`: Retrieves documentation on TraceQL query language.
-- `grafana_tempo_get-attribute-names`: Lists span and process attribute names in Tempo.
-- `grafana_tempo_get-attribute-values`: Lists attribute values for a specific Tempo attribute.
-- `grafana_tempo_get-trace`: Retrieves full distributed trace details by trace ID.
-- `grafana_tempo_traceql-metrics-instant`: Calculates instant metrics over traces using TraceQL.
-- `grafana_tempo_traceql-metrics-range`: Calculates range metric time series using TraceQL.
-- `grafana_tempo_traceql-search`: Searches distributed traces using TraceQL expressions.
 - `grafana_update_annotation`: Updates text or tags of an existing annotation.
 - `grafana_update_dashboard`: Updates a dashboard JSON model.
 - `grafana_update_datasource`: Updates data source connection properties.

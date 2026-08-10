@@ -1,0 +1,94 @@
+# ==========================================
+# MEMOS COLLABORATIVE NOTES
+# ==========================================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: memos-pvc
+  namespace: studio
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memos
+  namespace: studio
+  labels:
+    app: memos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memos
+  template:
+    metadata:
+      labels:
+        app: memos
+    spec:
+      containers:
+        - name: memos
+          image: neosmemo/memos:stable
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5230
+          env:
+            - name: MEMOS_PORT
+              value: '5230'
+            - name: MEMOS_DRIVER
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: MEMOS_DRIVER
+                  optional: true
+            - name: MEMOS_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: MEMOS_DSN
+                  optional: true
+          volumeMounts:
+            - name: memos-data
+              mountPath: /var/opt/memos
+      volumes:
+        - name: memos-data
+          persistentVolumeClaim:
+            claimName: memos-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memos
+  namespace: studio
+spec:
+  ports:
+    - name: http
+      port: 5230
+      targetPort: 5230
+  selector:
+    app: memos
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: memos-ingress
+  namespace: studio
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: memos-dev.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memos
+                port:
+                  number: 5230

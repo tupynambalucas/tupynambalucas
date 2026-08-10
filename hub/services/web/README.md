@@ -12,10 +12,10 @@ While the project currently focuses on "Single-Instance Mastery", the frontend i
 
 ### Documentation
 
-Detailed technical documentation is available in our [Knowledge Base](https://tupynambalucas-docs.pages.dev):
+Detailed technical documentation is available in our [Knowledge Base](https://docs.tupynambalucas.dev):
 
-- [Architecture Overview](https://tupynambalucas-docs.pages.dev/docs/engineering/architecture): Technical decisions and stack details.
-- [Style Guide](https://tupynambalucas-docs.pages.dev/docs/engineering/styleguide): UI patterns and React 19 standards.
+- [Architecture Overview](https://docs.tupynambalucas.dev/docs/explanation/architecture-overview): Technical decisions and stack details.
+- [Style Guide](https://docs.tupynambalucas.dev/docs/reference/styleguide): UI patterns and React 19 standards.
 
 ---
 

@@ -1,14 +1,35 @@
 # Cortex Memory Web Dashboard
 
-The `services/web` directory contains the Vite + React + Tailwind CSS dashboard (`@tupynambalucas-cortex/memory-web`) for inspecting knowledge graphs, chat history, and vector search results.
+The `cortex/memory/services/web` workspace contains the Vite + React 19 + Tailwind CSS dashboard (`@tupynambalucas-cortex/memory-web`) for visual inspection of knowledge graphs, episodic chat history, vector similarity search, and documentation synchronization.
 
 ---
 
-## Application Structure
+## Technology Stack
 
-- **[src/features/](./src/features/)**: Feature-Sliced Design UI components (Graph Explorer, Search, History).
-- **[src/domains/](./src/domains/)**: Domain API integrations and Zustand state stores.
-- **[src/components/](./src/components/)**: Core layout components.
+- **Framework**: React 19, Vite
+- **Styling**: Tailwind CSS v4, CSS Modules
+- **State Management**: Zustand
+- **Visualization**: `react-force-graph-2d`, Lucide React
+- **Port**: `9006`
+
+---
+
+## Application Structure (Feature-Sliced Design)
+
+```
+services/web/src/
+├── components/          # Reusable shared UI layout components (Sidebar, Card, Badge)
+├── domains/
+│   └── memory/         # Zustand store and Axios API integration
+├── features/
+│   ├── chat-memory/    # Episodic conversation inspector
+│   ├── docs-sync/      # Knowledge base sync status view
+│   ├── graph-explorer/ # 2D Force-directed knowledge graph explorer
+│   └── vector-playground/ # Live vector search playground
+├── types/              # Vite and CSS Module definitions
+├── App.tsx             # Main application layout and view router
+└── main.tsx            # React DOM mounting entry point
+```
 
 ---
 
@@ -16,5 +37,6 @@ The `services/web` directory contains the Vite + React + Tailwind CSS dashboard 
 
 - `pnpm dev`: Launches Vite development server at `http://localhost:9006`.
 - `pnpm build`: Compiles production web bundle into `dist/`.
-- `pnpm preview`: Serves production build locally.
+- `pnpm preview`: Serves production build locally on port `9006`.
 - `pnpm typecheck`: Validates TypeScript types without emitting files.
+- `pnpm lint`: Runs ESLint validation.

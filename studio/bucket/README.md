@@ -54,8 +54,8 @@ graph TD
 To avoid excess API usage costs and operate strictly within Cloudflare R2's free limit (10GB storage, 1M Class A operations/month, 10M Class B operations/month):
 
 - **Zero Redundant Writes**: Uses local MD5 calculation and remote ETag comparison.
-- **Direct Root Uploads**: Uploads are performed directly to the root of the bucket (e.g., `images/...` or `raw/...`) based on the paths configured in `studio/design/assets/assets-manifest.json` instead of adding nested path layers like `studio/`.
-- **Dynamic File Discovery**: Automatically targets specific assets folder structures defined in `studio/design/assets/assets-manifest.json`.
+- **Direct Root Uploads**: Uploads are performed directly to the root of the bucket based on the paths configured in `studio/assets/src/assets-manifest.json`.
+- **Dynamic File Discovery**: Automatically targets specific assets folder structures defined in `studio/assets/src/assets-manifest.json`.
 
 ---
 
@@ -92,7 +92,7 @@ Execute the main interactive wizard from the monorepo root:
 pnpm studio:bucket
 ```
 
-This starts a polished, command-line selection interface. Use the up and down arrow keys to choose:
+This starts a command-line selection interface:
 
 - **Push**: Scan and synchronize local modified files directly to R2.
 - **Pull**: Check R2 object metadata and download any new or updated files locally.

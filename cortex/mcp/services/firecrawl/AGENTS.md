@@ -9,45 +9,35 @@ This directory contains the containerized Firecrawl Model Context Protocol (MCP)
 The Firecrawl MCP service provides web scraping, crawling, searching, and autonomous research capabilities. It converts live web pages into structured JSON or clean Markdown context for AI agent consumption.
 
 - Docker Container Configuration: [Dockerfile](./Dockerfile)
+- Context Instructions: [instructions.md](./instructions.md)
 
 ---
 
 ## 2. Operational & Security Guardrails
 
-- **Local Host Application Resolution**: When scraping local development applications running on the
-  host machine, agents MUST substitute `localhost` or `127.0.0.1` with `host.docker.internal` and
-  use the correct service port. Do not query the user for these URLs:
+- **Local Host Application Resolution**: When scraping local development applications running on the host machine, agents MUST substitute `localhost` or `127.0.0.1` with `host.docker.internal` and use the correct service port:
   - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
   - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
   - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
-- **API Token Requirement**: A valid `FIRECRAWL_API_KEY` MUST be provided via environment configuration.
-- **Scrape & Crawl Scoping**: Agents MUST prefer targeted `firecrawl_scrape` over full site
-  `firecrawl_crawl` to minimize token consumption and rate limits.
-- **Structured Data Extraction**: Use `firecrawl_extract` when schema-conforming JSON payload
-  extraction is required from web sources.
+- **API Token Requirement**: A valid `FIRECRAWL_API_KEY` MUST be provided via container environment configuration.
+- **Scrape & Crawl Scoping**: Agents MUST prefer targeted `firecrawl_scrape` over full site `firecrawl_crawl` to minimize token consumption and rate limits.
+- **Structured Data Extraction**: Use `firecrawl_extract` when schema-conforming JSON payload extraction is required from web sources.
 
 ---
 
 ## 3. Environment Variables
 
-The Firecrawl MCP server supports configuration via the following environment variables:
-
-| Environment Variable             | Description                                                       |
-| :------------------------------- | :---------------------------------------------------------------- |
-| `FIRECRAWL_API_KEY`              | API key for Firecrawl Cloud API authentication.                   |
-| `FIRECRAWL_API_URL`              | Custom API endpoint URL for self-hosted Firecrawl instances.      |
-| `HTTP_STREAMABLE_SERVER`         | Enable HTTP Streamable Server transport mode (`true` or `false`). |
-| `HOST`                           | Interface binding host for HTTP transport (default: `0.0.0.0`).   |
-| `PORT`                           | Listening port for HTTP transport (default: `8080`).              |
-| `FIRECRAWL_OAUTH_TOKEN`          | Static OAuth access token for authenticated API requests.         |
-| `FIRECRAWL_NO_SEARCH_FEEDBACK`   | Disable search feedback tool registration (`1` or `0`).           |
-| `FIRECRAWL_NO_ENDPOINT_FEEDBACK` | Disable generic endpoint feedback tool registration (`1` or `0`). |
+| Environment Variable     | Description                                                       |
+| :----------------------- | :---------------------------------------------------------------- |
+| `FIRECRAWL_API_KEY`      | API key for Firecrawl Cloud API authentication.                   |
+| `FIRECRAWL_API_URL`      | Custom API endpoint URL for self-hosted Firecrawl instances.      |
+| `HTTP_STREAMABLE_SERVER` | Enable HTTP Streamable Server transport mode (`true` or `false`). |
+| `HOST`                   | Interface binding host for HTTP transport (default: `0.0.0.0`).   |
+| `PORT`                   | Listening port for HTTP transport (default: `8080`).              |
 
 ---
 
 ## 4. Available Tools
-
-The Firecrawl MCP server exposes the following web scraping and intelligence tools:
 
 - `firecrawl_scrape`: Scrapes content from a single URL into structured JSON or Markdown.
 - `firecrawl_map`: Maps a website domain to discover all indexed sub-URLs.

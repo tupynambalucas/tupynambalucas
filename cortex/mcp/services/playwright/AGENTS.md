@@ -6,20 +6,16 @@ This directory contains the containerized Playwright Model Context Protocol (MCP
 
 ## 1. Overview
 
-The Playwright MCP service provides headless browser automation capabilities using the `chromium-headless-shell` binary. It enables AI agents connected through the API gateway to interact with web applications, extract structural accessibility snapshots, and execute web UI interactions.
+The Playwright MCP service provides headless browser automation capabilities using the Chromium browser engine. It enables AI agents connected through AgentGateway to interact with web applications, extract structural accessibility snapshots, and execute web UI interactions.
 
 - Docker Container Configuration: [Dockerfile](./Dockerfile)
+- Context Instructions: [instructions.md](./instructions.md)
 
 ---
 
-## 2. Transport Protocol and Networking
+## 2. Transport Protocol & Networking
 
-The Playwright MCP server supports both Streamable HTTP (default) and Legacy SSE (Server-Sent Events):
-
-- Streamable HTTP Endpoint (Default): `POST /mcp`
-- Legacy SSE Endpoint: `GET /sse` (with `POST /messages`)
-
-In `agentgateway` configuration ([config.yaml](../../../gateway/config.yaml)), target the Streamable HTTP endpoint:
+The Playwright MCP server operates over Streamable HTTP on port `8080`. In AgentGateway configuration ([config.yaml](../../../gateway/config.yaml)), target the endpoint:
 
 ```yaml
 - name: playwright
@@ -31,48 +27,30 @@ In `agentgateway` configuration ([config.yaml](../../../gateway/config.yaml)), t
 
 ## 3. Operational & Networking Guardrails
 
-- **Local Host Application Resolution**: When navigating to local development applications running on
-  the host machine, agents MUST substitute `localhost` or `127.0.0.1` with `host.docker.internal` and
-  use the correct service port. Do not query the user for these URLs:
+- **Local Host Application Resolution**: When navigating to local development applications running on the host machine, agents MUST substitute `localhost` or `127.0.0.1` with `host.docker.internal` and use the correct service port:
   - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
   - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
   - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
-- **DNS Rebinding Protection**: `PLAYWRIGHT_MCP_ALLOWED_HOSTS=*` MUST be configured in container
-  environments to allow cross-container requests from `agentgateway`.
-- **Headless Execution**: All browser interactions MUST run in headless mode
-  (`PLAYWRIGHT_MCP_HEADLESS=true`) with container sandboxing disabled
-  (`PLAYWRIGHT_MCP_NO_SANDBOX=true`).
-- **Resource Cleanup**: Agents MUST close inactive browser sessions using `browser_close` to prevent
-  container memory leaks.
+- **DNS Rebinding Protection**: `PLAYWRIGHT_MCP_ALLOWED_HOSTS=*` MUST be configured in container environments to allow cross-container requests from `agentgateway`.
+- **Headless Execution**: All browser interactions MUST run in headless mode (`PLAYWRIGHT_MCP_HEADLESS=true`) with container sandboxing disabled (`PLAYWRIGHT_MCP_NO_SANDBOX=true`).
+- **Resource Cleanup**: Agents MUST close inactive browser sessions using `browser_close` to prevent container memory leaks.
 
 ---
 
 ## 4. Environment Variables
 
-The Playwright MCP server supports configuration via the following environment variables:
-
-| Environment Variable                            | Description                                                                            |
-| :---------------------------------------------- | :------------------------------------------------------------------------------------- |
-| `PLAYWRIGHT_MCP_PORT`                           | Listening port for HTTP transport (default: `8080`).                                   |
-| `PLAYWRIGHT_MCP_HOST`                           | Network interface binding host (default: `0.0.0.0`).                                   |
-| `PLAYWRIGHT_MCP_BROWSER`                        | Target browser engine (`chromium`, `firefox`, `webkit`, `chrome`, `msedge`).           |
-| `PLAYWRIGHT_MCP_HEADLESS`                       | Run browser in headless mode (`true` or `false`).                                      |
-| `PLAYWRIGHT_MCP_NO_SANDBOX`                     | Disable sandboxing for containerized runtimes (`true` or `false`).                     |
-| `PLAYWRIGHT_MCP_ALLOWED_HOSTS`                  | Comma-separated list or wildcard (`*`) of allowed request hostnames.                   |
-| `PLAYWRIGHT_MCP_ALLOWED_ORIGINS`                | Semicolon-separated list of trusted request origins.                                   |
-| `PLAYWRIGHT_MCP_BLOCKED_ORIGINS`                | Semicolon-separated list of blocked origins.                                           |
-| `PLAYWRIGHT_MCP_ALLOW_UNRESTRICTED_FILE_ACCESS` | Allow file system access outside workspace root (`true` or `false`).                   |
-| `PLAYWRIGHT_MCP_CAPS`                           | Additional capabilities (`vision`, `pdf`, `devtools`, `config`, `network`, `storage`). |
-| `PLAYWRIGHT_MCP_CDP_ENDPOINT`                   | External Chrome DevTools Protocol endpoint URL.                                        |
-| `PLAYWRIGHT_MCP_EXECUTABLE_PATH`                | Path to custom browser executable binary.                                              |
-| `PLAYWRIGHT_MCP_MOBILE`                         | Emulate generic mobile device layout (`true` or `false`).                              |
-| `PLAYWRIGHT_MCP_ISOLATED`                       | Keep browser profile in memory without disk persistence (`true` or `false`).           |
+| Environment Variable           | Description                                                                  |
+| :----------------------------- | :--------------------------------------------------------------------------- |
+| `PLAYWRIGHT_MCP_PORT`          | Listening port for HTTP transport (default: `8080`).                         |
+| `PLAYWRIGHT_MCP_HOST`          | Network interface binding host (default: `0.0.0.0`).                         |
+| `PLAYWRIGHT_MCP_BROWSER`       | Target browser engine (`chromium`, `firefox`, `webkit`, `chrome`, `msedge`). |
+| `PLAYWRIGHT_MCP_HEADLESS`      | Run browser in headless mode (`true` or `false`).                            |
+| `PLAYWRIGHT_MCP_NO_SANDBOX`    | Disable sandboxing for containerized runtimes (`true` or `false`).           |
+| `PLAYWRIGHT_MCP_ALLOWED_HOSTS` | Wildcard (`*`) or list of allowed request hostnames.                         |
 
 ---
 
 ## 5. Available Tools
-
-The Playwright MCP server exposes 23 browser automation tools:
 
 - `browser_click`: Performs click operations on target DOM elements.
 - `browser_close`: Closes the current browser page session.

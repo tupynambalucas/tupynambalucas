@@ -18,5 +18,5 @@
 > **Are you a developer?**
 > This repository (`tupynambalucas/tupynambalucas`) is a monorepo that manages my public image, development workspaces, and documentation.
 >
-> - [Documentation](https://tupynambalucas-docs.pages.dev/docs/intro) — Project documentation page built with Docusaurus
+> - [Documentation](https://docs.tupynambalucas.dev) — Project documentation page built with Docusaurus
 > - [Monorepo](https://github.com/tupynambalucas/tupynambalucas/blob/develop/MONOREPO.readme.md) — Entry point README for the tupynambalucas monorepo

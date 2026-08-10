@@ -1,12 +1,31 @@
 # Kubernetes Web UI Dashboard (Headlamp)
 
-Headlamp is an extensible, developer-friendly web UI for visual monitoring and administration of Kubernetes clusters.
+The `platform/services/headlamp` workspace provides an extensible, developer-friendly web UI for visual monitoring, pod logs, and administration of Kubernetes clusters.
+
+---
+
+## Technology Stack
+
+- **Base Image**: `ghcr.io/headlamp-k8s/headlamp:v0.41.0`
+- **Internal Port**: `4466`
+- **Service Port**: `80`
+- **Ingress Domain**: `headlamp-dev.tupynambalucas.dev`
 
 ---
 
 ## Service Overview
 
-This directory contains the custom build configuration to run Headlamp inside the local Kubernetes development cluster:
+- **[src/.kube/config/config.yaml](./src/.kube/config/config.yaml)**: In-cluster kubeconfig configured to dynamically read the mounted Pod ServiceAccount token (`tokenFile`), enabling seamless login-free access.
+- **[Dockerfile](./Dockerfile)**: Multi-stage container packaging setting up permissions and placing kubeconfig under `/home/headlamp/.kube/config`.
 
-1. **[config.yaml](./config.yaml)**: Kubeconfig configuration configured to dynamically read the mounted Pod ServiceAccount token (`tokenFile`), enabling seamless login-free access.
-2. **[Dockerfile](./Dockerfile)**: Sets up the custom container build environment, copying the custom kubeconfig to the standard location under `/home/headlamp/.kube/config` with correct file ownership.
+---
+
+## Getting Started
+
+Headlamp starts automatically when running platform services on Kubernetes:
+
+```bash
+pnpm platform:dev
+```
+
+Access the dashboard at `http://localhost:80` (or `http://headlamp-dev.tupynambalucas.dev`).

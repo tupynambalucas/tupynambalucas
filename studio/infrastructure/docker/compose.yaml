@@ -1,4 +1,4 @@
-name: tupynambalucas-penpot
+name: tupynambalucas-studio
 
 networks:
   penpot-net:
@@ -13,6 +13,8 @@ services:
     profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-frontend
     image: penpotapp/frontend:${PENPOT_VERSION:-latest}
+    env_file:
+      - ../.env
     ports:
       - '${PENPOT_FRONTEND_PORT:-9005}:8080'
     environment:
@@ -34,6 +36,8 @@ services:
     profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-backend
     image: penpotapp/backend:${PENPOT_VERSION:-latest}
+    env_file:
+      - ../.env
     environment:
       - PENPOT_FLAGS=${PENPOT_FLAGS}
       - PENPOT_REDIS_URI=${PENPOT_REDIS_URI}
@@ -62,6 +66,8 @@ services:
     profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-exporter
     image: penpotapp/exporter:${PENPOT_VERSION:-latest}
+    env_file:
+      - ../.env
     environment:
       - PENPOT_FLAGS=${PENPOT_FLAGS}
       - PENPOT_REDIS_URI=${PENPOT_REDIS_URI}
@@ -95,6 +101,8 @@ services:
     profiles: ['core', 'penpot']
     container_name: tupynambalucas-penpot-aide
     image: penpotapp/mcp:${PENPOT_VERSION:-latest}
+    env_file:
+      - ../.env
     ports:
       - '${PENPOT_AIDE_PORT_4400:-4400}:4400'
       - '${PENPOT_AIDE_PORT_4401:-4401}:4401'
@@ -114,6 +122,8 @@ services:
     profiles: ['core', 'memos']
     container_name: tupynambalucas-memos
     image: neosmemo/memos:stable
+    env_file:
+      - ../.env
     ports:
       - '${MEMOS_PORT:-5230}:5230'
     volumes:

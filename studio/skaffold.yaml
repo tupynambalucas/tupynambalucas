@@ -2,6 +2,30 @@ apiVersion: skaffold/v4beta11
 kind: Config
 metadata:
   name: studio-dev
+requires:
+  - configs: ['platform-dev']
+    path: ../platform/skaffold.yaml
+manifests:
+  kustomize:
+    paths:
+      - infrastructure/kubernetes
+    buildArgs:
+      - --load-restrictor=LoadRestrictionsNone
 deploy:
-  docker:
-    useCompose: true
+  kubectl: {}
+portForward:
+  - resourceType: service
+    resourceName: penpot-frontend
+    namespace: studio
+    port: 9005
+    localPort: 9005
+  - resourceType: service
+    resourceName: memos
+    namespace: studio
+    port: 5230
+    localPort: 5230
+  - resourceType: service
+    resourceName: penpot-aide
+    namespace: studio
+    port: 4401
+    localPort: 4401

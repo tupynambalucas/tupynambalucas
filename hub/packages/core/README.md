@@ -21,10 +21,10 @@ The shared library ensures architectural consistency within each community insta
 
 ### Documentation
 
-Detailed technical documentation is available in our [Knowledge Base](https://tupynambalucas-docs.pages.dev):
+Detailed technical documentation is available in our [Knowledge Base](https://docs.tupynambalucas.dev):
 
-- [Architecture Overview](https://tupynambalucas-docs.pages.dev/docs/engineering/architecture): SSOT principles and monorepo structure.
-- [Style Guide](https://tupynambalucas-docs.pages.dev/docs/engineering/styleguide): Coding standards and naming conventions.
+- [Architecture Overview](https://docs.tupynambalucas.dev/docs/explanation/architecture-overview): SSOT principles and monorepo structure.
+- [Style Guide](https://docs.tupynambalucas.dev/docs/reference/styleguide): Coding standards and naming conventions.
 
 ---
 

@@ -12,10 +12,10 @@ While the project currently focuses on "Single-Instance Mastery", the backend is
 
 ### Documentation
 
-Detailed technical documentation is available in our [Knowledge Base](https://tupynambalucas-docs.pages.dev):
+Detailed technical documentation is available in our [Knowledge Base](https://docs.tupynambalucas.dev):
 
-- [Architecture Overview](https://tupynambalucas-docs.pages.dev/docs/engineering/architecture): Technical decisions and domain modeling details.
-- [Style Guide](https://tupynambalucas-docs.pages.dev/docs/engineering/styleguide): Coding standards and conventions.
+- [Architecture Overview](https://docs.tupynambalucas.dev/docs/explanation/architecture-overview): Technical decisions and domain modeling details.
+- [Style Guide](https://docs.tupynambalucas.dev/docs/reference/styleguide): Coding standards and conventions.
 
 ---
 

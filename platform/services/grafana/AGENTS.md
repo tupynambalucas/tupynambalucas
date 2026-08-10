@@ -1,29 +1,22 @@
 # Local Context: Grafana Visualization Service
 
-This service directory ([grafana/](./)) manages visualization and dashboard configurations for
-monitoring the Monorepo infrastructure.
+This service directory ([grafana/](./)) manages visualization, dashboard provisioning, and datasource configurations for the tupynambalucas.dev platform.
 
 ---
 
 ## 1. Directory Layout
 
-- **[Dockerfile](./Dockerfile)**: Sets up the Grafana service based on the official `grafana/grafana`
-  base image.
-- **[provisioning/](./provisioning/)**: Holds YAML configurations to automatically load data sources
-  and dashboards.
-- **[provisioning/dashboards/sources/](./provisioning/dashboards/sources/)**: Stores JSON dashboard
-  files, including the core agentgateway metrics dashboard.
+- **[Dockerfile](./Dockerfile)**: Sets up Grafana runtime based on `grafana/grafana` with multi-stage targets (`dev` and `prod`).
+- **[src/provisioning/datasources/datasources.yaml](./src/provisioning/datasources/datasources.yaml)**: Declarative datasource definitions for Prometheus (`http://prometheus:9090`), Loki (`http://loki:3100`), and Tempo (`http://tempo:3200`).
+- **[src/provisioning/dashboards/dashboards.yaml](./src/provisioning/dashboards/dashboards.yaml)**: Automated dashboard provider settings scanning `/etc/grafana/provisioning/dashboards/sources`.
+- **[src/provisioning/dashboards/sources/agentgateway-dashboard.json](./src/provisioning/dashboards/sources/agentgateway-dashboard.json)**: Provisioned telemetry dashboard for AgentGateway latency, request counts, and error rates.
 
 ---
 
 ## 2. Guardrails & Architecture Rules
 
-- **Execution Port**: The server internally exposes port `3000`. Inside Kubernetes, this must be
-  mapped to port `3000` on the Service definition.
-- **Provisioning Flow**: Dashboards and datasources MUST be provisioned using code files under
-  `provisioning/`. Never configure dashboards manually in the UI for persistent setups.
-- **Permissions**: The Dockerfile MUST copy provisioning configurations using the `grafana` user
-  ownership context (`--chown=grafana:grafana`).
-- **Authentication**: Grafana admin security requires mapping the `GF_SECURITY_ADMIN_PASSWORD`
-  variable to the `GRAFANA_ADMIN_PASSWORD` secret generated from the local environment
-  configurations.
+- **Execution Port**: Grafana internally exposes port `3000`. Inside Kubernetes, this is routed via `grafana` Service (port `3000`) and exposed via Ingress at `grafana-dev.tupynambalucas.dev`.
+- **Declarative Provisioning**: Dashboards and datasources MUST be maintained in code under [src/provisioning/](./src/provisioning/). Never configure datasources manually in the UI.
+- **Permissions**: The Dockerfile MUST copy provisioning configurations using `grafana` user ownership (`--chown=grafana:grafana`).
+- **Anonymous Authentication**: Configured with `GF_AUTH_ANONYMOUS_ENABLED=true` and `GF_AUTH_ANONYMOUS_ORG_ROLE=Admin` for friction-free local developer access.
+- **Storage Persistence**: State and user customizations are persisted via PersistentVolumeClaim `grafana-pvc` mapped to `/var/lib/grafana`.

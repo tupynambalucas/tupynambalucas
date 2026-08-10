@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-studio-tupynambalucas-dev
+  namespace: studio
+spec:
+  secretName: studio-tls-secret
+  issuerRef:
+    name: letsencrypt-cloudflare-dns
+    kind: ClusterIssuer
+  commonName: '*.lan.tupynambalucas.dev'
+  dnsNames:
+    - '*.lan.tupynambalucas.dev'
