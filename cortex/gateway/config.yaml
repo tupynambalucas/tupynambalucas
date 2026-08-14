@@ -8,12 +8,17 @@ config:
     otlpEndpoint: http://otel-collector:4317
     randomSampling: true
 mcp:
-  port: 443
+  port: 8080
   policies:
     cors:
       allowOrigins:
+        - '*'
+        - 'https://agentgateway.tupynambalucas.dev'
         - 'https://agentgateway-dev.tupynambalucas.dev'
         - 'https://agentgateway-mcp-dev.tupynambalucas.dev'
+        - 'https://agentgateway-mcp.tupynambalucas.dev'
+        - 'https://agentgateway-ingress-dev.tupynambalucas.dev'
+        - 'https://agentgateway-ingress.tupynambalucas.dev'
       allowMethods:
         - '*'
         - GET
@@ -26,18 +31,13 @@ mcp:
       exposeHeaders:
         - Mcp-Session-Id
       allowCredentials: true
-    mcpGuardrails:
-      processors:
-        - kind: remote
-          host: mcp-guardrails:9001
-          failureMode: failOpen
-          methods:
-            tools/call: request
-            tools/list: response
+    authorization:
+      rules:
+        - 'request.path == "/ui" || request.path.startsWith("/ui/") || request.headers["x-mcp-token"] == "$CORTEX_MCP_TOKEN" || request.headers["authorization"] == "Bearer $CORTEX_MCP_TOKEN"'
   targets:
     - name: github
       mcp:
-        host: http://mcp-github:8080/mcp
+        host: http://mcp-github:8080/sse
       policies:
         backendAuth:
           key: '$GITHUB_PERSONAL_ACCESS_TOKEN'
@@ -52,15 +52,15 @@ mcp:
         host: http://mcp-firecrawl:8080/mcp
     - name: grafana
       mcp:
-        host: http://mcp-grafana:8080/mcp
+        host: http://mcp-grafana:8080/sse
     - name: playwright
       mcp:
-        host: http://mcp-playwright:8080/mcp
+        host: http://mcp-playwright:8080/sse
     - name: memory
       mcp:
         host: http://mcp-memory:8080/mcp
-  statefulMode: stateless
-  prefixMode: null
+  statefulMode: stateful
+  prefixMode: conditional
   failureMode: failOpen
 binds: []
 llm:

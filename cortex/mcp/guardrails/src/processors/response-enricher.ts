@@ -62,6 +62,7 @@ export function handleCheckResponse(res: McpResponseMessage): {
 
           if (result.tools && Array.isArray(result.tools)) {
             const updatedTools = result.tools.map((tool) => {
+              if (!tool) return tool;
               const currentDesc = tool.description ?? '';
               // Avoid duplicate injection
               if (!currentDesc.includes('[INSTRUCTIONS]:')) {

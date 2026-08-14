@@ -94,6 +94,7 @@
 /* Main Details Panel (2-Column Grid) */
 .detailsPanel {
   width: 100%;
+  min-height: 20rem;
   background: rgba(255, 255, 255, 0.03);
   border: 0.0625rem solid rgba(76, 77, 154, 0.3);
   border-radius: 0.875rem;

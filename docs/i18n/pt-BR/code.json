@@ -18,7 +18,7 @@
     "description": "First line of the introductory paragraph"
   },
   "homepage.button.docs": {
-    "message": "Explorar Arquitetura",
+    "message": "Ver Documentação",
     "description": "Label for the documentation button"
   },
   "homepage.button.workspaces": {

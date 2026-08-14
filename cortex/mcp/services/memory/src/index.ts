@@ -6,29 +6,29 @@ import { registerToolHandlers } from './tools/index.js';
 
 const fastify = Fastify({ logger: true });
 
-const mcpServer = new Server(
-  {
-    name: 'cortex-memory-mcp',
-    version: '1.0.0',
-  },
-  {
-    capabilities: {
-      tools: {},
-    },
-  },
-);
-
-registerToolHandlers(mcpServer);
-
-const transport = new StreamableHTTPServerTransport({
-  sessionIdGenerator: undefined,
-});
-
-await mcpServer.connect(transport);
-
 fastify.all('/mcp', async (req, reply) => {
-  reply.hijack();
-  await transport.handleRequest(req.raw, reply.raw, req.body);
+  try {
+    reply.hijack();
+    const server = new Server(
+      {
+        name: 'cortex-memory-mcp',
+        version: '1.0.0',
+      },
+      {
+        capabilities: {
+          tools: {},
+        },
+      },
+    );
+    registerToolHandlers(server);
+    const requestTransport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: undefined,
+    });
+    await server.connect(requestTransport);
+    await requestTransport.handleRequest(req.raw, reply.raw, req.body ?? undefined);
+  } catch (err) {
+    fastify.log.error(err);
+  }
 });
 
 fastify.listen({ port: config.PORT, host: '0.0.0.0' }, (err) => {

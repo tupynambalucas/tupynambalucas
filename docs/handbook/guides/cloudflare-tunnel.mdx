@@ -11,15 +11,11 @@ This guide details how to configure **Cloudflare Tunnel** (`cloudflared`) and **
 
 ## Architecture Overview
 
-Public ingress traffic is routed through Cloudflare's global edge network directly into the cluster via an encrypted QUIC tunnel:
+Public ingress traffic is routed through Cloudflare's global edge network directly into the cluster via an encrypted QUIC tunnel.
 
-```mermaid
-graph TD
-    Client["Browser / AI Agent"] -->|HTTPS 443| Edge["Cloudflare Edge (Managed TLS)"]
-    Edge -->|Encrypted QUIC Tunnel| TunnelPod["cloudflared Pod (platform)"]
-    TunnelPod -->|HTTP 80| Traefik["Traefik Ingress Controller (platform)"]
-    Traefik -->|Ingress Host Matching| Services["Cluster Services (cortex & platform)"]
-```
+:::info[Technical Architecture Reference]
+For complete technical specifications on edge TLS termination, single-level wildcard domain schemes (`*-dev.tupynambalucas.dev`), and reverse proxy topologies, refer to the [Infrastructure Reference](/docs/reference/infrastructure#4-reverse-proxy--request-routing).
+:::
 
 ---
 

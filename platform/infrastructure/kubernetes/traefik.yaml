@@ -94,6 +94,8 @@ spec:
             - --entrypoints.web.address=:80
             - --entrypoints.websecure.address=:443
             - --entrypoints.websecure.http.tls=true
+            - --entrypoints.websecure.forwardedHeaders.insecure=true
+            - --entrypoints.web.forwardedHeaders.insecure=true
             - --entrypoints.mcp.address=:8080
           ports:
             - name: web

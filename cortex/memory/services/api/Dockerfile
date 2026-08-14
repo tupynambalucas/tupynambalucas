@@ -26,7 +26,6 @@ ENV HOST=0.0.0.0
 ENV MONGODB_URI=mongodb://cortex_admin:cortex_password_dev@mongodb-db:27017/cortex_memory?authSource=admin
 
 COPY --from=builder /out ./
-COPY docs ./docs
 
 EXPOSE 3006
 CMD ["node", "dist/index.js"]

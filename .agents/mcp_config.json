@@ -2,6 +2,9 @@
   "mcpServers": {
     "agentgateway": {
       "url": "https://agentgateway-mcp-dev.tupynambalucas.dev/mcp",
+      "headers": {
+        "x-mcp-token": "${env:CORTEX_MCP_TOKEN}"
+      },
       "lifecycle": "eager"
     },
     "podman-mcp": {

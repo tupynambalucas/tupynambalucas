@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
+import { Icon, faGithub } from '@tupynambalucas-studio/assets/icons';
 import styles from './styles.module.css';
 
 export default function HeroSection(): ReactNode {
@@ -26,8 +27,8 @@ export default function HeroSection(): ReactNode {
           </p>
 
           <div className={styles.actions}>
-            <Link to="/docs/intro" className={styles.primaryBtn}>
-              <Translate id="homepage.button.docs">Explore Architecture</Translate>
+            <Link to="/docs" className={styles.primaryBtn}>
+              <Translate id="homepage.button.docs">See Documentation</Translate>
             </Link>
             <Link to="/workspaces" className={styles.secondaryBtn}>
               <Translate id="homepage.button.workspaces">Workspaces</Translate>
@@ -36,6 +37,7 @@ export default function HeroSection(): ReactNode {
               to="https://github.com/tupynambalucas/tupynambalucas"
               className={styles.tertiaryBtn}
             >
+              <Icon icon={faGithub} size="1.2em" style={{ marginRight: '0.5rem' }} />
               <Translate id="homepage.button.github">GitHub Monorepo</Translate>
             </Link>
           </div>

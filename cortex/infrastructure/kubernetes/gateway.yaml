@@ -17,14 +17,16 @@ spec:
     spec:
       containers:
         - name: agentgateway
-          image: tupynambalucas-cortex-gateway
+          image: cr.agentgateway.dev/agentgateway:latest
           imagePullPolicy: IfNotPresent
           args:
             - '-f'
             - '/config/config.yaml'
           ports:
             - name: traffic
-              containerPort: 443
+              containerPort: 8080
+            - name: llm
+              containerPort: 4000
             - name: admin
               containerPort: 15000
             - name: stats
@@ -54,6 +56,12 @@ spec:
                   name: cortex-secrets
                   key: FIRECRAWL_API_KEY
                   optional: true
+            - name: CORTEX_MCP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: CORTEX_MCP_TOKEN
+                  optional: true
           volumeMounts:
             - name: config-volume
               mountPath: /config
@@ -71,7 +79,10 @@ spec:
   ports:
     - name: traffic
       port: 8080
-      targetPort: 443
+      targetPort: 8080
+    - name: llm
+      port: 4000
+      targetPort: 4000
     - name: admin
       port: 15000
       targetPort: 15000
@@ -101,6 +112,7 @@ metadata:
   namespace: cortex
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web, websecure, mcp
+    traefik.ingress.kubernetes.io/custom-request-headers: 'X-Forwarded-Proto: https'
     traefik.ingress.kubernetes.io/custom-response-headers: 'Access-Control-Allow-Origin: *||Access-Control-Expose-Headers: Mcp-Session-Id||Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE||Access-Control-Allow-Headers: *||Access-Control-Allow-Credentials: true'
 spec:
   ingressClassName: traefik
@@ -122,16 +134,9 @@ spec:
                 name: agentgateway
                 port:
                   number: 15000
-    - host: agentgateway-mcp-dev.tupynambalucas.dev
+    - host: agentgateway.tupynambalucas.dev
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
           - path: /mcp
             pathType: Prefix
             backend:
@@ -139,6 +144,81 @@ spec:
                 name: agentgateway
                 port:
                   number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 15000
+    - host: agentgateway-ingress-dev.tupynambalucas.dev
+      http:
+        paths:
+          - path: /mcp
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
+          - path: /v1
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 4000
+    - host: agentgateway-ingress.tupynambalucas.dev
+      http:
+        paths:
+          - path: /mcp
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
+          - path: /v1
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 4000
+    - host: agentgateway-mcp-dev.tupynambalucas.dev
+      http:
+        paths:
+          - path: /mcp
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
+          - path: /v1
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 4000
+    - host: agentgateway-mcp.tupynambalucas.dev
+      http:
+        paths:
+          - path: /mcp
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
+          - path: /v1
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 4000
     - host: localhost
       http:
         paths:

@@ -11,15 +11,11 @@ Este guia detalha como configurar o **Cloudflare Tunnel** (`cloudflared`) e o **
 
 ## Visão Geral da Arquitetura
 
-O tráfego de entrada público é roteado através da rede global de borda da Cloudflare diretamente para o cluster por meio de um túnel criptografado QUIC:
+O tráfego de entrada público é roteado através da rede edge global da Cloudflare diretamente para o cluster por meio de um túnel QUIC criptografado.
 
-```mermaid
-graph TD
-    Client["Navegador / Agente de IA"] -->|HTTPS 443| Edge["Borda Cloudflare (TLS Gerenciado)"]
-    Edge -->|Túnel Criptografado QUIC| TunnelPod["Pod cloudflared (platform)"]
-    TunnelPod -->|HTTP 80| Traefik["Traefik Ingress Controller (platform)"]
-    Traefik -->|Correspondência de Host Ingress| Services["Serviços do Cluster (cortex & platform)"]
-```
+:::info[Referência Técnica de Arquitetura]
+Para especificações técnicas completas sobre terminação TLS na edge, esquemas de domínio wildcard de nível único (`*-dev.tupynambalucas.dev`) e topologias de proxy reverso, consulte a [Referência de Infraestrutura](/docs/reference/infrastructure#4-proxy-reverso--roteamento-de-requisições).
+:::
 
 ---
 

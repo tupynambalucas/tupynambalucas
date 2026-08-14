@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
+import gsap from 'gsap';
 import { WORKSPACES, type WorkspaceInfo } from './data';
 import styles from './styles.module.css';
 
@@ -12,6 +13,11 @@ export default function MonorepoMap() {
   const workspaceKeys = Object.keys(WORKSPACES);
   const [selectedId, setSelectedId] = useState<string>(workspaceKeys[0] || 'cortex');
 
+  const panelRef = useRef<HTMLDivElement>(null);
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
+
   const getLocalizedWorkspace = (ws: WorkspaceInfo): WorkspaceInfo => {
     if (!isPtBR || !ws.ptBR) return ws;
     return { ...ws, ...ws.ptBR };
@@ -20,6 +26,58 @@ export default function MonorepoMap() {
   const selectedWorkspace = getLocalizedWorkspace(
     WORKSPACES[selectedId] || WORKSPACES[workspaceKeys[0]],
   );
+
+  useLayoutEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (!panelRef.current) return;
+
+    const panelEl = panelRef.current;
+    const leftEl = leftColRef.current;
+    const rightEl = rightColRef.current;
+
+    // Get current height before update (or auto height)
+    const startHeight = panelEl.offsetHeight;
+
+    const ctx = gsap.context(() => {
+      // Temporarily set height to auto to measure new height
+      gsap.set(panelEl, { height: 'auto' });
+      const targetHeight = panelEl.offsetHeight;
+
+      // Animate container height smoothly
+      if (startHeight !== targetHeight) {
+        gsap.fromTo(
+          panelEl,
+          { height: startHeight },
+          {
+            height: targetHeight,
+            duration: 0.35,
+            ease: 'power2.out',
+            clearProps: 'height',
+          },
+        );
+      }
+
+      // Smooth fade out and subtle slide down of content
+      gsap.fromTo(
+        [leftEl, rightEl],
+        { opacity: 0, y: 10 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.35,
+          ease: 'power2.out',
+          stagger: 0.04,
+          clearProps: 'opacity,transform',
+        },
+      );
+    }, panelRef);
+
+    return () => ctx.revert();
+  }, [selectedId]);
 
   return (
     <section className={styles.monorepoSection}>
@@ -56,8 +114,8 @@ export default function MonorepoMap() {
         </div>
 
         {/* Dynamic Summary Panel (2-Column Split) */}
-        <div className={styles.detailsPanel}>
-          <div className={styles.leftCol}>
+        <div ref={panelRef} className={styles.detailsPanel}>
+          <div ref={leftColRef} className={styles.leftCol}>
             <div className={styles.panelHeader}>
               <span className={styles.pathTag}>{selectedWorkspace.path}</span>
               <h3>{selectedWorkspace.name}</h3>
@@ -73,7 +131,7 @@ export default function MonorepoMap() {
             </div>
           </div>
 
-          <div className={styles.rightCol}>
+          <div ref={rightColRef} className={styles.rightCol}>
             <div className={styles.metadataSection}>
               <h4>
                 <Translate id="homepage.monorepo.techstack">Tech Stack</Translate>
