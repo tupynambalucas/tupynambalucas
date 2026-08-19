@@ -1,0 +1,55 @@
+---
+title: AGENTS.md Format Reference
+sidebar_label: AGENTS.md Format Reference
+sidebar_position: 7
+---
+
+# AGENTS.md Format Reference
+
+This reference specifies the syntax, structural schemas, and constraints for `AGENTS.md` context router files.
+
+---
+
+## 1. Context Hierarchy Directive Specification
+
+The `<context-hierarchy>` XML block must be the first element in any Layer-2 or Layer-3 file.
+
+### Schema
+
+```xml
+<context-hierarchy>
+  <parent src="<RELATIVE_PATH_TO_PARENT_AGENTS_MD>" type="<PARENT_TYPE>" />
+  <system-instruction>
+    <IMPERATIVE_SYSTEM_INSTRUCTION>
+  </system-instruction>
+</context-hierarchy>
+```
+
+### Attribute Reference
+
+| Attribute | Required | Valid Values                            | Description                                                          |
+| :-------- | :------- | :-------------------------------------- | :------------------------------------------------------------------- |
+| `src`     | Yes      | Relative path                           | Path to parent `AGENTS.md` (e.g., `../AGENTS.md`, `../../AGENTS.md`) |
+| `type`    | Yes      | `global-rules`, `bounded-context-rules` | Semantic categorization of parent rules                              |
+
+---
+
+## 2. Layer Specifications
+
+| Metric                  | Layer 1 (Global)                         | Layer 2 (Bounded Context)                    | Layer 3 (Sub-Domain)         |
+| :---------------------- | :--------------------------------------- | :------------------------------------------- | :--------------------------- |
+| **File Path**           | `/AGENTS.md`                             | `/[context]/AGENTS.md`                       | `/[context]/[sub]/AGENTS.md` |
+| **Line Budget**         | 80 lines                                 | 120 lines                                    | 100 lines                    |
+| **Hierarchy Tag**       | None                                     | Yes (points to `/AGENTS.md`)                 | Yes (points to Layer 1 & 2)  |
+| **Ubiquitous Language** | No                                       | Yes                                          | No (inherited)               |
+| **Required Skills**     | `agent-router-expert`, `markdown-expert` | Context-specific (e.g., `docusaurus-expert`) | No (inherited)               |
+| **Code Snippets**       | No                                       | Optional                                     | Yes                          |
+
+---
+
+## 3. Universal Constraints
+
+- **Language**: English (en-US) only.
+- **Emojis**: Strictly forbidden in all headings, lists, and prose.
+- **Paths**: Relative Markdown links only (`./relative/path.md`). Absolute filesystem paths and external URLs are strictly forbidden.
+- **Placeholders**: Prohibited (no `TODO`, `TBD`, or empty sections).

@@ -1,3 +1,11 @@
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+
 # Bounded Context: AI Cortex Router
 
 This document defines the domain rules, architecture, and workspace navigation for the AI Cortex bounded context in the tupynambalucas.dev monorepo.
@@ -10,6 +18,18 @@ This document defines the domain rules, architecture, and workspace navigation f
 - **[infrastructure/](./infrastructure/AGENTS.md)**: Kubernetes manifests, Kustomize overlays, Docker Compose profiles, and environment variables ([infrastructure/AGENTS.md](./infrastructure/AGENTS.md)).
 - **[mcp/](./mcp/AGENTS.md)**: Model Context Protocol (MCP) data plane, ExtMCP gRPC guardrails, inspector, and service adapters ([mcp/AGENTS.md](./mcp/AGENTS.md)).
 - **[memory/](./memory/AGENTS.md)**: Self-hosted MongoDB Vector RAG memory subsystem, Fastify API, and React Web dashboard ([memory/AGENTS.md](./memory/AGENTS.md)).
+
+---
+
+## 1.5. Ubiquitous Language
+
+| Term           | Definition                                                                      | Forbidden Synonyms |
+| :------------- | :------------------------------------------------------------------------------ | :----------------- |
+| `AgentGateway` | The central MCP ingress proxy routing tool calls to downstream adapters         | API gateway, proxy |
+| `MCP Tool`     | A registered function exposed by a downstream MCP service adapter               | endpoint, function |
+| `Guardrail`    | The ExtMCP gRPC policy processor validating and mutating tool call payloads     | middleware, filter |
+| `Memory`       | The MongoDB Vector RAG subsystem storing episodic and semantic agent data       | database, storage  |
+| `Persona`      | A static system prompt configuration defining an agent's behavior and expertise | role, profile      |
 
 ---
 

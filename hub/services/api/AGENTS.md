@@ -1,3 +1,12 @@
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../../AGENTS.md" in this session, stop
+    now and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: Instance API Application
 
 This workspace (`@tupynambalucas-hub/api`) contains the Fastify 5 REST API for community-specific instance operations.

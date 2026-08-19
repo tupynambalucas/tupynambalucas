@@ -42,6 +42,22 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ---
 
+## 1.5. Context Hierarchy Directive
+
+Every Layer-2 and Layer-3 `AGENTS.md` file MUST include a `<context-hierarchy>` XML block as the
+very first content in the file. This directive instructs AI agents to read the parent context file
+before proceeding.
+
+- The directive MUST appear before the H1 heading.
+- The `src` attribute MUST use a relative path to the parent `AGENTS.md`.
+- The `<system-instruction>` MUST use imperative language ("stop now and read").
+- The directive MUST NOT contain external URLs or absolute paths.
+
+See [references/syntax.md](references/syntax.md) for the complete directive syntax specification.
+See [TEMPLATES.md](../../plans/agents-context-refac/TEMPLATES.md) for layer-specific directive examples.
+
+---
+
 ## 2. Document Guidelines
 
 Use these guidelines when creating, updating, or analyzing `AGENTS.md` context files across monorepo workspaces and packages.
@@ -53,10 +69,26 @@ Use these guidelines when creating, updating, or analyzing `AGENTS.md` context f
   - Absolute file system paths (e.g. `/absolute/path/to/project`, `/projects/...`) and external web URLs (e.g. `https://github.com/...`, `https://docusaurus.io/...`) MUST NEVER be used inside `AGENTS.md` files. Local development localhost links (e.g. `http://localhost:3000`) are permitted solely in commands execution logs/guidance.
   - Write using clear, absolute constraints ("NEVER", "MUST", "ALWAYS") rather than conversational prose.
   - Do not duplicate global rules (English-First, Zero Emojis, Zero Placeholders) in local sub-workspace context files.
+  - **Line Budget**: Each layer has a maximum line budget. Exceeding the budget degrades token efficiency. Layer 1: 80 lines. Layer 2: 120 lines. Layer 3: 100 lines. Extract concrete code patterns to separate linked reference files when needed.
 - **Reference Files**:
   - AI Agent syntax and path reference: [references/syntax.md](references/syntax.md)
   - Root, core, api, and web layouts: [references/patterns.md](references/patterns.md)
   - Verification, emoji auditing, and rule alignment: [references/workflow.md](references/workflow.md)
+
+---
+
+## 2.5. Required Skills Declaration Standard
+
+When an `AGENTS.md` file governs a workspace where agents perform documentation tasks requiring a specialized skill, the skill MUST be declared in a `Required Skill` (or `Required Skills`) section.
+
+**Rules**:
+
+- Skills MUST be declared by name only (e.g., `agent-router-expert`, `docusaurus-expert`).
+- Skills MUST NOT be referenced by filesystem path (e.g., `.agents/skills/agent-router-expert/`).
+- Name-only resolution is mandatory because agents running in isolated container environments resolve skills exclusively through the active runtime's skill registry, not the filesystem.
+- The Layer-1 root `AGENTS.md` declares global document-authoring skills (`agent-router-expert` and `markdown-expert`).
+- Bounded context `AGENTS.md` files declare context-specific skills only when the bounded context has a specialized authoring workflow (e.g., `docs/AGENTS.md` declares `docusaurus-expert`).
+- Layer-3 sub-domain files do NOT repeat skill declarations from parent files.
 
 ---
 

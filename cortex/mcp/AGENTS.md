@@ -1,3 +1,12 @@
+<context-hierarchy>
+  <parent src="../../AGENTS.md" type="global-rules" />
+  <parent src="../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../AGENTS.md" and "../AGENTS.md" in this session, stop now
+    and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: Model Context Protocol (MCP) Ecosystem
 
 This workspace context ([mcp/](./)) orchestrates the Model Context Protocol (MCP) data plane subsystem within the AI Cortex architecture, containing the ExtMCP policy guardrails server, developer inspector, and containerized downstream tool server adapters.
@@ -6,15 +15,15 @@ This workspace context ([mcp/](./)) orchestrates the Model Context Protocol (MCP
 
 ## 1. Directory Layout
 
-- **[guardrails/](./guardrails/AGENTS.md)**: Standalone gRPC ExtMCP policy processor for AgentGateway payload validation, tool description enrichment, and host URL mutation ([guardrails/AGENTS.md](./guardrails/AGENTS.md)).
-- **[inspector/](./inspector/AGENTS.md)**: Containerized developer interface for dynamic MCP tool server inspection and debugging ([inspector/AGENTS.md](./inspector/AGENTS.md)).
+- **[guardrails/](./guardrails/)**: Standalone gRPC ExtMCP policy processor for AgentGateway payload validation, tool description enrichment, and host URL mutation.
+- **[inspector/](./inspector/)**: MCP Inspector web UI available at `http://localhost:6274` during development. Use exclusively for debugging tool schema definitions and live request inspection. MUST NOT be exposed in production environments.
 - **[services/](./services/)**: Containerized downstream MCP tool server adapters:
-  - **[context7](./services/context7/AGENTS.md)**: Real-time framework documentation and code snippet search tools ([context7/AGENTS.md](./services/context7/AGENTS.md)).
-  - **[firecrawl](./services/firecrawl/AGENTS.md)**: Web scraping, crawling, searching, document parsing, and autonomous research tools ([firecrawl/AGENTS.md](./services/firecrawl/AGENTS.md)).
-  - **[github](./services/github/AGENTS.md)**: GitHub REST/GraphQL API integration for repository, PR, issue, commit, and Copilot management ([github/AGENTS.md](./services/github/AGENTS.md)).
-  - **[grafana](./services/grafana/AGENTS.md)**: Observability tools for Prometheus metrics, Loki logs, Tempo traces, and Pyroscope profiles ([grafana/AGENTS.md](./services/grafana/AGENTS.md)).
-  - **[memory](./services/memory/AGENTS.md)**: RAG vector search, episodic chat history, entity graph, and document ingestion tools ([memory/AGENTS.md](./services/memory/AGENTS.md)).
-  - **[playwright](./services/playwright/AGENTS.md)**: Headless browser automation and accessibility snapshot tools using Chromium ([playwright/AGENTS.md](./services/playwright/AGENTS.md)).
+  - **[context7](./services/context7/)**: Real-time framework documentation and code snippet search tools.
+  - **[firecrawl](./services/firecrawl/)**: Web scraping, crawling, searching, document parsing, and autonomous research tools.
+  - **[github](./services/github/)**: GitHub REST/GraphQL API integration for repository, PR, issue, commit, and Copilot management.
+  - **[grafana](./services/grafana/)**: Observability tools for Prometheus metrics, Loki logs, Tempo traces, and Pyroscope profiles.
+  - **[memory](./services/memory/)**: RAG vector search, episodic chat history, entity graph, and document ingestion tools.
+  - **[playwright](./services/playwright/)**: Headless browser automation and accessibility snapshot tools using Chromium.
 
 ---
 
@@ -32,3 +41,11 @@ This workspace context ([mcp/](./)) orchestrates the Model Context Protocol (MCP
 - **Credential Separation**: API keys and tokens MUST be configured via container environment files ([.env](../infrastructure/.env)) and MUST NOT be hardcoded.
 - **Fail-Safe Fallbacks**: ExtMCP guardrail handlers MUST catch parsing exceptions and return pass-through policies (`{ pass: {} }`) to prevent service interruption.
 - **Relative Linking**: All references MUST use relative Markdown links without enclosing backticks.
+
+### Guardrails Service Rules
+
+- The `mcp-guardrails` gRPC server MUST implement `tools/call` and `tools/list` ExtMCP handlers.
+- All handler functions MUST be wrapped in try/catch and return `{ pass: {} }` on any parsing exception to enforce the fail-open high-availability contract.
+- Tool description enrichment MUST add the configured `system_instruction` field to each tool metadata object before returning to AgentGateway.
+- `localhost` URL mutation MUST rewrite all tool argument URLs matching `localhost` patterns to `host.docker.internal` equivalents for containerized browser tools.
+- Asynchronous file reads for instruction enrichment MUST be cached in memory (`instructionsCache`) to minimize latency during tool discovery phases.

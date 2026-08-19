@@ -13,7 +13,20 @@ This reference defines the verification steps required when creating, updating, 
 
 ### B. Catalog Alignment
 
-- Verify that `AGENTS.md` files in applications (`apps/api`, `apps/web`) correctly refer to the pnpm Catalogs mapping of dependencies.
+- Verify that `AGENTS.md` files in applications (`services/api`, `services/web`) correctly refer to the pnpm Catalogs mapping of dependencies.
+
+### C. Context Hierarchy Directive Check
+
+- Verify that every Layer-2 and Layer-3 file has a `<context-hierarchy>` block as its first content (before the H1 heading).
+- Verify that the `src` attributes in the directive resolve to existing `AGENTS.md` files using the relative path from the current file.
+- Verify that the `<system-instruction>` uses imperative language.
+
+### D. Required Skills Audit
+
+- Verify that the root `/AGENTS.md` declares both `agent-router-expert` and `markdown-expert` in a `Required Skills` section.
+- Verify that `docs/AGENTS.md` declares `docusaurus-expert` in a `Required Skill` section.
+- Verify that all skill references use skill names only. The presence of any filesystem path (e.g., `.agents/skills/`, `../skills/`) in a skill declaration is a blocking violation.
+- Verify that Layer-3 files do NOT contain skill declarations (they inherit from parents).
 
 ---
 
@@ -41,3 +54,11 @@ This reference defines the verification steps required when creating, updating, 
 ### E. Prettier Alignment
 
 - Validate that the file complies with the formatting standards. Use `pnpm exec prettier --check <file>` or format with `pnpm exec prettier --write <file>`.
+
+### F. Line Budget Check
+
+- Count the total lines of the modified `AGENTS.md` file.
+- Layer 1 (root): MUST NOT exceed 80 lines.
+- Layer 2 (bounded context): MUST NOT exceed 120 lines.
+- Layer 3 (sub-domain): MUST NOT exceed 100 lines.
+- If the budget is exceeded, extract code snippets to a `patterns/` subdirectory and replace the inline block with a relative markdown link.

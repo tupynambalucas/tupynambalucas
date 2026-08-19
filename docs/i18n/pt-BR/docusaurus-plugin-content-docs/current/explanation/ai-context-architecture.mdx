@@ -1,0 +1,96 @@
+---
+title: Arquitetura de Contexto IA
+sidebar_label: Arquitetura de Contexto IA
+sidebar_position: 4
+---
+
+# Arquitetura de Contexto IA no Monorepo
+
+O monorepo **tupynambalucas.dev** organiza instruções para modelos de linguagem através de um sistema estruturado e hierárquico de roteamento de contexto em arquivos `AGENTS.md`. Essa arquitetura garante que agentes de codificação operem com máxima precisão, sem fragmentação de contexto e com estrita observância às fronteiras de domínio.
+
+---
+
+## 1. O Paradoxo da Fragmentação de Contexto
+
+Em monorepos complexos, fornecer contexto de máquina em todas as profundidades de diretório introduz falhas críticas:
+
+- **Miopia de Contexto**: Um agente que lê apenas um arquivo isolado perde as regras globais e a visão da arquitetura.
+- **Ineficiência de Tokens e Ruído**: Concatenar dezenas de arquivos esparsos esgota a janela de contexto antes do processamento das instruções reais da tarefa.
+- **Entropia de Manutenção**: Manter regras de domínio e linguagem ubíqua sincronizadas em dezenas de arquivos é insustentável.
+
+Para solucionar esses problemas, o monorepo adota a **Hierarquia de Contexto em 3 Camadas**.
+
+---
+
+## 2. A Hierarquia de Contexto em 3 Camadas
+
+```mermaid
+flowchart TD
+  subgraph Layer1 ["Camada 1: Contexto Global Mestre (/AGENTS.md)"]
+    L1Rules["Restrições Globais, Entrypoints, Módulos Skaffold, Skills Obrigatórias"]
+  end
+
+  subgraph Layer2 ["Camada 2: Roteadores de Bounded Context (/[context]/AGENTS.md)"]
+    L2Cortex["cortex/AGENTS.md"]
+    L2Hub["hub/AGENTS.md"]
+    L2Platform["platform/AGENTS.md"]
+    L2Studio["studio/AGENTS.md"]
+    L2Tools["tools/AGENTS.md"]
+    L2Renderer["renderer/AGENTS.md"]
+    L2Docs["docs/AGENTS.md"]
+  end
+
+  subgraph Layer3 ["Camada 3: Subdomínios Técnicos (/[context]/[sub]/AGENTS.md)"]
+    L3GW["cortex/gateway/AGENTS.md"]
+    L3Infra["cortex/infrastructure/AGENTS.md"]
+    L3MCP["cortex/mcp/AGENTS.md"]
+    L3Mem["cortex/memory/AGENTS.md"]
+    L3HCore["hub/packages/core/AGENTS.md"]
+    L3HApi["hub/services/api/AGENTS.md"]
+    L3HWeb["hub/services/web/AGENTS.md"]
+  end
+
+  Layer1 --> Layer2
+  Layer2 --> Layer3
+```
+
+### Camada 1: Contexto Global Mestre (`/AGENTS.md`)
+
+- **Escopo**: Regras globais, entrypoints, módulos Skaffold, padrões Prettier e declaração de skills obrigatórias.
+- **Orçamento de Linhas**: Máximo de 80 linhas.
+
+### Camada 2: Roteadores de Bounded Context (`/[context]/AGENTS.md`)
+
+- **Escopo**: Identidade de domínio, glossário de Linguagem Ubíqua, topologia de arquitetura, tabela de portas e comandos locais.
+- **Orçamento de Linhas**: Máximo de 120 linhas.
+
+### Camada 3: Subdomínios Técnicos (`/[context]/[sub]/AGENTS.md`)
+
+- **Escopo**: Padrões técnicos de implementação, trechos de código concretos (schemas Zod, plugins Fastify, seletores Zustand) e scripts de build.
+- **Orçamento de Linhas**: Máximo de 100 linhas.
+
+---
+
+## 3. Diretiva de Hierarquia de Contexto
+
+Para assegurar que agentes em subdiretórios nunca ignorem regras superiores, todo arquivo de Camada 2 e Camada 3 inicia com uma diretiva XML explícita:
+
+```xml
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+```
+
+---
+
+## 4. Alinhamento com Domain-Driven Design (DDD)
+
+Cada arquivo de Camada 2 define um glossário de **Linguagem Ubíqua**, prevenindo o uso de termos conflitantes entre domínios:
+
+- No **Developer Hub (`hub/`)**, o usuário autenticado é estritamente `Customer`.
+- No **Studio (`studio/`)**, variáveis de design são estritamente `Design Tokens`.
+- No **AI Cortex (`cortex/`)**, prompts de sistema são estritamente `Personas`.

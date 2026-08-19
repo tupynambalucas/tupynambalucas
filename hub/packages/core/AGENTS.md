@@ -1,3 +1,12 @@
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../../AGENTS.md" in this session, stop
+    now and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: Instance Core Package
 
 This package (`@tupynambalucas-hub/core`) is the Single Source of Truth (SSOT) for data contracts, validation schemas, and TypeScript interfaces shared across the community instance stack.
@@ -6,12 +15,7 @@ This package (`@tupynambalucas-hub/core`) is the Single Source of Truth (SSOT) f
 
 ## Local Architecture & Directory Map
 
-- **[src/schemas/](./src/schemas/)**: Central Zod schema definitions for request validation and type safety.
-- **[src/types/](./src/types/)**: Shared static TypeScript type mappings and configurations.
-
-All codebase symbols and schemas in this library are organized under `src/`:
-
-- **[src/schemas/](./src/schemas/)**: Central Zod schema definitions for requests, responses, and validation rules (e.g. `user.schema.ts`, `product.schema.ts`, `cycle.schema.ts`).
+- **[src/schemas/](./src/schemas/)**: Central Zod schema definitions for request validation and type safety (e.g. `user.schema.ts`, `product.schema.ts`, `cycle.schema.ts`).
 - **[src/types/](./src/types/)**: TypeScript type definitions and interfaces, both derived from Zod schemas (using `z.infer<typeof schema>`) and declared manually.
 - **[src/index.ts](./src/index.ts)**: Main entry point exporting all public interfaces, schemas, and constants.
 

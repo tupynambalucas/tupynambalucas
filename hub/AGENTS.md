@@ -1,10 +1,18 @@
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+
 # Bounded Context: Developer Hub
 
 This file defines the domain rules, local stack services, and workspace structure for the personal **Developer Hub Bounded Context** (`hub/`).
 
 ---
 
-## Bounded Context Navigation
+## 1. Bounded Context Navigation
 
 Before editing or analyzing code in this context, read the local rules for the specific workspace:
 
@@ -15,7 +23,18 @@ Before editing or analyzing code in this context, read the local rules for the s
 
 ---
 
-## Bounded Context Architecture
+## 1.5. Ubiquitous Language
+
+| Term       | Definition                                                                       | Forbidden Synonyms         |
+| :--------- | :------------------------------------------------------------------------------- | :------------------------- |
+| `Customer` | The authenticated user of the developer hub platform                             | user, person, member       |
+| `Product`  | A catalog item or service offered through the hub                                | item, listing, offering    |
+| `Cycle`    | An active time-bound subscription window                                         | period, subscription, plan |
+| `Core`     | The `@tupynambalucas-hub/core` shared Zod schema and TypeScript contract library | shared, common, utils      |
+
+---
+
+## 2. Bounded Context Architecture
 
 The Hub context manages all personal developer website operations. It is architected for strict domain isolation and scalability.
 
@@ -37,14 +56,14 @@ graph TD
 
 ---
 
-## Context Isolation Guardrails
+## 3. Context Isolation Guardrails
 
 1. **No Cross-Context Imports**: You MUST NEVER import modules, constants, validation schemas, or helper functions from other bounded contexts like `profile/`. All shared utilities or assets must be locally duplicated or centralized in global tooling workspaces if permitted.
 2. **Catalog Integrity**: All dependencies must declare versions using workspace catalogs (`catalog:web-stack`, `catalog:api-stack`, `catalog:shared-stack`, etc.) defined in `pnpm-workspace.yaml`.
 
 ---
 
-## Local Lifecycle Commands
+## 4. Local Lifecycle Commands
 
 Run these scripts from the monorepo root to manage the hub stack:
 

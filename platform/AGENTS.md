@@ -1,3 +1,11 @@
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+
 # Bounded Context: Platform Services Router
 
 This workspace context ([platform/](./)) centralizes and manages core cluster infrastructure, ingress routing, observability pipelines, developer dashboards, and Turborepo remote build caching for the tupynambalucas.dev monorepo.
@@ -6,14 +14,19 @@ This workspace context ([platform/](./)) centralizes and manages core cluster in
 
 ## 1. Bounded Context Navigation
 
-- **[infrastructure/](./infrastructure/AGENTS.md)**: Kubernetes Kustomize manifests, cert-manager certificates, Traefik ingress, and Docker Compose configurations ([infrastructure/AGENTS.md](./infrastructure/AGENTS.md)).
-- **[services/grafana/](./services/grafana/AGENTS.md)**: Grafana visualization service, automated datasources, and provisioned telemetry dashboards ([services/grafana/AGENTS.md](./services/grafana/AGENTS.md)).
-- **[services/headlamp/](./services/headlamp/AGENTS.md)**: Tokenless Kubernetes Web UI dashboard for cluster-wide resource administration ([services/headlamp/AGENTS.md](./services/headlamp/AGENTS.md)).
-- **[services/otelcol/](./services/otelcol/AGENTS.md)**: Edge OpenTelemetry Collector aggregating metrics, logs, and distributed traces ([services/otelcol/AGENTS.md](./services/otelcol/AGENTS.md)).
-- **[services/prometheus/](./services/prometheus/AGENTS.md)**: Prometheus time-series metrics storage and PromQL resolution engine ([services/prometheus/AGENTS.md](./services/prometheus/AGENTS.md)).
-- **[services/loki/](./services/loki/AGENTS.md)**: Grafana Loki log aggregation and LogQL query service ([services/loki/AGENTS.md](./services/loki/AGENTS.md)).
-- **[services/tempo/](./services/tempo/AGENTS.md)**: Grafana Tempo distributed trace storage and TraceQL query service ([services/tempo/AGENTS.md](./services/tempo/AGENTS.md)).
-- **[services/turbocache/](./services/turbocache/AGENTS.md)**: Containerized Turborepo Remote Cache server accelerating monorepo builds ([services/turbocache/AGENTS.md](./services/turbocache/AGENTS.md)).
+- **[services/](./services/)**: Observability and infrastructure services (Grafana, Headlamp, Loki, OTel Collector, Prometheus, Tempo, Turbocache). Rules are consolidated in Section 5 of this file.
+- **[infrastructure/](./infrastructure/)**: Kubernetes Kustomize manifests, cert-manager certificates, Traefik ingress, and Docker Compose configurations. Rules are consolidated in Section 5 of this file.
+
+---
+
+## 1.5. Ubiquitous Language
+
+| Term                 | Definition                                                               | Forbidden Synonyms   |
+| :------------------- | :----------------------------------------------------------------------- | :------------------- |
+| `Ingress`            | The Traefik reverse proxy routing external traffic into cluster services | load balancer, proxy |
+| `Telemetry Pipeline` | The OTel Collector chain aggregating metrics, logs, and traces           | observability stack  |
+| `Datasource`         | A Grafana-configured connection to Prometheus, Loki, or Tempo            | data source, backend |
+| `Build Cache`        | The Turbocache remote artifact store accelerating Turborepo builds       | cache server         |
 
 ---
 
@@ -86,7 +99,7 @@ flowchart TD
 
 - **Unified Ingestion**: All runtime applications across the monorepo MUST forward logs, metrics, and distributed traces to `otelcol` via OTLP (`http://otel-collector:4317` or `http://otel-collector.platform.svc.cluster.local:4317`). Direct logging to database tables is strictly forbidden.
 - **Credential Separation**: Secrets and sensitive tokens (such as `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_TUNNEL_TOKEN`, `TURBO_TOKEN`, `GRAFANA_ADMIN_PASSWORD`) MUST be declared in [.env](./infrastructure/.env) and mapped through `platform-secrets` or `cloudflare-api-token-secret`.
-- **Declarative Provisioning**: Grafana dashboards and datasources MUST be maintained declaratively in [services/grafana/src/provisioning/](./services/grafana/src/provisioning/AGENTS.md). Manual UI dashboard configurations will be lost across container recycles.
+- **Declarative Provisioning**: Grafana dashboards and datasources MUST be maintained declaratively in [services/grafana/src/provisioning/](./services/grafana/src/provisioning/). Manual UI dashboard configurations will be lost across container recycles.
 - **Cache Persistence**: Turborepo cache artifacts and persistent telemetry data MUST be bound to PersistentVolumeClaims (`turbocache-pvc`, `grafana-pvc`, `prometheus-pvc`, `loki-pvc`, `tempo-pvc`) or named volume mounts.
 
 ---
@@ -102,3 +115,23 @@ flowchart TD
 | **Docker Compose**        | Stop standalone platform containers       | `pnpm platform:down`  |
 | **Docker Compose**        | View platform container logs in real time | `pnpm platform:logs`  |
 | **Docker Compose**        | Reset containers and persistent volumes   | `pnpm platform:reset` |
+
+---
+
+## 5. Sub-Domain Operational Rules
+
+### Infrastructure Provisioning Rules
+
+- All Kubernetes deployments MUST consume credentials from the `platform-secrets` Secret (generated from [infrastructure/.env](./infrastructure/.env)).
+- Kustomize `secretGenerator` entries MUST include `options.disableNameSuffixHash: true` to maintain predictable Secret names referenced by Deployments.
+- Docker Compose services MUST declare `restart: unless-stopped` policies for always-on services.
+
+### OTel Collector Pipeline Rules
+
+- The OpenTelemetry Collector configuration (`otelcol-config.yaml`) MUST define separate receivers, processors, and exporters. Combining pipeline stages in a single block is forbidden.
+- All applications MUST use OTLP/gRPC (`4317`) for trace and metrics export and OTLP/HTTP (`4318`) exclusively for log export from non-gRPC-capable runtimes.
+
+### Turbocache Rules
+
+- The `TURBO_TOKEN` environment variable MUST be set in both the `turbocache` service and all CI/CD pipeline environments. Builds without the token bypass remote caching silently.
+- Cache artifact retention is configured via `TURBO_API` pointing to the internal cluster DNS service `turbocache.platform.svc.cluster.local`.

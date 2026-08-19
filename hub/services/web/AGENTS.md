@@ -1,3 +1,12 @@
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../../AGENTS.md" in this session, stop
+    now and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: Instance Web Client Application
 
 This workspace (`@tupynambalucas-hub/web`) contains the React 19 Single Page Application client for community shop and administration operations.

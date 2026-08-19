@@ -1,0 +1,55 @@
+---
+title: Referência do Formato AGENTS.md
+sidebar_label: Referência do Formato AGENTS.md
+sidebar_position: 7
+---
+
+# Referência do Formato AGENTS.md
+
+Esta referência especifica a sintaxe, schemas estruturais e restrições para arquivos de contexto `AGENTS.md`.
+
+---
+
+## 1. Especificação da Diretiva de Hierarquia de Contexto
+
+O bloco XML `<context-hierarchy>` deve ser o primeiro elemento em qualquer arquivo de Camada 2 ou 3.
+
+### Schema
+
+```xml
+<context-hierarchy>
+  <parent src="<CAMINHO_RELATIVO_PARA_AGENTS_MD_PAI>" type="<TIPO_PAI>" />
+  <system-instruction>
+    <INSTRUCAO_IMPERATIVA_DE_SISTEMA>
+  </system-instruction>
+</context-hierarchy>
+```
+
+### Referência de Atributos
+
+| Atributo | Obrigatório | Valores Válidos                         | Descrição                                           |
+| :------- | :---------- | :-------------------------------------- | :-------------------------------------------------- |
+| `src`    | Sim         | Caminho relativo                        | Caminho para o `AGENTS.md` pai (ex: `../AGENTS.md`) |
+| `type`   | Sim         | `global-rules`, `bounded-context-rules` | Categorização semântica das regras superiores       |
+
+---
+
+## 2. Especificação por Camada
+
+| Métrica                 | Camada 1 (Global)                        | Camada 2 (Bounded Context)           | Camada 3 (Subdomínio)          |
+| :---------------------- | :--------------------------------------- | :----------------------------------- | :----------------------------- |
+| **Caminho**             | `/AGENTS.md`                             | `/[context]/AGENTS.md`               | `/[context]/[sub]/AGENTS.md`   |
+| **Orçamento**           | 80 linhas                                | 120 linhas                           | 100 linhas                     |
+| **Tag de Hierarquia**   | Não                                      | Sim (aponta para `/AGENTS.md`)       | Sim (aponta para Camada 1 e 2) |
+| **Linguagem Ubíqua**    | Não                                      | Sim                                  | Não (herdado)                  |
+| **Skills Obrigatórias** | `agent-router-expert`, `markdown-expert` | Específica (ex: `docusaurus-expert`) | Não (herdado)                  |
+| **Trechos de Código**   | Não                                      | Opcional                             | Sim                            |
+
+---
+
+## 3. Restrições Universais
+
+- **Idioma**: Apenas inglês técnico (en-US) para documentação e código.
+- **Emojis**: Estritamente proibidos em títulos, listas e texto.
+- **Links**: Apenas links relativos em Markdown (`./caminho/relativo.md`). Caminhos absolutos e URLs externas são proibidos.
+- **Placeholders**: Proibidos (sem `TODO`, `TBD` ou seções vazias).

@@ -1,8 +1,27 @@
-# Local Context: Renderer Workspace
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+
+# Bounded Context: Renderer Workspace
 
 This workspace (`@tupynambalucas/renderer`) manages the generic dynamic asset generator and
 document compilation engine, responsible for generating custom visual SVG cards and compiling
 markdown templates into production-grade documents across the monorepo.
+
+---
+
+## Ubiquitous Language
+
+| Term       | Definition                                                             | Forbidden Synonyms   |
+| :--------- | :--------------------------------------------------------------------- | :------------------- |
+| `Pipeline` | A registered module executing a single document compilation workflow   | task, job, process   |
+| `Renderer` | An engine compiling metadata and templates into SVG or Markdown output | generator, compiler  |
+| `Template` | A `.template.*` source file containing interpolation placeholders      | source, layout       |
+| `Card`     | A generated SVG file representing a visual GitHub stats visualization  | image, badge, widget |
 
 ---
 

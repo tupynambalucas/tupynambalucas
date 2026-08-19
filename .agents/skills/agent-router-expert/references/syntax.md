@@ -78,3 +78,54 @@ All `AGENTS.md` files must comply with the Prettier rules in [.prettierrc.json](
   - `singleQuote: true` (use single quotes for strings)
   - `trailingComma: "all"` (enforce trailing commas)
   - `arrowParens: "always"` (parentheses around arrow function arguments)
+
+---
+
+## 5. Context Hierarchy Directive Syntax
+
+The `<context-hierarchy>` directive is an XML block placed at the top of every Layer-2 and
+Layer-3 `AGENTS.md` file. It instructs agents to load parent context files before proceeding.
+
+### Structure
+
+The directive contains:
+
+- One or more `<parent>` elements referencing parent context files via relative paths.
+- A `<system-instruction>` element with an imperative, first-person instruction to the agent.
+
+### Attributes
+
+- `src` (required): Relative filesystem path from the current file to the parent `AGENTS.md`.
+- `type` (required): Semantic category. Valid values: `global-rules`, `bounded-context-rules`.
+
+### Layer-2 Example (one level deep)
+
+```xml
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+```
+
+### Layer-3 Example (two levels deep)
+
+```xml
+<context-hierarchy>
+  <parent src="../../AGENTS.md" type="global-rules" />
+  <parent src="../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../AGENTS.md" and "../AGENTS.md" in this session, stop now
+    and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+```
+
+### Critical Rules
+
+- The directive MUST be the first content in the file, before the H1 heading.
+- MUST use relative paths only. Absolute paths are forbidden.
+- MUST NOT reference external URLs.
+- MUST use imperative language in the system-instruction.

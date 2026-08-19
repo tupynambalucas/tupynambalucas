@@ -9,8 +9,6 @@ tupynambalucas.dev monorepo.
   is automatically updated by the `@tupynambalucas/renderer` workspace generator.
 - [MONOREPO.readme.md](./MONOREPO.readme.md): The official developer entry point and
   technical README for the repository.
-- [Documentation Site](https://docs.tupynambalucas.dev): Live Docusaurus knowledge base
-  deployed on Cloudflare Pages.
 
 ## Bounded Contexts
 
@@ -56,7 +54,22 @@ The monorepo uses Skaffold v4beta11 with three composable modules defined in
 - MUST format all files according to Prettier standards (2-space indent, max 100-character
   line width).
 
+## Required Skills
+
+When performing documentation tasks in this monorepo, agents MUST activate the appropriate skill
+by name before beginning:
+
+- **`agent-router-expert`**: MUST be active when creating, updating, or reviewing any `AGENTS.md`
+  file anywhere in the monorepo. This skill defines the 3-layer context hierarchy standard,
+  `<context-hierarchy>` directive syntax, line budgets, and validation workflow.
+- **`markdown-expert`**: MUST be active when creating, updating, or reviewing any `README.md`,
+  `.md` skill file, or general Markdown document outside the `docs/` workspace.
+
+These skills are referenced by name only and are resolved by the active agent runtime. Do not
+reference skill files by filesystem path, as agents running in isolated container environments
+resolve skills exclusively by their registered name.
+
 ## Routing
 
-When working within a specific bounded context, agents MUST refer to the local `AGENTS.md`
-file within that directory for scoped instructions.
+When working within a specific bounded context, agents MUST read the local `AGENTS.md` file
+within that directory before proceeding.

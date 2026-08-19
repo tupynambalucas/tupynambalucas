@@ -1,0 +1,70 @@
+---
+title: Criação de Arquivos AGENTS.md
+sidebar_label: Criação de Arquivos AGENTS.md
+sidebar_position: 6
+---
+
+# Criação de Arquivos de Contexto AGENTS.md
+
+Este guia orienta o processo de criação, refatoração e manutenção de arquivos de contexto `AGENTS.md` no monorepo.
+
+---
+
+## 1. Determinando a Camada Correta
+
+Antes de criar um arquivo `AGENTS.md`, identifique a camada correspondente:
+
+1. **Raiz do Monorepo**: Camada 1 (`/AGENTS.md`). Existe apenas um arquivo nesta camada.
+2. **Raiz de Bounded Context**: Camada 2 (`/[context]/AGENTS.md`). Criado para raízes de domínio (`cortex`, `hub`, `platform`, `studio`, `tools`, `renderer`, `docs`).
+3. **Subdomínio Técnico**: Camada 3 (`/[context]/[sub]/AGENTS.md`). Criado apenas para sub-workspaces com regras técnicas exclusivas (ex: `services/api`, `packages/core`).
+
+---
+
+## 2. Fluxo Passo a Passo
+
+### Passo 1: Adicionar a Diretiva de Hierarquia de Contexto
+
+Para arquivos de Camada 2 e 3, inclua o bloco XML `<context-hierarchy>` no início:
+
+```xml
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+```
+
+### Passo 2: Definir a Linguagem Ubíqua (Apenas Camada 2)
+
+Inclua uma tabela com termos de domínio e sinônimos proibidos:
+
+```markdown
+## Ubiquitous Language
+
+| Term       | Definition                 | Forbidden Synonyms   |
+| :--------- | :------------------------- | :------------------- |
+| `Customer` | Usuário autenticado do hub | user, person, member |
+```
+
+### Passo 3: Escrever Guardrails Imperativos
+
+Utilize termos imperativos (`MUST`, `NEVER`, `ALWAYS`):
+
+- **Correto**: `Controllers MUST inject Mongoose models into the repository constructor.`
+- **Incorreto**: `Controllers should probably use repositories.`
+
+### Passo 4: Validar Orçamento de Linhas
+
+- Camada 1: Máximo de 80 linhas.
+- Camada 2: Máximo de 120 linhas.
+- Camada 3: Máximo de 100 linhas.
+
+### Passo 5: Formatar com Prettier
+
+Execute o Prettier para formatar o arquivo:
+
+```bash
+pnpm exec prettier --write <caminho/para/AGENTS.md>
+```

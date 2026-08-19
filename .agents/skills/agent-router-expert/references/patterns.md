@@ -36,18 +36,34 @@ This file establishes the authoritative monorepo context, global rules, and inte
 
 ## 2. Bounded Context Router Pattern (`/[context]/AGENTS.md`)
 
-Created at the root of a domain directory (e.g. `extension/`, `studio/`, `tools/`, `studio/`) to route agents to its apps and packages.
+Created at the root of a domain directory (e.g. `cortex/`, `studio/`, `hub/`) to route agents to
+its apps and packages.
 
 ### Outline Layout
 
 ```markdown
-# Bounded Context Context: [Context Name]
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
 
-This file defines the domain rules, local stack services, and workspace structure for the [Context Name] bounded context.
+# Bounded Context: [Context Name]
+
+This file defines the domain rules, local stack services, and workspace structure for the
+[Context Name] bounded context.
 
 ## Bounded Context Navigation
 
-- Links to sub-workspaces (Core, API, Web, etc.).
+- Links to sub-workspaces (Core, services/api, services/web, etc.).
+
+## Ubiquitous Language
+
+| Term   | Definition              | Forbidden Synonyms      |
+| :----- | :---------------------- | :---------------------- |
+| `Term` | Domain-specific meaning | forbidden, alternatives |
 
 ## Bounded Context Architecture
 
@@ -71,9 +87,19 @@ Details the validation and type requirements of the core library.
 ### Outline Layout
 
 ```markdown
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../../AGENTS.md" in this session, stop
+    now and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: [Context] Core Package
 
-This package is the Single Source of Truth (SSOT) for data contracts, validation schemas, and TypeScript interfaces.
+This package is the Single Source of Truth (SSOT) for data contracts, validation schemas, and
+TypeScript interfaces.
 
 ## Local Architecture & Directory Map
 
@@ -90,13 +116,22 @@ This package is the Single Source of Truth (SSOT) for data contracts, validation
 
 ---
 
-## 4. API Context Pattern (`/[context]/apps/api/AGENTS.md`)
+## 4. API Context Pattern (`/[context]/services/api/AGENTS.md`)
 
 Defines controllers, services, repositories, and models.
 
 ### Outline Layout
 
 ```markdown
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../../AGENTS.md" in this session, stop
+    now and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: [Context] API Application
 
 This workspace contains the REST API for this bounded context.
@@ -116,13 +151,22 @@ This workspace contains the REST API for this bounded context.
 
 ---
 
-## 5. Web Context Pattern (`/[context]/apps/web/AGENTS.md`)
+## 5. Web Context Pattern (`/[context]/services/web/AGENTS.md`)
 
 Specifies Zustand selectors, JSX rendering, and CSS rules.
 
 ### Outline Layout
 
 ```markdown
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../../AGENTS.md" in this session, stop
+    now and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: [Context] Web Client Application
 
 This workspace contains the React Single Page Application client.
@@ -133,9 +177,46 @@ This workspace contains the React Single Page Application client.
 
 ## Web Coding Guardrails
 
-- Zustand selector pattern, explicit JSX checks, relative CSS unit rules, and console logging constraints.
+- Zustand selector pattern, explicit JSX checks, relative CSS unit rules, and console logging
+  constraints.
 
 ## Local Lifecycle Commands
 
 - dev and build commands.
+```
+
+---
+
+## 6. Infrastructure / Deployment Context Pattern (`/[context]/infrastructure/AGENTS.md`)
+
+Used for Kubernetes manifests, Docker Compose configurations, and environment variable templates.
+
+### Outline Layout
+
+```markdown
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../AGENTS.md" in this session, stop now
+    and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
+# Local Context: [Context] Infrastructure & Deployment
+
+This workspace ([infrastructure/](./)) contains orchestration configurations for [Context].
+Read [../AGENTS.md](../AGENTS.md) for parent bounded context rules before operating here.
+
+## 1. Directory Layout
+
+- **[kubernetes/](./kubernetes/)**: Kubernetes manifests and Kustomize overlays.
+- **[docker/](./docker/)**: Docker Compose service definitions.
+- **[.env.example](./.env.example)**: Environment variable template.
+
+## 2. Operational Guardrails
+
+- Kustomize `secretGenerator` MUST include `options.disableNameSuffixHash: true`.
+- Compose services MUST declare `restart: unless-stopped` for always-on services.
+- MUST mirror all new environment variables in `.env.example`.
 ```

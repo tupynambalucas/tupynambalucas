@@ -1,10 +1,29 @@
-# Local Context: Documentation Hub (Docs)
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+
+# Bounded Context: Documentation Hub (Docs)
 
 This workspace (`@tupynambalucas/docs`) is the central knowledge base for the tupynambalucas.dev monorepo, powered by Docusaurus v3.
 
 ---
 
-## Local Architecture
+## 1. Ubiquitous Language
+
+| Term          | Definition                                                               | Forbidden Synonyms     |
+| :------------ | :----------------------------------------------------------------------- | :--------------------- |
+| `Tutorial`    | A learning-oriented guide taking the reader through a practical exercise | walkthrough, lesson    |
+| `Guide`       | A goal-oriented how-to document solving a specific task                  | tutorial, instructions |
+| `Reference`   | An information-oriented technical specification or API catalog           | docs, manual           |
+| `Explanation` | An understanding-oriented conceptual discussion                          | theory, background     |
+
+---
+
+## 2. Local Architecture
 
 - **[handbook/](./handbook/)**: Central project documentation structured using the Diátaxis framework:
   - **[tutorials/](./handbook/tutorials/)**: Learning-oriented guides to get started.
@@ -26,7 +45,7 @@ This workspace (`@tupynambalucas/docs`) is the central knowledge base for the tu
 
 ---
 
-## Workspace Guardrails
+## 3. Workspace Guardrails
 
 1. **Diátaxis Framework Standard**: All technical and user documentation under [handbook/](./handbook/) MUST adhere strictly to the Diátaxis quadrants. No content should conflate tutorials with how-to guides or reference with explanation.
 2. **MDX Extension Rule**: All documentation files under the [docs/](./) workspace (including [handbook/](./handbook/), [workspaces/](./workspaces/), [releases/](./releases/), [roadmap/](./roadmap/), and translations in [i18n/](./i18n/)) MUST use the `.mdx` extension. Standard `.md` files are strictly prohibited without exception (except the workspace-root [README.md](./README.md) and [AGENTS.md](./AGENTS.md)).
@@ -36,7 +55,18 @@ This workspace (`@tupynambalucas/docs`) is the central knowledge base for the tu
 
 ---
 
-## Scoped Operations
+## 4. Required Skill
+
+When creating, updating, or reviewing any `.mdx` file within this workspace, agents MUST activate
+the `docusaurus-expert` skill by name before beginning. This skill defines the Diátaxis framework
+application rules, MDX syntax compliance standards, and the documentation validation workflow.
+
+This skill is referenced by name only and is resolved by the active agent runtime. Do not
+reference the skill file by filesystem path.
+
+---
+
+## 5. Scoped Operations
 
 Run these scripts from the workspace directory or via pnpm filters:
 
