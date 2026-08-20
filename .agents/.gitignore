@@ -1,7 +1,3 @@
-plans/
 temp/
-analysis/
-references/
-!skills/**/references
 prints/
-reports/
+mcp_config_backup.json/

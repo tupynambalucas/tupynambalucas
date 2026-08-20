@@ -16,7 +16,7 @@ This package (`@tupynambalucas-hub/core`) is the Single Source of Truth (SSOT) f
 ## Local Architecture & Directory Map
 
 - **[src/schemas/](./src/schemas/)**: Central Zod schema definitions for request validation and type safety (e.g. `user.schema.ts`, `product.schema.ts`, `cycle.schema.ts`).
-- **[src/types/](./src/types/)**: TypeScript type definitions and interfaces, both derived from Zod schemas (using `z.infer<typeof schema>`) and declared manually.
+- **[src/index.ts](./src/index.ts)**: TypeScript type definitions and interfaces, both derived from Zod schemas (using `z.infer<typeof schema>`) and declared manually.
 - **[src/index.ts](./src/index.ts)**: Main entry point exporting all public interfaces, schemas, and constants.
 
 ---

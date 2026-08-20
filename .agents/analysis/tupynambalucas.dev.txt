@@ -1,0 +1,49 @@
+;;
+;; Domain:     tupynambalucas.dev.
+;; Exported:   2026-08-08 05:39:04
+;;
+;; This file is intended for use for informational and archival
+;; purposes ONLY and MUST be edited before use on a production
+;; DNS server.  In particular, you must:
+;;   -- update the SOA record with the correct authoritative name server
+;;   -- update the SOA record with the contact e-mail address information
+;;   -- update the NS record(s) with the authoritative name servers for this domain.
+;;
+;; For further information, please consult the BIND documentation
+;; located on the following website:
+;;
+;; http://www.isc.org/
+;;
+;; And RFC 1035:
+;;
+;; http://www.ietf.org/rfc/rfc1035.txt
+;;
+;; Please note that we do NOT offer technical support for any use
+;; of this zone data, the BIND name server, or any other third-party
+;; DNS software.
+;;
+;; Use at your own risk.
+;; SOA Record
+tupynambalucas.dev	3600	IN	SOA	alina.ns.cloudflare.com. dns.cloudflare.com. 2053783414 10000 2400 604800 3600
+
+;; NS Records
+tupynambalucas.dev.	86400	IN	NS	alina.ns.cloudflare.com.
+tupynambalucas.dev.	86400	IN	NS	ed.ns.cloudflare.com.
+
+;; CNAME Records
+agentgateway-dev.tupynambalucas.dev.	1	IN	CNAME	bba0d3f2-dc25-4e82-a9b9-66ba1826e5fc.cfargotunnel.com. ; cf_tags=cf-proxied:true
+agentgateway-mcp-dev.tupynambalucas.dev.	1	IN	CNAME	bba0d3f2-dc25-4e82-a9b9-66ba1826e5fc.cfargotunnel.com. ; cf_tags=cf-proxied:true
+docs.tupynambalucas.dev.	1	IN	CNAME	tupynambalucas-docs.pages.dev. ; cf_tags=cf-proxied:true
+grafana-dev.tupynambalucas.dev.	1	IN	CNAME	bba0d3f2-dc25-4e82-a9b9-66ba1826e5fc.cfargotunnel.com. ; cf_tags=cf-proxied:true
+headlamp-dev.tupynambalucas.dev.	1	IN	CNAME	bba0d3f2-dc25-4e82-a9b9-66ba1826e5fc.cfargotunnel.com. ; cf_tags=cf-proxied:true
+traefik-dev.tupynambalucas.dev.	1	IN	CNAME	bba0d3f2-dc25-4e82-a9b9-66ba1826e5fc.cfargotunnel.com. ; cf_tags=cf-proxied:true
+turbocache-dev.tupynambalucas.dev.	1	IN	CNAME	bba0d3f2-dc25-4e82-a9b9-66ba1826e5fc.cfargotunnel.com. ; cf_tags=cf-proxied:true
+
+;; MX Records
+tupynambalucas.dev.	1	IN	MX	41 route3.mx.cloudflare.net.
+tupynambalucas.dev.	1	IN	MX	100 route2.mx.cloudflare.net.
+tupynambalucas.dev.	1	IN	MX	1 route1.mx.cloudflare.net.
+
+;; TXT Records
+cf2024-1._domainkey.tupynambalucas.dev.	1	IN	TXT	"v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiweykoi+o48IOGuP7GR3X0MOExCUDY/BCRHoWBnh3rChl7WhdyCxW3jgq1daEjPPqoi7sJvdg5hEQVsgVRQP4DcnQDVjGMbASQtrY4WmB1VebF+RPJB2ECPsEDTpeiI5ZyUAwJaVX7r6bznU67g7LvFq35yIo4sdlmtZGV+i0H4cpYH9+3JJ78k" "m4KXwaf9xUJCWF6nxeD+qG6Fyruw1Qlbds2r85U9dkNDVAS3gioCvELryh1TxKGiVTkg4wqHTyHfWsp7KD3WQHYJn0RyfJJu6YEmL77zonn7p2SRMvTMP3ZEXibnC9gz3nnhR6wcYL8Q7zXypKTMD58bTixDSJwIDAQAB"
+tupynambalucas.dev.	1	IN	TXT	"v=spf1 include:_spf.mx.cloudflare.net ~all"

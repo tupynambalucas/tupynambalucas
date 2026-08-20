@@ -43,10 +43,8 @@ markdown templates into production-grade documents across the monorepo.
     repository, and language validation schema.
   - [pipeline.schema.ts](./src/schemas/pipeline.schema.ts): Pipeline execution targets and Zod
     validation schemas.
-- **[src/templates/](./src/templates/)**: Domain-organized document templates.
-  - [docs/](./src/templates/docs/): Markdown templates for generated documents (e.g.,
-    [README.template.md](./src/templates/docs/README.template.md)).
-    _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/assets` under `studio/design/assets/github/cards/`._
+- **[src/pipelines/profile/](./src/pipelines/profile/)**: Domain templates (e.g., [profile.template.md](./src/pipelines/profile/profile.template.md)).
+  _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/assets` under `studio/design/assets/github/cards/`._
 - **[src/utils/](./src/utils/)**: Common helpers for compilation and formatting.
   - [glob.ts](./src/utils/glob.ts): Simple glob matcher helper for filtering items.
   - [template-fill.ts](./src/utils/template-fill.ts):
@@ -58,7 +56,7 @@ markdown templates into production-grade documents across the monorepo.
 
 ## Active Pipelines
 
-- **[github-profile.pipeline.ts](./src/pipelines/github-profile.pipeline.ts)**:
+- **[profile.pipeline.ts](./src/pipelines/profile/profile.pipeline.ts)**:
   Compiles the root-level developer profile [README.md](../README.md) using the statistics cards
   generated from the GitHub API.
 
@@ -85,7 +83,7 @@ themes with absolute fidelity:
 ### Registering a New Pipeline
 
 All pipelines MUST satisfy the `Pipeline` type schema and be registered inside
-[src/pipelines/index.ts](./src/pipelines/index.ts):
+[src/pipelines/](./src/pipelines/):
 
 ```typescript
 import type { Pipeline } from './types.js';

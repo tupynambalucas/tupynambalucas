@@ -24,7 +24,7 @@ The client layout under `src/` is organized according to Domain-Driven Design (D
   - `admin/`: Cycle management, raw catalog parser ingestion dashboard.
   - `shop/`: Product catalog grid, cart, and Pix payment modal.
 - **[src/shared/ui/](./src/shared/ui/)**: Reusable, domain-agnostic UI elements (buttons, loaders, fields).
-- **[src/assets/](./src/assets/)**: Static icons, styles, and locales.
+- **[src/shared/](./src/shared/)**: Static UI components, styles, and locales.
 
 ---
 

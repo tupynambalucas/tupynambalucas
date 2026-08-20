@@ -1,24 +1,17 @@
 {
   "mcpServers": {
-    "agentgateway": {
-      "url": "https://agentgateway-mcp-dev.tupynambalucas.dev/mcp",
-      "headers": {
-        "x-mcp-token": "${env:CORTEX_MCP_TOKEN}"
-      },
-      "lifecycle": "eager"
-    },
     "podman-mcp": {
       "command": "pnx",
       "args": ["-y", "podman-mcp-server@latest"]
     },
-    "firecrawl-mcp-host": {
+    "firecrawl-mcp": {
       "command": "pnx",
       "args": ["-y", "firecrawl-mcp"],
       "env": {
         "FIRECRAWL_API_KEY": "$FIRECRAWL_API_KEY"
       }
     },
-    "context7-mcp-host": {
+    "context7-mcp": {
       "command": "pnx",
       "args": ["-y", "@upstash/context7-mcp", "--api-key", "$CONTEXT7_API_KEY"]
     }

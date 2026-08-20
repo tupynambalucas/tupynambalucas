@@ -8,7 +8,7 @@
       "command": "pnx",
       "args": ["-y", "podman-mcp-server@latest"]
     },
-    "firecrawl-mcp-host": {
+    "firecrawl-mcp": {
       "command": "pnx",
       "args": ["-y", "firecrawl-mcp"],
       "env": {

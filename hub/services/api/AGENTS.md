@@ -37,7 +37,7 @@ The source code under `src/` follows a domain-driven, layered responsibility mod
 Every endpoint workflow MUST adhere to the following sequence:
 
 ```
-Controller (Validation/Routing) ➔ Service (Business Logic) ➔ Repository (Persistence) ➔ Model (Mongoose)
+Controller (Validation/Routing) -> Service (Business Logic) -> Repository (Persistence) -> Model (Mongoose)
 ```
 
 - **Controllers**: Define routes, request schemas (Zod via `fastify-type-provider-zod`), and handle HTTP responses.
