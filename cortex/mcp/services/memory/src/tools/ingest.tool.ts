@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { memoryApiClient } from '../client/memory-api.client.js';
 
 export const ingestToolDefinition = {
-  name: 'memory_ingest_document',
+  name: 'ingest_document',
   description: 'Ingests a document to be chunked, embedded, and indexed into MongoDB vector store.',
   inputSchema: {
     type: 'object',

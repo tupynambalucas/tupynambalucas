@@ -21,13 +21,13 @@ export function registerToolHandlers(server: Server) {
     const { name, arguments: args } = request.params;
 
     switch (name) {
-      case 'memory_search_knowledge':
+      case 'search_knowledge':
         return await handleSearchTool(args);
-      case 'memory_store_episodic':
+      case 'store_episodic':
         return await handleChatTool(args);
-      case 'memory_query_graph':
+      case 'query_graph':
         return await handleGraphTool(args);
-      case 'memory_ingest_document':
+      case 'ingest_document':
         return await handleIngestTool(args);
       default:
         throw new Error(`Unknown tool requested: ${name}`);

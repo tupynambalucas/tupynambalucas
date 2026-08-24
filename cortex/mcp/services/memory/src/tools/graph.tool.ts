@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { memoryApiClient } from '../client/memory-api.client.js';
 
 export const graphToolDefinition = {
-  name: 'memory_query_graph',
+  name: 'query_graph',
   description: 'Queries relationl associative graph nodes and connections in Cortex Memory.',
   inputSchema: {
     type: 'object',

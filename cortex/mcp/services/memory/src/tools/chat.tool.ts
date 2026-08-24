@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { memoryApiClient } from '../client/memory-api.client.js';
 
 export const chatToolDefinition = {
-  name: 'memory_store_episodic',
+  name: 'store_episodic',
   description: 'Persists a conversation turn or user preference in episodic chat history.',
   inputSchema: {
     type: 'object',

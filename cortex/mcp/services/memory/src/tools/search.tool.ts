@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { memoryApiClient } from '../client/memory-api.client.js';
 
 export const searchToolDefinition = {
-  name: 'memory_search_knowledge',
+  name: 'search_knowledge',
   description:
     'Executes RAG vector search over indexed documents and memory planes in Cortex Memory.',
   inputSchema: {
