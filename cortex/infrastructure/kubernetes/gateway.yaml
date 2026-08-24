@@ -120,41 +120,27 @@ spec:
     - host: agentgateway-dev.tupynambalucas.dev
       http:
         paths:
-          - path: /mcp
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: agentgateway
                 port:
-                  number: 15000
+                  number: 8080
     - host: agentgateway.tupynambalucas.dev
       http:
         paths:
-          - path: /mcp
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: agentgateway
                 port:
-                  number: 15000
+                  number: 8080
     - host: agentgateway-ingress-dev.tupynambalucas.dev
       http:
         paths:
-          - path: /mcp
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -171,7 +157,7 @@ spec:
     - host: agentgateway-ingress.tupynambalucas.dev
       http:
         paths:
-          - path: /mcp
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -188,7 +174,7 @@ spec:
     - host: agentgateway-mcp-dev.tupynambalucas.dev
       http:
         paths:
-          - path: /mcp
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -205,7 +191,7 @@ spec:
     - host: agentgateway-mcp.tupynambalucas.dev
       http:
         paths:
-          - path: /mcp
+          - path: /
             pathType: Prefix
             backend:
               service:
@@ -223,6 +209,13 @@ spec:
       http:
         paths:
           - path: /mcp
+            pathType: Prefix
+            backend:
+              service:
+                name: agentgateway
+                port:
+                  number: 8080
+          - path: /sse
             pathType: Prefix
             backend:
               service:

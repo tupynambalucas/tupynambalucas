@@ -7,8 +7,16 @@ config:
   tracing:
     otlpEndpoint: http://otel-collector:4317
     randomSampling: true
+
+gateways:
+  default:
+    port: 8080
+
 mcp:
-  port: 8080
+  gateways: [default]
+  statefulMode: stateful
+  prefixMode: conditional
+  failureMode: failOpen
   policies:
     cors:
       allowOrigins:
@@ -34,10 +42,13 @@ mcp:
     authorization:
       rules:
         - 'request.path == "/ui" || request.path.startsWith("/ui/") || request.headers["x-mcp-token"] == "$CORTEX_MCP_TOKEN" || request.headers["authorization"] == "Bearer $CORTEX_MCP_TOKEN"'
+    requestHeaderModifier:
+      set:
+        accept: 'application/json, text/event-stream'
   targets:
     - name: github
       mcp:
-        host: http://mcp-github:8080/sse
+        host: http://mcp-github:8080/mcp
       policies:
         backendAuth:
           key: '$GITHUB_PERSONAL_ACCESS_TOKEN'
@@ -52,22 +63,23 @@ mcp:
         host: http://mcp-firecrawl:8080/mcp
     - name: grafana
       mcp:
-        host: http://mcp-grafana:8080/sse
+        host: http://mcp-grafana:8080/mcp
     - name: playwright
       mcp:
-        host: http://mcp-playwright:8080/sse
+        host: http://mcp-playwright:8080/mcp
     - name: memory
       mcp:
         host: http://mcp-memory:8080/mcp
-  statefulMode: stateful
-  prefixMode: conditional
-  failureMode: failOpen
-binds: []
+
+ui:
+  gateways: [default]
+
 llm:
-  port: 4000
+  gateways: [default]
   models: []
   providers: []
   virtualModels: []
+
 frontendPolicies:
   http:
     maxBufferSize: 33554432

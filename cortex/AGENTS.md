@@ -14,10 +14,10 @@ This document defines the domain rules, architecture, and workspace navigation f
 
 ## 1. Bounded Context Navigation
 
-- **[gateway/](./gateway/AGENTS.md)**: AgentGateway ingress proxy, routing, CORS policies, and administrative telemetry ([gateway/AGENTS.md](./gateway/AGENTS.md)).
-- **[infrastructure/](./infrastructure/AGENTS.md)**: Kubernetes manifests, Kustomize overlays, Docker Compose profiles, and environment variables ([infrastructure/AGENTS.md](./infrastructure/AGENTS.md)).
-- **[mcp/](./mcp/AGENTS.md)**: Model Context Protocol (MCP) data plane, ExtMCP gRPC guardrails, inspector, and service adapters ([mcp/AGENTS.md](./mcp/AGENTS.md)).
-- **[memory/](./memory/AGENTS.md)**: Self-hosted MongoDB Vector RAG memory subsystem, Fastify API, and React Web dashboard ([memory/AGENTS.md](./memory/AGENTS.md)).
+- **[gateway/](./gateway/AGENTS.md)**: AgentGateway ingress proxy, routing, CORS policies, and administrative telemetry.
+- **[infrastructure/](./infrastructure/AGENTS.md)**: Kubernetes manifests, Kustomize overlays, Docker Compose profiles, and environment variables.
+- **[mcp/](./mcp/AGENTS.md)**: Model Context Protocol (MCP) data plane, ExtMCP gRPC guardrails, inspector, and service adapters.
+- **[memory/](./memory/AGENTS.md)**: Self-hosted MongoDB Vector RAG memory subsystem, Fastify API, and React Web dashboard.
 
 ---
 
@@ -99,26 +99,22 @@ flowchart TD
 
 ## 3. Operational & Networking Guardrails
 
-- **Host Application Resolution**: When containerized MCP tools (such as Playwright MCP or Firecrawl MCP) access local development applications running on the host machine, agents MUST resolve them using `http://host.docker.internal:<port>`:
-  - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
-  - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
-  - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
-- **Credential Separation**: API keys and tokens MUST be configured via [.env](./infrastructure/.env) and referenced through Kubernetes Secrets (`cortex-secrets`) or Compose environment variables. Hardcoding credentials is strictly forbidden.
-- **Fail-Open Policy Resilience**: ExtMCP guardrail handlers MUST catch exceptions and fall back to `{ pass: {} }` to prevent service disruptions when processing untracked methods.
-- **Strict Relative Linking**: All Markdown links within this context MUST use relative filesystem paths without backtick wrappers around the link structure.
+- **Host Application Resolution**: Containerized MCP tools accessing host apps MUST use `http://host.docker.internal:<port>` (docs `:3002`, hub-web `:5173`, hub-api `:3000`).
+- **Credential Separation**: API keys and tokens MUST be configured via [.env](./infrastructure/.env) and referenced through Kubernetes Secrets (`cortex-secrets`) or Compose variables.
+- **Fail-Open Policy Resilience**: ExtMCP guardrail handlers MUST catch exceptions and fall back to `{ pass: {} }` to prevent service disruptions.
+- **Strict Relative Linking**: All Markdown links within this context MUST use relative filesystem paths without backtick wrappers.
 
 ---
 
 ## 4. Local Lifecycle Commands
 
-| Target Runtime            | Purpose                          | Command                 |
-| :------------------------ | :------------------------------- | :---------------------- |
-| **Kubernetes (Skaffold)** | Start hot-reload dev cluster     | `pnpm cortex:dev`       |
-| **Kubernetes (Skaffold)** | Clean cluster resources & cache  | `pnpm cortex:clean`     |
-| **Kubernetes (Skaffold)** | Stop all Kubernetes deployments  | `pnpm cortex:stop`      |
-| **Docker Compose**        | Boot standalone container stack  | `pnpm cortex:up`        |
-| **Docker Compose**        | Stop standalone container stack  | `pnpm cortex:down`      |
-| **Docker Compose**        | View container logs in real time | `pnpm cortex:logs`      |
-| **Docker Compose**        | Reset containers and re-deploy   | `pnpm cortex:reset`     |
-| **Type Checking**         | Verify TypeScript compilation    | `pnpm cortex:typecheck` |
-| **Linting**               | Verify ESLint standards          | `pnpm cortex:lint`      |
+| Target Runtime            | Purpose                 | Command                 |
+| :------------------------ | :---------------------- | :---------------------- |
+| **Kubernetes (Skaffold)** | Start dev cluster       | `pnpm cortex:dev`       |
+| **Kubernetes (Skaffold)** | Clean resources & cache | `pnpm cortex:clean`     |
+| **Kubernetes (Skaffold)** | Stop deployments        | `pnpm cortex:stop`      |
+| **Docker Compose**        | Boot standalone stack   | `pnpm cortex:up`        |
+| **Docker Compose**        | Stop standalone stack   | `pnpm cortex:down`      |
+| **Docker Compose**        | View container logs     | `pnpm cortex:logs`      |
+| **Docker Compose**        | Reset and re-deploy     | `pnpm cortex:reset`     |
+| **Code Verification**     | Typecheck and lint      | `pnpm cortex:typecheck` |
