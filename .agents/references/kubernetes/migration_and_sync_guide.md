@@ -103,6 +103,9 @@ Run Skaffold to launch the hot-reloading development cycle:
 skaffold dev -p tupynambalucas
 ```
 
+> [!WARNING]
+> **ConfigMap Sync Restriction**: You cannot use Skaffold `sync` on files that are mounted into the pod via a Kubernetes `ConfigMap` or `Secret`. Kubernetes mounts these as read-only symlinks, causing file syncs to fail with "Read-only file system" errors. Instead, rely on `configMapGenerator` in your `kustomization.yaml` so Kustomize can re-generate the ConfigMap and restart the pod on file changes.
+
 ---
 
 ## 4. Environment Variables and Secrets Migration

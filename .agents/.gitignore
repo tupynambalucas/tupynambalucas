@@ -1,5 +1,5 @@
 # Cortex plugin secrets - contains MCP token
-plugins/cortex/mcp_config.json
-
+mcp_config.json
+mcp_config_*.json
 backup/
 prints/

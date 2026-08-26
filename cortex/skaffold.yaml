@@ -18,10 +18,6 @@ build:
       context: gateway
       docker:
         dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: 'config.yaml'
-            dest: '/config/config.yaml'
     - image: tupynambalucas-cortex-mcp-guardrails
       context: ..
       docker:

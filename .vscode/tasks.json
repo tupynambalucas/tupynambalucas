@@ -16,18 +16,28 @@
       "isBackground": false
     },
     {
-      "label": "Antigravity CLI [Host]",
-      "type": "shell",
-      "command": "agy",
+      "label": "Antigravity CLI",
+      "type": "process",
+      "command": "wt.exe",
+      "args": [
+        "--window",
+        "-1",
+        "--maximized",
+        "--profile",
+        "Antigravity",
+        "--startingDirectory",
+        "${workspaceFolder}",
+        "pwsh",
+        "-NoExit",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/.vscode/scripts/launch-agy.ps1"
+      ],
       "problemMatcher": [],
       "presentation": {
-        "panel": "dedicated",
-        "focus": true,
-        "reveal": "always",
-        "clear": true,
-        "group": "llm-cli-group"
-      },
-      "isBackground": false
+        "reveal": "never"
+      }
     },
     {
       "label": "Open External Terminal (pwsh)",

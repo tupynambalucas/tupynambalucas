@@ -38,17 +38,18 @@ mcp:
         - '*'
       exposeHeaders:
         - Mcp-Session-Id
-      allowCredentials: true
-    authorization:
-      rules:
-        - 'request.path == "/ui" || request.path.startsWith("/ui/") || request.headers["x-mcp-token"] == "$CORTEX_MCP_TOKEN" || request.headers["authorization"] == "Bearer $CORTEX_MCP_TOKEN"'
-    requestHeaderModifier:
-      set:
-        accept: 'application/json, text/event-stream'
+    mcpGuardrails:
+      processors:
+        - kind: remote
+          host: 'mcp-guardrails:9001'
+          failureMode: failClosed
+          methods:
+            tools/call: request
+            tools/list: response
   targets:
     - name: github
       mcp:
-        host: http://mcp-github:8080/mcp
+        host: http://mcp-github:8080/sse
       policies:
         backendAuth:
           key: '$GITHUB_PERSONAL_ACCESS_TOKEN'

@@ -1,8 +1,7 @@
 # Cortex Plugin - MCP Service Instructions
 
 All services below are accessed through the single AgentGateway ingress at
-`agentgateway-mcp-dev.tupynambalucas.dev`. Authentication is handled by the gateway using the
-`x-mcp-token` header configured in `mcp_config.json`. Do not pass credentials directly to any
+`agentgateway-mcp-dev.tupynambalucas.dev`. Do not pass credentials directly to any
 individual service tool.
 
 ---
