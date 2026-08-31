@@ -59,8 +59,8 @@ const registryPlugin: FastifyPluginAsync = async function (server: FastifyInstan
     return { status: 'ok', timestamp: new Date().toISOString() };
   });
 
-  // Register API routes plugin under prefix /api/memory
-  await server.register(apiPlugin, { prefix: '/api/memory' });
+  // Register API routes plugin under prefix /api (which handles both /api/memory/* and /api/*)
+  await server.register(apiPlugin, { prefix: '/api' });
 };
 
 export default fp(registryPlugin);

@@ -4,14 +4,22 @@ export class MemoryApiClient {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = config.MEMORY_API_URL;
+    const rawUrl = config.MEMORY_API_URL || 'http://memory-api:3006';
+    this.baseUrl = rawUrl.endsWith('/api/memory')
+      ? rawUrl
+      : `${rawUrl.replace(/\/+$/, '')}/api/memory`;
   }
 
-  async searchKnowledge(query: string, limit = 5, minScore = 0.7): Promise<unknown> {
-    const res = await fetch(`${this.baseUrl}/api/search`, {
+  async searchKnowledge(
+    query: string,
+    limit = 5,
+    _minScore = 0.7,
+    filter?: Record<string, unknown>,
+  ): Promise<unknown> {
+    const res = await fetch(`${this.baseUrl}/search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, limit, minScore }),
+      body: JSON.stringify({ query, limit, filter }),
     });
 
     if (!res.ok) {
@@ -26,10 +34,15 @@ export class MemoryApiClient {
     role: 'user' | 'assistant' | 'system',
     content: string,
   ): Promise<unknown> {
-    const res = await fetch(`${this.baseUrl}/api/chat`, {
+    const res = await fetch(`${this.baseUrl}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId, role, content }),
+      body: JSON.stringify({
+        conversationId: sessionId,
+        agentId: 'cortex-agent',
+        role,
+        content,
+      }),
     });
 
     if (!res.ok) {
@@ -39,10 +52,12 @@ export class MemoryApiClient {
     return (await res.json()) as unknown;
   }
 
-  async queryGraph(entityId: string, maxDepth = 2): Promise<unknown> {
-    const res = await fetch(
-      `${this.baseUrl}/api/graph?entityId=${encodeURIComponent(entityId)}&maxDepth=${maxDepth}`,
-    );
+  async queryGraph(entityId?: string, maxDepth = 2): Promise<unknown> {
+    const url = new URL(`${this.baseUrl}/graph`);
+    if (entityId) url.searchParams.append('entityId', entityId);
+    url.searchParams.append('maxDepth', maxDepth.toString());
+
+    const res = await fetch(url.toString());
 
     if (!res.ok) {
       throw new Error(`Memory API graph query failed with status ${res.status}`);
@@ -51,11 +66,11 @@ export class MemoryApiClient {
     return (await res.json()) as unknown;
   }
 
-  async ingestDocument(title: string, content: string, source?: string): Promise<unknown> {
-    const res = await fetch(`${this.baseUrl}/api/ingest`, {
+  async ingestDocument(_title?: string, _content?: string, _source?: string): Promise<unknown> {
+    const res = await fetch(`${this.baseUrl}/ingest/docs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, content, source }),
+      body: JSON.stringify({}),
     });
 
     if (!res.ok) {

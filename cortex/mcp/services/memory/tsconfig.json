@@ -2,10 +2,7 @@
   "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
   "compilerOptions": {
     "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "paths": {
-      "@tupynambalucas-cortex/memory-core": ["../../../memory/packages/core/src/index.ts"]
-    }
+    "moduleResolution": "NodeNext"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
