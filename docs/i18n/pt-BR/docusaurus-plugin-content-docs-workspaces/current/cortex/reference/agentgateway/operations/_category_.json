@@ -1,0 +1,8 @@
+{
+  "label": "Operações & CLI",
+  "position": 8,
+  "link": {
+    "type": "generated-index",
+    "description": "Ferramental operacional, configuração da CLI agctl, depuração, inspeção de configuração e tracing."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "MCP Clients",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Configure MCP clients including Antigravity IDE, Claude, Cursor, Devin, OpenCode, and VS Code."
+  }
+}

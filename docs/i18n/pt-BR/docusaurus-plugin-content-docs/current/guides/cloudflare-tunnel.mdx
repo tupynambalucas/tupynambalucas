@@ -3,6 +3,8 @@ title: Configuração de Cloudflare Tunnel & Access
 description: Como configurar o Cloudflare Tunnel (cloudflared) e as políticas do Cloudflare Zero Trust Access para roteamento seguro de ingress no Kubernetes.
 ---
 
+{ }
+
 # Configuração de Cloudflare Tunnel & Access
 
 Este guia detalha como configurar o **Cloudflare Tunnel** (`cloudflared`) e o **Cloudflare Zero Trust Access** para expor ambientes de desenvolvimento Kubernetes locais e remotos de forma segura sobre HTTPS confiável pelo navegador, sem modificar arquivos `/etc/hosts` ou abrir portas de roteador.
@@ -38,6 +40,8 @@ Na aba **Public Hostnames** da configuração do seu túnel, registre as seguint
 | `agentgateway-mcp-dev` | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/mcp`  |
 | `grafana-dev`          | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
 | `headlamp-dev`         | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| `memory-dev`           | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| `memory-api-dev`       | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
 | `traefik-dev`          | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
 | `turbocache-dev`       | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
 

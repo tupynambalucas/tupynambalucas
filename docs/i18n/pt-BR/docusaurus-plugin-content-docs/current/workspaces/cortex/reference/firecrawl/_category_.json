@@ -1,0 +1,8 @@
+{
+  "label": "Firecrawl MCP",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Documentacao de referencia para o servico adaptador cortex-firecrawl-mcp — schemas de ferramentas, configuracao e padroes de integracao."
+  }
+}

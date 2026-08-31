@@ -14,7 +14,7 @@ export const Sidebar: React.FC = () => {
     syncStatus,
   } = useMemoryStore();
 
-  const totalNodes = graphData?.nodes.length ?? 0;
+  const totalNodes = graphData?.nodes?.length ?? 0;
   const isHealthy = apiHealthy === true;
 
   return (

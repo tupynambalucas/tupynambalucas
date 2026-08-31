@@ -1,0 +1,8 @@
+{
+  "label": "Cost Controls",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Budget spend limits, model costs, dashboard, and virtual keys."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Interfaces Web & Frameworks",
+  "position": 10,
+  "link": {
+    "type": "generated-index",
+    "description": "Integre Chatbot UI, Goose, LibreChat e Open WebUI."
+  }
+}

@@ -62,7 +62,13 @@ export const useMemoryStore = create<MemoryState>((set, get) => ({
     set({ isLoadingGraph: true });
     try {
       const data = await memoryApi.getGraphData();
-      set({ graphData: data, isLoadingGraph: false, apiHealthy: true });
+      set({
+        graphData: data
+          ? { nodes: data.nodes ?? [], edges: data.edges ?? [] }
+          : { nodes: [], edges: [] },
+        isLoadingGraph: false,
+        apiHealthy: true,
+      });
     } catch (err) {
       console.error('Failed to fetch graph:', err);
       set({ isLoadingGraph: false, apiHealthy: false });
@@ -74,7 +80,7 @@ export const useMemoryStore = create<MemoryState>((set, get) => ({
     set({ isSearching: true });
     try {
       const results = await memoryApi.searchVector(query);
-      set({ searchResults: results, isSearching: false, apiHealthy: true });
+      set({ searchResults: results ?? [], isSearching: false, apiHealthy: true });
     } catch (err) {
       console.error('Failed to search vector:', err);
       set({ isSearching: false, apiHealthy: false });
@@ -120,7 +126,7 @@ export const useMemoryStore = create<MemoryState>((set, get) => ({
       const ragResults = await memoryApi.searchVector(content, 3);
       let responseText = 'Memory message recorded into MongoDB episodic chat collection.';
 
-      if (ragResults.length > 0) {
+      if (ragResults && ragResults.length > 0 && ragResults[0]?.entity) {
         responseText = `Ingested Context Match (${(ragResults[0].score * 100).toFixed(1)}% match):\n${ragResults[0].entity.content.slice(0, 300)}...`;
       }
 

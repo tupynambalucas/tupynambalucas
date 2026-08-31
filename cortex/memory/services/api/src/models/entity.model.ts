@@ -28,9 +28,14 @@ const EntitySchema = new Schema<EntityDocument>(
       section: { type: String },
       contentHash: { type: String, index: true },
       updatedAt: { type: String, required: true },
+      tags: { type: [String], index: true },
+      keywords: { type: [String], index: true },
+      diataxis_type: { type: String, index: true },
     },
   },
   { timestamps: true },
 );
+
+EntitySchema.index({ name: 'text', content: 'text' });
 
 export const EntityModel = mongoose.model<EntityDocument>('MemoryEntity', EntitySchema);

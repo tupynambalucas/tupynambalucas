@@ -354,3 +354,74 @@ spec:
       targetPort: 8080
   selector:
     app: mcp-playwright
+---
+# MCP Kubectl Service
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mcp-kubectl-sa
+  namespace: cortex
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mcp-kubectl-admin
+subjects:
+  - kind: ServiceAccount
+    name: mcp-kubectl-sa
+    namespace: cortex
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-kubectl
+  namespace: cortex
+  labels:
+    app: mcp-kubectl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-kubectl
+  template:
+    metadata:
+      labels:
+        app: mcp-kubectl
+    spec:
+      serviceAccountName: mcp-kubectl-sa
+      containers:
+        - name: mcp-kubectl
+          image: ghcr.io/rohitg00/kubectl-mcp-server:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - '--transport'
+            - 'streamable-http'
+            - '--host'
+            - '0.0.0.0'
+            - '--port'
+            - '8080'
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: KUBECTL_MCP_PORT
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-kubectl
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-kubectl

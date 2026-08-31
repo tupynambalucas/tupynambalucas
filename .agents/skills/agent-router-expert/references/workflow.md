@@ -61,4 +61,4 @@ This reference defines the verification steps required when creating, updating, 
 - Layer 1 (root): MUST NOT exceed 80 lines.
 - Layer 2 (bounded context): MUST NOT exceed 120 lines.
 - Layer 3 (sub-domain): MUST NOT exceed 100 lines.
-- If the budget is exceeded, extract code snippets to a `patterns/` subdirectory and replace the inline block with a relative markdown link.
+- If the budget is exceeded, extract code snippets to an `.agents/` hidden subdirectory (e.g., `.agents/architecture.md`) and replace the inline block with a relative markdown link.

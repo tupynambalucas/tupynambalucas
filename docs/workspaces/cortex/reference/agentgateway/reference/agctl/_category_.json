@@ -1,0 +1,8 @@
+{
+  "label": "agctl CLI",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "agctl CLI command reference, proxy inspection, and controller logs."
+  }
+}

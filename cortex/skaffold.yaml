@@ -26,14 +26,36 @@ build:
       context: ..
       docker:
         dockerfile: cortex/memory/services/api/Dockerfile
+      sync:
+        manual:
+          - src: 'cortex/memory/services/api/dist/**/*'
+            dest: '/app/dist'
+          - src: 'docs/handbook/**/*'
+            dest: '/app/docs/handbook'
+          - src: 'docs/workspaces/**/*'
+            dest: '/app/docs/workspaces'
+          - src: 'docs/releases/**/*'
+            dest: '/app/docs/releases'
+          - src: 'docs/roadmap/**/*'
+            dest: '/app/docs/roadmap'
+          - src: 'docs/i18n/**/*'
+            dest: '/app/docs/i18n'
     - image: tupynambalucas-cortex-memory-web
       context: ..
       docker:
         dockerfile: cortex/memory/services/web/Dockerfile
+      sync:
+        manual:
+          - src: 'cortex/memory/services/web/dist/**/*'
+            dest: '/usr/share/nginx/html'
     - image: mcp-memory
       context: ..
       docker:
         dockerfile: cortex/mcp/services/memory/Dockerfile
+      sync:
+        manual:
+          - src: 'cortex/mcp/services/memory/dist/**/*'
+            dest: '/app/dist'
     - image: tupynambalucas-cortex-mcp-inspector
       context: ..
       docker:
@@ -50,6 +72,10 @@ build:
       context: ..
       docker:
         dockerfile: cortex/mcp/services/firecrawl/Dockerfile
+      sync:
+        manual:
+          - src: 'cortex/mcp/services/firecrawl/dist/**/*'
+            dest: '/app/dist'
     - image: mcp-grafana
       context: ..
       docker:

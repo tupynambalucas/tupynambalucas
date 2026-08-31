@@ -1,0 +1,8 @@
+{
+  "label": "Transportes de Conexão",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Conecte via Streamable HTTP, OpenAPI, Stdio e MCP Virtual."
+  }
+}

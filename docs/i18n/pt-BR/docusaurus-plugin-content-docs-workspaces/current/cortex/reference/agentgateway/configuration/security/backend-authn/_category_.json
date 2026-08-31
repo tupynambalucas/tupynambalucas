@@ -1,0 +1,8 @@
+{
+  "label": "Autenticação de Backend",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Acesso cross-app (ID-JAG) e configurações de troca de token OAuth."
+  }
+}

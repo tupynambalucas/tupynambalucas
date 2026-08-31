@@ -1,0 +1,8 @@
+{
+  "label": "Operations & CLI",
+  "position": 8,
+  "link": {
+    "type": "generated-index",
+    "description": "Operational tooling, agctl CLI setup, debugging, config inspection, and tracing."
+  }
+}

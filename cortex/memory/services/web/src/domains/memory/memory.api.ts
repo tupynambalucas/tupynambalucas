@@ -1,8 +1,8 @@
 import axios from 'axios';
 import type { GraphDataDTO, SearchResultDTO } from '@tupynambalucas-cortex/memory-core';
 
-const API_BASE =
-  (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:3006/api/memory';
+const envApiUrl = import.meta.env.VITE_API_URL as string | undefined;
+const API_BASE = envApiUrl && envApiUrl.trim().length > 0 ? envApiUrl.trim() : '/api/memory';
 
 export interface ChatMessage {
   id?: string;
@@ -60,8 +60,7 @@ export const memoryApi = {
   },
 
   async getHealthz(): Promise<{ status: string; timestamp: string }> {
-    const baseHost = API_BASE.replace('/api/memory', '');
-    const res = await axios.get<{ status: string; timestamp: string }>(`${baseHost}/healthz`);
+    const res = await axios.get<{ status: string; timestamp: string }>('/healthz');
     return res.data;
   },
 };

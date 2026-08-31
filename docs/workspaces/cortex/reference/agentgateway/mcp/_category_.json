@@ -1,0 +1,8 @@
+{
+  "label": "MCP Connectivity",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "Model Context Protocol connectivity, transports, virtualization, security, and guardrails."
+  }
+}

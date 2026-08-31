@@ -1,0 +1,64 @@
+---
+title: Attachment points
+description: Learn how to attach policies to different resources in agentgateway.
+sidebar_position: 2
+diataxis_type: reference
+workspace: cortex
+tags:
+  - cortex
+---
+
+# Attachment points
+
+Learn how to attach policies to different resources in agentgateway.
+
+You can attach policies at the gateway or listener Listeners are configured on ports and support HTTP, HTTPS, TCP, and TLS protocols., route Routes can match on path, hostname, headers, query parameters, and HTTP methods., or backend Backends can be static hosts, MCP servers, LLM providers, or other services. level to provide fine-grained control over traffic.
+
+## Phases
+
+Policies that are attached at multiple levels are applied at all levels.
+
+| Section             | Available Policies                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Phase                                                |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Gateway or listener | JWT JWTs are commonly used for authentication and authorization in agentgateway., External Authorization, External Processing ExtProc is API-compatible with Envoy's External Processing service., Transformation Transformations can change headers, body content, and other request/response attributes., Basic Authentication Agentgateway supports various authentication methods including JWT, API keys, and basic authentication., API Key Agentgateway can validate API keys and attach metadata to authenticated requests. authentication | Runs before route selection                          |
+| Route               | All Policies                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Runs after route selection, before backend selection |
+| Backend             | Backend TLS, Backend Authentication, Backend HTTP, Backend TCP, AI/LLM, MCP Authorization, MCP Authentication, External Authorization, Header modification                                                                                                                                                                                                                                                                                                                                                                                         | Runs after backend selection                         |
+
+## Example policy configuration
+
+Review the following example configuration that uses one of each policy type.
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+    # Gateway level policy
+    # Enforces that incoming requests have a valid API keyAPI KeyA secret token used to authenticate API requests. Agentgateway can validate API keys and attach metadata to authenticated requests.
+    apiKey:
+      mode: strict
+      keys:
+        - key: sk-testkey-1
+          metadata:
+            user: test
+            role: admin
+routes:
+  # Route level policy
+  # Adds a header (based on a CELCEL (Common Expression Language)A simple expression language used throughout agentgateway to enable flexible configuration. CEL expressions can access request context, JWT claims, and other variables to make dynamic decisions. expression) with the authenticated user (based on the API key)
+  - policies:
+      transformations:
+        request:
+          set:
+            x-authenticated-user: apiKey.user
+    backends:
+      - host: localhost:8080
+        # Backend level policy
+        # Adds an Authorization header to outgoing requests
+        policies:
+          backendAuth:
+            key: my-authorization-header
+```
+
+## More policy configuration guides
+
+For more information about available policies, review the following guides:

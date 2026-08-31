@@ -182,7 +182,7 @@ fi
 if [ -f "$VARIABLES_JSON" ] && [ -s "$VARIABLES_JSON" ]; then
   echo -e "\n${BOLD}${BLUE}[INFO] Synchronizing GitHub Variables (Actions only)...${RESET}"
   
-  # GitHub only natively supports variables for the ACTIONS scope
+  # Natively only support for ACTIONS scope variables
   category="ACTIONS"
   tmp_file="$TMP_ACTIONS_VARIABLES"
   

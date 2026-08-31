@@ -6,9 +6,9 @@ The `cortex/mcp/services/playwright` workspace provides the containerized Playwr
 
 ## Technology Stack
 
-- **Base Image**: Node.js 22 Alpine with Chromium dependencies (`nss`, `freetype`, `harfbuzz`, `ttf-freefont`)
+- **Base Image**: Node.js 22 Alpine with Chromium dependencies (`nss`, `freetype`, `harfbuzz`, `ttf-freefont`, `chromium`)
 - **Package**: `@playwright/mcp@latest`
-- **Browser Engine**: Chrome for Testing (Chromium headless)
+- **Browser Engine**: Chromium headless (via Alpine repository)
 - **Transport**: Streamable HTTP on port `8080`
 
 ---

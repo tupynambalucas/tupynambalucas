@@ -1,0 +1,119 @@
+---
+title: 'Streamable HTTP'
+description: 'Connect to MCP servers via streamable HTTP with automatic session management'
+sidebar_position: 2
+---
+
+# Streamable HTTP
+
+Connect to MCP servers via streamable HTTP with automatic session management
+
+Connect to an MCP server via streamable HTTP.
+
+Important
+
+Want to use agentgateway in a Kubernetes environment with the Gateway API? Check out the [agentgateway on Kubernetes docs](https://agentgateway.dev/docs/kubernetes/).
+
+## About streamable HTTP
+
+Agentgateway automatically manages stateful MCP sessions when using HTTP-based transports. The session state (including backend pinning) is encoded in the session ID and persisted across requests, ensuring that subsequent tool calls in the same session are routed to the same backend server.
+
+```
+MCP ServerAgentgatewayClientMCP ServerAgentgatewayClientPin session to backendEncode state into session IDDecode session IDRoute to pinned backendinitialize (no session)initializeinitializedMcp-Session-Id: encrypted-state-abc123call_tool (with session ID)call_tool (same server)tool resultresult
+```
+
+1. **Session initialization**: When a client sends an `initialize` request, agentgateway creates a session and returns a session ID
+2. **Backend pinning**: The session is pinned to a specific backend server (important when using multiple targets)
+3. **State encoding**: The session state is encoded into the session ID using AES-256-GCM encryption
+4. **Session resumption**: Subsequent requests with the same session ID are automatically routed to the same backend
+
+## Stateless sessions
+
+By default, agentgateway proxies streamable HTTP in **stateful** mode, as described in the previous section. You can instead run in **stateless** mode with the `statefulMode` field, so that agentgateway does not create a session or return an `Mcp-Session-Id` header. Each request is treated independently, and the client must send the full context that the request needs. This mode suits stateless agents, or MCP servers where the client handles state directly.
+
+Note
+
+The `statefulMode` field controls how agentgateway proxies session-based servers. It is separate from the newer, inherently sessionless `2026-07-28` MCP protocol, which agentgateway supports automatically through version negotiation. For more information, see [MCP spec compatibility](/workspaces/cortex/reference/agentgateway/mcp/spec-compatibility).
+
+To use stateless mode, set `statefulMode` to `stateless` on the MCP configuration.
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+mcp:
+  port: 3000
+  statefulMode: stateless
+  targets:
+    - name: mcp
+      mcp:
+        host: http://localhost:3005/mcp/
+```
+
+When you send an `initialize` request through agentgateway in stateless mode, the response returns `HTTP 200` with no `Mcp-Session-Id` header. In the default stateful mode, the same request returns an `Mcp-Session-Id` header that pins the session to a backend.
+
+## Before you begin
+
+[Install the `agentgateway` binary](/workspaces/cortex/reference/agentgateway/deployment/binary).
+
+## Configure the agentgateway
+
+1. Spin up an MCP server that uses streamable HTTP.
+
+```sh
+PORT=3005 npx -y @modelcontextprotocol/server-everything streamableHttp
+```
+
+2. Create a configuration for your agentgateway to connect to your MCP server. Make sure to expose the `Mcp-Session-Id` header in the CORS configuration for session persistence.
+
+```yaml
+cat <<EOF > config.yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+mcp:
+     port: 3000
+     policies:
+       cors:
+         allowOrigins:
+        - "*"
+      allowHeaders:
+        - "*"
+      exposeHeaders:
+        - "Mcp-Session-Id"
+targets:
+  - name: mcp
+    mcp:
+      host: http://localhost:3005/mcp/
+EOF
+```
+
+3. Run the agentgateway.
+
+```sh
+agentgateway -f config.yaml
+```
+
+## Verify access to tools
+
+1. Open the [agentgateway UI](http://localhost:15000/ui/) to view your listener and backend configuration.
+
+2. Connect to the MCP test server with the agentgateway UI playground.
+
+3. From the navigation menu under **MCP**, click **Tool Playground**.
+
+4. If you see a **Browser access is not allowed** notice, click **Apply CORS** so the playground can call the MCP listener from the UI.
+
+5. Click **Initialize** to open an MCP session. The agentgateway UI connects to the target that you configured and lists the tools that are exposed on the target.
+
+   ![](https://agentgateway.dev/img/ui-playground-tools.png)
+
+   ![](https://agentgateway.dev/img/ui-playground-tools-dark.png)
+
+6. Verify access to a tool.
+
+7. From the **Tool** list, select the `echo` tool.
+
+8. In the **Message** field, enter any string, such as `This is my first agentgateway setup.`, and click **Call tool**.
+
+9. Verify that the **Result** card shows an `HTTP 200` response with your message echoed back.
+
+   ![](https://agentgateway.dev/img/ui-playground-tool-echo.png)
+
+   ![](https://agentgateway.dev/img/ui-playground-tool-echo-dark.png)

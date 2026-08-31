@@ -106,6 +106,16 @@ flowchart TD
 
 ---
 
+## 3.5. Regras de Memória Cognitiva (Agent Behavior)
+
+To ensure this robust MongoDB Enterprise RAG architecture is used effectively, AI agents MUST follow these autonomous trigger rules:
+
+- **Search-First Policy:** Always use the \`search_knowledge\` MCP tool BEFORE generating new artifacts, answering about domain structure (cortex, platform, studio), or implementing infrastructure configurations. Use dynamic \`filter\` constraints when applicable.
+- **Entity Expansion:** If a search result returns an incomplete chunk (e.g. \`doc_chunk\`), use the \`resolve_graph_entity\` tool to traverse the Property Graph (using \`BELONGS_TO\` or \`NEXT_CHUNK\`) and read the full context.
+- **State Persistence:** Whenever the user makes an architectural decision, chooses a framework, or alters a business rule, invoke \`store_episodic\` with \`role: 'system'\` to record it for future agent sessions.
+
+---
+
 ## 4. Local Lifecycle Commands
 
 | Target Runtime            | Purpose                 | Command                 |

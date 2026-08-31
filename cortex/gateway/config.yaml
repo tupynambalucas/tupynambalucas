@@ -14,7 +14,7 @@ gateways:
 
 mcp:
   gateways: [default]
-  statefulMode: stateful
+  statefulMode: stateless
   prefixMode: conditional
   failureMode: failOpen
   policies:
@@ -27,6 +27,8 @@ mcp:
         - 'https://agentgateway-mcp.tupynambalucas.dev'
         - 'https://agentgateway-ingress-dev.tupynambalucas.dev'
         - 'https://agentgateway-ingress.tupynambalucas.dev'
+        - 'https://memory-dev.tupynambalucas.dev'
+        - 'https://memory.tupynambalucas.dev'
       allowMethods:
         - '*'
         - GET
@@ -71,6 +73,9 @@ mcp:
     - name: memory
       mcp:
         host: http://mcp-memory:8080/mcp
+    - name: kubectl
+      mcp:
+        host: http://mcp-kubectl:8080/mcp
 
 ui:
   gateways: [default]

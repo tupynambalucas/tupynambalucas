@@ -13,9 +13,15 @@ export class SearchService {
   }
 
   async search(dto: SearchQueryDTO): Promise<SearchResultDTO[]> {
-    // Generate deterministic mock vector embedding based on query for demonstration/search fallback
     const queryVector = this.generateEmbedding(dto.query);
-    return this.repository.vectorSearch(queryVector, dto.type, dto.workspace, dto.limit);
+    return this.repository.hybridSearch(
+      dto.query,
+      queryVector,
+      dto.type,
+      dto.workspace,
+      dto.limit,
+      dto.filter,
+    );
   }
 
   private generateEmbedding(text: string): number[] {

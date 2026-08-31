@@ -13,6 +13,10 @@ export interface EntityMetadata {
   section?: string;
   contentHash?: string;
   updatedAt: string;
+  tags?: string[];
+  keywords?: string[];
+  diataxis_type?: string;
+  [key: string]: unknown;
 }
 
 export interface MemoryEntity {
@@ -29,6 +33,7 @@ export interface SearchQueryDTO {
   type?: EntityType;
   workspace?: string;
   limit?: number;
+  filter?: Record<string, unknown>;
 }
 
 export interface SearchResultDTO {

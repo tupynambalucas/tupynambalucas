@@ -1,0 +1,59 @@
+---
+title: Mirroring
+description: Send copies of requests to alternative backends for shadow testing.
+sidebar_position: 2
+diataxis_type: reference
+workspace: cortex
+tags:
+  - cortex
+---
+
+# Mirroring
+
+Send copies of requests to alternative backends for shadow testing.
+
+Attaches to: [Route](https://agentgateway.dev/docs/standalone/latest/configuration/routes/ 'Route')
+
+[Route](https://agentgateway.dev/docs/standalone/latest/configuration/routes/ 'Route')
+
+[Backend](https://agentgateway.dev/docs/standalone/latest/configuration/backends/ 'Backend')
+
+Note
+
+Agentgateway supports more than one configuration style. Where a feature can also be configured in the simplified `llm` or `mcp` modes, the examples on this page show each option in tabs. For more information, see [Routing-based configuration](/workspaces/cortex/reference/agentgateway/llm/configuration-modes).
+
+Request mirroring allows sending a copy of each request to an alternative backend.
+These requests will not be retried if they fail.
+
+Simplified (MCP)Routing-based
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+mcp:
+  port: 3000
+  policies:
+    requestMirror:
+      backend:
+        host: localhost:8080
+      # Mirror 50% of requests
+      percentage: 0.5
+  targets:
+    - name: everything
+      stdio:
+        cmd: npx
+        args: ['@modelcontextprotocol/server-everything']
+yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+routes:
+  - policies:
+      requestMirror:
+        backend:
+          host: localhost:8080
+        # Mirror 50% of requests
+        percentage: 0.5
+    backends:
+      - host: localhost:8000
+```

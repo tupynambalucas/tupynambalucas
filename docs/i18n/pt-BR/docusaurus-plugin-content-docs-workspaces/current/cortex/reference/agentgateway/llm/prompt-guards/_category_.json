@@ -1,0 +1,8 @@
+{
+  "label": "Prompt Guards",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Azure AI Content Safety, Bedrock Guardrails, Model Armor, moderação, proteção multicamada, regex e webhooks."
+  }
+}

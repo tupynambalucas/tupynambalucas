@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import crypto from 'crypto';
+import matter from 'gray-matter';
 import { EntityModel } from '../../models/entity.model.js';
 import { RelationModel } from '../../models/relation.model.js';
 
@@ -90,13 +91,17 @@ export class IngestionService {
     // 2. Process File Nodes & Chunks
     for (const file of files) {
       try {
-        const content = fs.readFileSync(file, 'utf-8');
-        const hash = crypto.createHash('sha256').update(content).digest('hex');
+        const rawContent = fs.readFileSync(file, 'utf-8');
+        const parsed = matter(rawContent);
+        const content = parsed.content;
+        const hash = crypto.createHash('sha256').update(rawContent).digest('hex');
         const relPath = path.relative(this.docsDir, file).replace(/\\/g, '/');
 
         // Determine workspace
         let wsName = 'docs';
-        if (relPath.startsWith('handbook/')) {
+        if (parsed.data.workspace) {
+          wsName = parsed.data.workspace;
+        } else if (relPath.startsWith('handbook/')) {
           wsName = 'handbook';
         } else if (relPath.startsWith('workspaces/')) {
           const parts = relPath.split('/');
@@ -118,6 +123,9 @@ export class IngestionService {
             workspace: wsName,
             contentHash: hash,
             updatedAt: new Date().toISOString(),
+            tags: parsed.data.tags || [],
+            keywords: parsed.data.keywords || [],
+            diataxis_type: parsed.data.diataxis_type || '',
           },
         });
 
@@ -150,6 +158,9 @@ export class IngestionService {
               section: chunk.heading,
               contentHash: hash,
               updatedAt: new Date().toISOString(),
+              tags: parsed.data.tags || [],
+              keywords: parsed.data.keywords || [],
+              diataxis_type: parsed.data.diataxis_type || '',
             },
           });
 
@@ -164,6 +175,24 @@ export class IngestionService {
             weight: 1.0,
           });
           edgesCreated++;
+
+          // Edge: Previous Chunk -> Current Chunk (NEXT_CHUNK)
+          if (idx > 0) {
+            const prevChunkNode = await EntityModel.findOne({
+              'metadata.filePath': relPath,
+              'metadata.section': chunks[idx - 1].heading || idx.toString(),
+            }).sort({ createdAt: -1 });
+
+            if (prevChunkNode) {
+              await RelationModel.create({
+                fromId: prevChunkNode._id.toString(),
+                toId: chunkId,
+                relationType: 'NEXT_CHUNK',
+                weight: 0.9,
+              });
+              edgesCreated++;
+            }
+          }
         }
       } catch (err) {
         console.error(`Failed to ingest file ${file}:`, err);

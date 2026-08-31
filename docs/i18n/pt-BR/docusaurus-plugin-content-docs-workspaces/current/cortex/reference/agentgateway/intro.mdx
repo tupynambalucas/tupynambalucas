@@ -1,0 +1,152 @@
+---
+title: Introdução & Arquitetura
+description: Documentação de referência do AgentGateway Standalone, visão geral da arquitetura e conceitos fundamentais.
+sidebar_position: 1
+---
+
+import DocCardList from '@theme/DocCardList';
+
+# Referência do AgentGateway
+
+:::note[Referência Upstream]
+Esta seção é um espelho adaptado da [documentação oficial do AgentGateway](https://agentgateway.dev/docs/standalone/latest/).
+O conteúdo foi reformatado para total compatibilidade com Docusaurus MDX. Links externos e especificações técnicas foram preservados fielmente.
+:::
+
+O Agentgateway é um plano de controle e proxy de plano de dados open source para gateways, hospedado [como parte da Linux Foundation](https://www.linuxfoundation.org/press/linux-foundation-welcomes-agentgateway-project-to-accelerate-ai-agent-adoption-while-maintaining-security-observability-and-governance). É um plano de dados HTTP e gRPC de uso geral com balanceamento de carga, limites de tempo (timeouts), retentativas, TLS, rate limits, autorização e políticas de tráfego.
+
+Você também pode intermediar APIs e microsserviços comuns com o mesmo proxy usado para inferência de LLMs, servidores de ferramentas MCP e tráfego de agentes A2A. Dessa forma, não é necessário operar gateways separados para aplicações "regulares" e "IA". Sobre essa fundação, o projeto foca em implementar os recursos ausentes [não encontrados em gateways tradicionais](https://www.solo.io/blog/why-do-we-need-a-new-gateway-for-ai-agents) para suportar cargas de trabalho de agentes e MCP em escala, enfatizando segurança de nível corporativo, observabilidade, resiliência, confiabilidade e multi-tenancy.
+
+---
+
+## Visão Geral da Arquitetura
+
+O diagrama a seguir ilustra como o AgentGateway se posiciona entre os clientes e os servidores MCP, agentes e backends OpenAPI que ele conecta através de múltiplos ambientes de computação.
+
+![Arquitetura do AgentGateway](https://agentgateway.dev/img/architecture.svg)
+
+---
+
+## Por que usar o AgentGateway?
+
+Para compreender os benefícios do AgentGateway e as razões para sua utilização, analisamos o funcionamento de ambientes de IA agêntica, seus desafios intrínsecos e por que os gateways legados são insuficientes.
+
+### Sobre MCP e A2A
+
+Com a inteligência artificial (IA) agêntica transformando a construção e entrega de software, as organizações enfrentam o desafio de adotar rapidamente novas tecnologias e protocolos de interoperabilidade para conectar agentes e ferramentas em ecossistemas fragmentados. Como agentes e ferramentas podem ser desenvolvidos em diferentes frameworks e acessar APIs variadas, a padronização dessa comunicação é essencial para acelerar o desenvolvimento.
+
+O [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro) e o [Agent-to-Agent (A2A)](https://github.com/a2aproject/A2A) são os protocolos líderes para habilitar a comunicação entre agentes e ferramentas. O MCP auxilia na recuperação e troca de contexto com Grandes Modelos de Linguagem (LLMs) e na conexão de LLMs a ferramentas. Já o A2A resolve tarefas de longa duração e gerenciamento de estado entre múltiplos agentes. Ambos são protocolos JSON-RPC que definem como um agente descreve suas intenções, invoca ferramentas e delega tarefas a outros agentes.
+
+### Desafios com MCP e A2A
+
+Embora MCP e A2A definam o protocolo RPC de comunicação, eles não resolvem isoladamente preocupações corporativas do mundo real. Agentes interagem continuamente entre si (agent-to-agent), com sistemas internos (agent-to-tool) e com modelos fundamentais (agent-to-LLM).
+
+Essa interatividade contínua introduz novos vetores de risco e complexidade:
+
+- **Segurança**: Como gerenciar autenticação, autorização e auditoria das interações do agente entre ferramentas e serviços?
+- **Governança**: Como aplicar políticas em fluxos autônomos, como residência de dados e controle de acesso?
+- **Observabilidade**: Como obter visibilidade detalhada do que os agentes estão executando, quando e por quê?
+- **Escalabilidade e desempenho**: Como garantir baixa latência tratando retentativas, timeouts e falhas com segurança?
+
+O AgentGateway foi projetado para solucionar esses desafios em seu núcleo, fornecendo segurança integrada, governança e observabilidade em toda a comunicação MCP e A2A.
+
+### Gateways Tradicionais vs. AgentGateway
+
+Gateways de API tradicionais e proxies reversos, como o Envoy, foram desenvolvidos e otimizados para arquiteturas de microsserviços RESTful stateless, onde o gateway recebe requisições HTTP de curta duração, seleciona o backend e encaminha o pacote.
+
+O MCP, em contrapartida, é um protocolo stateful baseado em JSON-RPC. Clientes e servidores MCP mantêm sessões de longa duração com tráfego bidirecional constante, onde cada requisição e resposta deve estar vinculada ao mesmo contexto de sessão. Além disso, servidores MCP podem iniciar mensagens assíncronas para o cliente.
+
+Uma única solicitação de cliente para listar ferramentas pode exigir que o proxy consulte múltiplos servidores MCP de backend, agregue as respostas e entregue um resultado unificado. O proxy deve ser capaz de ajustar dinamicamente suas respostas por sessão e mapear cada cliente apenas aos servidores autorizados.
+
+---
+
+## Principais Recursos
+
+- **Plano de dados unificado**: Um único gateway para tráfego HTTP, gRPC e de agentes, permitindo rotear APIs de microsserviços com o mesmo proxy usado para MCP, A2A e LLMs.
+- **Alto desempenho**: Construído em Rust, projetado para alto throughput, baixíssima latência e estabilidade em conexões persistentes.
+- **Compatível com qualquer framework de agente**: Suporte nativo a LangGraph, AutoGen, kagent, Claude Desktop e SDKs OpenAI.
+- **Agnóstico de plataforma**: Execução em bare metal, máquinas virtuais, contêineres e clusters Kubernetes.
+- **Multiplexação e federação de ferramentas**: Ponto de extremidade único para federar múltiplos servidores MCP e virtualizar ferramentas por cliente.
+- **Negociação automática de protocolos**: Negociação e fallback transparente de versões de protocolo à medida que os padrões evoluem.
+- **Autenticação e autorização robustas**: Autenticação JWT integrada e sistema RBAC granular para controle de acesso.
+- **Observabilidade nativa**: Métricas e traces integrados com OpenTelemetry, Prometheus e Grafana.
+- **Atualizações dinâmicas de configuração**: Interface xDS para atualizações em tempo real sem downtime.
+
+---
+
+## Seções da Documentação
+
+Explore as categorias da documentação de referência do AgentGateway:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/quickstart',
+      label: 'Início Rápido',
+      description: 'Primeiros passos com roteamento de LLM, servidores MCP e tráfego HTTP.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/agent',
+      label: 'Conectividade de Agentes',
+      description: 'Conecte proxies AgentGateway a agentes de IA via protocolos A2A e MCP.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/configuration',
+      label: 'Configuração',
+      description: 'Configuração estática, gateways, listeners, rotas, backends e políticas.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/deployment',
+      label: 'Implantação',
+      description: 'Implantação do AgentGateway via Binário, Docker, Helm ou Kubernetes.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/llm',
+      label: 'Roteamento & Controle de LLM',
+      description:
+        'Consumo de LLM, modelos de API, controle de custos, prompt guards e provedores.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/mcp',
+      label: 'Conectividade MCP',
+      description: 'Conectividade Model Context Protocol, transportes, virtualização e guardrails.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/integrations',
+      label: 'Integrações',
+      description:
+        'Integre com Provedores de Auth, Clientes LLM, ferramentas MCP e Observabilidade.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/operations',
+      label: 'Operações & CLI',
+      description: 'Configuração da CLI agctl, depuração, inspeção e rastreamento.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/reference',
+      label: 'Referência de API & CLI',
+      description: 'Comandos agctl, expressões CEL e esquemas de configuração.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/faqs',
+      label: 'Perguntas Frequentes (FAQs)',
+      description: 'Perguntas frequentes sobre os recursos e a implantação do AgentGateway.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex/reference/agentgateway/inference',
+      label: 'Roteamento de Inferência',
+      description: 'Roteamento dinâmico de inferência entre provedores de LLM e modelos.',
+    },
+  ]}
+/>

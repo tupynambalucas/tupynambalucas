@@ -1,0 +1,8 @@
+{
+  "label": "Configuration Reference",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Configuration schema and validation rules."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "LLM Clients",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Integrate Claude Code, Claude Desktop, Codex, Continue, curl, Cursor, Devin, Copilot, and OpenAI SDK."
+  }
+}

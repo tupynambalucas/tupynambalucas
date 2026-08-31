@@ -1,0 +1,8 @@
+{
+  "label": "Controle de Custos",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Limites de gastos orçamentários, custos de modelos, dashboard e chaves virtuais."
+  }
+}

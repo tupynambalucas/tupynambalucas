@@ -167,7 +167,7 @@ Add the following step to Section 2 (Formatting and Rules Check):
 - Layer 1 (root): MUST NOT exceed 80 lines.
 - Layer 2 (bounded context): MUST NOT exceed 120 lines.
 - Layer 3 (sub-domain): MUST NOT exceed 100 lines.
-- If the budget is exceeded, extract code snippets to a `patterns/` subdirectory and replace the
+- If the budget is exceeded, extract code snippets to an `.agents/` hidden subdirectory and replace the
   inline block with a relative markdown link.
 ```
 

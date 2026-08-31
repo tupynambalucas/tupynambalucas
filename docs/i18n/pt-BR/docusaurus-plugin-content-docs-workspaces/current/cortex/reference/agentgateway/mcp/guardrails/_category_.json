@@ -1,0 +1,8 @@
+{
+  "label": "Guardrails MCP",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Inspeção de chamadas de ferramentas, configuração de guardrails e filtros de segurança."
+  }
+}

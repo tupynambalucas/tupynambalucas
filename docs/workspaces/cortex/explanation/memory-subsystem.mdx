@@ -2,52 +2,212 @@
 title: Persistent Memory Subsystem
 sidebar_label: Memory Subsystem
 sidebar_position: 2
+diataxis_type: explanation
+workspace: cortex
+tags:
+  - cortex
+  - memory
+  - rag
+  - mongodb
 ---
 
-### Persistent Memory Subsystem
-
-The Cortex memory layer is built on a self-hosted MongoDB instance leveraging native Vector Search capabilities to provide cognitive persistence for AI agents.
+The Cortex Memory Subsystem is a self-hosted, full-stack persistence layer that
+provides AI agents with three distinct memory planes: episodic (short-term chat
+history), semantic (long-term vector-indexed knowledge), and relational (graph-based
+entity associations). It is composed of four services: `mongodb-db`, `memory-api`,
+`memory-web`, and `mcp-memory`.
 
 ---
 
-## 1. Relational Document Design
+## 1. Stack Overview
 
-To balance relationship mapping with JSON document flexibility, agent memory is split across three core collections:
+```text
+memory-web  (Nginx, port 80)
+  └── reverse-proxies /api/* to memory-api:3006
+memory-api  (Fastify, port 3006)
+  └── MongoDB 7.0 rs0 (port 27017)
+mcp-memory  (Fastify MCP adapter, port 8080)
+  └── delegates all tool calls to memory-api:3006/api/memory/*
+```
 
-### A. `chat_history` (Short-Term Memory)
+Public access: `https://memory-dev.tupynambalucas.dev`
+Traffic path: Cloudflare Tunnel -> Traefik (platform namespace) ->
+`memory-web` Nginx -> `memory-api:3006`
 
-Tracks linear conversational turns grouped by agent sessions.
+---
 
-- **Purpose**: Restores immediate conversational context when resuming active threads.
-- **Fields**: Session identifiers, sender role (user/assistant), message content, and timestamps.
+## 2. MongoDB Collections
 
-### B. `entities` (Long-Term Memory)
+Agent memory is divided across three collections to balance document flexibility
+with graph-level relationship mapping.
 
-Represents discrete facts, user preferences, repositories, and workspace concepts.
+### A. `chat_history` (Episodic Memory)
 
-- **Purpose**: Acts as the semantic index. Each document is mapped to a vector embedding.
-- **Fields**: Entity name, classification type, textual summary, metadata properties, and the float array vector embedding.
+Tracks linear conversational turns grouped by session identifier.
+
+- **Purpose**: Restores immediate conversational context when resuming active
+  threads.
+- **Key fields**: `sessionId` / `conversationId` (aliased), `agentId`, `role`
+  (`user` | `assistant` | `system`), `content`, `createdAt`.
+
+### B. `entities` (Semantic Memory)
+
+Represents discrete facts, user preferences, workspace concepts, and
+documentation chunks with vector embeddings.
+
+- **Purpose**: Acts as the primary semantic index. Each document is associated
+  with a 128-dimensional float vector for similarity search.
+- **Key fields**: `name`, `type` (`workspace` | `doc_file` | `doc_chunk` |
+  `chat_message`), `content`, `embedding` (`float[128]`), `metadata`.
+- **Vector index**: MongoDB `$vectorSearch` aggregation against the `embedding`
+  field. `numCandidates` is always set to at least 10x the `limit` value.
 
 ### C. `relations` (Graph Layer)
 
-Maps semantic, directional links between stored entities.
+Stores directed, weighted edges between entities.
 
-- **Purpose**: Creates a Context Graph to track relationships (e.g., matching a `Task` to a specific `File` it modifies).
-- **Fields**: Source entity ObjectId, target entity ObjectId, link type (e.g., `CONTAINS`, `DEPENDS_ON`), and relation metadata.
+- **Purpose**: Creates an associative knowledge graph that links related concepts
+  (e.g., a `doc_chunk` entity BELONGS_TO a `doc_file` entity).
+- **Relation types**: `BELONGS_TO`, `REFERENCES`, `DEPENDS_ON`.
+- **Key fields**: `fromId` (ObjectId), `toId` (ObjectId), `relationType`,
+  `weight` (numeric strength).
 
 ---
 
-## 2. Vector Search & RAG Flow
+## 3. Vector Search and RAG Pipeline
 
-The retrieval process follows an injection pipeline to feed high-context data back to the agent:
+The retrieval-augmented generation pipeline translates a natural language query
+into a ranked set of relevant document chunks and connected graph nodes:
 
 ```text
-[User Prompt] ──> [Generate Embedding] ──> [Vector Similarity Search] ──> [Retrieve Entities]
-                                                                                │
-[Inject to Context Window] <── [Format Context Graph] <── [Fetch Relationships] ┘
+[Agent Query]
+    |
+    v
+[Generate Embedding]          POST /api/memory/search
+    |                         query -> hash-based float[128] vector
+    v
+[MongoDB $vectorSearch]       entities collection, minScore filter
+    |
+    v
+[Retrieve Top-K Entities]
+    |
+    v
+[Graph Hydration]             GET /api/memory/graph (maxDepth hops)
+    |                         relations collection traversal
+    v
+[Compile Context]
+    |
+    v
+[Return to Agent via mcp-memory search_knowledge tool]
 ```
 
-1. **Embedding Generation**: The input query is converted to a vector embedding array.
-2. **Similarity Search**: A `$vectorSearch` pipeline query is run against the `entities` collection to locate semantically similar documents.
-3. **Graph Hydration**: For each matching entity, the system queries the `relations` collection to fetch first-degree connected nodes.
-4. **Context Injection**: Stored details and connected node schemas are compiled into markdown strings and injected directly into the LLM system prompt.
+API endpoints involved:
+
+| Step            | Endpoint                       | Description                                      |
+| :-------------- | :----------------------------- | :----------------------------------------------- |
+| Semantic search | `POST /api/memory/search`      | Vector similarity query over `entities`.         |
+| Graph traversal | `GET /api/memory/graph`        | BFS traversal of `relations` from a root entity. |
+| Store turn      | `POST /api/memory/chat`        | Append a message turn to `chat_history`.         |
+| Ingest docs     | `POST /api/memory/ingest/docs` | Trigger full documentation re-sync pipeline.     |
+
+---
+
+## 4. Knowledge Graph
+
+The knowledge graph is built from the documentation corpus and conversational
+artifacts. After the initial monorepo documentation sync:
+
+- **300** unique entity nodes
+- **384** graph connections
+- **4,503** text chunks across **534** source files
+- **6,209** total graph edges
+
+Node types and their typical relationships:
+
+| From Type   | Relation     | To Type     |
+| :---------- | :----------- | :---------- |
+| `doc_chunk` | `BELONGS_TO` | `doc_file`  |
+| `doc_file`  | `BELONGS_TO` | `workspace` |
+| `doc_file`  | `REFERENCES` | `doc_file`  |
+| `doc_chunk` | `DEPENDS_ON` | `doc_chunk` |
+
+---
+
+## 5. Documentation Ingestion
+
+### Build-Time Bundling
+
+The Docusaurus documentation site (`docs/`) is copied into the `memory-api`
+Docker image at build time:
+
+```dockerfile
+COPY docs ./docs
+```
+
+The `.dockerignore` for `memory-api` must explicitly exclude only transient
+build artifacts while preserving the source MDX files:
+
+```
+docs/node_modules/
+docs/.docusaurus/
+docs/build/
+```
+
+### Startup Auto-Sync
+
+On every `memory-api` startup, the service walks the bundled `/app/docs`
+directory and ingests all `.mdx` and `.md` files. The pipeline is idempotent:
+a SHA-256 content hash is computed per file before embedding to skip unchanged
+documents.
+
+### Manual Re-Sync
+
+To trigger re-ingestion without restarting the service:
+
+```bash
+curl -X POST http://memory-api:3006/api/memory/ingest/docs
+```
+
+Or click the **Re-sync Docs** button in the Memory Web Dashboard Graph Topology
+panel.
+
+---
+
+## 6. Memory Web Dashboard
+
+The web dashboard at `https://memory-dev.tupynambalucas.dev` provides three
+interactive panels:
+
+- **Graph Topology**: Force-directed visualization of all entity nodes and their
+  relations. Supports filtering by node type and relation weight.
+- **RAG Playground**: Interactive `search_knowledge` form with similarity score
+  display and raw chunk inspection.
+- **Episodic Memory Chat**: Browse and replay `chat_history` turns filtered by
+  `sessionId`.
+
+### Nginx Configuration
+
+`memory-web` Nginx performs the following:
+
+- Serves the React SPA bundle at `/`.
+- Reverse-proxies all `/api/*` requests to `memory-api:3006`.
+- Reverse-proxies `/healthz` directly to `memory-api:3006/health`.
+- Sets CSP, X-Frame-Options, and X-Content-Type-Options security headers.
+
+---
+
+## 7. MCP Layer (mcp-memory)
+
+Agent access to the Memory Subsystem is exclusively through the `mcp-memory`
+adapter service, which is federated through AgentGateway. The four tools map
+directly to `memory-api` endpoints:
+
+| Tool               | Maps to                        | Description                                      |
+| :----------------- | :----------------------------- | :----------------------------------------------- |
+| `search_knowledge` | `POST /api/memory/search`      | RAG vector search with optional score threshold. |
+| `store_episodic`   | `POST /api/memory/chat`        | Persist a conversation turn by session.          |
+| `query_graph`      | `GET /api/memory/graph`        | Traverse entity relationships by depth.          |
+| `ingest_document`  | `POST /api/memory/ingest/docs` | Trigger full docs re-sync pipeline.              |
+
+For full tool parameter schemas, see the
+[Memory MCP Adapter reference](../reference/memory/overview.mdx).

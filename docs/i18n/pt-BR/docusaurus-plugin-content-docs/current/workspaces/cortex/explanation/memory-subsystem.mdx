@@ -1,0 +1,214 @@
+---
+title: Subsistema de Memoria Persistente
+sidebar_label: Subsistema de Memoria
+sidebar_position: 2
+---
+
+O Subsistema de Memoria do Cortex e uma camada de persistencia full-stack
+self-hosted que fornece aos agentes de IA tres planos de memoria distintos:
+episodico (historico de chat de curto prazo), semantico (conhecimento de longo
+prazo indexado por vetor) e relacional (associacoes de entidades baseadas em
+grafo). E composto por quatro servicos: `mongodb-db`, `memory-api`, `memory-web`
+e `mcp-memory`.
+
+---
+
+## 1. Visao Geral da Pilha
+
+```text
+memory-web  (Nginx, porta 80)
+  └── proxy reverso /api/* para memory-api:3006
+memory-api  (Fastify, porta 3006)
+  └── MongoDB 7.0 rs0 (porta 27017)
+mcp-memory  (Adaptador MCP Fastify, porta 8080)
+  └── delega todas as chamadas de ferramentas para memory-api:3006/api/memory/*
+```
+
+Acesso publico: `https://memory-dev.tupynambalucas.dev`
+Caminho do trafego: Cloudflare Tunnel -> Traefik (namespace platform) ->
+Nginx `memory-web` -> `memory-api:3006`
+
+---
+
+## 2. Colecoes do MongoDB
+
+A memoria do agente e dividida em tres colecoes para equilibrar a flexibilidade
+de documentos com o mapeamento de relacionamentos em nivel de grafo.
+
+### A. `chat_history` (Memoria Episodica)
+
+Rastreia turnos de conversa lineares agrupados por identificador de sessao.
+
+- **Proposito**: Restaura o contexto conversacional imediato ao retomar threads
+  ativos.
+- **Campos-chave**: `sessionId` / `conversationId` (aliasado), `agentId`, `role`
+  (`user` | `assistant` | `system`), `content`, `createdAt`.
+
+### B. `entities` (Memoria Semantica)
+
+Representa fatos discretos, preferencias do usuario, conceitos de workspace e
+fragmentos de documentacao com embeddings vetoriais.
+
+- **Proposito**: Atua como o indice semantico principal. Cada documento e
+  associado a um vetor float de 128 dimensoes para busca de similaridade.
+- **Campos-chave**: `name`, `type` (`workspace` | `doc_file` | `doc_chunk` |
+  `chat_message`), `content`, `embedding` (`float[128]`), `metadata`.
+- **Indice vetorial**: Agregacao MongoDB `$vectorSearch` no campo `embedding`.
+  `numCandidates` e sempre definido como pelo menos 10x o valor de `limit`.
+
+### C. `relations` (Camada de Grafo)
+
+Armazena arestas direcionadas e ponderadas entre entidades.
+
+- **Proposito**: Cria um grafo de conhecimento associativo que vincula conceitos
+  relacionados (ex.: uma entidade `doc_chunk` pertence a uma entidade `doc_file`).
+- **Tipos de relacao**: `BELONGS_TO`, `REFERENCES`, `DEPENDS_ON`.
+- **Campos-chave**: `fromId` (ObjectId), `toId` (ObjectId), `relationType`,
+  `weight` (forca numerica).
+
+---
+
+## 3. Busca Vetorial e Pipeline RAG
+
+O pipeline de geracao aumentada por recuperacao traduz uma consulta em linguagem
+natural em um conjunto classificado de fragmentos de documentos relevantes e nos
+de grafo conectados:
+
+```text
+[Consulta do Agente]
+    |
+    v
+[Gerar Embedding]              POST /api/memory/search
+    |                          consulta -> vetor float[128] baseado em hash
+    v
+[MongoDB $vectorSearch]        colecao entities, filtro minScore
+    |
+    v
+[Recuperar Top-K Entidades]
+    |
+    v
+[Hidratacao do Grafo]          GET /api/memory/graph (saltos maxDepth)
+    |                          travessia da colecao relations
+    v
+[Compilar Contexto]
+    |
+    v
+[Retornar ao Agente via ferramenta search_knowledge do mcp-memory]
+```
+
+Endpoints de API envolvidos:
+
+| Etapa              | Endpoint                       | Descricao                                                      |
+| :----------------- | :----------------------------- | :------------------------------------------------------------- |
+| Busca semantica    | `POST /api/memory/search`      | Consulta de similaridade vetorial sobre `entities`.            |
+| Travessia de grafo | `GET /api/memory/graph`        | BFS na colecao `relations` a partir de uma entidade raiz.      |
+| Armazenar turno    | `POST /api/memory/chat`        | Acrescentar um turno de mensagem ao `chat_history`.            |
+| Ingerir docs       | `POST /api/memory/ingest/docs` | Acionar pipeline completo de ressincronizacao de documentacao. |
+
+---
+
+## 4. Grafo de Conhecimento
+
+O grafo de conhecimento e construido a partir do corpus de documentacao e
+artefatos conversacionais. Apos a sincronizacao inicial da documentacao do
+monorepo:
+
+- **300** nos de entidade unicos
+- **384** conexoes de grafo
+- **4.503** fragmentos de texto em **534** arquivos de origem
+- **6.209** arestas de grafo no total
+
+Tipos de no e seus relacionamentos tipicos:
+
+| Tipo Origem | Relacao      | Tipo Destino |
+| :---------- | :----------- | :----------- |
+| `doc_chunk` | `BELONGS_TO` | `doc_file`   |
+| `doc_file`  | `BELONGS_TO` | `workspace`  |
+| `doc_file`  | `REFERENCES` | `doc_file`   |
+| `doc_chunk` | `DEPENDS_ON` | `doc_chunk`  |
+
+---
+
+## 5. Ingestao de Documentacao
+
+### Empacotamento em Tempo de Build
+
+O site de documentacao Docusaurus (`docs/`) e copiado para a imagem Docker do
+`memory-api` em tempo de build:
+
+```dockerfile
+COPY docs ./docs
+```
+
+O `.dockerignore` do `memory-api` deve excluir explicitamente apenas artefatos
+de build transitorios, preservando os arquivos MDX de origem:
+
+```
+docs/node_modules/
+docs/.docusaurus/
+docs/build/
+```
+
+### Sincronizacao Automatica na Inicializacao
+
+A cada inicializacao do `memory-api`, o servico percorre o diretorio `/app/docs`
+empacotado e ingere todos os arquivos `.mdx` e `.md`. O pipeline e idempotente:
+um hash SHA-256 do conteudo e calculado por arquivo antes do embedding para pular
+documentos nao alterados.
+
+### Ressincronizacao Manual
+
+Para acionar a reingestao sem reiniciar o servico:
+
+```bash
+curl -X POST http://localhost:3006/api/memory/ingest/docs
+```
+
+Ao executar no Kubernetes com `pnpm cortex:dev`, o servico `memory-api` e
+encaminhado automaticamente para `localhost:3006`.
+
+Ou clique no botao **Re-sync Docs** no painel Graph Topology do Painel Web de
+Memoria.
+
+---
+
+## 6. Painel Web de Memoria
+
+O painel web em `https://memory-dev.tupynambalucas.dev` oferece tres paineis
+interativos:
+
+- **Graph Topology**: Visualizacao dirigida por forca de todos os nos de entidade
+  e seus relacionamentos. Suporta filtragem por tipo de no e peso de relacao.
+- **RAG Playground**: Formulario interativo de `search_knowledge` com exibicao de
+  pontuacao de similaridade e inspecao de fragmento bruto.
+- **Episodic Memory Chat**: Navegue e reproduza turnos de `chat_history` filtrados
+  por `sessionId`.
+
+### Configuracao do Nginx
+
+O Nginx do `memory-web` realiza as seguintes operacoes:
+
+- Serve o bundle SPA React em `/`.
+- Encaminha como proxy reverso todas as requisicoes `/api/*` para
+  `memory-api:3006`.
+- Encaminha como proxy reverso `/healthz` diretamente para
+  `memory-api:3006/health`.
+- Define cabecalhos de seguranca CSP, X-Frame-Options e X-Content-Type-Options.
+
+---
+
+## 7. Camada MCP (mcp-memory)
+
+O acesso dos agentes ao Subsistema de Memoria e exclusivamente atraves do servico
+adaptador `mcp-memory`, federado pelo AgentGateway. As quatro ferramentas mapeiam
+diretamente para os endpoints do `memory-api`:
+
+| Ferramenta         | Mapeia para                    | Descricao                                               |
+| :----------------- | :----------------------------- | :------------------------------------------------------ |
+| `search_knowledge` | `POST /api/memory/search`      | Busca vetorial RAG com limiar de pontuacao opcional.    |
+| `store_episodic`   | `POST /api/memory/chat`        | Persiste um turno de conversa por sessao.               |
+| `query_graph`      | `GET /api/memory/graph`        | Percorre relacionamentos de entidades por profundidade. |
+| `ingest_document`  | `POST /api/memory/ingest/docs` | Aciona o pipeline completo de ressincronizacao de docs. |
+
+Para os schemas completos de parametros de ferramentas, consulte a
+[referencia do Adaptador MCP Memory](../reference/memory/overview.mdx).

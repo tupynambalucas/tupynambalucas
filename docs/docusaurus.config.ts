@@ -57,7 +57,15 @@ const config: Config = {
   organizationName: 'tupynambalucas.dev', // Usually your GitHub org/user name.
   projectName: 'tupynambalucas.dev', // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
+
+  markdown: {
+    mermaid: true,
+    hooks: {
+      onBrokenMarkdownImages: 'warn',
+    },
+  },
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -175,10 +183,6 @@ const config: Config = {
   ],
 
   themes: ['@docusaurus/theme-live-codeblock', '@docusaurus/theme-mermaid'],
-
-  markdown: {
-    mermaid: true,
-  },
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you

@@ -1,0 +1,8 @@
+{
+  "label": "Traffic Management",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Body buffering, direct responses, ExtProc, header manipulation, matching, redirects, and rewrites."
+  }
+}

@@ -1,0 +1,43 @@
+---
+title: v0.1.0 - Fundação Arquitetural & Gênese do Monorepo
+date: 2026-05-05
+tags: [core, architecture, monorepo, instance, portal]
+---
+
+O lançamento fundacional do tupynambalucas.dev (v0.1.0) estabelece a arquitetura central do monorepo, os limites de isolamento de workspaces e as fundações de domínio para a loja comunitária local e o hub da plataforma global.
+
+{/* truncate */}
+
+### Arquitetura do Monorepo & Contextos Delimitados
+
+- **Segregação de Workspaces**: Estruturação do monorepo utilizando PNPM Workspaces v11 e Turborepo para segregar domínios, ferramentas locais e sistemas de design.
+- **Contextos Delimitados Estritos**: Separação absoluta de responsabilidades entre as bases de código `instance` e `portal`. Importações entre workspaces são restritas via análise estática (restrições do ESLint e TypeScript compiler).
+- **Domain Core em Primeiro Lugar**: Estabelecido `packages/core` dentro de cada contexto como a Fonte Única da Verdade (SSOT) para modelos de dados, esquemas de validação e interfaces, garantindo que API e interfaces web compilem contra um registro de tipos compartilhado.
+- **Gerenciamento Unificado de Dependências**: Implementado PNPM Catalogs para manter consistência de versão para todas as dependências de terceiros nos pacotes do workspace.
+
+### Workspace Instance (Loja Comunitária)
+
+- **Arquitetura de Backend em Camadas**: Implementado o servidor Fastify v5 API (`@tupynambalucas-hub/api`) aproveitando uma arquitetura estrita em camadas (`Controller -> Service -> Repository -> Model`).
+- **Implementação de Domínio**: Módulos iniciais concluídos para:
+  - `auth`: Estado de sessão baseado em JWT e verificação de credenciais.
+  - `product`: Esquema de catálogo local e inventários.
+  - `cycle`: Estruturas de governança para ciclos cooperativos comunitários.
+- **Frontend Workspace**: Criado `@tupynambalucas-hub/web` usando React 19, com interfaces estilizadas via CSS Modules, roteamento para visualizações de cliente e integração com a API de backend. Possui módulos para autenticação, painel do usuário, checkout e administração local.
+
+### Workspace Portal (Global SaaS Hub)
+
+- **Infraestrutura Base**: Estruturado o esqueleto do workspace portal (`@tupynambalucas-hub/api`, `@tupynambalucas-hub/web` e `@tupynambalucas-hub/core`).
+- **Esqueleto de Autenticação**: Implementado o esqueleto de domínio `auth` para contas do portal, estabelecendo o precedente arquitetural para os próximos módulos globais de SaaS.
+
+### Studio & Ativos de Marca
+
+- **Design Tokens**: Cores, espaçamentos, tipografia e ativos visuais padronizados em `@tupynambalucas-studio/assets` para exportar um tema unificado.
+- **Integração com Design Ops**: Instância auto-hospedada do Penpot implantada para manter designs de estratégia visual e geração de ativos design-to-code.
+
+### Ferramentas de Desenvolvimento & Gateways de Contexto
+
+- **Ambientes Orquestrados**: Pilhas de desenvolvimento localizadas configuradas utilizando Docker Compose para provisionar serviços (Infra, API e Web) de forma limpa com arquivos de ambiente unificados.
+- **Model Context Protocol (MCP)**: Implementado um gateway Fastify baseado em SSE fornecendo integração de clientes LLM em contêineres com o contexto do workspace, expondo GitHub API, consulta de documentação Context7, automação de navegador Playwright e interfaces do Docker Hub.
+- **Base de Conhecimento TupyDocs**: Docusaurus configurado como o portal central de desenvolvedores para referências arquiteturais, guias e guias de estilo.
+
+---

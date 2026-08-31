@@ -428,6 +428,7 @@ export default defineConfig([
       '**/*.d.ts',
       '**/vite-env.d.ts',
       '**/.docusaurus/**',
+      '**/static/**',
     ],
   },
 

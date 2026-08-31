@@ -1,0 +1,8 @@
+{
+  "label": "Integrações",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Integrações com provedores de autenticação, clientes/provedores LLM, ecossistema MCP, redes, observabilidade e interfaces web."
+  }
+}

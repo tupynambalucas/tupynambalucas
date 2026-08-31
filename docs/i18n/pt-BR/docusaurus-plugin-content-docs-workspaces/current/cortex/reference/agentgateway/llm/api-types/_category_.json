@@ -1,0 +1,8 @@
+{
+  "label": "Tipos de API",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Chat completions, embeddings, messages, models, passthrough, realtime, rerank, responses e contagem de tokens."
+  }
+}

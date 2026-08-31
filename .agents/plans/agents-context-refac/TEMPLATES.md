@@ -259,5 +259,5 @@ Its purpose is to force agents to read the parent context before processing the 
 | Layer 2 | 120           | Loaded when entering a bounded context    |
 | Layer 3 | 100           | Loaded on-demand for specific sub-domains |
 
-If a file exceeds its budget, extract concrete code examples to a separate `patterns/` directory
+If a file exceeds its budget, extract concrete code examples to a separate local `.agents/` directory
 referenced by a link rather than inlining them.

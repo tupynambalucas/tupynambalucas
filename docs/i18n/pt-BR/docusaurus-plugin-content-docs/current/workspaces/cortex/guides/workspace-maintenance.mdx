@@ -1,0 +1,117 @@
+---
+title: Manutencao e Logica Operacional
+sidebar_label: Manutencao e Logica
+sidebar_position: 2
+---
+
+Comandos padronizados sao fornecidos para manutencao do workspace Cortex,
+gerenciamento de implantacoes Kubernetes via Skaffold e verificacao da saude de
+execucao em todo o subsistema de IA.
+
+---
+
+## 1. Comandos do Workspace
+
+Todos os comandos do workspace Cortex estao disponiveis a partir da raiz do
+monorepo via `pnpm`.
+
+| Comando                 | Descricao                                                                                         |
+| :---------------------- | :------------------------------------------------------------------------------------------------ |
+| `pnpm cortex:dev`       | Inicia os servicos Cortex no Kubernetes usando Skaffold (sincronizacao de arquivos e hot reload). |
+| `pnpm cortex:stop`      | Para a implantacao ativa do Skaffold e remove os recursos Kubernetes.                             |
+| `pnpm cortex:clean`     | Limpa o cache de build do Skaffold e remove recursos Kubernetes obsoletos.                        |
+| `pnpm cortex:up`        | Inicia os servicos Cortex usando Docker Compose (standalone, sem Kubernetes).                     |
+| `pnpm cortex:down`      | Para os servicos Docker Compose.                                                                  |
+| `pnpm cortex:logs`      | Transmite logs agregados de todos os servicos Docker Compose.                                     |
+| `pnpm cortex:reset`     | Para os servicos, limpa volumes e reinicia do zero.                                               |
+| `pnpm cortex:typecheck` | Executa verificacoes do compilador TypeScript em todos os pacotes Cortex.                         |
+
+---
+
+## 2. Fluxo de Trabalho Kubernetes / Skaffold
+
+O fluxo de desenvolvimento principal usa Skaffold com overlays Kustomize
+localizados em `cortex/infrastructure/kubernetes/`.
+
+### Inicializando a Pilha
+
+```bash
+pnpm cortex:dev
+```
+
+O Skaffold constroi todas as imagens de servico, aplica o overlay Kustomize `dev`
+e habilita sincronizacao de arquivos para iteracao rapida. Os encaminhamentos de
+porta sao configurados automaticamente para acesso de desenvolvimento local.
+
+### Parando a Pilha
+
+```bash
+pnpm cortex:stop
+```
+
+Encerra o processo Skaffold e remove todos os recursos Kubernetes no namespace
+`cortex` implantados pela sessao atual.
+
+### Limpando o Cache de Build
+
+```bash
+pnpm cortex:clean
+```
+
+Remove caches de imagens Skaffold e limpa recursos Kubernetes obsoletos. Use
+quando as imagens estiverem em estado inconsistente ou apos uma atualizacao de
+dependencia.
+
+---
+
+## 3. Fluxo de Trabalho Docker Compose Standalone
+
+Para ambientes onde o Kubernetes nao esta disponivel, o Docker Compose pode
+gerenciar a pilha completa Cortex de forma independente:
+
+```bash
+pnpm cortex:up    # Inicia todos os servicos
+pnpm cortex:down  # Para todos os servicos
+pnpm cortex:logs  # Transmite logs de todos os containers
+pnpm cortex:reset # Limpa volumes e reinicia
+```
+
+---
+
+## 4. Sincronizacao de Docs do Subsistema de Memoria
+
+O servico `memory-api` empacota o corpus de documentacao em tempo de build e
+sincroniza automaticamente na inicializacao. Para acionar uma ressincronizacao
+manual da base de conhecimento sem reiniciar:
+
+### Via API
+
+```bash
+curl -X POST http://localhost:3006/api/memory/ingest/docs
+```
+
+Ao executar no Kubernetes com `pnpm cortex:dev`, o servico `memory-api` e
+encaminhado automaticamente para `localhost:3006`.
+
+### Via Painel
+
+1. Abra o Painel Web de Memoria em `https://memory-dev.tupynambalucas.dev`.
+2. Navegue ate o painel **Graph Topology**.
+3. Clique no botao **Re-sync Docs**.
+
+A sincronizacao e idempotente: somente arquivos com hashes de conteudo alterados
+sao re-incorporados.
+
+---
+
+## 5. Estrutura do Workspace
+
+| Caminho                             | Proposito                                                      |
+| :---------------------------------- | :------------------------------------------------------------- |
+| `cortex/gateway/`                   | Arquivos de configuracao do AgentGateway (`config.yaml`).      |
+| `cortex/mcp/guardrails/`            | Servico guardrail ExtMCP gRPC.                                 |
+| `cortex/mcp/services/`              | Pacotes adaptadores MCP individuais (firecrawl, memory, etc.). |
+| `cortex/memory/packages/core/`      | Modelos TypeScript e schemas Zod compartilhados.               |
+| `cortex/memory/services/api/`       | Backend Fastify `memory-api`.                                  |
+| `cortex/memory/services/web/`       | Dashboard React `memory-web`.                                  |
+| `cortex/infrastructure/kubernetes/` | Configuracao Skaffold e manifestos Kustomize.                  |

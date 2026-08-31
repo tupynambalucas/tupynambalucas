@@ -11,6 +11,7 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
 COPY shared/config ./shared/config
 COPY cortex/memory/packages/core ./cortex/memory/packages/core
+ARG CACHEBUST=clean_v9
 COPY cortex/mcp/services/memory ./cortex/mcp/services/memory
 
 RUN pnpm --filter @tupynambalucas-cortex/memory-core build
@@ -24,6 +25,7 @@ ENV NODE_ENV=production
 ENV PORT=8080
 
 COPY --from=builder /out ./
+COPY --from=builder /workspace/cortex/mcp/services/memory/dist ./dist
 
 EXPOSE 8080
 

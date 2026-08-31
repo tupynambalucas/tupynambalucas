@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "dev": "tsx watch --env-file=../../../infrastructure/docker/.env src/index.ts",
@@ -19,6 +22,7 @@
     "@tupynambalucas-cortex/memory-core": "workspace:*",
     "fastify": "catalog:api-stack",
     "fastify-plugin": "catalog:api-stack",
+    "gray-matter": "catalog:",
     "mongoose": "catalog:api-stack",
     "zod": "catalog:shared-stack"
   },

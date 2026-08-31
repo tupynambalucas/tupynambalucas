@@ -52,10 +52,12 @@ catalog:
   'wrangler': '^4.114.0'
   'jimp': ^1.6.1
   dotenv-cli: ^11.0.0
+  gray-matter: ^4.0.3
 
 catalogs:
   mcp-stack:
     '@modelcontextprotocol/sdk': '^1.6.0'
+    'firecrawl': '^4.37.0'
 
   tooling-stack:
     '@eslint/js': '10.0.1'

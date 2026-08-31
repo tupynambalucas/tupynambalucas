@@ -2,109 +2,146 @@
 title: Unified AI Architecture & Sandboxing
 sidebar_label: Unified Architecture
 sidebar_position: 1
+diataxis_type: explanation
+workspace: cortex
+tags:
+  - cortex
 ---
 
-### Unified AI Architecture
-
-The Cortex workspace consolidates all artificial intelligence operations into a unified Bounded Context. By co-locating the API Ingress Gateway, persistent memory layer, Model Context Protocol (MCP) data plane, and containerized terminal agent workspaces, the system guarantees environment predictability and security.
+The Cortex workspace consolidates all artificial intelligence operations into a
+unified Bounded Context. By co-locating the API Ingress Gateway, persistent
+memory layer, Model Context Protocol (MCP) data plane, and containerized agent
+workspaces under a single Kubernetes namespace, the system guarantees environment
+predictability, network isolation, and security.
 
 ---
 
 ## 1. Network Topology & Isolation
 
-To secure developer workstations, AI agent containers run within a sandboxed virtual bridge network, preventing direct access to host resources.
+All Cortex services run inside the `cortex` Kubernetes namespace. Inbound traffic
+enters through Traefik (deployed in the `platform` namespace) and is routed
+through the AgentGateway before reaching any downstream MCP pod or the Memory
+Subsystem.
 
 ```mermaid
 graph TD
-    subgraph host [Host Machine]
-        direction TB
-        A[Developer Shell / IDE / VS Code]
+    subgraph platform_ns ["Namespace: platform"]
+        Traefik["Traefik Ingress Controller"]
+        CF["Cloudflare Tunnel"]
     end
 
-    subgraph cortex_network [Docker Bridge: tupynambalucas-cortex-net]
-        direction TB
-        subgraph agent_plane [Agent Plane]
-            B[cortex/agents - Antigravity Container]
-            C[cortex/agents - Copilot Container]
+    subgraph cortex_ns ["Namespace: cortex"]
+        subgraph gateway_plane ["Gateway Plane"]
+            GW["AgentGateway pod (port 8080)"]
+            GR["mcp-guardrails pod (gRPC)"]
         end
 
-        subgraph data_plane [Data & Memory Plane]
-            D[cortex/mcp - Downstream Servers]
-            E[cortex/memory - MongoDB RAG API]
+        subgraph mcp_plane ["MCP Data Plane"]
+            MFC["mcp-firecrawl pod"]
+            MMEM["mcp-memory pod"]
+            MGH["mcp-github pod"]
+            MGF["mcp-grafana pod"]
+            MPW["mcp-playwright pod"]
+            MCT["mcp-context7 pod"]
         end
 
-        subgraph gateway_plane [Gateway Plane]
-            F[cortex/gateway - Ingress Proxy]
+        subgraph memory_plane ["Memory Subsystem"]
+            MAPI["memory-api pod (port 3006)"]
+            MWEB["memory-web pod (Nginx)"]
+            MONGO["mongodb-db pod (rs0, port 27017)"]
         end
     end
 
-    subgraph platform_network [Docker Bridge: tupynambalucas-platform-net]
-        G[platform - OpenTelemetry Collector]
-    end
-
-    A -->|docker exec| B
-    A -->|docker exec| C
-    B -->|Request Tools| F
-    C -->|Request Tools| F
-    F -->|Federate Request| D
-    F -->|Telemetry Export| G
+    CF -->|HTTPS| Traefik
+    Traefik -->|IngressRoute| GW
+    Traefik -->|IngressRoute| MWEB
+    GW --> GR
+    GR -->|Validated requests| MFC
+    GR -->|Validated requests| MMEM
+    GR -->|Validated requests| MGH
+    GR -->|Validated requests| MGF
+    GR -->|Validated requests| MPW
+    GR -->|Validated requests| MCT
+    MMEM --> MAPI
+    MWEB --> MAPI
+    MAPI --> MONGO
 ```
 
-### Network Planes
+### Isolation Model
 
-- **Internal Bridge (`tupynambalucas-cortex-net`)**: The private network where all Cortex services communicate. Downstream MCP servers and memory databases do not expose ports to the host; they are accessed exclusively through the gateway.
-- **External Bridge (`tupynambalucas-platform-net`)**: Connects the gateway to platform-wide services like the OpenTelemetry Collector for telemetry aggregation.
+- All inter-service communication uses Kubernetes DNS names (e.g.,
+  `memory-api:3006`, `agentgateway:8080`). No service exposes a NodePort
+  directly to the host except during local Skaffold development sessions.
+- Downstream MCP pods and the Memory Subsystem pods are only reachable through
+  the AgentGateway or Traefik IngressRoutes. No direct pod-to-pod access from
+  agent containers is permitted.
+- The `platform` namespace hosts Traefik, OpenTelemetry Collector, and Grafana
+  stack. Telemetry data flows from Cortex pods to the platform namespace via
+  OTLP.
 
 ---
 
-## 2. Directory Layout & Mount Mappings
+## 2. Directory Layout
 
 ```text
 cortex/
-├── gateway/                 # API Ingress Gateway config
-├── mcp/                     # MCP server specifications
-├── memory/                  # MongoDB Vector RAG memory workspace
-└── agents/                  # AI agent runtime CLI setup
-    ├── compose.yaml         # Orchestration for agent containers
-    ├── mcp_config.json      # Unified MCP configuration
-    ├── skills/              # Shared agent skills
-    ├── copilot/
-    │   ├── Dockerfile       # GitHub CLI + Copilot CLI
-    │   └── data/            # Git-ignored session tokens
-    └── antigravity/
-        ├── Dockerfile       # Antigravity CLI
-        └── data/            # Git-ignored local brain/logs
+├── gateway/                 # AgentGateway configuration (config.yaml, guardrails)
+├── mcp/
+│   ├── guardrails/          # gRPC ExtMCP policy processor
+│   ├── inspector/           # MCP Inspector web UI (dev only)
+│   └── services/            # Downstream MCP adapter packages
+│       ├── context7/
+│       ├── firecrawl/
+│       ├── github/
+│       ├── grafana/
+│       ├── memory/
+│       └── playwright/
+├── memory/
+│   ├── packages/core/       # Shared TypeScript models and Zod schemas
+│   └── services/
+│       ├── api/             # memory-api Fastify backend
+│       ├── mongodb/         # MongoDB 7.0 rs0 init scripts
+│       └── web/             # memory-web React dashboard
+├── infrastructure/
+│   └── kubernetes/          # Skaffold + Kustomize manifests
+│       ├── base/            # Base Kustomize resources
+│       └── overlays/        # dev / staging / prod overlays
+├── package.json
+└── AGENTS.md
 ```
-
-### Configuration Injection
-
-All settings and credentials are dynamically bind-mounted at container startup. No private authentication keys are baked into the image layers.
-
-| Mount Source           | Container Destination                | Purpose                            |
-| :--------------------- | :----------------------------------- | :--------------------------------- |
-| `../../`               | `/workspace`                         | Monorepo working directory         |
-| `./skills/`            | `/workspace/.agents/skills`          | Shared agent skills                |
-| `./mcp_config.json`    | `/workspace/.agents/mcp_config.json` | Unified MCP configurations         |
-| `./antigravity/data/`  | `/root/.gemini/antigravity-cli/`     | Antigravity session & brain state  |
-| `./copilot/data/`      | `/root/.copilot/`                    | Copilot session tokens             |
-| `/var/run/docker.sock` | `/var/run/docker.sock`               | Docker-out-of-Docker orchestration |
-| `~/.ssh`               | `/root/.ssh` (read-only)             | Host SSH credentials for Git tasks |
-| `~/.gitconfig`         | `/root/.gitconfig` (read-only)       | Host Git profile configuration     |
 
 ---
 
 ## 3. Ingress Routing & Tool Federation
 
-The **AgentGateway** serves as the central router for all AI clients. It translates requests and routes tasks securely:
+The **AgentGateway** is the sole entry point for all AI tool calls. It validates,
+enriches, and routes requests through the following pipeline:
 
-- **Unified Ingress Proxy**: A Go-based gateway proxy runs on the container port `8080` (mapped to host `8080`). It acts as a single point of entry, routing requests to the target MCP servers.
-- **Tool Federation Configuration**: Inside the agent containers, the configuration maps downstream tools through the gateway:
-  ```json
-  {
-    "mcpServers": {
-      "github": { "url": "http://agentgateway:8080/mcp/http" },
-      "context7": { "url": "http://agentgateway:8080/mcp/http" }
-    }
+1. **Cloudflare Tunnel -> Traefik**: Public HTTPS traffic enters through a
+   Cloudflare Tunnel terminating at the Traefik Ingress Controller in the
+   `platform` namespace.
+2. **Traefik -> AgentGateway**: An IngressRoute forwards agent API traffic to the
+   AgentGateway pod on port `8080`.
+3. **ExtMCP Guardrails**: AgentGateway delegates every `tools/call` and
+   `tools/list` request to the `mcp-guardrails` gRPC sidecar, which:
+   - Rewrites `localhost` / `127.0.0.1` URLs to `host.docker.internal`.
+   - Injects `system_instruction` metadata into tool listings.
+   - Returns `{ pass: {} }` on any parsing exception (fail-open contract).
+4. **Downstream Dispatch**: Validated requests are forwarded to the appropriate
+   MCP adapter pod (e.g., `mcp-firecrawl`, `mcp-memory`) via Kubernetes
+   service DNS.
+
+### Tool Configuration in Agent Containers
+
+Agent containers reference AgentGateway as the single MCP endpoint:
+
+```json
+{
+  "mcpServers": {
+    "cortex": { "url": "http://agentgateway:8080/mcp" }
   }
-  ```
-- **Stream Stability**: The gateway disables default connection timeouts and intercepts requests to inject global CORS headers, ensuring stable, persistent Server-Sent Events (SSE) connections.
+}
+```
+
+AgentGateway federates the request to the correct downstream MCP pod
+transparently. Agents do not need individual service URLs.

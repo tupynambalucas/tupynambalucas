@@ -107,9 +107,9 @@ export const ResponsiveHero = () => {
   return (
     <section className={styles.heroSection}>
       <div className={styles.container}>
-        <h1 className={styles.heroTitle}>Design Fluido e Responsivo</h1>
-      </div>
-    </section>
+        <h1 className={styles.heroTitle}>Design Fluido e Responsivo\</h1\>
+      \</div\>
+    \</section\>
   );
 };
 ```
@@ -332,7 +332,7 @@ function AdvancedCycleManager() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Gerenciador de Ciclo</h3>
+        <h3 className={styles.title}>Gerenciador de Ciclo\</h3\>
 
         <span
           className={`${styles.statusBadge} ${
@@ -340,8 +340,8 @@ function AdvancedCycleManager() {
           }`}
         >
           {hasErrors === true ? '⚠ ITENS INVÁLIDOS' : '✓ PRONTO PARA SALVAR'}
-        </span>
-      </div>
+        \</span\>
+      \</div\>
 
       <div className={styles.productList}>
         {products.map((product) => (
@@ -352,22 +352,22 @@ function AdvancedCycleManager() {
             }`}
           >
             <div>
-              <div className={styles.productName}>{product.name}</div>
-              <div className={styles.productId}>ID: {product.id}</div>
-            </div>
+              <div className={styles.productName}>{product.name}\</div\>
+              <div className={styles.productId}>ID: {product.id}\</div\>
+            \</div\>
 
             <div className={styles.inputGroup}>
-              <span className={styles.currency}>R$</span>
+              <span className={styles.currency}>R$\</span\>
               <input
                 type="number"
                 value={product.price}
                 onChange={(e) => updateProductPrice(product.id, e.target.value)}
                 className={styles.priceInput}
               />
-            </div>
-          </div>
+            \</div\>
+          \</div\>
         ))}
-      </div>
+      \</div\>
 
       <button
         disabled={isSubmitting === true || hasErrors === true}
@@ -375,7 +375,7 @@ function AdvancedCycleManager() {
         className={styles.submitButton}
       >
         {isSubmitting === true ? 'Processando Atualização...' : 'Salvar Alterações do Ciclo'}
-      </button>
+      \</button\>
 
       {/* Internal CSS for the demo purpose only - NOT for production */}
       <style>{`
@@ -395,8 +395,8 @@ function AdvancedCycleManager() {
         .ACM_priceInput { width: 80px; padding: 0.4rem; border-radius: 6px; border: 1px solid #cbd5e1; text-align: right; }
         .ACM_submitButton { width: 100%; padding: 1rem; border-radius: 8px; border: none; background: #16a34a; color: white; font-weight: 700; cursor: pointer; }
         .ACM_submitButton:disabled { opacity: 0.6; cursor: not-allowed; }
-      `}</style>
-    </div>
+      `}\</style\>
+    \</div\>
   );
 }
 ```

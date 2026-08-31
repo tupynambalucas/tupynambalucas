@@ -1,0 +1,8 @@
+{
+  "label": "Security",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Authentication, authorization, TLS, CORS, CSRF, and OIDC policies."
+  }
+}

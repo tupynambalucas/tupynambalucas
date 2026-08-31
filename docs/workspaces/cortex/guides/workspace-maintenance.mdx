@@ -2,46 +2,117 @@
 title: Maintenance & Operational Logic
 sidebar_label: Maintenance & Logic
 sidebar_position: 2
+diataxis_type: how-to
+workspace: cortex
+tags:
+  - cortex
 ---
 
-### Operational Logic and Maintenance
-
-Standardized commands are provided for maintaining the Cortex workspace, managing container lifetimes, and verifying execution health across the AI subsystem.
-
-| Command          | Engineering Responsibility                                                     |
-| :--------------- | :----------------------------------------------------------------------------- |
-| `pnpm typecheck` | Validates TypeScript compiler integrity across active agents and MCP adapters. |
-| `pnpm build`     | Compiles the unified gateway and workspace build dependencies.                 |
-
----
-
-## 1. Workspace Orchestration
-
-Cortex runs Docker Compose orchestrations defined in the `cortex/infrastructure/docker/` directory. Use the centralized root-level scripts to control service state:
-
-### A. Core Services (Gateway)
-
-- **Start**: `pnpm cortex:core:up`
-- **Stop**: `pnpm cortex:core:down`
-- **Reset**: `pnpm cortex:core:reset` (fully prunes storage volumes and rebuilds containers)
-
-### B. MCP Server Adapters
-
-- **Start**: `pnpm cortex:mcp:up`
-- **Stop**: `pnpm cortex:mcp:down`
-- **Reset**: `pnpm cortex:mcp:reset`
-
-### C. Agent Runtimes
-
-- **Start**: `pnpm cortex:agents:up`
-- **Stop**: `pnpm cortex:agents:down`
-- **Reset**: `pnpm cortex:agents:reset`
+Standardized commands are provided for maintaining the Cortex workspace, managing
+Kubernetes deployments via Skaffold, and verifying execution health across the AI
+subsystem.
 
 ---
 
-## 2. Workspace Structure
+## 1. Workspace Commands
 
-- `cortex/infrastructure/docker/compose.yaml`: Configures database services, network definitions, and the AgentGateway proxy routing.
-- `cortex/gateway/`: Gateway configurations (e.g., `config.yaml`).
-- `cortex/mcp/`: Individual subdirectories containing multi-stage Dockerfiles and dependency logic for each registered MCP server (e.g., GitHub, Firecrawl, Grafana).
-- `cortex/agents/`: Dockerfiles and setup folders for containerized agent terminal runners (Antigravity, Copilot).
+All Cortex workspace commands are available from the monorepo root via `pnpm`.
+
+| Command                 | Description                                                                  |
+| :---------------------- | :--------------------------------------------------------------------------- |
+| `pnpm cortex:dev`       | Start Cortex services in Kubernetes using Skaffold (file-sync + hot reload). |
+| `pnpm cortex:stop`      | Stop active Skaffold deployment and delete Kubernetes resources.             |
+| `pnpm cortex:clean`     | Clean Skaffold build cache and remove stale Kubernetes resources.            |
+| `pnpm cortex:up`        | Start Cortex services using Docker Compose (standalone, no Kubernetes).      |
+| `pnpm cortex:down`      | Stop Docker Compose services.                                                |
+| `pnpm cortex:logs`      | Stream aggregated logs from all Docker Compose services.                     |
+| `pnpm cortex:reset`     | Stop services, prune volumes, and restart from a clean state.                |
+| `pnpm cortex:typecheck` | Run TypeScript compiler checks across all Cortex packages.                   |
+
+---
+
+## 2. Kubernetes / Skaffold Workflow
+
+The primary development workflow uses Skaffold with Kustomize overlays located
+in `cortex/infrastructure/kubernetes/`.
+
+### Starting the Stack
+
+```bash
+pnpm cortex:dev
+```
+
+Skaffold builds all service images, applies the `dev` Kustomize overlay, and
+enables file-sync for fast iteration. Port-forwards are configured automatically
+for local development access.
+
+### Stopping the Stack
+
+```bash
+pnpm cortex:stop
+```
+
+Terminates the Skaffold process and removes all Kubernetes resources in the
+`cortex` namespace deployed by the current session.
+
+### Cleaning Build Cache
+
+```bash
+pnpm cortex:clean
+```
+
+Removes Skaffold image caches and cleans stale Kubernetes resources. Use this
+when images are in an inconsistent state or after a dependency upgrade.
+
+---
+
+## 3. Docker Compose Standalone Workflow
+
+For environments where Kubernetes is not available, Docker Compose can manage
+the full Cortex stack independently:
+
+```bash
+pnpm cortex:up    # Start all services
+pnpm cortex:down  # Stop all services
+pnpm cortex:logs  # Tail logs from all containers
+pnpm cortex:reset # Prune volumes and restart
+```
+
+---
+
+## 4. Memory Subsystem Docs Sync
+
+The `memory-api` service bundles the documentation corpus at build time and
+auto-syncs on startup. To trigger a manual re-sync of the knowledge base without
+restarting:
+
+### Via API
+
+```bash
+curl -X POST http://localhost:3006/api/memory/ingest/docs
+```
+
+When running in Kubernetes with `pnpm cortex:dev`, the `memory-api` service is
+port-forwarded to `localhost:3006` automatically.
+
+### Via Dashboard
+
+1. Open the Memory Web Dashboard at `https://memory-dev.tupynambalucas.dev`.
+2. Navigate to the **Graph Topology** panel.
+3. Click the **Re-sync Docs** button.
+
+The sync is idempotent: only files with changed content hashes are re-embedded.
+
+---
+
+## 5. Workspace Structure
+
+| Path                                | Purpose                                                    |
+| :---------------------------------- | :--------------------------------------------------------- |
+| `cortex/gateway/`                   | AgentGateway configuration files (`config.yaml`).          |
+| `cortex/mcp/guardrails/`            | ExtMCP gRPC guardrail service.                             |
+| `cortex/mcp/services/`              | Individual MCP adapter packages (firecrawl, memory, etc.). |
+| `cortex/memory/packages/core/`      | Shared TypeScript models and Zod schemas.                  |
+| `cortex/memory/services/api/`       | `memory-api` Fastify backend.                              |
+| `cortex/memory/services/web/`       | `memory-web` React dashboard.                              |
+| `cortex/infrastructure/kubernetes/` | Skaffold configuration and Kustomize manifests.            |

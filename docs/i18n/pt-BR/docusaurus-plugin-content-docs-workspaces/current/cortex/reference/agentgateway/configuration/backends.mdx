@@ -1,0 +1,176 @@
+---
+title: 'Backends'
+description: 'Configure backends to route traffic to hostnames, LLM providers, and MCP servers.'
+sidebar_position: 2
+---
+
+# Backends
+
+Configure backends to route traffic to hostnames, LLM providers, and MCP servers.
+
+Agentgateway backends Backends can be static hosts, MCP servers, LLM providers, or other services. control where traffic is routed to.
+Agentgateway supports a variety of backends, such as simple hostnames and IP addresses, LLM providers Agentgateway supports multiple LLM providers and can route to different providers based on configuration., and MCP servers.
+
+Note
+
+Agentgateway supports more than one configuration style. Where a feature can also be configured in the simplified `llm` or `mcp` modes, the examples on this page show each option in tabs. For more information, see [Routing-based configuration](/workspaces/cortex/reference/agentgateway/llm/configuration-modes).
+
+## Static Hosts
+
+The simplest form of backend is a static hostname or IP address. Static hosts are a routing-based backend, so they are configured in a `routes` entry; the simplified `llm` and `mcp` modes model only LLM providers and MCP targets. For example:
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+    protocol: HTTP
+routes:
+  - backends:
+      - host: example.com:8080
+        weight: 1
+      - host: 127.0.0.1:80
+        weight: 9
+```
+
+## MCP Servers
+
+The MCP backend allows you to connect to an MCP server.
+Below shows a simple example, exposing a local and remote MCP server.
+See the [MCP connectivity guide](/workspaces/cortex/reference/agentgateway/mcp) for more information.
+
+Simplified (MCP)Routing-based
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+mcp:
+  port: 3000
+  targets:
+    - name: stdio-server
+      stdio:
+        cmd: npx
+        args: ['@modelcontextprotocol/server-everything']
+    - name: http-server
+      mcp:
+        host: https://example.com/mcp
+yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+routes:
+  - backends:
+      - mcp:
+          targets:
+            - name: stdio-server
+              stdio:
+                cmd: npx
+                args: ['@modelcontextprotocol/server-everything']
+            - name: http-server
+              mcp:
+                host: https://example.com/mcp
+```
+
+### Session routing
+
+By default, MCP backends use stateful session routing, where the gateway tracks session IDs and routes subsequent requests to the same upstream. For upstreams that do not maintain server-side session state, you can set `statefulMode: stateless`. In stateless mode, the gateway automatically wraps each request with an initialization sequence, so the upstream server processes every request independently.
+
+Simplified (MCP)Routing-based
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+mcp:
+  port: 3000
+  statefulMode: stateless
+  targets:
+    - name: openapi-server
+      openapi:
+        host: petstore3.swagger.io:443
+        schema:
+          url: https://petstore3.swagger.io/api/v3/openapi.json
+yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+routes:
+  - backends:
+      - mcp:
+          statefulMode: stateless
+          targets:
+            - name: openapi-server
+              openapi:
+                host: petstore3.swagger.io:443
+                schema:
+                  url: https://petstore3.swagger.io/api/v3/openapi.json
+```
+
+## LLM Providers
+
+Agentgateway natively supports connecting to LLM providers, such as OpenAI and Anthropic.
+Below shows a simple example, connecting to OpenAI.
+See the [LLM consumption guide](/workspaces/cortex/reference/agentgateway/llm) for more information.
+
+Simplified (LLM)Routing-based
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+llm:
+  models:
+    - name: openai
+      provider: openAI
+      params:
+        model: gpt-3.5-turbo
+        apiKey: '$OPENAI_API_KEY'
+yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+routes:
+  - backends:
+      - ai:
+          name: openai
+          provider:
+            openAI:
+              model: gpt-3.5-turbo
+    policies:
+      backendAuth:
+        key: '$OPENAI_API_KEY'
+```
+
+## AWS AgentCore
+
+The AWS backend routes requests to an [Amazon Bedrock AgentCore](https://aws.amazon.com/bedrock/agentcore/) agent runtime. AgentCore is a routing-based backend, so it is configured in a `routes` entry.
+
+Agentgateway derives the connection details from the `agentRuntimeArn` value: requests are sent over TLS to the `bedrock-agentcore` endpoint in the runtime’s AWS region, with the path set to the runtime’s invocation endpoint. Agentgateway signs each request with AWS SigV4 by using the standard [AWS credential lookup](https://docs.aws.amazon.com/sdkref/latest/guide/access.html) from the environment.
+
+The following configuration is from the [`traffic-aws-agentcore` example](https://github.com/agentgateway/agentgateway/tree/main/examples/traffic-aws-agentcore) in the agentgateway repository.
+
+[config.yaml](https://agentgateway.dev/agentgateway.dev/examples/traffic-aws-agentcore/config.yaml)
+
+```yaml
+# AgentCore with static user-id header forwarding.
+binds:
+  - port: 3000
+    listeners:
+      - routes:
+          - matches:
+              - path:
+                  pathPrefix: /supply-chain-agent
+            backends:
+              - aws:
+                  agentCore:
+                    agentRuntimeArn: 'arn:aws:bedrock-agentcore:us-west-2:606469916935:runtime/a2a_sca_iam-4rLvS1BRqq'
+                policies:
+                  requestHeaderModifier:
+                    set:
+                      X-Amzn-Bedrock-AgentCore-Runtime-User-Id: 'user-foo'
+                      X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id: 'user-foo'
+```
+
+| Setting                          | Description                                                                                                                                                                   |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `agentRuntimeArn`                | The ARN of the AgentCore agent runtime to invoke, in the format `arn:aws:bedrock-agentcore:<region>:<account-id>:runtime/<runtime-id>`.                                       |
+| `qualifier`                      | Optional runtime version or endpoint qualifier to invoke. If unset, the default endpoint is used.                                                                             |
+| `policies.requestHeaderModifier` | Optional headers to set before the request is sent upstream, such as the `X-Amzn-Bedrock-AgentCore-Runtime-User-Id` header that identifies the user to the AgentCore runtime. |

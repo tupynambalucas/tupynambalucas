@@ -77,3 +77,105 @@ All MDX files must align with the project Prettier configuration:
 - **Strictly No Dev/Preview Servers**: Never start the development server (`pnpm docs:dev`) or preview server (`pnpm docs:preview`). The verification workflow consists solely of verifying successful compilation and error-free builds.
 
 For the step-by-step validation pipeline instructions, refer to [references/workflow.md](references/workflow.md).
+
+---
+
+## 5. Upstream/Vendor Documentation Adaptation
+
+When a task requires adapting official third-party or upstream documentation (e.g., AgentGateway, Traefik, Kubernetes) into the Docusaurus workspace, follow this specific pattern. This type of documentation serves as an **inherited technology reference** — it is not project-authored content, but an adapted mirror of official upstream docs kept inside the project for developer convenience and architectural reference.
+
+### A. Dedicated Category Placement & Navigation
+
+- Place all adapted upstream docs inside a **dedicated named subfolder** within `docs/workspaces/<workspace>/reference/`, for example: `docs/workspaces/cortex/reference/agentgateway/`.
+- Every category and subcategory folder MUST include a `_category_.json` configured with a `generated-index` link:
+  ```json
+  {
+    "label": "Category Label",
+    "position": 1,
+    "link": {
+      "type": "generated-index",
+      "description": "Concise summary of this documentation section."
+    }
+  }
+  ```
+  This ensures clicking the dropdown or navigating to the category URL displays a clean list of document cards.
+- Do NOT mix upstream reference docs with project-authored content. They must occupy their own isolated category tree.
+
+### B. Entrypoint Structure & About Folder Conversion
+
+- Scraped documentation often features an `about/` folder containing `index.md`, `introduction.md`, and `architecture.md`.
+- Convert this pattern into a single top-level `intro.mdx` file at the root of the technology reference folder (e.g., `docs/workspaces/cortex/reference/agentgateway/intro.mdx`).
+- Include the Upstream Reference attribution banner, core concepts, motivation, and architecture diagrams in `intro.mdx`.
+- Conclude `intro.mdx` with a `<DocCardList />` component pointing to every subcategory and major reference document.
+
+### C. Redundant Index and Overview Consolidation
+
+- Pure table-of-contents `index.md` files produced by web scrapers are superseded by Docusaurus `generated-index` cards and must NOT be converted into empty `.mdx` files.
+- If an index file or `about.md` contains substantive introductory explanations or conceptual documentation, rename and convert it to `overview.mdx` (with `sidebar_position: 1`).
+
+### D. Source Scrape Cleanup Rules
+
+Upstream source files (typically obtained by scraping documentation websites) contain **web UI artifacts** that must be completely stripped before adapting the content:
+
+- Navigation headers (`[Skip to content]`, `Toggle theme`, `CTRL K`, navbar links).
+- Website announcement banners (e.g., `agentgateway has joined the Agentic AI Foundation — ...×`).
+- "Copy as Markdown" / "View as Markdown" / "Open in Claude" floating menus.
+- Empty fenced code blocks used as spacers (` ``` ` followed immediately by ` ``` `).
+- AI assistant widgets (`Ask AI`, `Agentgateway assistant`, `Rate limit reached`, `Start new conversation`).
+- Page navigation UI (`↑↓ navigate`, `↵ select`, `esc dismiss`).
+- Feedback forms (`Was this page helpful?`, `What could be improved?`, `SkipSubmit`).
+- Inline glossary/tooltip injection artifacts (e.g., `backends**Backend** A destination service...` -> `backends`).
+- `![Agent](filename.md)` image references pointing to local `.md` files (broken image links).
+- External service promotions (Solo MCP server, Discord invite blocks at the bottom).
+
+The actual technical content begins **after** this header noise, typically at the first `#` heading.
+
+### E. Link Adaptation Rules
+
+After stripping scrape artifacts, adapt all links:
+
+- **Internal cross-links** (relative paths like `../configuration/gateways.md` or `connect/index.md`): Convert to Docusaurus absolute paths pointing to the adapted location, e.g., `/workspaces/cortex/reference/agentgateway/configuration/gateways`. Remove `.md` and `.mdx` extensions from link targets as Docusaurus resolves them automatically.
+- **External upstream links** (e.g., `https://agentgateway.dev/docs/standalone/latest/mcp/...`): Preserve as-is. These are valid external references.
+- **Valid Remote Images**: Preserve remote images that point to valid public URLs (`https://...`).
+- **Permalink anchor links** (e.g., `[Permalink for this section](https://agentgateway.dev/...#anchor)`): Strip the entire `[Permalink for this section](...)` inline link — these are website-specific UI elements with no documentation value.
+- **Broken local image references** (e.g., `![Agent](about.md)`): Remove entirely.
+
+### F. Mermaid Diagram Adaptation
+
+Source files may contain raw Mermaid diagram syntax inside plain fenced code blocks (` ```mermaid ` or plain text). When a code block contains sequence diagram syntax (e.g., `sequenceDiagram`, `participant`, `->>`, `-->>`, `alt`/`else`/`end`):
+
+- Convert the block to use the ` ```mermaid ` language identifier so Docusaurus renders it as a diagram.
+- Preserve all Mermaid syntax content exactly — do not reformat or paraphrase.
+
+### G. Frontmatter Requirements
+
+Every adapted file must include a proper frontmatter block:
+
+```mdx
+---
+title: '<Page Title>'
+description: '<One-sentence summary of what this page covers>'
+sidebar_position: <integer>
+---
+```
+
+Use the original page `h1` heading as the `title`. Write a concise `description` based on the page's lead paragraph. Assign `sidebar_position` sequentially within each folder.
+
+### H. Attribution Notice
+
+At the top of the root `intro.mdx` of the upstream docs category, include a notice crediting the original source. For example:
+
+```mdx
+:::note[Upstream Reference]
+This section is an adapted mirror of the official [AgentGateway documentation](https://agentgateway.dev/docs/standalone/latest/).
+Content has been reformatted for Docusaurus MDX compatibility. External links and technical content are preserved faithfully.
+:::
+```
+
+### I. Content Integrity
+
+- **Never summarize, truncate, or paraphrase** the technical body content. The goal is a faithful adaptation, not a rewrite.
+- **Preserve all code blocks** exactly — including YAML, JSON, bash, and protocol-buffer examples.
+- **Preserve all tables** with their original column structure.
+- **Do not add opinions or project-specific commentary** inside the upstream reference category. Keep the content neutral and upstream-faithful.
+- If an upstream page references a feature or product that does not apply to this project (e.g., Kubernetes-specific deployment docs when the section is standalone-only), keep the content but add an `:::info[Note]` admonition clarifying the context.

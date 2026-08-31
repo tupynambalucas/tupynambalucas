@@ -1,0 +1,8 @@
+{
+  "label": "Observabilidade",
+  "position": 8,
+  "link": {
+    "type": "generated-index",
+    "description": "Integração da stack de observabilidade com Database logging, Grafana, Jaeger, OpenTelemetry e Prometheus."
+  }
+}

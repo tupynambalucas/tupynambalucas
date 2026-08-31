@@ -4,7 +4,7 @@ import type { GraphDataDTO } from '@tupynambalucas-cortex/memory-core';
 export class GraphService {
   constructor(private readonly repository: GraphRepository) {}
 
-  async fetchGraphData(): Promise<GraphDataDTO> {
-    return this.repository.getGraphData();
+  async fetchGraphData(entityId?: string, maxDepth?: number): Promise<GraphDataDTO> {
+    return this.repository.getGraphData(entityId, maxDepth);
   }
 }

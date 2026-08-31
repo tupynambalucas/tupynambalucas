@@ -1,0 +1,8 @@
+{
+  "label": "API Types",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Chat completions, embeddings, messages, models, passthrough, realtime, rerank, responses, and token count."
+  }
+}

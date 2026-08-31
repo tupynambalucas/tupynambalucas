@@ -1,0 +1,8 @@
+{
+  "label": "Connect Transports",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Connect via Streamable HTTP, OpenAPI, Stdio, and Virtual MCP."
+  }
+}

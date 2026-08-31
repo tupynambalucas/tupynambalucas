@@ -1,0 +1,29 @@
+{
+  "name": "@tupynambalucas-cortex/mcp-firecrawl",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "tsx watch --env-file=../../../infrastructure/docker/.env src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "catalog:mcp-stack",
+    "dotenv": "catalog:shared-stack",
+    "fastify": "catalog:api-stack",
+    "firecrawl": "catalog:mcp-stack",
+    "zod": "catalog:shared-stack"
+  },
+  "devDependencies": {
+    "@tupynambalucas-shared/config": "workspace:*",
+    "@types/node": "catalog:",
+    "rimraf": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}
