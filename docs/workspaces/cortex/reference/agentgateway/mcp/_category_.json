@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Model Context Protocol connectivity, transports, virtualization, security, and guardrails."
-  }
+  },
+  "key": "cortex-reference-agentgateway-mcp"
 }

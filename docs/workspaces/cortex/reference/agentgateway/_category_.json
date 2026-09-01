@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Comprehensive technical documentation and operational guides for AgentGateway Standalone."
-  }
+  },
+  "key": "cortex-reference-agentgateway"
 }

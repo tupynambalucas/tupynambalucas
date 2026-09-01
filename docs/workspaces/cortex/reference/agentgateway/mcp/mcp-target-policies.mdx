@@ -81,21 +81,21 @@ mcp:
   targets:
   - name: service-a
     mcp:
-      host: https://service-a.example.com/mcp
+      host: https://service-a.%PROJECT_DOMAIN%/mcp
     policies:
       backendAuth:
         key: "$SERVICE_A_API_KEY"
       backendTLS:
-        hostname: service-a.example.com
+        hostname: service-a.%PROJECT_DOMAIN%
 
   - name: service-b
     mcp:
-      host: https://service-b.example.com/mcp
+      host: https://service-b.%PROJECT_DOMAIN%/mcp
     policies:
       backendAuth:
         key: "$SERVICE_B_API_KEY"
       backendTLS:
-        hostname: service-b.example.com
+        hostname: service-b.%PROJECT_DOMAIN%
 ```
 
 ## Learn more

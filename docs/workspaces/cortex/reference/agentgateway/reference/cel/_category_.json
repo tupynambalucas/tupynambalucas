@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Common Expression Language reference, interactive explorer, playground, and variables."
-  }
+  },
+  "key": "cortex-reference-agentgateway-reference-cel"
 }

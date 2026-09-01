@@ -16,7 +16,7 @@ Agentgateway supports more than one configuration style. Where a feature can als
 Modify URLs of incoming requests with rewrite**Rewrite**A traffic management feature that modifies
 the authority (host) or path of requests before forwarding them to backends. policies.
 
-For example, the following configuration modifies the request hostname to `example.com` and the
+For example, the following configuration modifies the request hostname to `%PROJECT_DOMAIN%` and the
 request path to `/new-path`.
 
 ```
@@ -26,7 +26,7 @@ mcp:
   policies:
     urlRewrite:
       authority:
-        full: example.com
+        full: %PROJECT_DOMAIN%
       path:
         full: /new-path
   targets:
@@ -43,9 +43,9 @@ routes:
 - policies:
     urlRewrite:
       authority:
-        full: example.com
+        full: %PROJECT_DOMAIN%
       path:
         full: /new-path
   backends:
-  - host: example.com:443
+  - host: %PROJECT_DOMAIN%:443
 ```

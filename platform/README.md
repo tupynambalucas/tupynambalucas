@@ -1,6 +1,6 @@
 # Monorepo Platform Services Workspace
 
-The `platform/` workspace provides always-on operational infrastructure, observability pipelines, cluster administration dashboards, and Turborepo remote build caching for the tupynambalucas.dev monorepo.
+The `platform/` workspace provides always-on operational infrastructure, observability pipelines, cluster administration dashboards, and Turborepo remote build caching for the %PROJECT_DOMAIN% monorepo.
 
 ---
 

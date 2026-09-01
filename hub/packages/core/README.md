@@ -1,13 +1,13 @@
-# @tupynambalucas-hub/core - Community Contract Library
+# @%PROJECT_NAME%-hub/core - Community Contract Library
 
-This package plays the fundamental role of **Single Source of Truth (SSOT)** for the community-based instances of the Tupynambá Lucas architecture. It centralizes data contracts, validation logic, and shared constants used exclusively by the **Instance-based** applications (`@tupynambalucas-hub/api` and `@tupynambalucas-hub/web`).
+This package plays the fundamental role of **Single Source of Truth (SSOT)** for the community-based instances of the Tupynambá Lucas architecture. It centralizes data contracts, validation logic, and shared constants used exclusively by the **Instance-based** applications (`@%PROJECT_NAME%-hub/api` and `@%PROJECT_NAME%-hub/web`).
 
 ## Architectural Role: Library (SSOT)
 
 The shared library ensures architectural consistency within each community instance:
 
-- **Unified Validation**: Provides Zod schemas specifically for the `@tupynambalucas-hub/api` and `@tupynambalucas-hub/web` applications of a community instance.
-- **Type Safety**: Inferred TypeScript types prevent model drift between the community's API (`@tupynambalucas-hub/api`) and its management/shop portal (`@tupynambalucas-hub/web`).
+- **Unified Validation**: Provides Zod schemas specifically for the `@%PROJECT_NAME%-hub/api` and `@%PROJECT_NAME%-hub/web` applications of a community instance.
+- **Type Safety**: Inferred TypeScript types prevent model drift between the community's API (`@%PROJECT_NAME%-hub/api`) and its management/shop portal (`@%PROJECT_NAME%-hub/web`).
 - **Logical Separation**: This package is **not** shared with the global portal (`www`). Any shared logic required by the portal or future global services will be housed in dedicated packages to ensure strict separation of concerns.
 
 ---
@@ -21,10 +21,10 @@ The shared library ensures architectural consistency within each community insta
 
 ### Documentation
 
-Detailed technical documentation is available in our [Knowledge Base](https://docs.tupynambalucas.dev):
+Detailed technical documentation is available in our [Knowledge Base](https://docs.%PROJECT_DOMAIN%):
 
-- [Architecture Overview](https://docs.tupynambalucas.dev/docs/explanation/architecture-overview): SSOT principles and monorepo structure.
-- [Style Guide](https://docs.tupynambalucas.dev/docs/reference/styleguide): Coding standards and naming conventions.
+- [Architecture Overview](https://docs.%PROJECT_DOMAIN%/docs/explanation/architecture-overview): SSOT principles and monorepo structure.
+- [Style Guide](https://docs.%PROJECT_DOMAIN%/docs/reference/styleguide): Coding standards and naming conventions.
 
 ---
 
@@ -38,7 +38,7 @@ The library provides centralized resources used by community-instance modules:
 
 2.  **TypeScript Typing**:
     - Static types inferred from Zod Schemas (`z.infer<>`).
-    - Prevents data model drift between `@tupynambalucas-hub/api` and `@tupynambalucas-hub/web`.
+    - Prevents data model drift between `@%PROJECT_NAME%-hub/api` and `@%PROJECT_NAME%-hub/web`.
 
 3.  **Global Constants**:
     - Shared configurations and fixed values (e.g., Cycle status codes).
@@ -54,7 +54,7 @@ To update data contracts:
     ```bash
     pnpm build
     ```
-3.  **Refactor**: TypeScript will automatically identify drift in the `@tupynambalucas-hub/api` or `@tupynambalucas-hub/web` packages.
+3.  **Refactor**: TypeScript will automatically identify drift in the `@%PROJECT_NAME%-hub/api` or `@%PROJECT_NAME%-hub/web` packages.
 
 ---
 

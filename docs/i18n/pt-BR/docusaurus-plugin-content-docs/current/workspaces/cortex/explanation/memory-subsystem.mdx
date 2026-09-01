@@ -24,7 +24,7 @@ mcp-memory  (Adaptador MCP Fastify, porta 8080)
   └── delega todas as chamadas de ferramentas para memory-api:3006/api/memory/*
 ```
 
-Acesso publico: `https://memory-dev.tupynambalucas.dev`
+Acesso publico: `https://memory-dev.%PROJECT_DOMAIN%`
 Caminho do trafego: Cloudflare Tunnel -> Traefik (namespace platform) ->
 Nginx `memory-web` -> `memory-api:3006`
 
@@ -174,7 +174,7 @@ Memoria.
 
 ## 6. Painel Web de Memoria
 
-O painel web em `https://memory-dev.tupynambalucas.dev` oferece tres paineis
+O painel web em `https://memory-dev.%PROJECT_DOMAIN%` oferece tres paineis
 interativos:
 
 - **Graph Topology**: Visualizacao dirigida por forca de todos os nos de entidade

@@ -145,7 +145,7 @@ Review the following example for a Keycloak IdP.
 llm:
   policies:
     oidc:
-      issuer: http://keycloak.example.com/realms/myrealm
+      issuer: http://keycloak.%PROJECT_DOMAIN%/realms/myrealm
       clientId: agentgateway-browser
       clientSecret: my-client-secret
       redirectURI: http://localhost:3000/oauth/callback
@@ -163,7 +163,7 @@ mcp:
   port: 3000
   policies:
     oidc:
-      issuer: http://keycloak.example.com/realms/myrealm
+      issuer: http://keycloak.%PROJECT_DOMAIN%/realms/myrealm
       clientId: agentgateway-browser
       clientSecret: my-client-secret
       redirectURI: http://localhost:3000/oauth/callback
@@ -188,7 +188,7 @@ routes:
       pathPrefix: /
   policies:
     oidc:
-      issuer: http://keycloak.example.com/realms/myrealm
+      issuer: http://keycloak.%PROJECT_DOMAIN%/realms/myrealm
       clientId: agentgateway-browser
       clientSecret: my-client-secret
       redirectURI: http://localhost:3000/oauth/callback

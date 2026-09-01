@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Policy attachment points and conditional policy execution."
-  }
+  },
+  "key": "cortex-reference-agentgateway-configuration-policies"
 }

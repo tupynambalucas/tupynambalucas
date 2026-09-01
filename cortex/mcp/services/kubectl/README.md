@@ -11,7 +11,7 @@ inside the Kubernetes cluster.
 
 - **Transport Mechanism**: Configured with `--transport streamable-http` on port `8080`.
 - **Ingress Routing**: AgentGateway proxies AI requests to this service. External agents connect via
-  the Cloudflare Tunnel (`agentgateway-mcp-dev.tupynambalucas.dev`) utilizing the SSE remote
+  the Cloudflare Tunnel (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`) utilizing the SSE remote
   transport.
 - **Cluster Authentication**: Operates without a local `kubeconfig` file. It relies on the in-cluster
   `mcp-kubectl-sa` ServiceAccount, which holds a `ClusterRoleBinding` to the `cluster-admin` role,

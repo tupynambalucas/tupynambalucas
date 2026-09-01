@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Deployment environments across AWS, Azure, Docker, Google Cloud, and Kubernetes."
-  }
+  },
+  "key": "cortex-reference-agentgateway-integrations-platforms"
 }

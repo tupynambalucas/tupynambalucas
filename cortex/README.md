@@ -1,6 +1,6 @@
 # Unified AI Cortex Workspace
 
-The `cortex/` workspace is the bounded context for the tupynambalucas.dev artificial intelligence architecture, consolidating API ingress gateway routing, persistent vector memory, Model Context Protocol (MCP) tool adapters, policy guardrails, and cloud-native Kubernetes deployment configurations.
+The `cortex/` workspace is the bounded context for the %PROJECT_DOMAIN% artificial intelligence architecture, consolidating API ingress gateway routing, persistent vector memory, Model Context Protocol (MCP) tool adapters, policy guardrails, and cloud-native Kubernetes deployment configurations.
 
 ---
 

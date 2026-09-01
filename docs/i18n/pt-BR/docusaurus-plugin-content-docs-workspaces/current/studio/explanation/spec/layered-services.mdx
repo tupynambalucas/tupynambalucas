@@ -6,13 +6,13 @@ sidebar_position: 3
 
 ### Infraestrutura de Espaço de Trabalho Self-Hosted
 
-O projeto `tupynambalucas.dev` executa uma série de serviços em camadas self-hosted configurados em `studio/design/infrastructure/docker/compose.yaml` para garantir soberania absoluta de dados, colaboração e pipelines automatizados de design para código.
+O projeto `%PROJECT_DOMAIN%` executa uma série de serviços em camadas self-hosted configurados em `studio/design/infrastructure/docker/compose.yaml` para garantir soberania absoluta de dados, colaboração e pipelines automatizados de design para código.
 
 ---
 
 ## 1. Sistema de Design Penpot & Assistente Aide
 
-O tupynambalucas.dev utiliza uma stack do Penpot distribuída integrada com o Aide, um assistente de engenharia AI-native.
+O %PROJECT_DOMAIN% utiliza uma stack do Penpot distribuída integrada com o Aide, um assistente de engenharia AI-native.
 
 ### A. Arquitetura de Infraestrutura
 
@@ -43,7 +43,7 @@ A ponte auxiliar de IA (Aide) é integrada diretamente ao compose de orquestraç
 
 - **Reutilização de Componentes:** Sempre verifique a biblioteca de componentes existente (Penpot) ou a biblioteca de UI (`hub/services/web/src/components`) antes de criar novos elementos. O Aide deve priorizar os tokens e componentes existentes do design system.
 - **Lógica de Tokens Primeiro:** As exportações de design para código devem usar estritamente as propriedades personalizadas do CSS (CSS Custom Properties) derivadas de `assets/tokens/` para cores, fontes e espaçamento.
-- **Otimização de SVG:** Certifique-se de que o código SVG exportado está otimizado, segue os padrões de ícones do projeto e está integrado através do registro `@tupynambalucas-studio/assets/icons`.
+- **Otimização de SVG:** Certifique-se de que o código SVG exportado está otimizado, segue os padrões de ícones do projeto e está integrado através do registro `@repo/studio/assets/icons`.
 - **Hierarquia de Camadas:** A manutenção do agrupamento semântico é obrigatória. Os elementos devem ser organizados em páginas e frames (ex: `Layout/Grid`, `Components/Buttons`).
 
 ---

@@ -9,7 +9,7 @@ The `platform/services/grafana` workspace contains container build definitions a
 - **Base Image**: `grafana/grafana:latest`
 - **Provisioned Datasources**: Prometheus (Metrics), Grafana Loki (Logs), Grafana Tempo (Traces)
 - **Port**: `3000`
-- **Ingress Domain**: `grafana-dev.tupynambalucas.dev`
+- **Ingress Domain**: `grafana-dev.%PROJECT_DOMAIN%`
 
 ---
 
@@ -34,4 +34,4 @@ pnpm platform:dev
 pnpm platform:up
 ```
 
-Access the UI at `http://localhost:3000` or `http://grafana-dev.tupynambalucas.dev`.
+Access the UI at `http://localhost:3000` or `http://grafana-dev.%PROJECT_DOMAIN%`.

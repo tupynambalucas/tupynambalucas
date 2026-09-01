@@ -6,16 +6,16 @@
   </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Studio Workspace Router
+# Bounded Context: Studio Context Router
 
-This workspace context ([studio/](./)) defines domain rules, design tokens, asset synchronization pipelines, and containerized design collaboration infrastructure for the **Studio Bounded Context**.
+This bounded context ([studio/](./)) defines domain rules, design tokens, asset synchronization pipelines, and containerized design collaboration infrastructure for the **Studio Bounded Context**.
 
 ---
 
 ## 1. Directory Layout
 
-- **[assets/](./assets/)**: Brand identity assets, design tokens, theme configurations, and React SVG icon library under `@tupynambalucas-studio/assets`. Rules are consolidated in Section 4.
-- **[bucket/](./bucket/)**: Cloudflare R2 asset synchronization CLI tool under `@tupynambalucas-studio/bucket`. Rules are consolidated in Section 4.
+- **[assets/](./assets/)**: Brand identity assets, design tokens, theme configurations, and React SVG icon library under `@repo/studio/assets`. Rules are consolidated in Section 4.
+- **[bucket/](./bucket/)**: Cloudflare R2 asset synchronization CLI tool under `@repo/studio/bucket`. Rules are consolidated in Section 4.
 - **[creative/](./creative/)**: Raw creative design sources, master Illustrator/Photoshop files, and vector graphics.
 - **[infrastructure/](./infrastructure/)**: Containerized Docker Compose and Kubernetes deployment manifests for Penpot v2 and Memos. Rules are consolidated in Section 4.
 
@@ -33,18 +33,18 @@ This workspace context ([studio/](./)) defines domain rules, design tokens, asse
 
 ## 2. Bounded Context Architecture
 
-- **Architecture Diagram**: [.agents/architecture.md](./.agents/architecture.md)
+- **Architecture Diagram**: [references/architecture.md](./references/architecture.md)
 
 ### Service Mapping & Port Allocation
 
-| Service           | Internal Port | Host / Forwarded Port | Ingress Host                    | Protocol    |
-| :---------------- | :------------ | :-------------------- | :------------------------------ | :---------- |
-| `penpot-frontend` | 8080          | 9005                  | `penpot-dev.tupynambalucas.dev` | HTTP        |
-| `penpot-backend`  | 6060          | 6060                  | Internal Cluster DNS            | HTTP        |
-| `penpot-exporter` | 6061          | 6061                  | Internal Cluster DNS            | HTTP        |
-| `valkey`          | 6379          | 6379                  | Internal Cluster DNS            | TCP (Redis) |
-| `penpot-aide`     | 4400-4403     | 4400-4403             | Internal Cluster DNS            | HTTP / MCP  |
-| `memos`           | 5230          | 5230                  | `memos-dev.tupynambalucas.dev`  | HTTP        |
+| Service           | Internal Port | Host / Forwarded Port | Ingress Host                  | Protocol    |
+| :---------------- | :------------ | :-------------------- | :---------------------------- | :---------- |
+| `penpot-frontend` | 8080          | 9005                  | `penpot-dev.%PROJECT_DOMAIN%` | HTTP        |
+| `penpot-backend`  | 6060          | 6060                  | Internal Cluster DNS          | HTTP        |
+| `penpot-exporter` | 6061          | 6061                  | Internal Cluster DNS          | HTTP        |
+| `valkey`          | 6379          | 6379                  | Internal Cluster DNS          | TCP (Redis) |
+| `penpot-aide`     | 4400-4403     | 4400-4403             | Internal Cluster DNS          | HTTP / MCP  |
+| `memos`           | 5230          | 5230                  | `memos-dev.%PROJECT_DOMAIN%`  | HTTP        |
 
 ---
 
@@ -63,11 +63,11 @@ This workspace context ([studio/](./)) defines domain rules, design tokens, asse
 
 - Design token files MUST follow the `[category].[property].css` naming pattern (e.g., `color.primary.css`).
 - SVG icons MUST be exported with `viewBox` attributes only; `width` and `height` attributes MUST be stripped to allow CSS-controlled sizing.
-- The React icon library build MUST be triggered via `pnpm --filter @tupynambalucas-studio/assets build` before any workspace that imports icons runs its own build.
+- The React icon library build MUST be triggered via `pnpm --filter @repo/studio/assets build` before any workspace that imports icons runs its own build.
 
 ### Bucket Sync Rules
 
-- R2 sync operations MUST use the `@tupynambalucas-studio/bucket` CLI exclusively. Direct `wrangler r2 object put` commands are forbidden for bulk operations.
+- R2 sync operations MUST use the `@repo/studio/bucket` CLI exclusively. Direct `wrangler r2 object put` commands are forbidden for bulk operations.
 - Sync targets (`CLOUDFLARE_R2_BUCKET_NAME`) MUST be set via environment variables and MUST NOT be hardcoded in the CLI source.
 
 ### Infrastructure Sub-Domain Rules

@@ -46,7 +46,7 @@ Review the following diagram to see an example CSRF request flow:
     Attacker->>User: Trick user into visiting<br/>malicious page with hidden form
     User->>AGW: POST /api/action<br/>Origin: malicioussite.com<br/>Cookie: session=abc123
 
-    AGW->>AGW: CSRF validation:<br/>Origin (malicioussite.com)<br/>vs Destination (api.example.com)
+    AGW->>AGW: CSRF validation:<br/>Origin (malicioussite.com)<br/>vs Destination (api.%PROJECT_DOMAIN%)
 
     alt Origin does NOT match destination<br/>and NOT in additionalOrigins
         AGW-->>User: 403 Forbidden<br/>"CSRF validation failed"
@@ -55,7 +55,7 @@ Review the following diagram to see an example CSRF request flow:
 
     Note over User,Backend: Legitimate Request
 
-    User->>AGW: POST /api/action<br/>Origin: allowThisOne.example.com<br/>Cookie: session=abc123
+    User->>AGW: POST /api/action<br/>Origin: allowThisOne.%PROJECT_DOMAIN%<br/>Cookie: session=abc123
 
     AGW->>AGW: CSRF validation:<br/>Origin in additionalOrigins list
     AGW->>Backend: Forward request
@@ -95,7 +95,7 @@ mcp:
   policies:
     csrf:
       additionalOrigins:
-      - "https://www.example.com"
+      - "https://www.%PROJECT_DOMAIN%"
       - "https://trusted.domain.com"
   targets:
   - name: everything
@@ -111,7 +111,7 @@ routes:
 - policies:
     csrf:
       additionalOrigins:
-      - "https://www.example.com"
+      - "https://www.%PROJECT_DOMAIN%"
       - "https://trusted.domain.com"
   backends:
   - host: localhost:8080
@@ -120,7 +120,7 @@ routes:
 The `additionalOrigins` setting is a list of trusted origins allowed to make cross-site requests.
 
 - Format: `"scheme://host[:port]"`
-- Examples: `"https://www.example.com"`, `"http://localhost:3000"`
+- Examples: `"https://www.%PROJECT_DOMAIN%"`, `"http://localhost:3000"`
 
 For strict CSRF protection to prevent all cross-site requests, set `additionalOrigins` to an empty
 list, as shown in the following route-level policy.

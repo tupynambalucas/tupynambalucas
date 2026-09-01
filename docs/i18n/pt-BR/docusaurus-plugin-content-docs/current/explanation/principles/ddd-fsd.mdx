@@ -1,6 +1,6 @@
 ---
 title: DDD & Feature-Sliced Design (FSD)
-description: Combinando contextos delimitados do Domain-Driven Design (DDD) e a modularidade do Feature-Sliced Design (FSD) no frontend do projeto tupynambalucas.dev.
+description: Combinando contextos delimitados do Domain-Driven Design (DDD) e a modularidade do Feature-Sliced Design (FSD) no frontend do projeto %PROJECT_DOMAIN%.
 ---
 
 # Domain-Driven Design (DDD) & Feature-Sliced Design (FSD)
@@ -25,11 +25,11 @@ Ao combinar a segregação de contexto do DDD com a separação de camadas do FS
 
 ## 2. Utilização Específica do Projeto
 
-No tupynambalucas.dev, a combinação de DDD e FSD governa tanto a estrutura de pastas quanto as regras de importação:
+No %PROJECT_DOMAIN%, a combinação de DDD e FSD governa tanto a estrutura de pastas quanto as regras de importação:
 
 ### A. Segregação de Contexto Delimitado
 
-O monorepo é dividido em contextos distintos (como `hub/`, `cortex/`, `platform/`) no nível raiz. Esses limites garantem que os portais de desenvolvedores (Hub) e os serviços globais do sistema e IA (Cortex/Platform) permaneçam estrutural e logicamente independentes. Tokens de design compartilhados ou ativos de marca são importados exclusivamente do workspace `@tupynambalucas-studio/assets`.
+O monorepo é dividido em contextos distintos (como `hub/`, `cortex/`, `platform/`) no nível raiz. Esses limites garantem que os portais de desenvolvedores (Hub) e os serviços globais do sistema e IA (Cortex/Platform) permaneçam estrutural e logicamente independentes. Tokens de design compartilhados ou ativos de marca são importados exclusivamente do workspace `@repo/studio/assets`.
 
 ### B. Hierarquia de Camadas de Frontend (FSD)
 

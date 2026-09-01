@@ -1,6 +1,6 @@
 # Studio Design System & Assets Package
 
-The `studio/assets` package (`@tupynambalucas-studio/assets`) exports brand identity assets, design system tokens, CSS theme definitions, and React SVG icon components.
+The `studio/assets` package (`@repo/studio/assets`) exports brand identity assets, design system tokens, CSS theme definitions, and React SVG icon components.
 
 ---
 
@@ -19,8 +19,8 @@ The `studio/assets` package (`@tupynambalucas-studio/assets`) exports brand iden
 Import styles and components directly in consuming applications:
 
 ```tsx
-import { IconGithub } from '@tupynambalucas-studio/assets/icons';
-import '@tupynambalucas-studio/assets/theme.css';
+import { IconGithub } from '@repo/studio/assets/icons';
+import '@repo/studio/assets/theme.css';
 ```
 
 ---

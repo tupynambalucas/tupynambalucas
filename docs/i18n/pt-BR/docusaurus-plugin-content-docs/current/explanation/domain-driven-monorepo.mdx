@@ -10,7 +10,7 @@ sidebar_position: 2
 
 A escalabilidade de ecossistemas de software corporativos frequentemente esbarra em dois gargalos principais: a complexidade cognitiva do domínio de negócios e a fricção imposta pela infraestrutura de gestão de código. À medida que as organizações crescem, microsserviços distribuídos em múltiplos repositórios (multirepos) ou estruturas monolíticas sem fronteiras claras tendem a acumular débitos técnicos insustentáveis.
 
-A convergência entre o Domain-Driven Design (DDD)—especificamente o padrão estratégico de **Contextos Delimitados (Bounded Contexts)**—e as arquiteturas de **Monorepositórios (Monorepos)** oferece uma solução elegante. Ao mapear limites lógicos de negócios diretamente a limites físicos de pastas, estabelecemos um modelo de governança automatizado que protege o reaproveitamento de código enquanto garante a evolução independente. Este documento detalha como o `tupynambalucas.dev` materializa o design estratégico orientado a domínios em seu monorepo.
+A convergência entre o Domain-Driven Design (DDD)—especificamente o padrão estratégico de **Contextos Delimitados (Bounded Contexts)**—e as arquiteturas de **Monorepositórios (Monorepos)** oferece uma solução elegante. Ao mapear limites lógicos de negócios diretamente a limites físicos de pastas, estabelecemos um modelo de governança automatizado que protege o reaproveitamento de código enquanto garante a evolução independente. Este documento detalha como o `%PROJECT_DOMAIN%` materializa o design estratégico orientado a domínios em seu monorepo.
 
 ---
 
@@ -32,7 +32,7 @@ Em vez de criar uma definição global e inchada de `Asset`, cada contexto mant�
 
 ### 1.2 O Contexto Delimitado (Bounded Context)
 
-Um Contexto Delimitado define a fronteira explícita dentro da qual um modelo de domínio é válido. Dentro desta fronteira, nossa Linguagem Ubíqua (Ubiquitous Language) possui significados precisos e indiscutíveis. No `tupynambalucas.dev`:
+Um Contexto Delimitado define a fronteira explícita dentro da qual um modelo de domínio é válido. Dentro desta fronteira, nossa Linguagem Ubíqua (Ubiquitous Language) possui significados precisos e indiscutíveis. No `%PROJECT_DOMAIN%`:
 
 - A terminologia de domínio está totalmente alinhada a esquemas técnicos, variáveis e especificações.
 - Os desenvolvedores têm propriedade e autonomia total sobre o ciclo de vida de seus contextos.
@@ -63,7 +63,7 @@ While DDD dita o agrupamento lógico de conceitos, o monorepo define a topologia
 O layout de diretórios reflete diretamente o mapa de Contextos Delimitados:
 
 ```text
-tupynambalucas/
+workspace/
 ├── hub/                      # Contexto Hub (Portfólio Web & API)
 │   ├── services/web/         # Aplicativo Web (React)
 │   ├── services/api/         # Backend API (Fastify)
@@ -91,7 +91,7 @@ Bounded Contexts não operam em isolamento absoluto; eles devem se comunicar por
 
 ### 4.1 Shared Kernel (Núcleo Partilhado)
 
-O padrão de **Shared Kernel** é utilizado quando os contextos compartilham uma parte estável de esquemas de domínio ou variáveis de design. Em nosso sistema, o pacote **`@tupynambalucas-studio/assets`** atua como nosso Shared Kernel. Tanto o `@tupynambalucas-hub/web` quanto o `@tupynambalucas/renderer` importam os tokens de estilo CSS e ícones SVG diretamente deste pacote.
+O padrão de **Shared Kernel** é utilizado quando os contextos compartilham uma parte estável de esquemas de domínio ou variáveis de design. Em nosso sistema, o pacote **`@repo/studio/assets`** atua como nosso Shared Kernel. Tanto o `@repo/hub/web` quanto o `@/renderer` importam os tokens de estilo CSS e ícones SVG diretamente deste pacote.
 
 Qualquer alteração nesses tokens aciona validações imediatas em tempo de compilação em ambos os contextos downstream consumidores, garantindo consistência visual sistêmica.
 
@@ -110,7 +110,7 @@ Impomos modularidade estrutural dinamicamente para evitar importações cruzadas
 ### 5.1 Limites Verticais vs. Horizontais
 
 - **Limites Verticais**: Ditados pelos diretórios raiz dos workspaces (ex: o código em `hub/` não pode realizar importações diretas e profundas de arquivos do sistema de arquivos sob o diretório `renderer/`).
-- **Limites Horizontais**: Camadas arquiteturais internas. Por exemplo, o aplicativo web React `@tupynambalucas-hub/web` (camada de UI/Feature) é totalmente desacoplado do pacote `@tupynambalucas-hub/core` (camada de domínio/contratos), forçando o fluxo de dependências estritamente para baixo.
+- **Limites Horizontais**: Camadas arquiteturais internas. Por exemplo, o aplicativo web React `@repo/hub/web` (camada de UI/Feature) é totalmente desacoplado do pacote `@repo/hub/core` (camada de domínio/contratos), forçando o fluxo de dependências estritamente para baixo.
 
 ### 5.2 Imposição de Fronteiras Automatizada
 

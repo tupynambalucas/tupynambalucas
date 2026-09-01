@@ -1,6 +1,6 @@
 # AgentGateway ExtMCP Guardrail Server
 
-The `cortex/mcp/guardrails` workspace provides the standalone gRPC ExtMCP policy processor (`@tupynambalucas-cortex/mcp-guardrails`) for AgentGateway in the AI Cortex subsystem.
+The `cortex/mcp/guardrails` workspace provides the standalone gRPC ExtMCP policy processor (`@repo/cortex/mcp-guardrails`) for AgentGateway in the AI Cortex subsystem.
 
 ---
 

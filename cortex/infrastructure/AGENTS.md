@@ -21,7 +21,7 @@ This workspace directory ([infrastructure/](./)) contains orchestration configur
   - **[gateway.yaml](./kubernetes/gateway.yaml)**: `agentgateway` Deployment, Services (traffic, metrics), and Traefik Ingress route.
   - **[memory.yaml](./kubernetes/memory.yaml)**: `mongodb-db`, `memory-api`, and `memory-web` Deployments and Services.
   - **[mcp.yaml](./kubernetes/mcp.yaml)**: `mcp-guardrails`, `mcp-memory`, `mcp-github`, `mcp-firecrawl`, `mcp-grafana`, `mcp-inspector`, and `mcp-playwright` Deployments and Services.
-  - **[certmanager.yaml](./kubernetes/certmanager.yaml)**: Wildcard TLS Certificate definition for `*.lan.tupynambalucas.dev`.
+  - **[certmanager.yaml](./kubernetes/certmanager.yaml)**: Wildcard TLS Certificate definition for `*.lan.%PROJECT_DOMAIN%`.
 - **[.env.example](./.env.example)**: Central environment variable template for Cortex services.
 
 ---
@@ -34,4 +34,4 @@ This workspace directory ([infrastructure/](./)) contains orchestration configur
   - `memory`: MongoDB database, Fastify API, React web client, and MCP memory adapter.
   - `mcp`: Downstream MCP service containers (github, firecrawl, grafana, playwright, inspector).
 - **Environment Parity**: Always mirror updates in [.env.example](./.env.example) whenever introducing new container environment variables.
-- **Volume Mappings**: Persistent database data MUST be bound to named volumes (`tupynambalucas-cortex-mongodb-data` or Kubernetes PV/PVC).
+- **Volume Mappings**: Persistent database data MUST be bound to named volumes (`workspace-cortex-mongodb-data` or Kubernetes PV/PVC).

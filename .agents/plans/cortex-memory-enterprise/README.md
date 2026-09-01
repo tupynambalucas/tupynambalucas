@@ -16,7 +16,7 @@ A análise e o plano de implementação estão divididos nos seguintes documento
    Define o padrão rigoroso de SEO-IA para o Docusaurus: enriquecimento de _Frontmatter_ (tags, keywords, diataxis_type) e ingestão dinâmica com filtragem meta-dinâmica (Dynamic Meta-Filtering).
 
 4. **[AGENTS-INTEGRATION.md](./AGENTS-INTEGRATION.md)**  
-   Especifica as melhorias necessárias no plugin MCP (`@tupynambalucas/cortex-mcp`) e as **Regras de Gatilho (Trigger Rules)** para treinar os agentes autônomos por meio do arquivo `AGENTS.md`.
+   Especifica as melhorias necessárias no plugin MCP (`@%PROJECT_NAME%/cortex-mcp`) e as **Regras de Gatilho (Trigger Rules)** para treinar os agentes autônomos por meio do arquivo `AGENTS.md`.
 
 ---
 

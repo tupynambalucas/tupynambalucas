@@ -47,7 +47,7 @@ llm:
       # With inline configuration, $ must be escaped to $$.
       htpasswd: |
         user1:$$2y$$05$$LMZ.8WGNqvagmtJz2Gw6VuiE6khXc2zc0FDTHrfWJyLT66HM8BMAa
-      realm: example.com
+      realm: %PROJECT_DOMAIN%
   models:
   - name: "*"
     provider: openAI
@@ -67,7 +67,7 @@ mcp:
       # With inline configuration, $ must be escaped to $$.
       htpasswd: |
         user1:$$2y$$05$$LMZ.8WGNqvagmtJz2Gw6VuiE6khXc2zc0FDTHrfWJyLT66HM8BMAa
-      realm: example.com
+      realm: %PROJECT_DOMAIN%
   targets:
   - name: everything
     stdio:
@@ -87,7 +87,7 @@ gateways:
       # With inline configuration, $ must be escaped to $$.
       htpasswd: |
         user1:$$2y$$05$$LMZ.8WGNqvagmtJz2Gw6VuiE6khXc2zc0FDTHrfWJyLT66HM8BMAa
-      realm: example.com
+      realm: %PROJECT_DOMAIN%
 routes:
 - backends:
   - host: localhost:8080

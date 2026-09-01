@@ -4,19 +4,19 @@
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/overview.svg?raw=true#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/overview.svg?raw=true" />
-    <img alt="Tupynambá Lucas's GitHub Stats" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/overview.svg?raw=true" height="200px" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/%PROJECT_NAME%/%PROJECT_NAME%/generated/cards/stats/overview.svg?raw=true#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/%PROJECT_NAME%/%PROJECT_NAME%/generated/cards/stats/overview.svg?raw=true" />
+    <img alt="Tupynambá Lucas's GitHub Stats" src="https://raw.githubusercontent.com/%PROJECT_NAME%/%PROJECT_NAME%/generated/cards/stats/overview.svg?raw=true" height="200px" />
   </picture>&nbsp;&nbsp;<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/languages.svg?raw=true#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/languages.svg?raw=true" />
-    <img alt="Languages Used" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/languages.svg?raw=true" height="200px" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/%PROJECT_NAME%/%PROJECT_NAME%/generated/cards/stats/languages.svg?raw=true#gh-dark-mode-only" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/%PROJECT_NAME%/%PROJECT_NAME%/generated/cards/stats/languages.svg?raw=true" />
+    <img alt="Languages Used" src="https://raw.githubusercontent.com/%PROJECT_NAME%/%PROJECT_NAME%/generated/cards/stats/languages.svg?raw=true" height="200px" />
   </picture>
 </p>
 
 > [!NOTE]
 > **Are you a developer?**
-> This repository (`tupynambalucas/tupynambalucas`) is a monorepo that manages my public image, development workspaces, and documentation.
+> This repository (`%PROJECT_NAME%/%PROJECT_NAME%`) is a monorepo that manages my public image, development workspaces, and documentation.
 >
-> - [Documentation](https://docs.tupynambalucas.dev) — Project documentation page built with Docusaurus
-> - [Monorepo](https://github.com/tupynambalucas/tupynambalucas/blob/develop/MONOREPO.readme.md) — Entry point README for the tupynambalucas monorepo
+> - [Documentation](https://docs.%PROJECT_DOMAIN%) — Project documentation page built with Docusaurus
+> - [Monorepo](https://github.com/%GITHUB_ORG%/%GITHUB_REPO%/blob/develop/MONOREPO.readme.md) — Entry point README for the %PROJECT_NAME% monorepo

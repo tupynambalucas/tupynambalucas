@@ -1,7 +1,7 @@
 # Cortex Plugin - MCP Service Instructions
 
 All services below are accessed through the single AgentGateway ingress at
-`agentgateway-mcp-dev.tupynambalucas.dev`. Do not pass credentials directly to any
+`agentgateway-mcp-dev.%PROJECT_DOMAIN%`. Do not pass credentials directly to any
 individual service tool.
 
 ---

@@ -1,0 +1,60 @@
+---
+title: .agents Directory Reference
+sidebar_label: .agents Directory Reference
+sidebar_position: 8
+---
+
+# `.agents/` Directory Reference
+
+This reference details the folder structure, mechanics, and design boundaries of the central `.agents/` customization ecosystem inside the `%PROJECT_DOMAIN%` monorepo.
+
+This directory is natively supported by the **Antigravity (AGY)** agent architecture and ensures that AI tools, skills, and rules remain modular, copy-pasteable, and completely self-contained.
+
+---
+
+## 1. Directory Structure
+
+The `.agents/` bounded context restricts its content to the following distinct functional directories:
+
+### `plugins/`
+
+Namespaced bundles that package AI capabilities into a single deployable unit.
+
+- **Purpose**: Encapsulating Model Context Protocol (MCP) server bindings alongside the rules that teach the AI how to use them.
+- **Example**: `.agents/plugins/cortex/plugin.json` loads the `agentgateway` MCP server and injects an `AGENTS.md` rule instructing the AI to prefer the `firecrawl_scrape` tool for web extraction.
+- **Rules**: Plugins MUST be self-contained. They cannot rely on external temporary files.
+
+### `rules/`
+
+Guidelines and constraints that the AI must follow.
+
+- **Purpose**: Hierarchical and unconditional context injection.
+- **Mechanics**: Markdown files in this folder are automatically discovered by the Antigravity runtime and injected into the agent's context whenever the trigger conditions are met (or globally, if unconditionally active).
+
+### `skills/`
+
+Progressive-disclosure runbooks and expert personas.
+
+- **Purpose**: Teaching the agent how to execute complex, multi-step tasks without exhausting the global context window.
+- **Mechanics**: Skills (e.g., `agent-router-expert`) are discovered by the agent as available tools. The agent reads the `SKILL.md` file _only_ when activated by the user or by its own autonomous planning process.
+
+### `scripts/`
+
+Agent-authored utility scripts meant for repository manipulation.
+
+- **Purpose**: Version-controlled automation tasks.
+- **Constraint**: Agents are strictly forbidden from creating scratch scripts (`scratch.js`, `test.cjs`) in the root of the monorepo. They must place permanent scripts in `.agents/scripts/` or use their isolated internal `<appDataDir>/brain/scratch/` directory.
+
+### `plans/`
+
+Temporary architectural planning documents.
+
+- **Purpose**: Markdown-based execution plans for complex refactors, outlining step-by-step checklists and tracking state across agent sessions.
+
+---
+
+## 2. Core Operational Constraints
+
+1. **Self-Contained Logic**: Skills and Plugins must be 100% self-contained. Do not create relative links pointing to temporary plans or other transient context.
+2. **Generic Nomenclature**: Always use `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` templates instead of hardcoded brand names. This keeps the AI configuration portable and reusable across other corporate deployments.
+3. **No Nested `.agents` Folders**: To prevent context hallucination and configuration fragmentation, all AI orchestration logic must be centralized in the root `.agents/` folder. Creating isolated `.agents/` folders inside other bounded contexts (e.g., `platform/.agents/`) is forbidden; local context routing should be handled by `AGENTS.md` and standard `references/` directories.

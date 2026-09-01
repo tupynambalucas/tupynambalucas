@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Operational tooling, agctl CLI setup, debugging, config inspection, and tracing."
-  }
+  },
+  "key": "cortex-reference-agentgateway-operations"
 }

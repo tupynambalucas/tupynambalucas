@@ -31,6 +31,6 @@ flowchart TD
     MemosService --> NeonDB
   end
 
-  Traefik -->|penpot-dev.tupynambalucas.dev| PenpotFrontend
-  Traefik -->|memos-dev.tupynambalucas.dev| MemosService
+  Traefik -->|penpot-dev.example.com| PenpotFrontend
+  Traefik -->|memos-dev.example.com| MemosService
 ```

@@ -68,7 +68,7 @@ spec:
   - name: https
     protocol: HTTPS
     port: 443
-    hostname: "ai.example.com"
+    hostname: "ai.%PROJECT_DOMAIN%"
     tls:
       mode: Terminate
       certificateRefs:
@@ -97,8 +97,8 @@ spec:
     name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
-  - ai.example.com
-  - api.example.com
+  - ai.%PROJECT_DOMAIN%
+  - api.%PROJECT_DOMAIN%
 ```
 
 Then reference it in your agentgateway config:

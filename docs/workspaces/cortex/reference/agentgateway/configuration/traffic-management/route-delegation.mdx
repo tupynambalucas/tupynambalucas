@@ -53,7 +53,7 @@ Request: /anything/team1/foo
    Child Route "child-foo" (matches /anything/team1/foo)
          |
          v
-   Backend: team1-foo.example.com:8080
+   Backend: team1-foo.%PROJECT_DOMAIN%:8080
 ```
 
 ### More details
@@ -104,13 +104,13 @@ called `team1-routes`. The route group contains two child routes: `child-foo` ma
        - path:
            pathPrefix: /anything/team1/foo
        backends:
-       - host: team1-foo.example.com:8080
+       - host: team1-foo.%PROJECT_DOMAIN%:8080
      - name: child-bar
        matches:
        - path:
            pathPrefix: /anything/team1/bar
        backends:
-       - host: team1-bar.example.com:8080
+       - host: team1-bar.%PROJECT_DOMAIN%:8080
    EOF
    ```
 
@@ -185,13 +185,13 @@ query parameter are present. The route group has two child routes:
            value:
              exact: admin
        backends:
-       - host: team1-foo.example.com:8080
+       - host: team1-foo.%PROJECT_DOMAIN%:8080
      - name: child-bar
        matches:
        - path:
            pathPrefix: /anything/team1/bar
        backends:
-       - host: team1-bar.example.com:8080
+       - host: team1-bar.%PROJECT_DOMAIN%:8080
    EOF
    ```
 
@@ -259,7 +259,7 @@ routes.
        - path:
            pathPrefix: /api/users
        backends:
-       - host: users-service.example.com:8080
+       - host: users-service.%PROJECT_DOMAIN%:8080
      - name: child-orders
        matches:
        - path:
@@ -273,13 +273,13 @@ routes.
        - path:
            pathPrefix: /api/orders/list
        backends:
-       - host: orders-list.example.com:8080
+       - host: orders-list.%PROJECT_DOMAIN%:8080
      - name: grandchild-detail
        matches:
        - path:
            pathPrefix: /api/orders/detail
        backends:
-       - host: orders-detail.example.com:8080
+       - host: orders-detail.%PROJECT_DOMAIN%:8080
    EOF
    ```
 
@@ -343,7 +343,7 @@ to all requests. One child route inherits this policy, while the other overrides
        - path:
            pathPrefix: /anything/team1/foo
        backends:
-       - host: team1-foo.example.com:8080
+       - host: team1-foo.%PROJECT_DOMAIN%:8080
      - name: child-overrides
        matches:
        - path:
@@ -353,7 +353,7 @@ to all requests. One child route inherits this policy, while the other overrides
            add:
              x-child: from-child
        backends:
-       - host: team1-bar.example.com:8080
+       - host: team1-bar.%PROJECT_DOMAIN%:8080
    EOF
    ```
 

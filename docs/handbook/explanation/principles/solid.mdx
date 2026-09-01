@@ -118,7 +118,7 @@ Clients should not be forced to depend on interfaces or methods they do not util
 
 #### Typed Sub-contracts
 
-We avoid exposing large, monolithic models or database documents directly to layers that do not need them. Instead, we declare precise sub-interfaces and Zod schemas inside the `@tupynambalucas-hub/core` library:
+We avoid exposing large, monolithic models or database documents directly to layers that do not need them. Instead, we declare precise sub-interfaces and Zod schemas inside the `@repo/hub/core` library:
 
 ```typescript
 // Monolithic database representation (Internal only)
@@ -163,7 +163,7 @@ Services never instantiate repositories, databases, or third-party SDKs directly
 
 ```typescript
 import type { Model } from 'mongoose';
-import type { IUser } from '@tupynambalucas-hub/core';
+import type { IUser } from '@repo/hub/core';
 
 export class AuthRepository {
   // Injected model, decoupled from concrete instantiation

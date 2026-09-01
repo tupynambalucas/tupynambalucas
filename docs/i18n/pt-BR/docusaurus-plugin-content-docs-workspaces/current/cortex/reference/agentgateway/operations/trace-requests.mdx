@@ -147,16 +147,16 @@ Run `agctl proxy trace` with `--port` and a request URL after `--`. `agctl` enab
 sends the request itself, so you do not need a separate client.
 
 ```
-agctl proxy trace --local --raw --port 3000 -- http://example.com/headers
+agctl proxy trace --local --raw --port 3000 -- http://%PROJECT_DOMAIN%/headers
 ```
 
-The host portion of the URL (`example.com`) sets the `Host` header on the request but is not used
+The host portion of the URL (`%PROJECT_DOMAIN%`) sets the `Host` header on the request but is not used
 for DNS resolution. `agctl` always sends the request to `127.0.0.1:<port>`.
 
 You can pass extra `curl` arguments after the URL, such as headers or a request body.
 
 ```
-agctl proxy trace --local --raw --port 3000 -- http://example.com/post \
+agctl proxy trace --local --raw --port 3000 -- http://%PROJECT_DOMAIN%/post \
   -X POST \
   -H "Content-Type: application/json" \
   -d '{"key":"value"}'
@@ -168,7 +168,7 @@ Omit `--raw` to render the trace in an interactive, text-based terminal user int
 lets you step through each event and drill into the request and response state.
 
 ```
-agctl proxy trace --local --port 3000 -- http://example.com/headers
+agctl proxy trace --local --port 3000 -- http://%PROJECT_DOMAIN%/headers
 ```
 
 Example TUI:

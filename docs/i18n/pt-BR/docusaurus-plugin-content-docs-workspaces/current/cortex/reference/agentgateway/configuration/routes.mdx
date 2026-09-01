@@ -41,12 +41,12 @@ routes:
 - name: http-backend
   gateways: [http-proxy]
   hostnames:
-  - "example.com"
+  - "%PROJECT_DOMAIN%"
   matches:
   - path:
       pathPrefix: /
   backends:
-  - host: http.example.com:8080
+  - host: http.%PROJECT_DOMAIN%:8080
     weight: 1
 ```
 
@@ -73,7 +73,7 @@ tcpRoutes:
 - name: postgres-backend
   gateways: [postgres-proxy]
   backends:
-  - host: postgres.example.com:5432
+  - host: postgres.%PROJECT_DOMAIN%:5432
     weight: 1
 ```
 

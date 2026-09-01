@@ -1,6 +1,6 @@
-# @tupynambalucas/docs - Documentation Hub
+# @/docs - Documentation Hub
 
-This is the central, authoritative documentation hub for the tupynambalucas.dev project monorepo. Built with Docusaurus v3, it provides a high-performance, strictly-typed technical and product knowledge base.
+This is the central, authoritative documentation hub for the %PROJECT_DOMAIN% project monorepo. Built with Docusaurus v3, it provides a high-performance, strictly-typed technical and product knowledge base.
 
 ---
 
@@ -19,6 +19,7 @@ The documentation workspace is organized as follows:
 - **[i18n/](./i18n/)**: Translation catalogs for localized content (English and Brazilian Portuguese).
 - **[src/](./src/)**: Custom React components, theme styles, page templates, and layouts.
   - **[src/pages/](./src/pages/)**: MDX landing pages and custom layout files.
+- **[plugins/](./plugins/)**: Custom Docusaurus and unified/remark plugins (e.g., dynamic AST variables, Webpack config injection) for enterprise-grade tooling extensibility.
 - **[preset/](./preset/)**: Custom Docusaurus preset options and design tokens theme configurations.
 - **[loaders/](./loaders/)**: Webpack asset loaders for dynamic, bucket-stored Studio design resources.
 - **[scripts/](./scripts/)**: Task scripts orchestrating documentation dev/build pipelines.
@@ -38,6 +39,16 @@ All documentation under [handbook/](./handbook/) strictly adheres to the Diátax
 - **Explanation**: Understanding-oriented discussions on architecture and concepts.
 
 For more details on applying Diátaxis to this workspace, please refer to the introductory guide in [handbook/intro.mdx](./handbook/intro.mdx) or the local agent guidelines in [AGENTS.md](./AGENTS.md).
+
+---
+
+## AST Variables Plugin
+
+This workspace utilizes a custom `remark-project-variables` plugin to prevent hardcoded brand names.
+
+- You MUST write agnostic tokens like `%PROJECT_DOMAIN%` in all `.mdx` files.
+- The plugin intercepts the AST (Abstract Syntax Tree) during build time and resolves the tokens using `project.config.json`.
+- This ensures the raw markdown remains copy-pasteable and generic for AI agents and template reuse.
 
 ---
 
@@ -76,4 +87,4 @@ The static site will be generated in the `build/` directory using an optimized S
 The documentation is automatically deployed to Cloudflare Pages via GitHub Actions.
 
 - **Workflow:** `.github/workflows/deploy-docs.yaml`
-- **Authoritative URL:** [https://docs.tupynambalucas.dev](https://docs.tupynambalucas.dev)
+- **Authoritative URL:** [https://docs.%PROJECT_DOMAIN%](https://docs.%PROJECT_DOMAIN%)

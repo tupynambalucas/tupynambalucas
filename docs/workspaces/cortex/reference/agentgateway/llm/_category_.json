@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "LLM consumption, API models, cost controls, prompt guards, and provider configurations."
-  }
+  },
+  "key": "cortex-reference-agentgateway-llm"
 }

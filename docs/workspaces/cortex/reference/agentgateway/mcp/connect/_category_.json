@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Connect via Streamable HTTP, OpenAPI, Stdio, and Virtual MCP."
-  }
+  },
+  "key": "cortex-reference-agentgateway-mcp-connect"
 }

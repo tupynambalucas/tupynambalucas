@@ -9,7 +9,7 @@
 
 # Local Context: Model Context Protocol (MCP) Ecosystem
 
-This workspace context ([mcp/](./)) orchestrates the Model Context Protocol (MCP) data plane
+This bounded context ([mcp/](./)) orchestrates the Model Context Protocol (MCP) data plane
 subsystem within the AI Cortex architecture, containing the ExtMCP policy guardrails server,
 developer inspector, and containerized downstream tool server adapters.
 

@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Fault injection, request mirroring, rate limits, retries, and timeouts."
-  }
+  },
+  "key": "cortex-reference-agentgateway-configuration-resiliency"
 }

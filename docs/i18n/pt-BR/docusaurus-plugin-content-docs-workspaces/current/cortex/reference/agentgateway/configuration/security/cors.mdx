@@ -43,12 +43,12 @@ Review the following diagram to see an example CORS request flow:
 
     Note over B,Backend: CORS Preflight Flow
 
-    B->>AGW: OPTIONS /api (Preflight)<br/>Origin: https://app.example.com
+    B->>AGW: OPTIONS /api (Preflight)<br/>Origin: https://app.%PROJECT_DOMAIN%
     AGW->>AGW: Check origin against<br/>allowOrigins list
 
     alt Origin Allowed
-        AGW-->>B: 200 OK<br/>access-control-allow-origin: `https://app.example.com<br/>access-control-allow-methods:` GET, POST, OPTIONS<br/>access-control-allow-headers: Authorization, Content-Type<br/>access-control-max-age: 86400
-        B->>AGW: POST /api (Actual Request)<br/>Origin: `https://app.example.com<br/>Authorization:` Bearer <token>
+        AGW-->>B: 200 OK<br/>access-control-allow-origin: `https://app.%PROJECT_DOMAIN%<br/>access-control-allow-methods:` GET, POST, OPTIONS<br/>access-control-allow-headers: Authorization, Content-Type<br/>access-control-max-age: 86400
+        B->>AGW: POST /api (Actual Request)<br/>Origin: `https://app.%PROJECT_DOMAIN%<br/>Authorization:` Bearer <token>
         AGW->>Backend: Forward request
         Backend-->>AGW: Response
         AGW-->>B: Response + CORS headers
@@ -66,10 +66,10 @@ denies access to the resource in the other domain.
 CORS policies are typically implemented to limit access to server resources for JavaScripts that are
 embedded in a web page, such as:
 
-- A JavaScript on a web page at `example.com` tries to access a different domain, such as `api.com`.
-- A JavaScript on a web page at `example.com` tries to access a different subdomain, such as `api.example.com`.
-- A JavaScript on a web page at `example.com` tries to access a different port, such as `example.com:3001`.
-- A JavaScript on a web page at `https://example.com` tries to access the resources by using a different protocol, such as `http://example.com`.
+- A JavaScript on a web page at `%PROJECT_DOMAIN%` tries to access a different domain, such as `api.com`.
+- A JavaScript on a web page at `%PROJECT_DOMAIN%` tries to access a different subdomain, such as `api.%PROJECT_DOMAIN%`.
+- A JavaScript on a web page at `%PROJECT_DOMAIN%` tries to access a different port, such as `%PROJECT_DOMAIN%:3001`.
+- A JavaScript on a web page at `https://%PROJECT_DOMAIN%` tries to access the resources by using a different protocol, such as `http://%PROJECT_DOMAIN%`.
   :::tip[Tip]
   Requests that violate the CORS policy will still have responses returned, but the browser will reject them. As such, usage of tools like curl with cors can be confusing, as curl does not respect CORS headers.
   :::
@@ -87,7 +87,7 @@ llm:
   policies:
     cors:
       allowOrigins:
-      - https://chat.example.com
+      - https://chat.%PROJECT_DOMAIN%
       allowMethods:
       - POST
       - OPTIONS
@@ -110,7 +110,7 @@ mcp:
   policies:
     cors:
       allowOrigins:
-      - https://chat.example.com
+      - https://chat.%PROJECT_DOMAIN%
       allowMethods:
       - POST
       - OPTIONS
@@ -133,11 +133,11 @@ gateways:
     port: 3000
 routes:
 - backends:
-  - host: api.example.com:443
+  - host: api.%PROJECT_DOMAIN%:443
   policies:
     cors:
       allowOrigins:
-      - https://app.example.com
+      - https://app.%PROJECT_DOMAIN%
       allowMethods:
       - GET
       - POST

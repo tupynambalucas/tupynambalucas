@@ -81,13 +81,13 @@ gateways:
     listeners:
     - name: discrete
       protocol: HTTPS
-      hostname: a.example.com
+      hostname: a.%PROJECT_DOMAIN%
       tls:
         cert: examples/tls/certs/cert-a.pem
         key: examples/tls/certs/key-a.pem
     - name: wildcard
       protocol: HTTPS
-      hostname: "*.example.com"
+      hostname: "*.%PROJECT_DOMAIN%"
       tls:
         cert: examples/tls/certs/cert-wildcard.pem
         key: examples/tls/certs/key-wildcard.pem
@@ -161,10 +161,10 @@ gateways:
     port: 8443
     listeners:
     - name: passthrough
-      hostname: passthrough.example.com
+      hostname: passthrough.%PROJECT_DOMAIN%
       protocol: TLS
     - name: termination
-      hostname: termination.example.com
+      hostname: termination.%PROJECT_DOMAIN%
       protocol: TLS
       tls:
         cert: examples/tls/certs/cert.pem

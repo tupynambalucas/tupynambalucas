@@ -360,7 +360,7 @@ than the `Authorization` header, update the source header.
 ```
 backendAuth:
   oauthTokenExchange:
-    host: idp.example.com:443
+    host: idp.%PROJECT_DOMAIN%:443
     path: /token
     # Read the incoming credential from a custom header and declare its token type.
     subjectToken:
@@ -386,7 +386,7 @@ must be set.
 ```
 backendAuth:
   oauthTokenExchange:
-    host: idp.example.com:443
+    host: idp.%PROJECT_DOMAIN%:443
     path: /token
     actorToken:
       tokenType: urn:ietf:params:oauth:token-type:access_token

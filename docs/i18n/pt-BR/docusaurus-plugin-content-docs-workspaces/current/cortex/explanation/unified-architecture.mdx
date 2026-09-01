@@ -23,7 +23,7 @@ graph TD
         A[Shell do Desenvolvedor / IDE / VS Code]
     end
 
-    subgraph cortex_network [Ponte Docker: tupynambalucas-cortex-net]
+    subgraph cortex_network [Ponte Docker: workspace-cortex-net]
         direction TB
         subgraph agent_plane [Plano dos Agentes]
             B[cortex/agents - Container do Antigravity]
@@ -40,7 +40,7 @@ graph TD
         end
     end
 
-    subgraph platform_network [Ponte Docker: tupynambalucas-platform-net]
+    subgraph platform_network [Ponte Docker: workspace-platform-net]
         G[platform - Coletor OpenTelemetry]
     end
 
@@ -54,8 +54,8 @@ graph TD
 
 ### Planos de Rede
 
-- **Ponte Interna (`tupynambalucas-cortex-net`)**: Rede privada na qual todos os serviços do Cortex se comunicam. Servidores MCP downstream e bancos de dados de memória não expõem portas para o host; eles são acessados exclusivamente por meio do gateway.
-- **Ponte Externa (`tupynambalucas-platform-net`)**: Conecta o gateway a serviços globais da plataforma, como o coletor OpenTelemetry, para agregação de telemetria.
+- **Ponte Interna (`workspace-cortex-net`)**: Rede privada na qual todos os serviços do Cortex se comunicam. Servidores MCP downstream e bancos de dados de memória não expõem portas para o host; eles são acessados exclusivamente por meio do gateway.
+- **Ponte Externa (`workspace-platform-net`)**: Conecta o gateway a serviços globais da plataforma, como o coletor OpenTelemetry, para agregação de telemetria.
 
 ---
 

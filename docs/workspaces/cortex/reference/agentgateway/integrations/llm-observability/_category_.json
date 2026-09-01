@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Observability platforms including Langfuse, LangSmith, and Arize Phoenix."
-  }
+  },
+  "key": "cortex-reference-agentgateway-integrations-llm-observability"
 }

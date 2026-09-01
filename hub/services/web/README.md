@@ -1,4 +1,4 @@
-# @tupynambalucas-hub/web - Community Instance UI
+# @%PROJECT_NAME%-hub/web - Community Instance UI
 
 This module comprises the user interface for the Tupynambá Lucas platform. In our architectural model, this is an **Instance-based Application**, providing the specific Shop and Administrative Dashboard for each community (ecovillage, condominium, or tenant).
 
@@ -8,14 +8,14 @@ While the project currently focuses on "Single-Instance Mastery", the frontend i
 
 - **Tailored Experience**: Each community instance receives a customized interface based on local configurations.
 - **Client-Side Isolation**: Manages the state, authentication, and interactions for a single tenant instance.
-- **Contract-Driven**: Strictly follows the data contracts and UI tokens defined in `@tupynambalucas-hub/core` and the design system.
+- **Contract-Driven**: Strictly follows the data contracts and UI tokens defined in `@%PROJECT_NAME%-hub/core` and the design system.
 
 ### Documentation
 
-Detailed technical documentation is available in our [Knowledge Base](https://docs.tupynambalucas.dev):
+Detailed technical documentation is available in our [Knowledge Base](https://docs.%PROJECT_DOMAIN%):
 
-- [Architecture Overview](https://docs.tupynambalucas.dev/docs/explanation/architecture-overview): Technical decisions and stack details.
-- [Style Guide](https://docs.tupynambalucas.dev/docs/reference/styleguide): UI patterns and React 19 standards.
+- [Architecture Overview](https://docs.%PROJECT_DOMAIN%/docs/explanation/architecture-overview): Technical decisions and stack details.
+- [Style Guide](https://docs.%PROJECT_DOMAIN%/docs/reference/styleguide): UI patterns and React 19 standards.
 
 ---
 

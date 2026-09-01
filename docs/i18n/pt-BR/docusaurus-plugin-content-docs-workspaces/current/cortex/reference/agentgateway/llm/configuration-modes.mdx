@@ -79,12 +79,12 @@ llm:
   policies:
     jwtAuth:
       issuer: agentgateway.dev
-      audiences: [api.example.com]
+      audiences: [api.%PROJECT_DOMAIN%]
       jwks:
         file: ./public-key.json
     authorization:
       rules:
-      - 'jwt.email.endsWith("@example.com")'
+      - 'jwt.email.endsWith("@%PROJECT_DOMAIN%")'
   models:
   - name: claude-haiku
     provider: anthropic
@@ -232,5 +232,5 @@ routes:
   - path:
       pathPrefix: /api
   backends:
-  - host: api.example.com:443
+  - host: api.%PROJECT_DOMAIN%:443
 ```

@@ -36,7 +36,7 @@ Inside Podman Desktop (**Settings -> Extensions**), ensure the following extensi
 3. **Kubectl CLI Extension**: Integrates `kubectl` cluster controls and Kubernetes context switching directly inside Podman Desktop.
 
 :::info[No Shell Aliases Policy]
-Our project scripts explicitly invoke `podman compose` and `podman exec` directly in [package.json](file:///D:/projects/tupynambalucas/package.json). Do not create shell aliases (such as `alias docker=podman`). Using explicit `podman` commands ensures reproducible execution across all developer workstations and CI pipelines.
+Our project scripts explicitly invoke `podman compose` and `podman exec` directly in [package.json](file:///D:/projects/workspace/package.json). Do not create shell aliases (such as `alias docker=podman`). Using explicit `podman` commands ensures reproducible execution across all developer workstations and CI pipelines.
 :::
 
 ---
@@ -80,7 +80,7 @@ For fast feedback loops, we run microservices and backing databases using Podman
 
 ### Workspace Script Execution
 
-Instead of running verbose Podman Compose commands manually, use the predefined Turborepo filters and scripts in the root [package.json](file:///D:/projects/tupynambalucas/package.json):
+Instead of running verbose Podman Compose commands manually, use the predefined Turborepo filters and scripts in the root [package.json](file:///D:/projects/workspace/package.json):
 
 - **Start Hub Backing Services**: `pnpm hub:up`
 - **Stop Hub Backing Services**: `pnpm hub:down`
@@ -188,7 +188,7 @@ The **Antigravity CLI** connects to the Cortex ingress proxy (`agentgateway`) us
 
 ```json
 "agentgateway": {
-  "url": "https://agentgateway-mcp-dev.tupynambalucas.dev",
+  "url": "https://agentgateway-mcp-dev.%PROJECT_DOMAIN%",
   "lifecycle": "eager"
 }
 ```

@@ -26,6 +26,10 @@ The Single Source of Truth (SSOT) for shared schemas, data validation rules (Zod
 
 - **Detailed Guide:** Refer to the [Core Library README](./packages/core/README.md).
 
+### 4. Infrastructure Services (`services/mongodb/`, `services/redis/`)
+
+Docker configurations and initialization scripts for the local `hub-mongodb` replica set and `hub-redis` caching layer.
+
 ---
 
 ## Technical & Domain Isolation

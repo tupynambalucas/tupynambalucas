@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "AgentGateway static configuration, gateways, listeners, routes, backends, and policies."
-  }
+  },
+  "key": "cortex-reference-agentgateway-configuration"
 }

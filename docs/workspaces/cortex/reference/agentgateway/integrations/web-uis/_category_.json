@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Integrate Chatbot UI, Goose, LibreChat, and Open WebUI."
-  }
+  },
+  "key": "cortex-reference-agentgateway-integrations-web-uis"
 }

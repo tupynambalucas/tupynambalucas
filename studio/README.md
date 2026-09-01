@@ -1,13 +1,13 @@
 # Design Studio Workspace
 
-The `studio/` directory houses brand identity management, design system tokens, asset synchronization pipelines, and self-hosted collaborative design infrastructure for the tupynambalucas.dev monorepo.
+The `studio/` directory houses brand identity management, design system tokens, asset synchronization pipelines, and self-hosted collaborative design infrastructure for the %PROJECT_DOMAIN% monorepo.
 
 ---
 
 ## Technology Stack
 
-- **Design System & Tokens**: CSS variables, TypeScript token definitions, React SVG icons (`@tupynambalucas-studio/assets`)
-- **Asset Storage & Sync**: Cloudflare R2, `@tupynambalucas-studio/bucket`
+- **Design System & Tokens**: CSS variables, TypeScript token definitions, React SVG icons (`@repo/studio/assets`)
+- **Asset Storage & Sync**: Cloudflare R2, `@repo/studio/bucket`
 - **Collaborative Design Engine**: Penpot v2 (Frontend, Backend, Exporter, Valkey, Aide AI Assistant)
 - **Collaborative Notes**: Memos
 - **Orchestration**: Kubernetes, Kustomize, Skaffold, Podman / Docker Compose
@@ -16,8 +16,8 @@ The `studio/` directory houses brand identity management, design system tokens, 
 
 ## Directory Overview
 
-- **[assets/](./assets/README.md)**: Brand identity, design system tokens, React icons, and styling themes (`@tupynambalucas-studio/assets`) ([assets/README.md](./assets/README.md)).
-- **[bucket/](./bucket/README.md)**: Cloudflare R2 asset synchronization CLI package (`@tupynambalucas-studio/bucket`) ([bucket/README.md](./bucket/README.md)).
+- **[assets/](./assets/README.md)**: Brand identity, design system tokens, React icons, and styling themes (`@repo/studio/assets`) ([assets/README.md](./assets/README.md)).
+- **[bucket/](./bucket/README.md)**: Cloudflare R2 asset synchronization CLI package (`@repo/studio/bucket`) ([bucket/README.md](./bucket/README.md)).
 - **[creative/](./creative/)**: Raw creative design files, master graphics, and vector source assets.
 - **[infrastructure/](./infrastructure/README.md)**: Container orchestration and Kubernetes deployment manifests ([infrastructure/README.md](./infrastructure/README.md)).
 - **[AGENTS.md](./AGENTS.md)**: AI agent domain router context.

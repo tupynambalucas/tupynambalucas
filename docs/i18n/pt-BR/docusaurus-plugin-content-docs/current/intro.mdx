@@ -6,7 +6,7 @@ sidebar_position: 1
 
 import DocCardList from '@theme/DocCardList';
 
-# Monorepo tupynambalucas.dev
+# Monorepo %PROJECT_DOMAIN%
 
 Este repositório é um monorepo que contém um gerador de estatísticas de perfil de desenvolvedor, site/hub pessoal, ferramentas de desenvolvedor, tokens de design e documentação.
 
@@ -16,7 +16,7 @@ Este repositório é um monorepo que contém um gerador de estatísticas de perf
 
 O monorepo coordena o site pessoal do desenvolvedor (`hub`), visualizações de estatísticas automatizadas (`profile`), sistemas de design (`studio`), hub de processamento de IA (`cortex`) e ferramentas de automação (`tools`).
 
-A principal aplicação voltada para o cliente é o **Developer Hub** (`@tupynambalucas-hub/*`):
+A principal aplicação voltada para o cliente é o **Developer Hub** (`@repo/hub/*`):
 
 | Para Visitantes                                                         | Para o Desenvolvedor (Admin)                                         |
 | :---------------------------------------------------------------------- | :------------------------------------------------------------------- |
@@ -30,9 +30,9 @@ A principal aplicação voltada para o cliente é o **Developer Hub** (`@tupynam
 
 O site de portfólio e o gerador de estatísticas operam em um fluxo de trabalho simplificado:
 
-1. **Apresentação de Portfólio**: Os visitantes exploram o frontend `@tupynambalucas-hub/web`, consumindo postagens de blog e destaques de projetos servidos por `@tupynambalucas-hub/api`.
-2. **Envio de Contato**: As entradas do formulário são validadas por meio de chaves anti-spam do Turnstile, serializadas usando schemas do Zod do `@tupynambalucas-hub/core` e persistidas em uma instância do MongoDB.
-3. **Geração de Estatísticas de Perfil**: O workspace `@tupynambalucas/profile` compila métricas do GitHub usando uma CLI nativa em Zig e sobrescreve dinamicamente o arquivo `README.md` raiz.
+1. **Apresentação de Portfólio**: Os visitantes exploram o frontend `@repo/hub/web`, consumindo postagens de blog e destaques de projetos servidos por `@repo/hub/api`.
+2. **Envio de Contato**: As entradas do formulário são validadas por meio de chaves anti-spam do Turnstile, serializadas usando schemas do Zod do `@repo/hub/core` e persistidas em uma instância do MongoDB.
+3. **Geração de Estatísticas de Perfil**: O workspace `@/profile` compila métricas do GitHub usando uma CLI nativa em Zig e sobrescreve dinamicamente o arquivo `README.md` raiz.
 
 ---
 
@@ -78,8 +78,8 @@ Para uma análise abrangente de nossa filosofia de contexto, estrutura de diret�
 
 Nossa prioridade é a implantação e manutenção de:
 
-- **`@tupynambalucas-hub/*`**: Hub pessoal React/Fastify.
-- **`@tupynambalucas/profile`**: Compilador de estatísticas de perfil do GitHub baseado em Zig.
+- **`@repo/hub/*`**: Hub pessoal React/Fastify.
+- **`@/profile`**: Compilador de estatísticas de perfil do GitHub baseado em Zig.
 
 ---
 
@@ -106,7 +106,7 @@ Certifique-se de ter o **Node.js 22+**, **PNPM 11+**, **Zig**, **Podman** (com a
 
 3. **Iniciar Infraestrutura Local & Aplicações:**
    Fornecemos scripts de orquestração unificados via Turborepo e Skaffold. Você pode rodar no modo Podman Compose (`pnpm cortex:up` e `pnpm hub:dev`) ou no modo Kubernetes (`pnpm minikube:up` e `pnpm k8s:dev`).
-   Consulte [MONOREPO.readme.md](https://github.com/tupynambalucas/tupynambalucas/blob/develop/MONOREPO.readme.md) ou a [Referência de Comandos](./reference/commands.mdx) para obter detalhes.
+   Consulte [MONOREPO.readme.md](https://github.com/workspace/workspace/blob/develop/MONOREPO.readme.md) ou a [Referência de Comandos](./reference/commands.mdx) para obter detalhes.
 
 ---
 

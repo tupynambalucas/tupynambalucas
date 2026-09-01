@@ -1,6 +1,6 @@
 # GitHub Tooling Ecosystem
 
-This workspace houses the containerized GitHub CLI (`gh`) and Git environments, alongside TypeScript automation scripts for repository management in the tupynambalucas.dev infrastructure.
+This workspace houses the containerized GitHub CLI (`gh`) and Git environments, alongside TypeScript automation scripts for repository management in the %PROJECT_DOMAIN% infrastructure.
 
 ## Architecture Overview
 
@@ -19,7 +19,7 @@ The ecosystem provides standardized, isolated tooling for version control and pr
 - **[services/git/](./services/git/)**: Contains the Dockerfile and entrypoint for the Git CLI container (includes `git-flow`).
 
 > [!NOTE]
-> Repository automation scripts for generating changelogs and roadmaps are part of the `@tupynambalucas/docs` package context.
+> Repository automation scripts for generating changelogs and roadmaps are part of the `@/docs` package context.
 
 ---
 

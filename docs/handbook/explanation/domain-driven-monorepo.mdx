@@ -8,7 +8,7 @@ sidebar_position: 2
 
 The scalability of enterprise software ecosystems often faces two primary bottlenecks: the cognitive complexity of the business domain, and the friction imposed by codebase management infrastructure. As organizations grow, microservices distributed across multiple repositories (multirepos) or monolithic structures lacking clear boundaries tend to incur unsustainable technical debt.
 
-The convergence of Domain-Driven Design (DDD)—specifically the strategic pattern of **Bounded Contexts**—and **Monorepo** architectures offers an elegant solution. By mapping logical business domains directly to physical folder boundaries, we establish an automated governance model that secures code reuse while ensuring independent evolution. This document details how `tupynambalucas.dev` materializes strategic domain-driven design within its monorepo.
+The convergence of Domain-Driven Design (DDD)—specifically the strategic pattern of **Bounded Contexts**—and **Monorepo** architectures offers an elegant solution. By mapping logical business domains directly to physical folder boundaries, we establish an automated governance model that secures code reuse while ensuring independent evolution. This document details how `%PROJECT_DOMAIN%` materializes strategic domain-driven design within its monorepo.
 
 ---
 
@@ -30,7 +30,7 @@ Rather than creating a bloated, global `Asset` definition, each context maintain
 
 ### 1.2 The Bounded Context
 
-A Bounded Context defines the explicit boundary inside which a domain model is valid. Inside this boundary, our Ubiquitous Language has precise and indisputable meanings. Within each bounded context in `tupynambalucas.dev`:
+A Bounded Context defines the explicit boundary inside which a domain model is valid. Inside this boundary, our Ubiquitous Language has precise and indisputable meanings. Within each bounded context in `%PROJECT_DOMAIN%`:
 
 - Domain terminologies are highly aligned with technical schemas, variables, and specs.
 - Developers have complete ownership and autonomy over the lifecycle of their context.
@@ -61,7 +61,7 @@ While DDD dictates the logical grouping of concepts, our monorepo provides the p
 Our folder layout directly mirrors our Bounded Context map:
 
 ```text
-tupynambalucas/
+workspace/
 ├── hub/                      # Hub Context (Portfolio Web & API)
 │   ├── services/web/         # Web Application (React)
 │   ├── services/api/         # API Backend (Fastify)
@@ -89,7 +89,7 @@ Bounded Contexts do not operate in absolute isolation; they must communicate thr
 
 ### 4.1 Shared Kernel (Nucleu Partilhado)
 
-The **Shared Kernel** pattern is utilized when contexts share a stable portion of domain schemas or variables. In our system, **`@tupynambalucas-studio/assets`** acts as a Shared Kernel. Both `@tupynambalucas-hub/web` and `@tupynambalucas/renderer` import design tokens and SVG icons directly from this package.
+The **Shared Kernel** pattern is utilized when contexts share a stable portion of domain schemas or variables. In our system, **`@repo/studio/assets`** acts as a Shared Kernel. Both `@repo/hub/web` and `@/renderer` import design tokens and SVG icons directly from this package.
 
 Any change to these tokens triggers immediate build-time verification across both downstream consumer contexts, ensuring systemic visual consistency.
 
@@ -108,7 +108,7 @@ We enforce structural modularity dynamically to prevent spaghetti imports and en
 ### 5.1 Vertical vs. Horizontal Layering
 
 - **Vertical Boundaries**: Dictated by root workspace directories (e.g., code under `hub/` cannot perform direct, deep imports of file systems under `renderer/`).
-- **Horizontal Layering**: Internal architectural layers. For instance, the `@tupynambalucas-hub/web` (UI/Feature layer) is completely decoupled from `@tupynambalucas-hub/core` (Domain model layer), forcing the dependency flow downward.
+- **Horizontal Layering**: Internal architectural layers. For instance, the `@repo/hub/web` (UI/Feature layer) is completely decoupled from `@repo/hub/core` (Domain model layer), forcing the dependency flow downward.
 
 ### 5.2 Automated Boundary Enforcement
 

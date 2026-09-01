@@ -8,7 +8,7 @@
 
 # Bounded Context: AI Cortex Router
 
-This document defines the domain rules, architecture, and workspace navigation for the AI Cortex bounded context in the tupynambalucas.dev monorepo.
+This document defines the domain rules, architecture, and workspace navigation for the AI Cortex bounded context in the %PROJECT_DOMAIN% monorepo.
 
 ---
 

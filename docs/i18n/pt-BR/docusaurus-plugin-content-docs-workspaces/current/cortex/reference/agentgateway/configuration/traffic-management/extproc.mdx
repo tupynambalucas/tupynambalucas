@@ -143,7 +143,7 @@ routes:
       targets:
       - name: default
         sse:
-          host: mcp.example.com
+          host: mcp.%PROJECT_DOMAIN%
           port: 8080
           path: /sse
   policies:
@@ -174,7 +174,7 @@ routes:
       targets:
       - name: default
         sse:
-          host: mcp.example.com
+          host: mcp.%PROJECT_DOMAIN%
           port: 8080
           path: /sse
   policies:

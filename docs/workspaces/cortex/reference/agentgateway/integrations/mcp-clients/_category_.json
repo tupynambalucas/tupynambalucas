@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Configure MCP clients including Antigravity IDE, Claude, Cursor, Devin, OpenCode, and VS Code."
-  }
+  },
+  "key": "cortex-reference-agentgateway-integrations-mcp-clients"
 }

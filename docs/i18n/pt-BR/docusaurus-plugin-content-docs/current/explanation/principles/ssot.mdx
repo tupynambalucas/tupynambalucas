@@ -1,6 +1,6 @@
 ---
 title: Fonte Única da Verdade (SSOT)
-description: Desacoplamento e governança centralizada de esquemas e modelos compartilhados no monorepo tupynambalucas.dev.
+description: Desacoplamento e governança centralizada de esquemas e modelos compartilhados no monorepo %PROJECT_DOMAIN%.
 ---
 
 # Fonte Única da Verdade (SSOT)
@@ -23,15 +23,15 @@ Ao centralizar os esquemas principais, nós:
 
 ## 2. Utilização Específica no Projeto
 
-No tupynambalucas.dev, o princípio SSOT é implementado nativamente por meio de nossa arquitetura monorepo:
+No %PROJECT_DOMAIN%, o princípio SSOT é implementado nativamente por meio de nossa arquitetura monorepo:
 
 ### A. Bibliotecas Core Centralizadas
 
-Os workspaces `@tupynambalucas-hub/core` e `@tupynambalucas-hub/core` servem como o SSOT absoluto para seus respectivos contextos delimitados. Qualquer esquema, interface ou tipo compartilhado por mais de uma aplicação (como a API do backend e a SPA web do frontend) deve ser declarado aqui primeiro, seguindo nossa diretriz de **Design Direcionado ao Core (Core First Design)**.
+Os workspaces `@repo/hub/core` e `@repo/hub/core` servem como o SSOT absoluto para seus respectivos contextos delimitados. Qualquer esquema, interface ou tipo compartilhado por mais de uma aplicação (como a API do backend e a SPA web do frontend) deve ser declarado aqui primeiro, seguindo nossa diretriz de **Design Direcionado ao Core (Core First Design)**.
 
 ### B. Compartilhamento de Contratos e Tipos
 
-Aplicações downstream como `@tupynambalucas-hub/api` (Fastify) e `@tupynambalucas-hub/web` (React SPA) não mantêm interfaces de objetos de transferência de dados (DTO) ou modelos de banco de dados duplicados. Em vez disso, importam diretamente tipos, interfaces e classes do pacote core compartilhado:
+Aplicações downstream como `@repo/hub/api` (Fastify) e `@repo/hub/web` (React SPA) não mantêm interfaces de objetos de transferência de dados (DTO) ou modelos de banco de dados duplicados. Em vez disso, importam diretamente tipos, interfaces e classes do pacote core compartilhado:
 
 ```typescript
 // Core package definition
@@ -48,7 +48,7 @@ export interface ICycle {
 ```typescript
 // Consumed directly in downstream API
 // hub/services/api/src/domains/cycle/cycle.service.ts
-import type { ICycle } from '@tupynambalucas-hub/core';
+import type { ICycle } from '@repo/hub/core';
 ```
 
 ### C. Consistência na Validação de Esquemas

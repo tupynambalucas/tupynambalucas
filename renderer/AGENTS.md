@@ -8,7 +8,7 @@
 
 # Bounded Context: Renderer Workspace
 
-This workspace (`@tupynambalucas/renderer`) manages the generic dynamic asset generator and
+This workspace (`@/renderer`) manages the generic dynamic asset generator and
 document compilation engine, responsible for generating custom visual SVG cards and compiling
 markdown templates into production-grade documents across the monorepo.
 
@@ -44,7 +44,7 @@ markdown templates into production-grade documents across the monorepo.
   - [pipeline.schema.ts](./src/schemas/pipeline.schema.ts): Pipeline execution targets and Zod
     validation schemas.
 - **[src/pipelines/profile/](./src/pipelines/profile/)**: Domain templates (e.g., [profile.template.md](./src/pipelines/profile/profile.template.md)).
-  _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/assets` under `studio/design/assets/github/cards/`._
+  _Note: SVG stats card templates are loaded from `@repo/studio/assets` under `studio/design/assets/github/cards/`._
 - **[src/utils/](./src/utils/)**: Common helpers for compilation and formatting.
   - [glob.ts](./src/utils/glob.ts): Simple glob matcher helper for filtering items.
   - [template-fill.ts](./src/utils/template-fill.ts):
@@ -80,7 +80,7 @@ themes with absolute fidelity:
 
 ## Code Patterns
 
-- **Registering a New Pipeline**: [.agents/pipeline.md](./.agents/pipeline.md)
+- **Registering a New Pipeline**: [references/pipeline.md](./references/pipeline.md)
 
 ---
 
@@ -94,7 +94,7 @@ themes with absolute fidelity:
 3. **Template Consistent Naming**: All source files under the templates directory MUST use the
    `*.template.*` suffix pattern to distinguish static templates from compiled output.
 4. **Design Token Consumption**: Text style and layout colors MUST be bound directly to the central
-   brand design system tokens from `@tupynambalucas-studio/assets`.
+   brand design system tokens from `@repo/studio/assets`.
 5. **Base64 Font Inlining**: To guarantee rendering consistency under GitHub's SVG image sandbox,
    the variable Nunito brand font file MUST be encoded and inlined directly inside the generated
    SVGs using base64 data URIs.

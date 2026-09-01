@@ -1,12 +1,12 @@
-# tupynambalucas.dev Agents Context
+# %PROJECT_DOMAIN% Agents Context
 
 This document serves as the root context router for AI agents operating in the
-tupynambalucas.dev monorepo.
+%PROJECT_DOMAIN% monorepo.
 
 ## Repository Entry Points
 
 - [README.md](./README.md): Serves exclusively as the dynamic GitHub Profile view, which
-  is automatically updated by the `@tupynambalucas/renderer` workspace generator.
+  is automatically updated by the `@%PROJECT_NAME%/renderer` workspace generator.
 - [MONOREPO.readme.md](./MONOREPO.readme.md): The official developer entry point and
   technical README for the repository.
 
@@ -53,6 +53,21 @@ The monorepo uses Skaffold v4beta11 with three composable modules defined in
   forbidden.
 - MUST format all files according to Prettier standards (2-space indent, max 100-character
   line width).
+
+## .agents Architecture & Scripting Rules
+
+The `.agents/` directory is the authoritative domain for agentic AI configurations. It strictly follows a Domain-Driven Design (DDD) directory structure:
+
+- `.agents/plans/`: Temporary, markdown-based plan artifacts outlining execution steps for complex tasks.
+- `.agents/plugins/`: MCP (Model Context Protocol) plugin definitions and server configurations.
+- `.agents/rules/`: Global context files and shared system prompts.
+- `.agents/scripts/`: Agent-authored utility scripts (Node.js, Bash, Python) meant for repository manipulation.
+- `.agents/skills/`: Self-contained `.md` instruction files detailing expert agent personas and workflow rules.
+
+**CRITICAL SCRIPTING RULE**: Agents MUST NOT create utility or scratch scripts (e.g., `scratch.js`, `update.js`) directly in the monorepo root.
+
+- If a script is meant to be saved and version-controlled for the monorepo, it MUST be created inside `.agents/scripts/`.
+- If a script is strictly temporary (for one-off execution or debugging), it MUST be created in the agent's isolated artifact directory (`<appDataDir>/brain/<conversation-id>/scratch/`) or immediately deleted after execution.
 
 ## Required Skills
 

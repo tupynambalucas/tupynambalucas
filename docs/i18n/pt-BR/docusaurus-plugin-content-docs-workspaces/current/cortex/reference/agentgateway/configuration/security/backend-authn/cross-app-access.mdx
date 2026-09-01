@@ -324,7 +324,7 @@ clientAuth:
     file: /path/to/signing-key.pem
   alg: RS256  # one of RS256/RS384/RS512/ES256/ES384
   kid: my-signing-key  # optional `kid` header
-  assertionAudience: https://chat.example.com/oauth2/token
+  assertionAudience: https://chat.%PROJECT_DOMAIN%/oauth2/token
 ```
 
 ## Limitations

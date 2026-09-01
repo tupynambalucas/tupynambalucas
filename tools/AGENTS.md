@@ -8,7 +8,7 @@
 
 # Bounded Context: Developer Automation Tools Router
 
-This workspace context ([tools/](./)) orchestrates developer helper tools, git automation configurations, and GitHub CLI containerized workspaces.
+This bounded context ([tools/](./)) orchestrates developer helper tools, git automation configurations, and GitHub CLI containerized workspaces.
 
 ---
 

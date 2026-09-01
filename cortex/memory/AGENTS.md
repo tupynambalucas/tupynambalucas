@@ -9,7 +9,7 @@
 
 # Local Context: Cortex Memory Subsystem
 
-This workspace context ([memory/](./)) orchestrates the self-hosted MongoDB Vector RAG memory
+This bounded context ([memory/](./)) orchestrates the self-hosted MongoDB Vector RAG memory
 subsystem, providing episodic chat history, documentation knowledge RAG, and relational
 associative memory planes for AI agents.
 
@@ -18,13 +18,13 @@ associative memory planes for AI agents.
 ## 1. Local Architecture
 
 - [packages/core/](./packages/core/): Shared data models, TypeScript interfaces, and Zod schemas
-  (`@tupynambalucas-cortex/memory-core`).
+  (`@repo/cortex/memory-core`).
 - [services/api/](./services/api/): Fastify REST API backend executing MongoDB 7.0 `$vectorSearch`,
-  auto docs sync, and data persistence (`@tupynambalucas-cortex/memory-api`).
+  auto docs sync, and data persistence (`@repo/cortex/memory-api`).
 - [services/mongodb/](./services/mongodb/): MongoDB 7.0 Replica Set (`rs0`) container
   configuration and initialization scripts.
 - [services/web/](./services/web/): Vite + React 19 + Tailwind CSS dashboard built with
-  Feature-Sliced Design (`@tupynambalucas-cortex/memory-web`).
+  Feature-Sliced Design (`@repo/cortex/memory-web`).
 
 ---
 
@@ -53,9 +53,9 @@ associative memory planes for AI agents.
 
 ## 3. Scoped Operations
 
-- `pnpm --filter @tupynambalucas-cortex/memory-core build`: Compiles shared TypeScript types.
-- `pnpm --filter @tupynambalucas-cortex/memory-api dev`: Starts Fastify API in development mode.
-- `pnpm --filter @tupynambalucas-cortex/memory-web dev`: Starts React web dashboard on port
+- `pnpm --filter @repo/cortex/memory-core build`: Compiles shared TypeScript types.
+- `pnpm --filter @repo/cortex/memory-api dev`: Starts Fastify API in development mode.
+- `pnpm --filter @repo/cortex/memory-web dev`: Starts React web dashboard on port
   `9006`.
 - `pnpm cortex:dev`: Starts memory services alongside the Cortex stack in Kubernetes.
 - `pnpm cortex:up`: Starts memory containers via Docker Compose.
@@ -95,3 +95,9 @@ associative memory planes for AI agents.
   -> `entities` -> `shared`. Cross-layer imports are forbidden.
 - State management MUST use TanStack Query for server state. Zustand is permitted only for local
   UI state with no API dependency.
+
+---
+
+## 3. Docs Ingestion & Vector Agnosticism
+
+The memory API synchronizes documentation by directly ingesting raw .mdx files from the docs/ workspace. It intentionally embeds unresolved templating tokens (such as %PROJECT_DOMAIN% and %PROJECT_NAME%) into the MongoDB Vector space. This architectural decision ensures the semantic knowledge base remains strictly brand-agnostic and perfectly generic for enterprise template reuse.

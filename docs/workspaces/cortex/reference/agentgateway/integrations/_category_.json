@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Integrations with authentication providers, LLM clients/providers, MCP ecosystem, networking, observability, and web UIs."
-  }
+  },
+  "key": "cortex-reference-agentgateway-integrations"
 }

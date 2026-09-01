@@ -1,6 +1,6 @@
 # Cortex Memory Web Dashboard
 
-The `cortex/memory/services/web` workspace contains the Vite + React 19 + Tailwind CSS dashboard (`@tupynambalucas-cortex/memory-web`) for visual inspection of knowledge graphs, episodic chat history, vector similarity search, and documentation synchronization.
+The `cortex/memory/services/web` workspace contains the Vite + React 19 + Tailwind CSS dashboard (`@repo/cortex/memory-web`) for visual inspection of knowledge graphs, episodic chat history, vector similarity search, and documentation synchronization.
 
 ---
 

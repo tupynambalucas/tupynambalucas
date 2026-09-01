@@ -240,7 +240,7 @@ The following example runs the `ratelimit` server and its Redis backing store lo
 
 ```yaml
 # ratelimit-config/config.yaml
-domain: example.com
+domain: %PROJECT_DOMAIN%
 descriptors:
   - key: organization
     rate_limit:
@@ -304,7 +304,7 @@ policies:
     # The address to access the rate limit server
     host: localhost:8081
     # Arbitrary 'domain' to match limits on the rate limit server
-    domain: example.com
+    domain: %PROJECT_DOMAIN%
     descriptors:
       # Rate limit requests based on a header, whether the user is authenticated, and a static value (used to match a specific rate limit rule on the rate limit server)
       - entries:
@@ -329,7 +329,7 @@ policies:
     # The address to access the rate limit server
     host: localhost:8081
     # Arbitrary 'domain' to match limits on the rate limit server
-    domain: example.com
+    domain: %PROJECT_DOMAIN%
     descriptors:
       # Rate limit requests based on a header, whether the user is authenticated, and a static value (used to match a specific rate limit rule on the rate limit server)
       - entries:
@@ -356,7 +356,7 @@ routes:
         # The address to access the rate limit server
         host: localhost:8081
         # Arbitrary 'domain' to match limits on the rate limit server
-        domain: example.com
+        domain: %PROJECT_DOMAIN%
         descriptors:
           # Rate limit requests based on a header, whether the user is authenticated, and a static value (used to match a specific rate limit rule on the rate limit server)
           - entries:
@@ -439,7 +439,7 @@ To allow requests through when the rate limit service is unavailable, set `failu
 ```yaml
 remoteRateLimit:
 host: localhost:8081
-domain: example.com
+domain: %PROJECT_DOMAIN%
 failureMode: failOpen
 descriptors:
   - entries:

@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Quickstart guides for LLM routing, MCP servers, and non-agentic HTTP traffic."
-  }
+  },
+  "key": "cortex-reference-agentgateway-quickstart"
 }

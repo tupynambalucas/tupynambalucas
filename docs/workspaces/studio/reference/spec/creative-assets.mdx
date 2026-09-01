@@ -10,7 +10,7 @@ tags:
 
 ### Centralized Creative & Asset Workspace
 
-The `@tupynambalucas-studio/assets` package serves as the core repository for all brand designs, raw project master files, and compiled production-ready assets.
+The `@repo/studio/assets` package serves as the core repository for all brand designs, raw project master files, and compiled production-ready assets.
 
 To maintain clean separation between creation and distribution, the workspace is split into two primary roots: the `creative/` directory and the `assets/` directory.
 
@@ -30,11 +30,11 @@ The `creative/` directory acts as our private design vault. It houses raw source
 _Tracking & Storage:_
 
 - **Git Strategy:** This directory is completely ignored in Git to prevent repository bloat.
-- **Cloud Storage:** Synchronized bidirectionally with the private `tupynambalucas-creative` bucket.
+- **Cloud Storage:** Synchronized bidirectionally with the private `workspace-creative` bucket.
 
 ### B. Production-Ready Assets (`assets/`)
 
-The `assets/` directory contains final, optimized, web-ready static elements consumed directly by our client interfaces (like `@tupynambalucas/hub`) and pipelines.
+The `assets/` directory contains final, optimized, web-ready static elements consumed directly by our client interfaces (like `@/hub`) and pipelines.
 
 - **Brand Elements:** Vector logos, favicons, official palettes, and brand guidelines PDFs.
 - **UI Elements:** Optimized SVG icons (`assets/icons/`) and raster UI illustrations (`assets/images/`).
@@ -45,7 +45,7 @@ The `assets/` directory contains final, optimized, web-ready static elements con
 _Tracking & Storage:_
 
 - **Git Strategy:** Hybrid. Lightweight SVGs, React icon wrappers, fonts, stylesheets, and JSON manifests are committed to Git. Heavy binary PNGs, images, and GLB files are ignored.
-- **Cloud Storage:** Binary files are synchronized with the public `tupynambalucas-assets` bucket and served via CDN.
+- **Cloud Storage:** Binary files are synchronized with the public `workspace-assets` bucket and served via CDN.
 
 ---
 
@@ -59,7 +59,7 @@ Transitioning from raw design templates inside `creative/` to compiled deliverab
 
 #### Cloudflare R2 Asset Synchronizer
 
-To keep our Git repository lightweight, production-ready static assets are not committed directly to the codebase. Instead, they are synchronized bidirectionally with Cloudflare R2 Object Storage using our dedicated CLI synchronizer package `@tupynambalucas-studio/bucket`.
+To keep our Git repository lightweight, production-ready static assets are not committed directly to the codebase. Instead, they are synchronized bidirectionally with Cloudflare R2 Object Storage using our dedicated CLI synchronizer package `@repo/studio/bucket`.
 
 For detailed information about our buckets ecosystem, CLI commands, and synchronization architecture, refer to the [Cloudflare R2 Storage & Synchronizer](/workspaces/studio/reference/spec/cloudflare-storage) documentation.
 
@@ -142,10 +142,10 @@ All logo filenames must follow the pattern `logo-[lockup]-[variant].[ext]` using
 
 #### Asset Resolution & Zero-Copy Architecture
 
-To eliminate duplicate file storage in consuming applications like `@tupynambalucas-hub/web`:
+To eliminate duplicate file storage in consuming applications like `@repo/hub/web`:
 
 - **In Development**: The Vite dev server intercepts requests starting with `/@studio-assets/` and serves the files dynamically from the local assets package directory on your machine.
-- **In Production (Build-Time Copying)**: The application's build system uses `vite-plugin-static-copy` to automatically replicate files from `node_modules/@tupynambalucas-studio/assets/assets/brand/` into the build output `dist/` directory at bundle time.
+- **In Production (Build-Time Copying)**: The application's build system uses `vite-plugin-static-copy` to automatically replicate files from `node_modules/@repo/studio/assets/assets/brand/` into the build output `dist/` directory at bundle time.
 
 ---
 
@@ -153,8 +153,8 @@ To eliminate duplicate file storage in consuming applications like `@tupynambalu
 
 Internal packages access creative assets via strictly defined exports to ensure architectural isolation:
 
-- `@tupynambalucas-studio/assets/icons`: Optimized SVG library and curated Icon component registry.
-- `@tupynambalucas-studio/assets/logos`: Canonical brand logotypes.
-- `@tupynambalucas-studio/assets/brand/*`: Core brand assets (palettes, favicons, banners).
-- `@tupynambalucas-studio/assets/tokens`: Strongly-typed design constants for JS/TS logic.
-- `@tupynambalucas-studio/assets/theme.css`: Zero-runtime Tailwind CSS theme config.
+- `@repo/studio/assets/icons`: Optimized SVG library and curated Icon component registry.
+- `@repo/studio/assets/logos`: Canonical brand logotypes.
+- `@repo/studio/assets/brand/*`: Core brand assets (palettes, favicons, banners).
+- `@repo/studio/assets/tokens`: Strongly-typed design constants for JS/TS logic.
+- `@repo/studio/assets/theme.css`: Zero-runtime Tailwind CSS theme config.

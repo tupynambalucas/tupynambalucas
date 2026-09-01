@@ -1,6 +1,6 @@
-# @tupynambalucas-studio/bucket - Studio Bucket Synchronizer
+# @repo/studio/bucket - Studio Bucket Synchronizer
 
-This package houses the dynamic asset synchronization engine for the tupynambalucas Studio workspace. It provides bidirectional (`push` and `pull`) replication of web-ready assets (e.g., images, 3D assets/Three.js vectors, and raw backups) directly with Cloudflare R2 Object Storage.
+This package houses the dynamic asset synchronization engine for the workspace Studio workspace. It provides bidirectional (`push` and `pull`) replication of web-ready assets (e.g., images, 3D assets/Three.js vectors, and raw backups) directly with Cloudflare R2 Object Storage.
 
 ---
 

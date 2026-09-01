@@ -9,7 +9,7 @@ The `platform/services/headlamp` workspace provides an extensible, developer-fri
 - **Base Image**: `ghcr.io/headlamp-k8s/headlamp:v0.41.0`
 - **Internal Port**: `4466`
 - **Service Port**: `80`
-- **Ingress Domain**: `headlamp-dev.tupynambalucas.dev`
+- **Ingress Domain**: `headlamp-dev.%PROJECT_DOMAIN%`
 
 ---
 
@@ -28,4 +28,4 @@ Headlamp starts automatically when running platform services on Kubernetes:
 pnpm platform:dev
 ```
 
-Access the dashboard at `http://localhost:80` (or `http://headlamp-dev.tupynambalucas.dev`).
+Access the dashboard at `http://localhost:80` (or `http://headlamp-dev.%PROJECT_DOMAIN%`).

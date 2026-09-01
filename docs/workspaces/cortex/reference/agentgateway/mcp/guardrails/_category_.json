@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Tool call inspection, guardrail setup, and security filters."
-  }
+  },
+  "key": "cortex-reference-agentgateway-mcp-guardrails"
 }

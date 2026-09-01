@@ -5,7 +5,7 @@ description: Use this skill to write, analyze, or update general Markdown files 
 
 # Markdown Expert
 
-This skill defines the standards, structure, design patterns, and validation workflow for general Markdown documentation in the **tupynambalucas** monorepo.
+This skill defines the standards, structure, design patterns, and validation workflow for general Markdown documentation in the monorepo.
 
 ## 1. Global Documentation Standards
 
@@ -38,14 +38,14 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### F. Prettier Formatting Standards
 
-- All files must comply with the Prettier formatting rules defined in [.prettierrc.json](../../../.prettierrc.json) (2-space indentation, max 100-character line width, hyphen-based unordered lists, and proper JavaScript/TypeScript code block styling).
+- All files must comply with the root Prettier formatting rules (2-space indentation, max 100-character line width, hyphen-based unordered lists, and proper JavaScript/TypeScript code block styling).
 
 ### G. Prohibited Absolute Paths
 
 - Absolute filesystem paths or local protocol URLs (e.g., file scheme paths or `/absolute/path/...`) are strictly forbidden in all Markdown links and document references.
 - All references must use:
   1. Standard relative paths (e.g., `./relative-file.md` or `../sibling/file.md`).
-  2. Fully-qualified public web URLs with explicit domains (e.g., `https://tupynambalucas.dev` or external domain references).
+  2. Fully-qualified public web URLs with explicit domains (e.g., `https://example.com` or external domain references).
 
 ---
 

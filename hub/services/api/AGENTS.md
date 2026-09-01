@@ -9,7 +9,7 @@
 
 # Local Context: Instance API Application
 
-This workspace (`@tupynambalucas-hub/api`) contains the Fastify 5 REST API for community-specific instance operations.
+This workspace (`@%PROJECT_NAME%-hub/api`) contains the Fastify 5 REST API for community-specific instance operations.
 
 ---
 
@@ -49,7 +49,7 @@ Controller (Validation/Routing) -> Service (Business Logic) -> Repository (Persi
 
 ```typescript
 import type { Model } from 'mongoose';
-import type { IUser } from '@tupynambalucas-hub/core';
+import type { IUser } from '@%PROJECT_NAME%-hub/core';
 
 export class UserRepository {
   constructor(private readonly userModel: Model<IUser>) {}

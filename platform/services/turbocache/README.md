@@ -1,6 +1,6 @@
 # Turborepo Remote Cache (turbocache)
 
-The `platform/services/turbocache` workspace provides a high-performance, containerized Remote Cache server for Turborepo builds across the tupynambalucas.dev monorepo.
+The `platform/services/turbocache` workspace provides a high-performance, containerized Remote Cache server for Turborepo builds across the %PROJECT_DOMAIN% monorepo.
 
 ---
 
@@ -8,7 +8,7 @@ The `platform/services/turbocache` workspace provides a high-performance, contai
 
 - **Base Image**: `ducktors/turborepo-remote-cache:latest`
 - **Port**: `3000` (Host `3008` in Compose)
-- **Ingress Domain**: `turbocache-dev.tupynambalucas.dev`
+- **Ingress Domain**: `turbocache-dev.%PROJECT_DOMAIN%`
 
 ---
 

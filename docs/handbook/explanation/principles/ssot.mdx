@@ -1,6 +1,6 @@
 ---
 title: Single Source of Truth (SSOT)
-description: Decoupling and centralized governance of shared schemas and models in the tupynambalucas.dev monorepo.
+description: Decoupling and centralized governance of shared schemas and models in the %PROJECT_DOMAIN% monorepo.
 ---
 
 # Single Source of Truth (SSOT)
@@ -23,15 +23,15 @@ By centralizing core schemas, we:
 
 ## 2. Project-Specific Utilization
 
-In tupynambalucas.dev, the SSOT principle is implemented natively via our monorepo architecture:
+In %PROJECT_DOMAIN%, the SSOT principle is implemented natively via our monorepo architecture:
 
 ### A. Centralized Core Libraries
 
-The `@tupynambalucas-hub/core` and `@tupynambalucas-hub/core` workspaces serve as the absolute SSOT for their respective bounded contexts. Any schema, interface, or type shared by more than one application (such as backend API and frontend web SPA) must be declared here first, following our **Core First Design** guardrail.
+The `@repo/hub/core` and `@repo/hub/core` workspaces serve as the absolute SSOT for their respective bounded contexts. Any schema, interface, or type shared by more than one application (such as backend API and frontend web SPA) must be declared here first, following our **Core First Design** guardrail.
 
 ### B. Contract & Type Sharing
 
-Downstream applications like `@tupynambalucas-hub/api` (Fastify) and `@tupynambalucas-hub/web` (React SPA) do not maintain duplicate data transfer object (DTO) interfaces or database models. Instead, they directly import types, interfaces, and classes from the shared core package:
+Downstream applications like `@repo/hub/api` (Fastify) and `@repo/hub/web` (React SPA) do not maintain duplicate data transfer object (DTO) interfaces or database models. Instead, they directly import types, interfaces, and classes from the shared core package:
 
 ```typescript
 // Core package definition
@@ -48,7 +48,7 @@ export interface ICycle {
 ```typescript
 // Consumed directly in downstream API
 // hub/services/api/src/domains/cycle/cycle.service.ts
-import type { ICycle } from '@tupynambalucas-hub/core';
+import type { ICycle } from '@repo/hub/core';
 ```
 
 ### C. Schema Validation Consistency

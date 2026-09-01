@@ -1,6 +1,6 @@
 ---
 title: Bounded Contexts
-description: Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles in tupynambalucas.dev.
+description: Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles in %PROJECT_DOMAIN%.
 ---
 
 # Bounded Contexts
@@ -16,7 +16,7 @@ The monorepo distinguishes between different core contexts. The following diagra
 ```mermaid
 graph TD
     direction TB
-    Root["tupynambalucas.dev Monorepo"]
+    Root["%PROJECT_DOMAIN% Monorepo"]
     Root --> Hub["Hub Context: /hub"]
     Root --> Cortex["Cortex Context: /cortex"]
     Root --> Profile["Profile Context: /profile"]
@@ -44,17 +44,17 @@ graph TD
     H_API -.-> Cortex
 ```
 
-| Directory           | Package Name                    | Role               | Responsibility                                                  |
-| :------------------ | :------------------------------ | :----------------- | :-------------------------------------------------------------- |
-| `hub/services/web`  | `@tupynambalucas-hub/web`       | **Application**    | Personal portfolio React client, blog, and admin dashboard.     |
-| `hub/services/api`  | `@tupynambalucas-hub/api`       | **Application**    | Fastify REST API serving blog posts and form handlers.          |
-| `hub/packages/core` | `@tupynambalucas-hub/core`      | **Library**        | SSOT for the Hub context (Zod validation, shared schemas).      |
-| `cortex/`           | `@tupynambalucas/cortex`        | **Tooling**        | Unified AI gateway, MCP adapters, and agent runners.            |
-| `profile/`          | `@tupynambalucas/profile`       | **Application**    | Zig CLI application compiling GitHub stats and generating SVGs. |
-| `studio/assets`     | `@tupynambalucas-studio/assets` | **Library**        | Design tokens, logos, SVGs, and sync utilities.                 |
-| `tools/`            | `@tupynambalucas-tools/*`       | **Tooling**        | Isolated Git version control and GitHub CLI automation.         |
-| `platform/`         | `@tupynambalucas/platform`      | **Infrastructure** | Telemetry monitoring and Turborepo cache servers.               |
-| `docs/`             | `@tupynambalucas/docs`          | **Docs Hub**       | Authoritative Docusaurus developer portal.                      |
+| Directory           | Package Name          | Role               | Responsibility                                                  |
+| :------------------ | :-------------------- | :----------------- | :-------------------------------------------------------------- |
+| `hub/services/web`  | `@repo/hub/web`       | **Application**    | Personal portfolio React client, blog, and admin dashboard.     |
+| `hub/services/api`  | `@repo/hub/api`       | **Application**    | Fastify REST API serving blog posts and form handlers.          |
+| `hub/packages/core` | `@repo/hub/core`      | **Library**        | SSOT for the Hub context (Zod validation, shared schemas).      |
+| `cortex/`           | `@/cortex`            | **Tooling**        | Unified AI gateway, MCP adapters, and agent runners.            |
+| `profile/`          | `@/profile`           | **Application**    | Zig CLI application compiling GitHub stats and generating SVGs. |
+| `studio/assets`     | `@repo/studio/assets` | **Library**        | Design tokens, logos, SVGs, and sync utilities.                 |
+| `tools/`            | `@repo/tools/*`       | **Tooling**        | Isolated Git version control and GitHub CLI automation.         |
+| `platform/`         | `@/platform`          | **Infrastructure** | Telemetry monitoring and Turborepo cache servers.               |
+| `docs/`             | `@/docs`              | **Docs Hub**       | Authoritative Docusaurus developer portal.                      |
 
 ---
 

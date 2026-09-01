@@ -68,7 +68,7 @@ To ensure high-fidelity parsing by LLMs, all `AGENTS.md` files must adhere to th
 
 ## 4. Prettier Formatting Standards
 
-All `AGENTS.md` files must comply with the Prettier rules in [.prettierrc.json](../../../../.prettierrc.json):
+All `AGENTS.md` files must comply with the root Prettier formatting rules:
 
 - **Indentation**: Standard 2-space indentation for list nesting, blockquotes, and HTML tags.
 - **Line Width**: Word wrap prose to keep lines under 100 characters where possible.

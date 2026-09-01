@@ -9,7 +9,7 @@
 
 # Local Context: Instance Core Package
 
-This package (`@tupynambalucas-hub/core`) is the Single Source of Truth (SSOT) for data contracts, validation schemas, and TypeScript interfaces shared across the community instance stack.
+This package (`@%PROJECT_NAME%-hub/core`) is the Single Source of Truth (SSOT) for data contracts, validation schemas, and TypeScript interfaces shared across the community instance stack.
 
 ---
 
@@ -24,7 +24,7 @@ This package (`@tupynambalucas-hub/core`) is the Single Source of Truth (SSOT) f
 ## Core Package Guardrails
 
 1. **Schemas Naming**: All Zod validation schemas MUST end with the suffix `Schema` (e.g., `UserDTOSchema`, `RegisterDTOSchema`).
-2. **Core First**: You MUST declare new schemas, parameters, and contract types in this core library before using or referencing them in `@tupynambalucas-hub/api` or `@tupynambalucas-hub/web`.
+2. **Core First**: You MUST declare new schemas, parameters, and contract types in this core library before using or referencing them in `@%PROJECT_NAME%-hub/api` or `@%PROJECT_NAME%-hub/web`.
 3. **Strict Return Types**: All exported functions or public APIs in this package must feature explicit return types.
 4. **No Runtime Dependencies**: Never import database drivers, server modules (like Fastify), or environment configuration variables into this package. It must remain a lightweight, platform-agnostic library.
 5. **Separated Type Imports**: When importing types from this package in downstream code, always use the `import type` statement separate from value imports.
@@ -35,7 +35,7 @@ This package (`@tupynambalucas-hub/core`) is the Single Source of Truth (SSOT) f
 
 Run these scripts from the package directory or via pnpm filters:
 
-- `pnpm build` (or `pnpm --filter @tupynambalucas-hub/core build`): Compiles TypeScript source files into `dist/`.
+- `pnpm build` (or `pnpm --filter @%PROJECT_NAME%-hub/core build`): Compiles TypeScript source files into `dist/`.
 - `pnpm dev`: Runs compilation in watch mode for development.
 - `pnpm clean`: Deletes build folders and compilation caches.
 - `pnpm typecheck`: Validates TypeScript type-safety in this package.

@@ -1,12 +1,12 @@
 ---
 title: Segurança
-description: Visão geral abrangente das medidas de segurança, proteção contra bots e mitigação de força bruta no tupynambalucas.dev.
+description: Visão geral abrangente das medidas de segurança, proteção contra bots e mitigação de força bruta no %PROJECT_DOMAIN%.
 sidebar_position: 4
 ---
 
 # Arquitetura de Segurança
 
-tupynambalucas.dev implementa uma estratégia de segurança em múltiplas camadas para proteger os dados da comunidade e garantir a integridade dos ciclos de compartilhamento. Nossa abordagem combina protocolos padrão da indústria com proteção especializada contra bots e mitigação de força bruta.
+%PROJECT_DOMAIN% implementa uma estratégia de segurança em múltiplas camadas para proteger os dados da comunidade e garantir a integridade dos ciclos de compartilhamento. Nossa abordagem combina protocolos padrão da indústria com proteção especializada contra bots e mitigação de força bruta.
 
 ---
 
@@ -28,7 +28,7 @@ A API não confia apenas no estado do lado do cliente.
 
 - **Verificação**: O `AuthService` realiza uma requisição POST segura para `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
 - **Validação de IP**: O endereço IP do cliente é enviado ao Cloudflare para detectar redes de bots baseadas em proxies.
-- **DTOs Obrigatórios**: O `LoginDTOSchema` e o `RegisterDTOSchema` no `@tupynambalucas-hub/core` exigem estritamente o `turnstileToken`.
+- **DTOs Obrigatórios**: O `LoginDTOSchema` e o `RegisterDTOSchema` no `@repo/hub/core` exigem estritamente o `turnstileToken`.
 
 ---
 

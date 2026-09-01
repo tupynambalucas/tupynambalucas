@@ -56,7 +56,7 @@ needs.
 
 1. In the Auth0 Dashboard, go to **Applications > APIs** and click **Create API**. Enter a name such as
    `agentgateway API`, and set the **Identifier** to the resource URL that your MCP clients request,
-   such as `https://api.example.com`. The identifier becomes the `aud` claim of the tokens that Auth0
+   such as `https://api.%PROJECT_DOMAIN%`. The identifier becomes the `aud` claim of the tokens that Auth0
    issues.
 2. On the API’s **Settings** tab, enable **Add Permissions in the Access Token**. Then define the
    permissions that your MCP server enforces on the **Permissions** tab, such as `read:tools`. You use
@@ -74,7 +74,7 @@ needs.
    ```
    export AUTH0_TENANT_URL='https://your-tenant.us.auth0.com'
    export AUTH0_ISSUER="${AUTH0_TENANT_URL}/"
-   export AUTH0_AUDIENCE='https://api.example.com'
+   export AUTH0_AUDIENCE='https://api.%PROJECT_DOMAIN%'
    export AUTH0_CLIENT_ID='<your-m2m-client-id>'
    export AUTH0_CLIENT_SECRET='<your-m2m-client-secret>'
    ```
@@ -194,7 +194,7 @@ Agentgateway runs in the foreground, so run the following commands in another te
 
    ```
    ...
-   "authorization_endpoint": "https://your-tenant.us.auth0.com/authorize?audience=https://api.example.com",
+   "authorization_endpoint": "https://your-tenant.us.auth0.com/authorize?audience=https://api.%PROJECT_DOMAIN%",
    "token_endpoint": "https://your-tenant.us.auth0.com/oauth/token",
    ```
 

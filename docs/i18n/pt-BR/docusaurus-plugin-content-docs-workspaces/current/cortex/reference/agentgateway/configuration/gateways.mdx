@@ -53,8 +53,8 @@ gateways.
 
     subgraph ls["listeners: split one port by hostname"]
         LI["implicit listener<br/>all hostnames"]:::implicit
-        LD["discrete<br/>a.example.com"]:::listener
-        LW["wildcard<br/>*.example.com"]:::listener
+        LD["discrete<br/>a.%PROJECT_DOMAIN%"]:::listener
+        LW["wildcard<br/>*.%PROJECT_DOMAIN%"]:::listener
     end
 
     subgraph at["routes and endpoints: attach by name"]
@@ -124,7 +124,7 @@ routes:
   - path:
       pathPrefix: /api
   backends:
-  - host: api.example.com:443
+  - host: api.%PROJECT_DOMAIN%:443
 - name: internal-admin
   gateways: [internal]
   matches:
@@ -153,7 +153,7 @@ routes:
 - name: api
   gateways: [http, https]  # One route definition serves both ports
   backends:
-  - host: api.example.com:443
+  - host: api.%PROJECT_DOMAIN%:443
 ```
 
 ## Add listeners to a gateway
@@ -172,24 +172,24 @@ gateways:
     port: 8443
     listeners:
     - name: discrete
-      hostname: a.example.com
+      hostname: a.%PROJECT_DOMAIN%
       tls:
         cert: ./certs/cert-a.pem
         key: ./certs/key-a.pem
     - name: wildcard
-      hostname: "*.example.com"
+      hostname: "*.%PROJECT_DOMAIN%"
       tls:
         cert: ./certs/cert-wildcard.pem
         key: ./certs/key-wildcard.pem
 routes:
 - name: a-only
-  gateways: [web/discrete]  # Serves a.example.com only
+  gateways: [web/discrete]  # Serves a.%PROJECT_DOMAIN% only
   backends:
-  - host: a-backend.example.com:443
+  - host: a-backend.%PROJECT_DOMAIN%:443
 - name: everything-else
   gateways: [web]  # Serves every listener under the web gateway
   backends:
-  - host: shared-backend.example.com:443
+  - host: shared-backend.%PROJECT_DOMAIN%:443
 ```
 
 All listeners under a gateway share the gateway’s port, so they cannot mix encrypted and plaintext
@@ -289,7 +289,7 @@ gateways:
     port: 3000
     cors:  # Applies to every route on this gateway
       allowOrigins:
-      - "https://app.example.com"
+      - "https://app.%PROJECT_DOMAIN%"
       allowMethods:
       - GET
       - POST

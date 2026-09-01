@@ -1,0 +1,24 @@
+---
+title: Plugins Architecture
+sidebar_label: Plugins Architecture
+sidebar_position: 1
+---
+
+# Documentation Plugins Architecture
+
+The `%PROJECT_DOMAIN%` documentation workspace is strictly powered by Docusaurus v3 and uses a combination of standard React patterns and advanced Abstract Syntax Tree (AST) transformers.
+
+---
+
+## 1. The `remark-project-variables` Plugin
+
+To maintain a **copy-pasteable, generic monorepo**, the documentation MUST NOT contain hardcoded brand names or URLs (e.g., `tupynambalucas.dev`). Instead, authors must write generic tokens using percentage wrappers, such as `%PROJECT_DOMAIN%` or `%PROJECT_NAME%`.
+
+### How it Works
+
+1. **AST Transformation**: The custom `remark-project-variables` plugin hooks into the unified/remark MDX compilation pipeline.
+2. **Text Node Interception**: It traverses the Markdown AST (`mdast`) using `unist-util-visit`.
+3. **Value Resolution**: It intercepts nodes of type `text`, `inlineCode`, `link`, and `image`, and searches for patterns like `%PROJECT_DOMAIN%`.
+4. **Replacement**: It replaces those tokens with actual values pulled from a single source of truth (`project.config.json`) _before_ the MDX is compiled into React JSX.
+
+This architecture ensures that AI RAG embeddings (like the `cortex/memory` vectors) ingest the **agnostic** source files, avoiding brand hallucination when the repository is forked or applied to new clients.

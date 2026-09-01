@@ -1,6 +1,6 @@
 # Consolidated Master Plan: Unified Cortex AI Agents Architecture
 
-This document serves as the authoritative Single Source of Truth (SSOT) for restructuring the AI agents ecosystem within the `cortex` bounded context of the **tupynambalucas** monorepo. It outlines the overall architecture, domain-driven directory structure, technology stack, reverse tool calling mechanism, and specialized agent runtimes.
+This document serves as the authoritative Single Source of Truth (SSOT) for restructuring the AI agents ecosystem within the `cortex` bounded context of the **%PROJECT_NAME%** monorepo. It outlines the overall architecture, domain-driven directory structure, technology stack, reverse tool calling mechanism, and specialized agent runtimes.
 
 ---
 

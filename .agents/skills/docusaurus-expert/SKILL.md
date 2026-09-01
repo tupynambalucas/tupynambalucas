@@ -5,7 +5,7 @@ description: Use this skill to create, analyze, or update technical documentatio
 
 # Docusaurus Docs Expert
 
-This skill defines the authoritative standards, directory structures, design patterns, and validation workflows for the **tupynambalucas** Docusaurus Docs Hub (`docs/`).
+This skill defines the authoritative standards, directory structures, design patterns, and validation workflows for the **workspace** Docusaurus Docs Hub (`docs/`).
 
 ---
 
@@ -60,6 +60,12 @@ All MDX files must align with the project Prettier configuration:
 - Use exactly 2-space indentation.
 - Use hyphens (`-`) for unordered list items; asterisks or pluses are forbidden.
 - Code blocks embedded in MDX must feature semicolons, trailing commas, single quotes for strings (except double quotes in JSX props), and parentheses for arrow functions.
+
+### E. Project Variables Plugin
+
+- **No Hardcoded Brands**: You MUST NOT hardcode specific brand names or URLs (e.g., `tupynambalucas.dev`) in documentation content.
+- **AST Tokens**: Always use agnostic percentage-wrapped tokens like `%PROJECT_DOMAIN%` or `%PROJECT_NAME%`.
+- **Compilation**: The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens with real values during the build, keeping the repository generic and copy-pasteable.
 
 ---
 

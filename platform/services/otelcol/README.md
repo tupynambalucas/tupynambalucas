@@ -1,6 +1,6 @@
 # OpenTelemetry Collector Service
 
-The `platform/services/otelcol` workspace builds and manages the custom OpenTelemetry Collector (`otelcol-contrib`) responsible for telemetry aggregation across the tupynambalucas.dev platform.
+The `platform/services/otelcol` workspace builds and manages the custom OpenTelemetry Collector (`otelcol-contrib`) responsible for telemetry aggregation across the %PROJECT_DOMAIN% platform.
 
 ---
 

@@ -36,7 +36,7 @@ Use the context or package name as the scope:
 
 ## Commit Validation & CI Hooks
 
-To maintain code quality, styling consistency, and type safety across the **tupynambalucas.dev** monorepo, we use an automated pipeline that checks all changes before they are committed locally and before they are merged in the cloud.
+To maintain code quality, styling consistency, and type safety across the **%PROJECT_DOMAIN%** monorepo, we use an automated pipeline that checks all changes before they are committed locally and before they are merged in the cloud.
 
 ### Local Validation Architecture (Pre-commit)
 
@@ -62,20 +62,20 @@ graph TD
 
 ### Selective Workspace Typechecking
 
-Running a full typecheck across all monorepo packages (`pnpm typecheck`) can take several seconds. To keep the commit process fast, we use a custom script located at [precommit-typecheck.ts](file:///D:/projects/tupynambalucas/tools/scripts/precommit-typecheck.ts).
+Running a full typecheck across all monorepo packages (`pnpm typecheck`) can take several seconds. To keep the commit process fast, we use a custom script located at [precommit-typecheck.ts](file:///D:/projects/workspace/tools/scripts/precommit-typecheck.ts).
 
 #### How it Works
 
 1. The script inspects the currently staged files using `git diff --cached --name-only`.
 2. It detects the file extensions: if no JavaScript or TypeScript files have changed, it skips typechecking completely.
 3. It maps the changed files to their corresponding monorepo workspaces:
-   - Files in `hub/` $\rightarrow$ typecheck `@tupynambalucas-hub/*` packages.
-   - Files in `cortex/` $\rightarrow$ typecheck `@tupynambalucas/cortex`.
-   - Files in `studio/` $\rightarrow$ typecheck `@tupynambalucas-studio/assets`.
-   - Files in `tools/` $\rightarrow$ typecheck `@tupynambalucas-tools/*`.
-   - Files in `docs/` $\rightarrow$ typecheck `@tupynambalucas/docs`.
+   - Files in `hub/` $\rightarrow$ typecheck `@repo/hub/*` packages.
+   - Files in `cortex/` $\rightarrow$ typecheck `@/cortex`.
+   - Files in `studio/` $\rightarrow$ typecheck `@repo/studio/assets`.
+   - Files in `tools/` $\rightarrow$ typecheck `@repo/tools/*`.
+   - Files in `docs/` $\rightarrow$ typecheck `@/docs`.
 4. If global configuration or root files (e.g. `package.json`, `eslint.config.ts`, `pnpm-workspace.yaml`) are modified, the script runs a full typecheck.
-5. It executes the targeted typecheck in parallel using Turborepo filters (e.g., `npx turbo run typecheck --filter=@tupynambalucas-hub/*`).
+5. It executes the targeted typecheck in parallel using Turborepo filters (e.g., `npx turbo run typecheck --filter=@repo/hub/*`).
 
 :::tip[Performance Advantage]
 If you only modify files in the `cortex` workspace, only the cortex project is typechecked, which takes less than 1.5 seconds. If you only modify documentation (`.md` or `.mdx` files), the typecheck is skipped entirely.
@@ -89,7 +89,7 @@ Once typechecking passes, Husky triggers `lint-staged`, which runs linters and f
 
 #### Configuration
 
-The rules are declared in the root [package.json](file:///D:/projects/tupynambalucas/package.json):
+The rules are declared in the root [package.json](file:///D:/projects/workspace/package.json):
 
 ```json
   "lint-staged": {
@@ -103,7 +103,7 @@ The rules are declared in the root [package.json](file:///D:/projects/tupynambal
 ```
 
 :::note[Prettier Integration]
-For JavaScript, TypeScript, and TSX files, we do not run the standalone Prettier CLI. Instead, Prettier runs as an ESLint rule via `eslint-plugin-prettier`. Running `eslint --fix` formats the code according to [shared/config/prettierrc.json](file:///D:/projects/tupynambalucas/shared/config/prettierrc.json) and checks for code quality issues in a single execution.
+For JavaScript, TypeScript, and TSX files, we do not run the standalone Prettier CLI. Instead, Prettier runs as an ESLint rule via `eslint-plugin-prettier`. Running `eslint --fix` formats the code according to [shared/config/prettierrc.json](file:///D:/projects/workspace/shared/config/prettierrc.json) and checks for code quality issues in a single execution.
 :::
 
 ---
@@ -112,11 +112,11 @@ For JavaScript, TypeScript, and TSX files, we do not run the standalone Prettier
 
 Local Git hooks can be bypassed (e.g. using `git commit --no-verify`). To prevent unvalidated code from reaching stable branches, we run a Continuous Integration (CI) workflow in GitHub on every push and Pull Request.
 
-The workflow configuration is defined in [.github/workflows/ci.yaml](file:///D:/projects/tupynambalucas/.github/workflows/ci.yaml):
+The workflow configuration is defined in [.github/workflows/ci.yaml](file:///D:/projects/workspace/.github/workflows/ci.yaml):
 
 - It installs dependencies using `pnpm install --frozen-lockfile`.
-- It executes the full typecheck suite: `pnpm typecheck --filter=!@tupynambalucas-hub/*`.
-- It validates code style and quality: `pnpm lint --filter=!@tupynambalucas-hub/*`.
+- It executes the full typecheck suite: `pnpm typecheck --filter=!@repo/hub/*`.
+- It validates code style and quality: `pnpm lint --filter=!@repo/hub/*`.
 
 :::caution[Branch Protection]
 Repository administrators must configure branch protection rules on GitHub for `main` and `develop` branches. Enable the option **Require status checks to pass before merging** and select **Validate Types & Lint** to prevent merging PRs with failing builds.

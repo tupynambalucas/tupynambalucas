@@ -1,6 +1,6 @@
 # Tempo Distributed Tracing Service
 
-The `platform/services/tempo` workspace provides Grafana Tempo distributed trace storage and TraceQL querying for the tupynambalucas.dev platform.
+The `platform/services/tempo` workspace provides Grafana Tempo distributed trace storage and TraceQL querying for the %PROJECT_DOMAIN% platform.
 
 ---
 

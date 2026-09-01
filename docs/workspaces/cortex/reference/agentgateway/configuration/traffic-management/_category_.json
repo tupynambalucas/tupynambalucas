@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Body buffering, direct responses, ExtProc, header manipulation, matching, redirects, and rewrites."
-  }
+  },
+  "key": "cortex-reference-agentgateway-configuration-traffic-management"
 }

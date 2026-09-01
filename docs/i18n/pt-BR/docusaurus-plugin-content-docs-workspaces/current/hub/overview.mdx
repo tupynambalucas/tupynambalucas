@@ -7,7 +7,7 @@ slug: /hub
 
 { }
 
-O workspace Hub contém todas as aplicações e pacotes relacionados ao site pessoal do desenvolvedor. É a vitrine principal do tupynambalucas.dev, fornecendo portfólio profissional, motor de blog, inventário de habilidades técnicas e sistemas de tratamento de formulários de contato.
+O workspace Hub contém todas as aplicações e pacotes relacionados ao site pessoal do desenvolvedor. É a vitrine principal do %PROJECT_DOMAIN%, fornecendo portfólio profissional, motor de blog, inventário de habilidades técnicas e sistemas de tratamento de formulários de contato.
 
 ---
 
@@ -26,14 +26,14 @@ hub/
 
 ## Componentes Core e Arquitetura
 
-### `@tupynambalucas-hub/core` (SSOT do Domínio)
+### `@repo/hub/core` (SSOT do Domínio)
 
 Todas as configurações de esquemas, validadores e tipos de negócios core são definidas neste pacote. Ao forçar a API REST e o cliente Web a herdarem definições dessa camada core, garantimos a paridade estrita do Bounded Context e evitamos a duplicação de modelos.
 
 - **Stack Tecnológica**: TypeScript, Zod.
 - **Arquivos Chave**: Definições de esquemas compartilhados para posts de blog, projetos, envios de contato e contas de usuário.
 
-### `@tupynambalucas-hub/api` (Motor Fastify 5)
+### `@repo/hub/api` (Motor Fastify 5)
 
 Uma API REST de alto desempenho construída com Fastify v5, implementando uma arquitetura de software desacoplada e em camadas.
 
@@ -46,12 +46,12 @@ Uma API REST de alto desempenho construída com Fastify v5, implementando uma ar
   - Todas as operações assíncronas devem ser tratadas explicitamente.
   - Comparações booleanas estritas são aplicadas em todos os controladores da API (`if (value === true)`).
 
-### `@tupynambalucas-hub/web` (Portal React 19)
+### `@repo/hub/web` (Portal React 19)
 
 A interface de portfólio do usuário, frontend do blog e painel administrativo construídos em React 19 e compilados com Vite.
 
 - **Stack Tecnológica**: React 19, TypeScript, Vite, Zustand (gerenciamento de estado), Studio Tokens (integração de tema).
-- **Paridade de Design**: Herda variáveis de tema, cores e constantes de layout diretamente do pacote `@tupynambalucas-studio/assets`.
+- **Paridade de Design**: Herda variáveis de tema, cores e constantes de layout diretamente do pacote `@repo/studio/assets`.
 - **Recursos do React 19**: Implementa padrões modernos do React 19, utilizando o hook `use()` para carregar promessas de recursos e garantindo comparações booleanas estritas em todos os templates JSX.
 
 ---

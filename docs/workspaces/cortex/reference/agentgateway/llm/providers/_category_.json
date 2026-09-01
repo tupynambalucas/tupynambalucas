@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "LLM provider backend configurations and multi-LLM routing."
-  }
+  },
+  "key": "cortex-reference-agentgateway-llm-providers"
 }

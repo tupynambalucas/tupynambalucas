@@ -1,4 +1,4 @@
-# @tupynambalucas-hub/api - Community Instance API
+# @%PROJECT_NAME%-hub/api - Community Instance API
 
 This directory contains the core API for the Tupynambá Lucas system. In our architectural model, this is an **Instance-based Application**, meaning it is designed to be deployed specifically for each community (ecovillage, condominium, or tenant).
 
@@ -8,14 +8,14 @@ While the project currently focuses on "Single-Instance Mastery", the backend is
 
 - **Isolation**: Each instance manages its own business logic, database connections, and community-specific workflows.
 - **Portability**: Designed to be containerized and scaled independently per tenant.
-- **Contract-Driven**: Strictly follows the data contracts defined in `@tupynambalucas-hub/core`.
+- **Contract-Driven**: Strictly follows the data contracts defined in `@%PROJECT_NAME%-hub/core`.
 
 ### Documentation
 
-Detailed technical documentation is available in our [Knowledge Base](https://docs.tupynambalucas.dev):
+Detailed technical documentation is available in our [Knowledge Base](https://docs.%PROJECT_DOMAIN%):
 
-- [Architecture Overview](https://docs.tupynambalucas.dev/docs/explanation/architecture-overview): Technical decisions and domain modeling details.
-- [Style Guide](https://docs.tupynambalucas.dev/docs/reference/styleguide): Coding standards and conventions.
+- [Architecture Overview](https://docs.%PROJECT_DOMAIN%/docs/explanation/architecture-overview): Technical decisions and domain modeling details.
+- [Style Guide](https://docs.%PROJECT_DOMAIN%/docs/reference/styleguide): Coding standards and conventions.
 
 ---
 
@@ -63,7 +63,7 @@ USER_SESSION_KEY=EloInstance
 
 # Admin Seed
 ADMIN_USER_SEED=admin
-ADMIN_EMAIL_SEED=your-email@example.com
+ADMIN_EMAIL_SEED=your-email@%PROJECT_DOMAIN%
 ADMIN_PASS_SEED=admin
 
 # External Services

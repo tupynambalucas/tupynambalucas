@@ -6,7 +6,7 @@ sidebar_position: 1
 
 import DocCardList from '@theme/DocCardList';
 
-# tupynambalucas.dev Monorepo
+# %PROJECT_DOMAIN% Monorepo
 
 This repository is a monorepo containing a developer profile stats generator, personal website/hub, developer tools, design tokens, and documentation.
 
@@ -16,7 +16,7 @@ This repository is a monorepo containing a developer profile stats generator, pe
 
 The monorepo coordinates the developer's personal website (`hub`), automated stats visualizations (`profile`), design systems (`studio`), AI processing hub (`cortex`), and automation tools (`tools`).
 
-The primary customer-facing application is the **Developer Hub** (`@tupynambalucas-hub/*`):
+The primary customer-facing application is the **Developer Hub** (`@repo/hub/*`):
 
 | For Visitors                                                        | For the Developer (Admin)                                            |
 | :------------------------------------------------------------------ | :------------------------------------------------------------------- |
@@ -30,9 +30,9 @@ The primary customer-facing application is the **Developer Hub** (`@tupynambaluc
 
 The portfolio website and stats generator operate on a streamlined workflow:
 
-1. **Portfolio Presentation**: Visitors explore the frontend `@tupynambalucas-hub/web`, consuming blog posts and project highlights served by `@tupynambalucas-hub/api`.
-2. **Contact Submission**: Form inputs are validated via Turnstile anti-spam keys, serialized using Zod schemas from `@tupynambalucas-hub/core`, and persisted to a MongoDB instance.
-3. **Profile Statistics Generation**: The `@tupynambalucas/profile` workspace compiles GitHub metrics using a native Zig CLI and dynamically overwrites the root `README.md` file.
+1. **Portfolio Presentation**: Visitors explore the frontend `@repo/hub/web`, consuming blog posts and project highlights served by `@repo/hub/api`.
+2. **Contact Submission**: Form inputs are validated via Turnstile anti-spam keys, serialized using Zod schemas from `@repo/hub/core`, and persisted to a MongoDB instance.
+3. **Profile Statistics Generation**: The `@/profile` workspace compiles GitHub metrics using a native Zig CLI and dynamically overwrites the root `README.md` file.
 
 ---
 
@@ -78,8 +78,8 @@ For a comprehensive breakdown of our context philosophy, directory structure, an
 
 Our priority is the deployment and maintenance of:
 
-- **`@tupynambalucas-hub/*`**: Personal React/Fastify hub.
-- **`@tupynambalucas/profile`**: Zig-based GitHub profile stats compiler.
+- **`@repo/hub/*`**: Personal React/Fastify hub.
+- **`@/profile`**: Zig-based GitHub profile stats compiler.
 
 ---
 
@@ -106,7 +106,7 @@ Ensure you have **Node.js 22+**, **PNPM 11+**, **Zig**, **Podman** (with Compose
 
 3. **Start Local Infrastructure & Applications:**
    We provide unified orchestration scripts via Turborepo and Skaffold. You can run in Podman Compose mode (`pnpm cortex:up` and `pnpm hub:dev`) or Kubernetes mode (`pnpm minikube:up` and `pnpm k8s:dev`).
-   See [MONOREPO.readme.md](https://github.com/tupynambalucas/tupynambalucas/blob/develop/MONOREPO.readme.md) or the [Command Reference](./reference/commands.mdx) for details.
+   See [MONOREPO.readme.md](https://github.com/workspace/workspace/blob/develop/MONOREPO.readme.md) or the [Command Reference](./reference/commands.mdx) for details.
 
 ---
 
@@ -132,7 +132,7 @@ The best way to get started with Diátaxis is by applying it after reading a bri
   items={[
     {
       type: 'link',
-      href: '/docs/tutorials/diataxis-start',
+      href: '/docs/workspaces/docs/tutorials/diataxis-start',
       label: 'Start Here',
       description: 'A five-minute primer on the Diátaxis framework.',
     },
@@ -147,43 +147,43 @@ These pages will help make immediate, concrete sense of the approach.
   items={[
     {
       type: 'link',
-      href: '/docs/guides/diataxis/applying-diataxis',
+      href: '/docs/workspaces/docs/guides/diataxis/applying-diataxis',
       label: 'Applying Diátaxis',
       description: 'A practical overview of how to apply the framework.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/tutorials',
+      href: '/docs/workspaces/docs/reference/diataxis/tutorials',
       label: 'Tutorials',
       description: 'Reference for writing learning-oriented tutorials.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/how-to-guides',
+      href: '/docs/workspaces/docs/reference/diataxis/how-to-guides',
       label: 'How-to Guides',
       description: 'Reference for writing goal-oriented how-to guides.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/reference-docs',
+      href: '/docs/workspaces/docs/reference/diataxis/reference-docs',
       label: 'Reference',
       description: 'Reference for writing information-oriented reference docs.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/explanation-docs',
+      href: '/docs/workspaces/docs/reference/diataxis/explanation-docs',
       label: 'Explanation',
       description: 'Reference for writing understanding-oriented explanation.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/compass',
+      href: '/docs/workspaces/docs/reference/diataxis/compass',
       label: 'The Compass',
       description: 'A diagnostic tool for documentation quality.',
     },
     {
       type: 'link',
-      href: '/docs/guides/diataxis/workflow',
+      href: '/docs/workspaces/docs/guides/diataxis/workflow',
       label: 'Workflow',
       description: 'How to use Diátaxis as a guide to documentation work.',
     },
@@ -198,43 +198,43 @@ This section explores the theory and principles of Diátaxis more deeply, and se
   items={[
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/theory',
+      href: '/docs/workspaces/docs/explanation/diataxis/theory',
       label: 'Understanding Diátaxis',
       description: 'Towards a theory of quality in documentation.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/foundations',
+      href: '/docs/workspaces/docs/explanation/diataxis/foundations',
       label: 'Foundations',
       description: 'The two dimensions that underpin the Diátaxis map.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/map',
+      href: '/docs/workspaces/docs/reference/diataxis/map',
       label: 'The Map',
       description: 'The two-dimensional structure of documentation.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/quality',
+      href: '/docs/workspaces/docs/explanation/diataxis/quality',
       label: 'Quality',
       description: 'Towards a theory of quality in documentation.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/tutorials-vs-how-to',
+      href: '/docs/workspaces/docs/explanation/diataxis/tutorials-vs-how-to',
       label: 'Tutorials and How-to Guides',
       description: 'The difference between a tutorial and how-to guide.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/reference-vs-explanation',
+      href: '/docs/workspaces/docs/explanation/diataxis/reference-vs-explanation',
       label: 'Reference and Explanation',
       description: 'The difference between reference and explanation.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/complex-hierarchies',
+      href: '/docs/workspaces/docs/explanation/diataxis/complex-hierarchies',
       label: 'Complex Hierarchies',
       description: 'How Diátaxis works in complex documentation systems.',
     },

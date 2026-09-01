@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: Comprehensive overview of tupynambalucas.dev's monorepo structure, bounded contexts, and technology stack.
+description: Comprehensive overview of %PROJECT_DOMAIN%'s monorepo structure, bounded contexts, and technology stack.
 sidebar_position: 1
 ---
 
@@ -10,7 +10,7 @@ import DocCardList from '@theme/DocCardList';
 
 ## 1. Executive Summary
 
-tupynambalucas.dev is a personal developer portal, portfolio, blog, and automation engine. The system is built on a **Monorepo** architecture using **PNPM Workspaces** and **Turborepo**, prioritizing high performance, strict typing, and domain isolation through a **Bounded Context** strategy.
+%PROJECT_DOMAIN% is a personal developer portal, portfolio, blog, and automation engine. The system is built on a **Monorepo** architecture using **PNPM Workspaces** and **Turborepo**, prioritizing high performance, strict typing, and domain isolation through a **Bounded Context** strategy.
 
 The architecture is designed to host the developer hub website (`hub`) and the automated stats compiler (`profile`), logically decoupled at the root level.
 
@@ -18,7 +18,7 @@ The architecture is designed to host the developer hub website (`hub`) and the a
 
 ## 2. Monorepo Structure & Bounded Contexts
 
-The tupynambalucas.dev codebase is organized into **Domain Contexts** at the root level. For a detailed breakdown of the application roles, context philosophy, and directory structures, please refer to the Bounded Context guide:
+The %PROJECT_DOMAIN% codebase is organized into **Domain Contexts** at the root level. For a detailed breakdown of the application roles, context philosophy, and directory structures, please refer to the Bounded Context guide:
 
 <DocCardList
   items={[
@@ -71,7 +71,7 @@ For a complete reference list of orchestration scripts, service commands, and de
 
 ## 5. Architectural Principles
 
-To ensure extreme maintainability, long-term readability, and clean boundaries across our domain contexts, tupynambalucas.dev follows four foundational architectural principles.
+To ensure extreme maintainability, long-term readability, and clean boundaries across our domain contexts, %PROJECT_DOMAIN% follows four foundational architectural principles.
 
 Click on any card below to explore a deep dive into each principle:
 
@@ -155,7 +155,7 @@ To maintain strict typing and decoupling, repositories receive the Mongoose mode
 ```typescript
 // hub/services/api/src/domains/auth/auth.repository.ts
 import type { Model } from 'mongoose';
-import type { IUser } from '@tupynambalucas-hub/core';
+import type { IUser } from '@repo/hub/core';
 
 export class AuthRepository {
   constructor(private readonly userModel: Model<IUser>) {}
@@ -212,14 +212,14 @@ For a comprehensive, deep-dive guide on directory structures, gold-standard Dock
       href: '../reference/infrastructure',
       label: 'Infrastructure',
       description:
-        'To keep the tupynambalucas.dev infrastructure, DevOps tooling, and background runtime environments robust, maintainable, and highly modular, this document unifies our self-hosted infrastructure standards, directory conventions, and multi-service Docker topologies.',
+        'To keep the %PROJECT_DOMAIN% infrastructure, DevOps tooling, and background runtime environments robust, maintainable, and highly modular, this document unifies our self-hosted infrastructure standards, directory conventions, and multi-service Docker topologies.',
     },
     {
       type: 'link',
       href: '../guides/deployment',
       label: 'Deployment',
       description:
-        'To ensure high availability, security, and reproducible environments, tupynambalucas.dev utilizes a modern, self-hosted deployment model designed for Hetzner Cloud virtual machines. This guide outlines our deployment strategy, environment synchronization, and operational procedures.',
+        'To ensure high availability, security, and reproducible environments, %PROJECT_DOMAIN% utilizes a modern, self-hosted deployment model designed for Hetzner Cloud virtual machines. This guide outlines our deployment strategy, environment synchronization, and operational procedures.',
     },
   ]}
 />
@@ -237,7 +237,7 @@ The Studio and Cortex workspaces provide the infrastructure for design-to-code a
 
 ## 10. Security Standards
 
-tupynambalucas.dev follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](../reference/security.mdx)** document.
+%PROJECT_DOMAIN% follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](../reference/security.mdx)** document.
 
 - **Bot Protection**: Integration with Cloudflare Turnstile for all authentication entry points.
 - **Brute-Force Mitigation**: IP-based rate limiting and account lockout logic.

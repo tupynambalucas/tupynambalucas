@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Observability stack integration with Database logging, Grafana, Jaeger, OpenTelemetry, and Prometheus."
-  }
+  },
+  "key": "cortex-reference-agentgateway-integrations-observability"
 }

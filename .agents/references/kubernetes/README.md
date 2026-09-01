@@ -1,6 +1,6 @@
 # Dual-Orchestration Local Development Strategy
 
-This documentation hub describes the dual-orchestration workflow for the `tupynambalucas.dev` monorepo. It details the coexistence of Rancher Desktop (for rapid Docker Compose services) and Minikube (for robust, multi-cluster Kubernetes infrastructure testing).
+This documentation hub describes the dual-orchestration workflow for the `%PROJECT_DOMAIN%` monorepo. It details the coexistence of Rancher Desktop (for rapid Docker Compose services) and Minikube (for robust, multi-cluster Kubernetes infrastructure testing).
 
 ---
 
@@ -26,7 +26,7 @@ graph TD
     end
 
     subgraph k8s_path [Kubernetes Workflow]
-        B -->|Driver: hyperv / docker| F[Profile: tupynambalucas-dev]
+        B -->|Driver: hyperv / docker| F[Profile: %PROJECT_NAME%-dev]
         B -->|Driver: hyperv / docker| G[Profile: other-project-dev]
         F -->|Deploys Manifests| H[Full Cluster Setup]
         H -->|Tests Routing| I[Traefik Ingress & NetworkPolicies]

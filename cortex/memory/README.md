@@ -1,6 +1,6 @@
 # Cortex Memory Subsystem
 
-The `cortex/memory/` workspace provides the persistent memory architecture for AI agents in the tupynambalucas.dev monorepo, consolidating vector RAG retrieval, episodic chat persistence, associative knowledge graph modeling, and developer visualization.
+The `cortex/memory/` workspace provides the persistent memory architecture for AI agents in the %PROJECT_DOMAIN% monorepo, consolidating vector RAG retrieval, episodic chat persistence, associative knowledge graph modeling, and developer visualization.
 
 ---
 
@@ -15,7 +15,7 @@ The `cortex/memory/` workspace provides the persistent memory architecture for A
 
 ## Subsystem Architecture
 
-- **[packages/core/](./packages/core/README.md)**: Single Source of Truth for TypeScript interfaces and Zod validation schemas (`@tupynambalucas-cortex/memory-core`) ([packages/core/README.md](./packages/core/README.md)).
+- **[packages/core/](./packages/core/README.md)**: Single Source of Truth for TypeScript interfaces and Zod validation schemas (`@repo/cortex/memory-core`) ([packages/core/README.md](./packages/core/README.md)).
 - **[services/api/](./services/api/README.md)**: Fastify REST API backend exposing vector search, graph queries, chat sessions, and docs sync ([services/api/README.md](./services/api/README.md)).
 - **[services/mongodb/](./services/mongodb/README.md)**: MongoDB 7.0 container packaging and automated replica set initialization ([services/mongodb/README.md](./services/mongodb/README.md)).
 - **[services/web/](./services/web/README.md)**: Feature-Sliced Design web dashboard for visual graph inspection and search testing ([services/web/README.md](./services/web/README.md)).

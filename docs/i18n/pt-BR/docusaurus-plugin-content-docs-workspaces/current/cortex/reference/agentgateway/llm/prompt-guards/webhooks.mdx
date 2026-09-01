@@ -41,11 +41,11 @@ llm:
       request:
       - webhook:
           target:
-            host: content-safety-webhook.example.com:8000
+            host: content-safety-webhook.%PROJECT_DOMAIN%:8000
       response:
       - webhook:
           target:
-            host: content-safety-webhook.example.com:8000
+            host: content-safety-webhook.%PROJECT_DOMAIN%:8000
 EOF
 ```
 
@@ -79,7 +79,7 @@ llm:
       request:
       - webhook:
           target:
-            host: content-safety-webhook.example.com:8000
+            host: content-safety-webhook.%PROJECT_DOMAIN%:8000
           headers:
             ":path": '"/api/guardrails/request"'
             x-user: jwt.sub

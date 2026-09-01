@@ -1,6 +1,6 @@
 # Workstation Provisioner CLI
 
-This workspace encapsulates the workstation bootstrapping, local virtualization configurations, and developer environment setup utilities for the tupynambalucas.dev monorepo.
+This workspace encapsulates the workstation bootstrapping, local virtualization configurations, and developer environment setup utilities for the %PROJECT_DOMAIN% monorepo.
 
 ---
 
@@ -29,5 +29,5 @@ The Workstation Provisioner standardizes local machine provisioning through a mo
 All operations should be executed from the root of the monorepo:
 
 - `pnpm provision`: Launches the interactive Workstation Provisioner terminal menu.
-- `pnpm --filter @tupynambalucas-tools/provisioner run typecheck`: Validates static type safety using TypeScript.
-- `pnpm --filter @tupynambalucas-tools/provisioner run lint`: Runs ESLint and Prettier conformance checks.
+- `pnpm --filter @repo/tools/provisioner run typecheck`: Validates static type safety using TypeScript.
+- `pnpm --filter @repo/tools/provisioner run lint`: Runs ESLint and Prettier conformance checks.

@@ -1,6 +1,6 @@
 # Model Context Protocol (MCP) Ecosystem
 
-The `cortex/mcp/` directory houses the Model Context Protocol (MCP) data plane subsystem for the tupynambalucas.dev AI Cortex architecture. It consolidates runtime policy guardrails, developer inspection tools, and containerized downstream MCP server adapters.
+The `cortex/mcp/` directory houses the Model Context Protocol (MCP) data plane subsystem for the %PROJECT_DOMAIN% AI Cortex architecture. It consolidates runtime policy guardrails, developer inspection tools, and containerized downstream MCP server adapters.
 
 ---
 

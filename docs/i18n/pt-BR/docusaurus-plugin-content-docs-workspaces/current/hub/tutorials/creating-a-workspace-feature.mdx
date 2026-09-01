@@ -39,7 +39,7 @@ Adicione a seguinte rota do Fastify:
 
 ```typescript
 import { FastifyInstance } from 'fastify';
-import { getGreeting } from '@tupynambalucas-hub/core';
+import { getGreeting } from '@repo/hub/core';
 
 export default async function (fastify: FastifyInstance) {
   fastify.get('/greet', async (request, reply) => {
@@ -84,7 +84,7 @@ export function GreetingPanel() {
 Agora, nós executaremos o servidor de desenvolvimento para ver nosso recurso em ação.
 
 ```bash
-pnpm dev --filter=@tupynambalucas-hub/*
+pnpm dev --filter=@repo/hub/*
 ```
 
 Abra seu navegador em `http://localhost:3000`. Você deverá ver seu novo componente renderizando o texto:

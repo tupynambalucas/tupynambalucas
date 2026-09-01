@@ -1,11 +1,11 @@
 ---
 name: skill-expert
-description: Skill Creator for the tupynambalucas project. Use when requested to create, refine, analyze, or update custom Agent Skills (.agents/skills/*) within this workspace.
+description: Skill Creator for the project. Use when requested to create, refine, analyze, or update custom Agent Skills (.agents/skills/*) within this workspace.
 ---
 
 # Skill Creator Guidelines
 
-This skill establishes the authoritative, senior-grade engineering guidelines, workflows, and automated verification protocols for creating, updating, and maintaining custom Agent Skills in the **tupynambalucas** monorepo.
+This skill establishes the authoritative, senior-grade engineering guidelines, workflows, and automated verification protocols for creating, updating, and maintaining custom Agent Skills in the monorepo.
 
 ---
 

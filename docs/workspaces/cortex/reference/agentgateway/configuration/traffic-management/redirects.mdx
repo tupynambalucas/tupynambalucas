@@ -27,7 +27,7 @@ with configurable scheme, authority, path, or status code. allow returning a dir
 redirecting users to another location.
 
 For example, the following configuration will return a `307 Temporary Redirect` response with the
-header `location: https://example.com/new-path`:
+header `location: https://%PROJECT_DOMAIN%/new-path`:
 
 ```
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
@@ -37,7 +37,7 @@ mcp:
     requestRedirect:
       scheme: https
       authority:
-        full: example.com
+        full: %PROJECT_DOMAIN%
       path:
         full: /new-path
       status: 307
@@ -56,7 +56,7 @@ routes:
     requestRedirect:
       scheme: https
       authority:
-        full: example.com
+        full: %PROJECT_DOMAIN%
       path:
         full: /new-path
       status: 307

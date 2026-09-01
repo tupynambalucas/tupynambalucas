@@ -1,4 +1,5 @@
 {
   "label": "Renderer (Dynamic Assets)",
-  "position": 5
+  "position": 5,
+  "key": "renderer"
 }

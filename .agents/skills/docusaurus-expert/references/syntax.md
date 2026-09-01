@@ -1,6 +1,6 @@
 # MDX & Docusaurus Syntax Reference
 
-This reference outlines MDX syntax standards and native Docusaurus v3 features used in the **tupynambalucas** monorepo.
+This reference outlines MDX syntax standards and native Docusaurus v3 features used in the monorepo.
 
 ---
 
@@ -138,7 +138,7 @@ Standard HTML comments (`<!-- -->`) are **not** valid in MDX. Use JavaScript com
 
 ## 5. Prettier Formatting Standards
 
-All MDX files are automatically formatted by Prettier on pre-commit. To prevent formatting issues, your manual edits must align with the rules in [.prettierrc.json](../../../../.prettierrc.json):
+All MDX files are automatically formatted by Prettier on pre-commit. To prevent formatting issues, your manual edits must align with the root Prettier formatting rules:
 
 - **Indentation**: Explicit 2-space indentation for document layout, list nesting, and JSX wrapper structures.
 - **Line Width**: Word wrap prose to keep lines under 100 characters. Long URLs or code symbols that cannot be split are exempted.

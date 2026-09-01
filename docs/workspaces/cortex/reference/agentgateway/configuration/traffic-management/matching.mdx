@@ -66,7 +66,7 @@ routes:
   - path:
       exact: "/api/v1/users"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -78,7 +78,7 @@ routes:
   - path:
       pathPrefix: "/api/v1"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -90,7 +90,7 @@ routes:
   - path:
       regex: "^/api/v[0-9]+/users$"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 ```
 
 ### Header matching
@@ -119,7 +119,7 @@ routes:
       value:
         exact: "Bearer abc123token"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -135,7 +135,7 @@ routes:
       value:
         regex: "^Bearer .*"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -154,7 +154,7 @@ routes:
       value:
         exact: "application/json"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 ```
 
 ### Method matching
@@ -179,7 +179,7 @@ routes:
       pathPrefix: "/api"
     method: "GET"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -192,7 +192,7 @@ routes:
       pathPrefix: "/api/users"
     method: "POST"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -205,14 +205,14 @@ routes:
       pathPrefix: "/api/users"
     method: "GET"
   backends:
-  - host: read-api.example.com:8080
+  - host: read-api.%PROJECT_DOMAIN%:8080
 - name: write-operations
   matches:
   - path:
       pathPrefix: "/api/users"
     method: "POST"
   backends:
-  - host: write-api.example.com:8080
+  - host: write-api.%PROJECT_DOMAIN%:8080
 ```
 
 ### Query parameter matching
@@ -241,7 +241,7 @@ routes:
       value:
         exact: "v1"
   backends:
-  - host: api-v1.example.com:8080
+  - host: api-v1.%PROJECT_DOMAIN%:8080
 
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -257,7 +257,7 @@ routes:
       value:
         regex: "^v[0-9]+$"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -276,7 +276,7 @@ routes:
       value:
         regex: "^(json|xml)$"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 ```
 
 ### Combined matching
@@ -304,7 +304,7 @@ routes:
       value:
         exact: "json"
   backends:
-  - host: api.example.com:8080
+  - host: api.%PROJECT_DOMAIN%:8080
 ```
 
 ## TCP routes
@@ -327,9 +327,9 @@ tcpRoutes:
 - name: database-backend
   gateways: [database-proxy]
   hostnames:
-  - "db.example.com"
+  - "db.%PROJECT_DOMAIN%"
   backends:
-  - host: postgres.example.com:5432
+  - host: postgres.%PROJECT_DOMAIN%:5432
 ```
 
 ### Backend routing
@@ -359,10 +359,10 @@ tcpRoutes:
 - name: redis-cluster
   gateways: [redis-proxy]
   backends:
-  - host: redis-1.example.com:6379
+  - host: redis-1.%PROJECT_DOMAIN%:6379
     weight: 1
-  - host: redis-2.example.com:6379
+  - host: redis-2.%PROJECT_DOMAIN%:6379
     weight: 2
-  - host: redis-3.example.com:6379
+  - host: redis-3.%PROJECT_DOMAIN%:6379
     weight: 1
 ```

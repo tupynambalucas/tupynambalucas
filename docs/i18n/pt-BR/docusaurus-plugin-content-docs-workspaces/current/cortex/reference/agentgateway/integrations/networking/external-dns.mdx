@@ -63,7 +63,7 @@ spec:
   - name: https
     protocol: HTTPS
     port: 443
-    hostname: "ai.example.com"  # External DNS creates this record
+    hostname: "ai.%PROJECT_DOMAIN%"  # External DNS creates this record
 ```
 
 External DNS automatically:
@@ -82,12 +82,12 @@ kind: HTTPRoute
 metadata:
   name: ai-api
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: api.example.com
+    external-dns.alpha.kubernetes.io/hostname: api.%PROJECT_DOMAIN%
 spec:
   parentRefs:
   - name: agentgateway
   hostnames:
-  - "api.example.com"
+  - "api.%PROJECT_DOMAIN%"
   rules:
   - backendRefs:
     - name: agentgateway
@@ -102,7 +102,7 @@ Control External DNS behavior with annotations:
 metadata:
   annotations:
     # Set specific hostname
-    external-dns.alpha.kubernetes.io/hostname: ai.example.com
+    external-dns.alpha.kubernetes.io/hostname: ai.%PROJECT_DOMAIN%
     # Set TTL
     external-dns.alpha.kubernetes.io/ttl: "300"
     # Use specific target

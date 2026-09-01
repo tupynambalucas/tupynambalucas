@@ -16,7 +16,7 @@ Este guia detalha como configurar o **Cloudflare Tunnel** (`cloudflared`) e o **
 O tráfego de entrada público é roteado através da rede edge global da Cloudflare diretamente para o cluster por meio de um túnel QUIC criptografado.
 
 :::info[Referência Técnica de Arquitetura]
-Para especificações técnicas completas sobre terminação TLS na edge, esquemas de domínio wildcard de nível único (`*-dev.tupynambalucas.dev`) e topologias de proxy reverso, consulte a [Referência de Infraestrutura](/docs/reference/infrastructure#4-proxy-reverso--roteamento-de-requisições).
+Para especificações técnicas completas sobre terminação TLS na edge, esquemas de domínio wildcard de nível único (`*-dev.%PROJECT_DOMAIN%`) e topologias de proxy reverso, consulte a [Referência de Infraestrutura](/docs/reference/infrastructure#4-proxy-reverso--roteamento-de-requisições).
 :::
 
 ---
@@ -25,7 +25,7 @@ Para especificações técnicas completas sobre terminação TLS na edge, esquem
 
 1. Faça login no [Cloudflare Zero Trust Dashboard](https://one.dash.cloudflare.com/).
 2. Navegue até **Networks** -\> **Tunnels** e clique em **Add a Tunnel**.
-3. Selecione **Cloudflared** como tipo de conector e nomeie o túnel como `tupynambalucas-minikube`.
+3. Selecione **Cloudflared** como tipo de conector e nomeie o túnel como `workspace-minikube`.
 4. Selecione **Docker** como tipo de ambiente e copie o `TUNNEL_TOKEN` gerado (uma string codificada em base64).
 
 ---
@@ -34,16 +34,16 @@ Para especificações técnicas completas sobre terminação TLS na edge, esquem
 
 Na aba **Public Hostnames** da configuração do seu túnel, registre as seguintes rotas apontando para o Serviço interno do Traefik Ingress Controller (`http://traefik.platform.svc.cluster.local:80`):
 
-| Subdomínio             | Domínio              | Tipo de Serviço | URL do Serviço                          | Caminho |
-| :--------------------- | :------------------- | :-------------- | :-------------------------------------- | :------ |
-| `agentgateway-dev`     | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
-| `agentgateway-mcp-dev` | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/mcp`  |
-| `grafana-dev`          | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
-| `headlamp-dev`         | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
-| `memory-dev`           | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
-| `memory-api-dev`       | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
-| `traefik-dev`          | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
-| `turbocache-dev`       | `tupynambalucas.dev` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| Subdomínio             | Domínio            | Tipo de Serviço | URL do Serviço                          | Caminho |
+| :--------------------- | :----------------- | :-------------- | :-------------------------------------- | :------ |
+| `agentgateway-dev`     | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| `agentgateway-mcp-dev` | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/mcp`  |
+| `grafana-dev`          | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| `headlamp-dev`         | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| `memory-dev`           | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| `memory-api-dev`       | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| `traefik-dev`          | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
+| `turbocache-dev`       | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
 
 :::tip[Alternativa com Hostname Wildcard Único]
 Em vez de criar hostnames públicos individuais, você pode registrar um único hostname público wildcard `*.development` apontando para `http://traefik.platform.svc.cluster.local:80`.
@@ -76,14 +76,14 @@ Para proteger os endpoints de desenvolvimento contra acesso público não autori
 ### Interfaces de Usuário Web (Grafana, Headlamp, Traefik, AgentGateway Admin)
 
 1. No Cloudflare Zero Trust, navegue até **Access** -\> **Applications** -\> **Add an Application** -\> **Self-hosted**.
-2. Atribua o domínio público (ex: `grafana.development.tupynambalucas.dev`).
+2. Atribua o domínio público (ex: `grafana.development.%PROJECT_DOMAIN%`).
 3. Adicione uma política de **Allow** restringindo o acesso a endereços de e-mail de desenvolvedores autorizados via **One-Time PIN (OTP)**.
 
-### Ingress de Agentes de IA & MCP (`agentgateway-mcp-dev.tupynambalucas.dev`)
+### Ingress de Agentes de IA & MCP (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`)
 
 :::warning[Prevenindo Redirecionamentos de Login em Clientes Automatizados]
 Agentes de IA (como Antigravity, Cursor e ferramentas CLI) se comunicam via streams JSON-RPC / SSE e não conseguem processar redirecionamentos interativos de login web no navegador.
 :::
 
-1. Para `agentgateway-mcp-dev.tupynambalucas.dev`, configure uma Política de Acesso com **Action: Bypass** ou atribua um **Service Token** e defina o caminho da rota do túnel para `/mcp`.
+1. Para `agentgateway-mcp-dev.%PROJECT_DOMAIN%`, configure uma Política de Acesso com **Action: Bypass** ou atribua um **Service Token** e defina o caminho da rota do túnel para `/mcp`.
 2. Isso garante que clientes automatizados troquem payloads diretamente, enquanto a segurança interna é mantida pelas guardrails CEL do AgentGateway e tokens de API.

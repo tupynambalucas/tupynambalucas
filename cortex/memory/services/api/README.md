@@ -1,6 +1,6 @@
 # Cortex Memory Fastify API Subsystem
 
-The `cortex/memory/services/api` workspace contains the Fastify REST API backend service (`@tupynambalucas-cortex/memory-api`) for vector search, knowledge graph traversal, document ingestion, and episodic memory persistence.
+The `cortex/memory/services/api` workspace contains the Fastify REST API backend service (`@repo/cortex/memory-api`) for vector search, knowledge graph traversal, document ingestion, and episodic memory persistence.
 
 ---
 
@@ -9,7 +9,7 @@ The `cortex/memory/services/api` workspace contains the Fastify REST API backend
 - **Runtime**: Node.js 22, TypeScript
 - **Framework**: Fastify 5
 - **Database**: MongoDB 7.0 (Replica Set `rs0`), Mongoose ODM
-- **Validation**: Zod via `@tupynambalucas-cortex/memory-core`
+- **Validation**: Zod via `@repo/cortex/memory-core`
 - **Port**: `3006`
 
 ---

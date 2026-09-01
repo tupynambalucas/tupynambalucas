@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ### Espaço de Trabalho de Criação & Ativos Centralizado
 
-O pacote `@tupynambalucas-studio/assets` serve como o repositório central para todos os designs da marca, arquivos mestre de projetos brutos e ativos compilados prontos para produção.
+O pacote `@repo/studio/assets` serve como o repositório central para todos os designs da marca, arquivos mestre de projetos brutos e ativos compilados prontos para produção.
 
 Para manter uma separação clara entre criação e distribuição, o workspace é dividido em duas raízes principais: o diretório `creative/` e o diretório `assets/`.
 
@@ -26,11 +26,11 @@ O diretório `creative/` atua como nosso cofre privado de design. Ele abriga arq
 _Rastreamento & Armazenamento:_
 
 - **Estratégia do Git:** Este diretório é completamente ignorado no Git para evitar o inchaço do repositório.
-- **Armazenamento em Nuvem:** Sincronizado bidirecionalmente com o bucket privado `tupynambalucas-creative`.
+- **Armazenamento em Nuvem:** Sincronizado bidirecionalmente com o bucket privado `workspace-creative`.
 
 ### B. Ativos Prontos para Produção (`assets/`)
 
-O diretório `assets/` contém elementos estáticos finais, otimizados e prontos para a web, que são consumidos diretamente pelas nossas interfaces de cliente (como o `@tupynambalucas/hub`) e pipelines de renderização.
+O diretório `assets/` contém elementos estáticos finais, otimizados e prontos para a web, que são consumidos diretamente pelas nossas interfaces de cliente (como o `@/hub`) e pipelines de renderização.
 
 - **Elementos da Marca:** Logotipos vetoriais, favicons, paletas oficiais de cores e PDFs de diretrizes de marca.
 - **Elementos de Interface (UI):** Ícones SVG otimizados (`assets/icons/`) e ilustrações rasterizadas de interface (`assets/images/`).
@@ -41,7 +41,7 @@ O diretório `assets/` contém elementos estáticos finais, otimizados e prontos
 _Rastreamento & Armazenamento:_
 
 - **Estratégia do Git:** Híbrida. SVGs leves, wrappers de ícones do React, fontes web, folhas de estilo e manifestos JSON são commitados diretamente no Git. Imagens binárias rasterizadas pesadas (como PNGs) e arquivos GLB são ignorados.
-- **Armazenamento em Nuvem:** Os arquivos binários são sincronizados com o bucket público `tupynambalucas-assets` e servidos via CDN.
+- **Armazenamento em Nuvem:** Os arquivos binários são sincronizados com o bucket público `workspace-assets` e servidos via CDN.
 
 ---
 
@@ -55,7 +55,7 @@ A transição dos arquivos mestre de design dentro de `creative/` para os entreg
 
 #### Sincronizador de Ativos Cloudflare R2
 
-Para manter nosso repositório Git leve, ativos estáticos prontos para produção não são commitados diretamente no código-fonte. Em vez disso, eles são sincronizados através do Cloudflare R2 Object Storage usando nosso pacote de sincronização CLI dedicado `@tupynambalucas-studio/bucket`.
+Para manter nosso repositório Git leve, ativos estáticos prontos para produção não são commitados diretamente no código-fonte. Em vez disso, eles são sincronizados através do Cloudflare R2 Object Storage usando nosso pacote de sincronização CLI dedicado `@repo/studio/bucket`.
 
 Para obter informações detalhadas sobre nosso ecossistema de buckets, comandos CLI e arquitetura de sincronização, consulte a documentação do [Armazenamento Cloudflare R2 & Sincronizador](/workspaces/studio/reference/spec/cloudflare-storage).
 
@@ -138,10 +138,10 @@ Todos os nomes de arquivos de logotipo devem seguir o padrão `logo-[lockup]-[va
 
 #### Resolução de Ativos & Arquitetura Zero-Copy
 
-Para eliminar o armazenamento de arquivos duplicados em aplicações consumidoras como `@tupynambalucas-hub/web`:
+Para eliminar o armazenamento de arquivos duplicados em aplicações consumidoras como `@repo/hub/web`:
 
 - **Em Desenvolvimento**: O servidor de desenvolvimento Vite intercepta requisições que começam com `/@studio-assets/` e serve os arquivos dinamicamente a partir do diretório local do pacote de ativos na sua máquina.
-- **Em Produção (Cópia em Tempo de Build)**: O sistema de build da aplicação usa o `vite-plugin-static-copy` para replicar automaticamente os arquivos de `node_modules/@tupynambalucas-studio/assets/assets/brand/` para o diretório de saída de build `dist/` em tempo de empacotamento.
+- **Em Produção (Cópia em Tempo de Build)**: O sistema de build da aplicação usa o `vite-plugin-static-copy` para replicar automaticamente os arquivos de `node_modules/@repo/studio/assets/assets/brand/` para o diretório de saída de build `dist/` em tempo de empacotamento.
 
 ---
 
@@ -149,8 +149,8 @@ Para eliminar o armazenamento de arquivos duplicados em aplicações consumidora
 
 Pacotes internos acessam ativos criativos através de exportações estritamente definidas para garantir o isolamento arquitetônico:
 
-- `@tupynambalucas-studio/assets/icons`: Biblioteca SVG otimizada e registro de componentes Icon com curadoria.
-- `@tupynambalucas-studio/assets/logos`: Logotipos canônicos da marca.
-- `@tupynambalucas-studio/assets/brand/*`: Ativos fundamentais da marca (paletas, favicons, banners).
-- `@tupynambalucas-studio/assets/tokens`: Constantes de design fortemente tipadas para a lógica JS/TS.
-- `@tupynambalucas-studio/assets/theme.css`: Configuração de tema Tailwind CSS com zero runtime.
+- `@repo/studio/assets/icons`: Biblioteca SVG otimizada e registro de componentes Icon com curadoria.
+- `@repo/studio/assets/logos`: Logotipos canônicos da marca.
+- `@repo/studio/assets/brand/*`: Ativos fundamentais da marca (paletas, favicons, banners).
+- `@repo/studio/assets/tokens`: Constantes de design fortemente tipadas para a lógica JS/TS.
+- `@repo/studio/assets/theme.css`: Configuração de tema Tailwind CSS com zero runtime.

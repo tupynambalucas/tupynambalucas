@@ -6,7 +6,7 @@ sidebar_position: 4
 
 # AI Context Architecture in the Monorepo
 
-The **tupynambalucas.dev** monorepo organizes machine instructions using a structured, hierarchical `AGENTS.md` context routing system. This architecture ensures AI coding agents (such as Google Antigravity CLI and Anthropic Claude Code) operate with maximum accuracy, zero context fragmentation, and strict adherence to domain boundaries.
+The **%PROJECT_DOMAIN%** monorepo organizes machine instructions using a structured, hierarchical `AGENTS.md` context routing system. This architecture ensures AI coding agents (such as Google Antigravity CLI and Anthropic Claude Code) operate with maximum accuracy, zero context fragmentation, and strict adherence to domain boundaries.
 
 ---
 
@@ -96,3 +96,19 @@ Each Layer-2 file defines an explicit **Ubiquitous Language** glossary. This pre
 - In the **Developer Hub (`hub/`)**, the authenticated user is strictly `Customer`.
 - In the **Studio (`studio/`)**, brand variables are strictly `Design Tokens`.
 - In the **AI Cortex (`cortex/`)**, system prompts are strictly `Personas`.
+
+---
+
+## 5. The `.agents/` Customization Ecosystem
+
+While `AGENTS.md` files provide hierarchical routing and guardrails, the **active behavior** of the AI is defined within the central `.agents/` directory at the root of the monorepo. This directory utilizes the Antigravity (AGY) customization architecture to inject new capabilities into the agent.
+
+The `.agents/` directory is strictly divided into Domain-Driven Design components:
+
+- **`plugins/`**: Packages that bundle Model Context Protocol (MCP) servers, lifecycle configurations, and contextual rules (e.g., the `cortex` plugin routing the agent to use `firecrawl`).
+- **`rules/`**: Global or conditional constraints automatically injected into the agent's prompt.
+- **`skills/`**: Progressive-disclosure runbooks (like `agent-router-expert`) that teach the AI how to execute complex, multi-step tasks.
+- **`scripts/`**: AI-authored automation scripts stored permanently for repo operations.
+- **`plans/`**: Temporary architectural planning documents.
+
+For a detailed technical breakdown of this folder, refer to the [`.agents/ Directory Reference`](../reference/dot-agents-directory).

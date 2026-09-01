@@ -1,6 +1,6 @@
 # Prometheus Metrics Service
 
-The `platform/services/prometheus` workspace provides time-series metric storage, PromQL query processing, and Remote Write receiving for the tupynambalucas.dev platform.
+The `platform/services/prometheus` workspace provides time-series metric storage, PromQL query processing, and Remote Write receiving for the %PROJECT_DOMAIN% platform.
 
 ---
 

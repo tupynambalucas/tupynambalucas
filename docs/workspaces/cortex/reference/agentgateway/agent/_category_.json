@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Connect AgentGateway proxies to AI agents via A2A and MCP protocols."
-  }
+  },
+  "key": "cortex-reference-agentgateway-agent"
 }

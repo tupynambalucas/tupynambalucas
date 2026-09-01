@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Deploy AgentGateway using standalone binary, Docker container, Helm chart, or Kubernetes."
-  }
+  },
+  "key": "cortex-reference-agentgateway-deployment"
 }

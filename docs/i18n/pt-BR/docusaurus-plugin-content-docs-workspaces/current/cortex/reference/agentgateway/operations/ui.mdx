@@ -115,7 +115,7 @@ pass the policies that you attach.
 2. Add a `ui` section to your config file that attaches to a gateway and applies an `oidc` policy. The
    following example serves the UI on the `default` gateway on port 3000 and redirects unauthenticated
    users to the OIDC provider to log in. The optional `authorization` policy further restricts access
-   to users whose email address ends in `@example.com`.
+   to users whose email address ends in `@%PROJECT_DOMAIN%`.
 
    ```
    # yaml-language-server: $schema=https://agentgateway.dev/schema/config
@@ -134,7 +134,7 @@ pass the policies that you attach.
          - email
        authorization:
          rules:
-         - allow: jwt.email.endsWith("@example.com")
+         - allow: jwt.email.endsWith("@%PROJECT_DOMAIN%")
    ```
 
 3. Start agentgateway with the updated config.

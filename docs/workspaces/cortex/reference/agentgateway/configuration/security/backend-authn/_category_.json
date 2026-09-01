@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Cross-app access (ID-JAG) and OAuth token exchange configurations."
-  }
+  },
+  "key": "cortex-reference-agentgateway-configuration-security-backend-authn"
 }

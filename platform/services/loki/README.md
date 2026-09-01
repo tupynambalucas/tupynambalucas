@@ -1,6 +1,6 @@
 # Loki Log Aggregation Service
 
-The `platform/services/loki` workspace provides Grafana Loki log aggregation, indexing, and LogQL search for the tupynambalucas.dev platform.
+The `platform/services/loki` workspace provides Grafana Loki log aggregation, indexing, and LogQL search for the %PROJECT_DOMAIN% platform.
 
 ---
 

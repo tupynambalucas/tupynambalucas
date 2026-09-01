@@ -9,7 +9,7 @@
 
 # Local Context: Instance Web Client Application
 
-This workspace (`@tupynambalucas-hub/web`) contains the React 19 Single Page Application client for community shop and administration operations.
+This workspace (`@%PROJECT_NAME%-hub/web`) contains the React 19 Single Page Application client for community shop and administration operations.
 
 ---
 

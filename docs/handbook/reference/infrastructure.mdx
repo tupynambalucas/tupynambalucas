@@ -28,14 +28,14 @@ graph TD
     end
     subgraph Staging_Env
         StgCompose["podman compose -f compose.yaml -f compose.prod.yaml --env-file .env.staging"]
-        StgAPI["@tupynambalucas-hub/api (Staging)"]
-        StgWeb["@tupynambalucas-hub/web (Staging)"]
+        StgAPI["@repo/hub/api (Staging)"]
+        StgWeb["@repo/hub/web (Staging)"]
         StgDB[("MongoDB (Staging)")]
     end
     subgraph Prod_Env
         ProdCompose["podman compose -f compose.yaml -f compose.prod.yaml --env-file .env.prod"]
-        ProdAPI["@tupynambalucas-hub/api (Prod)"]
-        ProdWeb["@tupynambalucas-hub/web (Prod)"]
+        ProdAPI["@repo/hub/api (Prod)"]
+        ProdWeb["@repo/hub/web (Prod)"]
         ProdDB[("MongoDB (Prod)")]
     end
 
@@ -112,7 +112,7 @@ Workspaces that support Kubernetes deployment use a Kustomize-based directory la
 
 ## 4. Reverse Proxy & Request Routing
 
-tupynambalucas.dev utilizes an edge-to-cluster reverse proxy architecture to handle TLS termination, Zero Trust security, and request routing across bounded contexts.
+%PROJECT_DOMAIN% utilizes an edge-to-cluster reverse proxy architecture to handle TLS termination, Zero Trust security, and request routing across bounded contexts.
 
 ### 4.1. Cloudflare Tunnel & Edge Topology
 
@@ -129,30 +129,30 @@ graph TD
     Traefik -->|Service Routing| TurboCache["turbocache (platform)"]
 ```
 
-- **Edge TLS Termination:** Cloudflare Edge terminates public HTTPS for `*-dev.tupynambalucas.dev` using single-level wildcard SSL/TLS certificates (`*.tupynambalucas.dev`).
+- **Edge TLS Termination:** Cloudflare Edge terminates public HTTPS for `*-dev.%PROJECT_DOMAIN%` using single-level wildcard SSL/TLS certificates (`*.%PROJECT_DOMAIN%`).
 - **Encrypted Tunnel Transport:** Traffic travels from Cloudflare Edge to the cluster via an encrypted QUIC connection handled by the `cloudflared` deployment in the `platform` namespace.
 - **Traefik Ingress Controller:** `cloudflared` forwards requests internally to Traefik on port 80 (`http://traefik.platform.svc.cluster.local:80`), which routes HTTP/gRPC payloads to target Services based on standard Kubernetes `Ingress` resources.
 
 ### 4.2. Authoritative Development Domain Scheme
 
-All development services adopt a single-level hyphenated subdomain structure (`*-dev.tupynambalucas.dev`) to ensure 100% compatibility with free Universal SSL certificates:
+All development services adopt a single-level hyphenated subdomain structure (`*-dev.%PROJECT_DOMAIN%`) to ensure 100% compatibility with free Universal SSL certificates:
 
-| Domain Host                               | Target Service       | Namespace  | Purpose                                |
-| :---------------------------------------- | :------------------- | :--------- | :------------------------------------- |
-| `agentgateway-dev.tupynambalucas.dev`     | `agentgateway:15000` | `cortex`   | AgentGateway Admin UI & Control Plane  |
-| `agentgateway-mcp-dev.tupynambalucas.dev` | `agentgateway:8080`  | `cortex`   | Direct MCP Ingress Endpoint (`/mcp`)   |
-| `grafana-dev.tupynambalucas.dev`          | `grafana:3000`       | `platform` | Grafana Observability Dashboard        |
-| `headlamp-dev.tupynambalucas.dev`         | `headlamp:80`        | `platform` | Headlamp Kubernetes Dashboard          |
-| `traefik-dev.tupynambalucas.dev`          | `traefik:8082`       | `platform` | Traefik Ingress Dashboard              |
-| `turbocache-dev.tupynambalucas.dev`       | `turbocache:3000`    | `platform` | Turborepo Remote Cache Server          |
-| `docs.tupynambalucas.dev`                 | Cloudflare Pages     | External   | Docusaurus Technical Documentation Hub |
+| Domain Host                             | Target Service       | Namespace  | Purpose                                |
+| :-------------------------------------- | :------------------- | :--------- | :------------------------------------- |
+| `agentgateway-dev.%PROJECT_DOMAIN%`     | `agentgateway:15000` | `cortex`   | AgentGateway Admin UI & Control Plane  |
+| `agentgateway-mcp-dev.%PROJECT_DOMAIN%` | `agentgateway:8080`  | `cortex`   | Direct MCP Ingress Endpoint (`/mcp`)   |
+| `grafana-dev.%PROJECT_DOMAIN%`          | `grafana:3000`       | `platform` | Grafana Observability Dashboard        |
+| `headlamp-dev.%PROJECT_DOMAIN%`         | `headlamp:80`        | `platform` | Headlamp Kubernetes Dashboard          |
+| `traefik-dev.%PROJECT_DOMAIN%`          | `traefik:8082`       | `platform` | Traefik Ingress Dashboard              |
+| `turbocache-dev.%PROJECT_DOMAIN%`       | `turbocache:3000`    | `platform` | Turborepo Remote Cache Server          |
+| `docs.%PROJECT_DOMAIN%`                 | Cloudflare Pages     | External   | Docusaurus Technical Documentation Hub |
 
 ### 4.3. Cloudflare Access & Zero Trust Policies
 
 To secure development endpoints exposed via Cloudflare Tunnel:
 
 - **Web Dashboards (Grafana, Headlamp, Traefik, AgentGateway Admin):** Protected by Cloudflare Access **Email / One-Time PIN (OTP)** policies. Only authorized developer email addresses receive authentication PINs.
-- **AI & MCP Endpoints (`agentgateway-mcp-dev.tupynambalucas.dev`):** Configured with a **Bypass** policy or Service Token authentication in Cloudflare Zero Trust with tunnel routing directed to `/mcp`. This enables non-browser clients (such as AI agents, CLI tools, and automated pipelines) to exchange JSON-RPC / SSE payloads without encountering interactive browser login redirects. Internal security is enforced directly by AgentGateway CEL guardrails and API tokens.
+- **AI & MCP Endpoints (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`):** Configured with a **Bypass** policy or Service Token authentication in Cloudflare Zero Trust with tunnel routing directed to `/mcp`. This enables non-browser clients (such as AI agents, CLI tools, and automated pipelines) to exchange JSON-RPC / SSE payloads without encountering interactive browser login redirects. Internal security is enforced directly by AgentGateway CEL guardrails and API tokens.
 
 ---
 

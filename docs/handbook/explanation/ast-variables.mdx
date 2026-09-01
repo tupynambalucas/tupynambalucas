@@ -1,0 +1,23 @@
+---
+title: AST Variables Compilation
+sidebar_label: AST Variables
+sidebar_position: 5
+---
+
+# AST Variables Compilation
+
+To ensure the monorepo remains fully copy-pasteable and generic for AI context injection, we enforce the usage of AST (Abstract Syntax Tree) Variables across the documentation hub.
+
+---
+
+## 1. The `remark-project-variables` Plugin
+
+Documentation authors and AI agents are strictly forbidden from hardcoding the brand domain (e.g., `tupynambalucas.dev`). Instead, they must use agnostic tokens:
+
+- `%PROJECT_DOMAIN%`
+- `%PROJECT_NAME%`
+- `%GITHUB_ORG%`
+
+The `remark-project-variables` plugin intercepts the Docusaurus MDX compilation pipeline, traverses the Markdown AST (`mdast`), and replaces these tokens with the active configurations found in `project.config.json` before rendering the final HTML.
+
+This prevents "Brand Hallucination" when the AI extracts context using RAG memory indexing.

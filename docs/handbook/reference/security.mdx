@@ -1,12 +1,12 @@
 ---
 title: Security
-description: Comprehensive overview of security measures, bot protection, and brute-force mitigation in tupynambalucas.dev.
+description: Comprehensive overview of security measures, bot protection, and brute-force mitigation in %PROJECT_DOMAIN%.
 sidebar_position: 4
 ---
 
 # Security Architecture
 
-tupynambalucas.dev implements a multi-layered security strategy to protect community data and ensure the integrity of sharing cycles. Our approach combines industry-standard protocols with specialized bot protection and brute-force mitigation.
+%PROJECT_DOMAIN% implements a multi-layered security strategy to protect community data and ensure the integrity of sharing cycles. Our approach combines industry-standard protocols with specialized bot protection and brute-force mitigation.
 
 ---
 
@@ -28,7 +28,7 @@ The API does not trust client-side state alone.
 
 - **Verification**: The `AuthService` performs a secure POST request to `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
 - **IP Validation**: The client's IP address is passed to Cloudflare to detect proxy-based botnets.
-- **Mandatory DTOs**: The `LoginDTOSchema` and `RegisterDTOSchema` in `@tupynambalucas-hub/core` strictly require the `turnstileToken`.
+- **Mandatory DTOs**: The `LoginDTOSchema` and `RegisterDTOSchema` in `@repo/hub/core` strictly require the `turnstileToken`.
 
 ---
 

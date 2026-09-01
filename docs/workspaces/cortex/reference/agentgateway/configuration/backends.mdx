@@ -33,7 +33,7 @@ gateways:
     protocol: HTTP
 routes:
   - backends:
-      - host: example.com:8080
+      - host: %PROJECT_DOMAIN%:8080
         weight: 1
       - host: 127.0.0.1:80
         weight: 9
@@ -58,7 +58,7 @@ mcp:
         args: ['@modelcontextprotocol/server-everything']
     - name: http-server
       mcp:
-        host: https://example.com/mcp
+        host: https://%PROJECT_DOMAIN%/mcp
 yaml
 # yaml-language-server: $schema=https://agentgateway.dev/schema/config
 gateways:
@@ -74,7 +74,7 @@ routes:
                 args: ['@modelcontextprotocol/server-everything']
             - name: http-server
               mcp:
-                host: https://example.com/mcp
+                host: https://%PROJECT_DOMAIN%/mcp
 ```
 
 ### Session routing

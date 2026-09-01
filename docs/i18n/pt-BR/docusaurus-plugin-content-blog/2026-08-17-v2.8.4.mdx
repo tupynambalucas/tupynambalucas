@@ -4,7 +4,7 @@ date: 2026-05-05
 tags: [core, architecture, monorepo, instance, portal]
 ---
 
-O lançamento fundacional do tupynambalucas.dev (v0.1.0) estabelece a arquitetura central do monorepo, os limites de isolamento de workspaces e as fundações de domínio para a loja comunitária local e o hub da plataforma global.
+O lançamento fundacional do %PROJECT_DOMAIN% (v0.1.0) estabelece a arquitetura central do monorepo, os limites de isolamento de workspaces e as fundações de domínio para a loja comunitária local e o hub da plataforma global.
 
 {/* truncate */}
 
@@ -17,21 +17,21 @@ O lançamento fundacional do tupynambalucas.dev (v0.1.0) estabelece a arquitetur
 
 ### Workspace Instance (Loja Comunitária)
 
-- **Arquitetura de Backend em Camadas**: Implementado o servidor Fastify v5 API (`@tupynambalucas-hub/api`) aproveitando uma arquitetura estrita em camadas (`Controller -> Service -> Repository -> Model`).
+- **Arquitetura de Backend em Camadas**: Implementado o servidor Fastify v5 API (`@repo/hub/api`) aproveitando uma arquitetura estrita em camadas (`Controller -> Service -> Repository -> Model`).
 - **Implementação de Domínio**: Módulos iniciais concluídos para:
   - `auth`: Estado de sessão baseado em JWT e verificação de credenciais.
   - `product`: Esquema de catálogo local e inventários.
   - `cycle`: Estruturas de governança para ciclos cooperativos comunitários.
-- **Frontend Workspace**: Criado `@tupynambalucas-hub/web` usando React 19, com interfaces estilizadas via CSS Modules, roteamento para visualizações de cliente e integração com a API de backend. Possui módulos para autenticação, painel do usuário, checkout e administração local.
+- **Frontend Workspace**: Criado `@repo/hub/web` usando React 19, com interfaces estilizadas via CSS Modules, roteamento para visualizações de cliente e integração com a API de backend. Possui módulos para autenticação, painel do usuário, checkout e administração local.
 
 ### Workspace Portal (Global SaaS Hub)
 
-- **Infraestrutura Base**: Estruturado o esqueleto do workspace portal (`@tupynambalucas-hub/api`, `@tupynambalucas-hub/web` e `@tupynambalucas-hub/core`).
+- **Infraestrutura Base**: Estruturado o esqueleto do workspace portal (`@repo/hub/api`, `@repo/hub/web` e `@repo/hub/core`).
 - **Esqueleto de Autenticação**: Implementado o esqueleto de domínio `auth` para contas do portal, estabelecendo o precedente arquitetural para os próximos módulos globais de SaaS.
 
 ### Studio & Ativos de Marca
 
-- **Design Tokens**: Cores, espaçamentos, tipografia e ativos visuais padronizados em `@tupynambalucas-studio/assets` para exportar um tema unificado.
+- **Design Tokens**: Cores, espaçamentos, tipografia e ativos visuais padronizados em `@repo/studio/assets` para exportar um tema unificado.
 - **Integração com Design Ops**: Instância auto-hospedada do Penpot implantada para manter designs de estratégia visual e geração de ativos design-to-code.
 
 ### Ferramentas de Desenvolvimento & Gateways de Contexto

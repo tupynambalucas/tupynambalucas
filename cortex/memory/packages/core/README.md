@@ -1,6 +1,6 @@
 # Cortex Memory Core Package
 
-The `cortex/memory/packages/core` workspace contains the shared TypeScript types, interfaces, Data Transfer Objects (DTOs), and Zod validation schemas (`@tupynambalucas-cortex/memory-core`) for the Cortex Memory Subsystem.
+The `cortex/memory/packages/core` workspace contains the shared TypeScript types, interfaces, Data Transfer Objects (DTOs), and Zod validation schemas (`@repo/cortex/memory-core`) for the Cortex Memory Subsystem.
 
 ---
 

@@ -8,7 +8,7 @@
 
 # Bounded Context: Platform Services Router
 
-This workspace context ([platform/](./)) centralizes and manages core cluster infrastructure, ingress routing, observability pipelines, developer dashboards, and Turborepo remote build caching for the tupynambalucas.dev monorepo.
+This bounded context ([platform/](./)) centralizes and manages core cluster infrastructure, ingress routing, observability pipelines, developer dashboards, and Turborepo remote build caching for the %PROJECT_DOMAIN% monorepo.
 
 ---
 
@@ -32,21 +32,21 @@ This workspace context ([platform/](./)) centralizes and manages core cluster in
 
 ## 2. Bounded Context Architecture
 
-- **Architecture Diagram**: [.agents/architecture.md](./.agents/architecture.md)
+- **Architecture Diagram**: [references/architecture.md](./references/architecture.md)
 
 ### Port Allocation & Service Mapping
 
-| Service Name         | Internal Port         | Host / Forwarded Port | Ingress Domain                      | Transport Protocol |
-| :------------------- | :-------------------- | :-------------------- | :---------------------------------- | :----------------- |
-| `traefik`            | 80 / 443 / 8082       | 80 / 443 / 8082       | `traefik-dev.tupynambalucas.dev`    | HTTP / HTTPS       |
-| `grafana`            | 3000                  | 3000                  | `grafana-dev.tupynambalucas.dev`    | HTTP               |
-| `headlamp`           | 4466 (Pod) / 80 (Svc) | 80 / 4466             | `headlamp-dev.tupynambalucas.dev`   | HTTP               |
-| `turbocache`         | 3000                  | 3008 (Compose) / 3000 | `turbocache-dev.tupynambalucas.dev` | HTTP               |
-| `otelcol`            | 4317 / 4318 / 24224   | 4317 / 4318 / 24224   | Internal Cluster DNS                | gRPC / HTTP        |
-| `prometheus`         | 9090                  | 9090                  | Internal Cluster DNS                | HTTP / PromQL      |
-| `loki`               | 3100                  | 3100                  | Internal Cluster DNS                | HTTP / LogQL       |
-| `tempo`              | 3200 / 4317 / 4318    | 3200 / 4318           | Internal Cluster DNS                | HTTP / TraceQL     |
-| `kube-state-metrics` | 8080 / 8081           | 8080 / 8081           | Internal Cluster DNS                | HTTP               |
+| Service Name         | Internal Port         | Host / Forwarded Port | Ingress Domain                    | Transport Protocol |
+| :------------------- | :-------------------- | :-------------------- | :-------------------------------- | :----------------- |
+| `traefik`            | 80 / 443 / 8082       | 80 / 443 / 8082       | `traefik-dev.%PROJECT_DOMAIN%`    | HTTP / HTTPS       |
+| `grafana`            | 3000                  | 3000                  | `grafana-dev.%PROJECT_DOMAIN%`    | HTTP               |
+| `headlamp`           | 4466 (Pod) / 80 (Svc) | 80 / 4466             | `headlamp-dev.%PROJECT_DOMAIN%`   | HTTP               |
+| `turbocache`         | 3000                  | 3008 (Compose) / 3000 | `turbocache-dev.%PROJECT_DOMAIN%` | HTTP               |
+| `otelcol`            | 4317 / 4318 / 24224   | 4317 / 4318 / 24224   | Internal Cluster DNS              | gRPC / HTTP        |
+| `prometheus`         | 9090                  | 9090                  | Internal Cluster DNS              | HTTP / PromQL      |
+| `loki`               | 3100                  | 3100                  | Internal Cluster DNS              | HTTP / LogQL       |
+| `tempo`              | 3200 / 4317 / 4318    | 3200 / 4318           | Internal Cluster DNS              | HTTP / TraceQL     |
+| `kube-state-metrics` | 8080 / 8081           | 8080 / 8081           | Internal Cluster DNS              | HTTP               |
 
 ---
 

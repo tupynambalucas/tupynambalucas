@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "agctl CLI reference, CEL expressions, configuration schema, observability metrics, and release notes."
-  }
+  },
+  "key": "cortex-reference-agentgateway-reference"
 }

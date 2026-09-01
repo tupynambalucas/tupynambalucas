@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "Networking add-ons with cert-manager and ExternalDNS."
-  }
+  },
+  "key": "cortex-reference-agentgateway-integrations-networking"
 }

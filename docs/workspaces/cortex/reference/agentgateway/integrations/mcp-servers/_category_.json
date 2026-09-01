@@ -4,5 +4,6 @@
   "link": {
     "type": "generated-index",
     "description": "MCP server transports including SSE, Stdio, and Streamable HTTP."
-  }
+  },
+  "key": "cortex-reference-agentgateway-integrations-mcp-servers"
 }

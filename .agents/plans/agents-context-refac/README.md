@@ -1,7 +1,7 @@
 # AGENTS.md Context Architecture Refactoring Plan
 
 This document is the authoritative Single Source of Truth (SSOT) for the `AGENTS.md` context
-architecture refactoring initiative across the tupynambalucas.dev monorepo.
+architecture refactoring initiative across the %PROJECT_DOMAIN% monorepo.
 
 ---
 
