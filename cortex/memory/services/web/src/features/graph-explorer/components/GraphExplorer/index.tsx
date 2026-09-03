@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { useMemoryStore } from '../../../../domains/memory/memory.store.js';
-import type { GraphNode } from '@tupynambalucas-cortex/memory-core';
+import type { GraphNode } from '@monorepo/cortex-memory-core';
 import { Network, RefreshCw, Filter, Eye } from 'lucide-react';
 import styles from './styles.module.css';
 

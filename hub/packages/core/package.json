@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-hub/core",
+  "name": "@monorepo/hub-core",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -36,7 +36,7 @@
     "zod": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "prettier": "catalog:tooling-stack",
     "eslint": "catalog:tooling-stack",

@@ -93,14 +93,15 @@ export class IngestionService {
       try {
         const rawContent = fs.readFileSync(file, 'utf-8');
         const parsed = matter(rawContent);
+        const frontmatter = parsed.data as Record<string, unknown>;
         const content = parsed.content;
         const hash = crypto.createHash('sha256').update(rawContent).digest('hex');
         const relPath = path.relative(this.docsDir, file).replace(/\\/g, '/');
 
         // Determine workspace
         let wsName = 'docs';
-        if (parsed.data.workspace) {
-          wsName = parsed.data.workspace;
+        if (typeof frontmatter.workspace === 'string') {
+          wsName = frontmatter.workspace;
         } else if (relPath.startsWith('handbook/')) {
           wsName = 'handbook';
         } else if (relPath.startsWith('workspaces/')) {
@@ -123,9 +124,9 @@ export class IngestionService {
             workspace: wsName,
             contentHash: hash,
             updatedAt: new Date().toISOString(),
-            tags: parsed.data.tags || [],
-            keywords: parsed.data.keywords || [],
-            diataxis_type: parsed.data.diataxis_type || '',
+            tags: (frontmatter.tags as string[] | undefined) ?? [],
+            keywords: (frontmatter.keywords as string[] | undefined) ?? [],
+            diataxis_type: (frontmatter.diataxis_type as string | undefined) ?? '',
           },
         });
 
@@ -158,9 +159,9 @@ export class IngestionService {
               section: chunk.heading,
               contentHash: hash,
               updatedAt: new Date().toISOString(),
-              tags: parsed.data.tags || [],
-              keywords: parsed.data.keywords || [],
-              diataxis_type: parsed.data.diataxis_type || '',
+              tags: (frontmatter.tags as string[] | undefined) ?? [],
+              keywords: (frontmatter.keywords as string[] | undefined) ?? [],
+              diataxis_type: (frontmatter.diataxis_type as string | undefined) ?? '',
             },
           });
 

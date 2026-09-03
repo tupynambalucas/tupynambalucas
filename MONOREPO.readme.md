@@ -104,11 +104,11 @@ graph TD
 
 Personal developer portal, blog engine, and administration dashboard.
 
-| Package                    | Role        | Stack                                     |
-| :------------------------- | :---------- | :---------------------------------------- |
-| `@tupynambalucas-hub/web`  | Application | React 19, Vite 8, Zustand, TailwindCSS v4 |
-| `@tupynambalucas-hub/api`  | Application | Fastify 5, Mongoose, BullMQ, Zod          |
-| `@tupynambalucas-hub/core` | Library     | Zod schemas, shared contracts (SSOT)      |
+| Package              | Role        | Stack                                     |
+| :------------------- | :---------- | :---------------------------------------- |
+| `@monorepo/hub-web`  | Application | React 19, Vite 8, Zustand, TailwindCSS v4 |
+| `@monorepo/hub-api`  | Application | Fastify 5, Mongoose, BullMQ, Zod          |
+| `@monorepo/hub-core` | Library     | Zod schemas, shared contracts (SSOT)      |
 
 ### [Cortex](./cortex/README.md) (`cortex/`)
 
@@ -127,12 +127,12 @@ Unified AI processing hub with MCP gateway federation, vector memory, and agent 
 
 Brand identity management, collaborative design infrastructure, and asset synchronization.
 
-| Package / Service               | Role          | Stack                                        |
-| :------------------------------ | :------------ | :------------------------------------------- |
-| `@tupynambalucas-studio/assets` | Library       | CSS tokens, React SVG icons                  |
-| `@tupynambalucas-studio/bucket` | CLI Tool      | AWS SDK (Cloudflare R2), Glob                |
-| Penpot v2 (5 containers)        | Design Engine | Frontend, Backend, Exporter, Valkey, Aide AI |
-| Memos                           | Notes         | Lightweight collaborative notes              |
+| Package / Service         | Role          | Stack                                        |
+| :------------------------ | :------------ | :------------------------------------------- |
+| `@monorepo/studio-assets` | Library       | CSS tokens, React SVG icons                  |
+| `@monorepo/studio-bucket` | CLI Tool      | AWS SDK (Cloudflare R2), Glob                |
+| Penpot v2 (5 containers)  | Design Engine | Frontend, Backend, Exporter, Valkey, Aide AI |
+| Memos                     | Notes         | Lightweight collaborative notes              |
 
 **Skaffold Module**: `studio-dev` (requires `platform-dev`)
 

@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas/docs",
+  "name": "@monorepo/docs",
   "version": "1.0.0",
   "private": true,
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
@@ -33,7 +33,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@tupynambalucas-studio/assets": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
+    "@monorepo/studio-assets": "workspace:*",
     "@docusaurus/core": "catalog:docs-stack",
     "@docusaurus/faster": "catalog:docs-stack",
     "@docusaurus/theme-live-codeblock": "catalog:docs-stack",

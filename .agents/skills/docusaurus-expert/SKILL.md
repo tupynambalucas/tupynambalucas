@@ -63,9 +63,10 @@ All MDX files must align with the project Prettier configuration:
 
 ### E. Project Variables Plugin
 
-- **No Hardcoded Brands**: You MUST NOT hardcode specific brand names or URLs (e.g., `tupynambalucas.dev`) in documentation content.
+- **No Hardcoded Brands**: You MUST NOT hardcode specific brand names or URLs in documentation content.
 - **AST Tokens**: Always use agnostic percentage-wrapped tokens like `%PROJECT_DOMAIN%` or `%PROJECT_NAME%`.
-- **Compilation**: The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens with real values during the build, keeping the repository generic and copy-pasteable.
+- **Centralized Config**: These variables are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace).
+- **Compilation**: The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens with the real values from the shared config during the build, keeping the repository generic and copy-pasteable.
 
 ---
 

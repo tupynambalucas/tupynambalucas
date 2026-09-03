@@ -1,5 +1,5 @@
 import { EntityModel } from '../../models/entity.model.js';
-import type { MemoryEntity, SearchResultDTO } from '@tupynambalucas-cortex/memory-core';
+import type { MemoryEntity, SearchResultDTO } from '@monorepo/cortex-memory-core';
 
 export class SearchRepository {
   async insertEntity(entity: MemoryEntity): Promise<MemoryEntity> {
@@ -41,7 +41,10 @@ export class SearchRepository {
       .sort((a, b) => b.score - a.score);
 
     // 2. Text Search (Keyword exact match) if text index exists
-    let textRanked: Array<{ doc: any; score: number }> = [];
+    let textRanked: Array<{
+      doc: MemoryEntity & { _id: { toString(): string }; get: (key: string) => unknown };
+      score: number;
+    }> = [];
     try {
       const textDocs = await EntityModel.find(
         { ...matchFilter, $text: { $search: textQuery } },
@@ -51,20 +54,29 @@ export class SearchRepository {
         .limit(limit)
         .exec();
 
-      textRanked = textDocs.map((doc: any) => ({ doc, score: doc._doc.score || 1 }));
-    } catch (err) {
+      textRanked = textDocs.map((doc) => ({
+        doc: doc,
+        score: (doc.get('score') as number | undefined) ?? 1,
+      }));
+    } catch {
       // Ignore text search if index is not built yet
       console.warn('Text search failed or index missing, skipping text RRF fusion');
     }
 
     // 3. Reciprocal Rank Fusion (RRF)
     const rrfConstant = 60;
-    const rrfScores = new Map<string, { doc: any; rrf: number }>();
+    const rrfScores = new Map<
+      string,
+      { doc: MemoryEntity & { _id: { toString(): string } }; rrf: number }
+    >();
 
     vectorRanked.forEach(({ doc }, idx) => {
       const id = doc._id.toString();
       const rank = idx + 1;
-      rrfScores.set(id, { doc, rrf: 1 / (rrfConstant + rank) });
+      rrfScores.set(id, {
+        doc: doc,
+        rrf: 1 / (rrfConstant + rank),
+      });
     });
 
     textRanked.forEach(({ doc }, idx) => {

@@ -1,5 +1,5 @@
 import { Types, type Mongoose } from 'mongoose';
-import type { IProduct, CreateCycleDTO } from '@tupynambalucas-hub/core';
+import type { IProduct, CreateCycleDTO } from '@monorepo/hub-core';
 import type { ICycleRepository } from './cycle.repository.interface.js';
 import type { ProductService } from '../product/product.service.js';
 import type { ICycleDocument } from '../../models/cycle.model.js';

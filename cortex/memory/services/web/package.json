@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-cortex/memory-web",
+  "name": "@monorepo/cortex-memory-web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -13,8 +13,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@tupynambalucas-cortex/memory-core": "workspace:*",
-    "@tupynambalucas-studio/assets": "workspace:*",
+    "@monorepo/cortex-memory-core": "workspace:*",
+    "@monorepo/studio-assets": "workspace:*",
     "axios": "catalog:shared-stack",
     "lucide-react": "catalog:web-stack",
     "react": "catalog:web-stack",
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:web-stack",
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:web-stack",
     "@types/react-dom": "catalog:web-stack",

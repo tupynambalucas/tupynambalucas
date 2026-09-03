@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-cortex/mcp-guardrails",
+  "name": "@monorepo/cortex-mcp-guardrails",
   "version": "1.0.0",
   "private": true,
   "description": "AgentGateway ExtMCP gRPC policy server for MCP tool mutation and guardrails",

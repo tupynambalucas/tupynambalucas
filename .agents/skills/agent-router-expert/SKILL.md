@@ -40,6 +40,12 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 - All files must comply with the root Prettier formatting rules (2-space indentation, max 100-character line width, hyphen-based unordered lists, and proper JavaScript/TypeScript code block styling).
 
+### G. Project Variables
+
+- **No Hardcoded Brands**: Project names and domains MUST NOT be hardcoded in any `AGENTS.md` router file.
+- **AST Tokens**: Always use agnostic tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%`.
+- **Centralized Config**: These variables are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace) and are resolved automatically by the build plugins.
+
 ---
 
 ## 1.5. Context Hierarchy Directive

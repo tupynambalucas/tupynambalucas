@@ -3,7 +3,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const kbPkgPath = require.resolve('@tupynambalucas/docs/package.json');
+const kbPkgPath = require.resolve('@monorepo/docs/package.json');
 const kbDir = path.dirname(kbPkgPath);
 
 const ROADMAP_DIR = path.join(kbDir, 'roadmap');

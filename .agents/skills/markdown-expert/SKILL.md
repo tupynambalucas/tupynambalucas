@@ -47,6 +47,12 @@ The following rules apply to all documentation tasks, regardless of file extensi
   1. Standard relative paths (e.g., `./relative-file.md` or `../sibling/file.md`).
   2. Fully-qualified public web URLs with explicit domains (e.g., `https://example.com` or external domain references).
 
+### H. Project Variables
+
+- **No Hardcoded Brands**: Project names and domains MUST NOT be hardcoded in any general `.md` file, EXCEPT for the root `README.md` and `MONOREPO.readme.md`.
+- **AST Tokens**: Always use agnostic tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%`.
+- **Centralized Config**: These variables are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace) and are compiled automatically by the repository's build plugins.
+
 ---
 
 ## 2. Document Guidelines

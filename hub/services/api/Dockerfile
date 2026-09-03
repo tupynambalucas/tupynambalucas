@@ -1,5 +1,5 @@
 # =================================================================== #
-# @tupynambalucas-hub/api — Production Dockerfile
+# @monorepo/hub-api — Production Dockerfile
 # Multi-stage build using Turborepo pruning + pnpm deploy.
 # Build context: MONOREPO ROOT (../../ relative to this file).
 # =================================================================== #
@@ -12,14 +12,14 @@ ENV PATH="$PNPM_HOME:$PNPM_HOME/bin:$PATH"
 RUN corepack enable pnpm
 
 # ---- Stage 2: Pruner ----
-# Uses Turborepo to extract ONLY the files needed by @tupynambalucas-hub/api
-# and its workspace dependencies (@tupynambalucas-hub/core).
+# Uses Turborepo to extract ONLY the files needed by @monorepo/hub-api
+# and its workspace dependencies (@monorepo/hub-core).
 # This optimizes Docker layer caching: re-runs only when relevant source changes.
 FROM base AS pruner
 WORKDIR /app
 RUN pnpm add -g turbo@latest
 COPY . .
-RUN turbo prune @tupynambalucas-hub/api --docker
+RUN turbo prune @monorepo/hub-api --docker
 
 # ---- Stage 3: Builder ----
 # Installs dependencies from the pruned lockfile, then builds the TypeScript source.
@@ -32,7 +32,7 @@ RUN --mount=type=cache,id=pnpm-instance-api,target=/pnpm/store \
     pnpm install --frozen-lockfile
 # Copy full source and build
 COPY --from=pruner /app/out/full/ .
-RUN pnpm --filter @tupynambalucas-hub/api... build
+RUN pnpm --filter @monorepo/hub-api... build
 
 # ---- Stage 4: Deployer ----
 # Uses `pnpm deploy` to create a self-contained production directory:
@@ -42,7 +42,7 @@ FROM base AS deployer
 WORKDIR /app
 COPY --from=builder /app .
 RUN --mount=type=cache,id=pnpm-instance-api,target=/pnpm/store \
-    pnpm --filter @tupynambalucas-hub/api --prod deploy --legacy /prod/api
+    pnpm --filter @monorepo/hub-api --prod deploy --legacy /prod/api
 
 # ---- Stage 5: Runner ----
 # Minimal production image with non-root user for security.

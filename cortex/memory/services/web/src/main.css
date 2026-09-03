@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import '@tupynambalucas-studio/assets/theme.css';
+@import '@monorepo/studio-assets/theme.css';
 
 @layer components {
   .app-layout {

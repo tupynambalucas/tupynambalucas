@@ -106,25 +106,10 @@ flowchart TD
 
 ---
 
-## 3.5. Regras de Memória Cognitiva (Agent Behavior)
+## 3.5. Cognitive Memory Rules (Agent Behavior)
 
 To ensure this robust MongoDB Enterprise RAG architecture is used effectively, AI agents MUST follow these autonomous trigger rules:
 
-- **Search-First Policy:** Always use the \`search_knowledge\` MCP tool BEFORE generating new artifacts, answering about domain structure (cortex, platform, studio), or implementing infrastructure configurations. Use dynamic \`filter\` constraints when applicable.
-- **Entity Expansion:** If a search result returns an incomplete chunk (e.g. \`doc_chunk\`), use the \`resolve_graph_entity\` tool to traverse the Property Graph (using \`BELONGS_TO\` or \`NEXT_CHUNK\`) and read the full context.
-- **State Persistence:** Whenever the user makes an architectural decision, chooses a framework, or alters a business rule, invoke \`store_episodic\` with \`role: 'system'\` to record it for future agent sessions.
-
----
-
-## 4. Local Lifecycle Commands
-
-| Target Runtime            | Purpose                 | Command                 |
-| :------------------------ | :---------------------- | :---------------------- |
-| **Kubernetes (Skaffold)** | Start dev cluster       | `pnpm cortex:dev`       |
-| **Kubernetes (Skaffold)** | Clean resources & cache | `pnpm cortex:clean`     |
-| **Kubernetes (Skaffold)** | Stop deployments        | `pnpm cortex:stop`      |
-| **Docker Compose**        | Boot standalone stack   | `pnpm cortex:up`        |
-| **Docker Compose**        | Stop standalone stack   | `pnpm cortex:down`      |
-| **Docker Compose**        | View container logs     | `pnpm cortex:logs`      |
-| **Docker Compose**        | Reset and re-deploy     | `pnpm cortex:reset`     |
-| **Code Verification**     | Typecheck and lint      | `pnpm cortex:typecheck` |
+- **Search-First Policy:** Always use the `search_knowledge` MCP tool BEFORE generating new artifacts, answering about domain structure (cortex, platform, studio), or implementing infrastructure configurations. Use dynamic `filter` constraints when applicable.
+- **Entity Expansion:** If a search result returns an incomplete chunk (e.g. `doc_chunk`), use the `resolve_graph_entity` tool to traverse the Property Graph (using `BELONGS_TO` or `NEXT_CHUNK`) and read the full context.
+- **State Persistence:** Whenever the user makes an architectural decision, chooses a framework, or alters a business rule, invoke `store_episodic` with `role: 'system'` to record it for future agent sessions.

@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-tools/github",
+  "name": "@monorepo/tools-github",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -20,10 +20,10 @@
     "github:services:reset": "podman compose -f infrastructure/docker/compose.yaml down --volumes && podman compose -f infrastructure/docker/compose.yaml up -d --build gh git"
   },
   "dependencies": {
-    "@tupynambalucas/docs": "workspace:*"
+    "@monorepo/docs": "workspace:*"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"

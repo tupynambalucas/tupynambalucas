@@ -170,7 +170,7 @@ export default defineConfig([
   },
 
   // ========================================================================
-  // 4. DOMAIN CORE - Regras para @tupynambalucas-*/core (Strict Logic)
+  // 4. DOMAIN CORE - Regras para @monorepo-*/core (Strict Logic)
   // ========================================================================
   {
     name: 'monorepo/domain-core',

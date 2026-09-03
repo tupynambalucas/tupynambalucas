@@ -22,9 +22,9 @@ USER ${USER_UID}
 
 COPY ./src/collector-config.yaml /otelcol/collector-config.yaml
 COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --chmod=755 --from=build-stage /build/otelcol-tupynambalucas /otelcol
+COPY --chmod=755 --from=build-stage /build/otelcol-custom /otelcol
 
-ENTRYPOINT ["/otelcol/otelcol-tupynambalucas"]
+ENTRYPOINT ["/otelcol/otelcol-custom"]
 CMD ["--config", "/otelcol/collector-config.yaml"]
 
 EXPOSE 4317 4318 12001

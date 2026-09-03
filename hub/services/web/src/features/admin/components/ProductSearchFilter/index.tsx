@@ -1,6 +1,6 @@
 import type { FC } from 'react';
-import { Icon, faSearch, faTimes } from '@tupynambalucas-studio/assets/icons';
-import { PRODUCT_MEASURE_TYPES, PRODUCT_CATEGORIES } from '@tupynambalucas-hub/core';
+import { Icon, faSearch, faTimes } from '@monorepo/studio-assets/icons';
+import { PRODUCT_MEASURE_TYPES, PRODUCT_CATEGORIES } from '@monorepo/hub-core';
 import styles from './styles.module.css';
 
 interface ProductSearchFilterProps {

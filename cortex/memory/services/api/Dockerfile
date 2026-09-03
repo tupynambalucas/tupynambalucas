@@ -14,9 +14,9 @@ COPY cortex/memory/packages/core ./cortex/memory/packages/core
 COPY cortex/memory/services/api ./cortex/memory/services/api
 RUN echo "clean_api_build_v2" > /workspace/.build_version
 
-RUN pnpm --filter @tupynambalucas-cortex/memory-core build
-RUN pnpm --filter @tupynambalucas-cortex/memory-api build
-RUN pnpm --filter @tupynambalucas-cortex/memory-api deploy --legacy --prod /out
+RUN pnpm --filter @monorepo/cortex-memory-core build
+RUN pnpm --filter @monorepo/cortex-memory-api build
+RUN pnpm --filter @monorepo/cortex-memory-api deploy --legacy --prod /out
 RUN cp -r /workspace/cortex/memory/services/api/dist /out/dist
 
 FROM node:22-alpine AS runner

@@ -43,4 +43,4 @@ When creating, updating, or analyzing custom Agent Skills within this bounded co
 When agents write technical documentation for the monorepo (specifically in the `docs/` workspace):
 
 1. **Diátaxis Framework**: All documentation MUST be structured into four quadrants (`tutorials`, `guides`, `reference`, `explanation`). The AI must activate the `docusaurus-expert` skill for exact formatting instructions.
-2. **AST Project Variables**: Agents MUST NOT hardcode project names (e.g., `tupynambalucas.dev`). Instead, they must use tokens like `%PROJECT_DOMAIN%`. The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens during the build.
+2. **AST Project Variables**: Agents MUST NOT hardcode project names or domains. Instead, they must use tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` which are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace). The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens during the build.

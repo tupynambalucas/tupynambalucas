@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, faSync } from '@tupynambalucas-studio/assets/icons';
+import { Icon, faSync } from '@monorepo/studio-assets/icons';
 import styles from '../styles.module.css';
 import type { FixingItem } from '../types';
 

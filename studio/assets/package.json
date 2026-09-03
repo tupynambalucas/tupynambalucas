@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-studio/assets",
+  "name": "@monorepo/studio-assets",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -39,7 +39,7 @@
     "react-icons": "catalog:studio-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/react": "catalog:web-stack",
     "@types/react-dom": "catalog:web-stack",
     "tailwindcss": "catalog:shared-stack",

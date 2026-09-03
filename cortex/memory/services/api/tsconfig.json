@@ -1,10 +1,10 @@
 {
-  "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
+  "extends": "@monorepo/shared-config/tsconfig.base.json",
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "paths": {
-      "@tupynambalucas-cortex/memory-core": ["../../packages/core/src/index.ts"]
+      "@monorepo/cortex-memory-core": ["../../packages/core/src/index.ts"]
     }
   },
   "include": ["src"],

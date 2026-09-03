@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
-import { Icon, faGithub } from '@tupynambalucas-studio/assets/icons';
+import { Icon, faGithub } from '@monorepo/studio-assets/icons';
 import styles from './styles.module.css';
 
 export default function HeroSection(): ReactNode {

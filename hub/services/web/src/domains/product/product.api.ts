@@ -1,5 +1,5 @@
 import { api } from '@/lib/axios';
-import type { IProduct, ProductResponse } from '@tupynambalucas-hub/core';
+import type { IProduct, ProductResponse } from '@monorepo/hub-core';
 
 export const productApi = {
   list: async (filters?: {

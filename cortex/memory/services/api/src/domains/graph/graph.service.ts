@@ -1,5 +1,5 @@
 import type { GraphRepository } from './graph.repository.js';
-import type { GraphDataDTO } from '@tupynambalucas-cortex/memory-core';
+import type { GraphDataDTO } from '@monorepo/cortex-memory-core';
 
 export class GraphService {
   constructor(private readonly repository: GraphRepository) {}

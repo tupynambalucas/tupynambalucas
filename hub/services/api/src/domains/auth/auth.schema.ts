@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { RegisterDTOSchema, LoginDTOSchema, LoginResponseSchema } from '@tupynambalucas-hub/core';
+import { RegisterDTOSchema, LoginDTOSchema, LoginResponseSchema } from '@monorepo/hub-core';
 
 export const registerSchema = {
   body: RegisterDTOSchema,

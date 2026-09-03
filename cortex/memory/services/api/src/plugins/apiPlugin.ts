@@ -1,5 +1,6 @@
 import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 const apiPlugin: FastifyPluginAsync = async function (server: FastifyInstance): Promise<void> {
   // Routes with /memory prefix (e.g., /api/memory/chat)
   server.post('/memory/chat', server.chatController.storeMessage);

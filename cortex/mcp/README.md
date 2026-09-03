@@ -15,7 +15,7 @@ The `cortex/mcp/` directory houses the Model Context Protocol (MCP) data plane s
 
 ## Subsystem Structure
 
-- **[guardrails/](./guardrails/README.md)**: Standalone gRPC ExtMCP policy processor for AgentGateway payload validation, URL mutation, and tool listing enrichment ([guardrails/README.md](./guardrails/README.md)).
+- **[guardrails/](./guardrails/README.md)**: Standalone gRPC ExtMCP policy processor for AgentGateway payload validation and transparent URL mutation ([guardrails/README.md](./guardrails/README.md)).
 - **[inspector/](./inspector/README.md)**: Containerized web UI for inspecting and testing MCP tool servers dynamically ([inspector/README.md](./inspector/README.md)).
 - **[services/](./services/)**: Containerized downstream MCP tool server adapters:
   - **[context7/](./services/context7/README.md)**: Context7 framework documentation and code snippet retrieval tools ([context7/README.md](./services/context7/README.md)).

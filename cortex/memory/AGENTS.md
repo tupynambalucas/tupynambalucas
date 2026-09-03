@@ -51,17 +51,6 @@ associative memory planes for AI agents.
 
 ---
 
-## 3. Scoped Operations
-
-- `pnpm --filter @repo/cortex/memory-core build`: Compiles shared TypeScript types.
-- `pnpm --filter @repo/cortex/memory-api dev`: Starts Fastify API in development mode.
-- `pnpm --filter @repo/cortex/memory-web dev`: Starts React web dashboard on port
-  `9006`.
-- `pnpm cortex:dev`: Starts memory services alongside the Cortex stack in Kubernetes.
-- `pnpm cortex:up`: Starts memory containers via Docker Compose.
-
----
-
 ## 4. Service-Level Rules
 
 ### Core Package Rules
@@ -98,6 +87,6 @@ associative memory planes for AI agents.
 
 ---
 
-## 3. Docs Ingestion & Vector Agnosticism
+## 5. Docs Ingestion & Vector Agnosticism
 
 The memory API synchronizes documentation by directly ingesting raw .mdx files from the docs/ workspace. It intentionally embeds unresolved templating tokens (such as %PROJECT_DOMAIN% and %PROJECT_NAME%) into the MongoDB Vector space. This architectural decision ensures the semantic knowledge base remains strictly brand-agnostic and perfectly generic for enterprise template reuse.

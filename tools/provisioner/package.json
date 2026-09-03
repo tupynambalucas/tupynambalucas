@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-tools/provisioner",
+  "name": "@monorepo/tools-provisioner",
   "version": "0.1.0",
   "private": true,
   "type": "module",

@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-hub/web",
+  "name": "@monorepo/hub-web",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -22,8 +22,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@tupynambalucas-hub/core": "workspace:*",
-    "@tupynambalucas-studio/assets": "workspace:*",
+    "@monorepo/hub-core": "workspace:*",
+    "@monorepo/studio-assets": "workspace:*",
     "@gsap/react": "catalog:web-stack",
     "gsap": "catalog:web-stack",
     "react": "catalog:web-stack",
@@ -37,7 +37,7 @@
     "@marsidev/react-turnstile": "catalog:web-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "prettier": "catalog:tooling-stack",
     "eslint": "catalog:tooling-stack",
     "@types/node": "catalog:",

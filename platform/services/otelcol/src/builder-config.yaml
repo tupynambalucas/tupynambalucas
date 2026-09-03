@@ -1,7 +1,7 @@
 dist:
-  name: otelcol-tupynambalucas
+  name: otelcol-custom
   description: Basic OTel Collector distribution for Developers
-  output_path: ./otelcol-tupynambalucas
+  output_path: ./otelcol-custom
 
 exporters:
   - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.158.0

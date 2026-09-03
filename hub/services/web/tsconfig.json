@@ -1,5 +1,5 @@
 {
-  "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
+  "extends": "@monorepo/shared-config/tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "useDefineForClassFields": true,
@@ -11,7 +11,7 @@
       "@features/*": ["./src/features/*"],
       "@domains/*": ["./src/domains/*"],
       /* Desenvolvimento instantâneo: lê a fonte do core */
-      "@tupynambalucas-hub/core": ["../../packages/core/src/index.ts"]
+      "@monorepo/hub-core": ["../../packages/core/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/types/**/*.d.ts", "vite.config.ts"],

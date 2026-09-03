@@ -1,5 +1,5 @@
 {
-  "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
+  "extends": "@monorepo/shared-config/tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "useDefineForClassFields": true,
@@ -10,7 +10,7 @@
       "@components/*": ["./src/components/*"],
       "@features/*": ["./src/features/*"],
       "@domains/*": ["./src/domains/*"],
-      "@tupynambalucas-cortex/memory-core": ["../../packages/core/src/index.ts"]
+      "@monorepo/cortex-memory-core": ["../../packages/core/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/types/**/*.d.ts", "vite.config.ts"],

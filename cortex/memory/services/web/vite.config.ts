@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
 
     optimizeDeps: {
       include: ['react', 'react-dom', 'react/jsx-runtime'],
-      exclude: ['@tupynambalucas-cortex/memory-core', '@tupynambalucas-studio/assets'],
+      exclude: ['@monorepo/cortex-memory-core', '@monorepo/studio-assets'],
     },
 
     base: './',

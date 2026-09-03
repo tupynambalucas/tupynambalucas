@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-hub/api",
+  "name": "@monorepo/hub-api",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -22,7 +22,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@tupynambalucas-hub/core": "workspace:*",
+    "@monorepo/hub-core": "workspace:*",
     "@fastify/cookie": "catalog:api-stack",
     "@fastify/cors": "catalog:api-stack",
     "@fastify/csrf-protection": "catalog:api-stack",
@@ -47,7 +47,7 @@
     "dotenv": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/bcrypt": "catalog:api-stack",
     "prettier": "catalog:tooling-stack",

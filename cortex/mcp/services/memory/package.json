@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-cortex/mcp-memory",
+  "name": "@monorepo/cortex-mcp-memory",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "catalog:mcp-stack",
-    "@tupynambalucas-cortex/memory-core": "workspace:*",
+    "@monorepo/cortex-memory-core": "workspace:*",
     "dotenv": "catalog:shared-stack",
     "fastify": "catalog:api-stack",
     "zod": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:",
     "tsx": "catalog:",

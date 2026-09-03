@@ -1,5 +1,5 @@
 {
-  "extends": "@tupynambalucas-shared/config/tsconfig.base.json",
+  "extends": "@monorepo/shared-config/tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
     "noEmit": false,

@@ -5,10 +5,10 @@ import {
   faCalendarAlt,
   faChevronLeft,
   faChevronRight,
-} from '@tupynambalucas-studio/assets/icons';
+} from '@monorepo/studio-assets/icons';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import type { IProduct, CycleResponse } from '@tupynambalucas-hub/core';
+import type { IProduct, CycleResponse } from '@monorepo/hub-core';
 import { useAdminCycleStore } from '../../../../domains/cycle/cycle.store';
 import styles from './styles.module.css';
 import { AdminContainer } from '../../../../components';

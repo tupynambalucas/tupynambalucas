@@ -1,9 +1,5 @@
 import type { SearchRepository } from './search.repository.js';
-import type {
-  SearchQueryDTO,
-  SearchResultDTO,
-  MemoryEntity,
-} from '@tupynambalucas-cortex/memory-core';
+import type { SearchQueryDTO, SearchResultDTO, MemoryEntity } from '@monorepo/cortex-memory-core';
 
 export class SearchService {
   constructor(private readonly repository: SearchRepository) {}

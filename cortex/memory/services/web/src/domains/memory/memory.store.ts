@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GraphDataDTO, SearchResultDTO, GraphNode } from '@tupynambalucas-cortex/memory-core';
+import type { GraphDataDTO, SearchResultDTO, GraphNode } from '@monorepo/cortex-memory-core';
 import { memoryApi, type ChatMessage } from './memory.api';
 
 interface MemoryState {
@@ -63,9 +63,7 @@ export const useMemoryStore = create<MemoryState>((set, get) => ({
     try {
       const data = await memoryApi.getGraphData();
       set({
-        graphData: data
-          ? { nodes: data.nodes ?? [], edges: data.edges ?? [] }
-          : { nodes: [], edges: [] },
+        graphData: { nodes: data.nodes ?? [], edges: data.edges ?? [] },
         isLoadingGraph: false,
         apiHealthy: true,
       });
@@ -126,7 +124,7 @@ export const useMemoryStore = create<MemoryState>((set, get) => ({
       const ragResults = await memoryApi.searchVector(content, 3);
       let responseText = 'Memory message recorded into MongoDB episodic chat collection.';
 
-      if (ragResults && ragResults.length > 0 && ragResults[0]?.entity) {
+      if (ragResults.length > 0 && ragResults[0]?.entity !== undefined) {
         responseText = `Ingested Context Match (${(ragResults[0].score * 100).toFixed(1)}% match):\n${ragResults[0].entity.content.slice(0, 300)}...`;
       }
 

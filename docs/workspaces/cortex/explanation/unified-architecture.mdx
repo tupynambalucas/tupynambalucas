@@ -85,29 +85,29 @@ graph TD
 
 ```text
 cortex/
-├── gateway/                 # AgentGateway configuration (config.yaml, guardrails)
-├── mcp/
-│   ├── guardrails/          # gRPC ExtMCP policy processor
-│   ├── inspector/           # MCP Inspector web UI (dev only)
-│   └── services/            # Downstream MCP adapter packages
-│       ├── context7/
-│       ├── firecrawl/
-│       ├── github/
-│       ├── grafana/
-│       ├── memory/
-│       └── playwright/
-├── memory/
-│   ├── packages/core/       # Shared TypeScript models and Zod schemas
-│   └── services/
-│       ├── api/             # memory-api Fastify backend
-│       ├── mongodb/         # MongoDB 7.0 rs0 init scripts
-│       └── web/             # memory-web React dashboard
-├── infrastructure/
-│   └── kubernetes/          # Skaffold + Kustomize manifests
-│       ├── base/            # Base Kustomize resources
-│       └── overlays/        # dev / staging / prod overlays
-├── package.json
-└── AGENTS.md
+ gateway/                 # AgentGateway configuration (config.yaml, guardrails)
+ mcp/
+    guardrails/          # gRPC ExtMCP policy processor
+    inspector/           # MCP Inspector web UI (dev only)
+    services/            # Downstream MCP adapter packages
+        context7/
+        firecrawl/
+        github/
+        grafana/
+        memory/
+        playwright/
+ memory/
+    packages/core/       # Shared TypeScript models and Zod schemas
+    services/
+        api/             # memory-api Fastify backend
+        mongodb/         # MongoDB 7.0 rs0 init scripts
+        web/             # memory-web React dashboard
+ infrastructure/
+    kubernetes/          # Skaffold + Kustomize manifests
+        base/            # Base Kustomize resources
+        overlays/        # dev / staging / prod overlays
+ package.json
+ AGENTS.md
 ```
 
 ---
@@ -122,10 +122,9 @@ enriches, and routes requests through the following pipeline:
    `platform` namespace.
 2. **Traefik -> AgentGateway**: An IngressRoute forwards agent API traffic to the
    AgentGateway pod on port `8080`.
-3. **ExtMCP Guardrails**: AgentGateway delegates every `tools/call` and
-   `tools/list` request to the `mcp-guardrails` gRPC sidecar, which:
-   - Rewrites `localhost` / `127.0.0.1` URLs to `host.docker.internal`.
-   - Injects `system_instruction` metadata into tool listings.
+3. **ExtMCP Guardrails**: AgentGateway delegates every `tools/call` request to the
+   `mcp-guardrails` gRPC sidecar, which:
+   - Recursively traverses tool arguments and rewrites `localhost` / `127.0.0.1` strings to `host.docker.internal` as a transparent network proxy.
    - Returns `{ pass: {} }` on any parsing exception (fail-open contract).
 4. **Downstream Dispatch**: Validated requests are forwarded to the appropriate
    MCP adapter pod (e.g., `mcp-firecrawl`, `mcp-memory`) via Kubernetes

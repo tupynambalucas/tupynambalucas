@@ -21,12 +21,12 @@ export function studioAssetsPlugin(): Plugin {
   let cloudName = 'tupynambalucas';
 
   try {
-    const manifestPath = require.resolve('@tupynambalucas-studio/assets/assets-manifest.json');
+    const manifestPath = require.resolve('@monorepo/studio-assets/assets-manifest.json');
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as StudioManifest;
     buildFolders = manifest.buckets.assets.web;
   } catch {
     console.warn(
-      'Vite plugin warning: @tupynambalucas-studio/assets/assets-manifest.json not found or could not be loaded.',
+      'Vite plugin warning: @monorepo/studio-assets/assets-manifest.json not found or could not be loaded.',
     );
   }
 
@@ -47,8 +47,8 @@ export function studioAssetsPlugin(): Plugin {
       }
     },
     resolveId(source) {
-      if (isDev === false && source.startsWith('@tupynambalucas-studio/assets/') === true) {
-        const subPath = source.replace(/^@tupynambalucas\/studio\//, '');
+      if (isDev === false && source.startsWith('@monorepo/studio-assets/') === true) {
+        const subPath = source.replace(/^@monorepo\/studio-assets\//, '');
         const firstSegment = subPath.split('/')[0];
         const folderKey = `/${firstSegment}`;
 
@@ -59,9 +59,9 @@ export function studioAssetsPlugin(): Plugin {
       return null;
     },
     load(id) {
-      if (id.startsWith('\0@tupynambalucas-studio/assets/') === true) {
+      if (id.startsWith('\0@monorepo/studio-assets/') === true) {
         const cleanSource = id.replace(/^\0/, '');
-        const subPath = cleanSource.replace(/^@tupynambalucas\/studio\//, '');
+        const subPath = cleanSource.replace(/^@monorepo\/studio-assets\//, '');
 
         let deliveryPath = 'image/upload';
 
@@ -88,7 +88,7 @@ export function studioAssetsPlugin(): Plugin {
           const relativePath = cleanUrl.replace(/^\/@studio-assets\//, '');
 
           // Resolve the studio package location dynamically
-          const studioPackageJson = require.resolve('@tupynambalucas-studio/assets/package.json');
+          const studioPackageJson = require.resolve('@monorepo/studio-assets/package.json');
           const studioDir = path.dirname(studioPackageJson);
           const studioSrcDir = path.join(studioDir, 'assets');
 

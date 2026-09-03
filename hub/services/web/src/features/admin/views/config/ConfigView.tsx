@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { AdminContainer } from '../../components';
-import { faGear } from '@tupynambalucas-studio/assets/icons';
+import { faGear } from '@monorepo/studio-assets/icons';
 
 const ConfigView: FC = () => {
   return (

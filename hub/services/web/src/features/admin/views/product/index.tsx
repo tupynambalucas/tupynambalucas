@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { faCarrot } from '@tupynambalucas-studio/assets/icons';
+import { faCarrot } from '@monorepo/studio-assets/icons';
 import { AdminContainer } from '../../components';
 import { useProductManager } from '@/features/admin/domains/product/hooks/useProductManager';
 import { ProductManagerFilters, ProductManagerList } from './components/ProductManager';

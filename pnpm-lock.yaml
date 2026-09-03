@@ -591,7 +591,7 @@ importers:
       '@eslint/js':
         specifier: catalog:tooling-stack
         version: 10.0.1(eslint@10.8.0(jiti@2.7.0)(supports-color@10.2.2))
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:shared/config
       '@types/node':
@@ -689,7 +689,7 @@ importers:
         specifier: catalog:shared-stack
         version: 4.4.3
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../../../../shared/config
       '@types/node':
@@ -710,7 +710,7 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: catalog:mcp-stack
         version: 1.29.0(supports-color@10.2.2)(zod@4.4.3)
-      '@tupynambalucas-cortex/memory-core':
+      '@monorepo/cortex-memory-core':
         specifier: workspace:*
         version: link:../../../memory/packages/core
       dotenv:
@@ -723,7 +723,7 @@ importers:
         specifier: catalog:shared-stack
         version: 4.4.3
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../../../../shared/config
       '@types/node':
@@ -766,7 +766,7 @@ importers:
       '@fastify/sse':
         specifier: catalog:api-stack
         version: 0.4.0(fastify@5.10.0)
-      '@tupynambalucas-cortex/memory-core':
+      '@monorepo/cortex-memory-core':
         specifier: workspace:*
         version: link:../../packages/core
       fastify:
@@ -785,7 +785,7 @@ importers:
         specifier: catalog:shared-stack
         version: 4.4.3
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../../../../shared/config
       '@types/node':
@@ -803,10 +803,10 @@ importers:
 
   cortex/memory/services/web:
     dependencies:
-      '@tupynambalucas-cortex/memory-core':
+      '@monorepo/cortex-memory-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@tupynambalucas-studio/assets':
+      '@monorepo/studio-assets':
         specifier: workspace:*
         version: link:../../../../studio/assets
       axios:
@@ -828,12 +828,12 @@ importers:
         specifier: catalog:web-stack
         version: 5.0.14(@types/react@19.2.17)(react@19.2.8)(use-sync-external-store@1.6.0(react@19.2.8))
     devDependencies:
+      '@monorepo/shared-config':
+        specifier: workspace:*
+        version: link:../../../../shared/config
       '@tailwindcss/vite':
         specifier: catalog:web-stack
         version: 4.3.3(vite@8.1.5(@types/node@25.9.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0))
-      '@tupynambalucas-shared/config':
-        specifier: workspace:*
-        version: link:../../../../shared/config
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.5
@@ -918,7 +918,10 @@ importers:
       '@mdx-js/react':
         specifier: catalog:docs-stack
         version: 3.1.1(@types/react@19.2.17)(react@19.2.8)
-      '@tupynambalucas-studio/assets':
+      '@monorepo/shared-config':
+        specifier: workspace:*
+        version: link:../shared/config
+      '@monorepo/studio-assets':
         specifier: workspace:*
         version: link:../studio/assets
       clsx:
@@ -968,7 +971,7 @@ importers:
         specifier: catalog:shared-stack
         version: 4.4.3
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../../../shared/config
       '@types/node':
@@ -1013,15 +1016,15 @@ importers:
       '@fastify/session':
         specifier: catalog:api-stack
         version: 11.1.2
+      '@monorepo/hub-core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@sentry/node':
         specifier: catalog:api-stack
         version: 10.68.0(@opentelemetry/core@2.10.0(@opentelemetry/api@1.9.1))(supports-color@10.2.2)
       '@sentry/profiling-node':
         specifier: catalog:api-stack
         version: 10.68.0(@opentelemetry/core@2.10.0(@opentelemetry/api@1.9.1))(supports-color@10.2.2)
-      '@tupynambalucas-hub/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       bcrypt:
         specifier: catalog:api-stack
         version: 6.0.0
@@ -1059,7 +1062,7 @@ importers:
         specifier: catalog:shared-stack
         version: 4.4.3
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../../../shared/config
       '@types/bcrypt':
@@ -1092,10 +1095,10 @@ importers:
       '@marsidev/react-turnstile':
         specifier: catalog:web-stack
         version: 1.5.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@tupynambalucas-hub/core':
+      '@monorepo/hub-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@tupynambalucas-studio/assets':
+      '@monorepo/studio-assets':
         specifier: workspace:*
         version: link:../../../studio/assets
       axios:
@@ -1126,12 +1129,12 @@ importers:
         specifier: catalog:web-stack
         version: 5.0.14(@types/react@19.2.17)(react@19.2.8)(use-sync-external-store@1.6.0(react@19.2.8))
     devDependencies:
+      '@monorepo/shared-config':
+        specifier: workspace:*
+        version: link:../../../shared/config
       '@tailwindcss/vite':
         specifier: catalog:web-stack
         version: 4.3.3(vite@8.1.5(@types/node@25.9.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0))
-      '@tupynambalucas-shared/config':
-        specifier: workspace:*
-        version: link:../../../shared/config
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.5
@@ -1167,7 +1170,7 @@ importers:
 
   renderer:
     dependencies:
-      '@tupynambalucas-studio/assets':
+      '@monorepo/studio-assets':
         specifier: workspace:*
         version: link:../studio/assets
       dotenv:
@@ -1177,7 +1180,7 @@ importers:
         specifier: catalog:shared-stack
         version: 4.4.3
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../shared/config
       '@types/node':
@@ -1211,7 +1214,7 @@ importers:
         specifier: catalog:studio-stack
         version: 5.7.0(react@19.2.8)
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../../shared/config
       '@types/react':
@@ -1248,7 +1251,7 @@ importers:
         specifier: 'catalog:'
         version: 2.1.35
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../../shared/config
       '@types/glob':
@@ -1263,11 +1266,11 @@ importers:
 
   tools/github:
     dependencies:
-      '@tupynambalucas/docs':
+      '@monorepo/docs':
         specifier: workspace:*
         version: link:../../docs
     devDependencies:
-      '@tupynambalucas-shared/config':
+      '@monorepo/shared-config':
         specifier: workspace:*
         version: link:../../shared/config
       '@types/node':

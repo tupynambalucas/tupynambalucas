@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-studio/bucket",
+  "name": "@monorepo/studio-bucket",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -32,7 +32,7 @@
     "mime-types": "catalog:"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/glob": "catalog:",
     "@types/mime-types": "catalog:",
     "typescript": "catalog:"

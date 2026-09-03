@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-cortex/memory-api",
+  "name": "@monorepo/cortex-memory-api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -19,7 +19,7 @@
     "@fastify/cors": "catalog:api-stack",
     "@fastify/env": "catalog:api-stack",
     "@fastify/sse": "catalog:api-stack",
-    "@tupynambalucas-cortex/memory-core": "workspace:*",
+    "@monorepo/cortex-memory-core": "workspace:*",
     "fastify": "catalog:api-stack",
     "fastify-plugin": "catalog:api-stack",
     "gray-matter": "catalog:",
@@ -27,7 +27,7 @@
     "zod": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:",
     "tsx": "catalog:",

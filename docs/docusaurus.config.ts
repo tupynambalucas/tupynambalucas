@@ -5,11 +5,9 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import projectVariablesPlugin from './plugins/remark-project-variables/index.mjs';
-const projectConfig = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'project.config.json'), 'utf8'),
-);
 
 const require = createRequire(import.meta.url);
+const projectConfig = require('@monorepo/shared-config/project.config.json');
 
 interface WebpackMock {
   NormalModuleReplacementPlugin: new (
@@ -19,7 +17,7 @@ interface WebpackMock {
 }
 
 const webpack = require('webpack') as unknown as WebpackMock;
-const studioPath = path.dirname(require.resolve('@tupynambalucas-studio/assets/package.json'));
+const studioPath = path.dirname(require.resolve('@monorepo/studio-assets/package.json'));
 const studioSrcPath = path.join(studioPath, 'src');
 const staticPath = path.join(__dirname, 'static');
 

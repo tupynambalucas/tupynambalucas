@@ -14,9 +14,9 @@ COPY cortex/memory/packages/core ./cortex/memory/packages/core
 ARG CACHEBUST=clean_v9
 COPY cortex/mcp/services/memory ./cortex/mcp/services/memory
 
-RUN pnpm --filter @tupynambalucas-cortex/memory-core build
-RUN pnpm --filter @tupynambalucas-cortex/mcp-memory build
-RUN pnpm --filter @tupynambalucas-cortex/mcp-memory deploy --legacy --prod /out
+RUN pnpm --filter @monorepo/cortex-memory-core build
+RUN pnpm --filter @monorepo/cortex-mcp-memory build
+RUN pnpm --filter @monorepo/cortex-mcp-memory deploy --legacy --prod /out
 
 FROM node:22-alpine AS runner
 WORKDIR /app

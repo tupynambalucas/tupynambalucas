@@ -11,8 +11,8 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 COPY shared/config ./shared/config
 COPY cortex/mcp/services/firecrawl ./cortex/mcp/services/firecrawl
 
-RUN pnpm --filter @tupynambalucas-cortex/mcp-firecrawl build
-RUN pnpm --filter @tupynambalucas-cortex/mcp-firecrawl deploy --legacy --prod /out
+RUN pnpm --filter @monorepo/cortex-mcp-firecrawl build
+RUN pnpm --filter @monorepo/cortex-mcp-firecrawl deploy --legacy --prod /out
 
 FROM node:22-alpine AS runner
 WORKDIR /app

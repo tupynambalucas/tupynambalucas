@@ -1,6 +1,6 @@
 import type { FC } from 'react';
-import { Icon, faPen } from '@tupynambalucas-studio/assets/icons';
-import type { IProduct, ProductResponse } from '@tupynambalucas-hub/core';
+import { Icon, faPen } from '@monorepo/studio-assets/icons';
+import type { IProduct, ProductResponse } from '@monorepo/hub-core';
 import { ProductSearchFilter } from '../../../../components';
 import styles from './styles.module.css';
 

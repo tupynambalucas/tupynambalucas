@@ -96,6 +96,7 @@ All code, templates, and procedures within custom skills MUST conform to the pro
 - **No Floating Promises**: Never leave asynchronous calls unawaited. Use the `void` operator for intentional unawaited background processes: `void asyncFn()`.
 - **Zero Emojis**: Emojis are strictly forbidden to maintain a professional, corporate appearance.
 - **Strict English-First**: Technical documentation, READMEs, architectural briefs, commit messages, code comments, and variable names/logic MUST be written in English (en-US).
+- **Agnostic Project Variables**: Do NOT hardcode project brand names or domains in any skill file, script, or template. Use agnostic tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` which are resolved via `@monorepo/shared-config/project.config.json`.
 
 ---
 

@@ -13,7 +13,7 @@ module.exports = function (source) {
   const normalizedOriginal = original.replace(/\\/g, '/');
 
   // Load assets manifest
-  const manifestPath = require.resolve('@tupynambalucas-studio/assets/assets-manifest.json');
+  const manifestPath = require.resolve('@monorepo/studio-assets/assets-manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const buildFolders = manifest.buckets.assets.docs;
   const folderNames = buildFolders.map((f) => f.replace(/^\//, ''));

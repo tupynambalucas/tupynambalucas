@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas/renderer",
+  "name": "@monorepo/renderer",
   "version": "0.1.0",
   "type": "module",
   "private": true,
@@ -21,10 +21,10 @@
   "dependencies": {
     "zod": "catalog:shared-stack",
     "dotenv": "catalog:shared-stack",
-    "@tupynambalucas-studio/assets": "workspace:*"
+    "@monorepo/studio-assets": "workspace:*"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:"
   }

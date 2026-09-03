@@ -1,5 +1,5 @@
 import mongoose, { Schema, type Document } from 'mongoose';
-import type { MemoryEntity } from '@tupynambalucas-cortex/memory-core';
+import type { MemoryEntity } from '@monorepo/cortex-memory-core';
 
 export interface EntityDocument extends Omit<MemoryEntity, 'id'>, Document {}
 

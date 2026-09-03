@@ -6,7 +6,7 @@ import {
   useProductActions,
 } from '@/domains/product';
 import { useProductFilters } from '@/domains/product/hooks/useProductFilters';
-import type { IProduct, ProductResponse } from '@tupynambalucas-hub/core';
+import type { IProduct, ProductResponse } from '@monorepo/hub-core';
 
 /**
  * Domain-level hook for managing product data and search.

@@ -1,5 +1,5 @@
 import { Schema, model, type Document, type Types } from 'mongoose';
-import type { ICycle } from '@tupynambalucas-hub/core';
+import type { ICycle } from '@monorepo/hub-core';
 
 export interface ICycleDocument
   extends Omit<ICycle, '_id' | 'products' | 'openingDate' | 'closingDate'>, Document {

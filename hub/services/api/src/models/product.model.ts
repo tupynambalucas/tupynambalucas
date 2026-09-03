@@ -1,5 +1,5 @@
 import { Schema, model, type Document } from 'mongoose';
-import type { IProduct } from '@tupynambalucas-hub/core';
+import type { IProduct } from '@monorepo/hub-core';
 
 export type IProductDocument = Omit<IProduct, '_id'> & Document;
 

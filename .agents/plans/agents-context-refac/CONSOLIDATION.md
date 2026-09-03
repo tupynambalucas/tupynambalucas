@@ -214,7 +214,7 @@ into `studio/AGENTS.md` under a new `## 4. Sub-Domain Rules` section:
   (e.g., `color.primary.css`).
 - SVG icons MUST be exported with `viewBox` attributes only; `width` and `height` attributes
   MUST be stripped to allow CSS-controlled sizing.
-- The React icon library build MUST be triggered via `pnpm --filter @tupynambalucas-studio/assets
+- The React icon library build MUST be triggered via `pnpm --filter @monorepo/studio-assets
 build` before any workspace that imports icons runs its own build.
 ```
 
@@ -223,7 +223,7 @@ build` before any workspace that imports icons runs its own build.
 ```markdown
 #### Bucket Sync Rules
 
-- R2 sync operations MUST use the `@tupynambalucas-studio/bucket` CLI exclusively. Direct
+- R2 sync operations MUST use the `@monorepo/studio-bucket` CLI exclusively. Direct
   `wrangler r2 object put` commands are forbidden for bulk operations.
 - Sync targets (`CLOUDFLARE_R2_BUCKET_NAME`) MUST be set via environment variables and MUST NOT
   be hardcoded in the CLI source.

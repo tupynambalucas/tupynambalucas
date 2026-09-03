@@ -1,5 +1,5 @@
 # =================================================================== #
-# @tupynambalucas-hub/web — Production Dockerfile
+# @monorepo/hub-web — Production Dockerfile
 # Multi-stage build: Turborepo prune → Vite build → Nginx serve.
 # Build context: MONOREPO ROOT (../../ relative to this file).
 # VITE_* variables are injected at build time via Docker ARG.
@@ -12,13 +12,13 @@ ENV PATH="$PNPM_HOME:$PNPM_HOME/bin:$PATH"
 RUN corepack enable pnpm
 
 # ---- Stage 2: Pruner ----
-# Extracts ONLY files needed by @tupynambalucas-hub/web and its workspace deps
-# (@tupynambalucas-hub/core, @tupynambalucas-studio/assets).
+# Extracts ONLY files needed by @monorepo/hub-web and its workspace deps
+# (@monorepo/hub-core, @monorepo/studio-assets).
 FROM base AS pruner
 WORKDIR /app
 RUN pnpm add -g turbo@latest
 COPY . .
-RUN turbo prune @tupynambalucas-hub/web --docker
+RUN turbo prune @monorepo/hub-web --docker
 
 # ---- Stage 3: Builder ----
 # Injects VITE_* variables as build-time ARGs — they are statically
@@ -39,7 +39,7 @@ RUN --mount=type=cache,id=pnpm-instance-web,target=/pnpm/store \
 
 # Copy full source and build
 COPY --from=pruner /app/out/full/ .
-RUN pnpm --filter @tupynambalucas-hub/web... build
+RUN pnpm --filter @monorepo/hub-web... build
 
 # ---- Stage 4: Runner (Nginx) ----
 # Serves the built static files. Final image is ~25MB.

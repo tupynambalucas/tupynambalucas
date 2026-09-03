@@ -18,7 +18,7 @@ developer inspector, and containerized downstream tool server adapters.
 ## 1. Directory Layout
 
 - [guardrails/](./guardrails/): Standalone gRPC ExtMCP policy processor for AgentGateway
-  payload validation, tool description enrichment, and host URL mutation.
+  payload validation and transparent network mutation.
 - [inspector/](./inspector/): MCP Inspector web UI available at `http://localhost:6274` during
   development. Use exclusively for debugging tool schema definitions and live request inspection.
   MUST NOT be exposed in production environments.
@@ -43,9 +43,9 @@ developer inspector, and containerized downstream tool server adapters.
 
 1. **Ingress Routing**: Client tool calls entering via `agentgateway` ([config.yaml](../gateway/config.yaml))
    pass through the gRPC ExtMCP guardrail processor ([guardrails/](./guardrails/)).
-2. **Payload Mutation**: The guardrail layer automatically transforms `localhost` references to
-   `host.docker.internal` for containerized browser tools and enriches tool listing metadata with
-   service instructions.
+2. **Payload Mutation**: The guardrail layer acts as a Transparent Network Proxy, automatically
+   recursively traversing JSON arguments in any tool call and transforming `localhost` references
+   to `host.docker.internal` to resolve container-to-host networking.
 3. **Downstream Dispatch**: Validated requests are routed to specific containerized MCP service
    adapters under [services/](./services/).
 4. **Docs Ingestion Flow**: The `mcp-memory` `ingest_document` tool triggers
@@ -56,8 +56,9 @@ developer inspector, and containerized downstream tool server adapters.
 
 ## 3. Operational & Security Guardrails
 
-- **Host Application Resolution**: Containerized tools executing network calls against developer
-  applications running on the host machine MUST use `http://host.docker.internal:<port>`.
+- **Host Application Resolution**: Containerized tools accessing developer applications running on
+  the host machine will have their payloads automatically mutated by the Guardrails. Agents can
+  just send `localhost` naturally.
 - **Credential Separation**: API keys and tokens MUST be configured via container environment
   files ([.env](../infrastructure/.env)) and MUST NOT be hardcoded.
 - **Fail-Safe Fallbacks**: ExtMCP guardrail handlers MUST catch parsing exceptions and return
@@ -67,12 +68,9 @@ developer inspector, and containerized downstream tool server adapters.
 
 ### Guardrails Service Rules
 
-- The `mcp-guardrails` gRPC server MUST implement `tools/call` and `tools/list` ExtMCP handlers.
+- The `mcp-guardrails` gRPC server MUST implement the `tools/call` ExtMCP handler for request
+  mutation and the `tools/list` ExtMCP handler for passthrough.
 - All handler functions MUST be wrapped in try/catch and return `{ pass: {} }` on any parsing
   exception to enforce the fail-open high-availability contract.
-- Tool description enrichment MUST add the configured `system_instruction` field to each tool
-  metadata object before returning to AgentGateway.
-- `localhost` URL mutation MUST rewrite all tool argument URLs matching `localhost` patterns to
-  `host.docker.internal` equivalents for containerized browser tools.
-- Asynchronous file reads for instruction enrichment MUST be cached in memory
-  (`instructionsCache`) to minimize latency during tool discovery phases.
+- Transparent proxying MUST recursively traverse object properties, arrays, and strings in the
+  request arguments to ensure complete `localhost` URL translation.

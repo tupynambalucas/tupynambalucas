@@ -72,8 +72,8 @@ flowchart LR
 ```text
 cortex/mcp/services/firecrawl/
 ├── Dockerfile                  # Multi-stage build com pnpm
-├── package.json                # @tupynambalucas-cortex/mcp-firecrawl
-├── tsconfig.json               # Extends @tupynambalucas-shared/config
+├── package.json                # @monorepo/cortex-mcp-firecrawl
+├── tsconfig.json               # Extends @monorepo/shared-config
 ├── tsconfig.build.json         # Build configuration
 ├── README.md                   # Documentação técnica do serviço
 ├── instructions.md             # Instruções de contexto para agentes
@@ -98,7 +98,7 @@ cortex/mcp/services/firecrawl/
 
 ```json
 {
-  "name": "@tupynambalucas-cortex/mcp-firecrawl",
+  "name": "@monorepo/cortex-mcp-firecrawl",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -119,7 +119,7 @@ cortex/mcp/services/firecrawl/
     "zod": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:",
     "tsx": "catalog:",
@@ -164,8 +164,8 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 COPY shared/config ./shared/config
 COPY cortex/mcp/services/firecrawl ./cortex/mcp/services/firecrawl
 
-RUN pnpm --filter @tupynambalucas-cortex/mcp-firecrawl build
-RUN pnpm --filter @tupynambalucas-cortex/mcp-firecrawl deploy --legacy --prod /out
+RUN pnpm --filter @monorepo/cortex-mcp-firecrawl build
+RUN pnpm --filter @monorepo/cortex-mcp-firecrawl deploy --legacy --prod /out
 
 FROM node:22-alpine AS runner
 WORKDIR /app
@@ -198,5 +198,5 @@ CMD ["node", "dist/index.js"]
    - Atualizar `cortex/mcp/services/firecrawl/README.md` e `instructions.md`.
    - Garantir que `.agents/plugins/cortex/rules/AGENTS.md` reflita as ferramentas padronizadas.
 5. **Build, Validação de Tipagem e Testes**:
-   - Executar `pnpm cortex:typecheck` e `pnpm --filter @tupynambalucas-cortex/mcp-firecrawl build`.
+   - Executar `pnpm cortex:typecheck` e `pnpm --filter @monorepo/cortex-mcp-firecrawl build`.
    - Testar o handshake MCP localmente ou via `pnpm cortex:dev`.

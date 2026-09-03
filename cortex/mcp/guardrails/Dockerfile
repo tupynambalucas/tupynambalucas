@@ -11,8 +11,8 @@ RUN npm install -g pnpm && pnpm install --frozen-lockfile
 COPY shared/config ./shared/config
 COPY cortex/mcp/guardrails ./cortex/mcp/guardrails
 
-RUN pnpm --filter @tupynambalucas-cortex/mcp-guardrails build
-RUN pnpm --filter @tupynambalucas-cortex/mcp-guardrails deploy --legacy --prod /out
+RUN pnpm --filter @monorepo/cortex-mcp-guardrails build
+RUN pnpm --filter @monorepo/cortex-mcp-guardrails deploy --legacy --prod /out
 
 FROM node:22-alpine AS runner
 WORKDIR /app

@@ -1,5 +1,10 @@
 # Cortex Plugin - MCP Service Instructions
 
+> **🚨 CRITICAL AGENT INSTRUCTION (READ THIS FIRST):**
+> ALL of the toolsets mentioned below (Firecrawl, GitHub, Grafana, Playwright, Context7, Memory) are **bundled under a SINGLE MCP server named `agentgateway`**.
+> You MUST ALWAYS use `ServerName: "agentgateway"` when calling ANY of these tools via the `call_mcp_tool` wrapper.
+> DO NOT attempt to call `ServerName: "firecrawl"`, `ServerName: "github"`, etc. They do not exist as independent servers and will fail. `agentgateway` is the ONLY valid server name for these tools.
+
 All services below are accessed through the single AgentGateway ingress at
 `agentgateway-mcp-dev.%PROJECT_DOMAIN%`. Do not pass credentials directly to any
 individual service tool.
@@ -21,17 +26,16 @@ When multiple tools could satisfy a request, select the most specific one:
 
 ## Firecrawl
 
-The Firecrawl MCP server provides web scraping, crawling, searching, document parsing, and
+The Firecrawl tools (provided exclusively by the `agentgateway` MCP server) provide web scraping, crawling, searching, document parsing, and
 autonomous research capabilities.
 
 ### Environment and Network Routing
 
-- When scraping or interacting with local development applications running on the developer's host
-  machine, ALWAYS substitute `localhost` or `127.0.0.1` with `host.docker.internal`.
+- **Transparent Network Proxying**: AgentGateway automatically intercepts tools arguments and rewrites `localhost` or `127.0.0.1` to `host.docker.internal`. Agents should simply use `localhost`.
 - Automatic target URL mapping for local applications (do not query the user for URLs):
-  - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
-  - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
-  - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
+  - **docs** (Docusaurus dev server): `http://localhost:3002`
+  - **hub-web** (Vite/React dev server): `http://localhost:5173`
+  - **hub-api** (Fastify REST API): `http://localhost:3000`
 
 ### Tool Execution Best Practices
 
@@ -46,7 +50,7 @@ autonomous research capabilities.
 
 ## GitHub
 
-The GitHub MCP server provides repository, issue, pull request, commit, and Copilot management
+The GitHub tools (provided exclusively by the `agentgateway` MCP server) provide repository, issue, pull request, commit, and Copilot management
 tools.
 
 ### Operational Rules
@@ -62,7 +66,7 @@ tools.
 
 ## Grafana
 
-The Grafana MCP server provides observability, metrics (Prometheus), logs (Loki), traces (Tempo),
+The Grafana tools (provided exclusively by the `agentgateway` MCP server) provide observability, metrics (Prometheus), logs (Loki), traces (Tempo),
 and profiling (Pyroscope) tools.
 
 ### Operational Rules
@@ -77,17 +81,16 @@ and profiling (Pyroscope) tools.
 
 ## Playwright
 
-The Playwright MCP server provides headless browser automation using Chromium. Use these tools to
+The Playwright tools (provided exclusively by the `agentgateway` MCP server) provide headless browser automation using Chromium. Use these tools to
 inspect web pages, evaluate UI layouts, and extract structural accessibility trees.
 
 ### Environment and Network Routing
 
-- When navigating to local development applications running on the developer's host machine, ALWAYS
-  substitute `localhost` or `127.0.0.1` with `host.docker.internal`.
+- **Transparent Network Proxying**: AgentGateway automatically intercepts tools arguments and rewrites `localhost` or `127.0.0.1` to `host.docker.internal`. Agents should simply use `localhost`.
 - Automatic target URL mapping for local applications (do not query the user for URLs):
-  - **docs** (Docusaurus dev server): `http://host.docker.internal:3002`
-  - **hub-web** (Vite/React dev server): `http://host.docker.internal:5173`
-  - **hub-api** (Fastify REST API): `http://host.docker.internal:3000`
+  - **docs** (Docusaurus dev server): `http://localhost:3002`
+  - **hub-web** (Vite/React dev server): `http://localhost:5173`
+  - **hub-api** (Fastify REST API): `http://localhost:3000`
 
 ### Tool Execution Best Practices
 
@@ -103,7 +106,7 @@ inspect web pages, evaluate UI layouts, and extract structural accessibility tre
 
 ## Context7
 
-The Context7 MCP server provides up-to-date documentation, API references, and code snippets for
+The Context7 tools (provided exclusively by the `agentgateway` MCP server) provide up-to-date documentation, API references, and code snippets for
 software libraries and frameworks.
 
 ### Tool Execution Best Practices
@@ -117,7 +120,7 @@ software libraries and frameworks.
 
 ## Memory
 
-The Memory MCP server provides RAG vector search, episodic chat history, entity graph management,
+The Memory tools (provided exclusively by the `agentgateway` MCP server) provide RAG vector search, episodic chat history, entity graph management,
 and document ingestion tools for persistent knowledge across sessions.
 
 ### Operational Rules

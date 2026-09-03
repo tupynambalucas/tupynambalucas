@@ -1,6 +1,6 @@
 import { RelationModel } from '../../models/relation.model.js';
 import { EntityModel } from '../../models/entity.model.js';
-import type { GraphDataDTO } from '@tupynambalucas-cortex/memory-core';
+import type { GraphDataDTO } from '@monorepo/cortex-memory-core';
 
 export class GraphRepository {
   async getGraphData(entityId?: string, maxDepth = 2): Promise<GraphDataDTO> {
@@ -80,7 +80,10 @@ export class GraphRepository {
     }));
 
     // Deduplicate edges
-    const uniqueEdgesMap = new Map();
+    const uniqueEdgesMap = new Map<
+      string,
+      { id: string; source: string; target: string; label: string }
+    >();
     for (const r of edges) {
       uniqueEdgesMap.set(r._id.toString(), {
         id: r._id.toString(),

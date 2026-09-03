@@ -1,8 +1,9 @@
 import axios from 'axios';
-import type { GraphDataDTO, SearchResultDTO } from '@tupynambalucas-cortex/memory-core';
+import type { GraphDataDTO, SearchResultDTO } from '@monorepo/cortex-memory-core';
 
 const envApiUrl = import.meta.env.VITE_API_URL as string | undefined;
-const API_BASE = envApiUrl && envApiUrl.trim().length > 0 ? envApiUrl.trim() : '/api/memory';
+const API_BASE =
+  envApiUrl !== undefined && envApiUrl.trim().length > 0 ? envApiUrl.trim() : '/api/memory';
 
 export interface ChatMessage {
   id?: string;

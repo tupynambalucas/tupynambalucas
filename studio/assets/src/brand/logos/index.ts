@@ -6,11 +6,11 @@
  * Consumption in Vite/React apps:
  *
  * 1. As a React Component (Dynamic styling):
- *    import { LogoHorizontalPositive } from '@tupynambalucas-studio/assets/logos';
+ *    import { LogoHorizontalPositive } from '@monorepo/studio-assets/logos';
  *    <LogoHorizontalPositive className="w-32" />
  *
  * 2. As a static URL (Standard <img> tag):
- *    import { logoUrls } from '@tupynambalucas-studio/assets/logos';
+ *    import { logoUrls } from '@monorepo/studio-assets/logos';
  *    <img src={logoUrls.horizontalPositive} />
  */
 

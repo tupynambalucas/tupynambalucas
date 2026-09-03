@@ -24,9 +24,9 @@ sequenceDiagram
   participant GR as ExtMCP Guardrails (:9001)
   participant MCP as Downstream MCP Service
 
-  Agent->>GW: tools/call (e.g. browser_navigate localhost:3002)
+  Agent->>GW: tools/call (e.g. scrape localhost:3002)
   GW->>GR: CheckRequest (ext_mcp.proto)
-  Note over GR: Mutates localhost -> host.docker.internal
+  Note over GR: Recursively mutates localhost -> host.docker.internal across all arguments
   GR-->>GW: Mutated Request Payload
   GW->>MCP: Execute Tool Call
   MCP-->>GW: Tool Execution Result
@@ -37,9 +37,10 @@ sequenceDiagram
 
 ## Key Responsibilities
 
-1. **Host URL Mutation**: Intercepts `tools/call` requests (e.g. `browser_navigate`) and transforms `localhost` or `127.0.0.1` targets into `host.docker.internal` for seamless container-to-host connectivity.
-2. **Tool Listing Enrichment**: Modifies `tools/list` responses to enrich tool descriptions with operational instructions from each service's `instructions.md`.
-3. **Fail-Safe Processing**: Catches internal payload parsing exceptions and gracefully falls back to pass-through behavior (`pass: {}`).
+1. **Transparent Network Proxying (Host URL Mutation)**: Intercepts `tools/call` requests for _any tool_ and recursively scans its JSON arguments. It automatically transforms any string containing `localhost` or `127.0.0.1` into `host.docker.internal` for seamless container-to-host connectivity.
+2. **Fail-Safe Processing**: Catches internal payload parsing exceptions and gracefully falls back to pass-through behavior (`pass: {}`).
+
+_Note: In previous architectures, this guardrail also enriched `tools/list` with markdown instructions. This anti-pattern has been removed to preserve pure tool schemas. Agent instructions are now properly managed client-side via `.agents/rules`._
 
 ---
 

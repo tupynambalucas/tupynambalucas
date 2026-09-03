@@ -1,5 +1,5 @@
 import type { Model } from 'mongoose';
-import type { RegisterDTO } from '@tupynambalucas-hub/core';
+import type { RegisterDTO } from '@monorepo/hub-core';
 import type { IUserDocument } from '../../models/user.model.js';
 import type { IAuthRepository } from './auth.repository.interface.js';
 

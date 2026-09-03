@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useActiveCycle, useCycleActions, useCycleLoading } from '@/domains/cycle';
 import { useCartCount } from '@/features/shop/domains/cart';
 import { useProductFilters } from '@/domains/product/hooks/useProductFilters';
-import type { ProductResponse } from '@tupynambalucas-hub/core';
+import type { ProductResponse } from '@monorepo/hub-core';
 
 export const useShop = () => {
   const activeCycle = useActiveCycle();

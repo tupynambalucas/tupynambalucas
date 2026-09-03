@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-cortex/mcp-firecrawl",
+  "name": "@monorepo/cortex-mcp-firecrawl",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -20,7 +20,7 @@
     "zod": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-shared/config": "workspace:*",
+    "@monorepo/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:",
     "tsx": "catalog:",

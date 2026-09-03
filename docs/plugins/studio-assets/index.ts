@@ -37,12 +37,12 @@ export default function pluginStudioAssets(context: LoadContext, _options: Plugi
 
       const hasBucketUrl = bucketUrl !== undefined && bucketUrl !== '';
 
-      const manifestPath = require.resolve('@tupynambalucas-studio/assets/assets-manifest.json');
+      const manifestPath = require.resolve('@monorepo/studio-assets/assets-manifest.json');
       const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
       const buildFolders = manifest.buckets.assets.docs;
       const folderPattern = buildFolders.map((f: string) => f.replace(/^\//, '')).join('|');
       const matchRegex = new RegExp(
-        `(@tupynambalucas-studio[/\\x5C](assets|design)|studio[/\\x5C](assets|design))[/\\x5C](src[/\\x5C])?(${folderPattern})[/\\x5C].*`,
+        `(@monorepo[/\\x5C]studio-(assets|design)|studio[/\\x5C](assets|design))[/\\x5C](src[/\\x5C])?(${folderPattern})[/\\x5C].*`,
       );
 
       const assetRules = [

@@ -16,8 +16,8 @@ COPY cortex/memory/packages/core ./cortex/memory/packages/core
 RUN echo "clean_web_build_final_2" > /workspace/.build_version
 COPY cortex/memory/services/web ./cortex/memory/services/web
 
-RUN pnpm --filter @tupynambalucas-cortex/memory-core build
-RUN pnpm --filter @tupynambalucas-cortex/memory-web build
+RUN pnpm --filter @monorepo/cortex-memory-core build
+RUN pnpm --filter @monorepo/cortex-memory-web build
 
 FROM nginx:alpine
 RUN echo "clean_nginx_runner_final_2" > /etc/build_version
