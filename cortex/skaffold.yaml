@@ -14,15 +14,15 @@ build:
     tryImportMissing: true
     concurrency: 0
   artifacts:
-    - image: tupynambalucas-cortex-gateway
+    - image: cortex-gateway
       context: gateway
       docker:
         dockerfile: Dockerfile
-    - image: tupynambalucas-cortex-mcp-guardrails
+    - image: cortex-mcp-guardrails
       context: ..
       docker:
         dockerfile: cortex/mcp/guardrails/Dockerfile
-    - image: tupynambalucas-cortex-memory-api
+    - image: cortex-memory-api
       context: ..
       docker:
         dockerfile: cortex/memory/services/api/Dockerfile
@@ -40,7 +40,7 @@ build:
             dest: '/app/docs/roadmap'
           - src: 'docs/i18n/**/*'
             dest: '/app/docs/i18n'
-    - image: tupynambalucas-cortex-memory-web
+    - image: cortex-memory-web
       context: ..
       docker:
         dockerfile: cortex/memory/services/web/Dockerfile
@@ -56,7 +56,7 @@ build:
         manual:
           - src: 'cortex/mcp/services/memory/dist/**/*'
             dest: '/app/dist'
-    - image: tupynambalucas-cortex-mcp-inspector
+    - image: cortex-mcp-inspector
       context: ..
       docker:
         dockerfile: cortex/mcp/inspector/Dockerfile

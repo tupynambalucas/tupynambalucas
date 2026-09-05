@@ -2,16 +2,15 @@
   "name": "@monorepo/studio-bucket",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "description": "Cloudflare R2 synchronization engine for design studio assets.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
-  "description": "tupynambalucas.dev Studio Package",
-  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
-  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/studio/assets#readme",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
-    "directory": "studio/bucket"
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
   },
+  "type": "module",
   "files": [
     "src"
   ],

@@ -1,17 +1,16 @@
 {
   "name": "@monorepo/renderer",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
+  "description": "Dynamic asset generation engine for GitHub README compilation and templates.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
-  "description": "Elo Orgânico Instance Core Package",
-  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
-  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/renderer#readme",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
-    "directory": "renderer"
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
   },
+  "type": "module",
   "scripts": {
     "clean": "rimraf generated tsconfig.tsbuildinfo",
     "generate": "tsx src/index.ts",

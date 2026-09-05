@@ -18,7 +18,7 @@ interface StudioManifest {
 export function studioAssetsPlugin(): Plugin {
   let isDev = false;
   let buildFolders: string[] = [];
-  let cloudName = 'tupynambalucas';
+  let cloudName = 'monorepo';
 
   try {
     const manifestPath = require.resolve('@monorepo/studio-assets/assets-manifest.json');

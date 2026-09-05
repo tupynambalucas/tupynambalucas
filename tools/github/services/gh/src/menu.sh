@@ -21,7 +21,7 @@ print_header() {
   echo -e "${BLUE}====================================================${RESET}"
   echo -e "${BOLD}${CYAN}          TUPYNAMBÁ LUCAS - DEVOPS TERMINAL MENU       ${RESET}"
   echo -e "${BLUE}====================================================${RESET}"
-  echo -e "   Active Repository: ${BOLD}${GREEN}${GH_REPO:-tupynambalucas/tupynambalucas}${RESET}"
+  echo -e "   Active Repository: ${BOLD}${GREEN}${GH_REPO:-monorepo/monorepo}${RESET}"
   echo -e "   Environment:       ${BOLD}${YELLOW}Docker Interactive (gh)${RESET}"
   echo -e "${BLUE}----------------------------------------------------${RESET}"
 }

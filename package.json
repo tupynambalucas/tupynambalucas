@@ -1,14 +1,15 @@
 {
   "name": "tupynambalucas/monorepo",
   "private": true,
-  "type": "module",
+  "description": "Root monorepo workspace for the ecosystem.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
   "license": "MIT",
-  "homepage": "https://tupynambalucas.dev",
+  "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
   },
+  "type": "module",
   "packageManager": "pnpm@11.17.0",
   "devEngines": {
     "packageManager": {

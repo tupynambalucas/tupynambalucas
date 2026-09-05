@@ -1,4 +1,8 @@
 import { intro, outro, select, isCancel } from '@clack/prompts';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const projectConfig = require('@monorepo/shared-config/project.config.json');
 
 async function main(): Promise<void> {
   let currentMenu: 'main' | 'windows' | 'podman' | 'exit' = 'main';
@@ -6,7 +10,7 @@ async function main(): Promise<void> {
   while ((currentMenu as string) !== 'exit') {
     // eslint-disable-next-line no-console
     console.clear();
-    intro(' tupynambalucas.dev - Workstation Provisioner ');
+    intro(` ${projectConfig.PROJECT_DOMAIN} - Workstation Provisioner `);
 
     if (currentMenu === 'main') {
       const osChoice = await select({

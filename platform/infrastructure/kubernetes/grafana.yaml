@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: tupynambalucas-platform-grafana
+          image: monorepo-platform-grafana
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000

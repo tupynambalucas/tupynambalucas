@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: memory-api
-          image: tupynambalucas-cortex-memory-api:latest
+          image: cortex-memory-api:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3006
@@ -132,7 +132,7 @@ spec:
     spec:
       containers:
         - name: memory-web
-          image: tupynambalucas-cortex-memory-web:latest
+          image: cortex-memory-web:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9006

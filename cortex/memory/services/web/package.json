@@ -2,6 +2,14 @@
   "name": "@monorepo/cortex-memory-web",
   "version": "0.1.0",
   "private": true,
+  "description": "Frontend web interface for Cortex memory and vector management.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
   "type": "module",
   "scripts": {
     "clean": "rimraf dist tsconfig.tsbuildinfo",

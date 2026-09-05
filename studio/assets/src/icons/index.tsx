@@ -93,7 +93,7 @@ export const Icon = React.forwardRef<HTMLSpanElement, IconProps>(
     };
 
     return (
-      <span ref={ref} style={finalStyle} className="tupynambalucas-icon-wrapper">
+      <span ref={ref} style={finalStyle} className="monorepo-icon-wrapper">
         <IconComponent {...props} size={finalSize} color={color}>
           {title !== undefined && <title>{title}</title>}
         </IconComponent>

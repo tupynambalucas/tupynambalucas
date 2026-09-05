@@ -51,7 +51,7 @@ build:
       context: services/tempo
       docker:
         dockerfile: Dockerfile
-    - image: tupynambalucas-platform-grafana
+    - image: monorepo-platform-grafana
       context: services/grafana
       docker:
         dockerfile: Dockerfile
@@ -117,7 +117,7 @@ profiles:
   - name: prod
     build:
       artifacts:
-        - image: tupynambalucas-platform-grafana
+        - image: monorepo-platform-grafana
           context: services/grafana
           docker:
             dockerfile: Dockerfile

@@ -3,6 +3,7 @@ import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
 import { Icon, faGithub } from '@monorepo/studio-assets/icons';
 import styles from './styles.module.css';
+import projectConfig from '@monorepo/shared-config/project.config.json';
 
 export default function HeroSection(): ReactNode {
   return (
@@ -11,7 +12,9 @@ export default function HeroSection(): ReactNode {
         {/* Left Column: Documentation Hub Intro */}
         <div className={styles.leftColumn}>
           <div className={styles.badge}>
-            <Translate id="homepage.hero.badge">tupynambalucas.dev Ecosystem</Translate>
+            <Translate id="homepage.hero.badge" values={{ domain: projectConfig.PROJECT_DOMAIN }}>
+              {'{domain} Ecosystem'}
+            </Translate>
           </div>
 
           <h1 className={styles.title}>
@@ -19,10 +22,13 @@ export default function HeroSection(): ReactNode {
           </h1>
 
           <p className={styles.description}>
-            <Translate id="homepage.hero.text.primary">
-              Welcome to the central documentation hub for the tupynambalucas.dev monorepo. This
-              platform serves as the single source of truth for my personal website, engineering
-              services, dynamic asset engines, and production-grade developer workspaces.
+            <Translate
+              id="homepage.hero.text.primary"
+              values={{ domain: projectConfig.PROJECT_DOMAIN }}
+            >
+              {
+                'Welcome to the central documentation hub for the {domain} monorepo. This platform serves as the single source of truth for my personal website, engineering services, dynamic asset engines, and production-grade developer workspaces.'
+              }
             </Translate>
           </p>
 
@@ -34,7 +40,7 @@ export default function HeroSection(): ReactNode {
               <Translate id="homepage.button.workspaces">Workspaces</Translate>
             </Link>
             <Link
-              to="https://github.com/tupynambalucas/tupynambalucas"
+              to={`https://github.com/${projectConfig.GITHUB_ORG}/${projectConfig.GITHUB_REPO}`}
               className={styles.tertiaryBtn}
             >
               <Icon icon={faGithub} size="1.2em" style={{ marginRight: '0.5rem' }} />

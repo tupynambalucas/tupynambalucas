@@ -1,16 +1,16 @@
-name: tupynambalucas-cortex
+name: monorepo-cortex
 
 networks:
   cortex-net:
-    name: tupynambalucas-cortex-net
+    name: monorepo-cortex-net
     driver: bridge
   platform-net:
-    name: tupynambalucas-platform-net
+    name: monorepo-platform-net
     driver: bridge
 
 volumes:
   mongodb_memory_data:
-    name: tupynambalucas-cortex-mongodb-data
+    name: monorepo-cortex-mongodb-data
 
 services:
   # ==========================================
@@ -21,7 +21,7 @@ services:
     build:
       context: ../../gateway
       dockerfile: Dockerfile
-    container_name: tupynambalucas-cortex-gateway
+    container_name: monorepo-cortex-gateway
     volumes:
       - ../../gateway/config.yaml:/config/config.yaml
     ports:
@@ -42,7 +42,7 @@ services:
 
   mcp-guardrails:
     profiles: ['core', 'mcp']
-    container_name: tupynambalucas-cortex-mcp-guardrails
+    container_name: monorepo-cortex-mcp-guardrails
     build:
       context: ../../../
       dockerfile: cortex/mcp/guardrails/Dockerfile
@@ -65,7 +65,7 @@ services:
     build:
       context: ../../memory/services/mongodb
       dockerfile: Dockerfile
-    container_name: tupynambalucas-cortex-mongodb-db
+    container_name: monorepo-cortex-mongodb-db
     restart: unless-stopped
     command: ['mongod', '--replSet', 'rs0', '--bind_ip_all', '--keyFile', '/data/mongo-keyfile']
     environment:
@@ -91,7 +91,7 @@ services:
     build:
       context: ../../memory/services/mongodb
       dockerfile: Dockerfile
-    container_name: tupynambalucas-cortex-mongodb-init
+    container_name: monorepo-cortex-mongodb-init
     entrypoint: ['./init-db.sh']
     restart: on-failure
     environment:
@@ -107,7 +107,7 @@ services:
 
   memory-api:
     profiles: ['core', 'memory']
-    container_name: tupynambalucas-cortex-memory-api
+    container_name: monorepo-cortex-memory-api
     build:
       context: ../../../
       dockerfile: cortex/memory/services/api/Dockerfile
@@ -133,7 +133,7 @@ services:
 
   memory-web:
     profiles: ['core', 'memory']
-    container_name: tupynambalucas-cortex-memory-web
+    container_name: monorepo-cortex-memory-web
     build:
       context: ../../../
       dockerfile: cortex/memory/services/web/Dockerfile
@@ -153,7 +153,7 @@ services:
   # ==========================================
   mcp-github:
     profiles: ['core', 'mcp']
-    container_name: tupynambalucas-cortex-mcp-github
+    container_name: monorepo-cortex-mcp-github
     build:
       context: ../../../
       dockerfile: cortex/mcp/services/github/Dockerfile
@@ -166,7 +166,7 @@ services:
 
   mcp-firecrawl:
     profiles: ['core', 'mcp']
-    container_name: tupynambalucas-cortex-mcp-firecrawl
+    container_name: monorepo-cortex-mcp-firecrawl
     build:
       context: ../../../
       dockerfile: cortex/mcp/services/firecrawl/Dockerfile
@@ -179,7 +179,7 @@ services:
 
   mcp-grafana:
     profiles: ['core', 'mcp']
-    container_name: tupynambalucas-cortex-mcp-grafana
+    container_name: monorepo-cortex-mcp-grafana
     build:
       context: ../../../
       dockerfile: cortex/mcp/services/grafana/Dockerfile
@@ -194,7 +194,7 @@ services:
 
   mcp-memory:
     profiles: ['core', 'memory', 'mcp']
-    container_name: tupynambalucas-cortex-mcp-memory
+    container_name: monorepo-cortex-mcp-memory
     build:
       context: ../../../
       dockerfile: cortex/mcp/services/memory/Dockerfile
@@ -214,7 +214,7 @@ services:
 
   mcp-playwright:
     profiles: ['core', 'mcp']
-    container_name: tupynambalucas-cortex-mcp-playwright
+    container_name: monorepo-cortex-mcp-playwright
     build:
       context: ../../../
       dockerfile: cortex/mcp/services/playwright/Dockerfile
@@ -234,7 +234,7 @@ services:
 
   mcp-inspector:
     profiles: ['core', 'mcp']
-    container_name: tupynambalucas-cortex-mcp-inspector
+    container_name: monorepo-cortex-mcp-inspector
     build:
       context: ../../../
       dockerfile: cortex/mcp/inspector/Dockerfile

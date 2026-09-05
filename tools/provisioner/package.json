@@ -2,10 +2,15 @@
   "name": "@monorepo/tools-provisioner",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "description": "Workstation provisioner CLI for initializing local development environments.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
-  "description": "Tupynambá Workstation Provisioner CLI",
-  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
+  "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",

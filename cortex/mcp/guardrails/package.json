@@ -2,7 +2,14 @@
   "name": "@monorepo/cortex-mcp-guardrails",
   "version": "1.0.0",
   "private": true,
-  "description": "AgentGateway ExtMCP gRPC policy server for MCP tool mutation and guardrails",
+  "description": "MCP guardrails server providing context validation and safety enforcement for AI agents.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

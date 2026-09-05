@@ -4,7 +4,7 @@ metadata:
   name: letsencrypt-cloudflare-dns
 spec:
   acme:
-    email: admin@tupynambalucas.dev
+    email: admin@project.local
     # Production Let's Encrypt server for 100% trusted HTTPS when deployed to public cluster
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:

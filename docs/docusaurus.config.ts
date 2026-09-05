@@ -1,6 +1,6 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
-import type { TupynambalucasPresetOptions, ThemeConfig } from './preset';
+import type { MonorepoPresetOptions, ThemeConfig } from './preset';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -137,8 +137,7 @@ const config: Config = {
           path: 'releases',
           routeBasePath: 'changelog',
           blogTitle: 'Changelog',
-          blogDescription:
-            'Acompanhe as últimas atualizações, melhorias e correções do ${projectConfig.PROJECT_DOMAIN}.',
+          blogDescription: `Acompanhe as últimas atualizações, melhorias e correções do ${projectConfig.PROJECT_DOMAIN}.`,
           blogSidebarTitle: 'Todas as versões',
           blogSidebarCount: 'ALL',
           showReadingTime: true,
@@ -164,7 +163,7 @@ const config: Config = {
         theme: {
           customCss: ['./src/css/custom.css'],
         },
-      } satisfies TupynambalucasPresetOptions,
+      } satisfies MonorepoPresetOptions,
     ],
   ],
 

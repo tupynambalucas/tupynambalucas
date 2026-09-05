@@ -1,4 +1,4 @@
-name: tupynambalucas-github
+name: monorepo-github
 
 services:
   # Service 1: Long-running interactive GitHub CLI service for docker exec use

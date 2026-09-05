@@ -10,7 +10,7 @@ import type { ThemeConfig as BaseThemeConfig } from '@docusaurus/types';
 import type { UserThemeConfig as ClassicThemeConfig } from '@docusaurus/theme-common';
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 
-export type TupynambalucasPresetOptions = {
+export type MonorepoPresetOptions = {
   /**
    * Options for `@docusaurus/plugin-debug`. Use `false` to disable, or `true`
    * to enable even in production.

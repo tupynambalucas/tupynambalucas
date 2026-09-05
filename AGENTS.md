@@ -30,6 +30,7 @@ This document serves as the root context router for AI agents operating in the
   engine producing GitHub profile SVG cards and templated Markdown.
 - [docs](./docs/AGENTS.md): Docusaurus v3 knowledge base structured under the Diataxis
   framework with English and Portuguese (pt-BR) localization.
+- [shared](./shared/AGENTS.md): Foundational cross-workspace utilities, global configurations, and Git hooks.
 - [tools](./tools/AGENTS.md): GitHub CLI automation, repository provisioning scripts,
   and containerized Git environments.
 
@@ -47,6 +48,9 @@ The monorepo uses Skaffold v4beta11 with three composable modules defined in
 
 ## Global Constraints
 
+- MUST maintain a senior, objective, and technical tone in all documentation.
+- MUST avoid preambles, introductory chatter, or conclusion summaries.
+- MUST keep sentences concise, clear, and direct.
 - MUST write all documentation in English (en-US).
 - MUST NOT use emojis in any technical document, README, or skill file.
 - MUST NOT use placeholders (e.g., TODO, TBD).

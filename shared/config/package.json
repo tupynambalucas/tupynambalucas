@@ -2,6 +2,14 @@
   "name": "@monorepo/shared-config",
   "version": "1.0.0",
   "private": true,
+  "description": "Global configuration and constant definitions shared across all workspaces.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
   "type": "module",
   "main": "./prettierrc.json",
   "exports": {

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: agentgateway
-          image: cr.agentgateway.dev/agentgateway:latest
+          image: cortex-gateway
           imagePullPolicy: IfNotPresent
           args:
             - '-f'

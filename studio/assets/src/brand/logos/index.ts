@@ -1,5 +1,5 @@
 /**
- * tupynambalucas.dev - Canonical Logo System
+ * project.local - Canonical Logo System
  * Managed by @studio.
  *
  * This file provides named exports for all brand identity variations.

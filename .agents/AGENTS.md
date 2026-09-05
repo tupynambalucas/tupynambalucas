@@ -17,7 +17,7 @@ This bounded context ([.agents/](./)) manages the lifecycle, personas, tools, an
 - **[plans/](./plans/)**: Temporary, markdown-based execution plans for complex refactors.
 - **[plugins/](./plugins/)**: Bundled MCP (Model Context Protocol) definitions, server lifecycle configs, and associated rules (e.g., the `cortex` plugin routing to `agentgateway`).
 - **[rules/](./rules/)**: Global or localized markdown constraints that are automatically injected into the agent's context based on location or trigger conditions.
-- **[scripts/](./scripts/)**: Agent-authored utility scripts (Node.js, Bash) meant for repository manipulation.
+- **[scripts/](./scripts/)**: MUST be used ONLY for utility scripts (Node.js, Bash) that are executed by AI agents (both temporary and permanent). Human-operated scripts do not belong here.
 - **[skills/](./skills/)**: Self-contained Markdown instruction files defining expert personas, validation workflows, and multi-step runbooks. Loaded on demand via progressive disclosure.
 
 ---
@@ -25,7 +25,7 @@ This bounded context ([.agents/](./)) manages the lifecycle, personas, tools, an
 ## 2. Agent Constraints
 
 1. **Root Script Ban**: Agents MUST NEVER create temporary or utility scripts (e.g., `scratch.js`, `update.js`) directly in the monorepo root.
-2. **Script Location**: Permanent, version-controlled scripts MUST be saved in [scripts/](./scripts/). Transient execution scripts MUST be saved in the agent's isolated `brain/scratch/` directory.
+2. **Script Location**: The [scripts/](./scripts/) directory is STRICTLY for scripts executed by AI agents (temporary or permanent). Agents MUST save their scripts here instead of the root directory. Transient scripts can optionally be saved in the agent's isolated `brain/scratch/` directory.
 3. **Cross-Boundary References**: Customizations inside [skills/](./skills/) or [plugins/](./plugins/) MUST be 100% self-contained. They MUST NOT contain relative links pointing to transient folders like [plans/](./plans/).
 4. **Plugin Encapsulation**: Any new MCP server integration MUST be encapsulated inside a named plugin directory within [plugins/](./plugins/) containing a `plugin.json` and `mcp_config.json`.
 5. **Generic Nomenclature**: All contextual configurations MUST use agnostic template variables (`%PROJECT_DOMAIN%`, `%PROJECT_NAME%`) rather than hardcoded brand names to preserve monorepo template portability.

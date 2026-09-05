@@ -6,7 +6,7 @@
 @source "../**/*.{js,jsx,ts,tsx,md,mdx}";
 
 /**
- * tupynambalucas.dev - Knowledge Base Custom Styles
+ * %PROJECT_DOMAIN% - Knowledge Base Custom Styles
  * 
  * This file applies our centralized brand tokens to the Docusaurus (Infima) 
  * framework, strictly enforcing a light-only theme as per architectural decision.

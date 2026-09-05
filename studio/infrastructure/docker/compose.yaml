@@ -1,17 +1,17 @@
-name: tupynambalucas-studio
+name: monorepo-studio
 
 networks:
   penpot-net:
-    name: tupynambalucas-penpot-net
+    name: monorepo-penpot-net
     driver: bridge
   memos-net:
-    name: tupynambalucas-memos-net
+    name: monorepo-memos-net
     driver: bridge
 
 services:
   frontend:
     profiles: ['core', 'penpot']
-    container_name: tupynambalucas-penpot-frontend
+    container_name: monorepo-penpot-frontend
     image: penpotapp/frontend:${PENPOT_VERSION:-latest}
     env_file:
       - ../.env
@@ -34,7 +34,7 @@ services:
 
   backend:
     profiles: ['core', 'penpot']
-    container_name: tupynambalucas-penpot-backend
+    container_name: monorepo-penpot-backend
     image: penpotapp/backend:${PENPOT_VERSION:-latest}
     env_file:
       - ../.env
@@ -64,7 +64,7 @@ services:
 
   exporter:
     profiles: ['core', 'penpot']
-    container_name: tupynambalucas-penpot-exporter
+    container_name: monorepo-penpot-exporter
     image: penpotapp/exporter:${PENPOT_VERSION:-latest}
     env_file:
       - ../.env
@@ -84,7 +84,7 @@ services:
 
   valkey:
     profiles: ['core', 'penpot']
-    container_name: tupynambalucas-penpot-valkey
+    container_name: monorepo-penpot-valkey
     image: valkey/valkey:latest
     volumes:
       - penpot_valkey_data:/data
@@ -99,7 +99,7 @@ services:
 
   aide:
     profiles: ['core', 'penpot']
-    container_name: tupynambalucas-penpot-aide
+    container_name: monorepo-penpot-aide
     image: penpotapp/mcp:${PENPOT_VERSION:-latest}
     env_file:
       - ../.env
@@ -120,7 +120,7 @@ services:
 
   memos:
     profiles: ['core', 'memos']
-    container_name: tupynambalucas-memos
+    container_name: monorepo-memos
     image: neosmemo/memos:stable
     env_file:
       - ../.env
@@ -138,6 +138,6 @@ services:
 
 volumes:
   penpot_valkey_data:
-    name: tupynambalucas-penpot-valkey-data
+    name: monorepo-penpot-valkey-data
   memos_data:
-    name: tupynambalucas-memos-data
+    name: monorepo-memos-data

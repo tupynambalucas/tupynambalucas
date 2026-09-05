@@ -2,6 +2,14 @@
   "name": "@monorepo/cortex-mcp-memory",
   "version": "0.1.0",
   "private": true,
+  "description": "MCP integration for Cortex memory enabling semantic search and context retrieval.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
   "type": "module",
   "main": "dist/index.js",
   "files": [

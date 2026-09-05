@@ -1,17 +1,16 @@
 {
   "name": "@monorepo/hub-web",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
+  "description": "Frontend React application for the personal portfolio and blog.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
-  "description": "tupynambalucas.dev hub Web Application",
-  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
-  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/hub/services/web#readme",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
-    "directory": "hub/services/web"
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
   },
+  "type": "module",
   "scripts": {
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "dev": "vite --mode dev",

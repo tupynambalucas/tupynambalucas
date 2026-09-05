@@ -20,3 +20,4 @@ This section outlines the containerized Git version control and GitHub CLI autom
 
 - **Credential Synchronization**: Streamline secure PAT credential injection inside local developer Docker volumes.
 - **Pre-commit Type-checking**: Add custom hook checks running from tools CLI containers to prevent invalid types from being pushed.
+- **Monorepo Metadata Synchronization**: Develop an automated synchronization script (e.g., `tools/provisioner/src/sync-metadata.ts`) and integrate it into the Provisioner CLI to automatically update and standardize all workspace `package.json` fields based on `project.config.json` variables.

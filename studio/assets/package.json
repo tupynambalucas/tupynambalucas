@@ -2,16 +2,15 @@
   "name": "@monorepo/studio-assets",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "description": "Canonical design tokens, icons, and visual brand assets.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
-  "description": "tupynambalucas.dev Studio Design Assets Package",
-  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
-  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/studio/assets#readme",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
-    "directory": "studio/assets"
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
   },
+  "type": "module",
   "exports": {
     "./package.json": "./package.json",
     "./assets-manifest.json": "./src/assets-manifest.json",

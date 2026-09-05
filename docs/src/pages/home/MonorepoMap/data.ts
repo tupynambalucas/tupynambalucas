@@ -1,3 +1,5 @@
+import projectConfig from '@monorepo/shared-config/project.config.json';
+
 export interface WorkspaceInfo {
   id: string;
   name: string;
@@ -10,7 +12,7 @@ export interface WorkspaceInfo {
 
 export const MONOREPO_OVERVIEW: WorkspaceInfo = {
   id: 'root',
-  name: 'tupynambalucas.dev Architecture',
+  name: `${projectConfig.PROJECT_DOMAIN} Architecture`,
   path: '/workspaces/intro',
   description:
     'A high-performance, strictly-typed monorepo built on PNPM Workspaces and Turborepo. This architecture enforces strict domain isolation while sharing critical core logic.',
@@ -22,7 +24,7 @@ export const MONOREPO_OVERVIEW: WorkspaceInfo = {
     'Shared Design Tokens & Visual Assets',
   ],
   ptBR: {
-    name: 'Arquitetura tupynambalucas.dev',
+    name: `Arquitetura ${projectConfig.PROJECT_DOMAIN}`,
     description:
       'Um monorepo de alta performance e tipagem estrita construído com PNPM Workspaces e Turborepo. Esta arquitetura impõe um isolamento rigoroso de domínios enquanto compartilha lógica core crítica.',
     responsibilities: [

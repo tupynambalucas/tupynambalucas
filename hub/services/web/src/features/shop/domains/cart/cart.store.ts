@@ -76,7 +76,7 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      name: 'tupynambalucas-cart-storage',
+      name: 'monorepo-cart-storage',
       // We only persist items, not actions
       partialize: (state) => ({ items: state.items }),
     },

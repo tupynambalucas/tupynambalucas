@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+const projectConfig = require('@monorepo/shared-config/project.config.json');
 const kbPkgPath = require.resolve('@monorepo/docs/package.json');
 const kbDir = path.dirname(kbPkgPath);
 
@@ -26,8 +27,7 @@ function generateRoadmap(): void {
     process.exit(1);
   }
 
-  let roadmapContent =
-    '# Roadmap\n\nAll planned and completed milestones for each key workspace context in the tupynambalucas.dev ecosystem, aligning our immediate features with long-term platform transformations.\n\n';
+  let roadmapContent = `# Roadmap\n\nAll planned and completed milestones for each key workspace context in the ${projectConfig.PROJECT_DOMAIN} ecosystem, aligning our immediate features with long-term platform transformations.\n\n`;
   const entries: string[] = [];
 
   for (const file of ROADMAP_FILES) {

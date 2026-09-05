@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module';
 import type { Preset, LoadContext, PluginConfig, PluginOptions } from '@docusaurus/types';
-import type { TupynambalucasPresetOptions, ThemeConfig } from './options';
+import type { MonorepoPresetOptions, ThemeConfig } from './options';
 
 const require = createRequire(import.meta.url);
 
@@ -14,9 +14,9 @@ function makePluginConfig(
   return require.resolve(source);
 }
 
-export default function tupynambalucasPreset(
+export default function monorepoPreset(
   context: LoadContext,
-  opts: TupynambalucasPresetOptions = {},
+  opts: MonorepoPresetOptions = {},
 ): Preset {
   const { siteConfig } = context;
   const { themeConfig } = siteConfig;
@@ -76,4 +76,4 @@ export default function tupynambalucasPreset(
   return { themes, plugins };
 }
 
-export type { TupynambalucasPresetOptions, ThemeConfig };
+export type { MonorepoPresetOptions, ThemeConfig };

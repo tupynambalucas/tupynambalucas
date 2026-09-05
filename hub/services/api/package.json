@@ -1,17 +1,16 @@
 {
   "name": "@monorepo/hub-api",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
+  "description": "Backend REST API serving portfolio content and blog operations.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
-  "description": "tupynambalucas.dev hub API Application",
-  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
-  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/hub/services/api#readme",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
-    "directory": "hub/services/api"
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
   },
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist tsconfig.tsbuildinfo",

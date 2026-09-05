@@ -5,8 +5,8 @@ dotenv.config();
 
 export const ConfigSchema = z.object({
   githubToken: z.string().min(1, 'PROFILE_GH_PAT is required'),
-  repositoryOwner: z.string().min(1, 'REPOSITORY_OWNER is required').default('tupynambalucas'),
-  repositoryName: z.string().min(1, 'REPOSITORY_NAME is required').default('tupynambalucas'),
+  repositoryOwner: z.string().min(1, 'REPOSITORY_OWNER is required').default('monorepo'),
+  repositoryName: z.string().min(1, 'REPOSITORY_NAME is required').default('monorepo'),
   targetBranch: z.string().min(1, 'TARGET_BRANCH is required').default('develop'),
   excludeRepos: z.array(z.string()).default([]),
   excludeLangs: z.array(z.string()).default([]),

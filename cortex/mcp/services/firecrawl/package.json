@@ -2,6 +2,14 @@
   "name": "@monorepo/cortex-mcp-firecrawl",
   "version": "0.1.0",
   "private": true,
+  "description": "MCP integration for Firecrawl providing advanced web content extraction and crawling.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

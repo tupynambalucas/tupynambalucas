@@ -7,8 +7,8 @@ export const config = {
   githubToken: process.env.PROFILE_GH_PAT ?? '',
 
   // All other variables can be explicitly defined here for the project
-  repositoryOwner: 'tupynambalucas',
-  repositoryName: 'tupynambalucas',
+  repositoryOwner: 'monorepo',
+  repositoryName: 'monorepo',
   targetBranch: process.env.TARGET_BRANCH ?? 'develop',
 
   excludeRepos: [],

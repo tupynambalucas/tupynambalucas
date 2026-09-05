@@ -160,6 +160,10 @@ Always-on cluster infrastructure, observability pipelines, and build acceleratio
 Dynamic asset generator compiling GitHub profile stats into SVG cards and templated
 Markdown documents. Powered by the GitHub GraphQL API.
 
+### [Shared](./shared/README.md) (`shared/`)
+
+Foundational utilities, global configuration (`project.config.json`), and Git lifecycle hooks shared across all workspaces.
+
 ### [Tools](./tools/README.md) (`tools/`)
 
 Developer automation: containerized Git and GitHub CLI environments, repository

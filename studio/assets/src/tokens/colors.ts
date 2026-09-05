@@ -1,5 +1,5 @@
 /**
- * tupynambalucas.dev - Canonical Design Tokens
+ * project.local - Canonical Design Tokens
  * Source: @docs/handbook/studio.mdx
  */
 

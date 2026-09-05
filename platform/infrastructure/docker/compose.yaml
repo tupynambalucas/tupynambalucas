@@ -1,14 +1,14 @@
-name: tupynambalucas-platform
+name: monorepo-platform
 
 networks:
   platform-net:
-    name: tupynambalucas-platform-net
+    name: monorepo-platform-net
     driver: bridge
 
 services:
   otel-collector:
     profiles: ['core']
-    container_name: tupynambalucas-platform-otel
+    container_name: monorepo-platform-otel
     build:
       context: ../../services/otel-collector
       dockerfile: Dockerfile
@@ -28,7 +28,7 @@ services:
 
   turbocache:
     profiles: ['core']
-    container_name: tupynambalucas-platform-turbocache
+    container_name: monorepo-platform-turbocache
     build:
       context: ../../services/turbocache
       dockerfile: Dockerfile
@@ -52,7 +52,7 @@ services:
 
   prometheus:
     profiles: ['core']
-    container_name: tupynambalucas-platform-prometheus
+    container_name: monorepo-platform-prometheus
     build:
       context: ../../services/prometheus
       dockerfile: Dockerfile
@@ -66,7 +66,7 @@ services:
 
   loki:
     profiles: ['core']
-    container_name: tupynambalucas-platform-loki
+    container_name: monorepo-platform-loki
     build:
       context: ../../services/loki
       dockerfile: Dockerfile
@@ -80,7 +80,7 @@ services:
 
   tempo:
     profiles: ['core']
-    container_name: tupynambalucas-platform-tempo
+    container_name: monorepo-platform-tempo
     build:
       context: ../../services/tempo
       dockerfile: Dockerfile
@@ -95,7 +95,7 @@ services:
 
   grafana:
     profiles: ['core']
-    container_name: tupynambalucas-platform-grafana
+    container_name: monorepo-platform-grafana
     build:
       context: ../../services/grafana
       dockerfile: Dockerfile

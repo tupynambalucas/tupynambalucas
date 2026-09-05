@@ -2,16 +2,15 @@
   "name": "@monorepo/platform",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
+  "description": "Core platform orchestration workspace managing cluster telemetry and build systems.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
-  "description": "Tupynambá Lucas Tools Package",
-  "license": "https://github.com/tupynambalucas/tupynambalucas/tree/main#license",
-  "homepage": "https://github.com/tupynambalucas/tupynambalucas/tree/main/platform#readme",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git",
-    "directory": "platform"
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
   },
+  "type": "module",
   "scripts": {
     "platform:up": "podman compose -f infrastructure/docker/compose.yaml up -d --build",
     "platform:down": "podman compose -f infrastructure/docker/compose.yaml down",

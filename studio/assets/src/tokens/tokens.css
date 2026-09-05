@@ -15,7 +15,7 @@
 }
 
 /**
- * tupynambalucas.dev - Design Tokens (Pure Theme)
+ * project.local - Design Tokens (Pure Theme)
  * Centralized in @studio to ensure consistency across the monorepo.
  * This file contains ONLY the @theme block to avoid breaking 
  * third-party styles with Tailwind's Preflight or global resets.

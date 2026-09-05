@@ -36,11 +36,17 @@ When documenting specific domains or features that require multiple files:
 
 All files placed inside the documentation directories MUST strictly adhere to the following rules:
 
-### A. Extension Rule: All-MDX
+### A. Tone of Voice
+
+- Maintain a senior, objective, and technical tone.
+- Avoid preambles, introductory chatter, or conclusion summaries.
+- Keep sentences concise, clear, and direct.
+
+### B. Extension Rule: All-MDX
 
 - **Zero `.md` Files**: All technical documents and guides must use the `.mdx` file extension to support rich React components and strict MDX parsing. No `.md` files should be created or exist within these directories (the only exception is the repository-standard `README.md` at package and workspace roots).
 
-### B. MDX Parser Compliance
+### C. MDX Parser Compliance
 
 - **No HTML Comments**: Standard HTML comments (`<!-- comment -->`) are completely forbidden in MDX and will break compilation. Always use JavaScript comments wrapped in curly braces: `{/* comment */}`.
 - **Escaping Special Characters**: Raw curly braces (`{` and `}`) and less-than signs (`<`) will be intercepted by the MDX parser as JSX or expression start tokens. Always escape them when they are intended as raw text: `\{`, `\}`, and `\<`.
@@ -48,20 +54,20 @@ All files placed inside the documentation directories MUST strictly adhere to th
 - **Markdown inside HTML/JSX**: To render standard markdown formatting inside raw HTML/JSX block elements, isolate the markdown content with empty lines above and below the block tags.
 - **Docusaurus Admonitions**: Use native colon admonitions with a bracketed title (`:::note[Title]`, `:::tip[Title]`, `:::info[Title]`, `:::caution[Title]`, `:::danger[Title]`) instead of standard GFM quote alerts (`> [!NOTE]`).
 
-### C. Cross-linking and Content Preservation
+### D. Cross-linking and Content Preservation
 
 - **Cross-linking**: Use Docusaurus absolute paths (e.g., `[Link Text]` followed by `(/docs/handbook/reference/...)`) for internal markdown links to prevent dead links caused by the deeply nested Diátaxis structure. Avoid relative paths like `../../`.
 - **Content Integrity**: When migrating or converting existing `.md` documentation into MDX, you MUST migrate the content 1:1. Never summarize, truncate, or omit the original text. External web URLs (`http://` or `https://`) must be strictly preserved without modification.
 
-### D. Formatting & Prettier Standards
+### E. Formatting & Prettier Standards
 
-All MDX files must align with the project Prettier configuration:
+- All MDX files must align with the project Prettier configuration:
 
-- Use exactly 2-space indentation.
-- Use hyphens (`-`) for unordered list items; asterisks or pluses are forbidden.
-- Code blocks embedded in MDX must feature semicolons, trailing commas, single quotes for strings (except double quotes in JSX props), and parentheses for arrow functions.
+  - Use exactly 2-space indentation.
+  - Use hyphens (`-`) for unordered list items; asterisks or pluses are forbidden.
+  - Code blocks embedded in MDX must feature semicolons, trailing commas, single quotes for strings (except double quotes in JSX props), and parentheses for arrow functions.
 
-### E. Project Variables Plugin
+### F. Project Variables Plugin
 
 - **No Hardcoded Brands**: You MUST NOT hardcode specific brand names or URLs in documentation content.
 - **AST Tokens**: Always use agnostic percentage-wrapped tokens like `%PROJECT_DOMAIN%` or `%PROJECT_NAME%`.
