@@ -1,0 +1,41 @@
+deployment:
+  replicas: 1
+image:
+  name: traefik
+  tag: v3.1
+logs:
+  general:
+    level: DEBUG
+ingressClass:
+  enabled: true
+  isDefaultClass: false
+  name: traefik
+providers:
+  kubernetesIngress:
+    enabled: true
+ports:
+  web:
+    port: 80
+    expose: true
+    exposedPort: 80
+    forwardedHeaders:
+      insecure: true
+  websecure:
+    port: 443
+    expose: true
+    exposedPort: 443
+    forwardedHeaders:
+      insecure: true
+  mcp:
+    port: 8080
+    expose: true
+    exposedPort: 8080
+  traefik:
+    port: 8082
+    expose: true
+    exposedPort: 8082
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`traefik-dev.tupynambalucas.dev`)
+    entryPoints: ['web']

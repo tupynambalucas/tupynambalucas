@@ -1,53 +1,71 @@
-# Especificação: Refatoração do Kubernetes (Kustomize & Resources)
+# Specification: Kubernetes Refactor (Helm + Kustomize)
 
-Este documento detalha como refatoraremos os manifestos atuais de Kubernetes, deixando a abordagem monolítica e migrando para uma estrutura profissional separada por recursos, utilizando a capacidade nativa de patches do `Kustomize`.
+This document details the migration from distributed local manifests to the centralized Platform Engineering model, supporting both local execution and Cloud deployments.
 
-## 1. O Problema Atual
+## 1. Skaffold Profiles & Environment Mapping
 
-No momento, arquivos como `cortex/infrastructure/kubernetes/gateway.yaml` e `platform/infrastructure/kubernetes/traefik.yaml` declaram múltiplos recursos do Kubernetes (ex: `Deployment`, `Service`, `ConfigMap`) dentro de um mesmo arquivo separados por `---`. Isso dificulta a modularização, reuso e manutenção.
+Since Docker Compose is being removed in favor of a pure Kubernetes-native workflow, Skaffold must handle both local development and remote cloud deployments.
 
-## 2. Padrão-Alvo: K8s Resource Split
+We will place `skaffold.yaml` at `infrastructure/skaffold.yaml`. It will dynamically map to the Kustomize overlays in `environments/`:
 
-Todos os manifestos base (que formam o esqueleto da aplicação independente de ambiente) devem ser desmembrados e agrupados pelo tipo de recurso em `infrastructure/manifests/`.
+```yaml
+# infrastructure/skaffold.yaml
+apiVersion: skaffold/v4beta11
+kind: Config
 
-### Exemplo de Desmembramento do Gateway:
+# Default profile (Local Development)
+manifests:
+  kustomize:
+    paths:
+      - environments/local
+    buildArgs:
+      - --load-restrictor=LoadRestrictionsNone
+      - --enable-helm
 
-O arquivo monolítico atual se dividirá em:
+profiles:
+  - name: prod
+    manifests:
+      kustomize:
+        paths:
+          - environments/prod
+        buildArgs:
+          - --load-restrictor=LoadRestrictionsNone
+          - --enable-helm
+```
 
-- `infrastructure/manifests/deployments/gateway-deploy.yaml`
-- `infrastructure/manifests/services/gateway-svc.yaml`
+## 2. Consolidating Helm Charts
 
-### Exemplo de Kustomization Base (`infrastructure/manifests/kustomization.yaml`):
+- Move `cortex/infrastructure/kubernetes/agentgateway-chart` to `infrastructure/charts/agentgateway`.
+- Encapsulate all remaining internal services (`hub-api`, `memory`, `mcp`) into local Helm charts inside `infrastructure/charts/`.
+
+## 3. The Environment Kustomization
+
+The `infrastructure/environments/local/kustomization.yaml` acts as the environment registry:
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - deployments/gateway-deploy.yaml
-  - services/gateway-svc.yaml
-  - namespaces/cortex-ns.yaml
+
+secretGenerator:
+  - name: monorepo-secrets
+    envs:
+      - secrets.env
+
+helmCharts:
+  # Third-party standard charts
+  - name: traefik
+    repo: https://traefik.github.io/charts
+    version: 26.0.0
+    releaseName: traefik
+    valuesFile: helm-values/traefik-values.yaml
+
+  # Local Monorepo charts
+  - name: agentgateway
+    repo: file://../../charts/agentgateway
+    releaseName: agentgateway
+    valuesFile: helm-values/agentgateway-values.yaml
 ```
 
-_(Nota: a granularidade exata de onde fica o `kustomization.yaml` base pode ser ajustada, desde que fique centralizada no `manifests/`)_
+## 4. Cloud Native Cloud Deployments
 
-## 3. Gestão de Ambientes (Overlays)
-
-Os arquivos `skaffold.yaml` localizados nas pastas de módulos (ex: `infrastructure/cortex/skaffold.yaml`) vão referenciar o `kustomization.yaml` contido em `infrastructure/overlays/dev/cortex/`.
-
-```yaml
-# infrastructure/overlays/dev/cortex/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-
-bases:
-  - ../../../../manifests/
-
-# Aqui ficam as injeções específicas do ambiente de desenvolvimento:
-# resources: (arquivos que só sobem em dev, ex: banco mock)
-# patchesStrategicMerge: (escalas de CPU menores, varáveis de dev)
-```
-
-## Benefícios
-
-- **Padrão de Indústria:** Total aderência com práticas recomendadas pelo próprio Kustomize e ecossistema CNCF.
-- **Evita Duplicação:** Múltiplos ambientes podem consumir as exatas mesmas regras base definidas no `manifests/`, bastando adicionar um patch no `overlays/`.
+With this structure, CD pipelines (like GitHub Actions or ArgoCD) can target `environments/prod` directly, while developers run `pnpm dev` which invokes `skaffold dev` pointing to `environments/local`.

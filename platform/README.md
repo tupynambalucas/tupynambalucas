@@ -36,13 +36,9 @@ Platform organizes the core infrastructure into modular service directories:
 
 ### 1. Configure Environment Variables
 
-Create the `.env` configuration file in `platform/infrastructure/` from the provided template:
+All environment variables for this context are centralized in [`infrastructure/.env`](../infrastructure/.env) at the monorepo root.
 
-```bash
-cp platform/infrastructure/.env.example platform/infrastructure/.env
-```
-
-Configure sensitive tokens (e.g. `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_TUNNEL_TOKEN`, `TURBO_TOKEN`, `GRAFANA_ADMIN_PASSWORD`) inside [platform/infrastructure/.env](./infrastructure/.env).
+Configure sensitive tokens (e.g. `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_TUNNEL_TOKEN`, `TURBO_TOKEN`, `GRAFANA_ADMIN_PASSWORD`) inside [`infrastructure/.env`](../infrastructure/.env).
 
 ### 2. Kubernetes Dev Mode (Hot-Reload)
 

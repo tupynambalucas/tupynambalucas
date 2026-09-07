@@ -27,12 +27,12 @@ Before editing or analyzing code in this context, read the local rules for the s
 
 ## 1.5. Ubiquitous Language
 
-| Term       | Definition                                                                       | Forbidden Synonyms         |
-| :--------- | :------------------------------------------------------------------------------- | :------------------------- |
-| `Customer` | The authenticated user of the developer hub platform                             | user, person, member       |
-| `Product`  | A catalog item or service offered through the hub                                | item, listing, offering    |
-| `Cycle`    | An active time-bound subscription window                                         | period, subscription, plan |
-| `Core`     | The `@%PROJECT_NAME%-hub/core` shared Zod schema and TypeScript contract library | shared, common, utils      |
+| Term       | Definition                                                                 | Forbidden Synonyms         |
+| :--------- | :------------------------------------------------------------------------- | :------------------------- |
+| `Customer` | The authenticated user of the developer hub platform                       | user, person, member       |
+| `Product`  | A catalog item or service offered through the hub                          | item, listing, offering    |
+| `Cycle`    | An active time-bound subscription window                                   | period, subscription, plan |
+| `Core`     | The `@monorepo/hub-core` shared Zod schema and TypeScript contract library | shared, common, utils      |
 
 ---
 
@@ -44,9 +44,9 @@ The Hub context manages all personal developer website operations. It is archite
 graph TD
     direction TD
     subgraph Hub_Context
-        Web["@%PROJECT_NAME%-hub/web (Vite/React)"]
-        API["@%PROJECT_NAME%-hub/api (Fastify 5)"]
-        Core["@%PROJECT_NAME%-hub/core (Zod library)"]
+        Web["@monorepo/hub-web (Vite/React)"]
+        API["@monorepo/hub-api (Fastify 5)"]
+        Core["@monorepo/hub-core (Zod library)"]
     end
     Web --> Core
     API --> Core
@@ -69,7 +69,7 @@ graph TD
 
 Run these scripts from the monorepo root to manage the hub stack:
 
-- `pnpm hub:dev`: Boots the local compose databases (MongoDB + Redis), builds `@%PROJECT_NAME%-hub/core`, and runs `@%PROJECT_NAME%-hub/api` and `@%PROJECT_NAME%-hub/web` concurrently.
+- `pnpm hub:dev`: Boots the local compose databases (MongoDB + Redis), builds `@monorepo/hub-core`, and runs `@monorepo/hub-api` and `@monorepo/hub-web` concurrently.
 - `pnpm hub:up`: Boots only the MongoDB replica set (`%PROJECT_NAME%-hub-db-dev`) and Redis (`%PROJECT_NAME%-hub-redis-dev`) containers.
 - `pnpm hub:down`: Stops local Docker containers and releases localhost ports 3000 and 5173.
 - `pnpm hub:reset`: Clears local database volumes and rebuilds developer infrastructure containers.

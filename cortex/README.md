@@ -28,15 +28,9 @@ Cortex organizes the AI ecosystem into four modular sub-domains following Domain
 
 ## Getting Started
 
-### 1. Configure Environment Variables
+All environment variables for this context are centralized in [`infrastructure/.env`](../infrastructure/.env) at the monorepo root.
 
-Create the `.env` configuration file in `cortex/infrastructure/` from the provided template:
-
-```bash
-cp cortex/infrastructure/.env.example cortex/infrastructure/.env
-```
-
-Set any required API keys (e.g. `FIRECRAWL_API_KEY`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `CONTEXT7_API_KEY`) inside [cortex/infrastructure/.env](./infrastructure/.env).
+Set any required API keys (e.g. `FIRECRAWL_API_KEY`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `CONTEXT7_API_KEY`) inside [`infrastructure/.env`](../infrastructure/.env).
 
 ### 2. Kubernetes Dev Mode (Hot-Reload)
 

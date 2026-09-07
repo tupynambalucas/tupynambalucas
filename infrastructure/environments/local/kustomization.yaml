@@ -1,0 +1,57 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../manifests/cortex-namespace.yaml
+  - ../../manifests/cortex-memory.yaml
+  - ../../manifests/cortex-mcp.yaml
+  - ../../manifests/platform-namespace.yaml
+  - ../../manifests/platform-otelcol.yaml
+  - ../../manifests/platform-turbocache.yaml
+  - ../../manifests/platform-headlamp.yaml
+  - ../../manifests/platform-grafana.yaml
+  - ../../manifests/platform-prometheus.yaml
+  - ../../manifests/platform-kubestatemetrics.yaml
+  - ../../manifests/platform-loki.yaml
+  - ../../manifests/platform-tempo.yaml
+  - ../../manifests/platform-cloudflared.yaml
+  - ../../manifests/studio-namespace.yaml
+  - ../../manifests/studio-penpot.yaml
+  - ../../manifests/studio-memos.yaml
+
+secretGenerator:
+  - name: cortex-secrets
+    namespace: cortex
+    envs:
+      - ../../.env
+  - name: platform-secrets
+    namespace: platform
+    envs:
+      - ../../.env
+  - name: studio-secrets
+    namespace: studio
+    envs:
+      - ../../.env
+
+helmGlobals:
+  chartHome: ../../charts
+helmCharts:
+  - name: traefik
+    repo: https://traefik.github.io/charts
+    version: 26.0.0
+    releaseName: traefik
+    namespace: platform
+    includeCRDs: true
+    valuesFile: helm-values/traefik-values.yaml
+  - name: agentgateway
+    releaseName: agentgateway
+    namespace: cortex
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+patches:
+  - path: traefik-rbac-patch.json
+    target:
+      kind: ClusterRole
+      name: traefik-platform

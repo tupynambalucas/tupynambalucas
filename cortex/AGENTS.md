@@ -100,7 +100,7 @@ flowchart TD
 ## 3. Operational & Networking Guardrails
 
 - **Host Application Resolution**: Containerized MCP tools accessing host apps MUST use `http://host.docker.internal:<port>` (docs `:3002`, hub-web `:5173`, hub-api `:3000`).
-- **Credential Separation**: API keys and tokens MUST be configured via [.env](./infrastructure/.env) and referenced through Kubernetes Secrets (`cortex-secrets`) or Compose variables.
+- **Credential Separation**: API keys and tokens MUST be configured via [`infrastructure/.env`](../infrastructure/.env) and referenced through Kubernetes Secrets (`cortex-secrets`).
 - **Fail-Open Policy Resilience**: ExtMCP guardrail handlers MUST catch exceptions and fall back to `{ pass: {} }` to prevent service disruptions.
 - **Strict Relative Linking**: All Markdown links within this context MUST use relative filesystem paths without backtick wrappers.
 

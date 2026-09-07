@@ -19,7 +19,7 @@ graph TD
     Root["%PROJECT_DOMAIN% Monorepo"]
     Root --> Hub["Hub Context: /hub"]
     Root --> Cortex["Cortex Context: /cortex"]
-    Root --> Profile["Profile Context: /profile"]
+    Root --> Renderer["Renderer Context: /renderer"]
     Root --> Studio["Studio Context: /studio"]
     Root --> Tools["Tools Context: /tools"]
     Root --> Platform["Platform Context: /platform"]
@@ -34,7 +34,7 @@ graph TD
     Cortex --> MCP["MCP Adapters"]
     Cortex --> Agents["Terminal Agents"]
 
-    Profile --> P_Zig["Zig CLI Engine"]
+    Renderer --> R_Gen["TypeScript Generator"]
 
     Studio --> Tokens["Design Tokens"]
     Studio --> Assets["Brand Assets"]
@@ -50,7 +50,7 @@ graph TD
 | `hub/services/api`  | `@repo/hub/api`       | **Application**    | Fastify REST API serving blog posts and form handlers.          |
 | `hub/packages/core` | `@repo/hub/core`      | **Library**        | SSOT for the Hub context (Zod validation, shared schemas).      |
 | `cortex/`           | `@/cortex`            | **Tooling**        | Unified AI gateway, MCP adapters, and agent runners.            |
-| `profile/`          | `@/profile`           | **Application**    | Zig CLI application compiling GitHub stats and generating SVGs. |
+| `profile/`          | `@/profile`           | **Application**    | TypeScript application compiling Markdown templates and generating SVGs. |
 | `studio/assets`     | `@repo/studio/assets` | **Library**        | Design tokens, logos, SVGs, and sync utilities.                 |
 | `tools/`            | `@repo/tools/*`       | **Tooling**        | Isolated Git version control and GitHub CLI automation.         |
 | `platform/`         | `@/platform`          | **Infrastructure** | Telemetry monitoring and Turborepo cache servers.               |
@@ -94,3 +94,4 @@ Orchestrates OpenTelemetry pipelines and remote caching to accelerate developer 
 ### Docs Context (`docs/`)
 
 The developer documentation hub. For detailed documentation, see the **[Docs Workspace](/workspaces/docs)**.
+

@@ -1,58 +1,38 @@
-# Especificação: Estrutura de Diretórios (Target State)
+# Specification: Directory Structure (Target State)
 
-A árvore a seguir demonstra o estado final desejado para o workspace `infrastructure/` na raiz do projeto. Ela une as práticas do `Kustomize` (base/overlays) com o conceito de módulos de contexto (cortex, platform, studio, hub) para encapsular configurações específicas de `Docker Compose` e `Skaffold`.
+The `infrastructure/` workspace acts as the definitive GitOps source of truth for the cluster.
 
 ```text
 infrastructure/
-├── package.json               # Novo workspace package (@tupynambalucas/infrastructure)
+├── package.json               # Workspace package (@monorepo/infrastructure)
 ├── README.md
-├── docs/                      # Guias de deploy e arquitetura da infraestrutura
-├── .env                       # (ÚNICO) Arquivo centralizado contendo TODAS as variáveis de ambiente consolidadas
+├── skaffold.yaml              # (MASTER) Orchestrates builds and points to Kustomize overlays via profiles
 │
-├── manifests/                 # (KUBERNETES BASE) Manifestos separados por tipo de recurso
-│   ├── namespaces/            # Ex: cortex-ns.yaml, platform-ns.yaml
-│   ├── deployments/           # Ex: memory-api-deploy.yaml, gateway-deploy.yaml
-│   ├── services/              # Ex: memory-api-svc.yaml, grafana-svc.yaml
-│   ├── ingresses/             # Ex: traefik-ingress.yaml
-│   ├── configmaps/            # Ex: grafana-cm.yaml
-│   ├── secrets/
-│   ├── storage/
-│   └── crds/
+├── charts/                    # (HELM) Local Application Charts (Single Source of Truth)
+│   ├── agentgateway/
+│   ├── memory/
+│   ├── hub-api/
+│   └── hub-web/
 │
-├── overlays/                  # (KUBERNETES ENVIRONMENTS) Configurações por ambiente
-│   ├── dev/
-│   │   ├── cortex/            # kustomization.yaml referenciando os recursos de manifests/
-│   │   ├── platform/
-│   │   └── studio/
-│   ├── test/
-│   └── prod/
+├── environments/              # (KUSTOMIZE) Deployment Environments
+│   ├── local/                 # Local development loop (replaces Docker Compose)
+│   │   ├── kustomization.yaml # Renders all charts with local overrides
+│   │   ├── secrets.env        # Local secrets (ignored in Git, managed by CLI)
+│   │   └── helm-values/       # Local-specific values (e.g., Traefik dev ports, debug logs)
+│   │
+│   ├── staging/               # Remote Cloud Staging Environment
+│   │   ├── kustomization.yaml
+│   │   └── helm-values/
+│   │
+│   └── prod/                  # Remote Cloud Production Environment
+│       ├── kustomization.yaml
+│       └── helm-values/
 │
-├── charts/                    # Helm charts (reservado para expansões futuras)
-│
-├── cortex/                    # (MÓDULO DE CONTEXTO)
-│   ├── skaffold.yaml          # Copiado e com caminhos relativos atualizados
-│   └── compose.yaml           # Copiado de cortex/infrastructure/docker/compose.yaml
-│
-├── platform/                  # (MÓDULO DE CONTEXTO)
-│   ├── skaffold.yaml
-│   └── compose.yaml
-│
-├── studio/                    # (MÓDULO DE CONTEXTO)
-│   ├── skaffold.yaml
-│   └── compose.yaml
-│
-├── hub/                       # (MÓDULO DE CONTEXTO)
-│   ├── compose.yaml
-│   ├── compose.override.yaml
-│   └── compose.prod.yaml
-│
-└── tools/                     # (MÓDULO DE CONTEXTO)
-    └── github/
-        └── compose.yaml
+└── docs/                      # Platform engineering documentation
 ```
 
-## Regras de Encapsulamento
+## Encapsulation Rules
 
-1. **Manifestos Compartilhados:** `manifests/` e `overlays/` operam no nível do Kubernetes. Diferentes serviços podem compartilhar namespaces ou configmaps, garantindo um "Single Source of Truth" para os objetos do Cluster.
-2. **Desenvolvimento Local:** As pastas de contexto (`cortex/`, `platform/`, etc) lidam inteiramente com a orquestração do loop local do desenvolvedor (`compose.yaml` e `skaffold.yaml`).
-3. **Isolamento Total:** Nenhuma pasta "docker" ou "kubernetes" avulsa será criada na raiz de `infrastructure/`. O design força as configurações para dentro de seus domínios legítimos.
+1. **Skaffold at the Root**: The `skaffold.yaml` file sits at the root of the `infrastructure/` folder. It uses **Profiles** to determine which environment (`local`, `staging`, `prod`) to deploy to.
+2. **No Application Code**: The `infrastructure/` workspace contains ZERO application code. Dockerfiles remain in their respective bounded contexts (`cortex/`, `hub/`).
+3. **Build Contexts**: The master `skaffold.yaml` traverses up to the app directories (e.g., `context: ../cortex/gateway`) to build images, but handles the deployment routing centrally.

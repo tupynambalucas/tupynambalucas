@@ -1,0 +1,36 @@
+---
+title: Bootstrapping a New Project
+---
+# Bootstrapping a New Project
+
+This tutorial explains how to initialize a new instance of the monorepo using the state-aware provisioner CLI.
+
+## Prerequisites
+- Node.js (v22+)
+- pnpm (v9+)
+- Docker & Docker Compose (or Podman)
+
+## Step 1: Clone the Repository
+Clone the template repository to your local machine:
+```bash
+git clone https://github.com/%GITHUB_ORG%/%GITHUB_REPO%.git my-new-project
+cd my-new-project
+pnpm install
+```
+
+## Step 2: Run the Provisioner CLI
+Our repository ships with a state-aware CLI that automatically renames domains, internal hosts, and package scopes.
+```bash
+pnpm provision init
+```
+
+The interactive wizard will ask you for:
+- New Project Domain (e.g., `mycompany.com`)
+- New GitHub Organization
+- New GitHub Repository Name
+
+## Step 3: Start the Environment
+Once the bootstrap script completes, the entire monorepo is adapted to your new brand.
+```bash
+pnpm dev
+```

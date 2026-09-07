@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agentgateway-config
+  namespace: cortex
+data:
+  config.yaml: |
+    # yaml-language-server: $schema=https://agentgateway.dev/schema/config
+    config:
+      adminAddr: '[::]:15000'
+      statsAddr: '[::]:15001'
+      logging:
+        format: json
+      tracing:
+        otlpEndpoint: http://otel-collector:4317
+        randomSampling: true
+
+    gateways:
+      default:
+        port: 8080
+
+    mcp:
+      gateways: [default]
+      statefulMode: stateless
+      prefixMode: conditional
+      failureMode: failOpen
+      policies:
+        cors:
+          allowOrigins:
+            - '*'
+            - 'https://agentgateway.{{ .Values.projectDomain }}'
+            - 'https://agentgateway-dev.{{ .Values.projectDomain }}'
+            - 'https://agentgateway-mcp-dev.{{ .Values.projectDomain }}'
+            - 'https://agentgateway-mcp.{{ .Values.projectDomain }}'
+            - 'https://agentgateway-ingress-dev.{{ .Values.projectDomain }}'
+            - 'https://agentgateway-ingress.{{ .Values.projectDomain }}'
+            - 'https://memory-dev.{{ .Values.projectDomain }}'
+            - 'https://memory.{{ .Values.projectDomain }}'
+          allowMethods:
+            - '*'
+            - GET
+            - POST
+            - OPTIONS
+            - PUT
+            - DELETE
+          allowHeaders:
+            - '*'
+          exposeHeaders:
+            - Mcp-Session-Id
+        mcpGuardrails:
+          processors:
+            - kind: remote
+              host: 'mcp-guardrails:9001'
+              failureMode: failClosed
+              methods:
+                tools/call: request
+                tools/list: response
+      targets:
+        - name: github
+          mcp:
+            host: http://mcp-github:8080/sse
+          policies:
+            backendAuth:
+              key: '$GITHUB_PERSONAL_ACCESS_TOKEN'
+        - name: context7
+          mcp:
+            host: https://mcp.context7.com/mcp
+          policies:
+            backendAuth:
+              key: '$CONTEXT7_API_KEY'
+        - name: firecrawl
+          mcp:
+            host: http://mcp-firecrawl:8080/mcp
+        - name: grafana
+          mcp:
+            host: http://mcp-grafana:8080/mcp
+        - name: playwright
+          mcp:
+            host: http://mcp-playwright:8080/mcp
+        - name: memory
+          mcp:
+            host: http://mcp-memory:8080/mcp
+        - name: kubectl
+          mcp:
+            host: http://mcp-kubectl:8080/mcp
+
+    ui:
+      gateways: [default]
+
+    llm:
+      gateways: [default]
+      models: []
+      providers: []
+      virtualModels: []
+
+    frontendPolicies:
+      http:
+        maxBufferSize: 33554432

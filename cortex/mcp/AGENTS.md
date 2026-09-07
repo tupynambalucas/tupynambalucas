@@ -60,7 +60,7 @@ developer inspector, and containerized downstream tool server adapters.
   the host machine will have their payloads automatically mutated by the Guardrails. Agents can
   just send `localhost` naturally.
 - **Credential Separation**: API keys and tokens MUST be configured via container environment
-  files ([.env](../infrastructure/.env)) and MUST NOT be hardcoded.
+  files ([`infrastructure/.env`](../../infrastructure/.env)) and MUST NOT be hardcoded.
 - **Fail-Safe Fallbacks**: ExtMCP guardrail handlers MUST catch parsing exceptions and return
   pass-through policies (`{ pass: {} }`) to prevent service interruption.
 - **Relative Linking**: All references MUST use relative Markdown links without enclosing

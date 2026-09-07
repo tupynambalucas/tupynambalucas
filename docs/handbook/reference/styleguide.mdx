@@ -296,8 +296,8 @@ function AdvancedCycleManager() {
   };
 
   const [products, setProducts] = React.useState([
-    { id: 'uuid-1', name: 'Alface Crespa', price: 4.5, isValid: true },
-    { id: 'uuid-2', name: 'Tomate Cereja', price: 0, isValid: false },
+    { id: 'uuid-1', name: 'Green Lettuce', price: 4.5, isValid: true },
+    { id: 'uuid-2', name: 'Cherry Tomato', price: 0, isValid: false },
   ]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
@@ -332,14 +332,14 @@ function AdvancedCycleManager() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Gerenciador de Ciclo</h3>
+        <h3 className={styles.title}>Cycle Manager</h3>
 
         <span
           className={`${styles.statusBadge} ${
             hasErrors === true ? styles.statusInvalid : styles.statusReady
           }`}
         >
-          {hasErrors === true ? '⚠ ITENS INVÁLIDOS' : '✓ PRONTO PARA SALVAR'}
+          {hasErrors === true ? '⚠ INVALID ITEMS' : '✓ READY TO SAVE'}
         </span>
       </div>
 
@@ -374,7 +374,7 @@ function AdvancedCycleManager() {
         onClick={handleAction}
         className={styles.submitButton}
       >
-        {isSubmitting === true ? 'Processando Atualização...' : 'Salvar Alterações do Ciclo'}
+        {isSubmitting === true ? 'Processing Update...' : 'Save Cycle Changes'}
       </button>
 
       {/* Internal CSS for the demo purpose only - NOT for production */}
@@ -404,3 +404,4 @@ function AdvancedCycleManager() {
 ---
 
 _Last Updated: June 2026_
+

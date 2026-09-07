@@ -52,7 +52,7 @@ This bounded context ([studio/](./)) defines domain rules, design tokens, asset 
 
 1. **Token Invariance**: Brand CSS color tokens and variables MUST be maintained in [assets/src/tokens/](./assets/src/tokens/). AI agents MUST NEVER define hardcoded hex values in local application CSS modules.
 2. **Asset Governance**: Raw vector logos MUST be placed in [assets/src/brand/logos/](./assets/src/brand/logos/) and web-ready icon components inside [assets/src/icons/](./assets/src/icons/). Heavy binary backups MUST NOT be committed to Git.
-3. **Secrets Isolation**: Local variables and database strings MUST be defined in [.env](./infrastructure/.env) and mapped into container environments via `studio-secrets` in Kubernetes or `--env-file` in Docker Compose.
+3. **Secrets Isolation**: Local variables and database strings MUST be defined in [`infrastructure/.env`](../infrastructure/.env) and mapped into container environments via `studio-secrets` in Kubernetes.
 4. **Skaffold Dependency**: Studio requires `platform-dev` ([platform/skaffold.yaml](../platform/skaffold.yaml)). Whenever Studio runs in Kubernetes via Skaffold, Platform infrastructure starts automatically.
 
 ---

@@ -53,7 +53,7 @@ This bounded context ([platform/](./)) centralizes and manages core cluster infr
 ## 3. Operational & Telemetry Guardrails
 
 - **Unified Ingestion**: All runtime applications across the monorepo MUST forward logs, metrics, and distributed traces to `otelcol` via OTLP (`http://otel-collector:4317` or `http://otel-collector.platform.svc.cluster.local:4317`). Direct logging to database tables is strictly forbidden.
-- **Credential Separation**: Secrets and sensitive tokens (such as `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_TUNNEL_TOKEN`, `TURBO_TOKEN`, `GRAFANA_ADMIN_PASSWORD`) MUST be declared in [.env](./infrastructure/.env) and mapped through `platform-secrets` or `cloudflare-api-token-secret`.
+- **Credential Separation**: Secrets and sensitive tokens (such as `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_TUNNEL_TOKEN`, `TURBO_TOKEN`, `GRAFANA_ADMIN_PASSWORD`) MUST be declared in [`infrastructure/.env`](../infrastructure/.env) and mapped through `platform-secrets` or `cloudflare-api-token-secret`.
 - **Declarative Provisioning**: Grafana dashboards and datasources MUST be maintained declaratively in [services/grafana/src/provisioning/](./services/grafana/src/provisioning/). Manual UI dashboard configurations will be lost across container recycles.
 - **Cache Persistence**: Turborepo cache artifacts and persistent telemetry data MUST be bound to PersistentVolumeClaims (`turbocache-pvc`, `grafana-pvc`, `prometheus-pvc`, `loki-pvc`, `tempo-pvc`) or named volume mounts.
 
@@ -77,7 +77,7 @@ This bounded context ([platform/](./)) centralizes and manages core cluster infr
 
 ### Infrastructure Provisioning Rules
 
-- All Kubernetes deployments MUST consume credentials from the `platform-secrets` Secret (generated from [infrastructure/.env](./infrastructure/.env)).
+- All Kubernetes deployments MUST consume credentials from the `platform-secrets` Secret (generated from [`infrastructure/.env`](../infrastructure/.env)).
 - Kustomize `secretGenerator` entries MUST include `options.disableNameSuffixHash: true` to maintain predictable Secret names referenced by Deployments.
 - Docker Compose services MUST declare `restart: unless-stopped` policies for always-on services.
 

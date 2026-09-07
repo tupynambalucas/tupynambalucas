@@ -1,0 +1,11 @@
+{
+  "name": "@monorepo/infrastructure",
+  "description": "Centralized Kubernetes Infrastructure via Skaffold and Kustomize",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "skaffold dev --no-prune=false --check-cluster-node-platforms=false",
+    "delete": "skaffold delete && podman builder prune -f && podman volume prune -f"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

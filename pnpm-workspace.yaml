@@ -24,6 +24,7 @@ packages:
   - 'shared/*'
   - 'studio/*'
   - 'tools/*'
+  - 'infrastructure'
   - 'platform'
   - 'docs'
   - 'renderer'
@@ -48,11 +49,13 @@ catalog:
   'mime-types': '^2.1.35'
   '@types/mime-types': '^2.1.4'
   '@clack/prompts': '^0.9.1'
+  'commander': '^12.1.0'
   '@changesets/cli': ^2.31.1
   'wrangler': '^4.114.0'
   'jimp': ^1.6.1
   dotenv-cli: ^11.0.0
   gray-matter: ^4.0.3
+  vitest: ^5.0.0
 
 catalogs:
   mcp-stack:
@@ -179,3 +182,4 @@ allowBuilds:
   'sharp': true
   'unrs-resolver': true
   'workerd': true
+

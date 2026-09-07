@@ -222,14 +222,8 @@ pnpm install
 
 ### Environment Configuration
 
-Each workspace manages its own environment file under `<workspace>/infrastructure/.env`.
-Copy from the provided templates:
-
-```bash
-cp cortex/infrastructure/.env.example cortex/infrastructure/.env
-cp platform/infrastructure/.env.example platform/infrastructure/.env
-cp studio/infrastructure/.env.example studio/infrastructure/.env
-```
+All infrastructure credentials are centralized in a single [`infrastructure/.env`](./infrastructure/.env) file.
+Edit this file to configure API keys, tokens, and service credentials before starting the stack.
 
 ---
 

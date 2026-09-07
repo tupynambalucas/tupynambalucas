@@ -1,0 +1,89 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: monorepo-dev
+build:
+  platforms: ['linux/amd64']
+  local: { push: false, useDockerCLI: true, tryImportMissing: false }
+  artifacts:
+    - image: turbocache
+      context: ../platform/services/turbocache
+      docker: { dockerfile: Dockerfile }
+    - image: headlamp
+      context: ../platform/services/headlamp
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: otelcol-contrib
+      context: ../platform/services/otelcol
+      docker: { dockerfile: Dockerfile }
+    - image: prometheus
+      context: ../platform/services/prometheus
+      docker: { dockerfile: Dockerfile }
+    - image: loki
+      context: ../platform/services/loki
+      docker: { dockerfile: Dockerfile }
+    - image: tempo
+      context: ../platform/services/tempo
+      docker: { dockerfile: Dockerfile }
+    - image: monorepo-platform-grafana
+      context: ../platform/services/grafana
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: cortex-gateway
+      context: ../cortex/gateway
+      docker: { dockerfile: Dockerfile }
+    - image: cortex-mcp-guardrails
+      context: ..
+      docker: { dockerfile: cortex/mcp/guardrails/Dockerfile }
+    - image: cortex-memory-api
+      context: ..
+      docker: { dockerfile: cortex/memory/services/api/Dockerfile }
+    - image: cortex-memory-web
+      context: ..
+      docker: { dockerfile: cortex/memory/services/web/Dockerfile }
+    - image: mcp-memory
+      context: ..
+      docker: { dockerfile: cortex/mcp/services/memory/Dockerfile }
+    - image: cortex-mcp-inspector
+      context: ..
+      docker: { dockerfile: cortex/mcp/inspector/Dockerfile }
+    - image: mcp-github
+      context: ..
+      docker: { dockerfile: cortex/mcp/services/github/Dockerfile }
+    - image: mcp-firecrawl
+      context: ..
+      docker: { dockerfile: cortex/mcp/services/firecrawl/Dockerfile }
+    - image: mcp-grafana
+      context: ..
+      docker: { dockerfile: cortex/mcp/services/grafana/Dockerfile }
+    - image: mcp-playwright
+      context: ..
+      docker: { dockerfile: cortex/mcp/services/playwright/Dockerfile }
+manifests:
+  kustomize:
+    paths: [environments/local]
+    buildArgs: [--load-restrictor=LoadRestrictionsNone, --enable-helm]
+deploy:
+  kubectl:
+    hooks:
+      before:
+        - host:
+            command:
+              - kubectl
+              - apply
+              - -f
+              - https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+portForward:
+  - resourceType: service
+    resourceName: agentgateway
+    namespace: cortex
+    port: 8080
+    localPort: 8080
+  - resourceType: service
+    resourceName: memory-api
+    namespace: cortex
+    port: 3006
+    localPort: 3006
+  - resourceType: service
+    resourceName: penpot-frontend
+    namespace: studio
+    port: 9005
+    localPort: 9005

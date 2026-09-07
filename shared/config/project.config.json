@@ -1,6 +1,10 @@
 {
   "PROJECT_NAME": "Tupynambalucas",
+  "PROJECT_DISPLAY_NAME": "Tupynambá Lucas",
   "PROJECT_DOMAIN": "tupynambalucas.dev",
+  "PROJECT_INTERNAL_HOST": "tupynambalucas.internal",
   "GITHUB_ORG": "tupynambalucas",
-  "GITHUB_REPO": "tupynambalucas"
+  "GITHUB_REPO": "tupynambalucas",
+  "AUTHOR_NAME": "Tupynambá Lucas Varela Rodrigues",
+  "AUTHOR_EMAIL": "tupynambalucas.dev"
 }
