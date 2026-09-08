@@ -52,22 +52,22 @@ When it finishes, you will see output confirming dependencies are linked to the 
 Each workspace manages its own local configuration. Copy the template `.env.example` files to create the active environment files:
 
 ```bash
-# Set up Cortex environment variables
-cp cortex/infrastructure/.env.example cortex/infrastructure/.env
+# Set up Infrastructure environment variables
+cp infrastructure/.env.example infrastructure/.env
 
 # Set up Hub environment variables
-cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
+cp hub/.env.example hub/.env
 ```
 
 :::info[Open and Edit Configuration]
-Open the newly created `.env` files and add any required tokens (e.g., `GITHUB_PERSONAL_ACCESS_TOKEN`, `FIRECRAWL_API_KEY`) to access cloud services.
+Open the newly created `.env` files and add any required tokens (e.g., `CLOUDFLARE_TUNNEL_TOKEN`) to access cloud services.
 :::
 
 ---
 
 ## Step 4: Configure Podman Machine
 
-Before starting any container workloads, initialize and start the default Podman machine:
+Before starting any container workloads, initialize and start the default Podman machine (which will be used by Minikube):
 
 ```bash
 podman machine init
@@ -84,47 +84,37 @@ podman info
 
 ## Step 5: Start the Infrastructure
 
-You can choose between two orchestration pipelines based on your current task:
+To build all containers and deploy the full stack to your local Minikube cluster:
 
-### Option A: Podman Compose Mode (Fast Local Development)
+```bash
+pnpm minikube:up
+pnpm infra:dev
+```
 
-This is the recommended approach for rapid iteration, frontend coding, and microservice debugging.
+This command will:
 
-1. **Start Backing Infrastructure**:
-   ```bash
-   pnpm cortex:up
-   ```
-2. **Start Development Server**:
-   ```bash
-   pnpm hub:dev
-   ```
+1. Start the Minikube cluster.
+2. Trigger Skaffold to build all required images.
+3. Hydrate Kustomize manifests.
+4. Deploy the Platform, Cortex, and Studio layers.
+5. Stream logs and hot-reload code changes automatically.
 
-Navigate to `http://localhost:5173` to access the Hub interface, and `http://localhost:3002` for the documentation site.
+---
 
-### Option B: Kubernetes Mode (Skaffold + Minikube)
+## Step 6: Verify Access
 
-This approach is required for testing Kubernetes manifests, ingress controllers, telemetry configs, or service integrations.
+Once the services are running, verify access via the Cloudflare edge routes (or `localhost` if running offline):
 
-1. **Start the Minikube Cluster**:
-   ```bash
-   pnpm minikube:up
-   ```
-2. **Start the Network Tunnel** (in a separate terminal):
-   ```bash
-   pnpm minikube:tunnel
-   ```
-3. **Deploy with Skaffold Dev Mode (Hot-Reloading)**:
-   ```bash
-   pnpm k8s:dev
-   ```
+- **Grafana**: `https://grafana-dev.%PROJECT_DOMAIN%`
+- **AgentGateway**: `https://agentgateway-mcp-dev.%PROJECT_DOMAIN%`
+- **Penpot**: `https://penpot-dev.%PROJECT_DOMAIN%`
 
-Skaffold will build your images, deploy the manifests, stream container logs, and automatically port-forward services to your local machine (e.g., `agentgateway` to `http://localhost:8080/mcp/http`).
+---
 
-:::tip[Advanced Orchestration]
-For in-depth details on configuring Podman Desktop extensions, Minikube network tunnels, Skaffold port forwarding, and environment variable resolution, see the [Local Orchestration Setup Guide](/docs/guides/orchestration-environment).
-:::
+## Next Steps
+
+For in-depth details on configuring Minikube network tunnels, Skaffold port forwarding, and environment variable resolution, see the [Local Development Setup Guide](/docs/workspaces/infrastructure/guides/local-development).
 
 ## Conclusion
 
-Congratulations! You have successfully cloned the repository, configured environment variables, started Podman, and launched the local development server. You are now fully equipped to start building and contributing to the project.
-
+Congratulations! You have successfully cloned the repository, configured environment variables, started Minikube, and launched the local Kubernetes infrastructure. You are now fully equipped to start building and contributing to the project.

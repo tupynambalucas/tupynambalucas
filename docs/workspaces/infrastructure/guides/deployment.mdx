@@ -1,0 +1,58 @@
+---
+title: How to Deploy
+description: Step-by-step deployment sequences for local and production Kubernetes clusters.
+sidebar_position: 2
+---
+
+# How to Deploy
+
+This guide outlines the deployment command sequences to release the `%PROJECT_DOMAIN%` ecosystem across local and production environments using **Skaffold** and **Kubernetes**.
+
+---
+
+## 1. Kubernetes Environments (Skaffold)
+
+Deployments across all bounded contexts (`platform`, `cortex`, `studio`) are managed via Skaffold, orchestrating the build, tag, and deploy phases using Kustomize manifests.
+
+### 1.1. One-Time Deployments
+
+To compile all workspace images and apply their Kubernetes manifests directly to the active cluster context without hot-reloading:
+
+```bash
+pnpm infra:up
+```
+
+This builds the containers using the local engine cache, hydrates the image tags inside the manifests, and applies them to the cluster.
+
+### 1.2. Continuous Development (Live Reload)
+
+For active cluster testing with live logs and automatic redeploys when source code changes:
+
+```bash
+pnpm infra:dev
+```
+
+### 1.3. Terminating Cluster Deployments
+
+To delete all deployed resources and namespace allocations from the cluster:
+
+```bash
+pnpm infra:clean
+```
+
+---
+
+## 2. Production Deployments
+
+For production environments, we use Kustomize overlays located in `infrastructure/environments/prod`.
+
+1. Ensure your `kubectl` context points to your production cluster.
+2. Apply the production overlays directly (or via a GitOps operator like ArgoCD/Flux):
+
+```bash
+kubectl apply -k infrastructure/environments/prod/platform
+kubectl apply -k infrastructure/environments/prod/cortex
+kubectl apply -k infrastructure/environments/prod/studio
+```
+
+_Note: For production, images should be pre-built and pushed to a remote registry (e.g., via GitHub Actions) before applying the manifests, rather than building them locally with Skaffold._

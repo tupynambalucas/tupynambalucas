@@ -83,6 +83,34 @@ Use these guidelines when creating, updating, or analyzing `AGENTS.md` context f
 
 ---
 
+## 2.2. AGENTS.md Placement Policy
+
+An `AGENTS.md` file MUST only be created in directories that meet at least one of the following
+criteria:
+
+- The directory is a **monorepo root** (Layer 1).
+- The directory is a **bounded context root** — a top-level domain directory containing
+  architecture, ubiquitous language, or cross-service guardrails (Layer 2).
+- The directory is a **sub-domain** with its own source code, coding patterns, or non-trivial
+  architecture that agents need context to operate correctly (Layer 3).
+
+An `AGENTS.md` file MUST NOT be created in:
+
+- **Dockerfile-only service wrapper directories** — folders that contain only a `Dockerfile`
+  wrapping an upstream image with no local source code (e.g., `platform/services/grafana/`,
+  `cortex/mcp/services/firecrawl/`, `studio/penpot/services/frontend/`). All guardrails for
+  these services MUST be consolidated into the parent bounded context or sub-domain `AGENTS.md`.
+- **Asset or data directories** — folders containing only static files, images, raw creative
+  assets, or generated output with no operational rules for agents.
+- **Deep leaf directories** — directories more than 3 levels below the monorepo root that do not
+  have significant independent architecture warranting their own context file.
+
+Fragmented `AGENTS.md` files in shallow leaf directories degrade token efficiency by forcing
+agents to traverse excessive read steps before acting. Bounded context and sub-domain files are
+the correct consolidation points for service-level guardrails.
+
+---
+
 ## 2.5. Required Skills Declaration Standard
 
 When an `AGENTS.md` file governs a workspace where agents perform documentation tasks requiring a specialized skill, the skill MUST be declared in a `Required Skill` (or `Required Skills`) section.

@@ -65,16 +65,14 @@ Comandos para controlar o cluster Kubernetes de desenvolvimento local.
 
 ## Implantações no Kubernetes (Skaffold)
 
-Comandos para build, deploy e hot-reload de componentes dentro do cluster Kubernetes.
+Comandos para construir, implantar e atualizar componentes em tempo real dentro do cluster Kubernetes. Todas as cargas de trabalho são orquestradas através do workspace centralizado de Infraestrutura.
 
-- **`pnpm k8s:dev`**: Implanta a stack completa (cortex, platform, studio) no cluster com o hot-reloading ativado.
-- **`pnpm k8s:up`**: Executa um build e implantação única da stack completa no cluster.
-- **`pnpm k8s:down`**: Exclui todos os recursos implantados do cluster.
-- **`pnpm platform:dev`**: Implanta apenas os serviços de plataforma com hot-reloading.
-- **`pnpm platform:down`**: Exclui os serviços de plataforma do cluster.
-- **`pnpm cortex:dev`**: Implanta apenas os serviços de IA do Cortex no cluster com hot-reloading.
-- **`pnpm cortex:clean`**: Exclui os serviços do Cortex do cluster.
-- **`pnpm cortex:stop`**: Remove as instâncias do Kubernetes e do Podman Compose para o Cortex.
+- **`pnpm infra:dev`**: Implanta a stack completa (cortex, platform, studio, hub) no cluster com hot-reloading ativado.
+- **`pnpm infra:up`**: Executa uma construção e implantação única da stack completa no cluster sem observação contínua.
+- **`pnpm infra:clean`**: Exclui todos os recursos implantados do cluster e limpa o cache do Skaffold.
+- **`pnpm infra:platform:dev`**: Implanta apenas serviços de plataforma com hot-reloading.
+- **`pnpm infra:cortex:dev`**: Implanta Platform + serviços de IA Cortex no cluster com hot-reloading.
+- **`pnpm infra:studio:dev`**: Implanta Platform + ferramentas Studio (Penpot, Memos) no cluster com hot-reloading.
 
 ---
 
@@ -83,36 +81,16 @@ Comandos para build, deploy e hot-reload de componentes dentro do cluster Kubern
 Comandos para o contexto delimitado do Developer Hub (`hub/`).
 
 - **`pnpm hub:dev`**: Inicia os servidores de desenvolvimento local (API na porta 3006 e Web na porta 5173).
-- **`pnpm hub:up`**: Inicia a infraestrutura de suporte local (MongoDB) via Podman Compose.
-- **`pnpm hub:down`**: Para a infraestrutura local.
-- **`pnpm hub:reset`**: Exclui os volumes persistentes do banco de dados e reinicia a infraestrutura do Hub.
-- **`pnpm hub:staging`**: Inicia o ambiente de staging do Hub usando o perfil de compose correspondente.
-- **`pnpm hub:prod`**: Inicia o ambiente de produção do Hub.
-- **`pnpm hub:staging:down`**: Para a stack de staging do Hub.
-- **`pnpm hub:prod:down`**: Para a stack de produção do Hub.
+- **`pnpm hub:build`**: Compila os builds de produção para a API e Web.
 
 ---
 
-## Cortex (Modo Podman Compose)
+## Renderer
 
-Comandos para rodar a stack de IA do Cortex localmente via Podman Compose.
+Comandos para geração de ativos e renderização.
 
-- **`pnpm cortex:up`**: Inicia os serviços do Cortex (gateway, guardrails, memory API e serviços MCP) via Podman Compose.
-- **`pnpm cortex:down`**: Para os containers do Cortex e limpa pontes de rede órfãs.
-- **`pnpm cortex:reset`**: Para e reinicia o ambiente do Cortex Compose.
-- **`pnpm cortex:logs`**: Transmite os logs em tempo real dos containers do Cortex.
-
----
-
-## Studio e Renderer
-
-Comandos para geração de assets, design systems e renderização.
-
-- **`pnpm studio:dev`**: Implanta o workspace do Studio no Kubernetes via Skaffold.
-- **`pnpm studio:down`**: Exclui a implantação do Studio do cluster.
-- **`pnpm studio:bucket`**: Sincroniza os assets visuais do bucket Cloudflare R2.
-- **`pnpm renderer:clean`**: Limpa os assets compilados no workspace do renderer.
-- **`pnpm renderer:generate`**: Recompila componentes dinâmicos do perfil e templates do README.
+- **`pnpm renderer:clean`**: Limpa ativos compilados dentro do workspace renderer.
+- **`pnpm renderer:generate`**: Recompila componentes dinâmicos do perfil e modelos README.
 
 ---
 

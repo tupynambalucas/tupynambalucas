@@ -20,6 +20,8 @@ The `studio/` directory houses brand identity management, design system tokens, 
 - **[bucket/](./bucket/README.md)**: Cloudflare R2 asset synchronization CLI package (`@repo/studio/bucket`) ([bucket/README.md](./bucket/README.md)).
 - **[creative/](./creative/)**: Raw creative design files, master graphics, and vector source assets.
 - **[infrastructure/](./infrastructure/README.md)**: Container orchestration and Kubernetes deployment manifests ([infrastructure/README.md](./infrastructure/README.md)).
+- **[penpot/](./penpot/README.md)**: Container build definitions for all Penpot v2 services (`frontend`, `backend`, `exporter`, `aide`, `valkey`).
+- **[memos/](./memos/README.md)**: Container build definition for the Memos self-hosted note-taking service.
 - **[AGENTS.md](./AGENTS.md)**: AI agent domain router context.
 
 ---

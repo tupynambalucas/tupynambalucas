@@ -201,25 +201,25 @@ Gerenciamento modular por meio de decoradores do Fastify e um registro centraliz
 
 ## 8. Infraestrutura e Implantação
 
-Projetado para **Excelência Auto-Hospedada** na Hetzner Cloud, nossos padrões de conteinerização, topologias Docker Compose multisserviço, estratégia de variáveis de ambiente e padrões de rede são gerenciados de forma centralizada.
+Projetado para **Excelência Auto-Hospedada**, nossa orquestração nativa Kubernetes, pipelines de desenvolvimento Skaffold, estratégia de variáveis de ambiente e padrões de rede são gerenciados centralmente no workspace Infrastructure.
 
-Para um guia completo e aprofundado sobre estruturas de diretórios, modelos de Docker Compose de alto padrão e padrões avançados de multisserviços (incluindo os padrões Gateway e Pilha Distribuída), consulte a documentação dedicada:
+Para um guia completo e aprofundado sobre estruturas de diretórios, implantação no Minikube, roteamento com Cloudflare tunnel e overlays do Kustomize, explore a documentação dedicada do workspace Infrastructure:
 
 <DocCardList
   items={[
     {
       type: 'link',
-      href: '../reference/infrastructure',
-      label: 'Infraestrutura',
+      href: '/docs/workspaces/infrastructure/intro',
+      label: 'Workspace Infrastructure',
       description:
-        'Para manter a infraestrutura do %PROJECT_DOMAIN%, ferramentas de DevOps e ambientes de execução em segundo plano robustos, fáceis de manter e altamente modulares, este documento unifica nossos padrões de infraestrutura auto-hospedada, convenções de diretório e topologias Docker multisserviço.',
+        'Explore a orquestração centralizada do Kubernetes, pipelines de implantação GitOps e topologia de rede edge-to-cluster.',
     },
     {
       type: 'link',
-      href: '../guides/deployment',
-      label: 'Implantação',
+      href: '/docs/workspaces/infrastructure/guides/local-development',
+      label: 'Configuração de Desenvolvimento Local',
       description:
-        'Para garantir alta disponibilidade, segurança e ambientes reproduzíveis, o %PROJECT_DOMAIN% utiliza um modelo de implantação moderno e auto-hospedado projetado para máquinas virtuais Hetzner Cloud. Este guia descreve nossa estratégia de implantação, sincronização de ambiente e procedimentos operacionais.',
+        'Aprenda como executar o monorepo localmente usando Minikube e Skaffold para recarregamento rápido (hot-reloading).',
     },
   ]}
 />
@@ -237,7 +237,7 @@ Os workspaces Studio e Cortex fornecem a infraestrutura para alinhamento de desi
 
 ## 10. Padrões de Segurança
 
-O %PROJECT_DOMAIN% segue uma estratégia de segurança em múltiplas camadas. Para detalhes detalhados de implementação, consulte o documento de **[Arquitetura de Segurança](../reference/security.mdx)**.
+O %PROJECT_DOMAIN% segue uma estratégia de segurança em múltiplas camadas. Para detalhes detalhados de implementação, consulte o documento de **[Arquitetura de Segurança](/docs/handbook/reference/security)**.
 
 - **Proteção contra Bots**: Integração com o Cloudflare Turnstile para todos os pontos de entrada de autenticação.
 - **Mitigação de Força Bruta**: Limitação de taxa baseada em IP e lógica de bloqueio de conta.

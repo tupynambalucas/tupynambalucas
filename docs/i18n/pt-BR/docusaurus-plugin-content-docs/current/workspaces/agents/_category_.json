@@ -1,0 +1,8 @@
+{
+  "label": "AI Agents Configuration",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "Domínio autoritativo para configurações de agentes de IA, skills, plugins e scripts de manipulação do repositório."
+  }
+}

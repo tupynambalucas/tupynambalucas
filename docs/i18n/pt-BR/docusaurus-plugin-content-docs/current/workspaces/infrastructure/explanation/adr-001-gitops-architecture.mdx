@@ -1,0 +1,22 @@
+---
+title: ADR-001 GitOps Architecture
+---
+
+# ADR-001: Arquitetura Híbrida GitOps (Helm + Kustomize)
+
+## Contexto
+
+Implantações de manifestos crus Kubernetes em múltiplos workspaces resultam em configurações com "hardcode" e problemas de escalabilidade.
+
+## Decisão
+
+Vamos adotar uma abordagem híbrida:
+
+1. **Helm** gerencia o empacotamento complexo e modelos base de componentes de infraestrutura.
+2. **Kustomize** age como gerenciador de camadas (overlay manager), injetando variáveis por ambiente, arquivos `.env` locais (via `secretGenerator`), e substituindo domínios dinamicamente nos objetos Ingress.
+3. **Skaffold** orquestra o loop de desenvolvimento local e chama o Kustomize com a flag `--enable-helm`.
+
+## Consequências
+
+- Clara separação da lógica dos componentes originais das configurações locais.
+- Implantações fáceis para novos forks de monorepos, sem precisar editar manualmente o YAML.

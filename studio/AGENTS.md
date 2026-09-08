@@ -18,6 +18,8 @@ This bounded context ([studio/](./)) defines domain rules, design tokens, asset 
 - **[bucket/](./bucket/)**: Cloudflare R2 asset synchronization CLI tool under `@repo/studio/bucket`. Rules are consolidated in Section 4.
 - **[creative/](./creative/)**: Raw creative design sources, master Illustrator/Photoshop files, and vector graphics.
 - **[infrastructure/](./infrastructure/)**: Containerized Docker Compose and Kubernetes deployment manifests for Penpot v2 and Memos. Rules are consolidated in Section 4.
+- **[penpot/](./penpot/AGENTS.md)**: Container build definitions for all Penpot v2 services (`frontend`, `backend`, `exporter`, `aide`, `valkey`).
+- **[memos/](./memos/AGENTS.md)**: Container build definition for the Memos self-hosted note-taking service.
 
 ---
 

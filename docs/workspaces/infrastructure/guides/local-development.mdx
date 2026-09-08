@@ -1,47 +1,16 @@
 ---
-title: Local Orchestration Setup
-description: How to configure Podman Desktop, set up Podman Compose, configure Minikube for local Kubernetes testing, and manage workspace manifests with Skaffold.
+title: Local Development Setup
+description: How to configure Minikube and Skaffold for local Kubernetes development.
+sidebar_position: 1
 ---
 
-# Local Orchestration Setup
+# Local Development Setup
 
-This guide details the dual-orchestration environment used in the monorepo. Local development uses two specialized container pipelines:
-
-- **Podman Compose via Podman Desktop**: Used for high-velocity local coding, database testing, and general developer workflows using daemonless containers.
-- **Kubernetes via Minikube & Skaffold**: Used to validate configurations, routing, service discovery, and production-like environment policies with automated hot-reloading.
-
----
-
-## Tooling Prerequisites
-
-To run and manage the local orchestration environment, install the appropriate tools on your machine.
-
-### 1. Podman Container Engine & Podman Desktop
-
-For high-velocity local microservice coding and database testing:
-
-- **Podman Desktop**: GUI and management suite for daemonless Podman machines running over WSL2 on Windows.
-- **Podman CLI & Podman Compose**: CLI tools for container and pod management.
-- **Install command (PowerShell)**:
-  ```powershell
-  winget install RedHat.Podman-Desktop RedHat.Podman
-  ```
-
-#### Required Podman Desktop Extensions
-
-Inside Podman Desktop (**Settings -> Extensions**), ensure the following extensions are installed and enabled:
-
-1. **Podman Extension**: Core extension for managing Podman machines, images, containers, and volumes.
-2. **Compose Extension**: Required to parse and execute `podman compose` workflows for multi-container development.
-3. **Kubectl CLI Extension**: Integrates `kubectl` cluster controls and Kubernetes context switching directly inside Podman Desktop.
-
-:::info[No Shell Aliases Policy]
-Our project scripts explicitly invoke `podman compose` and `podman exec` directly in [package.json](file:///D:/projects/workspace/package.json). Do not create shell aliases (such as `alias docker=podman`). Using explicit `podman` commands ensures reproducible execution across all developer workstations and CI pipelines.
-:::
+This guide details how to set up your local Windows workstation to run the `%PROJECT_NAME%` monorepo using **Minikube**, **Skaffold**, and **Podman**. We exclusively use a Kubernetes-native orchestration approach, meaning there are no localized Docker Compose environments.
 
 ---
 
-### 2. Kubernetes Environment (Minikube via Podman)
+## 1. Prerequisites
 
 For local Kubernetes testing, routing validation, and deployment pipelines, we use host-installed `minikube`, `kubectl`, and `skaffold` with the `podman` driver for live hot-reloading and cluster deployment.
 
@@ -51,50 +20,20 @@ Install the following tools on your Windows host:
 - **Skaffold**: Automates build and deploy pipelines with hot-reloading capabilities.
 - **OpenLens**: Visual cluster monitoring client.
 - **Minikube CLI**: Provisions local Kubernetes cluster nodes inside Podman.
-- **Install command (PowerShell)**:
-  ```powershell
-  winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
-  ```
+
+**Install command (PowerShell)**:
+
+```powershell
+winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+```
 
 :::warning[Avoid Running Skaffold via Containers]
-Although you can run Skaffold inside a container, doing so requires mounting container sockets and remapping internal hosts. Furthermore, live file synchronization (`pnpm k8s:dev`) often fails to propagate file system events across container boundaries. For this reason, installing the native Skaffold binary locally is strongly recommended.
+Although you can run Skaffold inside a container, doing so requires mounting container sockets and remapping internal hosts. Furthermore, live file synchronization often fails to propagate file system events across container boundaries. For this reason, installing the native Skaffold binary locally is strictly required.
 :::
 
 ---
 
-## 1. Podman Compose Container Engine Setup
-
-For fast feedback loops, we run microservices and backing databases using Podman Compose.
-
-### Podman Machine Configuration
-
-1. Initialize and start the default Podman machine:
-   ```powershell
-   podman machine init
-   podman machine start
-   ```
-2. Verify Podman engine status:
-   ```powershell
-   podman info
-   ```
-
-### Workspace Script Execution
-
-Instead of running verbose Podman Compose commands manually, use the predefined Turborepo filters and scripts in the root [package.json](file:///D:/projects/workspace/package.json):
-
-- **Start Hub Backing Services**: `pnpm hub:up`
-- **Stop Hub Backing Services**: `pnpm hub:down`
-- **Reset Hub Backing Services**: `pnpm hub:reset` (deletes volumes)
-- **Start Cortex Stack**: `pnpm cortex:up`
-- **Stop Cortex Stack**: `pnpm cortex:down`
-- **Reset Cortex Stack**: `pnpm cortex:reset`
-- **Stream Cortex Logs**: `pnpm cortex:logs`
-
----
-
 ## 2. Minikube Local Cluster Setup
-
-When you need to test network policies, cross-namespace DNS resolution, or Traefik ingress configurations, you must deploy the workspaces to Minikube.
 
 ### Creating the Cluster
 
@@ -104,14 +43,14 @@ To start the default Minikube cluster using the Podman driver and configure the 
 pnpm minikube:up
 ```
 
-This executes:
+This executes the underlying command:
 
 ```bash
 minikube start --driver=podman --mount --mount-string ".:/workspace"
 ```
 
 :::info[Minikube Tunnel]
-Since some services in our cluster (like Traefik) use LoadBalancer IPs, you must open a network tunnel in a separate, persistent administrative terminal window:
+Since some services in our cluster (like Traefik) use LoadBalancer IPs, you must open a network tunnel in a separate, persistent administrative terminal window to expose them:
 
 ```bash
 pnpm minikube:tunnel
@@ -146,26 +85,26 @@ We provide simplified scripts in the root `package.json` to manage the lifecycle
    To build all images and deploy all platform and cortex components to Minikube:
 
    ```bash
-   pnpm k8s:up
+   pnpm infra:up
    ```
 
 2. **Continuous Development Mode (Live Hot-Reloading)**:
    To run Skaffold in development mode, watching source code changes and automatically hot-reloading code inside the running pods:
 
    ```bash
-   pnpm k8s:dev
+   pnpm infra:dev
    ```
 
 3. **Workspace Module Isolation**:
    You can deploy specific workspaces independently to save resources:
-   - **Deploy Cortex Only**: `pnpm cortex:dev`
-   - **Deploy Platform Only**: `pnpm platform:dev`
-   - **Deploy Studio Only**: `pnpm studio:dev`
+   - **Deploy Cortex Only**: `pnpm infra:cortex:dev`
+   - **Deploy Platform Only**: `pnpm infra:platform:dev`
+   - **Deploy Studio Only**: `pnpm infra:studio:dev`
 
 4. **Stop and Clean Up**:
    To tear down all resources, namespaces, and workloads deployed by Skaffold:
    ```bash
-   pnpm k8s:down
+   pnpm infra:clean
    ```
 
 ### Local Port Forwarding
@@ -204,16 +143,18 @@ The `agentgateway` intercepts the incoming JSON-RPC payload, runs it through con
 
 ## 6. Environment Variable Management
 
-Each workspace context manages its own environment files under `<workspace>/infrastructure/.env`.
+Each workspace context manages its own environment files under `<workspace>/.env` or `infrastructure/.env`.
 
 Skaffold uses `dotenv-cli` scripts to inject these values as build environment configurations, which are then bundled into Kubernetes secrets via Kustomize:
 
 ```yaml
-# infrastructure/kubernetes/kustomization.yaml
+# infrastructure/manifests/cortex-memory.yaml (example)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 secretGenerator:
   - name: cortex-secrets
     envs:
-      - ../.env
+      - .env
 ```
 
 :::warning[Kubernetes Service Environment Variable Collision]

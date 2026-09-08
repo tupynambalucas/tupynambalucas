@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: memos
-          image: neosmemo/memos:stable
+          image: studio-memos
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5230

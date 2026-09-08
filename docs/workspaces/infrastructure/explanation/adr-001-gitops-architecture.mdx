@@ -1,17 +1,22 @@
 ---
 title: ADR-001 GitOps Architecture
 ---
+
 # ADR-001: Hybrid Helm + Kustomize GitOps Architecture
 
 ## Context
+
 Deploying raw Kubernetes manifests across multiple workspaces leads to hardcoded configurations and scalability issues.
 
 ## Decision
+
 We will adopt a hybrid approach:
+
 1. **Helm** manages the complex templating and packaging of base infrastructure components.
 2. **Kustomize** acts as the overlay manager, injecting environment-specific variables, local `.env` files (via `secretGenerator`), and dynamically replacing fields like the Project Domain in Ingress objects.
 3. **Skaffold** orchestrates the local dev loop by invoking Kustomize with `--enable-helm`.
 
 ## Consequences
+
 - Clean separation of upstream chart logic from local configurations.
 - Seamless deployment for new monorepo forks without manually editing YAML files.

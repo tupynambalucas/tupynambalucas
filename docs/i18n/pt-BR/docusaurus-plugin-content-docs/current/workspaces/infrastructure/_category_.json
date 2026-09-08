@@ -1,0 +1,8 @@
+{
+  "label": "Infraestrutura",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Orquestração centralizada do Kubernetes e pipeline de implantação GitOps."
+  }
+}

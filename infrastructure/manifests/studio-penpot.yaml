@@ -1,4 +1,19 @@
 # ==========================================
+# PENPOT WEBSOCKET MIDDLEWARE
+# Traefik middleware to handle WebSocket upgrade headers required
+# for Penpot real-time collaboration (/ws/notifications).
+# ==========================================
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: penpot-ws
+  namespace: studio
+spec:
+  headers:
+    customRequestHeaders:
+      X-Forwarded-Proto: https
+---
+# ==========================================
 # PENPOT VALKEY (REDIS CACHE)
 # ==========================================
 apiVersion: v1
@@ -32,7 +47,7 @@ spec:
     spec:
       containers:
         - name: valkey
-          image: valkey/valkey:latest
+          image: studio-penpot-valkey
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6379
@@ -79,7 +94,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: penpotapp/backend:2.16.2
+          image: studio-penpot-backend
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6060
@@ -204,7 +219,7 @@ spec:
     spec:
       containers:
         - name: exporter
-          image: penpotapp/exporter:2.16.2
+          image: studio-penpot-exporter
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6061
@@ -265,7 +280,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: penpotapp/frontend:2.16.2
+          image: studio-penpot-frontend
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -340,6 +355,7 @@ metadata:
   namespace: studio
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    traefik.ingress.kubernetes.io/router.middlewares: studio-penpot-ws@kubernetescrd
 spec:
   ingressClassName: traefik
   rules:
@@ -352,7 +368,7 @@ spec:
               service:
                 name: penpot-frontend
                 port:
-                  number: 9005
+                  number: 8080
 ---
 # ==========================================
 # PENPOT AIDE (AI ASSISTANT / MCP)
@@ -376,7 +392,7 @@ spec:
     spec:
       containers:
         - name: aide
-          image: penpotapp/mcp:2.16.2
+          image: studio-penpot-aide
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4400

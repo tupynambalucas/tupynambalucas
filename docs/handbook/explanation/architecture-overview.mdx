@@ -201,25 +201,25 @@ Modular management through Fastify decorators and a centralized registry to deco
 
 ## 8. Infrastructure & Deployment
 
-Designed for **Self-Hosted Excellence** on Hetzner Cloud, our containerization standards, multi-service Docker Compose topologies, environment variables strategy, and networking standards are managed centrally.
+Designed for **Self-Hosted Excellence**, our Kubernetes-native orchestration, Skaffold development pipelines, environment variables strategy, and networking standards are managed centrally in the Infrastructure workspace.
 
-For a comprehensive, deep-dive guide on directory structures, gold-standard Docker Compose blueprints, and advanced multi-service patterns (including the Gateway and Distributed Stack patterns), refer to the dedicated documentation:
+For a comprehensive, deep-dive guide on directory structures, Minikube deployment, Cloudflare tunnel routing, and Kustomize overlays, explore the dedicated Infrastructure workspace documentation:
 
 <DocCardList
   items={[
     {
       type: 'link',
-      href: '../reference/infrastructure',
-      label: 'Infrastructure',
+      href: '/docs/workspaces/infrastructure/intro',
+      label: 'Infrastructure Workspace',
       description:
-        'To keep the %PROJECT_DOMAIN% infrastructure, DevOps tooling, and background runtime environments robust, maintainable, and highly modular, this document unifies our self-hosted infrastructure standards, directory conventions, and multi-service Docker topologies.',
+        'Explore the centralized Kubernetes orchestration, GitOps deployment pipelines, and edge-to-cluster networking topology.',
     },
     {
       type: 'link',
-      href: '../guides/deployment',
-      label: 'Deployment',
+      href: '/docs/workspaces/infrastructure/guides/local-development',
+      label: 'Local Development Setup',
       description:
-        'To ensure high availability, security, and reproducible environments, %PROJECT_DOMAIN% utilizes a modern, self-hosted deployment model designed for Hetzner Cloud virtual machines. This guide outlines our deployment strategy, environment synchronization, and operational procedures.',
+        'Learn how to run the monorepo locally using Minikube and Skaffold for live hot-reloading.',
     },
   ]}
 />
@@ -237,7 +237,7 @@ The Studio and Cortex workspaces provide the infrastructure for design-to-code a
 
 ## 10. Security Standards
 
-%PROJECT_DOMAIN% follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](../reference/security.mdx)** document.
+%PROJECT_DOMAIN% follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](/docs/handbook/reference/security)** document.
 
 - **Bot Protection**: Integration with Cloudflare Turnstile for all authentication entry points.
 - **Brute-Force Mitigation**: IP-based rate limiting and account lockout logic.

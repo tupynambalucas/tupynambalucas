@@ -57,6 +57,24 @@ build:
     - image: mcp-playwright
       context: ..
       docker: { dockerfile: cortex/mcp/services/playwright/Dockerfile }
+    - image: studio-penpot-frontend
+      context: ../studio/penpot/services/frontend
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-penpot-backend
+      context: ../studio/penpot/services/backend
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-penpot-exporter
+      context: ../studio/penpot/services/exporter
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-penpot-aide
+      context: ../studio/penpot/services/aide
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-penpot-valkey
+      context: ../studio/penpot/services/valkey
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-memos
+      context: ../studio/memos/services/memos
+      docker: { dockerfile: Dockerfile, target: dev }
 manifests:
   kustomize:
     paths: [environments/local]

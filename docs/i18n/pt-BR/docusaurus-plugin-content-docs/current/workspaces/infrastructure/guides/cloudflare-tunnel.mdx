@@ -1,0 +1,89 @@
+---
+title: Configuração do Cloudflare Tunnel & Access
+description: Como configurar o Cloudflare Tunnel (cloudflared) e políticas de acesso Zero Trust para roteamento seguro de ingress no Kubernetes.
+---
+
+# Configuração do Cloudflare Tunnel & Access
+
+Este guia detalha como configurar o **Cloudflare Tunnel** (`cloudflared`) e as **Cloudflare Zero Trust Access** para expor ambientes locais e remotos de desenvolvimento Kubernetes de forma segura por HTTPS, sem modificar `/etc/hosts` ou abrir portas de roteador.
+
+---
+
+## Visão Geral da Arquitetura
+
+O tráfego público de entrada é roteado através da rede global de borda da Cloudflare diretamente para o cluster através de um túnel QUIC criptografado.
+
+:::info[Referência de Arquitetura Técnica]
+Para especificações técnicas completas sobre terminação TLS na borda, esquemas de domínio wildcard de nível único (`*-dev.%PROJECT_DOMAIN%`) e topologias de proxy reverso, consulte a [Referência de Infraestrutura](/docs/workspaces/infrastructure/reference/architecture).
+:::
+
+---
+
+## 1. Criando o Túnel Cloudflare
+
+1. Acesse o [Painel do Cloudflare Zero Trust](https://one.dash.cloudflare.com/).
+2. Navegue até **Networks** -\> **Tunnels** e clique em **Add a Tunnel**.
+3. Selecione **Cloudflared** como tipo de conector e nomeie o túnel `workspace-minikube`.
+4. Selecione **Docker** como ambiente e copie o `TUNNEL_TOKEN` gerado.
+
+---
+
+## 2. Rotas Públicas
+
+Na aba **Public Hostnames** do seu túnel, registre as seguintes rotas apontando para o Traefik Ingress interno (`http://traefik.platform.svc.cluster.local:80`):
+
+| Subdomínio             | Domínio            | Tipo   | URL do Serviço                          | Path   |
+| :--------------------- | :----------------- | :----- | :-------------------------------------- | :----- |
+| `agentgateway-dev`     | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `agentgateway-mcp-dev` | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/mcp` |
+| `grafana-dev`          | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `headlamp-dev`         | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `memory-dev`           | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `memory-api-dev`       | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `traefik-dev`          | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `turbocache-dev`       | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `penpot-dev`           | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+| `memos-dev`            | `%PROJECT_DOMAIN%` | `HTTP` | `traefik.platform.svc.cluster.local:80` | `/`    |
+
+:::tip[Alternativa de Hostname Wildcard Único]
+Em vez de criar rotas individuais, você pode registrar um único hostname curinga `*.development` apontando para `http://traefik.platform.svc.cluster.local:80`.
+:::
+
+---
+
+## 3. Configurando Segredos e Deploy
+
+1. Adicione o token no arquivo de ambiente de sua infraestrutura (`infrastructure/.env`):
+   ```env
+   CLOUDFLARE_TUNNEL_TOKEN=eyJ2Ijoi...
+   ```
+2. O deployment do `cloudflared` (em `infrastructure/manifests/platform-cloudflared.yaml`) lerá esse secret:
+   ```bash
+   pnpm infra:up
+   ```
+3. Verifique se o pod conectou:
+   ```bash
+   kubectl get pods -n platform -l app=cloudflared
+   kubectl logs -n platform -l app=cloudflared --tail=20
+   ```
+
+---
+
+## 4. Políticas do Zero Trust
+
+Para proteger os endpoints de acesso público não autorizado:
+
+### UIs Web (Grafana, Headlamp, Traefik, Penpot)
+
+1. Em Zero Trust, vá para **Access** -\> **Applications** -\> **Add an Application** -\> **Self-hosted**.
+2. Atribua o domínio público (ex: `grafana-dev.%PROJECT_DOMAIN%`).
+3. Crie uma regra **Allow** restringindo o acesso por **Email / One-Time PIN (OTP)**.
+
+### Ingress MCP & AI (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`)
+
+:::warning[Evitando Login Redirects para Agentes Automatizados]
+Agentes de IA comunicam-se via JSON-RPC / SSE e não podem processar redirecionamentos de login no navegador.
+:::
+
+1. Para `agentgateway-mcp-dev.%PROJECT_DOMAIN%`, configure uma Política de Acesso com **Action: Bypass** ou atribua um **Service Token** e defina o path do túnel para `/mcp`.
+2. Isso garante que os agentes possam trocar informações diretamente, enquanto a segurança é imposta internamente via guardrails CEL no AgentGateway.

@@ -54,78 +54,63 @@ Quando o comando for finalizado, você verá uma saída confirmando que as depen
 Cada workspace gerencia suas próprias configurações locais. Copie os arquivos de modelo `.env.example` para criar os arquivos de ambiente ativos:
 
 ```bash
-# Configura as variáveis de ambiente do Cortex
-cp cortex/infrastructure/.env.example cortex/infrastructure/.env
+# Configura as variáveis de ambiente da Infraestrutura
+cp infrastructure/.env.example infrastructure/.env
 
 # Configura as variáveis de ambiente do Hub
-cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
+cp hub/.env.example hub/.env
 ```
 
 :::info[Abra e Edite a Configuração]
-Abra os arquivos `.env` recém-criados e adicione os tokens necessários (como `GITHUB_PERSONAL_ACCESS_TOKEN`, `FIRECRAWL_API_KEY`) para acessar os serviços de nuvem.
+Abra os arquivos `.env` recém-criados e adicione os tokens necessários (como `CLOUDFLARE_TUNNEL_TOKEN`) para acessar os serviços de nuvem.
 :::
 
 ---
 
 ## Passo 4: Configurar a Máquina Podman
 
-Antes de iniciar qualquer carga de trabalho de container, inicialize e inicie a máquina Podman padrão:
+Antes de iniciar qualquer carga de trabalho de container, inicialize e inicie a máquina Podman padrão (que será usada pelo Minikube):
 
 ```bash
 podman machine init
 podman machine start
 ```
 
-Verifique se a engine de container está ativa:
-
-```bash
-podman info
-```
-
 ---
 
 ## Passo 5: Iniciar a Infraestrutura
 
-Você pode escolher entre duas pipelines de orquestração de acordo com sua tarefa atual:
+Para construir todos os contêineres e implantar a stack completa no seu cluster Minikube local:
 
-### Opção A: Modo Podman Compose (Desenvolvimento Local Rápido)
+```bash
+pnpm minikube:up
+pnpm infra:dev
+```
 
-Esta é a abordagem recomendada para iterações rápidas, codificação de frontend e depuração de microserviços.
+Este comando irá:
 
-1. **Iniciar Infraestrutura de Suporte**:
-   ```bash
-   pnpm cortex:up
-   ```
-2. **Iniciar Servidor de Desenvolvimento**:
-   ```bash
-   pnpm hub:dev
-   ```
+1. Iniciar o cluster Minikube.
+2. Acionar o Skaffold para construir todas as imagens necessárias.
+3. Hidratar os manifestos do Kustomize.
+4. Implantar as camadas Platform, Cortex e Studio.
+5. Transmitir logs e recarregar mudanças no código automaticamente (hot-reload).
 
-Acesse `http://localhost:5173` para a interface do Hub e `http://localhost:3002` para o site de documentação.
+---
 
-### Opção B: Modo Kubernetes (Skaffold + Minikube)
+## Passo 6: Verificar Acesso
 
-Esta abordagem é necessária para testar manifestos Kubernetes, controllers de ingress, configurações de telemetria ou integrações de serviços.
+Assim que os serviços estiverem em execução, verifique o acesso pelas rotas de borda do Cloudflare (ou `localhost` se estiver offline):
 
-1. **Iniciar o Cluster Minikube**:
-   ```bash
-   pnpm minikube:up
-   ```
-2. **Iniciar o Túnel de Rede** (em um terminal separado):
-   ```bash
-   pnpm minikube:tunnel
-   ```
-3. **Implantar com Skaffold em Modo Dev (Hot-Reloading)**:
-   ```bash
-   pnpm k8s:dev
-   ```
+- **Grafana**: `https://grafana-dev.%PROJECT_DOMAIN%`
+- **AgentGateway**: `https://agentgateway-mcp-dev.%PROJECT_DOMAIN%`
+- **Penpot**: `https://penpot-dev.%PROJECT_DOMAIN%`
 
-O Skaffold fará o build de suas imagens, implantará os manifestos, transmitirá os logs dos containers e direcionará portas de serviços automaticamente para a sua máquina local (como o `agentgateway` em `http://localhost:8080/mcp/http`).
+---
 
-:::tip[Orquestração Avançada]
-Para detalhes aprofundados sobre a configuração de extensões do Podman Desktop, túneis de rede do Minikube, redirecionamento de portas com Skaffold e resolução de variáveis de ambiente, consulte o [Guia de Configuração da Orquestração Local](/docs/guides/orchestration-environment).
-:::
+## Próximos Passos
+
+Para detalhes aprofundados sobre túneis de rede do Minikube, redirecionamento de portas do Skaffold e resolução de variáveis de ambiente, consulte o [Guia de Configuração de Desenvolvimento Local](/docs/workspaces/infrastructure/guides/local-development).
 
 ## Conclusão
 
-Parabéns! Você clonou com sucesso o repositório, configurou as variáveis de ambiente, iniciou o Podman e lançou o servidor de desenvolvimento local. Agora você está totalmente equipado para começar a construir e contribuir com o projeto.
+Parabéns! Você clonou com sucesso o repositório, configurou as variáveis de ambiente, iniciou o Minikube e lançou a infraestrutura Kubernetes local. Agora você está totalmente equipado para começar a construir e contribuir com o projeto.

@@ -63,16 +63,14 @@ Commands to control the local development Kubernetes cluster.
 
 ## Kubernetes Deployments (Skaffold)
 
-Commands to build, deploy, and hot-reload components within the Kubernetes cluster.
+Commands to build, deploy, and hot-reload components within the Kubernetes cluster. All workloads are orchestrated through the central Infrastructure workspace.
 
-- **`pnpm k8s:dev`**: Deploys the entire stack (cortex, platform, studio) to the cluster with hot-reloading enabled.
-- **`pnpm k8s:up`**: Runs a one-time build and deployment of the entire stack to the cluster.
-- **`pnpm k8s:down`**: Deletes all deployed resources from the cluster.
-- **`pnpm platform:dev`**: Deploys only platform services with hot-reloading.
-- **`pnpm platform:down`**: Deletes platform services from the cluster.
-- **`pnpm cortex:dev`**: Deploys only Cortex AI services to the cluster with hot-reloading.
-- **`pnpm cortex:clean`**: Deletes Cortex services from the cluster.
-- **`pnpm cortex:stop`**: Tears down both Kubernetes and Podman Compose instances for Cortex.
+- **`pnpm infra:dev`**: Deploys the entire stack (cortex, platform, studio, hub) to the cluster with live hot-reloading enabled.
+- **`pnpm infra:up`**: Runs a one-time build and deployment of the entire stack to the cluster without continuous watching.
+- **`pnpm infra:clean`**: Deletes all deployed resources from the cluster and cleans the Skaffold cache.
+- **`pnpm infra:platform:dev`**: Deploys only platform services with hot-reloading.
+- **`pnpm infra:cortex:dev`**: Deploys Platform + Cortex AI services to the cluster with hot-reloading.
+- **`pnpm infra:studio:dev`**: Deploys Platform + Studio tools (Penpot, Memos) to the cluster with hot-reloading.
 
 ---
 
@@ -81,34 +79,14 @@ Commands to build, deploy, and hot-reload components within the Kubernetes clust
 Commands for the Developer Hub (`hub/`) bounded context.
 
 - **`pnpm hub:dev`**: Starts local development servers (API on port 3006 and Web on port 5173).
-- **`pnpm hub:up`**: Starts local backing infrastructure (MongoDB) via Podman Compose.
-- **`pnpm hub:down`**: Stops local infrastructure.
-- **`pnpm hub:reset`**: Deletes persistent database volumes and restarts Hub infrastructure.
-- **`pnpm hub:staging`**: Launches the Hub staging environment using the staging compose profile.
-- **`pnpm hub:prod`**: Launches the Hub production environment.
-- **`pnpm hub:staging:down`**: Stops the Hub staging stack.
-- **`pnpm hub:prod:down`**: Stops the Hub production stack.
+- **`pnpm hub:build`**: Compiles production builds for the API and Web.
 
 ---
 
-## Cortex (Podman Compose Mode)
+## Renderer
 
-Commands for running the Cortex AI stack locally via Podman Compose.
+Commands for asset generation and rendering.
 
-- **`pnpm cortex:up`**: Starts the Cortex services (gateway, guardrails, memory API, and MCP services) via Podman Compose.
-- **`pnpm cortex:down`**: Stops Cortex containers and cleans up orphan network bridges.
-- **`pnpm cortex:reset`**: Stops and restarts the Cortex Compose environment.
-- **`pnpm cortex:logs`**: Streams real-time logs from Cortex containers.
-
----
-
-## Studio & Renderer
-
-Commands for asset generation, design systems, and rendering.
-
-- **`pnpm studio:dev`**: Deploys the Studio workspace to Kubernetes via Skaffold.
-- **`pnpm studio:down`**: Deletes the Studio deployment from the cluster.
-- **`pnpm studio:bucket`**: Syncs Cloudflare R2 bucket visual assets.
 - **`pnpm renderer:clean`**: Cleans compiled assets inside the renderer workspace.
 - **`pnpm renderer:generate`**: Recompiles dynamic profile components and README templates.
 
