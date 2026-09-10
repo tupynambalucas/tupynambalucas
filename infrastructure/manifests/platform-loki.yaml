@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: loki
-          image: loki
+          image: platform-loki
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3100

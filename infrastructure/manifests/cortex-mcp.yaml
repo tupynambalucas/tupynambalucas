@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
         - name: mcp-memory
-          image: mcp-memory:latest
+          image: cortex-mcp-memory:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -118,7 +118,7 @@ spec:
     spec:
       containers:
         - name: mcp-github
-          image: mcp-github:latest
+          image: cortex-mcp-github:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -162,7 +162,7 @@ spec:
     spec:
       containers:
         - name: mcp-firecrawl
-          image: mcp-firecrawl:latest
+          image: cortex-mcp-firecrawl:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -206,7 +206,7 @@ spec:
     spec:
       containers:
         - name: mcp-grafana
-          image: mcp-grafana:latest
+          image: cortex-mcp-grafana:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -301,7 +301,7 @@ spec:
     spec:
       containers:
         - name: mcp-playwright
-          image: mcp-playwright:latest
+          image: cortex-mcp-playwright:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -425,3 +425,47 @@ spec:
       targetPort: 8080
   selector:
     app: mcp-kubectl
+---
+# MCP Context7 Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-context7
+  namespace: cortex
+  labels:
+    app: mcp-context7
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-context7
+  template:
+    metadata:
+      labels:
+        app: mcp-context7
+    spec:
+      containers:
+        - name: mcp-context7
+          image: cortex-mcp-context7:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: CONTEXT7_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: CONTEXT7_API_KEY
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-context7
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-context7

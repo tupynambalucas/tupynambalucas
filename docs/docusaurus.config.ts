@@ -1,10 +1,9 @@
-import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
-import type { MonorepoPresetOptions, ThemeConfig } from './preset';
+import type { MonorepoPresetOptions } from './preset/options';
+import { getBaseThemeConfig } from './preset/themeConfig';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import projectVariablesPlugin from './plugins/remark-project-variables/index.mjs';
 
 const require = createRequire(import.meta.url);
 const projectConfig = require('@monorepo/shared-config/project.config.json');
@@ -51,11 +50,9 @@ const config: Config = {
   // Set the production url of your site here
   url: `https://${projectConfig.PROJECT_DOMAIN}`,
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
+  trailingSlash: false,
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
   organizationName: projectConfig.GITHUB_ORG, // Usually your GitHub org/user name.
   projectName: projectConfig.GITHUB_REPO, // Usually your repo name.
 
@@ -69,7 +66,6 @@ const config: Config = {
     },
   },
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
@@ -80,35 +76,8 @@ const config: Config = {
     studioPath,
   },
 
-  plugins: [
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'roadmap',
-        path: 'roadmap',
-        routeBasePath: 'roadmap',
-        sidebarPath: './sidebarsRoadmap.ts',
-        remarkPlugins: [projectVariablesPlugin],
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'workspaces',
-        path: 'workspaces',
-        routeBasePath: 'workspaces',
-        sidebarPath: './sidebarsWorkspaces.ts',
-        remarkPlugins: [projectVariablesPlugin],
-      },
-    ],
-    './plugins/studio-assets/index.ts',
-  ],
-
   themes: ['@docusaurus/theme-live-codeblock', '@docusaurus/theme-mermaid'],
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pt-BR'],
@@ -131,7 +100,12 @@ const config: Config = {
         docs: {
           path: 'handbook',
           sidebarPath: './sidebars.ts',
-          remarkPlugins: [projectVariablesPlugin],
+        },
+        roadmap: {
+          sidebarPath: './sidebarsRoadmap.ts',
+        },
+        workspaces: {
+          sidebarPath: './sidebarsWorkspaces.ts',
         },
         blog: {
           path: 'releases',
@@ -148,7 +122,6 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
-          remarkPlugins: [projectVariablesPlugin],
         },
         pages: {
           exclude: [
@@ -167,115 +140,7 @@ const config: Config = {
     ],
   ],
 
-  themeConfig: {
-    // Replace with your project's social card
-    image: 'brand/logos/logo-mark-negative.svg',
-    colorMode: {
-      defaultMode: 'light',
-      disableSwitch: true,
-      respectPrefersColorScheme: false,
-    },
-    navbar: {
-      title: `${projectConfig.PROJECT_NAME} Docs`,
-      logo: {
-        alt: `${projectConfig.PROJECT_NAME} Logo`,
-        src: 'brand/logos/logo-mark-positive.svg',
-      },
-      items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Documentation',
-        },
-        { to: '/workspaces', label: 'Workspaces', position: 'left' },
-        { to: '/roadmap', label: 'Roadmap', position: 'right' },
-        { to: '/changelog', label: 'Changelog', position: 'right' },
-        {
-          type: 'localeDropdown',
-          position: 'right',
-        },
-        {
-          href: `https://github.com/${projectConfig.GITHUB_ORG}/${projectConfig.GITHUB_REPO}`,
-          position: 'right',
-          className: 'header-github-link',
-          'aria-label': 'GitHub repository',
-        },
-      ],
-    },
-    footer: {
-      links: [
-        {
-          title: 'Documentation',
-          items: [
-            {
-              label: 'Introduction',
-              to: '/docs/intro',
-            },
-            {
-              label: 'Architecture',
-              to: '/docs/explanation/architecture-overview',
-            },
-            {
-              label: 'Style Guide',
-              to: '/docs/reference/styleguide',
-            },
-            {
-              label: 'Command Reference',
-              to: '/docs/reference/commands',
-            },
-          ],
-        },
-        {
-          title: 'Ecosystem',
-          items: [
-            {
-              label: 'Hub Workspace',
-              to: '/workspaces/hub',
-            },
-            {
-              label: 'Renderer Workspace',
-              to: '/workspaces/renderer',
-            },
-            {
-              label: 'Studio Workspace',
-              to: '/workspaces/studio',
-            },
-            {
-              label: 'Tools Workspace',
-              to: '/workspaces/tools',
-            },
-          ],
-        },
-        {
-          title: 'Product',
-          items: [
-            {
-              label: 'Master Plan & Vision',
-              to: '/docs/intro',
-            },
-            {
-              label: 'Roadmap',
-              to: '/roadmap',
-            },
-          ],
-        },
-      ],
-      copyright: `
-        <div class="footer__banner-container">
-          <img src="/brand/logos/logo-horizontal-positive.svg" alt="${projectConfig.PROJECT_DOMAIN}" class="footer__banner" />
-        </div>
-        <p>Copyright © ${new Date().getFullYear()} ${projectConfig.PROJECT_DOMAIN}. High-end, production-grade software engineering. Built with Docusaurus.</p>
-      `,
-    },
-    prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
-    },
-    mermaid: {
-      theme: { light: 'neutral', dark: 'forest' },
-    },
-  } satisfies ThemeConfig,
+  themeConfig: getBaseThemeConfig(projectConfig),
 };
 
 export default config;

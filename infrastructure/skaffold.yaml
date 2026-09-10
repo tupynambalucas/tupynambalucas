@@ -6,25 +6,25 @@ build:
   platforms: ['linux/amd64']
   local: { push: false, useDockerCLI: true, tryImportMissing: false }
   artifacts:
-    - image: turbocache
+    - image: platform-turbocache
       context: ../platform/services/turbocache
       docker: { dockerfile: Dockerfile }
-    - image: headlamp
+    - image: platform-headlamp
       context: ../platform/services/headlamp
       docker: { dockerfile: Dockerfile, target: dev }
-    - image: otelcol-contrib
+    - image: platform-otelcol-contrib
       context: ../platform/services/otelcol
       docker: { dockerfile: Dockerfile }
-    - image: prometheus
+    - image: platform-prometheus
       context: ../platform/services/prometheus
       docker: { dockerfile: Dockerfile }
-    - image: loki
+    - image: platform-loki
       context: ../platform/services/loki
       docker: { dockerfile: Dockerfile }
-    - image: tempo
+    - image: platform-tempo
       context: ../platform/services/tempo
       docker: { dockerfile: Dockerfile }
-    - image: monorepo-platform-grafana
+    - image: platform-grafana
       context: ../platform/services/grafana
       docker: { dockerfile: Dockerfile, target: dev }
     - image: cortex-gateway
@@ -39,22 +39,25 @@ build:
     - image: cortex-memory-web
       context: ..
       docker: { dockerfile: cortex/memory/services/web/Dockerfile }
-    - image: mcp-memory
+    - image: cortex-mcp-memory
       context: ..
       docker: { dockerfile: cortex/mcp/services/memory/Dockerfile }
     - image: cortex-mcp-inspector
       context: ..
       docker: { dockerfile: cortex/mcp/inspector/Dockerfile }
-    - image: mcp-github
+    - image: cortex-mcp-github
       context: ..
       docker: { dockerfile: cortex/mcp/services/github/Dockerfile }
-    - image: mcp-firecrawl
+    - image: cortex-mcp-context7
+      context: ..
+      docker: { dockerfile: cortex/mcp/services/context7/Dockerfile }
+    - image: cortex-mcp-firecrawl
       context: ..
       docker: { dockerfile: cortex/mcp/services/firecrawl/Dockerfile }
-    - image: mcp-grafana
+    - image: cortex-mcp-grafana
       context: ..
       docker: { dockerfile: cortex/mcp/services/grafana/Dockerfile }
-    - image: mcp-playwright
+    - image: cortex-mcp-playwright
       context: ..
       docker: { dockerfile: cortex/mcp/services/playwright/Dockerfile }
     - image: studio-penpot-frontend

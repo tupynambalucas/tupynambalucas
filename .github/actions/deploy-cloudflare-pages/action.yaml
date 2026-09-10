@@ -1,0 +1,68 @@
+name: 'Deploy to Cloudflare Pages (Idempotent)'
+description: 'Checks if a Cloudflare Pages project exists, creates it if not, links custom domain, and deploys.'
+
+inputs:
+  api_token:
+    description: 'Cloudflare API Token'
+    required: true
+  account_id:
+    description: 'Cloudflare Account ID'
+    required: true
+  project_name:
+    description: 'Cloudflare Pages Project Name'
+    required: true
+  directory:
+    description: 'Directory containing the static build'
+    required: true
+  production_branch:
+    description: 'Production branch name (e.g. main or develop)'
+    default: 'develop'
+  custom_domain:
+    description: 'Custom domain to bind (optional)'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Ensure Project Exists
+      shell: bash
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ inputs.api_token }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ inputs.account_id }}
+      run: |
+        echo "=> Checking/Creating Cloudflare Pages project: ${{ inputs.project_name }}"
+        output=$(npx wrangler pages project create "${{ inputs.project_name }}" --production-branch="${{ inputs.production_branch }}" 2>&1 || true)
+
+        if echo "$output" | grep -qiE "already exists"; then
+          echo "✅ Project '${{ inputs.project_name }}' already exists."
+        elif echo "$output" | grep -qiE "Successfully created"; then
+          echo "✨ Project '${{ inputs.project_name }}' successfully created!"
+        else
+          echo "⚠️ Unexpected output during project creation."
+          echo "$output"
+        fi
+
+    - name: Deploy to Cloudflare Pages
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ inputs.api_token }}
+        accountId: ${{ inputs.account_id }}
+        command: pages deploy ${{ inputs.directory }} --project-name=${{ inputs.project_name }}
+
+    - name: Bind Custom Domain
+      if: ${{ inputs.custom_domain != '' }}
+      shell: bash
+      run: |
+        echo "=> Binding Custom Domain: ${{ inputs.custom_domain }}"
+        response=$(curl -s -o /dev/null -w "%{http_code}" -X POST "https://api.cloudflare.com/client/v4/accounts/${{ inputs.account_id }}/pages/projects/${{ inputs.project_name }}/domains" \
+          -H "Authorization: Bearer ${{ inputs.api_token }}" \
+          -H "Content-Type: application/json" \
+          -d "{\"name\":\"${{ inputs.custom_domain }}\"}")
+          
+        if [ "$response" == "200" ] || [ "$response" == "201" ]; then
+          echo "✅ Domain '${{ inputs.custom_domain }}' successfully bound."
+        elif [ "$response" == "400" ]; then
+          echo "ℹ️ Domain might already be bound or invalid. API returned 400."
+        else
+          echo "⚠️ Failed to bind domain. HTTP status: $response"
+        fi

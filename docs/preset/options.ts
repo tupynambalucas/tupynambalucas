@@ -11,27 +11,15 @@ import type { UserThemeConfig as ClassicThemeConfig } from '@docusaurus/theme-co
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 
 export type MonorepoPresetOptions = {
-  /**
-   * Options for `@docusaurus/plugin-debug`. Use `false` to disable, or `true`
-   * to enable even in production.
-   */
   debug?: boolean;
-  /** Options for `@docusaurus/plugin-content-docs`. Use `false` to disable. */
   docs?: false | DocsPluginOptions;
-  /** Options for `@docusaurus/plugin-content-blog`. Use `false` to disable. */
   blog?: false | BlogPluginOptions;
-  /** Options for `@docusaurus/plugin-content-pages`. Use `false` to disable. */
   pages?: false | PagesPluginOptions;
-  /** Options for `@docusaurus/plugin-sitemap`. Use `false` to disable. */
+  roadmap?: false | DocsPluginOptions;
+  workspaces?: false | DocsPluginOptions;
   sitemap?: false | SitemapPluginOptions;
-  /** Options for `@docusaurus/plugin-svgr`. Use `false` to disable. */
   svgr?: false | SVGRPluginOptions;
-  /** Options for `@docusaurus/theme-classic`. */
   theme?: ThemeOptions;
-  /**
-   * Options for `@docusaurus/plugin-google-gtag`. Only enabled when the key
-   * is present.
-   */
   gtag?: GtagPluginOptions;
   googleTagManager?: GTMPluginOptions;
 };

@@ -59,7 +59,7 @@
     "github:services:down": "pnpm --filter @monorepo/tools-github github:services:down",
     "github:services:reset": "pnpm --filter @monorepo/tools-github github:services:reset",
     "// Infrastructure Context": "----------------------------------------",
-    "minikube:up": "minikube start --driver=podman --cpus=4 --memory=8192 --mount --mount-string \".:/workspace\"",
+    "minikube:up": "minikube start --driver=podman --cpus=4 --memory=8192 --mount --mount-string \".:/workspace\" --addons=metrics-server",
     "minikube:tunnel": "minikube tunnel",
     "minikube:status": "minikube status",
     "minikube:mount": "minikube mount .:/workspace",

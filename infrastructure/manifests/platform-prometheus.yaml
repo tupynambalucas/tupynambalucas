@@ -21,7 +21,7 @@ spec:
       serviceAccountName: prometheus-sa
       containers:
         - name: prometheus
-          image: prometheus
+          image: platform-prometheus
           imagePullPolicy: IfNotPresent
           args:
             - --config.file=/etc/prometheus/prometheus.yml

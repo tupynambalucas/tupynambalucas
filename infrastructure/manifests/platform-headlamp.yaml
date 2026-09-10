@@ -46,7 +46,7 @@ spec:
       serviceAccountName: headlamp
       containers:
         - name: headlamp
-          image: headlamp
+          image: platform-headlamp
           imagePullPolicy: IfNotPresent
           args:
             - '-kubeconfig=/home/headlamp/.kube/config/config.yaml'
