@@ -31,7 +31,7 @@ runs:
         CLOUDFLARE_ACCOUNT_ID: ${{ inputs.account_id }}
       run: |
         echo "=> Checking/Creating Cloudflare Pages project: ${{ inputs.project_name }}"
-        output=$(npx wrangler pages project create "${{ inputs.project_name }}" --production-branch="${{ inputs.production_branch }}" 2>&1 || true)
+        output=$(pnpm exec wrangler pages project create "${{ inputs.project_name }}" --production-branch="${{ inputs.production_branch }}" 2>&1 || true)
 
         if echo "$output" | grep -qiE "already exists"; then
           echo "✅ Project '${{ inputs.project_name }}' already exists."
