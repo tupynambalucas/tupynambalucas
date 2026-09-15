@@ -50,7 +50,7 @@ export default defineConfig([
           project: [
             'tsconfig.json',
             'docs/tsconfig.json',
-            'profile/tsconfig.json',
+            'renderer/tsconfig.json',
             'hub/services/*/tsconfig.json',
             'hub/packages/*/tsconfig.json',
             'shared/*/tsconfig.json',
@@ -326,8 +326,8 @@ export default defineConfig([
     },
   },
   {
-    name: 'monorepo/profile-workspace',
-    files: ['profile/**/*.ts', 'profile/**/*.tsx'],
+    name: 'monorepo/renderer-workspace',
+    files: ['renderer/**/*.ts', 'renderer/**/*.tsx'],
     ignores: ['**/*.md/**', '**/*.mdx/**'],
     rules: {
       'no-console': ['warn', { allow: ['info', 'warn', 'error', 'log'] }],

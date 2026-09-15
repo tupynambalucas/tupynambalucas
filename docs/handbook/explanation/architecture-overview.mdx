@@ -12,7 +12,7 @@ import DocCardList from '@theme/DocCardList';
 
 %PROJECT_DOMAIN% is a personal developer portal, portfolio, blog, and automation engine. The system is built on a **Monorepo** architecture using **PNPM Workspaces** and **Turborepo**, prioritizing high performance, strict typing, and domain isolation through a **Bounded Context** strategy.
 
-The architecture is designed to host the developer hub website (`hub`) and the automated stats compiler (`profile`), logically decoupled at the root level.
+The architecture is designed to host the developer hub website (`hub`) and the automated stats compiler (`renderer`), logically decoupled at the root level.
 
 ---
 
@@ -209,14 +209,14 @@ For a comprehensive, deep-dive guide on directory structures, Minikube deploymen
   items={[
     {
       type: 'link',
-      href: '/docs/workspaces/infrastructure/intro',
+      href: '/workspaces/infrastructure/intro',
       label: 'Infrastructure Workspace',
       description:
         'Explore the centralized Kubernetes orchestration, GitOps deployment pipelines, and edge-to-cluster networking topology.',
     },
     {
       type: 'link',
-      href: '/docs/workspaces/infrastructure/guides/local-development',
+      href: '/workspaces/infrastructure/guides/local-development',
       label: 'Local Development Setup',
       description:
         'Learn how to run the monorepo locally using Minikube and Skaffold for live hot-reloading.',
@@ -237,7 +237,7 @@ The Studio and Cortex workspaces provide the infrastructure for design-to-code a
 
 ## 10. Security Standards
 
-%PROJECT_DOMAIN% follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](/docs/handbook/reference/security)** document.
+%PROJECT_DOMAIN% follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](/docs/reference/security)** document.
 
 - **Bot Protection**: Integration with Cloudflare Turnstile for all authentication entry points.
 - **Brute-Force Mitigation**: IP-based rate limiting and account lockout logic.

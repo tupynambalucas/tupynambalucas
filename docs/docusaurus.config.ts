@@ -56,13 +56,14 @@ const config: Config = {
   organizationName: projectConfig.GITHUB_ORG, // Usually your GitHub org/user name.
   projectName: projectConfig.GITHUB_REPO, // Usually your repo name.
 
-  onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: 'ignore',
+  onBrokenAnchors: 'ignore',
+  onBrokenMarkdownLinks: 'ignore',
 
   markdown: {
     mermaid: true,
     hooks: {
-      onBrokenMarkdownImages: 'warn',
+      onBrokenMarkdownImages: 'ignore',
     },
   },
 

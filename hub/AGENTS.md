@@ -60,7 +60,7 @@ graph TD
 
 ## 3. Context Isolation Guardrails
 
-1. **No Cross-Context Imports**: You MUST NEVER import modules, constants, validation schemas, or helper functions from other bounded contexts like `profile/`. All shared utilities or assets must be locally duplicated or centralized in global tooling workspaces if permitted.
+1. **No Cross-Context Imports**: You MUST NEVER import modules, constants, validation schemas, or helper functions from other bounded contexts like `renderer/`. All shared utilities or assets must be locally duplicated or centralized in global tooling workspaces if permitted.
 2. **Catalog Integrity**: All dependencies must declare versions using workspace catalogs (`catalog:web-stack`, `catalog:api-stack`, `catalog:shared-stack`, etc.) defined in `pnpm-workspace.yaml`.
 
 ---

@@ -44,24 +44,24 @@ graph TD
     H_API -.-> Cortex
 ```
 
-| Directory           | Package Name          | Role               | Responsibility                                                  |
-| :------------------ | :-------------------- | :----------------- | :-------------------------------------------------------------- |
-| `hub/services/web`  | `@repo/hub/web`       | **Application**    | Personal portfolio React client, blog, and admin dashboard.     |
-| `hub/services/api`  | `@repo/hub/api`       | **Application**    | Fastify REST API serving blog posts and form handlers.          |
-| `hub/packages/core` | `@repo/hub/core`      | **Library**        | SSOT for the Hub context (Zod validation, shared schemas).      |
-| `cortex/`           | `@/cortex`            | **Tooling**        | Unified AI gateway, MCP adapters, and agent runners.            |
-| `profile/`          | `@/profile`           | **Application**    | TypeScript application compiling Markdown templates and generating SVGs. |
-| `studio/assets`     | `@repo/studio/assets` | **Library**        | Design tokens, logos, SVGs, and sync utilities.                 |
-| `tools/`            | `@repo/tools/*`       | **Tooling**        | Isolated Git version control and GitHub CLI automation.         |
-| `platform/`         | `@/platform`          | **Infrastructure** | Telemetry monitoring and Turborepo cache servers.               |
-| `docs/`             | `@/docs`              | **Docs Hub**       | Authoritative Docusaurus developer portal.                      |
+| Directory           | Package Name          | Role               | Responsibility                                                           |
+| :------------------ | :-------------------- | :----------------- | :----------------------------------------------------------------------- |
+| `hub/services/web`  | `@repo/hub/web`       | **Application**    | Personal portfolio React client, blog, and admin dashboard.              |
+| `hub/services/api`  | `@repo/hub/api`       | **Application**    | Fastify REST API serving blog posts and form handlers.                   |
+| `hub/packages/core` | `@repo/hub/core`      | **Library**        | SSOT for the Hub context (Zod validation, shared schemas).               |
+| `cortex/`           | `@/cortex`            | **Tooling**        | Unified AI gateway, MCP adapters, and agent runners.                     |
+| `renderer/`         | `@/renderer`          | **Application**    | TypeScript application compiling Markdown templates and generating SVGs. |
+| `studio/assets`     | `@repo/studio/assets` | **Library**        | Design tokens, logos, SVGs, and sync utilities.                          |
+| `tools/`            | `@repo/tools/*`       | **Tooling**        | Isolated Git version control and GitHub CLI automation.                  |
+| `platform/`         | `@/platform`          | **Infrastructure** | Telemetry monitoring and Turborepo cache servers.                        |
+| `docs/`             | `@/docs`              | **Docs Hub**       | Authoritative Docusaurus developer portal.                               |
 
 ---
 
 ## Bounded Context Philosophy
 
-- **Context Isolation**: Each root directory (`hub/`, `cortex/`, `profile/`, `studio/`, `tools/`, `platform/`, `docs/`) represents an isolated workspace context. Types, contracts, and configurations are encapsulated locally, referencing external libraries only through package boundaries.
-- **Strict Decoupling**: Business logic from the Developer Hub (`hub/`) is decoupled from the Profile Stats Compiler (`profile/`) and the AI processing hub (`cortex/`).
+- **Context Isolation**: Each root directory (`hub/`, `cortex/`, `renderer/`, `studio/`, `tools/`, `platform/`, `docs/`) represents an isolated workspace context. Types, contracts, and configurations are encapsulated locally, referencing external libraries only through package boundaries.
+- **Strict Decoupling**: Business logic from the Developer Hub (`hub/`) is decoupled from the Profile Stats Compiler (`renderer/`) and the AI processing hub (`cortex/`).
 
 ---
 
@@ -94,4 +94,3 @@ Orchestrates OpenTelemetry pipelines and remote caching to accelerate developer 
 ### Docs Context (`docs/`)
 
 The developer documentation hub. For detailed documentation, see the **[Docs Workspace](/workspaces/docs)**.
-

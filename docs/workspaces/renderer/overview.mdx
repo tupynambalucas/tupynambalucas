@@ -21,7 +21,7 @@ renderer/
 │   ├── index.ts                     # Main runner executing active pipelines
 │   ├── pipelines/                   # Pipelines Layer (SOLID/OCP architecture)
 │   │   ├── types.ts                 # Shared pipeline schemas & types
-│   │   ├── github-profile.pipeline.ts # Standard profile README compiler target
+│   │   ├── github-renderer.pipeline.ts # Standard renderer README compiler target
 │   │   └── index.ts                 # Central active pipeline registry
 │   ├── templates/                   # Domain-organized template directory
 │   │   ├── cards/                   # Metrics-based and static SVG layouts
@@ -41,7 +41,7 @@ renderer/
 
 Unlike a simple ad-hoc generation script, the Renderer features an extensible **Pipeline Architecture** complying with the Open/Closed Principle (SOLID).
 
-- **Extensible Registry**: Independent compilation targets (e.g., GitHub profile READMEs, handbook manuals, or design systems specs) are registered inside `src/pipelines/index.ts`.
+- **Extensible Registry**: Independent compilation targets (e.g., GitHub renderer READMEs, handbook manuals, or design systems specs) are registered inside `src/pipelines/index.ts`.
 - **Theme-separated Previews**: When executing compilation locally, the generator writes fully rendered light and dark versions into `generated/cards/` and `generated/docs/`. Light markdown previews reference light SVG assets, while dark previews reference dark SVGs, ensuring absolute high-fidelity theme testing.
 
 ---

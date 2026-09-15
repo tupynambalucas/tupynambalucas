@@ -95,7 +95,7 @@ routes so that they can share a single listener and port. `gateways` supersedes 
 `gateways`. This release also adds simpler host and TLS configuration, the ability to serve LLM and
 MCP traffic on the same port, and an internal bind mode with wildcard fallback. For the full
 configuration surface, see the [Configuration
-reference](/workspaces/cortex/reference/agentgateway/reference/configuration).
+reference](https://agentgateway.dev/docs/standalone/latest).
 
 ### Database-backed configuration storage
 
@@ -105,7 +105,7 @@ file as the baseline and stores the UI-managed resources, including policies, in
 `config.database.url` points to. Use SQLite for local usage, or PostgreSQL for remote and highly
 available setups, where a change notification keeps multiple replicas in sync. For the full
 configuration surface, see the [Configuration
-reference](/workspaces/cortex/reference/agentgateway/reference/configuration).
+reference](https://agentgateway.dev/docs/standalone/latest).
 
 ### MCP protocol 2026-07-28 support
 
@@ -119,7 +119,7 @@ version](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate
 
 Because the MCP `2026-07-28` support is new in this release, most of it is not yet covered by a
 dedicated guide. For the fields available today, see the [Configuration
-reference](/workspaces/cortex/reference/agentgateway/reference/configuration).
+reference](https://agentgateway.dev/docs/standalone/latest).
 
 ### Cross App Access (XAA) for MCP
 
@@ -161,7 +161,7 @@ information, see [Virtual key management](/workspaces/cortex/reference/agentgate
 - **CEL filters for telemetry**: An opt-in CEL filter selects which requests emit OpenTelemetry spans, and CEL filters decouple OTLP log fields and filtering from stdout logging.
 - **New CEL context and functions**: Access inbound `CONNECT` request headers through `source.connectHeaders`, and use a CEL replace mode for header transformations.
 
-For the full CEL surface, see the [CEL reference](/workspaces/cortex/reference/agentgateway/reference/cel).
+For the full CEL surface, see the [CEL reference](https://agentgateway.dev/docs/standalone/latest).
 
 ### Fault injection: request delay
 
@@ -178,7 +178,7 @@ AWS `assumeRole` backend authentication supports STS session tags and a configur
 `RoleSessionName`. Both the session name (`sessionNameExpression`) and per-tag values
 (`tags[].expression`) can be set from CEL expressions that are evaluated per request, so you can
 propagate identity attributes such as `jwt.sub` into the assumed AWS session. For more information,
-see [Backend authentication](/workspaces/cortex/reference/agentgateway/configuration/security/backend-authn).
+see [Backend authentication](https://agentgateway.dev/docs/standalone/latest).
 
 ### Guardrail enhancements
 
@@ -186,8 +186,8 @@ see [Backend authentication](/workspaces/cortex/reference/agentgateway/configura
 - **Improved logs and UI**: Guardrail decisions surface more clearly in logs and the UI.
 - **`failureMode` for external processing**: External processing (`extProc`) supports a `failureMode` for fail-open or fail-closed behavior.
 
-For more information, see the [prompt guards](/workspaces/cortex/reference/agentgateway/llm/prompt-guards) and [MCP
-guardrails](/workspaces/cortex/reference/agentgateway/mcp/guardrails) docs.
+For more information, see the [prompt guards](https://agentgateway.dev/docs/standalone/latest) and [MCP
+guardrails](https://agentgateway.dev/docs/standalone/latest) docs.
 
 ### External processing enhancements
 
@@ -203,7 +203,7 @@ processing](/workspaces/cortex/reference/agentgateway/configuration/traffic-mana
 - **Azure AI Foundry**: Support for Anthropic endpoints on Foundry.
 - **Detect mode and audio**: Fixed the detect-mode and audio endpoint paths.
 
-For the list of supported providers, see the [LLM providers](/workspaces/cortex/reference/agentgateway/llm/providers)
+For the list of supported providers, see the [LLM providers](https://agentgateway.dev/docs/standalone/latest)
 docs.
 
 ### A2A v1.0 agent cards

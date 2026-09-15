@@ -3,8 +3,6 @@ title: Configuração do Desenvolvimento Local
 description: Siga estes passos para rodar o monorepo %PROJECT_DOMAIN% na sua máquina.
 ---
 
-{ }
-
 # Configuração do Desenvolvimento Local
 
 Neste tutorial, configuraremos o monorepo %PROJECT_DOMAIN% na sua máquina local. Ao final desta lição, você terá o ambiente de desenvolvimento completo rodando e pronto para você construir novas funcionalidades.
@@ -27,11 +25,11 @@ Antes de começarmos, garanta que você possui os seguintes itens instalados:
 Primeiro, clone o repositório em seu workspace local e navegue para dentro dele.
 
 ```bash
-git clone https://github.com/workspace/workspace.git
+git clone https://github.com/%GITHUB_ORG%/%GITHUB_REPO%.git
 cd workspace
 ```
 
-Você deve ver uma estrutura de diretórios contendo pastas como `docs`, `hub`, `cortex`, `profile`, `studio`, `platform` e `tools`.
+Você deve ver uma estrutura de diretórios contendo pastas como `docs`, `hub`, `cortex`, `renderer`, `studio`, `platform` e `tools`.
 
 ---
 
@@ -76,6 +74,12 @@ podman machine init
 podman machine start
 ```
 
+Verifique se o motor de container está ativo:
+
+```bash
+podman info
+```
+
 ---
 
 ## Passo 5: Iniciar a Infraestrutura
@@ -109,7 +113,7 @@ Assim que os serviços estiverem em execução, verifique o acesso pelas rotas d
 
 ## Próximos Passos
 
-Para detalhes aprofundados sobre túneis de rede do Minikube, redirecionamento de portas do Skaffold e resolução de variáveis de ambiente, consulte o [Guia de Configuração de Desenvolvimento Local](/docs/workspaces/infrastructure/guides/local-development).
+Para detalhes aprofundados sobre túneis de rede do Minikube, redirecionamento de portas do Skaffold e resolução de variáveis de ambiente, consulte o [Guia de Configuração de Desenvolvimento Local](/workspaces/infrastructure/guides/local-development).
 
 ## Conclusão
 

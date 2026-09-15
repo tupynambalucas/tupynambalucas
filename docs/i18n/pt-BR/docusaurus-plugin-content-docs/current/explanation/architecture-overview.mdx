@@ -12,7 +12,7 @@ import DocCardList from '@theme/DocCardList';
 
 %PROJECT_DOMAIN% é um portal de desenvolvedor pessoal, portfólio, blog e motor de automação. O sistema é construído sobre uma arquitetura **Monorepo** usando **PNPM Workspaces** e **Turborepo**, priorizando alto desempenho, tipagem estrita e isolamento de domínio por meio de uma estratégia de **Contexto Delimitado** (Bounded Context).
 
-A arquitetura é projetada para hospedar o site central do desenvolvedor (`hub`) e o compilador automatizado de estatísticas (`profile`), logicamente desacoplados no nível raiz.
+A arquitetura é projetada para hospedar o site central do desenvolvedor (`hub`) e o compilador automatizado de estatísticas (`renderer`), logicamente desacoplados no nível raiz.
 
 ---
 
@@ -209,14 +209,14 @@ Para um guia completo e aprofundado sobre estruturas de diretórios, implantaç�
   items={[
     {
       type: 'link',
-      href: '/docs/workspaces/infrastructure/intro',
+      href: '/workspaces/infrastructure/intro',
       label: 'Workspace Infrastructure',
       description:
         'Explore a orquestração centralizada do Kubernetes, pipelines de implantação GitOps e topologia de rede edge-to-cluster.',
     },
     {
       type: 'link',
-      href: '/docs/workspaces/infrastructure/guides/local-development',
+      href: '/workspaces/infrastructure/guides/local-development',
       label: 'Configuração de Desenvolvimento Local',
       description:
         'Aprenda como executar o monorepo localmente usando Minikube e Skaffold para recarregamento rápido (hot-reloading).',
@@ -237,7 +237,7 @@ Os workspaces Studio e Cortex fornecem a infraestrutura para alinhamento de desi
 
 ## 10. Padrões de Segurança
 
-O %PROJECT_DOMAIN% segue uma estratégia de segurança em múltiplas camadas. Para detalhes detalhados de implementação, consulte o documento de **[Arquitetura de Segurança](/docs/handbook/reference/security)**.
+O %PROJECT_DOMAIN% segue uma estratégia de segurança em múltiplas camadas. Para detalhes detalhados de implementação, consulte o documento de **[Arquitetura de Segurança](/docs/reference/security)**.
 
 - **Proteção contra Bots**: Integração com o Cloudflare Turnstile para todos os pontos de entrada de autenticação.
 - **Mitigação de Força Bruta**: Limitação de taxa baseada em IP e lógica de bloqueio de conta.

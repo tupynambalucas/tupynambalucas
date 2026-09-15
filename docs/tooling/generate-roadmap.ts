@@ -13,7 +13,7 @@ const ROADMAP_PATH = path.join(kbDir, '../ROADMAP.md');
 const ROADMAP_FILES = [
   '01-core.mdx',
   '02-hub.mdx',
-  '03-profile.mdx',
+  '03-renderer.mdx',
   '04-studio.mdx',
   '05-tools.mdx',
   '06-docs.mdx',

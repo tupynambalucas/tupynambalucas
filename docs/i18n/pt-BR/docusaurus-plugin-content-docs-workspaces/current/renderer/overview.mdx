@@ -3,9 +3,11 @@ title: Visão Geral do Workspace Renderer
 sidebar_label: Visão Geral
 sidebar_position: 1
 slug: /renderer
+diataxis_type: overview
+workspace: renderer
+tags:
+  - renderer
 ---
-
-{ }
 
 O workspace Renderer contém o gerador genérico de ativos dinâmicos e o motor de compilação de documentos. Ele é responsável por compilar templates markdown em documentos prontos para produção em todo o monorepo e gerar cartões SVG personalizados e consistentes com a identidade visual.
 
@@ -19,7 +21,7 @@ renderer/
 │   ├── index.ts                     # Executável principal rodando os pipelines ativos
 │   ├── pipelines/                   # Camada de pipelines (arquitetura SOLID/OCP)
 │   │   ├── types.ts                 # Esquemas e tipos compartilhados de pipelines
-│   │   ├── github-profile.pipeline.ts # Pipeline padrão para compilação do README de perfil
+│   │   ├── github-renderer.pipeline.ts # Pipeline padrão para compilação do README do renderer
 │   │   └── index.ts                 # Registro central de pipelines ativos
 │   ├── templates/                   # Diretório de templates organizado por domínio
 │   │   ├── cards/                   # Layouts de cartões SVG estáticos e baseados em métricas
@@ -39,7 +41,7 @@ renderer/
 
 Diferente de um script de geração simples ad-hoc, o Renderer possui uma **Arquitetura de Pipelines** extensível que está em conformidade com o princípio Open/Closed (SOLID).
 
-- **Registro Extensível**: Alvos de compilação independentes (por exemplo, README de perfil do GitHub, manuais de handbook ou especificações de design systems) são registrados dentro de `src/pipelines/index.ts`.
+- **Registro Extensível**: Alvos de compilação independentes (por exemplo, README do renderer do GitHub, manuais de handbook ou especificações de design systems) são registrados dentro de `src/pipelines/index.ts`.
 - **Pré-visualizações Separadas por Tema**: Ao executar a compilação localmente, o gerador grava versões claras (light) e escuras (dark) totalmente renderizadas em `generated/cards/` e `generated/docs/`. Os markdowns de visualização clara referenciam ativos SVG claros, enquanto as visualizações escuras referenciam SVGs escuros, garantindo testes de tema de altíssima fidelidade.
 
 ---

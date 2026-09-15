@@ -15,7 +15,7 @@ export default function ArchitectureDiagram({ onSelect, activeId }: Architecture
       color: styles.hubColor,
       items: ['web', 'api', 'core'],
     },
-    { id: 'profile', label: '/profile', color: styles.profileColor, items: ['zig', 'stats'] },
+    { id: 'renderer', label: '/renderer', color: styles.rendererColor, items: ['zig', 'stats'] },
     { id: 'studio', label: '/studio', color: styles.studioColor, items: ['tokens', 'assets'] },
     { id: 'tools', label: '/tools', color: styles.toolsColor, items: ['mcp', 'scripts'] },
     { id: 'knowledge', label: '/docs', color: styles.docsColor, items: ['docusaurus'] },

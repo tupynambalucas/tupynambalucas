@@ -15,7 +15,7 @@ tags:
 Exchange the incoming request credential for a per-backend token at an OAuth authorization server
 before forwarding the request.
 
-Attaches to: [Backend](/workspaces/cortex/reference/agentgateway/configuration/security/backend-authn/docs/standalone/latest/configuration/backends/ 'Backend')
+Attaches to: [Backend](https://agentgateway.dev/docs/standalone/latest/configuration/backends/ 'Backend')
 
 ## About
 
@@ -87,7 +87,7 @@ token for a token scoped to a different backend client.
    endpoint, authenticates as the confidential client `requester-client`, and requests a token for
    `audience=target-client`. Because `grantType` is omitted, the gateway uses the default RFC 8693
    token exchange grant. For the full set of fields, see the [configuration
-   reference](/workspaces/cortex/reference/agentgateway/reference/configuration).
+   reference](https://agentgateway.dev/docs/standalone/latest).
 
    [config.yaml](/workspaces/cortex/reference/agentgateway/./configuration/security/backend-authn/https:/agentgateway.dev/examples/traffic-token-exchange/oauth-rfc8693/config.yaml)
 
@@ -212,7 +212,7 @@ upstream token.
 2. Review the gateway configuration. The `/jwt-bearer-kc` route runs a full exchange against real
    Keycloak; the `/jwt-bearer` and `/obo` routes point at a mock token endpoint that logs the exact
    request the gateway sends. For the full set of fields, see the [configuration
-   reference](/workspaces/cortex/reference/agentgateway/reference/configuration).
+   reference](https://agentgateway.dev/docs/standalone/latest).
 
    [config.yaml](/workspaces/cortex/reference/agentgateway/./configuration/security/backend-authn/https:/agentgateway.dev/examples/traffic-token-exchange/jwt-authz-grant/config.yaml)
 
@@ -433,7 +433,7 @@ README](https://github.com/agentgateway/agentgateway/tree/main/examples/traffic-
 ## Configuration reference
 
 The following table describes the most common `oauthTokenExchange` fields. For the full set of
-fields, see the [configuration reference](/workspaces/cortex/reference/agentgateway/reference/configuration).
+fields, see the [configuration reference](https://agentgateway.dev/docs/standalone/latest).
 
 | Field                              | Description                                                                                                                                                                   |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

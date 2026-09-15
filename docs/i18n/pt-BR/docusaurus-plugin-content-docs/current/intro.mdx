@@ -14,7 +14,7 @@ Este repositório é um monorepo que contém um gerador de estatísticas de perf
 
 ## 1. Visão Geral do Produto & Proposta de Valor
 
-O monorepo coordena o site pessoal do desenvolvedor (`hub`), visualizações de estatísticas automatizadas (`profile`), sistemas de design (`studio`), hub de processamento de IA (`cortex`) e ferramentas de automação (`tools`).
+O monorepo coordena o site pessoal do desenvolvedor (`hub`), visualizações de estatísticas automatizadas (`renderer`), sistemas de design (`studio`), hub de processamento de IA (`cortex`) e ferramentas de automação (`tools`).
 
 A principal aplicação voltada para o cliente é o **Developer Hub** (`@repo/hub/*`):
 
@@ -32,7 +32,7 @@ O site de portfólio e o gerador de estatísticas operam em um fluxo de trabalho
 
 1. **Apresentação de Portfólio**: Os visitantes exploram o frontend `@repo/hub/web`, consumindo postagens de blog e destaques de projetos servidos por `@repo/hub/api`.
 2. **Envio de Contato**: As entradas do formulário são validadas por meio de chaves anti-spam do Turnstile, serializadas usando schemas do Zod do `@repo/hub/core` e persistidas em uma instância do MongoDB.
-3. **Geração de Estatísticas de Perfil**: O workspace `@/profile` compila métricas do GitHub usando uma CLI nativa em Zig e sobrescreve dinamicamente o arquivo `README.md` raiz.
+3. **Geração de Estatísticas de Perfil**: O workspace `@/renderer` compila métricas do GitHub usando uma CLI nativa em Zig e sobrescreve dinamicamente o arquivo `README.md` raiz.
 
 ---
 
@@ -79,7 +79,7 @@ Para uma análise abrangente de nossa filosofia de contexto, estrutura de diret�
 Nossa prioridade é a implantação e manutenção de:
 
 - **`@repo/hub/*`**: Hub pessoal React/Fastify.
-- **`@/profile`**: Compilador de estatísticas de perfil do GitHub baseado em Zig.
+- **`@/renderer`**: Compilador de estatísticas de perfil do GitHub baseado em Zig.
 
 ---
 
@@ -132,7 +132,7 @@ A melhor maneira de começar com o Diátaxis é aplicando-o após a leitura de u
   items={[
     {
       type: 'link',
-      href: '/docs/tutorials/diataxis-start',
+      href: '/workspaces/docs/tutorials/diataxis-start',
       label: 'Comece Aqui',
       description: 'Uma introdução de cinco minutos sobre o framework Diátaxis.',
     },
@@ -147,43 +147,43 @@ Estas páginas ajudarão a dar um sentido imediato e concreto à abordagem.
   items={[
     {
       type: 'link',
-      href: '/docs/guides/diataxis/applying-diataxis',
+      href: '/workspaces/docs/guides/diataxis/applying-diataxis',
       label: 'Aplicando o Diátaxis',
       description: 'Uma visão geral prática de como aplicar o framework.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/tutorials',
+      href: '/workspaces/docs/reference/diataxis/tutorials',
       label: 'Tutoriais',
       description: 'Referência para escrever tutoriais voltados para o aprendizado.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/how-to-guides',
+      href: '/workspaces/docs/reference/diataxis/how-to-guides',
       label: 'Guias de Como Fazer',
       description: 'Referência para escrever guias voltados para objetivos.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/reference-docs',
+      href: '/workspaces/docs/reference/diataxis/reference-docs',
       label: 'Referência',
       description: 'Referência para escrever documentação voltada para a informação.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/explanation-docs',
+      href: '/workspaces/docs/reference/diataxis/explanation-docs',
       label: 'Explicação',
       description: 'Referência para escrever explicações voltadas para o entendimento.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/compass',
+      href: '/workspaces/docs/reference/diataxis/compass',
       label: 'A Bússola',
       description: 'Uma ferramenta de diagnóstico para a qualidade da documentação.',
     },
     {
       type: 'link',
-      href: '/docs/guides/diataxis/workflow',
+      href: '/workspaces/docs/guides/diataxis/workflow',
       label: 'Fluxo de Trabalho',
       description: 'Como usar o Diátaxis como guia para o trabalho de documentação.',
     },
@@ -198,43 +198,43 @@ Esta seção explora a teoria e os princípios do Diátaxis mais profundamente e
   items={[
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/theory',
+      href: '/workspaces/docs/explanation/diataxis/theory',
       label: 'Entendendo o Diátaxis',
       description: 'Em direção a uma teoria de qualidade em documentação.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/foundations',
+      href: '/workspaces/docs/explanation/diataxis/foundations',
       label: 'Fundações',
       description: 'As duas dimensões que sustentam o mapa do Diátaxis.',
     },
     {
       type: 'link',
-      href: '/docs/reference/diataxis/map',
+      href: '/workspaces/docs/reference/diataxis/map',
       label: 'O Mapa',
       description: 'A estrutura bidimensional da documentação.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/quality',
+      href: '/workspaces/docs/explanation/diataxis/quality',
       label: 'Qualidade',
       description: 'Em direção a uma teoria de qualidade em documentação.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/tutorials-vs-how-to',
+      href: '/workspaces/docs/explanation/diataxis/tutorials-vs-how-to',
       label: 'Tutoriais e Guias de Como Fazer',
       description: 'A diferença entre um tutorial e um guia de como fazer.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/reference-vs-explanation',
+      href: '/workspaces/docs/explanation/diataxis/reference-vs-explanation',
       label: 'Referência e Explicação',
       description: 'A diferença entre referência e explicação.',
     },
     {
       type: 'link',
-      href: '/docs/explanation/diataxis/complex-hierarchies',
+      href: '/workspaces/docs/explanation/diataxis/complex-hierarchies',
       label: 'Hierarquias Complexas',
       description: 'Como o Diátaxis funciona em sistemas de documentação complexos.',
     },

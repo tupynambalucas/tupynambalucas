@@ -33,7 +33,7 @@ export default function HeroSection(): ReactNode {
           </p>
 
           <div className={styles.actions}>
-            <Link to="/docs" className={styles.primaryBtn}>
+            <Link to="/docs/intro" className={styles.primaryBtn}>
               <Translate id="homepage.button.docs">See Documentation</Translate>
             </Link>
             <Link to="/workspaces" className={styles.secondaryBtn}>

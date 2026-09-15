@@ -78,8 +78,11 @@ All files placed inside the documentation directories MUST strictly adhere to th
 
 ## 3. Localization Parity (pt-BR)
 
-- When creating or editing an English document, you MUST keep its Brazilian Portuguese (`pt-BR`) translation synchronized under `docs/i18n/pt-BR/` in the corresponding plugin subdirectory.
-- Never translate frontmatter keys, component tags, or code block variables.
+- **Absolute Synchronization**: Whenever you create, modify, rename, or delete an English document in the `docs/` workspace, you MUST perform the exact same action on its Brazilian Portuguese (`pt-BR`) counterpart.
+- **Creation & Modification**: If a new EN document is created or an existing one is updated, you MUST immediately create or update the corresponding pt-BR file under `docs/i18n/pt-BR/` in the correct plugin subdirectory.
+- **Strict Fidelity**: Translations must be strictly faithful ("fiel ao pé da letra") to the English source. Do not summarize, paraphrase, omit sections, or add new content. The structure, headings, URLs, and meaning must perfectly mirror the English original.
+- **Review Requirement**: Even if you are just reviewing or doing minor fixes in EN documents, you MUST review and apply the same fixes to the pt-BR documents to ensure no parity gaps exist.
+- **Preservation**: Never translate frontmatter keys (except the values for `title`, `description`, and `sidebar_label`), component tags, HTML/JSX elements, or code block contents.
 
 ---
 
