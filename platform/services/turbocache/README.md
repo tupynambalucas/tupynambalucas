@@ -21,14 +21,10 @@ The `platform/services/turbocache` workspace provides a high-performance, contai
 
 ## Getting Started
 
-Turbocache starts automatically with the platform stack:
+Turbocache starts automatically with the unified platform stack:
 
 ```bash
-# Kubernetes development mode
-pnpm platform:dev
-
-# Standalone Docker Compose mode
-pnpm platform:up
+pnpm infra:dev
 ```
 
 To configure Turborepo to use the remote cache locally:

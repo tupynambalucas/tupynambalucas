@@ -29,12 +29,8 @@ The `platform/services/otelcol` workspace builds and manages the custom OpenTele
 
 ## Getting Started
 
-The OpenTelemetry Collector is launched automatically as part of the platform stack:
+The OpenTelemetry Collector is launched automatically as part of the unified platform stack:
 
 ```bash
-# Kubernetes development mode
-pnpm platform:dev
-
-# Standalone Docker Compose mode
-pnpm platform:up
+pnpm infra:dev
 ```

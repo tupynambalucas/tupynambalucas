@@ -1,0 +1,129 @@
+# ==========================================
+# PENPOT SEED JOB
+# Idempotent Kubernetes Job that provisions the initial Penpot user
+# accounts directly into the Neon Postgres database on first boot.
+#
+# Design principles:
+#   - Idempotent: INSERT ... ON CONFLICT DO NOTHING -- safe to re-run
+#     on every cluster restart; no duplicate users are ever created.
+#   - Zero runtime dependency on the Penpot backend container or its
+#     internal CLI. Uses a standalone postgres client image.
+#   - Secrets are consumed from the existing studio-secrets Secret,
+#     which is generated from infrastructure/.env by Kustomize.
+#   - The Job completes and its Pod enters Completed state after the
+#     first successful execution. Kubernetes keeps the Pod log for
+#     audit purposes but does not restart it.
+#
+# To update a user password after the seed has run, delete the Job
+# and re-apply with an updated BCRYPT hash in the SQL below:
+#   kubectl delete job penpot-seed -n studio
+#   pnpm infra:dev
+#
+# Password hashing: Penpot uses bcrypt cost 12.
+# Generate a new hash with:
+#   htpasswd -bnBC 12 "" "your_password" | tr -d ':\n' | sed 's/$2y/$2a/'
+# ==========================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: penpot-seed
+  namespace: studio
+  labels:
+    app: penpot-seed
+    component: seed
+  annotations:
+    app.kubernetes.io/managed-by: skaffold
+    app.kubernetes.io/part-of: studio-penpot
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 604800
+  template:
+    metadata:
+      labels:
+        app: penpot-seed
+        component: seed
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: seed
+          image: postgres:16-alpine
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+
+              echo "[seed] Waiting for Neon Postgres to accept connections..."
+              until psql "$PENPOT_DATABASE_URI" -c "SELECT 1" > /dev/null 2>&1; do
+                echo "[seed] DB not ready, retrying in 3s..."
+                sleep 3
+              done
+              echo "[seed] Connection established."
+
+              echo "[seed] Provisioning initial user accounts..."
+
+              echo "
+              INSERT INTO profile (
+                id, fullname, email, password,
+                is_active, is_blocked, is_demo, is_muted,
+                created_at, modified_at, props
+              )
+              SELECT
+                gen_random_uuid(),
+                :'fullname',
+                :'email',
+                :'password',
+                true, false, false, false,
+                now(), now(), '{}'::jsonb
+              WHERE NOT EXISTS (
+                SELECT 1 FROM profile WHERE email = :'email'
+              );
+              " | psql "$PENPOT_DATABASE_URI" \
+                -v fullname="$PENPOT_ADMIN_FULLNAME" \
+                -v email="$PENPOT_ADMIN_EMAIL" \
+                -v password="$PENPOT_ADMIN_PASSWORD_HASH" \
+                -f -
+
+
+              echo "[seed] Done. Initial accounts provisioned successfully."
+          env:
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_DATABASE_USERNAME
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_DATABASE_PASSWORD
+            - name: PENPOT_DATABASE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_DATABASE_URI
+            - name: PENPOT_ADMIN_FULLNAME
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_ADMIN_FULLNAME
+            - name: PENPOT_ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_ADMIN_EMAIL
+            - name: PENPOT_ADMIN_PASSWORD_HASH
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_ADMIN_PASSWORD_HASH
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi

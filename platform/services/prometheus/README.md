@@ -22,12 +22,8 @@ The `platform/services/prometheus` workspace provides time-series metric storage
 
 ## Getting Started
 
-Prometheus starts automatically with the platform stack:
+Prometheus starts automatically with the unified platform stack:
 
 ```bash
-# Kubernetes development mode
-pnpm platform:dev
-
-# Standalone Docker Compose mode
-pnpm platform:up
+pnpm infra:dev
 ```

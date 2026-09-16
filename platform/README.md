@@ -13,7 +13,7 @@ The `platform/` workspace provides always-on operational infrastructure, observa
 - **Distributed Traces**: Grafana Tempo
 - **Visualization**: Grafana, Headlamp Kubernetes Web UI
 - **Build Optimization**: Ducktors Turborepo Remote Cache (`turbocache`)
-- **Orchestration**: Kubernetes, Kustomize, Skaffold, Podman / Docker Compose
+- **Orchestration**: Kubernetes, Kustomize, Skaffold
 
 ---
 
@@ -21,7 +21,7 @@ The `platform/` workspace provides always-on operational infrastructure, observa
 
 Platform organizes the core infrastructure into modular service directories:
 
-1. **[infrastructure/](./infrastructure/README.md)**: Centralized Docker Compose profiles, Kubernetes deployment manifests, cert-manager resources, and Ingress routing rules ([infrastructure/README.md](./infrastructure/README.md)).
+1. **[infrastructure/](./infrastructure/README.md)**: Kubernetes deployment manifests, cert-manager resources, and Ingress routing rules ([infrastructure/README.md](./infrastructure/README.md)).
 2. **[services/grafana/](./services/grafana/README.md)**: Grafana visualization server, pre-configured datasources, and provisioned telemetry dashboards ([services/grafana/README.md](./services/grafana/README.md)).
 3. **[services/headlamp/](./services/headlamp/README.md)**: Extensible, tokenless Kubernetes Web UI dashboard for cluster administration ([services/headlamp/README.md](./services/headlamp/README.md)).
 4. **[services/otelcol/](./services/otelcol/README.md)**: Edge OpenTelemetry Collector pipelines for log, metric, and trace aggregation ([services/otelcol/README.md](./services/otelcol/README.md)).
@@ -42,38 +42,25 @@ Configure sensitive tokens (e.g. `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_TUNNEL_TOKE
 
 ### 2. Kubernetes Dev Mode (Hot-Reload)
 
-To build, deploy, and automatically sync telemetry and dashboard changes inside the local Kubernetes cluster:
+Platform is deployed as part of the unified infrastructure stack. To build, deploy, and
+automatically sync changes inside the local Kubernetes cluster:
 
 ```bash
-pnpm platform:dev
+pnpm infra:dev
 ```
 
-This command deploys all services into the `platform` namespace and handles cert-manager CRD provisioning hooks via Skaffold.
-
-### 3. Standalone Containers (Docker Compose / Podman)
-
-To run the platform services using standalone container profiles:
+This command deploys all services into the `platform` namespace and handles cert-manager
+CRD provisioning hooks via Skaffold. To tear down all resources:
 
 ```bash
-pnpm platform:up
+pnpm infra:delete
 ```
-
-To monitor logs or stop the environment:
-
-- View active logs: `pnpm platform:logs`
-- Stop containers: `pnpm platform:down`
-- Reset environment: `pnpm platform:reset`
 
 ---
 
 ## Key Scripts
 
-| Command               | Description                                                            |
-| :-------------------- | :--------------------------------------------------------------------- |
-| `pnpm platform:dev`   | Starts local Kubernetes cluster with live sync via Skaffold.           |
-| `pnpm platform:clean` | Deletes deployed platform resources and prunes container build caches. |
-| `pnpm platform:stop`  | Tears down Kubernetes deployments and standalone containers.           |
-| `pnpm platform:up`    | Boots standalone Docker Compose platform services.                     |
-| `pnpm platform:down`  | Stops and removes all Docker Compose platform containers.              |
-| `pnpm platform:logs`  | Streams live container logs across platform services.                  |
-| `pnpm platform:reset` | Restarts the Docker Compose stack cleanly.                             |
+| Command             | Description                                                      |
+| :------------------ | :--------------------------------------------------------------- |
+| `pnpm infra:dev`    | Deploys the full stack including Platform services via Skaffold. |
+| `pnpm infra:delete` | Tears down all cluster resources including Platform deployments. |

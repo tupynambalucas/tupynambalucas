@@ -10,7 +10,7 @@ The `studio/` directory houses brand identity management, design system tokens, 
 - **Asset Storage & Sync**: Cloudflare R2, `@repo/studio/bucket`
 - **Collaborative Design Engine**: Penpot v2 (Frontend, Backend, Exporter, Valkey, Aide AI Assistant)
 - **Collaborative Notes**: Memos
-- **Orchestration**: Kubernetes, Kustomize, Skaffold, Podman / Docker Compose
+- **Orchestration**: Kubernetes, Kustomize, Skaffold
 
 ---
 
@@ -28,30 +28,20 @@ The `studio/` directory houses brand identity management, design system tokens, 
 
 ## Service Infrastructure
 
-Studio services (Penpot and Memos) can be run on Kubernetes via Skaffold or in standalone containers via Docker Compose.
+Studio services (Penpot and Memos) run exclusively on Kubernetes via Skaffold, deployed
+as part of the unified infrastructure stack.
 
-### 1. Kubernetes Dev Mode (Hot-Reload)
+### Kubernetes Dev Mode (Hot-Reload)
 
-Studio integrates with the cluster via Skaffold and automatically boots the `platform-dev` module:
-
-```bash
-pnpm studio:dev
-```
-
-### 2. Standalone Containers (Docker Compose / Podman)
-
-To run Studio services standalone:
+Studio integrates with the cluster via the `studio-dev` Skaffold module and is included
+in the full stack deployment:
 
 ```bash
-# Start containers
-pnpm studio:up
-
-# View live logs
-pnpm studio:logs
-
-# Stop containers
-pnpm studio:down
+pnpm infra:dev
 ```
+
+This automatically deploys the `platform-dev` module as a prerequisite and launches all
+Studio services into the `studio` namespace with live sync enabled.
 
 ---
 
@@ -59,13 +49,8 @@ pnpm studio:down
 
 | Command                 | Description                                                        |
 | :---------------------- | :----------------------------------------------------------------- |
-| `pnpm studio:dev`       | Starts Studio with Platform on Kubernetes via Skaffold.            |
-| `pnpm studio:clean`     | Deletes deployed Studio cluster resources.                         |
-| `pnpm studio:stop`      | Tears down Kubernetes deployments and standalone containers.       |
-| `pnpm studio:up`        | Boots standalone Studio containers with Docker Compose.            |
-| `pnpm studio:down`      | Stops and removes Studio containers.                               |
-| `pnpm studio:logs`      | Streams live container logs across Studio services.                |
-| `pnpm studio:reset`     | Restarts Studio containers cleanly.                                |
+| `pnpm infra:dev`        | Deploys the full stack including Studio services via Skaffold.     |
+| `pnpm infra:delete`     | Tears down all cluster resources including Studio deployments.     |
 | `pnpm studio:bucket`    | Runs the Cloudflare R2 asset synchronization CLI.                  |
 | `pnpm studio:typecheck` | Validates TypeScript compilation across studio packages.           |
 | `pnpm studio:lint`      | Validates code standards and linting rules across studio packages. |

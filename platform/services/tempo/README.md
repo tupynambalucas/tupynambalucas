@@ -22,12 +22,8 @@ The `platform/services/tempo` workspace provides Grafana Tempo distributed trace
 
 ## Getting Started
 
-Tempo starts automatically with the platform stack:
+Tempo starts automatically with the unified platform stack:
 
 ```bash
-# Kubernetes development mode
-pnpm platform:dev
-
-# Standalone Docker Compose mode
-pnpm platform:up
+pnpm infra:dev
 ```

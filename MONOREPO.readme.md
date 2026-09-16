@@ -1,8 +1,7 @@
 # tupynambalucas.dev Monorepo
 
 High-performance, domain-driven monorepo powering the tupynambalucas.dev developer platform.
-Built on TypeScript, PNPM Workspaces, and Turborepo with dual-mode orchestration across
-Docker Compose and Kubernetes via Skaffold.
+Built on TypeScript, PNPM Workspaces, and Turborepo with Kubernetes-native orchestration via Skaffold.
 
 **Documentation**: [docs.tupynambalucas.dev](https://docs.tupynambalucas.dev)
 
@@ -74,7 +73,7 @@ graph TD
     Memos --> NeonDB
   end
 
-  subgraph HubServices ["Hub Services (Docker Compose)"]
+  subgraph HubServices ["Hub Services (Podman)"]
     HubWeb["Web Client (React 19)"]
     HubAPI["REST API (Fastify 5)"]
     HubCore["Core Library (Zod)"]
@@ -187,7 +186,7 @@ framework with full English / Portuguese (pt-BR) localization.
 | **Task Orchestrator** | Turborepo (parallel pipelines, remote caching via Turbocache)    |
 | **Backend**           | Fastify 5, Mongoose, BullMQ, Zod                                 |
 | **Frontend**          | React 19, Vite 8, Zustand, TailwindCSS v4, GSAP, Three.js        |
-| **Containers**        | Podman / Docker Compose, Kubernetes v1.30+, Skaffold v4beta11    |
+| **Containers**        | Podman (Hub), Kubernetes v1.30+, Skaffold v4beta11               |
 | **Ingress**           | Traefik v3.1, Cloudflare Tunnel, cert-manager (DNS-01 ACME)      |
 | **Observability**     | OpenTelemetry Collector, Prometheus, Grafana Loki, Grafana Tempo |
 | **AI Infrastructure** | AgentGateway (Go), MCP protocol, MongoDB Vector Search           |
@@ -229,8 +228,8 @@ Edit this file to configure API keys, tokens, and service credentials before sta
 
 ## Orchestration
 
-The monorepo supports two parallel orchestration modes. All commands are defined in the
-root [package.json](./package.json) and executed via `pnpm`.
+The monorepo uses a unified Kubernetes-native orchestration model. All infrastructure commands are
+defined in the root [package.json](./package.json) and executed via `pnpm`.
 
 ### Kubernetes (Skaffold + Minikube)
 
@@ -241,35 +240,22 @@ Deploy the complete development cluster with automatic port forwarding and hot-r
 pnpm minikube:up
 pnpm minikube:tunnel    # Required in a separate terminal for LoadBalancer IPs
 
-# Deploy the full stack (platform + cortex + studio)
-pnpm k8s:dev
+# Deploy and stream the full stack (platform + cortex + studio)
+pnpm infra:dev
 
-# Deploy individual modules
-pnpm platform:dev       # Infrastructure foundation (always starts first)
-pnpm cortex:dev         # AI services (auto-starts platform)
-pnpm studio:dev         # Design services (auto-starts platform)
-
-# Tear down
-pnpm k8s:down           # Delete all cluster resources
+# Tear down all cluster resources
+pnpm infra:delete
 ```
 
-### Docker Compose (Podman)
+### Hub Services (Podman)
 
-Run individual workspace services in standalone container mode:
+The Hub workspace uses standalone Podman containers for local development:
 
 ```bash
-# Platform observability stack
-pnpm platform:up        # Start   |  pnpm platform:down   # Stop
-
-# Cortex AI services
-pnpm cortex:up          # Start   |  pnpm cortex:down     # Stop
-
-# Studio design services
-pnpm studio:up          # Start   |  pnpm studio:down     # Stop
-pnpm penpot:up          # Penpot  |  pnpm memos:up        # Memos only
-
-# Hub development
 pnpm hub:dev            # API + Web + DB with hot-reload
+pnpm hub:up             # Start containers only
+pnpm hub:down           # Stop containers
+pnpm hub:reset          # Reset containers and volumes
 ```
 
 ### Development Domain Routing

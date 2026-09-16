@@ -15,7 +15,7 @@ This bounded context ([platform/](./)) centralizes and manages core cluster infr
 ## 1. Bounded Context Navigation
 
 - **[services/](./services/)**: Observability and infrastructure services (Grafana, Headlamp, Loki, OTel Collector, Prometheus, Tempo, Turbocache). Rules are consolidated in Section 5 of this file.
-- **[infrastructure/](./infrastructure/)**: Kubernetes Kustomize manifests, cert-manager certificates, Traefik ingress, and Docker Compose configurations. Rules are consolidated in Section 5 of this file.
+- **[infrastructure/](./infrastructure/)**: Kubernetes Kustomize manifests, cert-manager certificates, and Traefik ingress configurations. Rules are consolidated in Section 5 of this file.
 
 ---
 
@@ -61,15 +61,10 @@ This bounded context ([platform/](./)) centralizes and manages core cluster infr
 
 ## 4. Local Lifecycle Commands
 
-| Target Runtime            | Purpose                                   | Command               |
-| :------------------------ | :---------------------------------------- | :-------------------- |
-| **Kubernetes (Skaffold)** | Start platform cluster with hot-reloading | `pnpm platform:dev`   |
-| **Kubernetes (Skaffold)** | Delete cluster resources & clean cache    | `pnpm platform:clean` |
-| **Kubernetes (Skaffold)** | Stop platform deployment stack            | `pnpm platform:stop`  |
-| **Docker Compose**        | Boot standalone platform containers       | `pnpm platform:up`    |
-| **Docker Compose**        | Stop standalone platform containers       | `pnpm platform:down`  |
-| **Docker Compose**        | View platform container logs in real time | `pnpm platform:logs`  |
-| **Docker Compose**        | Reset containers and persistent volumes   | `pnpm platform:reset` |
+| Target Runtime            | Purpose                              | Command             |
+| :------------------------ | :----------------------------------- | :------------------ |
+| **Kubernetes (Skaffold)** | Deploy full stack with hot-reloading | `pnpm infra:dev`    |
+| **Kubernetes (Skaffold)** | Delete all cluster resources         | `pnpm infra:delete` |
 
 ---
 
@@ -79,7 +74,6 @@ This bounded context ([platform/](./)) centralizes and manages core cluster infr
 
 - All Kubernetes deployments MUST consume credentials from the `platform-secrets` Secret (generated from [`infrastructure/.env`](../infrastructure/.env)).
 - Kustomize `secretGenerator` entries MUST include `options.disableNameSuffixHash: true` to maintain predictable Secret names referenced by Deployments.
-- Docker Compose services MUST declare `restart: unless-stopped` policies for always-on services.
 
 ### OTel Collector Pipeline Rules
 

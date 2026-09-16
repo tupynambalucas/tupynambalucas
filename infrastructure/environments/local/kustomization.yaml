@@ -17,6 +17,7 @@ resources:
   - ../../manifests/platform-cloudflared.yaml
   - ../../manifests/studio-namespace.yaml
   - ../../manifests/studio-penpot.yaml
+  - ../../manifests/studio-penpot-seed.yaml
   - ../../manifests/studio-memos.yaml
 
 secretGenerator:

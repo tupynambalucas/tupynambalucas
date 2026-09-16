@@ -22,12 +22,8 @@ The `platform/services/loki` workspace provides Grafana Loki log aggregation, in
 
 ## Getting Started
 
-Loki starts automatically with the platform stack:
+Loki starts automatically with the unified platform stack:
 
 ```bash
-# Kubernetes development mode
-pnpm platform:dev
-
-# Standalone Docker Compose mode
-pnpm platform:up
+pnpm infra:dev
 ```
