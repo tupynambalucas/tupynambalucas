@@ -48,78 +48,33 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: seed
-          image: postgres:16-alpine
+          image: studio-penpot-backend
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: studio-secrets
           command:
-            - /bin/sh
+            - /bin/bash
             - -c
             - |
               set -eu
-
-              echo "[seed] Waiting for Neon Postgres to accept connections..."
-              until psql "$PENPOT_DATABASE_URI" -c "SELECT 1" > /dev/null 2>&1; do
-                echo "[seed] DB not ready, retrying in 3s..."
+              echo "[seed] Waiting for Penpot database and dependencies to be ready..."
+              # manage.py search-profile implicitly checks the DB connection
+              until python3 manage.py search-profile -c backend:6063 -e "test@example.com" > /dev/null 2>&1; do
+                echo "[seed] Backend services not ready, retrying in 3s..."
                 sleep 3
               done
-              echo "[seed] Connection established."
 
-              echo "[seed] Provisioning initial user accounts..."
-
-              echo "
-              INSERT INTO profile (
-                id, fullname, email, password,
-                is_active, is_blocked, is_demo, is_muted,
-                created_at, modified_at, props
-              )
-              SELECT
-                gen_random_uuid(),
-                :'fullname',
-                :'email',
-                :'password',
-                true, false, false, false,
-                now(), now(), '{}'::jsonb
-              WHERE NOT EXISTS (
-                SELECT 1 FROM profile WHERE email = :'email'
-              );
-              " | psql "$PENPOT_DATABASE_URI" \
-                -v fullname="$PENPOT_ADMIN_FULLNAME" \
-                -v email="$PENPOT_ADMIN_EMAIL" \
-                -v password="$PENPOT_ADMIN_PASSWORD_HASH" \
-                -f -
-
+              echo "[seed] Checking if admin user exists..."
+              if python3 manage.py search-profile -c backend:6063 -e "$PENPOT_ADMIN_EMAIL" | grep -q "$PENPOT_ADMIN_EMAIL"; then
+                echo "[seed] Profile already exists. Updating password..."
+                python3 manage.py update-profile -c backend:6063 -e "$PENPOT_ADMIN_EMAIL" -p "$PENPOT_ADMIN_PASSWORD"
+              else
+                echo "[seed] Creating new admin profile..."
+                python3 manage.py create-profile -c backend:6063 -n "$PENPOT_ADMIN_FULLNAME" -e "$PENPOT_ADMIN_EMAIL" -p "$PENPOT_ADMIN_PASSWORD"
+              fi
 
               echo "[seed] Done. Initial accounts provisioned successfully."
-          env:
-            - name: PGUSER
-              valueFrom:
-                secretKeyRef:
-                  name: studio-secrets
-                  key: PENPOT_DATABASE_USERNAME
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: studio-secrets
-                  key: PENPOT_DATABASE_PASSWORD
-            - name: PENPOT_DATABASE_URI
-              valueFrom:
-                secretKeyRef:
-                  name: studio-secrets
-                  key: PENPOT_DATABASE_URI
-            - name: PENPOT_ADMIN_FULLNAME
-              valueFrom:
-                secretKeyRef:
-                  name: studio-secrets
-                  key: PENPOT_ADMIN_FULLNAME
-            - name: PENPOT_ADMIN_EMAIL
-              valueFrom:
-                secretKeyRef:
-                  name: studio-secrets
-                  key: PENPOT_ADMIN_EMAIL
-            - name: PENPOT_ADMIN_PASSWORD_HASH
-              valueFrom:
-                secretKeyRef:
-                  name: studio-secrets
-                  key: PENPOT_ADMIN_PASSWORD_HASH
           resources:
             requests:
               cpu: 50m

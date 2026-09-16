@@ -98,6 +98,8 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6060
+            - containerPort: 6063
+              name: prepl
           env:
             - name: PENPOT_FLAGS
               valueFrom:
@@ -233,9 +235,14 @@ metadata:
   namespace: studio
 spec:
   ports:
-    - name: http
+    - protocol: TCP
       port: 6060
       targetPort: 6060
+      name: http
+    - protocol: TCP
+      port: 6063
+      targetPort: 6063
+      name: prepl
   selector:
     app: penpot-backend
 ---
