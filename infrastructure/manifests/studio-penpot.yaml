@@ -183,6 +183,48 @@ spec:
                   name: studio-secrets
                   key: AWS_SECRET_ACCESS_KEY
                   optional: true
+            - name: PENPOT_SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_SMTP_HOST
+                  optional: true
+            - name: PENPOT_SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_SMTP_PORT
+                  optional: true
+            - name: PENPOT_SMTP_TLS
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_SMTP_TLS
+                  optional: true
+            - name: PENPOT_SMTP_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_SMTP_USERNAME
+                  optional: true
+            - name: PENPOT_SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_SMTP_PASSWORD
+                  optional: true
+            - name: PENPOT_SMTP_DEFAULT_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_SMTP_DEFAULT_FROM
+                  optional: true
+            - name: PENPOT_SMTP_DEFAULT_REPLY_TO
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_SMTP_DEFAULT_REPLY_TO
+                  optional: true
 ---
 apiVersion: v1
 kind: Service
