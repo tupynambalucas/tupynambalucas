@@ -213,11 +213,13 @@ spec:
           env:
             - name: GRAFANA_URL
               value: http://grafana.platform.svc.cluster.local:3000
-            - name: GRAFANA_SERVICE_ACCOUNT_TOKEN
+            - name: GRAFANA_BASIC_AUTH_USERNAME
+              value: admin
+            - name: GRAFANA_BASIC_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: cortex-secrets
-                  key: GRAFANA_SERVICE_ACCOUNT_TOKEN
+                  name: platform-secrets
+                  key: GRAFANA_ADMIN_PASSWORD
                   optional: true
 ---
 apiVersion: v1

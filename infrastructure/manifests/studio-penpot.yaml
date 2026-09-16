@@ -101,6 +101,8 @@ spec:
             - containerPort: 6063
               name: prepl
           env:
+            - name: PENPOT_PREPL_HOST
+              value: '0.0.0.0'
             - name: PENPOT_FLAGS
               valueFrom:
                 secretKeyRef:

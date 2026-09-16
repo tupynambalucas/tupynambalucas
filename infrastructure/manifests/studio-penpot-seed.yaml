@@ -60,18 +60,18 @@ spec:
               set -eu
               echo "[seed] Waiting for Penpot database and dependencies to be ready..."
               # manage.py search-profile implicitly checks the DB connection
-              until python3 manage.py search-profile -c backend:6063 -e "test@example.com" > /dev/null 2>&1; do
+              until python3 manage.py search-profile -c tcp://backend:6063 -e "test@example.com" > /dev/null 2>&1; do
                 echo "[seed] Backend services not ready, retrying in 3s..."
                 sleep 3
               done
 
               echo "[seed] Checking if admin user exists..."
-              if python3 manage.py search-profile -c backend:6063 -e "$PENPOT_ADMIN_EMAIL" | grep -q "$PENPOT_ADMIN_EMAIL"; then
+              if python3 manage.py search-profile -c tcp://backend:6063 -e "$PENPOT_ADMIN_EMAIL" | grep -q "$PENPOT_ADMIN_EMAIL"; then
                 echo "[seed] Profile already exists. Updating password..."
-                python3 manage.py update-profile -c backend:6063 -e "$PENPOT_ADMIN_EMAIL" -p "$PENPOT_ADMIN_PASSWORD"
+                python3 manage.py update-profile -c tcp://backend:6063 -e "$PENPOT_ADMIN_EMAIL" -p "$PENPOT_ADMIN_PASSWORD"
               else
                 echo "[seed] Creating new admin profile..."
-                python3 manage.py create-profile -c backend:6063 -n "$PENPOT_ADMIN_FULLNAME" -e "$PENPOT_ADMIN_EMAIL" -p "$PENPOT_ADMIN_PASSWORD"
+                python3 manage.py create-profile -c tcp://backend:6063 -n "$PENPOT_ADMIN_FULLNAME" -e "$PENPOT_ADMIN_EMAIL" -p "$PENPOT_ADMIN_PASSWORD" --skip-tutorial --skip-walkthrough
               fi
 
               echo "[seed] Done. Initial accounts provisioned successfully."
