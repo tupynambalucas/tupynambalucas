@@ -69,6 +69,19 @@ spec:
       labels:
         app: memory-api
     spec:
+      initContainers:
+        - name: wait-for-mongodb
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for mongodb-db:27017 to be ready..."
+              until nc -z mongodb-db 27017; do
+                echo "Retrying..."
+                sleep 2
+              done
+              echo "mongodb-db is ready!"
       containers:
         - name: memory-api
           image: cortex-memory-api:latest
