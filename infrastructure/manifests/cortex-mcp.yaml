@@ -214,7 +214,11 @@ spec:
             - name: GRAFANA_URL
               value: http://grafana.platform.svc.cluster.local:3000
             - name: GRAFANA_BASIC_AUTH_USERNAME
-              value: admin
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: GRAFANA_ADMIN_USER
+                  optional: true
             - name: GRAFANA_BASIC_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
