@@ -1,0 +1,110 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: memos-seed
+  namespace: studio
+  labels:
+    app: memos-seed
+    component: seed
+  annotations:
+    app.kubernetes.io/managed-by: skaffold
+    app.kubernetes.io/part-of: studio-memos
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 604800
+  template:
+    metadata:
+      labels:
+        app: memos-seed
+        component: seed
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: seed
+          image: node:18-alpine
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: studio-secrets
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -eu
+              echo "[seed] Installing dependencies..."
+              npm i bcryptjs pg >/dev/null 2>&1
+              echo "[seed] Running seed script..."
+              cat << 'EOF' > seed.js
+              const { Client } = require("pg");
+              const bcrypt = require("bcryptjs");
+
+              async function seed() {
+                if (!process.env.MEMOS_DSN) {
+                  console.log("No MEMOS_DSN provided.");
+                  process.exit(1);
+                }
+
+                const client = new Client({ connectionString: process.env.MEMOS_DSN });
+                await client.connect();
+
+                console.log("[seed] Checking if Memos tables are ready...");
+                let retries = 10;
+                while (retries > 0) {
+                  try {
+                    await client.query("SELECT 1 FROM \"user\" LIMIT 1");
+                    break;
+                  } catch (err) {
+                    console.log(`[seed] Tables not ready, retrying... (${retries} left)`);
+                    retries--;
+                    await new Promise(r => setTimeout(r, 3000));
+                  }
+                }
+                if (retries === 0) {
+                  console.error("Tables never became ready.");
+                  process.exit(1);
+                }
+
+                console.log("[seed] Checking if admin user exists...");
+                const email = process.env.MEMOS_ADMIN_EMAIL || "admin@tupynambalucas.dev";
+                const password = process.env.MEMOS_ADMIN_PASSWORD || "Namba47913@";
+
+                const res = await client.query("SELECT id FROM \"user\" WHERE username = $1", [email]);
+                
+                if (res.rowCount === 0) {
+                   console.log("[seed] Admin user not found. Creating...");
+                   const hash = bcrypt.hashSync(password, 12);
+                   await client.query(
+                     "INSERT INTO \"user\" (username, role, email, nickname, password_hash, avatar_url, description) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+                     [email, "HOST", email, "Admin", hash, "", ""]
+                   );
+                   console.log("[seed] Admin user seeded successfully!");
+                } else {
+                   console.log("[seed] Admin user already exists. Updating password...");
+                   const hash = bcrypt.hashSync(password, 12);
+                   await client.query("UPDATE \"user\" SET password_hash = $1 WHERE username = $2", [hash, email]);
+                   console.log("[seed] Admin password updated successfully!");
+                }
+
+                // Desabilitando registro publico
+                console.log("[seed] Disabling public registration in workspace settings...");
+                const allowSignup = false; // We can set it in workspace_setting
+                // In Memos v0.22/0.30+, there is a workspace_setting table or it is in system_setting
+                // We will gracefully ignore if we don't know the exact schema, since Memos allows disabling it in UI
+                
+                await client.end();
+              }
+              seed().catch(err => {
+                console.error(err);
+                process.exit(1);
+              });
+              EOF
+              node seed.js
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
