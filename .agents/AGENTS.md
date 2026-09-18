@@ -29,6 +29,7 @@ This bounded context ([.agents/](./)) manages the lifecycle, personas, tools, an
 3. **Cross-Boundary References**: Customizations inside [skills/](./skills/) or [plugins/](./plugins/) MUST be 100% self-contained. They MUST NOT contain relative links pointing to transient folders like [plans/](./plans/).
 4. **Plugin Encapsulation**: Any new MCP server integration MUST be encapsulated inside a named plugin directory within [plugins/](./plugins/) containing a `plugin.json` and `mcp_config.json`.
 5. **Generic Nomenclature**: All contextual configurations MUST use agnostic template variables (`%PROJECT_DOMAIN%`, `%PROJECT_NAME%`) rather than hardcoded brand names to preserve monorepo template portability.
+6. **Environment Variables**: When generating or updating `.env.example` files, agents MUST replace all sensitive values with explicit uppercase placeholders matching the key name (e.g., `API_KEY=<YOUR_API_KEY>`). Agents MUST use native shell regex tools (e.g., `sed` or PowerShell `-replace`) to scrub these files and MUST NEVER use inline Node.js scripts parsing multiline strings, as cross-platform line-ending issues cause silent failures and secret leaks.
 
 ---
 
