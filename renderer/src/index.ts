@@ -72,7 +72,7 @@ async function main(): Promise<void> {
 
     console.info(`\nCompleted processing. Total executed pipelines: ${executedCount}`);
   } catch (error) {
-    console.error('Fatal error during profile generation:', error);
+    console.error('Fatal error during document generation:', error);
     process.exit(1);
   }
 }

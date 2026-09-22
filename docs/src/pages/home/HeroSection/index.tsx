@@ -3,7 +3,7 @@ import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
 import { Icon, faGithub } from '@monorepo/studio-assets/icons';
 import styles from './styles.module.css';
-import projectConfig from '@monorepo/shared-config/project.config.json';
+import projectConfig from '@monorepo/shared-config/project.config';
 
 export default function HeroSection(): ReactNode {
   return (
@@ -40,7 +40,7 @@ export default function HeroSection(): ReactNode {
               <Translate id="homepage.button.workspaces">Workspaces</Translate>
             </Link>
             <Link
-              to={`https://github.com/${projectConfig.GITHUB_ORG}/${projectConfig.GITHUB_REPO}`}
+              to={`https://github.com/${projectConfig.GITHUB_ORG}/${projectConfig.REPOSITORY_NAME}`}
               className={styles.tertiaryBtn}
             >
               <Icon icon={faGithub} size="1.2em" style={{ marginRight: '0.5rem' }} />

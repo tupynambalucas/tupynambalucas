@@ -1,4 +1,4 @@
-import projectConfig from '@monorepo/shared-config/project.config.json';
+import projectConfig from '@monorepo/shared-config/project.config';
 
 export interface WorkspaceInfo {
   id: string;

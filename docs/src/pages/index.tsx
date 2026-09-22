@@ -4,7 +4,7 @@ import styles from './home/styles.module.css';
 import LandingSection from './home/HeroSection';
 import MonorepoSection from './home/MonorepoMap';
 import FromSoilSection from './home/TechnicalFoundation';
-import projectConfig from '@monorepo/shared-config/project.config.json';
+import projectConfig from '@monorepo/shared-config/project.config';
 
 export default function HomePage(): ReactNode {
   return (

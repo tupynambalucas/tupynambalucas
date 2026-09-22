@@ -1,19 +1,26 @@
-# tupynambalucas.dev Monorepo
+<!-- Note: This profile README is dynamically updated by the TypeScript-based generator in the ./renderer workspace -->
 
-High-performance, domain-driven monorepo powering the tupynambalucas.dev developer platform.
-Built on TypeScript, PNPM Workspaces, and Turborepo with Kubernetes-native orchestration via Skaffold.
+**Senior Full-Stack Engineer** with over 10 years of experience and studies in software development, building production systems in TypeScript from end to end. I make architectural decisions driven by requirements, not by trends — selecting the right database, framework, or protocol for each problem. My current expertise runs deep in MongoDB replica sets with ACID transactions, but I reach for PostgreSQL or Redis when the domain calls for it. I design domain-driven monorepos orchestrated by Turborepo with strict catalog-managed dependencies, ship high-performance APIs on Fastify with Redis-backed job queues, and craft interactive frontends with React 19, Three.js, and GSAP. My infrastructure runs on Docker and Kubernetes with Traefik ingress, OpenTelemetry-instrumented observability pipelines exporting to Grafana Cloud, and multi-environment promotion from dev to production. I architect AI-native toolchains — self-hosted MCP gateway federations, containerized agent runtimes, and vector memory layers — turning autonomous workflows into first-class infrastructure. Every repository I own ships with automated CI/CD, Conventional Commits, and security hardened by design.
 
-**Documentation**: [docs.tupynambalucas.dev](https://docs.tupynambalucas.dev)
+<p align="center">
+  {{ overviewImages }}&nbsp;&nbsp;{{ languagesImages }}
+</p>
+
+<details>
+<summary><strong>Developer Overview: Monorepo Architecture & Services</strong></summary>
+
+# %PROJECT_DOMAIN% Monorepo
+
+High-performance, domain-driven monorepo powering the `%PROJECT_DOMAIN%` developer platform. Built on TypeScript, PNPM Workspaces, and Turborepo with Kubernetes-native orchestration via Skaffold.
+
+> [!NOTE]
+> **Documentation:** Full architectural deep dives and developer guides are available at [%PROJECT_DOCS_URL%](%PROJECT_DOCS_URL%).
 
 ---
 
 ## Architecture Overview
 
-The codebase is organized into seven isolated **Bounded Contexts**, each owning its own
-infrastructure manifests, Kubernetes namespace, and lifecycle scripts.
-Three Skaffold modules (`platform-dev`, `cortex-dev`, `studio-dev`) compose the full local
-Kubernetes development cluster, with `platform-dev` serving as the required infrastructure
-foundation for all downstream modules.
+The codebase is organized into isolated **Bounded Contexts**, each owning its own infrastructure manifests, Kubernetes namespace, and lifecycle scripts. Three Skaffold modules (`platform-dev`, `cortex-dev`, `studio-dev`) compose the full local Kubernetes development cluster, with `platform-dev` serving as the required infrastructure foundation for all downstream modules.
 
 ```mermaid
 graph TD
@@ -99,7 +106,10 @@ graph TD
 
 ## Bounded Contexts
 
-### [Hub](./hub/README.md) (`hub/`)
+> [!TIP]
+> Each directory operates as an independent domain. Refer to their individual `README.md` files for targeted deployment instructions.
+
+### [Hub](./hub/README.md)
 
 Personal developer portal, blog engine, and administration dashboard.
 
@@ -109,7 +119,7 @@ Personal developer portal, blog engine, and administration dashboard.
 | `@monorepo/hub-api`  | Application | Fastify 5, Mongoose, BullMQ, Zod          |
 | `@monorepo/hub-core` | Library     | Zod schemas, shared contracts (SSOT)      |
 
-### [Cortex](./cortex/README.md) (`cortex/`)
+### [Cortex](./cortex/README.md)
 
 Unified AI processing hub with MCP gateway federation, vector memory, and agent runtimes.
 
@@ -120,9 +130,7 @@ Unified AI processing hub with MCP gateway federation, vector memory, and agent 
 | `mcp/`     | Downstream MCP adapter services and tools         | Per-adapter ports   |
 | `agents/`  | Containerized AI agent terminal runtimes          | Claude, Gemini CLI  |
 
-**Skaffold Module**: `cortex-dev` (requires `platform-dev`)
-
-### [Studio](./studio/README.md) (`studio/`)
+### [Studio](./studio/README.md)
 
 Brand identity management, collaborative design infrastructure, and asset synchronization.
 
@@ -133,9 +141,7 @@ Brand identity management, collaborative design infrastructure, and asset synchr
 | Penpot v2 (5 containers)  | Design Engine | Frontend, Backend, Exporter, Valkey, Aide AI |
 | Memos                     | Notes         | Lightweight collaborative notes              |
 
-**Skaffold Module**: `studio-dev` (requires `platform-dev`)
-
-### [Platform](./platform/README.md) (`platform/`)
+### [Platform](./platform/README.md)
 
 Always-on cluster infrastructure, observability pipelines, and build acceleration.
 
@@ -152,28 +158,12 @@ Always-on cluster infrastructure, observability pipelines, and build acceleratio
 | cloudflared             | -    | Cloudflare Tunnel for Zero Trust access |
 | cert-manager            | -    | Automated TLS via Let's Encrypt DNS-01  |
 
-**Skaffold Module**: `platform-dev` (base module, required by all others)
+### Workspace Utilities
 
-### [Renderer](./renderer/README.md) (`renderer/`)
-
-Dynamic asset generator compiling GitHub profile stats into SVG cards and templated
-Markdown documents. Powered by the GitHub GraphQL API.
-
-### [Shared](./shared/README.md) (`shared/`)
-
-Foundational utilities, global configuration (`project.config.json`), and Git lifecycle hooks shared across all workspaces.
-
-### [Tools](./tools/README.md) (`tools/`)
-
-Developer automation: containerized Git and GitHub CLI environments, repository
-provisioning scripts, and commit hook tooling.
-
-### [Docs](./docs/README.md) (`docs/`)
-
-Centralized knowledge base built with Docusaurus v3, structured under the Diataxis
-framework with full English / Portuguese (pt-BR) localization.
-
-**Live Site**: [docs.tupynambalucas.dev](https://docs.tupynambalucas.dev)
+- **[`renderer/`](./renderer/README.md)**: Dynamic asset generator compiling GitHub profile stats into SVG cards and templated Markdown documents.
+- **[`shared/`](./shared/README.md)**: Foundational utilities, global configuration, and Git lifecycle hooks.
+- **[`tools/`](./tools/README.md)**: Developer automation, repository provisioning scripts, and containerized Git environments.
+- **[`docs/`](./docs/README.md)**: Centralized knowledge base built with Docusaurus v3 under the Diataxis framework.
 
 ---
 
@@ -199,6 +189,9 @@ framework with full English / Portuguese (pt-BR) localization.
 
 ## Getting Started
 
+> [!WARNING]
+> Before deploying, you must configure all environment variables via `infrastructure/.env`.
+
 ### Prerequisites
 
 Install the following on your development machine:
@@ -214,29 +207,22 @@ winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold
 ### Installation
 
 ```bash
-git clone https://github.com/tupynambalucas/tupynambalucas.git
-cd tupynambalucas
+git clone https://github.com/%GITHUB_ORG%/%REPOSITORY_NAME%.git
+cd %REPOSITORY_NAME%
 pnpm install
 ```
-
-### Environment Configuration
-
-All infrastructure credentials are centralized in a single [`infrastructure/.env`](./infrastructure/.env) file.
-Edit this file to configure API keys, tokens, and service credentials before starting the stack.
 
 ---
 
 ## Orchestration
 
-The monorepo uses a unified Kubernetes-native orchestration model. All infrastructure commands are
-defined in the root [package.json](./package.json) and executed via `pnpm`.
+The monorepo uses a unified Kubernetes-native orchestration model. All infrastructure commands are defined in the root [`package.json`](./package.json) and executed via `pnpm`.
 
 ### Kubernetes (Skaffold + Minikube)
 
 Deploy the complete development cluster with automatic port forwarding and hot-reloading:
 
 ```bash
-# Start the local Kubernetes cluster
 pnpm minikube:up
 pnpm minikube:tunnel    # Required in a separate terminal for LoadBalancer IPs
 
@@ -258,22 +244,6 @@ pnpm hub:down           # Stop containers
 pnpm hub:reset          # Reset containers and volumes
 ```
 
-### Development Domain Routing
-
-When running in Kubernetes, services are accessible via Traefik Ingress at
-`*-dev.tupynambalucas.dev` subdomains routed through Cloudflare Tunnel:
-
-| Domain                                    | Service              | Namespace  |
-| :---------------------------------------- | :------------------- | :--------- |
-| `agentgateway-dev.tupynambalucas.dev`     | AgentGateway Admin   | `cortex`   |
-| `agentgateway-mcp-dev.tupynambalucas.dev` | MCP Ingress          | `cortex`   |
-| `grafana-dev.tupynambalucas.dev`          | Grafana Dashboards   | `platform` |
-| `headlamp-dev.tupynambalucas.dev`         | Headlamp K8s UI      | `platform` |
-| `traefik-dev.tupynambalucas.dev`          | Traefik Dashboard    | `platform` |
-| `turbocache-dev.tupynambalucas.dev`       | Turborepo Cache      | `platform` |
-| `penpot-dev.tupynambalucas.dev`           | Penpot Design Editor | `studio`   |
-| `memos-dev.tupynambalucas.dev`            | Memos Notes          | `studio`   |
-
 ---
 
 ## Quality Assurance
@@ -290,9 +260,7 @@ pnpm format:write       # Auto-fix formatting issues
 
 ## Versioning and Releases
 
-The project uses [Changesets](https://github.com/changesets/changesets) for version
-management and follows [Conventional Commits](https://www.conventionalcommits.org/)
-for structured commit history.
+The project uses [Changesets](https://github.com/changesets/changesets) for version management and follows [Conventional Commits](https://www.conventionalcommits.org/) for structured commit history.
 
 ```bash
 pnpm version:changeset  # Create a new changeset
@@ -305,3 +273,5 @@ pnpm version:publish    # Publish updated packages
 ## License
 
 This project is licensed under the [MIT License](./LICENSE.md).
+
+</details>

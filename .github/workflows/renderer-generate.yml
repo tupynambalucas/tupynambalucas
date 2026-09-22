@@ -8,47 +8,28 @@ on:
 permissions:
   contents: write
 
-defaults:
-  run:
-    shell: bash -euxo pipefail {0}
+concurrency:
+  group: 'renderer'
+  cancel-in-progress: false
 
 jobs:
-  generate-stats:
+  generate-documents:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || 'main' }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 11.9.0
-
-      - name: Setup Node.js Environment
-        uses: actions/setup-node@v4
+      - name: Setup PNPM Environment
+        uses: ./.github/actions/setup-pnpm-env
         with:
           node-version: 22
-          cache: 'pnpm'
+          frozen-lockfile: 'true'
+          filter: '@monorepo/renderer...'
 
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Clean Generated Branch
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin generated:generated || true
-          git checkout generated || git checkout --orphan generated
-          git rm -rf . || true
-          git commit --allow-empty -m "chore: clear generated assets [skip ci]"
-          git push origin generated
-          git checkout -
-
-      - name: Run Profile Generator
-        run: pnpm --filter @tupynambalucas/renderer generate
-        env:
-          PROFILE_GH_PAT: ${{ secrets.PROFILE_GH_PAT }}
-          GITHUB_ACTIONS: 'true'
-          TARGET_BRANCH: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || 'main' }}
+      - name: Generate and Publish Documents
+        uses: ./.github/actions/generate-renderer
+        with:
+          github_token: ${{ secrets.RENDERER_GH_PAT }}
+          target_branch: ${{ github.event_name == 'workflow_dispatch' && github.ref_name || 'main' }}

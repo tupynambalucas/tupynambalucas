@@ -1,9 +1,6 @@
-import { createRequire } from 'node:module';
 import type { Plugin } from 'unified';
 import type { Node, Parent } from 'unist';
-
-const require = createRequire(import.meta.url);
-const projectConfig = require('@monorepo/shared-config/project.config.json');
+import ProjectConfig from '@monorepo/shared-config/project.config';
 
 interface Literal extends Node {
   value: string;
@@ -20,7 +17,7 @@ const plugin: Plugin = () => {
         const literal = node as Literal;
         if (literal.value) {
           let val = literal.value;
-          for (const [key, value] of Object.entries(projectConfig)) {
+          for (const [key, value] of Object.entries(ProjectConfig)) {
             val = val.replace(new RegExp('%' + key + '%', 'g'), value as string);
           }
           literal.value = val;
@@ -29,7 +26,7 @@ const plugin: Plugin = () => {
       if (node.type === 'link' && (node as Link).url) {
         const link = node as Link;
         let url = link.url;
-        for (const [key, value] of Object.entries(projectConfig)) {
+        for (const [key, value] of Object.entries(ProjectConfig)) {
           url = url.replace(new RegExp('%' + key + '%', 'g'), value as string);
         }
         link.url = url;

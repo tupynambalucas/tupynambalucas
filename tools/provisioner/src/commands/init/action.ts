@@ -8,7 +8,7 @@ import type { InitCommandOptions } from '../../types/index.js';
 export async function runInitAction(_options: InitCommandOptions): Promise<void> {
   console.clear();
 
-  const currentConfig = loadProjectConfig();
+  const currentConfig = await loadProjectConfig();
   intro(`Bootstrap Monorepo - Current Domain: ${currentConfig.PROJECT_DOMAIN}`);
 
   const newConfig = await promptForConfig(currentConfig);

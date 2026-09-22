@@ -1,18 +1,26 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import * as path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import type { ProjectConfig } from '../types/index.js';
 
 export function getConfigPath(): string {
-  return path.resolve(process.cwd(), '../../shared/config/project.config.json');
+  return path.resolve(process.cwd(), '../../shared/config/project.config.ts');
 }
 
-export function loadProjectConfig(): ProjectConfig {
+export async function loadProjectConfig(): Promise<ProjectConfig> {
   const configPath = getConfigPath();
-  const raw = readFileSync(configPath, 'utf-8');
-  return JSON.parse(raw) as ProjectConfig;
+
+  // Safe dynamic import for loading TS via tsx (which provisioner uses)
+  const moduleUrl = pathToFileURL(configPath).toString();
+  const { ProjectConfig } = await import(moduleUrl);
+  return ProjectConfig as ProjectConfig;
 }
 
 export function saveProjectConfig(config: ProjectConfig): void {
   const configPath = getConfigPath();
-  writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf-8');
+  const fileContent = `export const ProjectConfig = ${JSON.stringify(config, null, 2)} as const;
+
+export default ProjectConfig;
+`;
+  writeFileSync(configPath, fileContent, 'utf-8');
 }

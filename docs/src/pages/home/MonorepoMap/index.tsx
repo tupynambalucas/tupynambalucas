@@ -5,7 +5,7 @@ import Link from '@docusaurus/Link';
 import gsap from 'gsap';
 import { WORKSPACES, type WorkspaceInfo } from './data';
 import styles from './styles.module.css';
-import projectConfig from '@monorepo/shared-config/project.config.json';
+import projectConfig from '@monorepo/shared-config/project.config';
 
 export default function MonorepoMap() {
   const { i18n } = useDocusaurusContext();

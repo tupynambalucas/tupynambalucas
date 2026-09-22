@@ -1,12 +1,16 @@
 import { z } from 'zod';
 import dotenv from 'dotenv';
+import ProjectConfig from '@monorepo/shared-config/project.config';
 
 dotenv.config();
 
+const fallbackOwner = ProjectConfig.REPOSITORY_OWNER ?? ProjectConfig.GITHUB_ORG;
+const fallbackRepo = ProjectConfig.REPOSITORY_NAME;
+
 export const ConfigSchema = z.object({
-  githubToken: z.string().min(1, 'PROFILE_GH_PAT is required'),
-  repositoryOwner: z.string().min(1, 'REPOSITORY_OWNER is required').default('monorepo'),
-  repositoryName: z.string().min(1, 'REPOSITORY_NAME is required').default('monorepo'),
+  githubToken: z.string().min(1, 'RENDERER_GH_PAT is required'),
+  repositoryOwner: z.string().min(1, 'REPOSITORY_OWNER is required').default(fallbackOwner),
+  repositoryName: z.string().min(1, 'REPOSITORY_NAME is required').default(fallbackRepo),
   targetBranch: z.string().min(1, 'TARGET_BRANCH is required').default('develop'),
   excludeRepos: z.array(z.string()).default([]),
   excludeLangs: z.array(z.string()).default([]),

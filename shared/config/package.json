@@ -18,7 +18,7 @@
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./prettierrc.json": "./prettierrc.json",
     "./.prettierignore": "./.prettierignore",
-    "./project.config.json": "./project.config.json"
+    "./project.config": "./project.config.ts"
   },
   "scripts": {},
   "dependencies": {
