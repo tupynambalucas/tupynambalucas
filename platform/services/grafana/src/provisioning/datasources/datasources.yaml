@@ -23,3 +23,11 @@ datasources:
     uid: tempo
     url: http://tempo:3200
     isDefault: false
+    jsonData:
+      tracesToLogsV2:
+        datasourceUid: 'loki'
+        tags:
+          - key: 'service.name'
+            value: 'app'
+      serviceMap:
+        datasourceUid: 'prometheus'

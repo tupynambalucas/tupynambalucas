@@ -83,10 +83,6 @@ spec:
                   name: platform-secrets
                   key: GRAFANA_DATABASE_SSL_MODE
                   optional: true
-            - name: GF_AUTH_ANONYMOUS_ENABLED
-              value: 'true'
-            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
-              value: 'Admin'
 ---
 apiVersion: v1
 kind: Service

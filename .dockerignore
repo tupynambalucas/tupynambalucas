@@ -49,3 +49,7 @@ docs/.turbo/
 .agents/
 .github/
 .system_generated/
+
+node_modules
+*/*/node_modules
+*/*/*/node_modules

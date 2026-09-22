@@ -33,8 +33,10 @@ spec:
             - -c
             - |
               set -eu
+              mkdir -p /tmp/seed && cd /tmp/seed
               echo "[seed] Installing dependencies..."
-              npm i bcryptjs pg >/dev/null 2>&1
+              npm init -y >/dev/null 2>&1
+              npm i bcryptjs pg
               echo "[seed] Running seed script..."
               cat << 'EOF' > seed.js
               const { Client } = require("pg");

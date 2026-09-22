@@ -212,7 +212,11 @@ spec:
             - containerPort: 8080
           env:
             - name: GRAFANA_URL
-              value: http://grafana.platform.svc.cluster.local:3000
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: GRAFANA_URL
+                  optional: true
             - name: GRAFANA_BASIC_AUTH_USERNAME
               valueFrom:
                 secretKeyRef:

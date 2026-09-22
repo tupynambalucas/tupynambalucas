@@ -34,7 +34,7 @@ ENV VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY
 # Install dependencies (cached layer)
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN --mount=type=cache,id=pnpm-instance-web,target=/pnpm/store \
+RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm install --frozen-lockfile
 
 # Copy full source and build

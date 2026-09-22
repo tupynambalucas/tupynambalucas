@@ -38,7 +38,11 @@ spec:
             - containerPort: 5230
           env:
             - name: MEMOS_PORT
-              value: '5230'
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: MEMOS_PORT
+                  optional: true
             - name: MEMOS_DRIVER
               valueFrom:
                 secretKeyRef:

@@ -28,7 +28,7 @@ WORKDIR /app
 # Install deps first (cached layer — only invalidated when lockfile changes)
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN --mount=type=cache,id=pnpm-instance-api,target=/pnpm/store \
+RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm install --frozen-lockfile
 # Copy full source and build
 COPY --from=pruner /app/out/full/ .
@@ -41,7 +41,7 @@ RUN pnpm --filter @monorepo/hub-api... build
 FROM base AS deployer
 WORKDIR /app
 COPY --from=builder /app .
-RUN --mount=type=cache,id=pnpm-instance-api,target=/pnpm/store \
+RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm --filter @monorepo/hub-api --prod deploy --legacy /prod/api
 
 # ---- Stage 5: Runner ----

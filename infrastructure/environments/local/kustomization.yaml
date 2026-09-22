@@ -15,6 +15,7 @@ resources:
   - ../../manifests/platform-loki.yaml
   - ../../manifests/platform-tempo.yaml
   - ../../manifests/platform-cloudflared.yaml
+  - ../../manifests/platform-fluentbit.yaml
   - ../../manifests/studio-namespace.yaml
   - ../../manifests/studio-penpot.yaml
   - ../../manifests/studio-penpot-seed.yaml

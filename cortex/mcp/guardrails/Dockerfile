@@ -1,26 +1,35 @@
-FROM node:22-alpine AS builder
-WORKDIR /workspace
-ENV CI=true
+FROM node:22-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PNPM_HOME/bin:$PATH"
+RUN corepack enable pnpm
 
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
-COPY shared/config/package.json ./shared/config/
-COPY cortex/mcp/guardrails/package.json ./cortex/mcp/guardrails/
+FROM base AS pruner
+WORKDIR /app
+RUN pnpm add -g turbo@latest
+COPY . .
+RUN turbo prune @monorepo/cortex-mcp-guardrails --docker
 
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+FROM base AS builder
+WORKDIR /app
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
+    pnpm install --frozen-lockfile
 
-COPY shared/config ./shared/config
-COPY cortex/mcp/guardrails ./cortex/mcp/guardrails
+COPY --from=pruner /app/out/full/ .
+RUN pnpm --filter @monorepo/cortex-mcp-guardrails... build
 
-RUN pnpm --filter @monorepo/cortex-mcp-guardrails build
-RUN pnpm --filter @monorepo/cortex-mcp-guardrails deploy --legacy --prod /out
+FROM base AS deployer
+WORKDIR /app
+COPY --from=builder /app .
+RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
+    pnpm --filter @monorepo/cortex-mcp-guardrails --prod deploy --legacy /prod/app
 
 FROM node:22-alpine AS runner
 WORKDIR /app
-
 ENV NODE_ENV=production
 
-COPY --from=builder /out ./
+COPY --from=deployer /prod/app ./
 
 EXPOSE 9001
-
 CMD ["node", "dist/index.js"]

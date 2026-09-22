@@ -102,7 +102,11 @@ spec:
               name: prepl
           env:
             - name: PENPOT_PREPL_HOST
-              value: '0.0.0.0'
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_PREPL_HOST
+                  optional: true
             - name: PENPOT_FLAGS
               valueFrom:
                 secretKeyRef:
@@ -294,7 +298,11 @@ spec:
                   key: PENPOT_SECRET_KEY
                   optional: true
             - name: PENPOT_PUBLIC_URI
-              value: http://frontend:8080
+              valueFrom:
+                secretKeyRef:
+                  name: studio-secrets
+                  key: PENPOT_EXPORTER_PUBLIC_URI
+                  optional: true
 ---
 apiVersion: v1
 kind: Service

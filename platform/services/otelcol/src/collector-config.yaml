@@ -108,7 +108,7 @@ receivers:
 
 exporters:
   otlphttp/loki:
-    endpoint: 'http://loki:3100/loki/api/v1/push'
+    endpoint: 'http://loki.platform.svc.cluster.local:3100/otlp'
 
   otlphttp/tempo:
     endpoint: 'http://tempo:4318'
@@ -124,8 +124,8 @@ processors:
     timeout: 1s
   resource/fluentd:
     attributes:
-      - key: service.name
-        value: agentgateway
+      - key: log.source
+        value: kubernetes
         action: insert
 
 service:
