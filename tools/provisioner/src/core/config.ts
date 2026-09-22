@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 import type { ProjectConfig } from '../types/index.js';
 
 export function getConfigPath(): string {
-  return path.resolve(process.cwd(), '../../shared/config/project.config.ts');
+  return path.resolve(process.cwd(), '../../shared/config/src/project.config.ts');
 }
 
 export async function loadProjectConfig(): Promise<ProjectConfig> {

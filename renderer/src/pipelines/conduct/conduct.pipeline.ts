@@ -20,7 +20,7 @@ export const conductPipeline: Pipeline = {
       ciBranches: ['main'],
     },
   ],
-  async run(stats: GitHubStats, config: Config, workspaceRoot: string): Promise<void> {
+  async run(_stats: GitHubStats, config: Config, workspaceRoot: string): Promise<void> {
     console.info('Executing document rendering pipeline targets for Code of Conduct...');
     for (const target of this.targets) {
       console.info(`Compiling target: ${target.name}...`);

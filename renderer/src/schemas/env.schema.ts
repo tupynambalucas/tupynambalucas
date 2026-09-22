@@ -4,7 +4,7 @@ import ProjectConfig from '@monorepo/shared-config/project.config';
 
 dotenv.config();
 
-const fallbackOwner = ProjectConfig.REPOSITORY_OWNER ?? ProjectConfig.GITHUB_ORG;
+const fallbackOwner = ProjectConfig.REPOSITORY_OWNER;
 const fallbackRepo = ProjectConfig.REPOSITORY_NAME;
 
 export const ConfigSchema = z.object({

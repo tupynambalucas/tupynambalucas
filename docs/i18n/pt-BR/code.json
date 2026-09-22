@@ -440,5 +440,89 @@
   "theme.tags.tagsPageTitle": {
     "message": "Etiquetas",
     "description": "The title of the tag list page"
+  },
+  "conduct.pledge.title": {
+    "message": "Nosso Compromisso"
+  },
+  "conduct.pledge.p1": {
+    "message": "Eu, como criador e mantenedor do tupynambalucas.dev, comprometo-me a tornar a participação neste projeto uma experiência livre de assédio para todos, independentemente da idade, tamanho corporal, deficiência visível ou invisível, etnia, características sexuais, identidade e expressão de gênero, nível de experiência, educação, status socioeconômico, nacionalidade, aparência pessoal, raça, casta, cor, religião, ou identidade e orientação sexual."
+  },
+  "conduct.pledge.p2": {
+    "message": "Eu me comprometo a agir e interagir de maneiras que contribuam para uma comunidade aberta, acolhedora, diversa, inclusiva e saudável."
+  },
+  "conduct.standards.title": {
+    "message": "Nossos Padrões"
+  },
+  "conduct.standards.positive.intro": {
+    "message": "Exemplos de comportamento que contribuem para um ambiente positivo neste projeto incluem:"
+  },
+  "conduct.standards.positive.1": {
+    "message": "Demonstrar empatia e gentileza para com as outras pessoas."
+  },
+  "conduct.standards.positive.2": {
+    "message": "Ser respeitoso com opiniões, pontos de vista e experiências diferentes."
+  },
+  "conduct.standards.positive.3": {
+    "message": "Dar e aceitar com elegância feedbacks construtivos."
+  },
+  "conduct.standards.positive.4": {
+    "message": "Assumir responsabilidade e pedir desculpas àqueles afetados por nossos erros, e aprender com a experiência."
+  },
+  "conduct.standards.positive.5": {
+    "message": "Focar no que é melhor para a comunidade como um todo."
+  },
+  "conduct.standards.unacceptable.intro": {
+    "message": "Exemplos de comportamento inaceitável incluem:"
+  },
+  "conduct.standards.unacceptable.1": {
+    "message": "O uso de linguagem ou imagens sexualizadas, e atenção ou avanços sexuais de qualquer tipo."
+  },
+  "conduct.standards.unacceptable.2": {
+    "message": "Trolling, comentários insultuosos ou depreciativos, e ataques pessoais ou políticos."
+  },
+  "conduct.standards.unacceptable.3": {
+    "message": "Assédio público ou privado."
+  },
+  "conduct.standards.unacceptable.4": {
+    "message": "Publicar informações privadas de terceiros, como endereço físico ou e-mail, sem a permissão explícita deles."
+  },
+  "conduct.standards.unacceptable.5": {
+    "message": "Outras condutas que poderiam razoavelmente ser consideradas inadequadas num ambiente profissional."
+  },
+  "conduct.responsibilities.title": {
+    "message": "Responsabilidades de Cumprimento"
+  },
+  "conduct.responsibilities.p1": {
+    "message": "Como mantenedor deste projeto, sou responsável por esclarecer e aplicar nossos padrões de comportamento aceitável e tomarei medidas corretivas adequadas e justas em resposta a qualquer comportamento que eu julgue inadequado, ameaçador, ofensivo ou prejudicial."
+  },
+  "conduct.responsibilities.p2": {
+    "message": "Tenho o direito e a responsabilidade de remover, editar ou rejeitar comentários, commits, códigos, edições de wiki, issues e outras contribuições que não estejam alinhadas a este Código de Conduta, e comunicarei as razões para decisões de moderação quando for apropriado."
+  },
+  "conduct.scope.title": {
+    "message": "Escopo"
+  },
+  "conduct.scope.p1": {
+    "message": "Este Código de Conduta aplica-se a todos os espaços comunitários relacionados ao tupynambalucas.dev e também se aplica quando um indivíduo está representando oficialmente o projeto em espaços públicos."
+  },
+  "conduct.enforcement.title": {
+    "message": "Aplicação"
+  },
+  "conduct.enforcement.p1": {
+    "message": "Instâncias de comportamento abusivo, assediador ou de outra forma inaceitável podem ser relatadas diretamente a mim através do"
+  },
+  "conduct.enforcement.p1.2": {
+    "message": "Todas as reclamações serão revisadas e investigadas prontamente e de forma justa."
+  },
+  "conduct.enforcement.p2": {
+    "message": "Sou obrigado a respeitar a privacidade e a segurança do relator de qualquer incidente."
+  },
+  "conduct.attribution.title": {
+    "message": "Atribuição"
+  },
+  "conduct.attribution.p1": {
+    "message": "Este Código de Conduta é adaptado do"
+  },
+  "conduct.attribution.p1.2": {
+    "message": "versão 2.1, disponível em:"
   }
 }

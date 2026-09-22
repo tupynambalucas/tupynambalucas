@@ -8,6 +8,7 @@
     { "path": "./hub" },
     { "path": "./studio" },
     { "path": "./tools" },
-    { "path": "./cortex" }
+    { "path": "./cortex" },
+    { "path": "./shared" }
   ]
 }

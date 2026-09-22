@@ -15,19 +15,20 @@
 }
 
 .container {
-  width: 80%;
+  width: 90%;
+  max-width: 1400px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 4rem;
   padding: 8rem 0;
 }
 
 /* Diagram Styles */
 .imageContainer {
-  width: 45%;
+  width: calc(50% - 2rem);
   aspect-ratio: 1 / 1;
-  max-width: 37.5rem;
   background: var(--color-background-shade);
   border-radius: 0.5rem;
   flex-shrink: 0;
@@ -41,7 +42,7 @@
 }
 
 .content {
-  width: 45%;
+  width: calc(50% - 2rem);
   display: flex;
   flex-direction: column;
 }

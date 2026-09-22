@@ -4,9 +4,9 @@ import { getBaseThemeConfig } from './preset/themeConfig';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
+import projectConfig from '@monorepo/shared-config/project.config';
 
 const require = createRequire(import.meta.url);
-const projectConfig = require('@monorepo/shared-config/project.config.json');
 
 interface WebpackMock {
   NormalModuleReplacementPlugin: new (

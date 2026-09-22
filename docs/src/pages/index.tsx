@@ -2,6 +2,7 @@ import React, { type ReactNode } from 'react';
 import Layout from '@theme/Layout';
 import styles from './home/styles.module.css';
 import LandingSection from './home/HeroSection';
+import CodeOfConductSection from './home/CodeOfConductSection';
 import MonorepoSection from './home/MonorepoMap';
 import FromSoilSection from './home/TechnicalFoundation';
 import projectConfig from '@monorepo/shared-config/project.config';
@@ -14,6 +15,7 @@ export default function HomePage(): ReactNode {
     >
       <main className={styles.homeMain}>
         <LandingSection />
+        <CodeOfConductSection />
         <MonorepoSection />
         <FromSoilSection />
       </main>

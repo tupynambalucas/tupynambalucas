@@ -3,9 +3,8 @@ import ProjectConfig from '@monorepo/shared-config/project.config';
 
 dotenv.config();
 
-const fallbackOwner =
-  ProjectConfig.REPOSITORY_OWNER ?? ProjectConfig.GITHUB_ORG ?? 'tupynambalucas';
-const fallbackRepo = ProjectConfig.REPOSITORY_NAME ?? 'tupynambalucas';
+const fallbackOwner = ProjectConfig.REPOSITORY_OWNER;
+const fallbackRepo = ProjectConfig.REPOSITORY_NAME;
 
 const githubRepo = process.env.GITHUB_REPOSITORY ?? `${fallbackOwner}/${fallbackRepo}`;
 const [owner, name] = githubRepo.split('/');
@@ -15,8 +14,8 @@ export const config = {
   githubToken: process.env.RENDERER_GH_PAT ?? '',
 
   // Resolve dynamically in CI or fallback to the local default from shared-config
-  repositoryOwner: owner ?? fallbackOwner,
-  repositoryName: name ?? fallbackRepo,
+  repositoryOwner: owner || fallbackOwner,
+  repositoryName: name || fallbackRepo,
   targetBranch: process.env.TARGET_BRANCH ?? 'develop',
 
   excludeRepos: [],
