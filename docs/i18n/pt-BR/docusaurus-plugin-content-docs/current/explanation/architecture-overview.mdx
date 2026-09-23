@@ -1,6 +1,6 @@
 ---
 title: Visão Geral
-description: Visão geral abrangente da estrutura monorepo, contextos delimitados e pilha de tecnologia do tupynambalucas.dev.
+description: Visão geral abrangente da estrutura monorepo, contextos delimitados e pilha de tecnologia do %PROJECT_DOMAIN%.
 sidebar_position: 1
 ---
 
@@ -10,15 +10,15 @@ import DocCardList from '@theme/DocCardList';
 
 ## 1. Resumo Executivo
 
-tupynambalucas.dev é um portal de desenvolvedor pessoal, portfólio, blog e motor de automação. O sistema é construído sobre uma arquitetura **Monorepo** usando **PNPM Workspaces** e **Turborepo**, priorizando alto desempenho, tipagem estrita e isolamento de domínio por meio de uma estratégia de **Contexto Delimitado** (Bounded Context).
+%PROJECT_DOMAIN% é um portal de desenvolvedor pessoal, portfólio, blog e motor de automação. O sistema é construído sobre uma arquitetura **Monorepo** usando **PNPM Workspaces** e **Turborepo**, priorizando alto desempenho, tipagem estrita e isolamento de domínio por meio de uma estratégia de **Contexto Delimitado** (Bounded Context).
 
-A arquitetura é projetada para hospedar o site central do desenvolvedor (`hub`) e o compilador automatizado de estatísticas (`profile`), logicamente desacoplados no nível raiz.
+A arquitetura é projetada para hospedar o site central do desenvolvedor (`hub`) e o compilador automatizado de estatísticas (`renderer`), logicamente desacoplados no nível raiz.
 
 ---
 
 ## 2. Estrutura Monorepo e Contextos Delimitados
 
-A base de código do tupynambalucas.dev é organizada em **Contextos de Domínio** no nível raiz. Para um detalhamento dos papéis da aplicação, filosofia de contextos e estruturas de diretórios, por favor consulte o guia de Contextos Delimitados:
+A base de código do %PROJECT_DOMAIN% é organizada em **Contextos de Domínio** no nível raiz. Para um detalhamento dos papéis da aplicação, filosofia de contextos e estruturas de diretórios, por favor consulte o guia de Contextos Delimitados:
 
 <DocCardList
   items={[
@@ -43,7 +43,7 @@ Empregamos uma **Arquitetura Híbrida de Alto Desempenho** otimizada pelo **Turb
 O **Turborepo** é o motor por trás da nossa produtividade no monorepo. Ele lida com:
 
 - **Grafo de Dependências:** Identificação automática de quais pacotes precisam ser construídos ou verificados com base em alterações locais.
-- **Acoplamento de Infraestrutura:** Orquestração de serviços do Docker Compose como pré-requisitos para o desenvolvimento da aplicação (por exemplo, `pnpm hub:up` inicia os bancos de dados antes da API).
+- **Acoplamento de Infraestrutura:** Orquestração de serviços de suporte como pré-requisitos para o desenvolvimento da aplicação (por exemplo, `pnpm hub:up` ou `pnpm cortex:up` inicia bancos de dados/serviços de suporte antes da API).
 - **Cache:** Aceleração de builds, checagem de tipos e linting ao pular módulos não alterados.
 - **Saídas Unificadas:** Padronização de artefatos de build em `dist/` (para aplicativos e core) e `build/` (para Docusaurus).
 
@@ -71,7 +71,7 @@ Para uma lista de referência completa de scripts de orquestração, comandos de
 
 ## 5. Princípios Arquiteturais
 
-Para garantir manutenibilidade extrema, legibilidade a longo prazo e limites claros entre nossos contextos de domínio, o tupynambalucas.dev segue quatro princípios arquiteturais fundamentais.
+Para garantir manutenibilidade extrema, legibilidade a longo prazo e limites claros entre nossos contextos de domínio, o %PROJECT_DOMAIN% segue quatro princípios arquiteturais fundamentais.
 
 Clique em qualquer cartão abaixo para explorar uma análise aprofundada de cada princípio:
 
@@ -155,7 +155,7 @@ Para manter a tipagem estrita e o desacoplamento, os repositórios recebem o mod
 ```typescript
 // hub/services/api/src/domains/auth/auth.repository.ts
 import type { Model } from 'mongoose';
-import type { IUser } from '@tupynambalucas-hub/core';
+import type { IUser } from '@repo/hub/core';
 
 export class AuthRepository {
   constructor(private readonly userModel: Model<IUser>) {}
@@ -201,25 +201,25 @@ Gerenciamento modular por meio de decoradores do Fastify e um registro centraliz
 
 ## 8. Infraestrutura e Implantação
 
-Projetado para **Excelência Auto-Hospedada** na Hetzner Cloud, nossos padrões de conteinerização, topologias Docker Compose multisserviço, estratégia de variáveis de ambiente e padrões de rede são gerenciados de forma centralizada.
+Projetado para **Excelência Auto-Hospedada**, nossa orquestração nativa Kubernetes, pipelines de desenvolvimento Skaffold, estratégia de variáveis de ambiente e padrões de rede são gerenciados centralmente no workspace Infrastructure.
 
-Para um guia completo e aprofundado sobre estruturas de diretórios, modelos de Docker Compose de alto padrão e padrões avançados de multisserviços (incluindo os padrões Gateway e Pilha Distribuída), consulte a documentação dedicada:
+Para um guia completo e aprofundado sobre estruturas de diretórios, implantação no Minikube, roteamento com Cloudflare tunnel e overlays do Kustomize, explore a documentação dedicada do workspace Infrastructure:
 
 <DocCardList
   items={[
     {
       type: 'link',
-      href: '../reference/infrastructure',
-      label: 'Infraestrutura',
+      href: '/workspaces/infrastructure/intro',
+      label: 'Workspace Infrastructure',
       description:
-        'Para manter a infraestrutura do tupynambalucas.dev, ferramentas de DevOps e ambientes de execução em segundo plano robustos, fáceis de manter e altamente modulares, este documento unifica nossos padrões de infraestrutura auto-hospedada, convenções de diretório e topologias Docker multisserviço.',
+        'Explore a orquestração centralizada do Kubernetes, pipelines de implantação GitOps e topologia de rede edge-to-cluster.',
     },
     {
       type: 'link',
-      href: '../guides/deployment',
-      label: 'Implantação',
+      href: '/workspaces/infrastructure/guides/local-development',
+      label: 'Configuração de Desenvolvimento Local',
       description:
-        'Para garantir alta disponibilidade, segurança e ambientes reproduzíveis, o tupynambalucas.dev utiliza um modelo de implantação moderno e auto-hospedado projetado para máquinas virtuais Hetzner Cloud. Este guia descreve nossa estratégia de implantação, sincronização de ambiente e procedimentos operacionais.',
+        'Aprenda como executar o monorepo localmente usando Minikube e Skaffold para recarregamento rápido (hot-reloading).',
     },
   ]}
 />
@@ -237,7 +237,7 @@ Os workspaces Studio e Cortex fornecem a infraestrutura para alinhamento de desi
 
 ## 10. Padrões de Segurança
 
-O tupynambalucas.dev segue uma estratégia de segurança em múltiplas camadas. Para detalhes detalhados de implementação, consulte o documento de **[Arquitetura de Segurança](../reference/security.mdx)**.
+O %PROJECT_DOMAIN% segue uma estratégia de segurança em múltiplas camadas. Para detalhes detalhados de implementação, consulte o documento de **[Arquitetura de Segurança](/docs/reference/security)**.
 
 - **Proteção contra Bots**: Integração com o Cloudflare Turnstile para todos os pontos de entrada de autenticação.
 - **Mitigação de Força Bruta**: Limitação de taxa baseada em IP e lógica de bloqueio de conta.

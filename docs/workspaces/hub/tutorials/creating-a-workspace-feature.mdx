@@ -1,6 +1,10 @@
 ---
 title: Creating a Workspace Feature
 description: Learn how to build a feature that spans across multiple layers in a workspace.
+diataxis_type: tutorial
+workspace: hub
+tags:
+  - hub
 ---
 
 # Creating a Workspace Feature
@@ -39,7 +43,7 @@ Add the following Fastify route:
 
 ```typescript
 import { FastifyInstance } from 'fastify';
-import { getGreeting } from '@tupynambalucas-hub/core';
+import { getGreeting } from '@repo/hub/core';
 
 export default async function (fastify: FastifyInstance) {
   fastify.get('/greet', async (request, reply) => {
@@ -84,7 +88,7 @@ export function GreetingPanel() {
 Now, we will run the development server to see our feature in action.
 
 ```bash
-pnpm dev --filter=@tupynambalucas-hub/*
+pnpm dev --filter=@repo/hub/*
 ```
 
 Open your browser to `http://localhost:3000`. You should see your new component rendering the text:

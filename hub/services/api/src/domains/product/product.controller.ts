@@ -1,5 +1,5 @@
 import type { z } from 'zod';
-import type { ProductResponseSchema } from '@tupynambalucas-hub/core';
+import type { ProductResponseSchema } from '@monorepo/hub-core';
 import type { FastifyZodHandler } from '../../types/fastify.js';
 import type { ListProductsRoute, UpdateProductRoute } from './product.schema.js';
 import type { IProductDocument } from '../../models/product.model.js';

@@ -1,12 +1,12 @@
 @import 'tailwindcss/theme' layer(theme);
-@import '@tupynambalucas-studio/design/tokens.css' layer(theme);
+@import '@monorepo/studio-assets/tokens.css' layer(theme);
 @import 'tailwindcss/utilities' layer(utilities);
 
 @source "../../docs/**/*.{md,mdx}";
 @source "../**/*.{js,jsx,ts,tsx,md,mdx}";
 
 /**
- * tupynambalucas.dev - Knowledge Base Custom Styles
+ * %PROJECT_DOMAIN% - Knowledge Base Custom Styles
  * 
  * This file applies our centralized brand tokens to the Docusaurus (Infima) 
  * framework, strictly enforcing a light-only theme as per architectural decision.
@@ -74,15 +74,37 @@
 }
 
 /* Base Body Background - Set to footer color to fix persistent gap at the end of the page */
+html {
+  scrollbar-gutter: stable;
+}
+
 html,
 body {
   background-color: var(--ifm-footer-background-color);
+  overflow-x: clip;
 }
 
 /* Main wrapper should have the light background to ensure content area remains light */
 .main-wrapper {
   background-color: var(--ifm-background-color);
   min-height: calc(100vh - var(--ifm-navbar-height));
+  width: 100%;
+}
+
+/* Ensure sticky sidebar & Table of Contents (TOC) follow window scroll smoothly */
+.theme-doc-sidebar-container {
+  position: sticky !important;
+  top: var(--ifm-navbar-height);
+  height: calc(100vh - var(--ifm-navbar-height));
+  align-self: flex-start;
+}
+
+.theme-doc-toc-desktop {
+  position: sticky !important;
+  top: calc(var(--ifm-navbar-height) + 1rem);
+  max-height: calc(100vh - var(--ifm-navbar-height) - 2rem);
+  overflow-y: auto;
+  align-self: flex-start;
 }
 
 /* Ensure #__docusaurus also matches the footer color */

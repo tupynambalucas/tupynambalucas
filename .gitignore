@@ -36,7 +36,7 @@ mongo-keyfile
 *.p12
 *.pem
 *.key
-
+REGULATIONS_AND_GUIDELINES_STRATEGY.md
 # --- Logs e Diagnósticos ---
 logs/
 *.log
@@ -64,4 +64,6 @@ gha-creds-*.json
 # --- Persistent runtime ---
 data/
 logs/
+
+
 

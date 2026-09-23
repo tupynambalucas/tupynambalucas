@@ -1,7 +1,9 @@
 ---
 title: Contextos Delimitados
-description: Explicação detalhada de Contextos Delimitados (Bounded Contexts), estrutura do monorepo e papéis dos workspaces no tupynambalucas.dev.
+description: Explicação detalhada de Contextos Delimitados (Bounded Contexts), estrutura do monorepo e papéis dos workspaces no %PROJECT_DOMAIN%.
 ---
+
+{ }
 
 # Contextos Delimitados
 
@@ -16,10 +18,10 @@ O monorepo faz distinções entre diferentes contextos principais. O diagrama a 
 ```mermaid
 graph TD
     direction TB
-    Root["tupynambalucas.dev Monorepo"]
+    Root["%PROJECT_DOMAIN% Monorepo"]
     Root --> Hub["Hub Context: /hub"]
     Root --> Cortex["Cortex Context: /cortex"]
-    Root --> Profile["Profile Context: /profile"]
+    Root --> Renderer["Renderer Context: /renderer"]
     Root --> Studio["Studio Context: /studio"]
     Root --> Tools["Tools Context: /tools"]
     Root --> Platform["Platform Context: /platform"]
@@ -34,7 +36,7 @@ graph TD
     Cortex --> MCP["MCP Adapters"]
     Cortex --> Agents["Terminal Agents"]
 
-    Profile --> P_Zig["Zig CLI Engine"]
+    Renderer --> R_Gen["TypeScript Generator"]
 
     Studio --> Tokens["Design Tokens"]
     Studio --> Assets["Brand Assets"]
@@ -44,24 +46,24 @@ graph TD
     H_API -.-> Cortex
 ```
 
-| Diretório           | Nome do Pacote                  | Papel              | Responsabilidade                                                    |
-| :------------------ | :------------------------------ | :----------------- | :------------------------------------------------------------------ |
-| `hub/services/web`  | `@tupynambalucas-hub/web`       | **Aplicação**      | Cliente React do portfólio pessoal, blog e painel de administração. |
-| `hub/services/api`  | `@tupynambalucas-hub/api`       | **Aplicação**      | Backend Fastify REST API servindo posts de blog e formulários.      |
-| `hub/packages/core` | `@tupynambalucas-hub/core`      | **Biblioteca**     | SSOT para o contexto Hub (validação Zod, esquemas compartilhados).  |
-| `cortex/`           | `@tupynambalucas/cortex`        | **Ferramental**    | Gateway unificado de IA, adaptadores MCP e executores de agentes.   |
-| `profile/`          | `@tupynambalucas/profile`       | **Aplicação**      | Aplicação CLI em Zig compilando métricas do GitHub e gerando SVGs.  |
-| `studio/assets`     | `@tupynambalucas-studio/design` | **Biblioteca**     | Tokens de design, logos, SVGs e utilitários de sincronização.       |
-| `tools/`            | `@tupynambalucas-tools/*`       | **Ferramental**    | Controle de versão Git e automação do GitHub CLI isolados.          |
-| `platform/`         | `@tupynambalucas/platform`      | **Infraestrutura** | Monitoramento de telemetria e servidores de cache Turborepo.        |
-| `docs/`             | `@tupynambalucas/docs`          | **Docs Hub**       | Portal do desenvolvedor Docusaurus autoritativo.                    |
+| Diretório           | Nome do Pacote        | Papel              | Responsabilidade                                                    |
+| :------------------ | :-------------------- | :----------------- | :------------------------------------------------------------------ |
+| `hub/services/web`  | `@repo/hub/web`       | **Aplicação**      | Cliente React do portfólio pessoal, blog e painel de administração. |
+| `hub/services/api`  | `@repo/hub/api`       | **Aplicação**      | Backend Fastify REST API servindo posts de blog e formulários.      |
+| `hub/packages/core` | `@repo/hub/core`      | **Biblioteca**     | SSOT para o contexto Hub (validação Zod, esquemas compartilhados).  |
+| `cortex/`           | `@/cortex`            | **Ferramental**    | Gateway unificado de IA, adaptadores MCP e executores de agentes.   |
+| `renderer/`         | `@/renderer`          | **Aplicação**      | Aplicação CLI em Zig compilando métricas do GitHub e gerando SVGs.  |
+| `studio/assets`     | `@repo/studio/assets` | **Biblioteca**     | Tokens de design, logos, SVGs e utilitários de sincronização.       |
+| `tools/`            | `@repo/tools/*`       | **Ferramental**    | Controle de versão Git e automação do GitHub CLI isolados.          |
+| `platform/`         | `@/platform`          | **Infraestrutura** | Monitoramento de telemetria e servidores de cache Turborepo.        |
+| `docs/`             | `@/docs`              | **Docs Hub**       | Portal do desenvolvedor Docusaurus autoritativo.                    |
 
 ---
 
 ## Filosofia de Contextos Delimitados
 
-- **Isolamento de Contexto**: Cada diretório raiz (`hub/`, `cortex/`, `profile/`, `studio/`, `tools/`, `platform/`, `docs/`) representa um contexto isolado. Tipos, contratos e configurações são encapsulados localmente, referenciando bibliotecas externas apenas por fronteiras de pacotes.
-- **Desacoplamento Estrito**: As regras de negócio do Developer Hub (`hub/`) são completamente desacopladas do compilador de estatísticas do perfil (`profile/`) e do hub de IA (`cortex/`).
+- **Isolamento de Contexto**: Cada diretório raiz (`hub/`, `cortex/`, `renderer/`, `studio/`, `tools/`, `platform/`, `docs/`) representa um contexto isolado. Tipos, contratos e configurações são encapsulados localmente, referenciando bibliotecas externas apenas por fronteiras de pacotes.
+- **Desacoplamento Estrito**: As regras de negócio do Developer Hub (`hub/`) são completamente desacopladas do compilador de estatísticas do perfil (`renderer/`) e do hub de IA (`cortex/`).
 
 ---
 

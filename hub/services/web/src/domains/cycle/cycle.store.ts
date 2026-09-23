@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { cycleApi } from './cycle.api';
 import { getErrorMessage } from '@/utils/errorHelper';
-import { CycleResponseSchema, type CycleResponse } from '@tupynambalucas-hub/core';
+import { CycleResponseSchema, type CycleResponse } from '@monorepo/hub-core';
 
 interface PublicCycleState {
   activeCycle: CycleResponse | null;

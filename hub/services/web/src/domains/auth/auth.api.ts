@@ -1,5 +1,5 @@
 import { api } from '@/lib/axios';
-import type { LoginDTO, RegisterDTO, LoginResponse } from '@tupynambalucas-hub/core';
+import type { LoginDTO, RegisterDTO, LoginResponse } from '@monorepo/hub-core';
 
 export const authApi = {
   login: async (data: LoginDTO) => {

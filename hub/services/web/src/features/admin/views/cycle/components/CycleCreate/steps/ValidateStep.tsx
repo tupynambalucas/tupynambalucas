@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, faExclamationTriangle } from '@tupynambalucas-studio/design/icons';
+import { Icon, faExclamationTriangle } from '@monorepo/studio-assets/icons';
 import styles from '../styles.module.css';
-import type { IProduct } from '@tupynambalucas-hub/core';
+import type { IProduct } from '@monorepo/hub-core';
 import type { FailedLine } from '../parseList';
 
 interface ValidateStepProps {
@@ -88,7 +88,7 @@ export const ValidateStep: React.FC<ValidateStepProps> = ({
           <div className={styles.dangerContent}>
             <div className={styles.failedPreview}>
               {failedLines.slice(0, 3).map((fail, fIdx) => (
-                // eslint-disable-next-line react/no-array-index-key
+                // eslint-disable-next-line @eslint-react/no-array-index-key
                 <div key={`fail-${fIdx}`}>• {fail.text}</div>
               ))}
               {failedLines.length > 3 && (

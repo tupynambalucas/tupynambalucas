@@ -2,12 +2,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import eslint from '@eslint/js';
-import type { Linter } from 'eslint';
 import { defineConfig } from 'eslint/config';
-import { fixupPluginRules } from '@eslint/compat';
-import importPlugin from 'eslint-plugin-import';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import eslintPluginImportX from 'eslint-plugin-import-x';
+import eslintReact from '@eslint-react/eslint-plugin';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
@@ -41,31 +38,35 @@ export default defineConfig([
       },
     },
     plugins: {
-      import: importPlugin,
+      'import-x': eslintPluginImportX,
     },
     settings: {
-      'import/parsers': {
+      'import-x/parsers': {
         '@typescript-eslint/parser': ['.ts', '.tsx'],
       },
-      'import/resolver': {
+      'import-x/resolver': {
         typescript: {
           alwaysTryTypes: true,
           project: [
             'tsconfig.json',
             'docs/tsconfig.json',
-            'profile/tsconfig.json',
+            'renderer/tsconfig.json',
             'hub/services/*/tsconfig.json',
             'hub/packages/*/tsconfig.json',
             'shared/*/tsconfig.json',
             'studio/*/tsconfig.json',
             'tools/*/tsconfig.json',
+            'cortex/mcp/guardrails/tsconfig.json',
+            'cortex/mcp/services/*/tsconfig.json',
+            'cortex/memory/packages/*/tsconfig.json',
+            'cortex/memory/services/*/tsconfig.json',
           ],
         },
         node: {
           extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
       },
-      'import/ignore': [
+      'import-x/ignore': [
         '.css$',
         '.scss$',
         '.sass$',
@@ -116,8 +117,8 @@ export default defineConfig([
       '@typescript-eslint/naming-convention': 'off',
 
       // 🟢 REGRAS DE IMPORTAÇÃO
-      'import/no-duplicates': 'warn',
-      'import/no-unresolved': [
+      'import-x/no-duplicates': 'warn',
+      'import-x/no-unresolved': [
         'error',
         {
           ignore: [
@@ -130,10 +131,10 @@ export default defineConfig([
           ],
         },
       ],
-      'import/order': 'off',
-      'import/newline-after-import': 'off',
-      'import/first': 'off',
-      'import/no-default-export': 'off',
+      'import-x/order': 'off',
+      'import-x/newline-after-import': 'off',
+      'import-x/first': 'off',
+      'import-x/no-default-export': 'off',
     },
   },
 
@@ -169,11 +170,11 @@ export default defineConfig([
   },
 
   // ========================================================================
-  // 4. DOMAIN CORE - Regras para @tupynambalucas-*/core (Strict Logic)
+  // 4. DOMAIN CORE - Regras para @monorepo-*/core (Strict Logic)
   // ========================================================================
   {
     name: 'monorepo/domain-core',
-    files: ['**/packages/core/**/*.{ts,tsx}'],
+    files: ['**/core/**/*.{ts,tsx}', '**/packages/core/**/*.{ts,tsx}'],
     ignores: ['**/*.md/**', '**/*.mdx/**'],
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -195,7 +196,12 @@ export default defineConfig([
   // ========================================================================
   {
     name: 'monorepo/domain-api',
-    files: ['**/services/api/**/*.{ts,tsx}'],
+    files: [
+      '**/api/**/*.{ts,tsx}',
+      '**/services/api/**/*.{ts,tsx}',
+      'cortex/mcp/services/**/*.{ts,tsx}',
+      'cortex/mcp/guardrails/**/*.{ts,tsx}',
+    ],
     rules: {
       '@typescript-eslint/no-misused-promises': [
         'error',
@@ -209,36 +215,18 @@ export default defineConfig([
   },
 
   // ========================================================================
-  // 6. DOMAIN WEB - Regras para Frontend (React/Vite)
+  // 6. DOMAIN WEB - Regras para Frontend (React/Vite - Strict Type-Checked)
   // ========================================================================
   {
     name: 'monorepo/domain-web',
-    files: ['**/services/web/**/*.{ts,tsx}'],
+    files: ['**/web/**/*.{ts,tsx}', '**/services/web/**/*.{ts,tsx}'],
     ignores: ['**/*.md/**', '**/*.mdx/**'],
     plugins: {
-      react: fixupPluginRules(reactPlugin),
-      'react-hooks': fixupPluginRules(
-        reactHooksPlugin as unknown as NonNullable<Linter.Config['plugins']>[string],
-      ),
-      'react-refresh': fixupPluginRules(reactRefreshPlugin),
-    },
-    settings: {
-      react: {
-        version: 'detect',
-      },
+      '@eslint-react': eslintReact,
+      'react-refresh': reactRefreshPlugin,
     },
     rules: {
-      ...reactHooksPlugin.configs.recommended.rules,
-      ...reactPlugin.configs.recommended.rules,
-      ...reactPlugin.configs['jsx-runtime'].rules,
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'error',
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      'react/display-name': 'warn',
-      'react/no-array-index-key': 'warn',
-      'react/jsx-no-target-blank': 'error',
-      'react/jsx-key': ['error', { checkFragmentShorthand: true }],
+      ...eslintReact.configs['strict-type-checked'].rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
       '@typescript-eslint/strict-boolean-expressions': 'error',
@@ -329,7 +317,7 @@ export default defineConfig([
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-empty-object-type': 'off',
-      'import/no-unresolved': [
+      'import-x/no-unresolved': [
         'error',
         {
           ignore: ['^@docusaurus/', '^@theme/', '^@site/'],
@@ -338,8 +326,8 @@ export default defineConfig([
     },
   },
   {
-    name: 'monorepo/profile-workspace',
-    files: ['profile/**/*.ts', 'profile/**/*.tsx'],
+    name: 'monorepo/renderer-workspace',
+    files: ['renderer/**/*.ts', 'renderer/**/*.tsx'],
     ignores: ['**/*.md/**', '**/*.mdx/**'],
     rules: {
       'no-console': ['warn', { allow: ['info', 'warn', 'error', 'log'] }],
@@ -440,6 +428,7 @@ export default defineConfig([
       '**/*.d.ts',
       '**/vite-env.d.ts',
       '**/.docusaurus/**',
+      '**/static/**',
     ],
   },
 

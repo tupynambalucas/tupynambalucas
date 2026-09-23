@@ -13,6 +13,7 @@
 
 # Build artifacts (rebuilt inside the image)
 **/dist
+!cortex/mcp/services/*/dist
 **/build
 **/.turbo
 **/*.tsbuildinfo
@@ -20,6 +21,7 @@
 # Secrets — NEVER copy env files into a Docker image
 **/.env
 **/.env.*
+skaffold.env
 
 # Logs
 **/*.log
@@ -37,8 +39,17 @@
 **/.DS_Store
 **/Thumbs.db
 
-# Documentation (not needed in production images)
-docs/
-README.md
-CHANGELOG.md
-LICENSE.md
+# Documentation and Non-Code Folders
+!docs/
+!docs/**
+docs/node_modules/
+docs/.docusaurus/
+docs/build/
+docs/.turbo/
+.agents/
+.github/
+.system_generated/
+
+node_modules
+*/*/node_modules
+*/*/*/node_modules

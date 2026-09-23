@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: Comprehensive overview of tupynambalucas.dev's monorepo structure, bounded contexts, and technology stack.
+description: Comprehensive overview of %PROJECT_DOMAIN%'s monorepo structure, bounded contexts, and technology stack.
 sidebar_position: 1
 ---
 
@@ -10,15 +10,15 @@ import DocCardList from '@theme/DocCardList';
 
 ## 1. Executive Summary
 
-tupynambalucas.dev is a personal developer portal, portfolio, blog, and automation engine. The system is built on a **Monorepo** architecture using **PNPM Workspaces** and **Turborepo**, prioritizing high performance, strict typing, and domain isolation through a **Bounded Context** strategy.
+%PROJECT_DOMAIN% is a personal developer portal, portfolio, blog, and automation engine. The system is built on a **Monorepo** architecture using **PNPM Workspaces** and **Turborepo**, prioritizing high performance, strict typing, and domain isolation through a **Bounded Context** strategy.
 
-The architecture is designed to host the developer hub website (`hub`) and the automated stats compiler (`profile`), logically decoupled at the root level.
+The architecture is designed to host the developer hub website (`hub`) and the automated stats compiler (`renderer`), logically decoupled at the root level.
 
 ---
 
 ## 2. Monorepo Structure & Bounded Contexts
 
-The tupynambalucas.dev codebase is organized into **Domain Contexts** at the root level. For a detailed breakdown of the application roles, context philosophy, and directory structures, please refer to the Bounded Context guide:
+The %PROJECT_DOMAIN% codebase is organized into **Domain Contexts** at the root level. For a detailed breakdown of the application roles, context philosophy, and directory structures, please refer to the Bounded Context guide:
 
 <DocCardList
   items={[
@@ -43,7 +43,7 @@ We employ a **Hybrid High-Performance Architecture** optimized by **Turborepo** 
 **Turborepo** is the engine behind our monorepo productivity. It handles:
 
 - **Dependency Graph:** Automatically identifying which packages need to be built or checked based on local changes.
-- **Infrastructure Coupling:** Orchestrating Docker Compose services as pre-requisites for application development (e.g., `pnpm hub:up` starts databases before the API).
+- **Infrastructure Coupling:** Orchestrating backing services as pre-requisites for application development (e.g., `pnpm hub:up` or `pnpm cortex:up` starts databases/backing services before the API).
 - **Caching:** Speeding up builds, type-checking, and linting by skipping unchanged modules.
 - **Unified Outputs:** Standardizing build artifacts into `dist/` (for apps and core) and `build/` (for Docusaurus).
 
@@ -71,7 +71,7 @@ For a complete reference list of orchestration scripts, service commands, and de
 
 ## 5. Architectural Principles
 
-To ensure extreme maintainability, long-term readability, and clean boundaries across our domain contexts, tupynambalucas.dev follows four foundational architectural principles.
+To ensure extreme maintainability, long-term readability, and clean boundaries across our domain contexts, %PROJECT_DOMAIN% follows four foundational architectural principles.
 
 Click on any card below to explore a deep dive into each principle:
 
@@ -155,7 +155,7 @@ To maintain strict typing and decoupling, repositories receive the Mongoose mode
 ```typescript
 // hub/services/api/src/domains/auth/auth.repository.ts
 import type { Model } from 'mongoose';
-import type { IUser } from '@tupynambalucas-hub/core';
+import type { IUser } from '@repo/hub/core';
 
 export class AuthRepository {
   constructor(private readonly userModel: Model<IUser>) {}
@@ -201,25 +201,25 @@ Modular management through Fastify decorators and a centralized registry to deco
 
 ## 8. Infrastructure & Deployment
 
-Designed for **Self-Hosted Excellence** on Hetzner Cloud, our containerization standards, multi-service Docker Compose topologies, environment variables strategy, and networking standards are managed centrally.
+Designed for **Self-Hosted Excellence**, our Kubernetes-native orchestration, Skaffold development pipelines, environment variables strategy, and networking standards are managed centrally in the Infrastructure workspace.
 
-For a comprehensive, deep-dive guide on directory structures, gold-standard Docker Compose blueprints, and advanced multi-service patterns (including the Gateway and Distributed Stack patterns), refer to the dedicated documentation:
+For a comprehensive, deep-dive guide on directory structures, Minikube deployment, Cloudflare tunnel routing, and Kustomize overlays, explore the dedicated Infrastructure workspace documentation:
 
 <DocCardList
   items={[
     {
       type: 'link',
-      href: '../reference/infrastructure',
-      label: 'Infrastructure',
+      href: '/workspaces/infrastructure/intro',
+      label: 'Infrastructure Workspace',
       description:
-        'To keep the tupynambalucas.dev infrastructure, DevOps tooling, and background runtime environments robust, maintainable, and highly modular, this document unifies our self-hosted infrastructure standards, directory conventions, and multi-service Docker topologies.',
+        'Explore the centralized Kubernetes orchestration, GitOps deployment pipelines, and edge-to-cluster networking topology.',
     },
     {
       type: 'link',
-      href: '../guides/deployment',
-      label: 'Deployment',
+      href: '/workspaces/infrastructure/guides/local-development',
+      label: 'Local Development Setup',
       description:
-        'To ensure high availability, security, and reproducible environments, tupynambalucas.dev utilizes a modern, self-hosted deployment model designed for Hetzner Cloud virtual machines. This guide outlines our deployment strategy, environment synchronization, and operational procedures.',
+        'Learn how to run the monorepo locally using Minikube and Skaffold for live hot-reloading.',
     },
   ]}
 />
@@ -237,7 +237,7 @@ The Studio and Cortex workspaces provide the infrastructure for design-to-code a
 
 ## 10. Security Standards
 
-tupynambalucas.dev follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](../reference/security.mdx)** document.
+%PROJECT_DOMAIN% follows a multi-layered security strategy. For detailed implementation details, refer to the **[Security Architecture](/docs/reference/security)** document.
 
 - **Bot Protection**: Integration with Cloudflare Turnstile for all authentication entry points.
 - **Brute-Force Mitigation**: IP-based rate limiting and account lockout logic.

@@ -1,0 +1,29 @@
+{
+  "name": "@monorepo/cortex-mcp-guardrails",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MCP guardrails server providing context validation and safety enforcement for AI agents.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc -w",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "catalog:api-stack",
+    "@grpc/proto-loader": "catalog:api-stack"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}

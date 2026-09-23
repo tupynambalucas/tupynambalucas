@@ -17,5 +17,5 @@
     },
     "skipLibCheck": true
   },
-  "exclude": [".docusaurus", "build"]
+  "exclude": [".docusaurus", "build", "static"]
 }

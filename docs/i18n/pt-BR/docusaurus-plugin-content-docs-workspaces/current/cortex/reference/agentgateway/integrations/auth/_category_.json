@@ -1,0 +1,8 @@
+{
+  "label": "Autenticação e Identidade",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Integrações com Auth0, authentik, Descope, Entra ID, Keycloak, OAuth2 Proxy, Okta e Tailscale."
+  }
+}

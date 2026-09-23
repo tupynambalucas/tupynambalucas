@@ -1,0 +1,22 @@
+- op: add
+  path: /rules/-
+  value:
+    apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
+      - get
+      - list
+      - watch
+- op: add
+  path: /rules/-
+  value:
+    apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+      - list
+      - watch

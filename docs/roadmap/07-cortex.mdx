@@ -11,8 +11,13 @@ This section outlines the strategic milestones and development timeline for the 
 
 - **AI Stack Consolidation**: Unified the AI ecosystem by co-locating the API Ingress Gateway, Model Context Protocol (MCP) data plane, and agent runtimes under `cortex/`. Removed legacy configurations from `/tools` and `/platform`.
 - **Layered Domain Reorganization**: Removed the redundant `core/` wrapper directory, restructuring the workspace into flat root-level domains: `gateway/`, `memory/`, `mcp/`, and `agents/`.
-- **Gateway Port Alignment**: Remapped container ports and updated internal agent settings to route traffic through the Go-based gateway on port `8080`.
+- **Gateway Port Alignment**: Remapped container ports and updated internal agent settings to route traffic through Traefik -> AgentGateway on port `8080`.
 - **Database Startup Resiliency**: Implemented container healthchecks inside the compose manifest to ensure downstream adapters wait until databases are fully initialized before attempting socket connections.
+
+### MCP and Documentation Expansion
+
+- **New MCP Services**: Deployed new Playwright and Kubectl MCP services alongside Github, Firecrawl, Grafana, and Memory.
+- **Documentation Migration**: Successfully migrated the entire AgentGateway standalone documentation reference into the Cortex workspace documentation structure.
 
 ---
 

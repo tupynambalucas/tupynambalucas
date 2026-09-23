@@ -1,4 +1,4 @@
-import type { LoginDTO, RegisterDTO } from '@tupynambalucas-hub/core';
+import type { LoginDTO, RegisterDTO } from '@monorepo/hub-core';
 
 export interface AuthFormData
   extends Omit<LoginDTO, 'turnstileToken'>, Omit<RegisterDTO, 'turnstileToken'> {

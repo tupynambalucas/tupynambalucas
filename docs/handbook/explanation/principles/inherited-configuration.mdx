@@ -1,6 +1,6 @@
 ---
 title: Inherited Configuration
-description: Tooling governance and root-level config inheritance across the tupynambalucas.dev monorepo.
+description: Tooling governance and root-level config inheritance across the %PROJECT_DOMAIN% monorepo.
 ---
 
 # Inherited Configuration
@@ -19,7 +19,7 @@ This layout allows us to enforce strict workspace standards (such as Airbnb-leve
 
 ## 2. Project-Specific Utilization
 
-In tupynambalucas.dev, all toolings and configurations are centrally orchestrated from the root:
+In %PROJECT_DOMAIN%, all toolings and configurations are centrally orchestrated from the root:
 
 ### A. Unified ESLint Governance
 
@@ -51,7 +51,7 @@ Root-level `tsconfig.json` files define the baseline strictness:
 Workspaces extend these shared settings via the `extends` property, customizing only runtime-specific libraries or target environments (such as Node.js vs. DOM/browser contexts):
 
 ```json
-// instance/apps/web/tsconfig.json
+// hub/services/web/tsconfig.json
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {

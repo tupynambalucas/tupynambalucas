@@ -1,0 +1,40 @@
+{
+  "name": "@monorepo/cortex-mcp-memory",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP integration for Cortex memory enabling semantic search and context retrieval.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "tsx watch --env-file=../../../infrastructure/docker/.env src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "catalog:mcp-stack",
+    "@monorepo/cortex-memory-core": "workspace:*",
+    "dotenv": "catalog:shared-stack",
+    "fastify": "catalog:api-stack",
+    "zod": "catalog:shared-stack"
+  },
+  "devDependencies": {
+    "@monorepo/shared-config": "workspace:*",
+    "@types/node": "catalog:",
+    "rimraf": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

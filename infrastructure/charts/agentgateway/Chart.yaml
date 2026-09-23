@@ -1,0 +1,6 @@
+apiVersion: v2
+name: agentgateway
+description: Local Helm Chart for AgentGateway
+type: application
+version: 0.1.0
+appVersion: '1.0.0'

@@ -1,6 +1,8 @@
 import { createRequire } from 'node:module';
 import type { Preset, LoadContext, PluginConfig, PluginOptions } from '@docusaurus/types';
-import type { TupynambalucasPresetOptions, ThemeConfig } from './options';
+import type { MonorepoPresetOptions, ThemeConfig } from './options';
+import projectVariablesPlugin from './plugins/remark-project-variables';
+import pluginStudioAssets from './plugins/studio-assets';
 
 const require = createRequire(import.meta.url);
 
@@ -14,15 +16,36 @@ function makePluginConfig(
   return require.resolve(source);
 }
 
-export default function tupynambalucasPreset(
+function withProjectVariables(options: any) {
+  if (!options) return options;
+  return {
+    ...options,
+    remarkPlugins: [...(options.remarkPlugins || []), projectVariablesPlugin],
+  };
+}
+
+export default function monorepoPreset(
   context: LoadContext,
-  opts: TupynambalucasPresetOptions = {},
+  opts: MonorepoPresetOptions = {},
 ): Preset {
   const { siteConfig } = context;
   const { themeConfig } = siteConfig;
   const { algolia } = themeConfig as Partial<ThemeConfig>;
   const isProd = process.env.NODE_ENV === 'production';
-  const { debug, docs, blog, pages, sitemap, svgr, theme, gtag, googleTagManager, ...rest } = opts;
+  const {
+    debug,
+    docs,
+    blog,
+    pages,
+    roadmap,
+    workspaces,
+    sitemap,
+    svgr,
+    theme,
+    gtag,
+    googleTagManager,
+    ...rest
+  } = opts;
 
   const themes: PluginConfig[] = [];
   themes.push(makePluginConfig('@docusaurus/theme-classic', theme));
@@ -43,13 +66,40 @@ export default function tupynambalucasPreset(
   }
 
   if (docs !== false) {
-    plugins.push(makePluginConfig('@docusaurus/plugin-content-docs', docs));
+    plugins.push(makePluginConfig('@docusaurus/plugin-content-docs', withProjectVariables(docs)));
   }
+  if (roadmap !== false && roadmap !== undefined) {
+    plugins.push(
+      makePluginConfig(
+        '@docusaurus/plugin-content-docs',
+        withProjectVariables({
+          id: 'roadmap',
+          path: 'roadmap',
+          routeBasePath: 'roadmap',
+          ...roadmap,
+        }),
+      ),
+    );
+  }
+  if (workspaces !== false && workspaces !== undefined) {
+    plugins.push(
+      makePluginConfig(
+        '@docusaurus/plugin-content-docs',
+        withProjectVariables({
+          id: 'workspaces',
+          path: 'workspaces',
+          routeBasePath: 'workspaces',
+          ...workspaces,
+        }),
+      ),
+    );
+  }
+
   if (blog !== false) {
-    plugins.push(makePluginConfig('@docusaurus/plugin-content-blog', blog));
+    plugins.push(makePluginConfig('@docusaurus/plugin-content-blog', withProjectVariables(blog)));
   }
   if (pages !== false) {
-    plugins.push(makePluginConfig('@docusaurus/plugin-content-pages', pages));
+    plugins.push(makePluginConfig('@docusaurus/plugin-content-pages', withProjectVariables(pages)));
   }
   if (debug === true || (debug === undefined && isProd === false)) {
     plugins.push(require.resolve('@docusaurus/plugin-debug'));
@@ -67,6 +117,9 @@ export default function tupynambalucasPreset(
     plugins.push(makePluginConfig('@docusaurus/plugin-svgr', svgr));
   }
 
+  // Push local plugins directly instead of relying on docusaurus.config.ts
+  plugins.push(pluginStudioAssets);
+
   if (Object.keys(rest).length > 0) {
     throw new Error(
       `Unrecognized keys ${Object.keys(rest).join(', ')} found in preset configuration.`,
@@ -76,4 +129,4 @@ export default function tupynambalucasPreset(
   return { themes, plugins };
 }
 
-export type { TupynambalucasPresetOptions, ThemeConfig };
+export type { MonorepoPresetOptions, ThemeConfig };

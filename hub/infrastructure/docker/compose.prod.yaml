@@ -6,7 +6,7 @@ services:
     build:
       context: ../../../
       dockerfile: instance/services/api/Dockerfile
-    image: tupynambalucas-hub-api:latest
+    image: hub-api:latest
     restart: unless-stopped
     expose:
       - '3000'
@@ -32,7 +32,7 @@ services:
       dockerfile: instance/services/web/Dockerfile
       args:
         VITE_TURNSTILE_SITE_KEY: ${VITE_TURNSTILE_SITE_KEY}
-    image: tupynambalucas-hub-web:latest
+    image: hub-web:latest
     ports:
       - '80:80'
     restart: unless-stopped
@@ -44,7 +44,7 @@ services:
     build:
       context: ../../services/redis
       dockerfile: Dockerfile
-    image: tupynambalucas-hub-redis:latest
+    image: hub-redis:latest
     restart: unless-stopped
     volumes:
       - redis-data:/data
@@ -56,4 +56,4 @@ services:
 
 volumes:
   redis-data:
-    name: tupynambalucas_hub_redis_prod_data
+    name: monorepo-hub_redis_prod_data

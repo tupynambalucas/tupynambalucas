@@ -1,0 +1,70 @@
+---
+title: Authoring AGENTS.md Files
+sidebar_label: Authoring AGENTS.md Files
+sidebar_position: 6
+---
+
+# Authoring AGENTS.md Context Files
+
+This guide explains how to create, refactor, and maintain `AGENTS.md` context router files across the monorepo.
+
+---
+
+## 1. Determining the Appropriate Layer
+
+Before creating an `AGENTS.md` file, identify the target layer:
+
+1. **Monorepo Root**: Layer 1 (`/AGENTS.md`). Only one file exists at this layer.
+2. **Bounded Context Root**: Layer 2 (`/[context]/AGENTS.md`). Created for domain roots (`cortex`, `hub`, `platform`, `studio`, `tools`, `renderer`, `docs`).
+3. **Technical Sub-Domain**: Layer 3 (`/[context]/[sub]/AGENTS.md`). Created only for sub-workspaces with unique, non-duplicative technical rules (e.g., `services/api`, `packages/core`).
+
+---
+
+## 2. Step-by-Step Authoring Workflow
+
+### Step 1: Add the Context Hierarchy Directive
+
+For Layer-2 and Layer-3 files, place the `<context-hierarchy>` XML block at the very top:
+
+```xml
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
+```
+
+### Step 2: Define the Ubiquitous Language (Layer 2 Only)
+
+Include a table defining domain terms and forbidden synonyms:
+
+```markdown
+## Ubiquitous Language
+
+| Term       | Definition                 | Forbidden Synonyms   |
+| :--------- | :------------------------- | :------------------- |
+| `Customer` | The authenticated hub user | user, person, member |
+```
+
+### Step 3: Write Imperative Guardrails
+
+Use strict imperative keywords (`MUST`, `NEVER`, `ALWAYS`) rather than descriptive prose:
+
+- **Correct**: `Controllers MUST inject Mongoose models into the repository constructor.`
+- **Incorrect**: `Controllers should probably use repositories.`
+
+### Step 4: Validate Line Budget
+
+- Layer 1: Max 80 lines.
+- Layer 2: Max 120 lines.
+- Layer 3: Max 100 lines.
+
+### Step 5: Format with Prettier
+
+Run Prettier to format markdown and code blocks:
+
+```bash
+pnpm exec prettier --write <path/to/AGENTS.md>
+```

@@ -1,15 +1,24 @@
 {
-  "name": "@tupynambalucas-shared/config",
+  "name": "@monorepo/shared-config",
   "version": "1.0.0",
   "private": true,
+  "description": "Global configuration and constant definitions shared across all workspaces.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
   "type": "module",
-  "main": "./prettierrc.json",
+  "main": "./src/prettierrc.json",
   "exports": {
     "./package.json": "./package.json",
-    ".": "./prettierrc.json",
-    "./tsconfig.base.json": "./tsconfig.base.json",
-    "./prettierrc.json": "./prettierrc.json",
-    "./.prettierignore": "./.prettierignore"
+    ".": "./src/prettierrc.json",
+    "./tsconfig.base.json": "./src/tsconfig.base.json",
+    "./prettierrc.json": "./src/prettierrc.json",
+    "./.prettierignore": "./src/.prettierignore",
+    "./project.config": "./src/project.config.ts"
   },
   "scripts": {},
   "dependencies": {

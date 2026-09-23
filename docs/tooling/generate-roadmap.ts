@@ -3,7 +3,8 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const kbPkgPath = require.resolve('@tupynambalucas/docs/package.json');
+const projectConfig = require('@monorepo/shared-config/project.config.json');
+const kbPkgPath = require.resolve('@monorepo/docs/package.json');
 const kbDir = path.dirname(kbPkgPath);
 
 const ROADMAP_DIR = path.join(kbDir, 'roadmap');
@@ -12,7 +13,7 @@ const ROADMAP_PATH = path.join(kbDir, '../ROADMAP.md');
 const ROADMAP_FILES = [
   '01-core.mdx',
   '02-hub.mdx',
-  '03-profile.mdx',
+  '03-renderer.mdx',
   '04-studio.mdx',
   '05-tools.mdx',
   '06-docs.mdx',
@@ -26,8 +27,7 @@ function generateRoadmap(): void {
     process.exit(1);
   }
 
-  let roadmapContent =
-    '# Roadmap\n\nAll planned and completed milestones for each key workspace context in the tupynambalucas.dev ecosystem, aligning our immediate features with long-term platform transformations.\n\n';
+  let roadmapContent = `# Roadmap\n\nAll planned and completed milestones for each key workspace context in the ${projectConfig.PROJECT_DOMAIN} ecosystem, aligning our immediate features with long-term platform transformations.\n\n`;
   const entries: string[] = [];
 
   for (const file of ROADMAP_FILES) {

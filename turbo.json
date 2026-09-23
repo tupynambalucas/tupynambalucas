@@ -1,5 +1,5 @@
 {
-  "$schema": "https://turbo.build/schema.json",
+  "$schema": "./node_modules/turbo/schema.json",
   "remoteCache": {
     "apiUrl": "http://localhost:3008",
     "signature": false
@@ -25,6 +25,10 @@
       "persistent": true
     },
     "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "preview": {
       "cache": false,
       "persistent": true
     }

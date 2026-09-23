@@ -1,12 +1,12 @@
 ---
 title: Segurança
-description: Visão geral abrangente das medidas de segurança, proteção contra bots e mitigação de força bruta no tupynambalucas.dev.
+description: Visão geral abrangente das medidas de segurança, proteção contra bots e mitigação de força bruta no %PROJECT_DOMAIN%.
 sidebar_position: 4
 ---
 
 # Arquitetura de Segurança
 
-tupynambalucas.dev implementa uma estratégia de segurança em múltiplas camadas para proteger os dados da comunidade e garantir a integridade dos ciclos de compartilhamento. Nossa abordagem combina protocolos padrão da indústria com proteção especializada contra bots e mitigação de força bruta.
+%PROJECT_DOMAIN% implementa uma estratégia de segurança em múltiplas camadas para proteger os dados da comunidade e garantir a integridade dos ciclos de compartilhamento. Nossa abordagem combina protocolos padrão da indústria com proteção especializada contra bots e mitigação de força bruta.
 
 ---
 
@@ -28,7 +28,7 @@ A API não confia apenas no estado do lado do cliente.
 
 - **Verificação**: O `AuthService` realiza uma requisição POST segura para `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
 - **Validação de IP**: O endereço IP do cliente é enviado ao Cloudflare para detectar redes de bots baseadas em proxies.
-- **DTOs Obrigatórios**: O `LoginDTOSchema` e o `RegisterDTOSchema` no `@tupynambalucas-hub/core` exigem estritamente o `turnstileToken`.
+- **DTOs Obrigatórios**: O `LoginDTOSchema` e o `RegisterDTOSchema` no `@repo/hub/core` exigem estritamente o `turnstileToken`.
 
 ---
 
@@ -73,9 +73,9 @@ A API foi projetada para vazar o mínimo de informações possível sobre o esta
 
 ## 4. Requisitos de Ambiente
 
-As seguintes chaves de segurança são obrigatórias para o funcionamento da stack da **Instância**. Cada variável reside no arquivo env pertencente à aplicação responsável, seguindo o princípio de isolamento de **Contexto Delimitado (Bounded Context)** do projeto.
+As seguintes chaves de segurança são obrigatórias para o funcionamento da stack do **Hub**. Cada variável reside no arquivo env pertencente à aplicação responsável, seguindo o princípio de isolamento de **Contexto Delimitado (Bounded Context)** do projeto.
 
-### 4.1. API (`instance/apps/api/.env.*`)
+### 4.1. API (`hub/services/api/.env.*`)
 
 | Variável               | Propósito                                                                                                          | Ambientes          |
 | :--------------------- | :----------------------------------------------------------------------------------------------------------------- | :----------------- |
@@ -84,7 +84,7 @@ As seguintes chaves de segurança são obrigatórias para o funcionamento da sta
 | `SESSION_SECRET`       | Criptografia de cookies de sessão assinados HTTP-only.                                                             | dev, prod, staging |
 | `MONGO_URI`            | String de conexão do MongoDB. O dev usa o Replica Set local; prod/staging usam o MongoDB Atlas (`mongodb+srv://`). | dev, prod, staging |
 
-### 4.2. Web (`instance/apps/web/.env.*` / Docker `ARG`)
+### 4.2. Web (`hub/services/web/.env.*` / Docker `ARG`)
 
 | Variável                  | Propósito                                                    | Método de Injeção                                                                                                                                                    |
 | :------------------------ | :----------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

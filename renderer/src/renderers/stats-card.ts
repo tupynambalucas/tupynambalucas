@@ -1,5 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { dirname, join } from 'path';
+import { readFileSync } from 'fs';
 import type { Config } from '../schemas/env.schema.js';
 import type { GitHubStats } from '../schemas/githubstats.schema.js';
 import { fillTemplate } from '../utils/template-fill.js';
@@ -10,19 +9,15 @@ interface RenderOptions {
   config: Config;
   defaultOverviewTemplatePath: string;
   defaultLanguagesTemplatePath: string;
-  overviewOutputFile: string;
-  languagesOutputFile: string;
 }
 
-export function renderStatsCards(options: RenderOptions): void {
-  const {
-    stats,
-    config,
-    defaultOverviewTemplatePath,
-    defaultLanguagesTemplatePath,
-    overviewOutputFile,
-    languagesOutputFile,
-  } = options;
+export interface RenderedCards {
+  overviewSvg: string;
+  languagesSvg: string;
+}
+
+export function renderStatsCards(options: RenderOptions): RenderedCards {
+  const { stats, config, defaultOverviewTemplatePath, defaultLanguagesTemplatePath } = options;
 
   let totalStars = 0;
   let totalForks = 0;
@@ -35,7 +30,6 @@ export function renderStatsCards(options: RenderOptions): void {
   let languagesTotalSize = 0;
 
   for (const repo of stats.repositories) {
-    // Apply repository exclusion filters
     if (matchAnyGlob(config.excludeRepos, repo.name)) {
       console.info(`Excluding repository ${repo.name} based on excludeRepos config`);
       continue;
@@ -80,10 +74,8 @@ export function renderStatsCards(options: RenderOptions): void {
     stats.pr_contributions +
     stats.review_contributions;
 
-  // 1. Render Overview Card
-  const overviewTemplatePath = defaultOverviewTemplatePath;
-  console.info(`Reading overview template from ${overviewTemplatePath}...`);
-  const overviewTemplate = readFileSync(overviewTemplatePath, 'utf8');
+  console.info(`Reading overview template from ${defaultOverviewTemplatePath}...`);
+  const overviewTemplate = readFileSync(defaultOverviewTemplatePath, 'utf8');
 
   const overviewData = {
     name: stats.name,
@@ -96,23 +88,7 @@ export function renderStatsCards(options: RenderOptions): void {
   };
 
   const overviewSvg = fillTemplate(overviewTemplate, overviewData);
-  const overviewOutPath = overviewOutputFile;
-  const outDir = dirname(overviewOutPath);
-  mkdirSync(outDir, { recursive: true });
 
-  if (!config.isGitHubAction) {
-    console.info(`Writing local light overview card to ${join(outDir, 'overview-light.svg')}...`);
-    writeFileSync(join(outDir, 'overview-light.svg'), overviewSvg, 'utf8');
-
-    console.info(`Writing local dark overview card to ${join(outDir, 'overview-dark.svg')}...`);
-    const darkOverviewSvg = overviewSvg.replace(/#gh-dark-mode-only:target/g, '#gh-dark-mode-only');
-    writeFileSync(join(outDir, 'overview-dark.svg'), darkOverviewSvg, 'utf8');
-  } else {
-    console.info(`Writing production adaptive overview card to ${overviewOutPath}...`);
-    writeFileSync(overviewOutPath, overviewSvg, 'utf8');
-  }
-
-  // 2. Render Languages Card
   const progressItems = sortedLanguages
     .map((lang) => {
       const percent = languagesTotalSize === 0 ? 0 : (lang.size / languagesTotalSize) * 100;
@@ -148,35 +124,13 @@ export function renderStatsCards(options: RenderOptions): void {
     })
     .join('\n');
 
-  const languagesTemplatePath = defaultLanguagesTemplatePath;
-  console.info(`Reading languages template from ${languagesTemplatePath}...`);
-  const languagesTemplate = readFileSync(languagesTemplatePath, 'utf8');
+  console.info(`Reading languages template from ${defaultLanguagesTemplatePath}...`);
+  const languagesTemplate = readFileSync(defaultLanguagesTemplatePath, 'utf8');
 
   const languagesSvg = fillTemplate(languagesTemplate, {
     progress: progressItems,
     lang_list: langListItems,
   });
 
-  const languagesOutPath = languagesOutputFile;
-  const langOutDir = dirname(languagesOutPath);
-  mkdirSync(langOutDir, { recursive: true });
-
-  if (!config.isGitHubAction) {
-    console.info(
-      `Writing local light languages card to ${join(langOutDir, 'languages-light.svg')}...`,
-    );
-    writeFileSync(join(langOutDir, 'languages-light.svg'), languagesSvg, 'utf8');
-
-    console.info(
-      `Writing local dark languages card to ${join(langOutDir, 'languages-dark.svg')}...`,
-    );
-    const darkLanguagesSvg = languagesSvg.replace(
-      /#gh-dark-mode-only:target/g,
-      '#gh-dark-mode-only',
-    );
-    writeFileSync(join(langOutDir, 'languages-dark.svg'), darkLanguagesSvg, 'utf8');
-  } else {
-    console.info(`Writing production adaptive languages card to ${languagesOutPath}...`);
-    writeFileSync(languagesOutPath, languagesSvg, 'utf8');
-  }
+  return { overviewSvg, languagesSvg };
 }

@@ -1,0 +1,134 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: turbocache-pvc
+  namespace: platform
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: turbocache
+  namespace: platform
+  labels:
+    app: turbocache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: turbocache
+  template:
+    metadata:
+      labels:
+        app: turbocache
+    spec:
+      containers:
+        - name: turbocache
+          image: platform-turbocache
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: STORAGE_PROVIDER
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: STORAGE_PROVIDER
+                  optional: true
+            - name: STORAGE_PATH
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: STORAGE_PATH
+                  optional: true
+            - name: STORAGE_PATH_USE_TMP_FOLDER
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: STORAGE_PATH_USE_TMP_FOLDER
+                  optional: true
+            - name: TURBO_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: TURBO_TOKEN
+                  optional: true
+            - name: AUTH_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: AUTH_MODE
+                  optional: true
+            - name: LOG_LEVEL
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: LOG_LEVEL
+                  optional: true
+            - name: ENABLE_STATUS_LOG
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: ENABLE_STATUS_LOG
+                  optional: true
+            - name: LOG_MODE
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: LOG_MODE
+                  optional: true
+            - name: HTTP2
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: HTTP2
+                  optional: true
+            - name: READ_ONLY
+              valueFrom:
+                secretKeyRef:
+                  name: platform-secrets
+                  key: READ_ONLY
+                  optional: true
+          volumeMounts:
+            - name: cache-volume
+              mountPath: /data
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: turbocache-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: turbocache
+  namespace: platform
+spec:
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: turbocache
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: turbocache-ingress
+  namespace: platform
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: turbocache-dev.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: turbocache
+                port:
+                  number: 3000

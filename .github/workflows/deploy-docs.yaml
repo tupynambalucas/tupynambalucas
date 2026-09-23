@@ -6,6 +6,7 @@ on:
     paths:
       - 'docs/**'
       - '.github/workflows/deploy-docs.yaml'
+      - '.github/actions/deploy-cloudflare-pages/**'
   workflow_dispatch:
 
 permissions:
@@ -52,10 +53,12 @@ jobs:
         env:
           CLOUDFLARE_R2_ASSETS_PUBLIC_URL: ${{ secrets.CLOUDFLARE_R2_ASSETS_PUBLIC_URL }}
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
+      - name: Idempotent Deploy to Cloudflare Pages
+        uses: ./.github/actions/deploy-cloudflare-pages
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy docs/build --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT_DOCS_NAME }}
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          api_token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+          account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          project_name: ${{ vars.CLOUDFLARE_PAGES_PROJECT_DOCS_NAME }}
+          directory: docs/build
+          production_branch: develop
+          custom_domain: 'docs.tupynambalucas.dev'

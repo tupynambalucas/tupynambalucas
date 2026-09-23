@@ -1,23 +1,30 @@
-# Local Context: Developer Automation Tools Router
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
 
-This workspace context ([tools/](./)) orchestrates developer helper tools, git automation configurations, and GitHub CLI containerized workspaces.
+# Bounded Context: Developer Automation Tools Router
+
+This bounded context ([tools/](./)) orchestrates developer helper tools, git automation configurations, and GitHub CLI containerized workspaces.
 
 ---
 
 ## 1. Directory Layout
 
-- **[github/](./github/)**: Git and GitHub CLI containerized workspaces and
-  repository automation.
+- **[github/](./github/)**: Git and GitHub CLI containerized workspaces and repository automation. Setup Reference: [github/README.md](./github/README.md).
+- **[provisioner/](./provisioner/)**: Workstation bootstrapping, WSL2 configuration and local dev environment setup. Setup Reference: [provisioner/README.md](./provisioner/README.md).
 
 ---
 
-## 2. Scoped Workspaces and Entry Points
+## 1.5. Ubiquitous Language
 
-AI agents operating within the tools directory must consult the localized specifications of each child workspace before performing modifications:
-
-- **Git and GitHub Automation CLI (`tools/github/`)**:
-  - Context & Setup Reference: [README.md](./github/README.md)
-  - Scoped Developer Rules: [AGENTS.md](./github/AGENTS.md)
+| Term          | Definition                                                              | Forbidden Synonyms |
+| :------------ | :---------------------------------------------------------------------- | :----------------- |
+| `Provisioner` | The workstation bootstrapping CLI script configuring WSL2 and dev tools | setup, installer   |
+| `Workspace`   | The bind-mounted `/workspace` volume inside GitHub CLI containers       | volume, directory  |
 
 ---
 
@@ -31,10 +38,25 @@ When modifying configurations or scripts inside this bounded context, the follow
 
 ---
 
-## 3. Operations Commands Summary
+## 3. Sub-Domain Rules
+
+### GitHub CLI Rules
+
+- The monorepo root MUST be bind-mounted to `/workspace` inside all GitHub CLI containers. All automation scripts MUST resolve relative paths from this mount point.
+- GitHub Personal Access Tokens MUST be provided via the `GITHUB_TOKEN` environment variable passed through Docker `--env-file`. Tokens MUST NOT be embedded in Dockerfiles or scripts.
+
+### Provisioner Rules
+
+- All shell provisioning scripts MUST begin with `set -euo pipefail` to enforce immediate exit on error, undefined variable access, or pipe failures.
+- WSL2 configuration changes MUST be documented in the provisioner README before being applied.
+
+---
+
+## 4. Operations Commands Summary
 
 Manage the tool environments using the mapped root execution scripts:
 
-| Context Subsystem      | Up Command                | Down Command                | Reset Command                |
-| :--------------------- | :------------------------ | :-------------------------- | :--------------------------- |
-| **GitHub CLI Tooling** | `pnpm github:services:up` | `pnpm github:services:down` | `pnpm github:services:reset` |
+| Context Subsystem           | Up Command                | Down Command                | Reset Command                |
+| :-------------------------- | :------------------------ | :-------------------------- | :--------------------------- |
+| **GitHub CLI Tooling**      | `pnpm github:services:up` | `pnpm github:services:down` | `pnpm github:services:reset` |
+| **Workstation Provisioner** | `pnpm provision`          | -                           | -                            |

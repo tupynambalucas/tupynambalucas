@@ -2,17 +2,21 @@
 title: Layered Services (Penpot & Memos)
 sidebar_label: Layered Services
 sidebar_position: 3
+diataxis_type: explanation
+workspace: studio
+tags:
+  - studio
 ---
 
 ### Self-Hosted Workspace Infrastructure
 
-The `tupynambalucas.dev` project runs a series of self-hosted layered services configured in `studio/design/infrastructure/docker/compose.yaml` to ensure absolute data sovereignty, collaboration, and automated design-to-code pipelines.
+The `%PROJECT_DOMAIN%` project runs a series of self-hosted layered services configured in `studio/design/infrastructure/docker/compose.yaml` to ensure absolute data sovereignty, collaboration, and automated design-to-code pipelines.
 
 ---
 
 ## 1. Penpot Design System & Aide Assistant
 
-tupynambalucas.dev utilizes a distributed Penpot stack integrated with Aide, an AI-native engineering assistant.
+%PROJECT_DOMAIN% utilizes a distributed Penpot stack integrated with Aide, an AI-native engineering assistant.
 
 ### A. Infrastructure Architecture
 
@@ -43,7 +47,7 @@ The AI assistant bridge (Aide) is built directly into the core docker orchestrat
 
 - **Component Reuse:** Always check the existing component library (Penpot) or the UI library (`hub/services/web/src/components`) before creating new elements. Aide must prioritize existing design system tokens and components.
 - **Token-First Logic:** Design-to-code exports must strictly utilize CSS Custom Properties derived from `assets/tokens/` for colors, fonts, and spacing.
-- **SVG Optimization:** Ensure exported SVG code is optimized, follows the project's icon standards, and is integrated via the `@tupynambalucas-studio/design/icons` registry.
+- **SVG Optimization:** Ensure exported SVG code is optimized, follows the project's icon standards, and is integrated via the `@repo/studio/assets/icons` registry.
 - **Layer Hierarchy:** Maintenance of semantic grouping is mandatory. Elements must be organized into clear pages and frames (e.g., `Layout/Grid`, `Components/Buttons`).
 
 ---
@@ -64,9 +68,9 @@ The Memos service is integrated as a lightweight layered service running inside 
 
 Memos accesses the database using the connection string defined in the environment variables:
 
-```bash
+```env
 MEMOS_DRIVER=postgres
-MEMOS_DSN=postgresql://memos_app:npg_xOmLhI1oHwq3@ep-twilight-morning-acgd3tih-pooler.sa-east-1.aws.neon.tech/memos_db?sslmode=require&channel_binding=require
+MEMOS_DSN=postgresql://your_db_user:your_db_password@your_db_host/your_db_name?sslmode=require
 ```
 
 ### C. Operational Script

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ProductResponseSchema } from '@tupynambalucas-hub/core';
+import { ProductResponseSchema } from '@monorepo/hub-core';
 
 const ListProductsQuerySchema = z.object({
   search: z.string().optional(),

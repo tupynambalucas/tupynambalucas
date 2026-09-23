@@ -7,6 +7,8 @@
     { "path": "./renderer" },
     { "path": "./hub" },
     { "path": "./studio" },
-    { "path": "./tools" }
+    { "path": "./tools" },
+    { "path": "./cortex" },
+    { "path": "./shared" }
   ]
 }

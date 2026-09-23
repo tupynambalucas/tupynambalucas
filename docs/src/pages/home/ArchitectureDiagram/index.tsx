@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './styles.module.css';
+import projectConfig from '@monorepo/shared-config/project.config';
 
 interface ArchitectureDiagramProps {
   onSelect?: (id: string) => void;
@@ -14,7 +15,7 @@ export default function ArchitectureDiagram({ onSelect, activeId }: Architecture
       color: styles.hubColor,
       items: ['web', 'api', 'core'],
     },
-    { id: 'profile', label: '/profile', color: styles.profileColor, items: ['zig', 'stats'] },
+    { id: 'renderer', label: '/renderer', color: styles.rendererColor, items: ['zig', 'stats'] },
     { id: 'studio', label: '/studio', color: styles.studioColor, items: ['tokens', 'assets'] },
     { id: 'tools', label: '/tools', color: styles.toolsColor, items: ['mcp', 'scripts'] },
     { id: 'knowledge', label: '/docs', color: styles.docsColor, items: ['docusaurus'] },
@@ -25,7 +26,9 @@ export default function ArchitectureDiagram({ onSelect, activeId }: Architecture
       <div className={styles.diagramGrid}>
         {/* Monorepo Root */}
         <div className={styles.rootNode}>
-          <span className={styles.rootLabel}>TUPYNAMBALUCAS.DEV MONOREPO</span>
+          <span
+            className={styles.rootLabel}
+          >{`${projectConfig.PROJECT_DOMAIN.toUpperCase()} MONOREPO`}</span>
           {/* Visual link to the trunk */}
           <div className={styles.trunkLink} />
         </div>

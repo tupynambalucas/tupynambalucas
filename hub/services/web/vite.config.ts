@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
 
     optimizeDeps: {
       include: ['react', 'react-dom', 'react/jsx-runtime'],
-      exclude: ['@tupynambalucas-hub/core', '@tupynambalucas-studio/assets'],
+      exclude: ['@monorepo/hub-core', '@monorepo/studio-assets'],
     },
 
     base: './',

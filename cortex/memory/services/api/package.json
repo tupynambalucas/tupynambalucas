@@ -1,0 +1,44 @@
+{
+  "name": "@monorepo/cortex-memory-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend REST API for Cortex memory subsystem and vector retrieval.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "tsx watch --env-file=../../../infrastructure/docker/.env src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@fastify/cors": "catalog:api-stack",
+    "@fastify/env": "catalog:api-stack",
+    "@fastify/sse": "catalog:api-stack",
+    "@monorepo/cortex-memory-core": "workspace:*",
+    "fastify": "catalog:api-stack",
+    "fastify-plugin": "catalog:api-stack",
+    "gray-matter": "catalog:",
+    "mongoose": "catalog:api-stack",
+    "zod": "catalog:shared-stack"
+  },
+  "devDependencies": {
+    "@monorepo/shared-config": "workspace:*",
+    "@types/node": "catalog:",
+    "rimraf": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

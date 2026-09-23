@@ -1,0 +1,84 @@
+# ==========================================
+# PENPOT SEED JOB
+# Idempotent Kubernetes Job that provisions the initial Penpot user
+# accounts directly into the Neon Postgres database on first boot.
+#
+# Design principles:
+#   - Idempotent: INSERT ... ON CONFLICT DO NOTHING -- safe to re-run
+#     on every cluster restart; no duplicate users are ever created.
+#   - Zero runtime dependency on the Penpot backend container or its
+#     internal CLI. Uses a standalone postgres client image.
+#   - Secrets are consumed from the existing studio-secrets Secret,
+#     which is generated from infrastructure/.env by Kustomize.
+#   - The Job completes and its Pod enters Completed state after the
+#     first successful execution. Kubernetes keeps the Pod log for
+#     audit purposes but does not restart it.
+#
+# To update a user password after the seed has run, delete the Job
+# and re-apply with an updated BCRYPT hash in the SQL below:
+#   kubectl delete job penpot-seed -n studio
+#   pnpm infra:dev
+#
+# Password hashing: Penpot uses bcrypt cost 12.
+# Generate a new hash with:
+#   htpasswd -bnBC 12 "" "your_password" | tr -d ':\n' | sed 's/$2y/$2a/'
+# ==========================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: penpot-seed
+  namespace: studio
+  labels:
+    app: penpot-seed
+    component: seed
+  annotations:
+    app.kubernetes.io/managed-by: skaffold
+    app.kubernetes.io/part-of: studio-penpot
+spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 604800
+  template:
+    metadata:
+      labels:
+        app: penpot-seed
+        component: seed
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: seed
+          image: studio-penpot-backend
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: studio-secrets
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -eu
+              echo "[seed] Waiting for Penpot database and dependencies to be ready..."
+              # manage.py search-profile implicitly checks the DB connection
+              until python3 manage.py search-profile -c tcp://backend:6063 -e "test@example.com" > /dev/null 2>&1; do
+                echo "[seed] Backend services not ready, retrying in 3s..."
+                sleep 3
+              done
+
+              echo "[seed] Checking if admin user exists..."
+              if python3 manage.py search-profile -c tcp://backend:6063 -e "$PENPOT_ADMIN_EMAIL" | grep -q "$PENPOT_ADMIN_EMAIL"; then
+                echo "[seed] Profile already exists. Updating password..."
+                python3 manage.py update-profile -c tcp://backend:6063 -e "$PENPOT_ADMIN_EMAIL" -p "$PENPOT_ADMIN_PASSWORD"
+              else
+                echo "[seed] Creating new admin profile..."
+                python3 manage.py create-profile -c tcp://backend:6063 -n "$PENPOT_ADMIN_FULLNAME" -e "$PENPOT_ADMIN_EMAIL" -p "$PENPOT_ADMIN_PASSWORD" --skip-tutorial --skip-walkthrough
+              fi
+
+              echo "[seed] Done. Initial accounts provisioned successfully."
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi

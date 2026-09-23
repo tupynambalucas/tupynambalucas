@@ -1,6 +1,15 @@
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../../AGENTS.md" in this session, stop
+    now and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: Instance Web Client Application
 
-This workspace (`@tupynambalucas-hub/web`) contains the React 19 Single Page Application client for community shop and administration operations.
+This workspace (`@%PROJECT_NAME%-hub/web`) contains the React 19 Single Page Application client for community shop and administration operations.
 
 ---
 
@@ -15,7 +24,7 @@ The client layout under `src/` is organized according to Domain-Driven Design (D
   - `admin/`: Cycle management, raw catalog parser ingestion dashboard.
   - `shop/`: Product catalog grid, cart, and Pix payment modal.
 - **[src/shared/ui/](./src/shared/ui/)**: Reusable, domain-agnostic UI elements (buttons, loaders, fields).
-- **[src/assets/](./src/assets/)**: Static icons, styles, and locales.
+- **[src/shared/](./src/shared/)**: Static UI components, styles, and locales.
 
 ---
 

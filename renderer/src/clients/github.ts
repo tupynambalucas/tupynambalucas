@@ -102,7 +102,7 @@ export async function getBasicInfo(token: string): Promise<{
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
-      'User-Agent': 'tupynambalucas-profile-generator',
+      'User-Agent': 'monorepo-profile-generator',
     },
     body: JSON.stringify({ query }),
   });
@@ -135,7 +135,7 @@ export async function getBasicInfo(token: string): Promise<{
         Authorization: `Bearer ${token}`,
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'tupynambalucas-profile-generator',
+        'User-Agent': 'monorepo-profile-generator',
       },
     });
 
@@ -179,7 +179,7 @@ async function fetchLinesChangedForRepo(
         Authorization: `Bearer ${token}`,
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'tupynambalucas-profile-generator',
+        'User-Agent': 'monorepo-profile-generator',
       },
     });
 
@@ -228,7 +228,7 @@ async function fetchViewsForRepo(repo: Repository, token: string): Promise<void>
         Authorization: `Bearer ${token}`,
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'tupynambalucas-profile-generator',
+        'User-Agent': 'monorepo-profile-generator',
       },
     });
 
@@ -303,7 +303,7 @@ async function getReposByYear(
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
-      'User-Agent': 'tupynambalucas-profile-generator',
+      'User-Agent': 'monorepo-profile-generator',
     },
     body: JSON.stringify({
       query,
@@ -497,7 +497,7 @@ async function getFileSha(
       Authorization: `Bearer ${token}`,
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
-      'User-Agent': 'tupynambalucas-profile-generator',
+      'User-Agent': 'monorepo-profile-generator',
     },
   });
   if (response.status === 200) {
@@ -527,7 +527,7 @@ export async function uploadFileContents(
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
       'Content-Type': 'application/json',
-      'User-Agent': 'tupynambalucas-profile-generator',
+      'User-Agent': 'monorepo-profile-generator',
     },
     body: JSON.stringify({
       message,

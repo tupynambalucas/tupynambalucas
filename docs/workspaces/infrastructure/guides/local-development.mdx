@@ -1,0 +1,164 @@
+---
+title: Local Development Setup
+description: How to configure Minikube and Skaffold for local Kubernetes development.
+sidebar_position: 1
+---
+
+# Local Development Setup
+
+This guide details how to set up your local Windows workstation to run the `%PROJECT_NAME%` monorepo using **Minikube**, **Skaffold**, and **Podman**. We exclusively use a Kubernetes-native orchestration approach, meaning there are no localized Docker Compose environments.
+
+---
+
+## 1. Prerequisites
+
+For local Kubernetes testing, routing validation, and deployment pipelines, we use host-installed `minikube`, `kubectl`, and `skaffold` with the `podman` driver for live hot-reloading and cluster deployment.
+
+Install the following tools on your Windows host:
+
+- **kubectl**: CLI tool for executing commands against Kubernetes clusters.
+- **Skaffold**: Automates build and deploy pipelines with hot-reloading capabilities.
+- **OpenLens**: Visual cluster monitoring client.
+- **Minikube CLI**: Provisions local Kubernetes cluster nodes inside Podman.
+
+**Install command (PowerShell)**:
+
+```powershell
+winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+```
+
+:::warning[Avoid Running Skaffold via Containers]
+Although you can run Skaffold inside a container, doing so requires mounting container sockets and remapping internal hosts. Furthermore, live file synchronization often fails to propagate file system events across container boundaries. For this reason, installing the native Skaffold binary locally is strictly required.
+:::
+
+---
+
+## 2. Minikube Local Cluster Setup
+
+### Creating the Cluster
+
+To start the default Minikube cluster using the Podman driver and configure the local host mounting required by AI agents:
+
+```bash
+pnpm minikube:up
+```
+
+This executes the underlying command:
+
+```bash
+minikube start --driver=podman --mount --mount-string ".:/workspace"
+```
+
+:::info[Minikube Tunnel]
+Since some services in our cluster (like Traefik) use LoadBalancer IPs, you must open a network tunnel in a separate, persistent administrative terminal window to expose them:
+
+```bash
+pnpm minikube:tunnel
+```
+
+:::
+
+---
+
+## 3. Visualizing the Cluster
+
+To monitor resource consumption, inspect logs, and manage namespaces visually, we use **OpenLens** or **Podman Desktop** on the Windows host.
+
+1. Set the active context to the Minikube profile in your terminal:
+   ```bash
+   kubectl config use-context minikube
+   ```
+2. Open **OpenLens** or **Podman Desktop**.
+3. Select the cluster context named **minikube**.
+
+---
+
+## 4. Professional Orchestration with Skaffold
+
+We use **Skaffold** to automate the build, deployment, and live hot-reloading pipelines.
+
+### Launching the Cluster and Workspaces
+
+We provide simplified scripts in the root `package.json` to manage the lifecycle:
+
+1. **Deploy and Run in the Background**:
+   To build all images and deploy all platform and cortex components to Minikube:
+
+   ```bash
+   pnpm infra:up
+   ```
+
+2. **Continuous Development Mode (Live Hot-Reloading)**:
+   To run Skaffold in development mode, watching source code changes and automatically hot-reloading code inside the running pods:
+
+   ```bash
+   pnpm infra:dev
+   ```
+
+3. **Workspace Module Isolation**:
+   You can deploy specific workspaces independently to save resources:
+   - **Deploy Cortex Only**: `pnpm infra:cortex:dev`
+   - **Deploy Platform Only**: `pnpm infra:platform:dev`
+   - **Deploy Studio Only**: `pnpm infra:studio:dev`
+
+4. **Stop and Clean Up**:
+   To tear down all resources, namespaces, and workloads deployed by Skaffold:
+   ```bash
+   pnpm infra:clean
+   ```
+
+### Local Port Forwarding
+
+Skaffold automatically sets up port-forwarding tunnels targeting Kubernetes **Services** inside the cluster rather than ephemeral Pods. This guarantees stable local port mappings that survive container restarts.
+
+| Service              | Local Port | Namespace | Purpose                   |
+| :------------------- | :--------- | :-------- | :------------------------ |
+| `agentgateway`       | `8080`     | `cortex`  | Unified MCP Ingress       |
+| `agentgateway admin` | `15000`    | `cortex`  | Gateway Management Web UI |
+| `memory-api`         | `3006`     | `cortex`  | Memory Service REST API   |
+| `memory-web`         | `9006`     | `cortex`  | Memory Service Frontend   |
+| `mcp-inspector`      | `6274`     | `cortex`  | MCP Inspector Sandbox     |
+
+---
+
+## 5. Antigravity CLI Connectivity
+
+The **Antigravity CLI** connects to the Cortex ingress proxy (`agentgateway`) using the Cloudflare Tunnel endpoint defined in `.agents/mcp_config.json`:
+
+```json
+"agentgateway": {
+  "url": "https://agentgateway-mcp-dev.%PROJECT_DOMAIN%",
+  "lifecycle": "eager"
+}
+```
+
+This client configuration enables seamless MCP tool discovery and execution across both local host environments and remote developer workstations on any network:
+
+- **Cloudflare Tunnel Mode**: Traffic routes securely via `cloudflared` to the `agentgateway` Service inside Minikube without requiring local port forwarding or `/etc/hosts` modifications.
+- **Local Fallback Mode**: When working offline, Skaffold port-forwards the `agentgateway` Service to `localhost:8080`.
+
+The `agentgateway` intercepts the incoming JSON-RPC payload, runs it through configured CEL guardrails (via `mcp-guardrails` on port `9001`), and routes it to the target microservice based on targets defined in `cortex/gateway/config.yaml`.
+
+---
+
+## 6. Environment Variable Management
+
+Each workspace context manages its own environment files under `<workspace>/.env` or `infrastructure/.env`.
+
+Skaffold uses `dotenv-cli` scripts to inject these values as build environment configurations, which are then bundled into Kubernetes secrets via Kustomize:
+
+```yaml
+# infrastructure/manifests/cortex-memory.yaml (example)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+secretGenerator:
+  - name: cortex-secrets
+    envs:
+      - .env
+```
+
+:::warning[Kubernetes Service Environment Variable Collision]
+Kubernetes automatically injects environment variables for every active Service in the same namespace. If a Service is named `mcp-memory`, Kubernetes sets the environment variable `MCP_MEMORY_PORT` inside every container to its connection URI (e.g. `tcp://10.103.79.15:8080`).
+
+If your application attempts to parse `process.env.MCP_MEMORY_PORT` as a port number, it will yield `NaN` and crash. To prevent this collision, always prefix or rename application-specific port environment variables (e.g., use `MEMORY_MCP_PORT` instead of `MCP_MEMORY_PORT`).
+:::

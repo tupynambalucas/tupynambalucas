@@ -1,6 +1,6 @@
 # GFM Syntax (GitHub Flavored Markdown)
 
-Technical reference for writing and formatting Markdown files within the tupynambalucas workspace.
+Technical reference for writing and formatting Markdown files within the the workspace.
 
 ## Headings
 
@@ -96,7 +96,7 @@ Use triple backticks to create standalone code blocks. Optionally, specify the l
 
 ````markdown
 ```typescript
-const app = 'tupynambalucas';
+const app = 'workspace';
 console.log(app);
 ```
 ````
@@ -104,7 +104,7 @@ console.log(app);
 #### Rendered Preview
 
 ```typescript
-const app = 'tupynambalucas';
+const app = 'workspace';
 console.log(app);
 ```
 
@@ -155,7 +155,7 @@ Relative paths can be used to link to files within the repository.
 > file scheme paths like `/absolute/path/to/docs/CONTRIBUTING.md` or similar). You must always use
 > relative paths starting with `./` or `../` (or simply `path/to/file` if resolving from the
 > current directory) or fully-qualified public web URLs with explicit domains (e.g.,
-> `https://tupynambalucas.dev/`).
+> `https://example.com/`).
 
 #### Syntax
 
@@ -435,7 +435,7 @@ Prevent Markdown parsing by escaping characters with a backslash `\`.
 
 ## Prettier Formatting Standards
 
-All Markdown files are formatted by Prettier on pre-commit. To ensure your modifications do not cause conflicts or formatting drift, align with [.prettierrc.json](../../../../.prettierrc.json):
+All Markdown files are formatted by Prettier on pre-commit. To ensure your modifications do not cause conflicts or formatting drift, align with the root Prettier formatting rules:
 
 - **Indentation**: Standard 2-space indentation for list nesting, blockquotes, and HTML tags.
 - **Line Width**: Word wrap prose to keep lines under 100 characters where possible.

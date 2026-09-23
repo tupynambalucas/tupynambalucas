@@ -11,7 +11,7 @@ MONGO_BACKUP_NAME="mongo_dump_${TIMESTAMP}"
 mkdir -p "$BACKUP_DIR"
 
 echo "[backup] Initiating MongoDB database dump..."
-docker exec tupynambalucas-hub-db-prod mongodump \
+docker exec hub-db-prod mongodump \
   --username="${MONGO_USER}" \
   --password="${MONGO_PASSWORD}" \
   --authenticationDatabase=admin \

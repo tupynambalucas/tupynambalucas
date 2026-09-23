@@ -1,1 +1,1 @@
-pnpm exec lint-staged
+pnpm exec tsx shared/git/scripts/pre-commit.ts

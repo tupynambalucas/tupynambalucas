@@ -1,12 +1,12 @@
 ---
 title: Security
-description: Comprehensive overview of security measures, bot protection, and brute-force mitigation in tupynambalucas.dev.
+description: Comprehensive overview of security measures, bot protection, and brute-force mitigation in %PROJECT_DOMAIN%.
 sidebar_position: 4
 ---
 
 # Security Architecture
 
-tupynambalucas.dev implements a multi-layered security strategy to protect community data and ensure the integrity of sharing cycles. Our approach combines industry-standard protocols with specialized bot protection and brute-force mitigation.
+%PROJECT_DOMAIN% implements a multi-layered security strategy to protect community data and ensure the integrity of sharing cycles. Our approach combines industry-standard protocols with specialized bot protection and brute-force mitigation.
 
 ---
 
@@ -28,7 +28,7 @@ The API does not trust client-side state alone.
 
 - **Verification**: The `AuthService` performs a secure POST request to `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
 - **IP Validation**: The client's IP address is passed to Cloudflare to detect proxy-based botnets.
-- **Mandatory DTOs**: The `LoginDTOSchema` and `RegisterDTOSchema` in `@tupynambalucas-hub/core` strictly require the `turnstileToken`.
+- **Mandatory DTOs**: The `LoginDTOSchema` and `RegisterDTOSchema` in `@repo/hub/core` strictly require the `turnstileToken`.
 
 ---
 
@@ -73,9 +73,9 @@ The API is designed to leak as little information as possible about the system's
 
 ## 4. Environment Requirements
 
-The following security keys are mandatory for the **Instance** stack to operate. Each variable lives in the env file owned by the responsible application, following the project's **Bounded Context** isolation principle.
+The following security keys are mandatory for the **Hub** stack to operate. Each variable lives in the env file owned by the responsible application, following the project's **Bounded Context** isolation principle.
 
-### 4.1. API (`instance/apps/api/.env.*`)
+### 4.1. API (`hub/services/api/.env.*`)
 
 | Variable               | Purpose                                                                                                    | Environments       |
 | :--------------------- | :--------------------------------------------------------------------------------------------------------- | :----------------- |
@@ -84,7 +84,7 @@ The following security keys are mandatory for the **Instance** stack to operate.
 | `SESSION_SECRET`       | Encrypting signed HTTP-only session cookies.                                                               | dev, prod, staging |
 | `MONGO_URI`            | MongoDB connection string. Dev uses local Replica Set; prod/staging uses MongoDB Atlas (`mongodb+srv://`). | dev, prod, staging |
 
-### 4.2. Web (`instance/apps/web/.env.*` / Docker `ARG`)
+### 4.2. Web (`hub/services/web/.env.*` / Docker `ARG`)
 
 | Variable                  | Purpose                                             | Injection Method                                                                                                                                       |
 | :------------------------ | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------- |

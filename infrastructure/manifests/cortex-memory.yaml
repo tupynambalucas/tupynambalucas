@@ -1,0 +1,243 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-db
+  namespace: cortex
+  labels:
+    app: mongodb-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-db
+  template:
+    metadata:
+      labels:
+        app: mongodb-db
+    spec:
+      containers:
+        - name: mongodb-db
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_ROOT_USERNAME
+                  optional: true
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_ROOT_PASSWORD
+                  optional: true
+            - name: MONGO_INITDB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_DATABASE
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-db
+  namespace: cortex
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongodb-db
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-api
+  namespace: cortex
+  labels:
+    app: memory-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-api
+  template:
+    metadata:
+      labels:
+        app: memory-api
+    spec:
+      initContainers:
+        - name: wait-for-mongodb
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for mongodb-db:27017 to be ready..."
+              until nc -z mongodb-db 27017; do
+                echo "Retrying..."
+                sleep 2
+              done
+              echo "mongodb-db is ready!"
+      containers:
+        - name: memory-api
+          image: cortex-memory-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3006
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_API_PORT
+                  optional: true
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_API_HOST
+                  optional: true
+            - name: NODE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: NODE_ENV
+                  optional: true
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MONGODB_URI
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memory-api
+  namespace: cortex
+spec:
+  ports:
+    - port: 3006
+      targetPort: 3006
+  selector:
+    app: memory-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-web
+  namespace: cortex
+  labels:
+    app: memory-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-web
+  template:
+    metadata:
+      labels:
+        app: memory-web
+    spec:
+      containers:
+        - name: memory-web
+          image: cortex-memory-web:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9006
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memory-web
+  namespace: cortex
+spec:
+  ports:
+    - port: 9006
+      targetPort: 9006
+  selector:
+    app: memory-web
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: memory-ingress
+  namespace: cortex
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    traefik.ingress.kubernetes.io/custom-request-headers: 'X-Forwarded-Proto: https'
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: memory-dev.tupynambalucas.dev
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: memory-api
+                port:
+                  number: 3006
+          - path: /healthz
+            pathType: Prefix
+            backend:
+              service:
+                name: memory-api
+                port:
+                  number: 3006
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memory-web
+                port:
+                  number: 9006
+    - host: memory.tupynambalucas.dev
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: memory-api
+                port:
+                  number: 3006
+          - path: /healthz
+            pathType: Prefix
+            backend:
+              service:
+                name: memory-api
+                port:
+                  number: 3006
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memory-web
+                port:
+                  number: 9006
+    - host: memory-api-dev.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memory-api
+                port:
+                  number: 3006
+    - host: memory-api.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: memory-api
+                port:
+                  number: 3006

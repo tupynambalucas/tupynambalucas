@@ -7,7 +7,7 @@ import {
   type RegisterDTO,
   type UserResponse,
   UserResponseSchema,
-} from '@tupynambalucas-hub/core';
+} from '@monorepo/hub-core';
 
 type AuthStatus = 'IDLE' | 'LOADING' | 'AUTHENTICATED' | 'UNAUTHENTICATED' | 'ERROR';
 

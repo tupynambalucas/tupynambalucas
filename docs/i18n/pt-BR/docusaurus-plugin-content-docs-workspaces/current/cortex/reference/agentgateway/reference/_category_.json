@@ -1,0 +1,8 @@
+{
+  "label": "Referência de API & CLI",
+  "position": 10,
+  "link": {
+    "type": "generated-index",
+    "description": "Referência de comandos da CLI agctl, expressões CEL, esquema de configuração, métricas e notas de versão."
+  }
+}

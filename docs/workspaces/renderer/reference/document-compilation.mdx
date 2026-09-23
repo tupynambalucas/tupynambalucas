@@ -2,6 +2,10 @@
 title: Document Compilation & Pipelines
 sidebar_label: Document Compilation
 sidebar_position: 2
+diataxis_type: reference
+workspace: renderer
+tags:
+  - renderer
 ---
 
 The Renderer workspace features a highly flexible and extensible Markdown template compilation engine designed to combine dynamic SVG graphic elements, base64-encoded typography, and token-interpolated textual files.
@@ -10,7 +14,7 @@ The Renderer workspace features a highly flexible and extensible Markdown templa
 
 ## Extensible Pipeline Flow
 
-The engine compiles documents using decoupled pipelines conforming to the Open/Closed Principle (SOLID). Standard pipelines, such as the `github-profile.pipeline.ts`, orchestrate the document compilation process:
+The engine compiles documents using decoupled pipelines conforming to the Open/Closed Principle (SOLID). Standard pipelines, such as the `github-renderer.pipeline.ts`, orchestrate the document compilation process:
 
 1. **Pipeline Execution**: The main runner (`src/index.ts`) launches the registered active pipelines.
 2. **Template Parsing**: Reads raw templates, such as `src/templates/docs/README.template.md` and the SVG card templates.

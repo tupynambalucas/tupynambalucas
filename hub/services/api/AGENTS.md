@@ -1,6 +1,15 @@
+<context-hierarchy>
+  <parent src="../../../AGENTS.md" type="global-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../../../AGENTS.md" and "../../AGENTS.md" in this session, stop
+    now and read both files using your file-reading tools before proceeding.
+  </system-instruction>
+</context-hierarchy>
+
 # Local Context: Instance API Application
 
-This workspace (`@tupynambalucas-hub/api`) contains the Fastify 5 REST API for community-specific instance operations.
+This workspace (`@%PROJECT_NAME%-hub/api`) contains the Fastify 5 REST API for community-specific instance operations.
 
 ---
 
@@ -28,7 +37,7 @@ The source code under `src/` follows a domain-driven, layered responsibility mod
 Every endpoint workflow MUST adhere to the following sequence:
 
 ```
-Controller (Validation/Routing) ➔ Service (Business Logic) ➔ Repository (Persistence) ➔ Model (Mongoose)
+Controller (Validation/Routing) -> Service (Business Logic) -> Repository (Persistence) -> Model (Mongoose)
 ```
 
 - **Controllers**: Define routes, request schemas (Zod via `fastify-type-provider-zod`), and handle HTTP responses.
@@ -40,7 +49,7 @@ Controller (Validation/Routing) ➔ Service (Business Logic) ➔ Repository (Per
 
 ```typescript
 import type { Model } from 'mongoose';
-import type { IUser } from '@tupynambalucas-hub/core';
+import type { IUser } from '@%PROJECT_NAME%-hub/core';
 
 export class UserRepository {
   constructor(private readonly userModel: Model<IUser>) {}

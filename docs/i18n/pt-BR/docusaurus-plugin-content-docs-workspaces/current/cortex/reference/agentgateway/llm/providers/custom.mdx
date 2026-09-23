@@ -1,0 +1,74 @@
+---
+title: 'Custom'
+description: 'Verified Code examples on this page have been automatically tested and verified.'
+sidebar_position: 2
+---
+
+# Custom
+
+Verified Code examples on this page have been automatically tested and verified.
+
+Configure agentgateway for providers without built-in support that implement the OpenAI API format.
+
+Use this page for providers that implement the OpenAI API format but do not have a first-class
+`provider:` support yet. For built-in providers such as
+[Baseten](/workspaces/cortex/reference/agentgateway/llm/providers/baseten),
+[Cerebras](/workspaces/cortex/reference/agentgateway/llm/providers/cerebras),
+[Cohere](/workspaces/cortex/reference/agentgateway/llm/providers/cohere),
+[DeepInfra](/workspaces/cortex/reference/agentgateway/llm/providers/deepinfra),
+[DeepSeek](/workspaces/cortex/reference/agentgateway/llm/providers/deepseek), [Fireworks
+AI](/workspaces/cortex/reference/agentgateway/llm/providers/fireworks),
+[Groq](/workspaces/cortex/reference/agentgateway/llm/providers/groq), [Hugging
+Face](/workspaces/cortex/reference/agentgateway/llm/providers/huggingface),
+[Mistral](/workspaces/cortex/reference/agentgateway/llm/providers/mistral),
+[OpenRouter](/workspaces/cortex/reference/agentgateway/llm/providers/openrouter), [Together
+AI](/workspaces/cortex/reference/agentgateway/llm/providers/togetherai),
+[xAI](/workspaces/cortex/reference/agentgateway/llm/providers/xai), and
+[Ollama](/workspaces/cortex/reference/agentgateway/llm/providers/ollama), use the dedicated provider pages instead.
+:::note[Note]
+Many providers provide “OpenAI compatible” or “Anthropic compatible” endpoints. While these can be used with provider: openai / provider: anthropic and a customized baseUrl , prefer to use provider: custom . Using a specific vendor’s provider may introduce semantics specific to that provider.
+:::
+
+## Before you begin
+
+[Install the `agentgateway` binary](/workspaces/cortex/reference/agentgateway/deployment/binary).
+
+You also need the following prerequisites.
+
+- An API key for your chosen provider, unless you are pointing to a local endpoint such as vLLM or LM Studio.
+
+## Configuring a custom provider
+
+With a custom provider, you provide the API endpoint and a list of formats it supports. Agentgateway
+will automatically handle mapping between the incoming format and the supported formats.
+
+Below shows an example of connecting to [Perplexity](https://www.perplexity.ai/), which exposes an
+OpenAI-compatible API for search-augmented models and does not currently have a first-class
+provider.
+
+```
+cat > /tmp/test-perplexity.yaml << 'EOF'
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+llm:
+  models:
+  - name: "*"
+    provider:
+      custom:
+        formats:
+          # Indicate this provider supports the completions API. With no `path` specified, this defaults to <baseUrl>/chat/completions
+          - type: completions
+          # Indicate this provider supports the messages API, on a custom path /messages-api
+          # - type: messages
+          #   path: /messages-api
+          # All possible APIs:
+          # - type: embeddings
+          # - type: responses
+          # - type: realtime
+          # - type: anthropicTokenCount
+          # - type: rerank
+    params:
+      apiKey: "$PERPLEXITY_API_KEY"
+      model: llama-3.1-sonar-large-128k-online
+      baseUrl: "https://api.perplexity.ai"
+EOF
+```

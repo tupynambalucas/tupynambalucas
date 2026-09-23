@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { productApi } from './product.api';
 import { getErrorMessage } from '@/utils/errorHelper';
 import { useCycleStore } from '@/domains/cycle';
-import type { IProduct, ProductResponse } from '@tupynambalucas-hub/core';
+import type { IProduct, ProductResponse } from '@monorepo/hub-core';
 
 interface ProductState {
   products: ProductResponse[];

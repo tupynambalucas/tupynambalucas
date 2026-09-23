@@ -50,7 +50,7 @@ O ecossistema de plugins e decoradores do Fastify é uma implementação ideal d
 
 ```typescript
 // Registering a core authentication decorator securely
-// instance/apps/api/src/plugins/auth.ts
+// hub/services/api/src/plugins/auth.ts
 import fp from 'fastify-plugin';
 
 export default fp(async (fastify) => {
@@ -75,11 +75,11 @@ interface CardProps {
 export const PremiumCard = ({ title, children, actions }: CardProps) => (
   <div className="card-container">
     <div className="card-header">
-      <h3>{title}</h3>
-      {actions !== undefined && <div className="card-actions">{actions}</div>}
-    </div>
-    <div className="card-body">{children}</div>
-  </div>
+      <h3>{title}\</h3\>
+      {actions !== undefined && <div className="card-actions">{actions}\</div\>}
+    \</div\>
+    <div className="card-body">{children}\</div\>
+  \</div\>
 );
 ```
 
@@ -118,7 +118,7 @@ Os clientes não devem ser forçados a depender de interfaces ou métodos que n�
 
 #### Subcontratos Tipados
 
-Evitamos expor modelos grandes e monolíticos ou documentos de banco de dados diretamente para camadas que não precisam deles. Em vez disso, declaramos subinterfaces precisas e esquemas Zod dentro da biblioteca `@tupynambalucas-hub/core` os quais:
+Evitamos expor modelos grandes e monolíticos ou documentos de banco de dados diretamente para camadas que não precisam deles. Em vez disso, declaramos subinterfaces precisas e esquemas Zod dentro da biblioteca `@repo/hub/core` os quais:
 
 ```typescript
 // Monolithic database representation (Internal only)
@@ -163,7 +163,7 @@ Os serviços nunca instanciam repositórios, bancos de dados ou SDKs de terceiro
 
 ```typescript
 import type { Model } from 'mongoose';
-import type { IUser } from '@tupynambalucas-hub/core';
+import type { IUser } from '@repo/hub/core';
 
 export class AuthRepository {
   // Injected model, decoupled from concrete instantiation

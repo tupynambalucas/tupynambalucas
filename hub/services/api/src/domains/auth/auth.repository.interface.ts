@@ -1,4 +1,4 @@
-import type { RegisterDTO } from '@tupynambalucas-hub/core';
+import type { RegisterDTO } from '@monorepo/hub-core';
 import type { IUserDocument } from '../../models/user.model.js';
 
 export interface IAuthRepository {

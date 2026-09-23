@@ -1,0 +1,103 @@
+.cardContainer {
+  background-color: var(--color-background-shade);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.syncBox {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: var(--color-background-dark);
+  border: 1px solid var(--color-border-dark);
+  padding: 1rem;
+  border-radius: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .syncBox {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.syncInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.iconWrapper {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background-color: color-mix(in srgb, var(--color-identity-primary) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-identity-primary) 30%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-identity-tertiary);
+}
+
+.bookIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-title-light);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  color: var(--color-label-dark);
+  margin-top: 0.125rem;
+}
+
+.syncBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: var(--color-identity-primary);
+  color: var(--color-background-tint);
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.syncBtn:hover:not(:disabled) {
+  background-color: var(--color-identity-secondary);
+}
+
+.syncBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.syncBtnIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

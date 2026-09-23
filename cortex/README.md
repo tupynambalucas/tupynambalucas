@@ -1,66 +1,60 @@
 # Unified AI Cortex Workspace
 
-Cortex is the unified Bounded Context for the tupynambalucas.dev artificial intelligence architecture, consolidating the gateway ingress, persistent memory databases, Model Context Protocol (MCP) data plane integrations, and control plane agent runtimes.
+The `cortex/` workspace is the bounded context for the %PROJECT_DOMAIN% artificial intelligence architecture, consolidating API ingress gateway routing, persistent vector memory, Model Context Protocol (MCP) tool adapters, policy guardrails, and cloud-native Kubernetes deployment configurations.
 
 ---
 
-## Architecture Overview
+## Technology Stack
 
-Cortex organizes the AI ecosystem into three distinct functional planes:
-
-1. **Ingress Gateway Plane ([gateway/](./gateway/))**:
-   - Routes traffic, validates inputs, and connects clients to the Model Context Protocol ecosystem.
-   - Utilizes `agentgateway` to expose HTTP endpoints and a visual playground interface.
-
-2. **Data Plane & Memory Layer ([mcp/](./mcp/) & [memory/](./memory/))**:
-   - Implements document-native Vector RAG memory databases (MongoDB) and tools integrations.
-   - Downstream MCP server adapters expose specific resources and tools (GitHub, Docker Hub, Grafana, Context7, Firecrawl).
-
-3. **Control Plane Agent Plane ([agents/](./agents/))**:
-   - Operates containerized terminal runtimes (Google Antigravity CLI and GitHub Copilot CLI).
-   - Downstream agents execute operations against the mapped repository workspace using tools.
+- **Ingress Gateway**: AgentGateway (Envoy-based AI Gateway), Traefik Ingress Controller
+- **Protocol & Policies**: Model Context Protocol (MCP), gRPC (ExtMCP), Protocol Buffers
+- **Memory & Storage**: MongoDB 7.0 (Replica Set `rs0`), Mongoose ODM, MongoDB Vector Search
+- **API Runtime**: Node.js 22, Fastify 5, Zod
+- **Frontend Dashboard**: React 19, Vite, Tailwind CSS v4, Zustand, `react-force-graph-2d`
+- **Orchestration**: Kubernetes, Kustomize, Skaffold
 
 ---
 
-## Directory Structures
+## Bounded Context Architecture
 
-- [gateway/](./gateway/): System API Ingress Gateway configuration and playground.
-- [memory/](./memory/): Self-hosted MongoDB Vector RAG memory subsystem (core, api, web).
-- [mcp/](./mcp/): Model Context Protocol server specifications and service Dockerfiles.
-- [agents/](./agents/): Control plane agent CLI installation scripts and state folders.
-- [infrastructure/](./infrastructure/): Docker orchestration compose files and development templates.
+Cortex organizes the AI ecosystem into four modular sub-domains following Domain-Driven Design (DDD):
+
+1. **[gateway/](./gateway/README.md)**: AgentGateway configuration, upstream MCP target routing, CORS policies, and administrative telemetry ([gateway/README.md](./gateway/README.md)).
+2. **[infrastructure/](./infrastructure/README.md)**: Kubernetes deployment manifests, Kustomize overlays, and cert-manager certificates ([infrastructure/README.md](./infrastructure/README.md)).
+3. **[mcp/](./mcp/README.md)**: Model Context Protocol (MCP) data plane, standalone gRPC ExtMCP policy guardrails, MCP Inspector, and tool server adapters ([mcp/README.md](./mcp/README.md)).
+4. **[memory/](./memory/README.md)**: Self-hosted MongoDB Vector RAG memory subsystem, Fastify REST API, and React Web visualization dashboard ([memory/README.md](./memory/README.md)).
 
 ---
 
-## Development Setup & Running
+## Getting Started
 
-All services are orchestrated via Docker Compose profiles. Centralized configuration parameters are managed inside the [infrastructure/docker/.env](./infrastructure/docker/.env) file.
+All environment variables for this context are centralized in [`infrastructure/.env`](../infrastructure/.env) at the monorepo root.
 
-### 1. Core Services
+Set any required API keys (e.g. `FIRECRAWL_API_KEY`, `GITHUB_PERSONAL_ACCESS_TOKEN`, `CONTEXT7_API_KEY`) inside [`infrastructure/.env`](../infrastructure/.env).
 
-To build and start the core services (gateway and memory database):
+### Kubernetes Dev Mode (Hot-Reload)
 
-```bash
-pnpm cortex:core:up
-```
-
-### 2. Model Context Protocol Services
-
-To start the Neo4j database and all MCP adapters:
+Cortex is deployed as part of the unified infrastructure stack. To build, deploy, and
+stream logs with hot-reloading in the local Kubernetes cluster:
 
 ```bash
-pnpm cortex:mcp:up
+pnpm infra:dev
 ```
 
-### 3. Agent Runtime Environment
-
-To run the containerized agent CLI runtimes:
+This command deploys all deployments, services, ingress routes, and config maps in the
+`cortex` namespace using Skaffold. To tear down all resources:
 
 ```bash
-pnpm cortex:agents:up
+pnpm infra:delete
 ```
 
-For authentication, run:
+---
 
-- Antigravity CLI: `pnpm cortex:antigravity:auth`
-- Copilot CLI: `pnpm cortex:copilot:auth`
+## Key Scripts
+
+| Command                 | Description                                                     |
+| :---------------------- | :-------------------------------------------------------------- |
+| `pnpm infra:dev`        | Deploys the full stack including Cortex services via Skaffold.  |
+| `pnpm infra:delete`     | Tears down all cluster resources including Cortex deployments.  |
+| `pnpm cortex:typecheck` | Executes TypeScript type validation across all Cortex packages. |
+| `pnpm cortex:lint`      | Runs ESLint validation across all Cortex workspaces.            |

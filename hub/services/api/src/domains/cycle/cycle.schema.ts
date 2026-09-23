@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CreateCycleDTOSchema, CycleResponseSchema, ProductSchema } from '@tupynambalucas-hub/core';
+import { CreateCycleDTOSchema, CycleResponseSchema, ProductSchema } from '@monorepo/hub-core';
 
 export const createCycleSchema = {
   body: CreateCycleDTOSchema,

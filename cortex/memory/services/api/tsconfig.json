@@ -1,0 +1,12 @@
+{
+  "extends": "@monorepo/shared-config/tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "paths": {
+      "@monorepo/cortex-memory-core": ["../../packages/core/src/index.ts"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,71 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  outline: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary {
+  background-color: var(--color-identity-primary);
+  color: var(--color-background-tint);
+}
+
+.primary:hover:not(:disabled) {
+  background-color: var(--color-identity-secondary);
+}
+
+.secondary {
+  background-color: var(--color-background-shade);
+  color: var(--color-body-light);
+  border-color: var(--color-border-dark);
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: var(--color-border-dark);
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--color-body-light);
+  border-color: var(--color-border-dark);
+}
+
+.outline:hover:not(:disabled) {
+  background-color: var(--color-background-shade);
+}
+
+.ghost {
+  background-color: transparent;
+  color: var(--color-body-light);
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: var(--color-background-shade);
+}
+
+.sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.md {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.lg {
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+}

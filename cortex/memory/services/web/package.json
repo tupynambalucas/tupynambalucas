@@ -1,0 +1,46 @@
+{
+  "name": "@monorepo/cortex-memory-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Frontend web interface for Cortex memory and vector management.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "vite --mode dev",
+    "build": "tsc -p tsconfig.build.json && vite build",
+    "start": "vite preview --port 9006",
+    "preview": "vite preview --port 9006",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@monorepo/cortex-memory-core": "workspace:*",
+    "@monorepo/studio-assets": "workspace:*",
+    "axios": "catalog:shared-stack",
+    "lucide-react": "catalog:web-stack",
+    "react": "catalog:web-stack",
+    "react-dom": "catalog:web-stack",
+    "react-force-graph-2d": "catalog:web-stack",
+    "zustand": "catalog:web-stack"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "catalog:web-stack",
+    "@monorepo/shared-config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:web-stack",
+    "@types/react-dom": "catalog:web-stack",
+    "@vitejs/plugin-react-swc": "catalog:web-stack",
+    "rimraf": "catalog:",
+    "tailwindcss": "catalog:shared-stack",
+    "typescript": "catalog:",
+    "vite": "catalog:web-stack",
+    "vite-plugin-svgr": "catalog:web-stack"
+  }
+}

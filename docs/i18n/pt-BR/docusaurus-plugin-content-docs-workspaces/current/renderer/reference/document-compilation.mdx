@@ -2,6 +2,10 @@
 title: Compilação de Documentos e Pipelines
 sidebar_label: Compilação de Documentos
 sidebar_position: 2
+diataxis_type: reference
+workspace: renderer
+tags:
+  - renderer
 ---
 
 O workspace Renderer apresenta um motor de compilação de templates Markdown altamente flexível e extensível, projetado para combinar elementos gráficos SVG dinâmicos, tipografia codificada em Base64 e arquivos textuais interpolados por tokens.
@@ -10,7 +14,7 @@ O workspace Renderer apresenta um motor de compilação de templates Markdown al
 
 ## Fluxo de Pipelines Extensível
 
-O motor compila documentos usando pipelines desacoplados que estão em conformidade com o princípio Open/Closed (SOLID). Pipelines padrão, como o `github-profile.pipeline.ts`, orquestram o processo de compilação de documentos:
+O motor compila documentos usando pipelines desacoplados que estão em conformidade com o princípio Open/Closed (SOLID). Pipelines padrão, como o `github-renderer.pipeline.ts`, orquestram o processo de compilação de documentos:
 
 1. **Execução de Pipelines**: O executável principal (`src/index.ts`) inicia os pipelines ativos registrados.
 2. **Parsing de Templates**: Lê os templates brutos, como `src/templates/docs/README.template.md` e os templates de cartões SVG.

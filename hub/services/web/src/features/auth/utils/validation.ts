@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next';
-import { LoginDTOSchema, RegisterDTOSchema, AUTH_RULES } from '@tupynambalucas-hub/core';
+import { LoginDTOSchema, RegisterDTOSchema, AUTH_RULES } from '@monorepo/hub-core';
 import type { AuthFormData, AuthFormRefs, ValidationResult } from '../types';
 
 export const validateAuthForm = (

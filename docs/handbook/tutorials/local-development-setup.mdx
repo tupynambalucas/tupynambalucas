@@ -1,35 +1,41 @@
 ---
 title: Local Development Setup
-description: Follow these steps to get the tupynambalucas.dev monorepo running on your machine.
+description: Follow these steps to get the %PROJECT_DOMAIN% monorepo running on your machine.
 ---
 
 # Local Development Setup
 
-In this tutorial, we will set up the tupynambalucas.dev monorepo on your local machine. By the end of this lesson, you will have the complete development environment running and ready for you to build features.
+In this tutorial, we will set up the %PROJECT_DOMAIN% monorepo on your local machine. By the end of this lesson, you will have the complete development environment running and ready for you to build features.
 
 ## Prerequisites
 
-Before we begin, ensure we have the following installed:
+Before we begin, ensure you have the following installed:
 
 - Node.js version 22
 - PNPM version 11
-- Docker and Docker Compose
+- Podman Desktop + Podman CLI + Compose Extension (instead of Docker)
+- Minikube and kubectl (for Kubernetes cluster mode)
+- Skaffold (for Kubernetes deployment pipelines and hot-reloading)
 - Git
+
+---
 
 ## Step 1: Clone the Repository
 
-First, we will clone the repository to our local workspace and navigate into it.
+First, clone the repository to your local workspace and navigate into it.
 
 ```bash
-git clone https://github.com/tupynambalucas/tupynambalucas.dev.git
-cd tupynambalucas.dev
+git clone https://github.com/%GITHUB_ORG%/%GITHUB_REPO%.git
+cd workspace
 ```
 
-You should see a directory structure containing folders like `docs`, `hub`, `cortex`, `profile`, and `tools`.
+You should see a directory structure containing folders like `docs`, `hub`, `cortex`, `renderer`, `studio`, `platform`, and `tools`.
+
+---
 
 ## Step 2: Install Dependencies
 
-Next, we need to install the project dependencies. Since this is a monorepo, we will use PNPM to install everything at once.
+Next, install the project dependencies. Since this is a monorepo, we use PNPM to install everything at once.
 
 Run the following command:
 
@@ -37,57 +43,78 @@ Run the following command:
 pnpm install
 ```
 
-When it finishes, you will see output similar to this:
+When it finishes, you will see output confirming dependencies are linked to the content-addressable store.
 
-```
-Packages: +1245
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Packages are hard linked from the content-addressable store to the virtual store.
-...
-Done in 12.4s
-```
+---
 
 ## Step 3: Configure Environment Variables
 
-Now, we need to set up our local environment configuration. We will copy the sample `.env` file to create our active environment variables.
+Each workspace manages its own local configuration. Copy the template `.env.example` files to create the active environment files:
 
 ```bash
-cp .env.example .env
+# Set up Infrastructure environment variables
+cp infrastructure/.env.example infrastructure/.env
+
+# Set up Hub environment variables
+cp hub/.env.example hub/.env
 ```
 
-## Step 4: Start the Local Infrastructure
+:::info[Open and Edit Configuration]
+Open the newly created `.env` files and add any required tokens (e.g., `CLOUDFLARE_TUNNEL_TOKEN`) to access cloud services.
+:::
 
-With our dependencies installed and environment configured, we will spin up the necessary backend services (like the database) using Docker Compose.
+---
+
+## Step 4: Configure Podman Machine
+
+Before starting any container workloads, initialize and start the default Podman machine (which will be used by Minikube):
 
 ```bash
-pnpm infra:up
+podman machine init
+podman machine start
 ```
 
-Wait a few moments. You should see Docker pulling images and starting the containers.
-
-```
-[+] Running 2/2
- ✔ Container mongodb  Started
- ✔ Container db-init  Started
-```
-
-## Step 5: Start the Development Server
-
-Finally, we are ready to start the application. We will use the Turborepo command to run the development servers across all workspaces.
+Verify that the container engine is active:
 
 ```bash
-pnpm dev
+podman info
 ```
 
-You will see output indicating that various services are starting. Look for lines like:
+---
 
-```
-@tupynambalucas-hub/web: dev:   ➜  Local:   http://localhost:3000/
-@tupynambalucas/docs: dev:      [SUCCESS] Docusaurus website is running at: http://localhost:3001/
+## Step 5: Start the Infrastructure
+
+To build all containers and deploy the full stack to your local Minikube cluster:
+
+```bash
+pnpm minikube:up
+pnpm infra:dev
 ```
 
-Open your browser and navigate to `http://localhost:3000`. You should see the Hub interface loaded successfully.
+This command will:
+
+1. Start the Minikube cluster.
+2. Trigger Skaffold to build all required images.
+3. Hydrate Kustomize manifests.
+4. Deploy the Platform, Cortex, and Studio layers.
+5. Stream logs and hot-reload code changes automatically.
+
+---
+
+## Step 6: Verify Access
+
+Once the services are running, verify access via the Cloudflare edge routes (or `localhost` if running offline):
+
+- **Grafana**: `https://grafana-dev.%PROJECT_DOMAIN%`
+- **AgentGateway**: `https://agentgateway-mcp-dev.%PROJECT_DOMAIN%`
+- **Penpot**: `https://penpot-dev.%PROJECT_DOMAIN%`
+
+---
+
+## Next Steps
+
+For in-depth details on configuring Minikube network tunnels, Skaffold port forwarding, and environment variable resolution, see the [Local Development Setup Guide](/workspaces/infrastructure/guides/local-development).
 
 ## Conclusion
 
-Congratulations! We have successfully cloned the repository, installed the dependencies, launched the infrastructure, and started the local development servers. We are now fully equipped to start building and contributing to the project.
+Congratulations! You have successfully cloned the repository, configured environment variables, started Minikube, and launched the local Kubernetes infrastructure. You are now fully equipped to start building and contributing to the project.

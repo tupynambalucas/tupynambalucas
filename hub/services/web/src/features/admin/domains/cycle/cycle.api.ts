@@ -1,5 +1,5 @@
 import { api } from '@/lib/axios';
-import type { ICycle, CreateCycleDTO, IProduct } from '@tupynambalucas-hub/core';
+import type { ICycle, CreateCycleDTO, IProduct } from '@monorepo/hub-core';
 
 interface HistoryParams {
   page?: number;

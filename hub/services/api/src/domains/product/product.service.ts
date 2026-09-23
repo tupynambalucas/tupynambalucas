@@ -1,5 +1,5 @@
 import type { ClientSession, QueryFilter, AnyBulkWriteOperation } from 'mongoose';
-import type { IProduct } from '@tupynambalucas-hub/core';
+import type { IProduct } from '@monorepo/hub-core';
 import type { IProductRepository } from './product.repository.interface.js';
 import type { ListProductsRoute } from './product.schema.js';
 import { AppError } from '../../utils/AppError.js';

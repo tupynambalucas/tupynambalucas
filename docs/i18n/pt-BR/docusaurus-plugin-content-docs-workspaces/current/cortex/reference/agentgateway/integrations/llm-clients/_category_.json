@@ -1,0 +1,8 @@
+{
+  "label": "Clientes LLM",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Integre Claude Code, Claude Desktop, Codex, Continue, curl, Cursor, Devin, Copilot e SDK OpenAI."
+  }
+}

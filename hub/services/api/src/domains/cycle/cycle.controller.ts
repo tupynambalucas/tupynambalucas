@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import type { z } from 'zod';
 import type { Types } from 'mongoose';
-import type { CycleResponseSchema, IProduct } from '@tupynambalucas-hub/core';
+import type { CycleResponseSchema, IProduct } from '@monorepo/hub-core';
 import type { CycleService } from './cycle.service.js';
 import type { FastifyZodHandler } from '../../types/fastify.js';
 import type { ICycleDocument } from '../../models/cycle.model.js';

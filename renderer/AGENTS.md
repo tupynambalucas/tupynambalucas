@@ -1,8 +1,27 @@
-# Local Context: Renderer Workspace
+<context-hierarchy>
+  <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Global constraints are mandatory.
+  </system-instruction>
+</context-hierarchy>
 
-This workspace (`@tupynambalucas/renderer`) manages the generic dynamic asset generator and
+# Bounded Context: Renderer Workspace
+
+This workspace (`@/renderer`) manages the generic dynamic asset generator and
 document compilation engine, responsible for generating custom visual SVG cards and compiling
 markdown templates into production-grade documents across the monorepo.
+
+---
+
+## Ubiquitous Language
+
+| Term       | Definition                                                             | Forbidden Synonyms   |
+| :--------- | :--------------------------------------------------------------------- | :------------------- |
+| `Pipeline` | A registered module executing a single document compilation workflow   | task, job, process   |
+| `Renderer` | An engine compiling metadata and templates into SVG or Markdown output | generator, compiler  |
+| `Template` | A `.template.*` source file containing interpolation placeholders      | source, layout       |
+| `Card`     | A generated SVG file representing a visual GitHub stats visualization  | image, badge, widget |
 
 ---
 
@@ -24,10 +43,8 @@ markdown templates into production-grade documents across the monorepo.
     repository, and language validation schema.
   - [pipeline.schema.ts](./src/schemas/pipeline.schema.ts): Pipeline execution targets and Zod
     validation schemas.
-- **[src/templates/](./src/templates/)**: Domain-organized document templates.
-  - [docs/](./src/templates/docs/): Markdown templates for generated documents (e.g.,
-    [README.template.md](./src/templates/docs/README.template.md)).
-    _Note: SVG stats card templates are loaded from `@tupynambalucas-studio/design` under `studio/design/assets/github/cards/`._
+- **[src/pipelines/profile/](./src/pipelines/profile/)**: Domain templates (e.g., [profile.template.md](./src/pipelines/profile/profile.template.md)).
+  _Note: SVG stats card templates are loaded from `@repo/studio/assets` under `studio/design/assets/github/cards/`._
 - **[src/utils/](./src/utils/)**: Common helpers for compilation and formatting.
   - [glob.ts](./src/utils/glob.ts): Simple glob matcher helper for filtering items.
   - [template-fill.ts](./src/utils/template-fill.ts):
@@ -39,7 +56,7 @@ markdown templates into production-grade documents across the monorepo.
 
 ## Active Pipelines
 
-- **[github-profile.pipeline.ts](./src/pipelines/github-profile.pipeline.ts)**:
+- **[profile.pipeline.ts](./src/pipelines/profile/profile.pipeline.ts)**:
   Compiles the root-level developer profile [README.md](../README.md) using the statistics cards
   generated from the GitHub API.
 
@@ -63,29 +80,7 @@ themes with absolute fidelity:
 
 ## Code Patterns
 
-### Registering a New Pipeline
-
-All pipelines MUST satisfy the `Pipeline` type schema and be registered inside
-[src/pipelines/index.ts](./src/pipelines/index.ts):
-
-```typescript
-import type { Pipeline } from './types.js';
-
-export const customPipeline: Pipeline = {
-  id: 'handbook-docs',
-  name: 'Handbook Documents',
-  description: 'Compiles project manuals and handbooks.',
-  targets: [
-    {
-      name: 'User Guide',
-      templatePath: 'src/templates/docs/guide.template.md',
-      outputPath: '../docs/GUIDE.md',
-      ciPath: 'docs/GUIDE.md',
-      ciBranches: ['main'],
-    },
-  ],
-};
-```
+- **Registering a New Pipeline**: [references/pipeline.md](./references/pipeline.md)
 
 ---
 
@@ -99,7 +94,7 @@ export const customPipeline: Pipeline = {
 3. **Template Consistent Naming**: All source files under the templates directory MUST use the
    `*.template.*` suffix pattern to distinguish static templates from compiled output.
 4. **Design Token Consumption**: Text style and layout colors MUST be bound directly to the central
-   brand design system tokens from `@tupynambalucas-studio/design`.
+   brand design system tokens from `@repo/studio/assets`.
 5. **Base64 Font Inlining**: To guarantee rendering consistency under GitHub's SVG image sandbox,
    the variable Nunito brand font file MUST be encoded and inlined directly inside the generated
    SVGs using base64 data URIs.

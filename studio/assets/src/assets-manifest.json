@@ -1,0 +1,16 @@
+{
+  "buckets": {
+    "assets": {
+      "name": "tupynambalucas-assets",
+      "push": ["/images", "/three", "/brand", "/fonts"],
+      "pull": ["/images", "/three", "/brand", "/fonts"],
+      "docs": ["/images", "/brand", "/fonts"],
+      "web": ["/images", "/brand", "/three", "/fonts"]
+    },
+    "creative": {
+      "name": "tupynambalucas-creative",
+      "push": ["/blender", "/illustrator", "/photoshop", "/premiere"],
+      "pull": ["/blender", "/illustrator", "/photoshop", "/premiere"]
+    }
+  }
+}

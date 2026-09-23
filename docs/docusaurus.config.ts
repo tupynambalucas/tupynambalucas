@@ -1,9 +1,10 @@
-import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
-import type { TupynambalucasPresetOptions, ThemeConfig } from './preset';
+import type { MonorepoPresetOptions } from './preset/options';
+import { getBaseThemeConfig } from './preset/themeConfig';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
+import projectConfig from '@monorepo/shared-config/project.config';
 
 const require = createRequire(import.meta.url);
 
@@ -15,152 +16,69 @@ interface WebpackMock {
 }
 
 const webpack = require('webpack') as unknown as WebpackMock;
-const studioPath = path.dirname(require.resolve('@tupynambalucas-studio/design/package.json'));
+const studioPath = path.dirname(require.resolve('@monorepo/studio-assets/package.json'));
+const studioSrcPath = path.join(studioPath, 'src');
+const staticPath = path.join(__dirname, 'static');
+
+const itemsToSync = [
+  'brand',
+  'fonts',
+  'icons',
+  'images',
+  'three',
+  'tokens',
+  'assets-manifest.json',
+];
+if (fs.existsSync(staticPath) === false) {
+  fs.mkdirSync(staticPath, { recursive: true });
+}
+for (const item of itemsToSync) {
+  const src = path.join(studioSrcPath, item);
+  const dest = path.join(staticPath, item);
+  if (fs.existsSync(src) === true) {
+    fs.cpSync(src, dest, { recursive: true, force: true });
+  }
+}
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Tupynambá Lucas',
-  tagline: 'Documentation for tupynambalucas.dev monorepo',
+  title: projectConfig.PROJECT_NAME,
+  tagline: `Documentation for ${projectConfig.PROJECT_DOMAIN} monorepo`,
   favicon: 'brand/logos/logo-mark-blue.svg',
 
   // Set the production url of your site here
-  url: 'https://tupynambalucas-docs.pages.dev',
+  url: `https://${projectConfig.PROJECT_DOMAIN}`,
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
+  trailingSlash: false,
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'tupynambalucas.dev', // Usually your GitHub org/user name.
-  projectName: 'tupynambalucas.dev', // Usually your repo name.
+  organizationName: projectConfig.GITHUB_ORG, // Usually your GitHub org/user name.
+  projectName: projectConfig.GITHUB_REPO, // Usually your repo name.
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'ignore',
+  onBrokenAnchors: 'ignore',
+  onBrokenMarkdownLinks: 'ignore',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
+  markdown: {
+    mermaid: true,
+    hooks: {
+      onBrokenMarkdownImages: 'ignore',
+    },
+  },
+
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  staticDirectories: [path.join(studioPath, 'assets')],
+  staticDirectories: ['static'],
 
   customFields: {
     studioPath,
   },
 
-  plugins: [
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'roadmap',
-        path: 'roadmap',
-        routeBasePath: 'roadmap',
-        sidebarPath: './sidebarsRoadmap.ts',
-      },
-    ],
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'workspaces',
-        path: 'workspaces',
-        routeBasePath: 'workspaces',
-        sidebarPath: './sidebarsWorkspaces.ts',
-      },
-    ],
-    () => ({
-      name: 'docusaurus-plugin-studio-assets',
-      configureWebpack(_config, _isServer, _utils) {
-        const isProd = process.env.NODE_ENV === 'production';
-
-        let bucketUrl = process.env.CLOUDFLARE_R2_ASSETS_PUBLIC_URL;
-        if (bucketUrl === undefined || bucketUrl === '') {
-          const secretsPath = path.join(
-            __dirname,
-            '..',
-            'tools',
-            'github',
-            'infrastructure',
-            'gh',
-            'features',
-            'security-quality',
-            'secrets',
-            '.env.actions.secrets',
-          );
-          if (fs.existsSync(secretsPath) === true) {
-            const content = fs.readFileSync(secretsPath, 'utf8');
-            const match = /^CLOUDFLARE_R2_ASSETS_PUBLIC_URL=(.*)$/m.exec(content);
-            if (match?.[1] !== undefined) {
-              bucketUrl = match[1].trim();
-            }
-          }
-        }
-
-        const hasBucketUrl = bucketUrl !== undefined && bucketUrl !== '';
-
-        const manifestPath = require.resolve('@tupynambalucas-studio/design/assets-manifest.json');
-        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as {
-          buckets: { assets: { docs: string[] } };
-        };
-        const buildFolders = manifest.buckets.assets.docs;
-        const folderPattern = buildFolders.map((f: string) => f.replace(/^\//, '')).join('|');
-        const matchRegex = new RegExp(
-          `(@tupynambalucas-studio[/\\x5C]design([/\\x5C]assets)?|studio[/\\x5C]design[/\\x5C]assets)[/\\x5C](${folderPattern})[/\\x5C].*`,
-        );
-
-        // Heavy/3D assets rule so Webpack can resolve direct imports of .exr/.glb files
-        const assetRules = [
-          {
-            test: /\.(exr|glb|gltf)$/,
-            type: 'asset/resource',
-          },
-        ];
-
-        if (isProd === false || hasBucketUrl === false) {
-          return {
-            module: {
-              rules: assetRules,
-            },
-          };
-        }
-
-        return {
-          plugins: [
-            new webpack.NormalModuleReplacementPlugin(
-              matchRegex,
-              (resource: { request: string }) => {
-                const originalRequest = resource.request;
-                const mockAssetPath = path.resolve(__dirname, 'src/mock-asset.js');
-                resource.request = `${mockAssetPath}?original=${encodeURIComponent(originalRequest)}`;
-              },
-            ),
-          ],
-          module: {
-            rules: [
-              {
-                resourceQuery: /original=/,
-                use: [
-                  {
-                    loader: path.resolve(__dirname, 'loaders/bucket-loader.js'),
-                  },
-                ],
-              },
-              ...assetRules,
-            ],
-          },
-        };
-      },
-    }),
-  ],
-
   themes: ['@docusaurus/theme-live-codeblock', '@docusaurus/theme-mermaid'],
 
-  markdown: {
-    mermaid: true,
-  },
-
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pt-BR'],
@@ -184,12 +102,17 @@ const config: Config = {
           path: 'handbook',
           sidebarPath: './sidebars.ts',
         },
+        roadmap: {
+          sidebarPath: './sidebarsRoadmap.ts',
+        },
+        workspaces: {
+          sidebarPath: './sidebarsWorkspaces.ts',
+        },
         blog: {
           path: 'releases',
           routeBasePath: 'changelog',
           blogTitle: 'Changelog',
-          blogDescription:
-            'Acompanhe as últimas atualizações, melhorias e correções do tupynambalucas.dev.',
+          blogDescription: `Acompanhe as últimas atualizações, melhorias e correções do ${projectConfig.PROJECT_DOMAIN}.`,
           blogSidebarTitle: 'Todas as versões',
           blogSidebarCount: 'ALL',
           showReadingTime: true,
@@ -214,119 +137,11 @@ const config: Config = {
         theme: {
           customCss: ['./src/css/custom.css'],
         },
-      } satisfies TupynambalucasPresetOptions,
+      } satisfies MonorepoPresetOptions,
     ],
   ],
 
-  themeConfig: {
-    // Replace with your project's social card
-    image: 'brand/logos/logo-mark-negative.svg',
-    colorMode: {
-      defaultMode: 'light',
-      disableSwitch: true,
-      respectPrefersColorScheme: false,
-    },
-    navbar: {
-      title: 'TupynambalucasDocs',
-      logo: {
-        alt: 'Tupynambalucas Logo',
-        src: 'brand/logos/logo-mark-positive.svg',
-      },
-      items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Documentation',
-        },
-        { to: '/workspaces', label: 'Workspaces', position: 'left' },
-        { to: '/roadmap', label: 'Roadmap', position: 'right' },
-        { to: '/changelog', label: 'Changelog', position: 'right' },
-        {
-          type: 'localeDropdown',
-          position: 'right',
-        },
-        {
-          href: 'https://github.com/tupynambalucas/tupynambalucas',
-          position: 'right',
-          className: 'header-github-link',
-          'aria-label': 'GitHub repository',
-        },
-      ],
-    },
-    footer: {
-      links: [
-        {
-          title: 'Documentation',
-          items: [
-            {
-              label: 'Introduction',
-              to: '/docs/intro',
-            },
-            {
-              label: 'Architecture',
-              to: '/docs/explanation/architecture-overview',
-            },
-            {
-              label: 'Style Guide',
-              to: '/docs/reference/styleguide',
-            },
-            {
-              label: 'Command Reference',
-              to: '/docs/reference/commands',
-            },
-          ],
-        },
-        {
-          title: 'Ecosystem',
-          items: [
-            {
-              label: 'Hub Workspace',
-              to: '/workspaces/hub',
-            },
-            {
-              label: 'Renderer Workspace',
-              to: '/workspaces/renderer',
-            },
-            {
-              label: 'Studio Workspace',
-              to: '/workspaces/studio',
-            },
-            {
-              label: 'Tools Workspace',
-              to: '/workspaces/tools',
-            },
-          ],
-        },
-        {
-          title: 'Product',
-          items: [
-            {
-              label: 'Master Plan & Vision',
-              to: '/docs/intro',
-            },
-            {
-              label: 'Roadmap',
-              to: '/roadmap',
-            },
-          ],
-        },
-      ],
-      copyright: `
-        <div class="footer__banner-container">
-          <img src="/brand/logos/logo-horizontal-positive.svg" alt="tupynambalucas.dev" class="footer__banner" />
-        </div>
-        <p>Copyright © ${new Date().getFullYear()} tupynambalucas.dev. High-end, production-grade software engineering. Built with Docusaurus.</p>
-      `,
-    },
-    prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
-    },
-    mermaid: {
-      theme: { light: 'neutral', dark: 'forest' },
-    },
-  } satisfies ThemeConfig,
+  themeConfig: getBaseThemeConfig(projectConfig),
 };
 
 export default config;

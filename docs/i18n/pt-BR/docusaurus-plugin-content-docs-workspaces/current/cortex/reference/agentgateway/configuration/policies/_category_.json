@@ -1,0 +1,8 @@
+{
+  "label": "Políticas",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Pontos de anexação de políticas e execução condicional de regras."
+  }
+}

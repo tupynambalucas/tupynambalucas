@@ -1,0 +1,83 @@
+---
+title: 'Timeouts'
+description: 'Set request and backend timeouts to prevent long-running requests.'
+sidebar_position: 2
+---
+
+# Timeouts
+
+Set request and backend timeouts to prevent long-running requests.
+
+Attaches to: [Route](https://agentgateway.dev/docs/standalone/latest/configuration/routes/ 'Route')
+
+[Route](https://agentgateway.dev/docs/standalone/latest/configuration/routes/ 'Route')
+
+[Backend](https://agentgateway.dev/docs/standalone/latest/configuration/backends/ 'Backend')
+
+Note
+
+Agentgateway supports more than one configuration style. Where a feature can also be configured in the simplified `llm` or `mcp` modes, the examples on this page show each option in tabs. For more information, see [Routing-based configuration](/workspaces/cortex/reference/agentgateway/llm/configuration-modes).
+
+Request timeouts Timeouts can be configured at the request or backend level. allow returning an error for requests that take too long to complete.
+
+## Route Timeouts
+
+You can configure two types of timeouts on a route.
+
+| Timeout                 | Description                                                                                                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `requestTimeout`        | The time from the start of an incoming request, until the end of the response headers is received. Note if there are retries, this includes the total time across retries.     |
+| `backendRequestTimeout` | The time from the start of a request to a backend, until the end of the response headers are completed. Note this is per-request, so with retries this is a per-retry timeout. |
+
+Simplified (MCP)Routing-based
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+mcp:
+  port: 3000
+  policies:
+    timeout:
+      requestTimeout: 1s
+  targets:
+    - name: everything
+      stdio:
+        cmd: npx
+        args: ['@modelcontextprotocol/server-everything']
+yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+routes:
+  - policies:
+      timeout:
+        requestTimeout: 1s
+    backends:
+      - host: localhost:8080
+```
+
+## Backend Timeouts
+
+In addition to route level timeouts, you can configure per-backend timeouts within the backend configuration section.
+
+| Timeout          | Description                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------- |
+| `requestTimeout` | The time from the start of an HTTP request to a backend until the response headers are completed. |
+| `connectTimeout` | The time from the start of a TCP connection to a backend until the connection is established.     |
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+routes:
+  - backends:
+      - host: localhost:8080
+        policies:
+          http:
+            requestTimeout: 1s
+          tcp:
+            connectTimeout: 10s
+            # Required when setting tcp connection options; {} keeps keepalive defaults
+            keepalives: {}
+```

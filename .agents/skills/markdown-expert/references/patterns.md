@@ -1,6 +1,6 @@
 # GitHub Markdown Patterns
 
-This document defines the formatting, structural patterns, and content conventions for general Markdown files (`.md`, `README.md`, and skill documentation) across the **tupynambalucas** monorepo.
+This document defines the formatting, structural patterns, and content conventions for general Markdown files (`.md`, `README.md`, and skill documentation) across the monorepo.
 
 ---
 
@@ -72,7 +72,7 @@ For ordered instructions, use lazy numbering (`1.`) for all list items. This all
 - When mentioning a file path or directory as a link, use relative markdown links.
 - **Link Formatting constraint**: NEVER wrap the entire markdown link structure in backticks (e.g., `[file.ts](./file.ts)`). This renders the literal markdown text of the link inside a code inline block, making it unclickable.
 - **Monospace Styling**: If monospace formatting is required for the path or file label, place the backticks inside the brackets: `[`file.ts`](./file.ts)`. For maximum cleanliness, plain links without backticks are preferred.
-- Example: Refer to [extension/packages/core/src/index.ts](../../../../../extension/packages/core/src/index.ts) for details.
+- Example: Refer to `extension/packages/core/src/index.ts` for details.
 
 ### E. Unordered Lists Formatting
 

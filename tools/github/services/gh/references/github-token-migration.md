@@ -28,7 +28,7 @@ Different components in this monorepo interact with the GitHub API in distinct w
   - **Variables**: Read & Write (required to read/write Actions configuration variables).
   - **Metadata**: Read-only (default, required to view repository context).
 
-### B. Profile Stats Generator (`profile/`)
+### B. Renderer Stats Generator (`renderer/`)
 
 - **Functionality**: Queries user contribution metrics via the GraphQL API, fetches views, and fallback user emails.
 - **Target Repositories**: This monorepo only.

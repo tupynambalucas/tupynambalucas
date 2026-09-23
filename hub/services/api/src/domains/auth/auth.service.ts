@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import type { RegisterDTO, LoginDTO } from '@tupynambalucas-hub/core';
+import type { RegisterDTO, LoginDTO } from '@monorepo/hub-core';
 import type { IAuthRepository } from './auth.repository.interface.js';
 import type { IUserDocument } from '../../models/user.model.js';
 import { AppError } from '../../utils/AppError.js';

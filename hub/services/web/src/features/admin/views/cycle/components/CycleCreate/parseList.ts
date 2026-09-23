@@ -1,4 +1,4 @@
-import type { IProduct } from '@tupynambalucas-hub/core';
+import type { IProduct } from '@monorepo/hub-core';
 
 export interface FailedLine {
   text: string;

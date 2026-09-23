@@ -1,0 +1,26 @@
+---
+title: ADR-003 Docker Build Strategy
+---
+
+# ADR-003: Multi-Stage Docker Builds with Turbo Prune and BuildKit Caching
+
+## Context
+
+The monorepo contains multiple Node.js microservices (e.g., API servers, MCP services, web frontends) managed via PNPM workspaces and Turborepo. Building these Docker images concurrently via Skaffold previously led to inefficiencies:
+
+1. Copying the entire root package.json and workspaces triggered cache invalidations across all services whenever an unrelated package changed.
+2. Independent pnpm install commands within each Docker build context wasted bandwidth and duplicated cache entries for identical dependencies.
+
+## Decision
+
+We will standardize all Node.js Dockerfiles in the monorepo to use a Multi-Stage architecture leveraging Turborepo pruning and Docker BuildKit cache mounts:
+
+1. **Turborepo Prune (`turbo prune --docker`)**: An initial pruner stage creates a minimal, isolated snapshot of the specific workspace and its internal dependencies (out/json and out/full).
+2. **Shared BuildKit Cache Mount (`id=pnpm-store-shared`)**: The `builder` and deployer stages use `--mount=type=cache,id=pnpm-store-shared,target=/pnpm/store`. This allows concurrent Skaffold builds to share the same virtual PNPM store on the host daemon, ensuring packages are downloaded exactly once.
+3. **Deployer Isolation (`pnpm deploy`)**: Production builds utilize `pnpm --filter \<workspace\> --prod deploy` to extract a self-contained production environment free of development dependencies or source artifacts.
+
+## Consequences
+
+- Build times are significantly reduced through a 90% layer cache hit rate and zero-duplication network downloads.
+- Docker images are incredibly lightweight, containing only compiled assets and production dependencies.
+- Changes in one workspace do not invalidate the Docker build cache of unrelated workspaces.

@@ -1,0 +1,8 @@
+{
+  "label": "Conectividade de Agentes",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Conecte proxies AgentGateway a agentes de IA via protocolos A2A e MCP."
+  }
+}

@@ -58,6 +58,6 @@ services:
 
 volumes:
   mongo-data:
-    name: tupynambalucas_hub_mongo_data
+    name: hub_mongo_data
   redis-data:
-    name: tupynambalucas_hub_redis_data
+    name: hub_redis_data

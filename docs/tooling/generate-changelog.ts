@@ -3,7 +3,8 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const kbPkgPath = require.resolve('@tupynambalucas/docs/package.json');
+const projectConfig = require('@monorepo/shared-config/project.config.json');
+const kbPkgPath = require.resolve('@monorepo/docs/package.json');
 const kbDir = path.dirname(kbPkgPath);
 
 const RELEASES_DIR = path.join(kbDir, 'releases');
@@ -28,8 +29,7 @@ function generateChangelog(): void {
     return;
   }
 
-  let changelogContent =
-    '# Changelog\n\nAll updates, improvements, and new features of tupynambalucas.dev documented in the Knowledge Base.\n\n';
+  let changelogContent = `# Changelog\n\nAll updates, improvements, and new features of ${projectConfig.PROJECT_DOMAIN} documented in the Knowledge Base.\n\n`;
   const entries: string[] = [];
 
   for (const file of files) {
