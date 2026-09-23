@@ -57,12 +57,12 @@ export default function HeroSection(): ReactNode {
                 <Translate id="homepage.profile.badge">The Architect</Translate>
               </div>
               <h2 className={styles.profileTitle}>Tupynambá Lucas</h2>
-              <span className={styles.profileSubtitle}>Senior Full-Stack Engineer</span>
+              <span className={styles.profileSubtitle}>Full-Stack Engineer</span>
             </div>
 
             <p className={styles.profileText}>
               <Translate id="homepage.profile.bio">
-                Senior Full-Stack Engineer with over 10 years of experience and studies in software
+                Full-Stack Engineer with over 10 years of experience and studies in software
                 development, building production systems in TypeScript from end to end. I make
                 architectural decisions driven by requirements, not by trends — selecting the right
                 database, framework, or protocol for each problem. My current expertise runs deep in

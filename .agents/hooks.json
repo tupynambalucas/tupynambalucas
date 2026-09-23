@@ -5,7 +5,7 @@
         "matcher": "write_to_file",
         "hooks": [
           {
-            "command": "node .agents/scripts/prevent-root-scripts.js",
+            "command": "node scripts/prevent-root-scripts.js",
             "timeout": 5
           }
         ]
