@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import projectConfig from '@monorepo/shared-config/project.config';
 
 const require = createRequire(import.meta.url);
-const projectConfig = require('@monorepo/shared-config/project.config.json');
 const kbPkgPath = require.resolve('@monorepo/docs/package.json');
 const kbDir = path.dirname(kbPkgPath);
 
