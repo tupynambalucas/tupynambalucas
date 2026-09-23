@@ -18,7 +18,7 @@ export function getBaseThemeConfig(projectConfig: any): ThemeConfig {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'defaultSidebar',
           position: 'left',
           label: 'Documentation',
         },
@@ -30,7 +30,7 @@ export function getBaseThemeConfig(projectConfig: any): ThemeConfig {
           position: 'right',
         },
         {
-          href: `https://github.com/${projectConfig.GITHUB_ORG}/${projectConfig.GITHUB_REPO}`,
+          href: `https://github.com/${projectConfig.GITHUB_ORG}/${projectConfig.REPOSITORY_NAME}`,
           position: 'right',
           className: 'header-github-link',
           'aria-label': 'GitHub repository',

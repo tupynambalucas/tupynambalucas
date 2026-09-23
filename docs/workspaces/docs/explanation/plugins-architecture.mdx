@@ -10,7 +10,27 @@ The `%PROJECT_DOMAIN%` documentation workspace is strictly powered by Docusaurus
 
 ---
 
-## 1. The `remark-project-variables` Plugin
+## 1. Domain Plugin Wrappers (SSOT Architecture)
+
+To enforce the **Single Source of Truth (SSOT)** and maintain a clean `docusaurus.config.ts`, the monorepo uses a Custom Docusaurus Preset (`@/docs/preset/`). This preset is the authoritative core that encapsulates and configures all underlying documentation engines.
+
+Instead of declaring Docusaurus core plugins directly in the preset array, we use **Domain Plugin Wrappers** (located in `preset/plugins/`):
+
+- `content-docs`
+- `content-blog`
+- `content-pages`
+
+### The Wrapper Lifecycle
+
+Each domain wrapper imports the native Docusaurus plugin (e.g., `@docusaurus/plugin-content-docs`), dynamically merges our enterprise rules, and then invokes the native plugin. This guarantees that **every** documentation instance—whether it is the primary handbook, the roadmap, or the workspaces specs—is forced to run through our sanitization and AST injection pipelines automatically.
+
+1. **Option Validation**: The wrappers re-export `validateOptions` to satisfy Docusaurus's strict schema validators.
+2. **AST Injection**: The wrappers automatically append the custom `remark-project-variables` plugin to the `remarkPlugins` array.
+3. **Context Preservation**: The wrappers return the exact original name (e.g., `docusaurus-plugin-content-docs`) to ensure the React UI components correctly resolve the global context data during Server-Side Generation (SSG).
+
+---
+
+## 2. The `remark-project-variables` Plugin
 
 To maintain a **copy-pasteable, generic monorepo**, the documentation MUST NOT contain hardcoded brand names or URLs (e.g., `example.com`). Instead, authors must write generic tokens using percentage wrappers, such as `%PROJECT_DOMAIN%` or `%PROJECT_NAME%`.
 

@@ -3,20 +3,20 @@
     "message": "Next",
     "description": "The label for version current"
   },
-  "sidebar.tutorialSidebar.category.Product": {
+  "sidebar.defaultSidebar.category.Product": {
     "message": "Produto",
-    "description": "The label for category 'Product' in sidebar 'tutorialSidebar'"
+    "description": "The label for category 'Product' in sidebar 'defaultSidebar'"
   },
-  "sidebar.tutorialSidebar.category.Product.link.generated-index.description": {
+  "sidebar.defaultSidebar.category.Product.link.generated-index.description": {
     "message": "O 'Porquê' e o 'O Quê' do do projeto: Visão, Plano Mestre e Roadmap.",
-    "description": "The generated-index page description for category 'Product' in sidebar 'tutorialSidebar'"
+    "description": "The generated-index page description for category 'Product' in sidebar 'defaultSidebar'"
   },
-  "sidebar.tutorialSidebar.category.Engineering": {
+  "sidebar.defaultSidebar.category.Engineering": {
     "message": "Engenharia",
-    "description": "The label for category 'Engineering' in sidebar 'tutorialSidebar'"
+    "description": "The label for category 'Engineering' in sidebar 'defaultSidebar'"
   },
-  "sidebar.tutorialSidebar.category.Engineering.link.generated-index.description": {
+  "sidebar.defaultSidebar.category.Engineering.link.generated-index.description": {
     "message": "O 'Como' e os 'Padrões' do do projeto: Arquitetura e Guia de Estilo.",
-    "description": "The generated-index page description for category 'Engineering' in sidebar 'tutorialSidebar'"
+    "description": "The generated-index page description for category 'Engineering' in sidebar 'defaultSidebar'"
   }
 }

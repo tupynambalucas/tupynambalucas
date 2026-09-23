@@ -54,7 +54,7 @@ const config: Config = {
   trailingSlash: false,
 
   organizationName: projectConfig.GITHUB_ORG, // Usually your GitHub org/user name.
-  projectName: projectConfig.GITHUB_REPO, // Usually your repo name.
+  projectName: projectConfig.REPOSITORY_NAME, // Usually your repo name.
 
   onBrokenLinks: 'ignore',
   onBrokenAnchors: 'ignore',
@@ -94,52 +94,7 @@ const config: Config = {
     },
   },
 
-  presets: [
-    [
-      './preset/index.ts',
-      {
-        docs: {
-          path: 'handbook',
-          sidebarPath: './sidebars.ts',
-        },
-        roadmap: {
-          sidebarPath: './sidebarsRoadmap.ts',
-        },
-        workspaces: {
-          sidebarPath: './sidebarsWorkspaces.ts',
-        },
-        blog: {
-          path: 'releases',
-          routeBasePath: 'changelog',
-          blogTitle: 'Changelog',
-          blogDescription: `Acompanhe as últimas atualizações, melhorias e correções do ${projectConfig.PROJECT_DOMAIN}.`,
-          blogSidebarTitle: 'Todas as versões',
-          blogSidebarCount: 'ALL',
-          showReadingTime: true,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
-        pages: {
-          exclude: [
-            '**/_*/**',
-            '**/*.test.{js,jsx,ts,tsx}',
-            '**/__tests__/**',
-            '**/components/**',
-            '**/data.ts',
-            '**/*.material.ts',
-          ],
-        },
-        theme: {
-          customCss: ['./src/css/custom.css'],
-        },
-      } satisfies MonorepoPresetOptions,
-    ],
-  ],
+  presets: [['./preset/index.ts', {} satisfies MonorepoPresetOptions]],
 
   themeConfig: getBaseThemeConfig(projectConfig),
 };

@@ -19,13 +19,13 @@ The documentation workspace is organized as follows:
 - **[i18n/](./i18n/)**: Translation catalogs for localized content (English and Brazilian Portuguese).
 - **[src/](./src/)**: Custom React components, theme styles, page templates, and layouts.
   - **[src/pages/](./src/pages/)**: MDX landing pages and custom layout files.
-- **[plugins/](./plugins/)**: Custom Docusaurus and unified/remark plugins (e.g., dynamic AST variables, Webpack config injection) for enterprise-grade tooling extensibility.
-- **[preset/](./preset/)**: Custom Docusaurus preset options and design tokens theme configurations.
+- **[plugins/](./plugins/)**: Custom independent utilities and lifecycle hooks.
+- **[preset/](./preset/)**: The custom SSOT Docusaurus preset. It contains the design tokens theme configurations, and the **Domain Plugin Wrappers** (in `preset/plugins/`) that securely encapsulate Docusaurus core plugins and AST transformers.
 - **[loaders/](./loaders/)**: Webpack asset loaders for dynamic, bucket-stored Studio design resources.
 - **[scripts/](./scripts/)**: Task scripts orchestrating documentation dev/build pipelines.
 - **[tooling/](./tooling/)**: Utility scripts compiling raw git history into changelogs and roadmaps.
-- **[docusaurus.config.ts](./docusaurus.config.ts)**: Primary Docusaurus configuration for plugins, headers, footers, and localization.
-- **[sidebars.ts](./sidebars.ts)** / **[sidebarsRoadmap.ts](./sidebarsRoadmap.ts)** / **[sidebarsWorkspaces.ts](./sidebarsWorkspaces.ts)**: Navigation structures for sidebars mapping.
+- **[docusaurus.config.ts](./docusaurus.config.ts)**: Primary Docusaurus entrypoint (consumes the custom preset).
+- **[sidebars.ts](./sidebars.ts)**: Single source of truth for navigation structures mapping all docs instances.
 
 ---
 

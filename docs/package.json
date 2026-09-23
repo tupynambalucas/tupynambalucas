@@ -32,31 +32,31 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@monorepo/shared-config": "workspace:*",
-    "@monorepo/studio-assets": "workspace:*",
     "@docusaurus/core": "catalog:docs-stack",
     "@docusaurus/faster": "catalog:docs-stack",
-    "@docusaurus/theme-live-codeblock": "catalog:docs-stack",
-    "@docusaurus/theme-mermaid": "catalog:docs-stack",
-    "@docusaurus/plugin-content-docs": "catalog:docs-stack",
     "@docusaurus/plugin-content-blog": "catalog:docs-stack",
+    "@docusaurus/plugin-content-docs": "catalog:docs-stack",
     "@docusaurus/plugin-content-pages": "catalog:docs-stack",
+    "@docusaurus/plugin-css-cascade-layers": "catalog:docs-stack",
     "@docusaurus/plugin-debug": "catalog:docs-stack",
     "@docusaurus/plugin-google-gtag": "catalog:docs-stack",
     "@docusaurus/plugin-google-tag-manager": "catalog:docs-stack",
     "@docusaurus/plugin-sitemap": "catalog:docs-stack",
     "@docusaurus/plugin-svgr": "catalog:docs-stack",
-    "@docusaurus/plugin-css-cascade-layers": "catalog:docs-stack",
     "@docusaurus/theme-classic": "catalog:docs-stack",
-    "@docusaurus/theme-search-algolia": "catalog:docs-stack",
     "@docusaurus/theme-common": "catalog:docs-stack",
+    "@docusaurus/theme-live-codeblock": "catalog:docs-stack",
+    "@docusaurus/theme-mermaid": "catalog:docs-stack",
+    "@docusaurus/theme-search-algolia": "catalog:docs-stack",
+    "@gsap/react": "catalog:web-stack",
     "@mdx-js/react": "catalog:docs-stack",
+    "@monorepo/shared-config": "workspace:*",
+    "@monorepo/studio-assets": "workspace:*",
     "clsx": "catalog:docs-stack",
+    "gsap": "catalog:web-stack",
     "prism-react-renderer": "catalog:docs-stack",
     "react": "catalog:web-stack",
-    "react-dom": "catalog:web-stack",
-    "gsap": "catalog:web-stack",
-    "@gsap/react": "catalog:web-stack"
+    "react-dom": "catalog:web-stack"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "catalog:docs-stack",
@@ -65,8 +65,10 @@
     "@tailwindcss/postcss": "catalog:web-stack",
     "@types/node": "catalog:",
     "@types/react": "catalog:web-stack",
+    "@types/unist": "catalog:",
     "tsx": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "unified": "catalog:"
   },
   "browserslist": {
     "production": [

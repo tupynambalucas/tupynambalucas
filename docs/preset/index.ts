@@ -1,8 +1,9 @@
 import { createRequire } from 'node:module';
 import type { Preset, LoadContext, PluginConfig, PluginOptions } from '@docusaurus/types';
 import type { MonorepoPresetOptions, ThemeConfig } from './options';
-import projectVariablesPlugin from './plugins/remark-project-variables';
-import pluginStudioAssets from './plugins/studio-assets';
+import projectConfig from '@monorepo/shared-config/project.config';
+
+import pluginStudioAssets from './plugins/webpack-loaders/studio-assets';
 
 const require = createRequire(import.meta.url);
 
@@ -16,14 +17,6 @@ function makePluginConfig(
   return require.resolve(source);
 }
 
-function withProjectVariables(options: any) {
-  if (!options) return options;
-  return {
-    ...options,
-    remarkPlugins: [...(options.remarkPlugins || []), projectVariablesPlugin],
-  };
-}
-
 export default function monorepoPreset(
   context: LoadContext,
   opts: MonorepoPresetOptions = {},
@@ -34,14 +27,47 @@ export default function monorepoPreset(
   const isProd = process.env.NODE_ENV === 'production';
   const {
     debug,
-    docs,
-    blog,
-    pages,
-    roadmap,
-    workspaces,
+    docs = {
+      path: 'handbook',
+      sidebarPath: './sidebars.ts',
+    },
+    blog = {
+      path: 'releases',
+      routeBasePath: 'changelog',
+      blogTitle: 'Changelog',
+      blogDescription: `Acompanhe as últimas atualizações, melhorias e correções do ${projectConfig.PROJECT_DOMAIN}.`,
+      blogSidebarTitle: 'Todas as versões',
+      blogSidebarCount: 'ALL',
+      showReadingTime: true,
+      feedOptions: {
+        type: ['rss', 'atom'],
+        xslt: true,
+      },
+      onInlineTags: 'warn',
+      onInlineAuthors: 'warn',
+      onUntruncatedBlogPosts: 'warn',
+    },
+    pages = {
+      exclude: [
+        '**/_*/**',
+        '**/*.test.{js,jsx,ts,tsx}',
+        '**/__tests__/**',
+        '**/components/**',
+        '**/data.ts',
+        '**/*.material.ts',
+      ],
+    },
+    roadmap = {
+      sidebarPath: './sidebars.ts',
+    },
+    workspaces = {
+      sidebarPath: './sidebars.ts',
+    },
     sitemap,
     svgr,
-    theme,
+    theme = {
+      customCss: ['./src/css/custom.css'],
+    },
     gtag,
     googleTagManager,
     ...rest
@@ -65,42 +91,40 @@ export default function monorepoPreset(
     plugins.push(makePluginConfig('@docusaurus/plugin-css-cascade-layers'));
   }
 
+  // Push Domain wrappers as module paths so Docusaurus can run validateOptions
   if (docs !== false) {
-    plugins.push(makePluginConfig('@docusaurus/plugin-content-docs', withProjectVariables(docs)));
+    plugins.push([require.resolve('./plugins/content-docs/index.ts'), docs as any]);
   }
   if (roadmap !== false && roadmap !== undefined) {
-    plugins.push(
-      makePluginConfig(
-        '@docusaurus/plugin-content-docs',
-        withProjectVariables({
-          id: 'roadmap',
-          path: 'roadmap',
-          routeBasePath: 'roadmap',
-          ...roadmap,
-        }),
-      ),
-    );
+    plugins.push([
+      require.resolve('./plugins/content-docs/index.ts'),
+      {
+        id: 'roadmap',
+        path: 'roadmap',
+        routeBasePath: 'roadmap',
+        ...(roadmap as any),
+      },
+    ]);
   }
   if (workspaces !== false && workspaces !== undefined) {
-    plugins.push(
-      makePluginConfig(
-        '@docusaurus/plugin-content-docs',
-        withProjectVariables({
-          id: 'workspaces',
-          path: 'workspaces',
-          routeBasePath: 'workspaces',
-          ...workspaces,
-        }),
-      ),
-    );
+    plugins.push([
+      require.resolve('./plugins/content-docs/index.ts'),
+      {
+        id: 'workspaces',
+        path: 'workspaces',
+        routeBasePath: 'workspaces',
+        ...(workspaces as any),
+      },
+    ]);
   }
 
   if (blog !== false) {
-    plugins.push(makePluginConfig('@docusaurus/plugin-content-blog', withProjectVariables(blog)));
+    plugins.push([require.resolve('./plugins/content-blog/index.ts'), blog as any]);
   }
   if (pages !== false) {
-    plugins.push(makePluginConfig('@docusaurus/plugin-content-pages', withProjectVariables(pages)));
+    plugins.push([require.resolve('./plugins/content-pages/index.ts'), pages as any]);
   }
+
   if (debug === true || (debug === undefined && isProd === false)) {
     plugins.push(require.resolve('@docusaurus/plugin-debug'));
   }
@@ -118,7 +142,8 @@ export default function monorepoPreset(
   }
 
   // Push local plugins directly instead of relying on docusaurus.config.ts
-  plugins.push(pluginStudioAssets);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+  plugins.push(pluginStudioAssets as any);
 
   if (Object.keys(rest).length > 0) {
     throw new Error(
