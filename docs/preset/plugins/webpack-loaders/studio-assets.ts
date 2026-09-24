@@ -75,7 +75,7 @@ export default function pluginStudioAssets(context: LoadContext, _options: Plugi
               resourceQuery: /original=/,
               use: [
                 {
-                  loader: path.resolve(rootDir, 'loaders/bucket-loader.js'),
+                  loader: path.resolve(rootDir, 'preset/plugins/webpack-loaders/bucket-loader.ts'),
                 },
               ],
             },

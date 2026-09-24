@@ -3,6 +3,9 @@ import type { Preset, LoadContext, PluginConfig, PluginOptions } from '@docusaur
 import type { MonorepoPresetOptions, ThemeConfig } from './options';
 import projectConfig from '@monorepo/shared-config/project.config';
 
+import { createDocsInstances } from './plugins/content-docs/instances';
+import { createBlogInstance } from './plugins/content-blog/instances';
+import { createPagesInstance } from './plugins/content-pages/instances';
 import pluginStudioAssets from './plugins/webpack-loaders/studio-assets';
 
 const require = createRequire(import.meta.url);
@@ -27,42 +30,11 @@ export default function monorepoPreset(
   const isProd = process.env.NODE_ENV === 'production';
   const {
     debug,
-    docs = {
-      path: 'handbook',
-      sidebarPath: './sidebars.ts',
-    },
-    blog = {
-      path: 'releases',
-      routeBasePath: 'changelog',
-      blogTitle: 'Changelog',
-      blogDescription: `Acompanhe as últimas atualizações, melhorias e correções do ${projectConfig.PROJECT_DOMAIN}.`,
-      blogSidebarTitle: 'Todas as versões',
-      blogSidebarCount: 'ALL',
-      showReadingTime: true,
-      feedOptions: {
-        type: ['rss', 'atom'],
-        xslt: true,
-      },
-      onInlineTags: 'warn',
-      onInlineAuthors: 'warn',
-      onUntruncatedBlogPosts: 'warn',
-    },
-    pages = {
-      exclude: [
-        '**/_*/**',
-        '**/*.test.{js,jsx,ts,tsx}',
-        '**/__tests__/**',
-        '**/components/**',
-        '**/data.ts',
-        '**/*.material.ts',
-      ],
-    },
-    roadmap = {
-      sidebarPath: './sidebars.ts',
-    },
-    workspaces = {
-      sidebarPath: './sidebars.ts',
-    },
+    docs,
+    blog,
+    pages,
+    roadmap,
+    workspaces,
     sitemap,
     svgr,
     theme = {
@@ -91,39 +63,10 @@ export default function monorepoPreset(
     plugins.push(makePluginConfig('@docusaurus/plugin-css-cascade-layers'));
   }
 
-  // Push Domain wrappers as module paths so Docusaurus can run validateOptions
-  if (docs !== false) {
-    plugins.push([require.resolve('./plugins/content-docs/index.ts'), docs as any]);
-  }
-  if (roadmap !== false && roadmap !== undefined) {
-    plugins.push([
-      require.resolve('./plugins/content-docs/index.ts'),
-      {
-        id: 'roadmap',
-        path: 'roadmap',
-        routeBasePath: 'roadmap',
-        ...(roadmap as any),
-      },
-    ]);
-  }
-  if (workspaces !== false && workspaces !== undefined) {
-    plugins.push([
-      require.resolve('./plugins/content-docs/index.ts'),
-      {
-        id: 'workspaces',
-        path: 'workspaces',
-        routeBasePath: 'workspaces',
-        ...(workspaces as any),
-      },
-    ]);
-  }
-
-  if (blog !== false) {
-    plugins.push([require.resolve('./plugins/content-blog/index.ts'), blog as any]);
-  }
-  if (pages !== false) {
-    plugins.push([require.resolve('./plugins/content-pages/index.ts'), pages as any]);
-  }
+  // Inject Domain Wrapper Instances
+  plugins.push(...createDocsInstances(opts));
+  plugins.push(...createBlogInstance(opts));
+  plugins.push(...createPagesInstance(opts));
 
   if (debug === true || (debug === undefined && isProd === false)) {
     plugins.push(require.resolve('@docusaurus/plugin-debug'));

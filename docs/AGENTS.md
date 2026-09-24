@@ -38,7 +38,6 @@ This workspace (`@/docs`) is the central knowledge base for the %PROJECT_DOMAIN%
   - **[src/pages/](./src/pages/)**: MDX landing pages and custom layout files.
 - **[plugins/](./plugins/)**: Custom independent utilities (e.g., local lifecycle scripts).
 - **[preset/](./preset/)**: The SSOT custom Docusaurus preset. It contains the theme configuration, preset options, and **Domain Plugin Wrappers** (in `preset/plugins/`) that wrap core Docusaurus plugins (docs, blog, pages) to strictly enforce enterprise rules and AST transformers.
-- **[loaders/](./loaders/)**: Webpack asset loaders for dynamic, bucket-stored Studio design resources.
 - **[scripts/](./scripts/)**: Task scripts orchestrating documentation dev/build pipelines.
 - **[tooling/](./tooling/)**: Utility scripts compiling raw git history into changelogs and roadmaps.
 - **[docusaurus.config.ts](./docusaurus.config.ts)**: Primary Docusaurus configuration (acts as a dumb client consuming the custom preset).

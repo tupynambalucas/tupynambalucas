@@ -21,7 +21,6 @@ The documentation workspace is organized as follows:
   - **[src/pages/](./src/pages/)**: MDX landing pages and custom layout files.
 - **[plugins/](./plugins/)**: Custom independent utilities and lifecycle hooks.
 - **[preset/](./preset/)**: The custom SSOT Docusaurus preset. It contains the design tokens theme configurations, and the **Domain Plugin Wrappers** (in `preset/plugins/`) that securely encapsulate Docusaurus core plugins and AST transformers.
-- **[loaders/](./loaders/)**: Webpack asset loaders for dynamic, bucket-stored Studio design resources.
 - **[scripts/](./scripts/)**: Task scripts orchestrating documentation dev/build pipelines.
 - **[tooling/](./tooling/)**: Utility scripts compiling raw git history into changelogs and roadmaps.
 - **[docusaurus.config.ts](./docusaurus.config.ts)**: Primary Docusaurus entrypoint (consumes the custom preset).
