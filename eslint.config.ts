@@ -50,6 +50,8 @@ export default defineConfig([
           project: [
             'tsconfig.json',
             'docs/tsconfig.json',
+            'docs/packages/*/tsconfig.json',
+            'docs/services/*/tsconfig.json',
             'renderer/tsconfig.json',
             'hub/services/*/tsconfig.json',
             'hub/packages/*/tsconfig.json',
@@ -148,8 +150,8 @@ export default defineConfig([
       '*.config.{js,mjs,ts}',
       '**/*.config.{js,mjs,cjs,ts}',
       '**/postcss.config.{js,mjs,cjs,ts}',
-      'docs/loaders/**/*.js',
-      'docs/src/mock-asset.js',
+      'docs/packages/preset/src/plugins/webpack-loaders/**/*.js',
+      'docs/services/docusaurus/src/mock-asset.js',
     ],
     languageOptions: {
       globals: {

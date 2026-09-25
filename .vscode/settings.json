@@ -107,7 +107,7 @@
   },
 
   /* --- Markdown Preview Enhanced --- */
-  "markdown-preview-enhanced.codeBlockTheme": "github-dark.css",
+  "markdown-preview-enhanced.codeBlockTheme": "github-light.css",
   "markdown-preview-enhanced.previewTheme": "github-light.css",
   "markdown-preview-enhanced.enableWikiLinkSyntax": true,
 
@@ -138,17 +138,7 @@
 
   /* --- Color Highlight --- */
   "color-highlight.languages": ["*", "!json", "!yaml", "!markdown", "!mdx"],
-  "yaml.disableSchemaDetection": [],
-  "markdown-preview-enhanced.alwaysShowBacklinksInPreview": false,
-  "markdown-preview-enhanced.breakOnSingleNewLine": true,
-  "markdown-preview-enhanced.d2Sketch": false,
-  "markdown-preview-enhanced.enableHTML5Embed": false,
-  "markdown-preview-enhanced.enableExtendedTableSyntax": false,
-  "markdown-preview-enhanced.enableImageLightbox": true,
-  "markdown-preview-enhanced.enableScriptExecution": false,
-  "markdown-preview-enhanced.hideDefaultVSCodeMarkdownPreviewButtons": true,
-  "markdown-preview-enhanced.HTML5EmbedIsAllowedHttp": true,
-  "markdown-preview-enhanced.markdownParser": "markdown-it"
+  "yaml.disableSchemaDetection": []
 
   /* --- GitHub Copilot Chat Configuration --- */
 }

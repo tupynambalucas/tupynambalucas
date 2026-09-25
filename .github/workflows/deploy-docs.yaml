@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 22
           frozen-lockfile: 'false'
-          filter: '@tupynambalucas/docs...'
+          filter: '@monorepo/docs-docusaurus...'
 
       - name: Generate Global Documents
         run: |
@@ -59,6 +59,6 @@ jobs:
           api_token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
           account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           project_name: ${{ vars.CLOUDFLARE_PAGES_PROJECT_DOCS_NAME }}
-          directory: docs/build
+          directory: docs/services/docusaurus/build
           production_branch: develop
           custom_domain: 'docs.tupynambalucas.dev'

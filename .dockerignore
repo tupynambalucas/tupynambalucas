@@ -42,10 +42,10 @@ skaffold.env
 # Documentation and Non-Code Folders
 !docs/
 !docs/**
-docs/node_modules/
-docs/.docusaurus/
-docs/build/
-docs/.turbo/
+docs/services/docusaurus/node_modules/
+docs/services/docusaurus/.docusaurus/
+docs/services/docusaurus/build/
+docs/services/docusaurus/.turbo/
 .agents/
 .github/
 .system_generated/
@@ -53,3 +53,5 @@ docs/.turbo/
 node_modules
 */*/node_modules
 */*/*/node_modules
+docs/packages/*/node_modules/
+docs/packages/*/dist/

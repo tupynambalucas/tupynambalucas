@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.mdx", "docusaurus.config.ts"],
+  "exclude": ["node_modules", "build", "**/*.test.*", "**/*.spec.*"],
+  "references": [{ "path": "../../packages/preset" }, { "path": "../../packages/theme" }]
+}

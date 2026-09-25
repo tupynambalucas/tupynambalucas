@@ -11,7 +11,7 @@ inputs:
     required: false
     default: 'true'
   filter:
-    description: 'pnpm filter to limit dependency installation (e.g. @tupynambalucas/docs...)'
+    description: 'pnpm filter to limit dependency installation (e.g. @monorepo/docs-docusaurus...)'
     required: false
     default: ''
 

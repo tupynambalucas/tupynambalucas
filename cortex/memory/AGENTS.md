@@ -40,10 +40,10 @@ associative memory planes for AI agents.
    ACID transactions and vector indexes.
 5. **Startup Auto-Sync**: The Fastify API automatically scans and ingests markdown documents from
    `/app/docs` on startup. The sync is idempotent (content hash check before re-embedding).
-6. **Build-Time Docs Bundling**: The `docs/` directory is copied into the `memory-api` Docker
-   image at build time (`COPY docs ./docs`). The `.dockerignore` MUST NOT exclude `docs/` itself;
-   only transient artifacts (`docs/node_modules/`, `docs/.docusaurus/`, `docs/build/`) are
-   excluded.
+6. **Build-Time Docs Bundling**: The `docs/services/docusaurus/` directory is copied into the
+   `memory-api` Docker image at build time. The `.dockerignore` MUST NOT exclude the markdown
+   content directories (`handbook/`, `workspaces/`, `roadmap/`, `releases/`); only transient
+   artifacts (`node_modules/`, `.docusaurus/`, `build/`) are excluded.
 7. **MCP Ingestion Trigger**: The `mcp-memory` service accesses `memory-api` internally via
    `MemoryApiClient`. The MCP tool `ingest_document` triggers the full
    `POST /api/memory/ingest/docs` pipeline, which re-walks `/app/docs` and re-embeds changed
