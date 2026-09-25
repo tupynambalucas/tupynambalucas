@@ -20,6 +20,7 @@ export type MonorepoPresetOptions = {
   sitemap?: false | SitemapPluginOptions;
   svgr?: false | SVGRPluginOptions;
   theme?: ThemeOptions;
+  liveCodeblock?: Record<string, unknown>;
   gtag?: GtagPluginOptions;
   googleTagManager?: GTMPluginOptions;
 };

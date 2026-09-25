@@ -1,0 +1,42 @@
+{
+  "name": "@monorepo/docs-theme",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Custom Docusaurus theme plugin (Thin Orchestrator) for the monorepo knowledge base.",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./src/css/*": "./src/css/*"
+  },
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "build": "tsc -b",
+    "dev": "pnpm clean && tsc -b -w",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@monorepo/studio-assets": "workspace:*",
+    "tailwindcss": "catalog:shared-stack",
+    "clsx": "catalog:docs-stack"
+  },
+  "peerDependencies": {
+    "@docusaurus/theme-classic": "catalog:docs-stack",
+    "@docusaurus/theme-live-codeblock": "catalog:docs-stack",
+    "@docusaurus/theme-mermaid": "catalog:docs-stack",
+    "@docusaurus/theme-common": "catalog:docs-stack",
+    "@docusaurus/plugin-content-docs": "catalog:docs-stack",
+    "react": "catalog:web-stack",
+    "react-dom": "catalog:web-stack"
+  },
+  "devDependencies": {
+    "@docusaurus/types": "catalog:docs-stack",
+    "@docusaurus/module-type-aliases": "catalog:docs-stack",
+    "@docusaurus/tsconfig": "catalog:docs-stack",
+    "@types/react": "catalog:web-stack",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -27,7 +27,7 @@ export function createBlogInstance(opts: Pick<MonorepoPresetOptions, 'blog'>): P
 
   if (blog !== false) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    plugins.push([require.resolve('./index.ts'), blog as any]);
+    plugins.push([require.resolve('./index.js'), blog as any]);
   }
 
   return plugins;

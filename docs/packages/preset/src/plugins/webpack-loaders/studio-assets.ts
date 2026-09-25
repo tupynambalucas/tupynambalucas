@@ -17,6 +17,8 @@ export default function pluginStudioAssets(context: LoadContext, _options: Plugi
         const secretsPath = path.join(
           rootDir,
           '..',
+          '..',
+          '..',
           'tools',
           'github',
           'infrastructure',
@@ -75,7 +77,7 @@ export default function pluginStudioAssets(context: LoadContext, _options: Plugi
               resourceQuery: /original=/,
               use: [
                 {
-                  loader: path.resolve(rootDir, 'preset/plugins/webpack-loaders/bucket-loader.ts'),
+                  loader: require.resolve('./bucket-loader.ts'),
                 },
               ],
             },

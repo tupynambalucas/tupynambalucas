@@ -20,7 +20,7 @@ export function createPagesInstance(opts: Pick<MonorepoPresetOptions, 'pages'>):
 
   if (pages !== false) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    plugins.push([require.resolve('./index.ts'), pages as any]);
+    plugins.push([require.resolve('./index.js'), pages as any]);
   }
 
   return plugins;

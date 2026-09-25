@@ -1,6 +1,6 @@
 import type { Config } from '@docusaurus/types';
-import type { MonorepoPresetOptions } from './preset/options';
-import { getBaseThemeConfig } from './preset/themeConfig';
+import type { MonorepoPresetOptions } from '@monorepo/docs-preset/options';
+import { getBaseThemeConfig } from '@monorepo/docs-preset/themeConfig';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -77,8 +77,6 @@ const config: Config = {
     studioPath,
   },
 
-  themes: ['@docusaurus/theme-live-codeblock', '@docusaurus/theme-mermaid'],
-
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pt-BR'],
@@ -94,7 +92,53 @@ const config: Config = {
     },
   },
 
-  presets: [['./preset/index.ts', {} satisfies MonorepoPresetOptions]],
+  presets: [
+    [
+      require.resolve('@monorepo/docs-preset'),
+      {
+        liveCodeblock: {
+          playgroundPosition: 'bottom',
+        },
+        docs: {
+          path: 'handbook',
+          sidebarPath: require.resolve('@monorepo/docs-preset/sidebars'),
+        },
+        roadmap: {
+          sidebarPath: require.resolve('@monorepo/docs-preset/sidebars'),
+        },
+        workspaces: {
+          sidebarPath: require.resolve('@monorepo/docs-preset/sidebars'),
+        },
+      } satisfies MonorepoPresetOptions,
+    ],
+  ],
+
+  plugins: [
+    () => ({
+      name: 'monorepo-webpack-alias-plugin',
+      configureWebpack() {
+        const docusaurusNodeModules = path.join(__dirname, 'node_modules', '@docusaurus');
+        const alias: Record<string, string> = {};
+        
+        if (fs.existsSync(docusaurusNodeModules)) {
+          const packages = fs.readdirSync(docusaurusNodeModules);
+          for (const pkg of packages) {
+            alias[`@docusaurus/${pkg}$`] = path.join(docusaurusNodeModules, pkg);
+            alias[`@docusaurus/${pkg}/internal`] = path.join(docusaurusNodeModules, pkg, 'lib/internal.js');
+            alias[`@docusaurus/${pkg}/Details`] = path.join(docusaurusNodeModules, pkg, 'lib/components/Details/index.js');
+            // generic fallback for subpaths that don't need exact matching
+            alias[`@docusaurus/${pkg}/client`] = path.join(docusaurusNodeModules, pkg, 'lib/client');
+          }
+        }
+
+        return {
+          resolve: {
+            alias
+          },
+        };
+      },
+    }),
+  ],
 
   themeConfig: getBaseThemeConfig(projectConfig),
 };

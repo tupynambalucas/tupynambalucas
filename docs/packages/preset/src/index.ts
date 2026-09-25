@@ -1,7 +1,6 @@
 import { createRequire } from 'node:module';
 import type { Preset, LoadContext, PluginConfig, PluginOptions } from '@docusaurus/types';
 import type { MonorepoPresetOptions, ThemeConfig } from './options';
-import projectConfig from '@monorepo/shared-config/project.config';
 
 import { createDocsInstances } from './plugins/content-docs/instances';
 import { createBlogInstance } from './plugins/content-blog/instances';
@@ -38,18 +37,31 @@ export default function monorepoPreset(
     sitemap,
     svgr,
     theme = {
-      customCss: ['./src/css/custom.css'],
+      customCss: [require.resolve('@monorepo/docs-theme/src/css/custom.css')],
     },
+    liveCodeblock,
     gtag,
     googleTagManager,
     ...rest
   } = opts;
 
   const themes: PluginConfig[] = [];
+
+  // BASE THEME
   themes.push(makePluginConfig('@docusaurus/theme-classic', theme));
+
+  // ADD-ON THEMES
+  themes.push(makePluginConfig('@docusaurus/theme-live-codeblock', liveCodeblock ?? {}));
+  themes.push(require.resolve('@docusaurus/theme-mermaid'));
+
+  // ALGOLIA SEARCH
   if (algolia !== undefined) {
     themes.push(require.resolve('@docusaurus/theme-search-algolia'));
   }
+
+  // LOCAL OVERRIDE LAYER
+  themes.push(makePluginConfig(require.resolve('@monorepo/docs-theme'), {}));
+
   if ('gtag' in themeConfig) {
     throw new Error(
       'The "gtag" field in themeConfig should now be specified as option for plugin-google-gtag.',

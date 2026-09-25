@@ -11,25 +11,25 @@ export function createDocsInstances(
 
   const docs = opts.docs ?? {
     path: 'handbook',
-    sidebarPath: './sidebars.ts',
+    sidebarPath: require.resolve('../../sidebars/index.js'),
   };
 
   const roadmap = opts.roadmap ?? {
-    sidebarPath: './sidebars.ts',
+    sidebarPath: require.resolve('../../sidebars/index.js'),
   };
 
   const workspaces = opts.workspaces ?? {
-    sidebarPath: './sidebars.ts',
+    sidebarPath: require.resolve('../../sidebars/index.js'),
   };
 
   if (docs !== false) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    plugins.push([require.resolve('./index.ts'), docs as any]);
+    plugins.push([require.resolve('./index.js'), docs as any]);
   }
 
   if (roadmap !== false) {
     plugins.push([
-      require.resolve('./index.ts'),
+      require.resolve('./index.js'),
       {
         id: 'roadmap',
         path: 'roadmap',
@@ -42,7 +42,7 @@ export function createDocsInstances(
 
   if (workspaces !== false) {
     plugins.push([
-      require.resolve('./index.ts'),
+      require.resolve('./index.js'),
       {
         id: 'workspaces',
         path: 'workspaces',

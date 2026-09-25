@@ -1,17 +1,18 @@
-import type { Plugin } from 'unified';
-import type { Node, Parent } from 'unist';
 import ProjectConfig from '@monorepo/shared-config/project.config';
 
-interface Literal extends Node {
+interface Literal {
+  type: string;
   value: string;
 }
 
-interface Link extends Parent {
+interface Link {
+  type: string;
   url: string;
+  children?: any[];
 }
 
-const plugin: Plugin = () => {
-  return (tree: Node) => {
+const plugin: any = () => {
+  return (tree: any) => {
     const visit = (node: any) => {
       if (node.type === 'text' || node.type === 'inlineCode') {
         const literal = node as Literal;
@@ -31,8 +32,8 @@ const plugin: Plugin = () => {
         }
         link.url = url;
       }
-      if ((node as Parent).children) {
-        (node as Parent).children.forEach(visit);
+      if (node.children) {
+        node.children.forEach(visit);
       }
     };
     visit(tree);

@@ -1,0 +1,12 @@
+{
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@monorepo/docs-preset/*": ["../../packages/preset/src/*"],
+      "@monorepo/docs-theme/*": ["../../packages/theme/src/*"]
+    },
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src", "preset", "scripts", "tooling", "docusaurus.config.ts"]
+}

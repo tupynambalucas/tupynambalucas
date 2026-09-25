@@ -29,18 +29,19 @@ async function main(): Promise<void> {
   if (isDevRunning === true) {
     console.warn('\x1b[33m[Docusaurus Build] Dev server is active on port 3002.\x1b[0m');
     console.warn(
-      '\x1b[33m[Docusaurus Build] Skipping production build to prevent dev server crash.\x1b[0m',
+      '\x1b[33m[Docusaurus Build] WARNING: Running production build while dev server is active WILL crash the dev server!\x1b[0m',
     );
     console.warn(
-      '\x1b[33m[Docusaurus Build] If you want to force a production build, stop the dev server first.\x1b[0m\n',
+      '\x1b[33m[Docusaurus Build] Proceeding anyway in 3 seconds. Please restart your dev server later.\x1b[0m\n',
     );
-    process.exit(0);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  } else {
+    console.info(
+      '[Docusaurus Build] Dev server not active on port 3002. Proceeding with docusaurus build...',
+    );
   }
 
-  console.info(
-    '[Docusaurus Build] Dev server not active on port 3002. Proceeding with docusaurus build...',
-  );
-  const result = spawnSync('docusaurus', ['build'], { stdio: 'inherit', shell: true });
+  const result = spawnSync('pnpm', ['exec', 'docusaurus', 'build'], { stdio: 'inherit', shell: true });
   process.exit(result.status ?? 0);
 }
 
