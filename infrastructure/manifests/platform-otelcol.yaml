@@ -27,6 +27,13 @@ spec:
               containerPort: 4318
             - name: fluentforward
               containerPort: 24224
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           envFrom:
             - secretRef:
                 name: platform-secrets

@@ -66,6 +66,7 @@ catalogs:
     'firecrawl': '^4.37.0'
 
   tooling-stack:
+    '@docusaurus/eslint-plugin': '3.10.2'
     '@eslint/js': '10.0.1'
     '@typescript-eslint/eslint-plugin': '8.62.0'
     'eslint': '10.8.0'

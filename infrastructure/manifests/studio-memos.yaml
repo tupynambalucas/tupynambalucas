@@ -36,6 +36,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5230
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: MEMOS_PORT
               valueFrom:

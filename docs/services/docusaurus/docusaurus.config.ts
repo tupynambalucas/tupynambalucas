@@ -119,21 +119,33 @@ const config: Config = {
       configureWebpack() {
         const docusaurusNodeModules = path.join(__dirname, 'node_modules', '@docusaurus');
         const alias: Record<string, string> = {};
-        
+
         if (fs.existsSync(docusaurusNodeModules)) {
           const packages = fs.readdirSync(docusaurusNodeModules);
           for (const pkg of packages) {
             alias[`@docusaurus/${pkg}$`] = path.join(docusaurusNodeModules, pkg);
-            alias[`@docusaurus/${pkg}/internal`] = path.join(docusaurusNodeModules, pkg, 'lib/internal.js');
-            alias[`@docusaurus/${pkg}/Details`] = path.join(docusaurusNodeModules, pkg, 'lib/components/Details/index.js');
+            alias[`@docusaurus/${pkg}/internal`] = path.join(
+              docusaurusNodeModules,
+              pkg,
+              'lib/internal.js',
+            );
+            alias[`@docusaurus/${pkg}/Details`] = path.join(
+              docusaurusNodeModules,
+              pkg,
+              'lib/components/Details/index.js',
+            );
             // generic fallback for subpaths that don't need exact matching
-            alias[`@docusaurus/${pkg}/client`] = path.join(docusaurusNodeModules, pkg, 'lib/client');
+            alias[`@docusaurus/${pkg}/client`] = path.join(
+              docusaurusNodeModules,
+              pkg,
+              'lib/client',
+            );
           }
         }
 
         return {
           resolve: {
-            alias
+            alias,
           },
         };
       },

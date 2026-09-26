@@ -22,6 +22,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9001
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: GUARDRAILS_PORT
               valueFrom:
@@ -72,6 +79,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: PORT
               valueFrom:
@@ -122,6 +136,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: GITHUB_PERSONAL_ACCESS_TOKEN
               valueFrom:
@@ -166,6 +187,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: FIRECRAWL_API_KEY
               valueFrom:
@@ -210,6 +238,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: GRAFANA_URL
               valueFrom:
@@ -267,6 +302,13 @@ spec:
           ports:
             - containerPort: 6274
             - containerPort: 6277
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: DANGEROUSLY_BIND_ALL_INTERFACES
               valueFrom:
@@ -315,6 +357,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '100m'
+            limits:
+              memory: '1Gi'
+              cpu: '500m'
           env:
             - name: PORT
               valueFrom:
@@ -416,6 +465,13 @@ spec:
             - '8080'
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: PORT
               valueFrom:
@@ -460,6 +516,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
           env:
             - name: CONTEXT7_API_KEY
               valueFrom:

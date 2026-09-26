@@ -41,7 +41,10 @@ async function main(): Promise<void> {
     );
   }
 
-  const result = spawnSync('pnpm', ['exec', 'docusaurus', 'build'], { stdio: 'inherit', shell: true });
+  const result = spawnSync('pnpm', ['exec', 'docusaurus', 'build'], {
+    stdio: 'inherit',
+    shell: true,
+  });
   process.exit(result.status ?? 0);
 }
 

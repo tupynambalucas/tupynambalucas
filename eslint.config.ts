@@ -10,6 +10,7 @@ import tseslint from 'typescript-eslint';
 import eslintPluginPrettier from 'eslint-plugin-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import * as mdx from 'eslint-plugin-mdx';
+import eslintPluginDocusaurus from '@docusaurus/eslint-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -305,7 +306,11 @@ export default defineConfig([
   {
     name: 'monorepo/docs-workspace',
     files: ['docs/**/*.{ts,tsx,js,jsx}'],
+    plugins: {
+      '@docusaurus': eslintPluginDocusaurus as any,
+    },
     rules: {
+      ...(eslintPluginDocusaurus.configs.recommended.rules as any),
       'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',

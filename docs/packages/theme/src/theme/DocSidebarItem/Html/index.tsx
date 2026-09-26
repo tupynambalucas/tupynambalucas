@@ -16,7 +16,6 @@ export default function DocSidebarItemHtml({ item, level, index }: Props): React
         className,
       )}
       key={index}
-      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: value }}
     />
   );

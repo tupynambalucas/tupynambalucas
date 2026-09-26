@@ -4,7 +4,7 @@ metadata:
   name: monorepo-dev
 build:
   platforms: ['linux/amd64']
-  local: { push: false, useDockerCLI: true, tryImportMissing: false }
+  local: { push: false, useDockerCLI: true, tryImportMissing: false, concurrency: 0 }
   artifacts:
     - image: platform-turbocache
       context: ../platform/services/turbocache

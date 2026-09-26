@@ -20,6 +20,13 @@ spec:
           image: mongo:latest
           ports:
             - containerPort: 27017
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '100m'
+            limits:
+              memory: '1Gi'
+              cpu: '500m'
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
@@ -82,12 +89,26 @@ spec:
                 sleep 2
               done
               echo "mongodb-db is ready!"
+          resources:
+            requests:
+              memory: '16Mi'
+              cpu: '10m'
+            limits:
+              memory: '32Mi'
+              cpu: '50m'
       containers:
         - name: memory-api
           image: cortex-memory-api:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3006
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '50m'
+            limits:
+              memory: '512Mi'
+              cpu: '300m'
           env:
             - name: PORT
               valueFrom:
@@ -149,6 +170,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9006
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
 ---
 apiVersion: v1
 kind: Service

@@ -1,14 +1,16 @@
 import path from 'path';
-import type { LoadContext, Plugin, OptionValidationContext } from '@docusaurus/types';
-import type { ThemeConfigValidationContext } from '@docusaurus/types';
+import type {
+  LoadContext,
+  Plugin,
+  OptionValidationContext,
+  ThemeConfigValidationContext,
+} from '@docusaurus/types';
 
 import * as themeClassicModule from '@docusaurus/theme-classic';
 import * as themeLiveCodeblockModule from '@docusaurus/theme-live-codeblock';
 import * as themeMermaidModule from '@docusaurus/theme-mermaid';
 
-export interface PluginOptions {
-  [key: string]: unknown;
-}
+export type PluginOptions = Record<string, unknown>;
 
 /**
  * Custom Theme Plugin — Thin Orchestrator
@@ -40,26 +42,30 @@ export default function customThemePlugin(
   };
 }
 
-export function validateThemeConfig(
-  ctx: ThemeConfigValidationContext<Record<string, unknown>>,
-) {
+export function validateThemeConfig(ctx: ThemeConfigValidationContext<Record<string, unknown>>) {
   let { themeConfig } = ctx;
   const { validate } = ctx;
 
   if ('validateThemeConfig' in themeClassicModule && themeClassicModule.validateThemeConfig) {
-    themeConfig = (themeClassicModule.validateThemeConfig as Function)({ validate, themeConfig });
+    themeConfig = (themeClassicModule.validateThemeConfig as (args: any) => any)({
+      validate,
+      themeConfig,
+    });
   }
   if (
     'validateThemeConfig' in themeLiveCodeblockModule &&
     themeLiveCodeblockModule.validateThemeConfig
   ) {
-    themeConfig = (themeLiveCodeblockModule.validateThemeConfig as Function)({
+    themeConfig = (themeLiveCodeblockModule.validateThemeConfig as (args: any) => any)({
       validate,
       themeConfig,
     });
   }
   if ('validateThemeConfig' in themeMermaidModule && themeMermaidModule.validateThemeConfig) {
-    themeConfig = (themeMermaidModule.validateThemeConfig as Function)({ validate, themeConfig });
+    themeConfig = (themeMermaidModule.validateThemeConfig as (args: any) => any)({
+      validate,
+      themeConfig,
+    });
   }
 
   return themeConfig;

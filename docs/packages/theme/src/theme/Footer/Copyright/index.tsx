@@ -8,7 +8,7 @@ export default function FooterCopyright({ copyright }: Props): ReactNode {
     <div
       className={clsx('footer__copyright', styles.__prevent_tree_shake)}
       // Developer provided the HTML, so assume it's safe.
-      // eslint-disable-next-line react/no-danger
+
       dangerouslySetInnerHTML={{ __html: copyright }}
     />
   );
