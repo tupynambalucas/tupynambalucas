@@ -33,8 +33,8 @@ jobs:
 
       - name: Generate Global Documents
         run: |
-          pnpm docs:generate:changelog
-          pnpm docs:generate:roadmap
+          pnpm docs:docusaurus:generate:changelog
+          pnpm docs:docusaurus:generate:roadmap
 
       - name: Commit and Push Compiled Documents
         run: |
@@ -49,7 +49,7 @@ jobs:
           fi
 
       - name: Build documentation
-        run: pnpm docs:build
+        run: pnpm docs:docusaurus:build
         env:
           CLOUDFLARE_R2_ASSETS_PUBLIC_URL: ${{ secrets.CLOUDFLARE_R2_ASSETS_PUBLIC_URL }}
 

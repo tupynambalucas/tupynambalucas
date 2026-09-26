@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import projectConfig from '@monorepo/shared-config/project.config';
 
 const require = createRequire(import.meta.url);
-const kbPkgPath = require.resolve('@monorepo/docs/package.json');
+const kbPkgPath = require.resolve('@monorepo/docs-docusaurus/package.json');
 const kbDir = path.dirname(kbPkgPath);
 
 const RELEASES_DIR = path.join(kbDir, 'releases');
