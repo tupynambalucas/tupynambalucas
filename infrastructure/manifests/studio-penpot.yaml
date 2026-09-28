@@ -324,6 +324,14 @@ spec:
                   name: studio-secrets
                   key: PENPOT_EXPORTER_PUBLIC_URI
                   optional: true
+          volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 512Mi
 ---
 apiVersion: v1
 kind: Service
@@ -491,7 +499,7 @@ spec:
               memory: '64Mi'
               cpu: '25m'
             limits:
-              memory: '256Mi'
+              memory: '1024Mi'
               cpu: '200m'
           env:
             - name: PENPOT_SECRET_KEY

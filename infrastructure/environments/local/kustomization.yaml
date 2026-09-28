@@ -21,6 +21,8 @@ resources:
   - ../../manifests/studio-penpot-seed.yaml
   - ../../manifests/studio-memos.yaml
   - ../../manifests/studio-memos-seed.yaml
+  - ../../manifests/docs-namespace.yaml
+  - ../../manifests/docs-docusaurus.yaml
 
 secretGenerator:
   - name: cortex-secrets

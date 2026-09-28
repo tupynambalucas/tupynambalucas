@@ -27,7 +27,6 @@
   "dependencies": {
     "@monorepo/docs-preset": "workspace:*",
     "@docusaurus/core": "catalog:docs-stack",
-    "@docusaurus/faster": "catalog:docs-stack",
     "@docusaurus/theme-classic": "catalog:docs-stack",
     "@docusaurus/theme-common": "catalog:docs-stack",
     "@docusaurus/theme-live-codeblock": "catalog:docs-stack",

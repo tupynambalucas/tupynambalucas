@@ -2,52 +2,21 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Copilot CLI [Host]",
-      "type": "shell",
-      "command": "copilot",
-      "problemMatcher": [],
-      "presentation": {
-        "panel": "dedicated",
-        "focus": true,
-        "reveal": "always",
-        "clear": true,
-        "group": "llm-cli-group"
-      },
-      "isBackground": false
-    },
-    {
       "label": "Antigravity CLI",
-      "type": "process",
-      "command": "wt.exe",
-      "args": [
-        "--window",
-        "-1",
-        "--maximized",
-        "--profile",
-        "Antigravity",
-        "--startingDirectory",
-        "${workspaceFolder}",
-        "pwsh",
-        "-NoExit",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        "${workspaceFolder}/.vscode/scripts/launch-agy.ps1"
-      ],
+      "type": "shell",
+      "command": "wt.exe --window -1 --maximized --profile \"Antigravity\" --startingDirectory \"${workspaceFolder}\" pwsh.exe -NoExit -ExecutionPolicy Bypass -File \"${workspaceFolder}/.vscode/scripts/launch-agy.ps1\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "never"
       }
     },
     {
-      "label": "Open External Terminal (pwsh)",
+      "label": "Admin CLI",
       "type": "shell",
-      "command": "wt -d \"${workspaceFolder}\" pwsh",
+      "command": "wt.exe --window -1 --maximized --profile \"Admin\" --startingDirectory \"${workspaceFolder}\" pwsh.exe -NoExit -ExecutionPolicy Bypass -File \"${workspaceFolder}/.vscode/scripts/launch-admin.ps1\"",
       "problemMatcher": [],
       "presentation": {
-        "reveal": "silent",
-        "panel": "shared",
-        "focus": false
+        "reveal": "never"
       }
     }
   ]

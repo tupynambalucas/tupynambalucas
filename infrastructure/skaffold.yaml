@@ -4,7 +4,7 @@ metadata:
   name: monorepo-dev
 build:
   platforms: ['linux/amd64']
-  local: { push: false, useDockerCLI: true, tryImportMissing: false, concurrency: 0 }
+  local: { push: false, useDockerCLI: true, tryImportMissing: false, concurrency: 1 }
   artifacts:
     - image: platform-turbocache
       context: ../platform/services/turbocache
@@ -78,6 +78,25 @@ build:
     - image: studio-memos
       context: ../studio/memos/services/memos
       docker: { dockerfile: Dockerfile, target: dev }
+    - image: docs-docusaurus
+      context: ..
+      docker: { dockerfile: docs/services/docusaurus/Dockerfile }
+      sync:
+        manual:
+          - src: 'docs/services/docusaurus/docs/**/*'
+            dest: /app
+          - src: 'docs/services/docusaurus/src/**/*'
+            dest: /app
+          - src: 'docs/services/docusaurus/static/**/*'
+            dest: /app
+          - src: 'docs/services/docusaurus/docusaurus.config.ts'
+            dest: /app
+          - src: 'docs/packages/**/*'
+            dest: /app
+          - src: 'studio/assets/**/*'
+            dest: /app
+          - src: 'shared/**/*'
+            dest: /app
 manifests:
   kustomize:
     paths: [environments/local]
