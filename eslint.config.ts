@@ -307,6 +307,7 @@ export default defineConfig([
   {
     name: 'monorepo/docs-workspace',
     files: ['knowledge-base/**/*.{ts,tsx,js,jsx}'],
+    ignores: ['knowledge-base/collections/**/*.ts', 'knowledge-base/collections/**/*.tsx'],
     plugins: {
       '@docusaurus': eslintPluginDocusaurus as any,
     },

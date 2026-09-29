@@ -1,9 +1,10 @@
 {
-  "extends": "@docusaurus/tsconfig",
+  "extends": "@monorepo/shared-config/tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "paths": {
+      "@collections/*": ["./src/*"]
+    }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

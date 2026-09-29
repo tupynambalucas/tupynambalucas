@@ -21,6 +21,8 @@
     "// Knowledge Base Context": "---------------------------------------------",
     "kb:typecheck": "turbo run typecheck --filter=\"@monorepo/kb-*\"",
     "kb:lint": "turbo run lint --filter=\"@monorepo/kb-*\"",
+    "kb:collections:typecheck": "pnpm --filter @monorepo/kb-collections typecheck",
+    "kb:collections:lint": "pnpm --filter @monorepo/kb-collections lint",
     "kb:docusaurus:portal:typecheck": "pnpm --filter @monorepo/kb-docusaurus-portal typecheck",
     "kb:docusaurus:portal:lint": "pnpm --filter @monorepo/kb-docusaurus-portal lint",
     "kb:docusaurus:preset:typecheck": "pnpm --filter @monorepo/kb-docusaurus-preset typecheck",
