@@ -1,6 +1,6 @@
-# Docs Hub Documentation Workflow
+# Knowledge Base Documentation Workflow
 
-This reference defines the compilation, localization, and single-pass alignment validation protocols for the Docusaurus Docs Hub.
+This reference defines the compilation, localization, and single-pass alignment validation protocols for the Docusaurus Knowledge Base.
 
 ---
 
@@ -8,7 +8,7 @@ This reference defines the compilation, localization, and single-pass alignment 
 
 To support multi-language parity, follow these rules when editing or creating documentation:
 
-- **100% Parity Check**: For every modified or new English document under the docs hub, you must create or update the corresponding Portuguese (`pt-BR`) file inside `knowledge-base/docs/monorepo/i18n/pt-BR/` in the correct plugin subdirectory:
+- **100% Parity Check**: For every modified or new English document under the knowledge base, you must create or update the corresponding Portuguese (`pt-BR`) file inside `knowledge-base/docs/monorepo/i18n/pt-BR/` in the correct plugin subdirectory:
   - Files under `knowledge-base/docs/monorepo/handbook/` -> `knowledge-base/docs/monorepo/i18n/pt-BR/docusaurus-plugin-content-docs/current/...`
   - Files under `knowledge-base/docs/monorepo/roadmap/` -> `knowledge-base/docs/monorepo/i18n/pt-BR/docusaurus-plugin-content-docs-roadmap/current/...`
   - Files under `knowledge-base/docs/monorepo/workspaces/` -> `knowledge-base/docs/monorepo/i18n/pt-BR/docusaurus-plugin-content-docs-workspaces/current/...`

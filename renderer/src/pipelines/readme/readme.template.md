@@ -163,7 +163,7 @@ Always-on cluster infrastructure, observability pipelines, and build acceleratio
 - **[`renderer/`](./renderer/README.md)**: Dynamic asset generator compiling GitHub profile stats into SVG cards and templated Markdown documents.
 - **[`shared/`](./shared/README.md)**: Foundational utilities, global configuration, and Git lifecycle hooks.
 - **[`tools/`](./tools/README.md)**: Developer automation, repository provisioning scripts, and containerized Git environments.
-- **[`docs/`](./docs/README.md)**: Centralized knowledge base built with Docusaurus v3 under the Diataxis framework.
+- **[`knowledge-base/`](./knowledge-base/README.md)**: Centralized knowledge base built with Docusaurus v3 under the Diataxis framework.
 
 ---
 

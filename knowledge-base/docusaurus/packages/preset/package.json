@@ -30,6 +30,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@monorepo/kb-collections": "workspace:*",
     "@monorepo/kb-docusaurus-theme": "workspace:*",
     "@monorepo/shared-config": "workspace:*",
     "@monorepo/studio-assets": "workspace:*",

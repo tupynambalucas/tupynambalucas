@@ -50,9 +50,10 @@ export default defineConfig([
           alwaysTryTypes: true,
           project: [
             'tsconfig.json',
-            'docs/tsconfig.json',
-            'docs/packages/*/tsconfig.json',
-            'docs/services/*/tsconfig.json',
+            'knowledge-base/collections/tsconfig.json',
+            'knowledge-base/docusaurus/tsconfig.json',
+            'knowledge-base/docusaurus/packages/*/tsconfig.json',
+            'knowledge-base/docusaurus/services/*/tsconfig.json',
             'renderer/tsconfig.json',
             'hub/services/*/tsconfig.json',
             'hub/packages/*/tsconfig.json',
@@ -151,8 +152,8 @@ export default defineConfig([
       '*.config.{js,mjs,ts}',
       '**/*.config.{js,mjs,cjs,ts}',
       '**/postcss.config.{js,mjs,cjs,ts}',
-      'docs/packages/preset/src/plugins/webpack-loaders/**/*.js',
-      'docs/services/docusaurus/src/mock-asset.js',
+      'knowledge-base/docusaurus/packages/preset/src/plugins/webpack-loaders/**/*.js',
+      'knowledge-base/docusaurus/services/portal/src/mock-asset.js',
     ],
     languageOptions: {
       globals: {

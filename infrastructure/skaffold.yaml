@@ -78,18 +78,20 @@ build:
     - image: studio-memos
       context: ../studio/memos/services/memos
       docker: { dockerfile: Dockerfile, target: dev }
-    - image: kb-docusaurus-monorepo
+    - image: kb-docusaurus-portal
       context: ..
-      docker: { dockerfile: knowledge-base/docusaurus/services/monorepo/Dockerfile }
+      docker: { dockerfile: knowledge-base/docusaurus/services/portal/Dockerfile }
       sync:
         manual:
-          - src: 'knowledge-base/docs/monorepo/**/*'
+          - src: 'knowledge-base/collections/domains/portal/content/**/*'
             dest: /app
-          - src: 'knowledge-base/docusaurus/services/monorepo/src/**/*'
+          - src: 'knowledge-base/collections/domains/portal/translations/**/*'
             dest: /app
-          - src: 'knowledge-base/docusaurus/services/monorepo/static/**/*'
+          - src: 'knowledge-base/docusaurus/services/portal/src/**/*'
             dest: /app
-          - src: 'knowledge-base/docusaurus/services/monorepo/docusaurus.config.ts'
+          - src: 'knowledge-base/docusaurus/services/portal/static/**/*'
+            dest: /app
+          - src: 'knowledge-base/docusaurus/services/portal/docusaurus.config.ts'
             dest: /app
           - src: 'knowledge-base/docusaurus/packages/**/*'
             dest: /app

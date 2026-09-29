@@ -3,5 +3,8 @@
   "references": [
     { "path": "./docs" },
     { "path": "./docusaurus" }
+  ],
+  "exclude": [
+    "references"
   ]
 }

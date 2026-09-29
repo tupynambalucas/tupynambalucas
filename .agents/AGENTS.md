@@ -15,7 +15,7 @@ This bounded context ([.agents/](./)) manages the lifecycle, personas, tools, an
 ## 1. Directory Architecture
 
 - **[plans/](./plans/)**: Temporary, markdown-based execution plans for complex refactors.
-- **[plugins/](./plugins/)**: Bundled MCP (Model Context Protocol) definitions, server lifecycle configs, and associated rules (e.g., the `cortex` plugin routing to `agentgateway`).
+- **[plugins/](./plugins/)**: Bundled MCP (Model Context Protocol) definitions, server lifecycle configs, and associated rules (e.g., the `cortex` plugin routing to `cortex_agentgateway`).
 - **[rules/](./rules/)**: Global or localized markdown constraints that are automatically injected into the agent's context based on location or trigger conditions.
 - **[scripts/](./scripts/)**: MUST be used ONLY for utility scripts (Node.js, Bash) that are executed by AI agents (both temporary and permanent). Human-operated scripts do not belong here.
 - **[skills/](./skills/)**: Self-contained Markdown instruction files defining expert personas, validation workflows, and multi-step runbooks. Loaded on demand via progressive disclosure.
@@ -41,7 +41,7 @@ When creating, updating, or analyzing custom Agent Skills within this bounded co
 
 ## 4. Documentation Rules (Diátaxis & AST Variables)
 
-When agents write technical documentation for the monorepo (specifically in the `docs/` workspace):
+When agents write technical documentation for the monorepo (specifically in the `knowledge-base/` workspace):
 
 1. **Diátaxis Framework**: All documentation MUST be structured into four quadrants (`tutorials`, `guides`, `reference`, `explanation`). The AI must activate the `docusaurus-expert` skill for exact formatting instructions.
 2. **AST Project Variables**: Agents MUST NOT hardcode project names or domains. Instead, they must use tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` which are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace). The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens during the build.

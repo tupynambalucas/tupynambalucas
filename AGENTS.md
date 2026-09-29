@@ -28,7 +28,7 @@ This document serves as the root context router for AI agents operating in the
   and Zod-based data core library.
 - [renderer](./renderer/AGENTS.md): Dynamic asset generator and document compilation
   engine producing GitHub profile SVG cards and templated Markdown.
-- [docs](./docs/AGENTS.md): Docusaurus v3 knowledge base structured under the Diataxis
+- [knowledge-base](./knowledge-base/AGENTS.md): Docusaurus v3 knowledge base structured under the Diataxis
   framework with English and Portuguese (pt-BR) localization.
 - [shared](./shared/AGENTS.md): Foundational cross-workspace utilities, global configurations, and Git hooks.
 - [tools](./tools/AGENTS.md): GitHub CLI automation, repository provisioning scripts,
@@ -69,7 +69,7 @@ by name before beginning:
   file anywhere in the monorepo. This skill defines the 3-layer context hierarchy standard,
   `<context-hierarchy>` directive syntax, line budgets, and validation workflow.
 - **`markdown-expert`**: MUST be active when creating, updating, or reviewing any `README.md`,
-  `.md` skill file, or general Markdown document outside the `docs/` workspace.
+  `.md` skill file, or general Markdown document outside the `knowledge-base/` workspace.
 
 These skills are referenced by name only and are resolved by the active agent runtime. Do not
 reference skill files by filesystem path, as agents running in isolated container environments

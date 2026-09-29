@@ -1,0 +1,20 @@
+{
+  "name": "@monorepo/kb-collections",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./domains/*": "./domains/*",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@crowdin/crowdin-api-client": "catalog:docs-stack",
+    "extract-zip": "catalog:docs-stack"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/node": "catalog:"
+  }
+}

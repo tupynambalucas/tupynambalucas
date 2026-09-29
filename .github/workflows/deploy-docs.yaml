@@ -29,12 +29,12 @@ jobs:
         with:
           node-version: 22
           frozen-lockfile: 'false'
-          filter: '@monorepo/kb-docusaurus-monorepo...'
+          filter: '@monorepo/kb-docusaurus-portal...'
 
       - name: Generate Global Documents
         run: |
-          pnpm kb:docusaurus:monorepo:generate:changelog
-          pnpm kb:docusaurus:monorepo:generate:roadmap
+          pnpm kb:docusaurus:portal:generate:changelog
+          pnpm kb:docusaurus:portal:generate:roadmap
 
       - name: Commit and Push Compiled Documents
         run: |
@@ -48,10 +48,19 @@ jobs:
             git push
           fi
 
+      - name: Sync Crowdin Translations
+        uses: ./.github/actions/crowdin-sync
+        with:
+          collection: portal
+          crowdin_token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
       - name: Build documentation
-        run: pnpm kb:docusaurus:monorepo:build
+        run: pnpm kb:docusaurus:portal:build
         env:
           CLOUDFLARE_R2_ASSETS_PUBLIC_URL: ${{ secrets.CLOUDFLARE_R2_ASSETS_PUBLIC_URL }}
+          SYNC_TRANSLATIONS: 'true'
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
       - name: Idempotent Deploy to Cloudflare Pages
         uses: ./.github/actions/deploy-cloudflare-pages
@@ -59,6 +68,6 @@ jobs:
           api_token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
           account_id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           project_name: ${{ vars.CLOUDFLARE_PAGES_PROJECT_DOCS_NAME }}
-          directory: knowledge-base/docusaurus/services/monorepo/build
+          directory: knowledge-base/docusaurus/services/portal/build
           production_branch: develop
           custom_domain: 'docs.tupynambalucas.dev'

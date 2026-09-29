@@ -1,17 +1,17 @@
 ---
 name: docusaurus-expert
-description: Use this skill to create, analyze, or update technical documentation in the knowledge-base/docs/ workspace, ensuring MDX syntax compliance and strict adherence to the Diátaxis framework.
+description: Use this skill to create, analyze, or update technical documentation in the knowledge-base/ workspace, ensuring MDX syntax compliance and strict adherence to the Diátaxis framework.
 ---
 
 # Docusaurus Docs Expert
 
-This skill defines the authoritative standards, directory structures, design patterns, and validation workflows for the **workspace** Docusaurus Docs Hub (`knowledge-base/`).
+This skill defines the authoritative standards, directory structures, design patterns, and validation workflows for the **workspace** Knowledge Base (`knowledge-base/`).
 
 ---
 
 ## 1. Directory Structure & Diátaxis Standards
 
-The `knowledge-base/docs/` workspace officially adopts the **Diátaxis** framework. All documentation must be structured around user needs into four distinct quadrants. Do not organize files merely by topic.
+The `knowledge-base/` workspace officially adopts the **Diátaxis** framework. All documentation must be structured around user needs into four distinct quadrants. Do not organize files merely by topic.
 
 ### A. The Four Quadrants
 

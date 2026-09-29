@@ -12,11 +12,10 @@ import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-se
 
 export type MonorepoPresetOptions = {
   debug?: boolean;
-  docs?: false | DocsPluginOptions;
-  blog?: false | BlogPluginOptions;
+  docs?: false | DocsPluginOptions | DocsPluginOptions[];
+  blog?: false | BlogPluginOptions | BlogPluginOptions[];
   pages?: false | PagesPluginOptions;
-  roadmap?: false | DocsPluginOptions;
-  workspaces?: false | DocsPluginOptions;
+  crowdin?: false | { collection: string };
   sitemap?: false | SitemapPluginOptions;
   svgr?: false | SVGRPluginOptions;
   theme?: ThemeOptions;

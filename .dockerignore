@@ -40,12 +40,12 @@ skaffold.env
 **/Thumbs.db
 
 # Documentation and Non-Code Folders
-!docs/
-!docs/**
-docs/services/docusaurus/node_modules/
-docs/services/docusaurus/.docusaurus/
-docs/services/docusaurus/build/
-docs/services/docusaurus/.turbo/
+!knowledge-base/
+!knowledge-base/**
+knowledge-base/docusaurus/services/monorepo/node_modules/
+knowledge-base/docusaurus/services/monorepo/.docusaurus/
+knowledge-base/docusaurus/services/monorepo/build/
+knowledge-base/docusaurus/services/monorepo/.turbo/
 .agents/
 .github/
 .system_generated/
@@ -53,5 +53,6 @@ docs/services/docusaurus/.turbo/
 node_modules
 */*/node_modules
 */*/*/node_modules
-docs/packages/*/node_modules/
-docs/packages/*/dist/
+knowledge-base/docusaurus/packages/*/node_modules/
+knowledge-base/docusaurus/packages/*/dist/
+**/references

@@ -90,7 +90,7 @@ Executes an agent task. Supports Server-Sent Events (SSE) streaming.
 
 ```json
 {
-  "prompt": "Audit and update the API authentication guide in docs workspace",
+  "prompt": "Audit and update the API authentication guide in knowledge-base workspace",
   "persona": "auto",
   "model": "qwen2.5-coder:7b",
   "stream": true

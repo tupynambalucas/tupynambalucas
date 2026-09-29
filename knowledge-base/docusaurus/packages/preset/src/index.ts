@@ -6,6 +6,7 @@ import { createDocsInstances } from './plugins/content-docs/instances';
 import { createBlogInstance } from './plugins/content-blog/instances';
 import { createPagesInstance } from './plugins/content-pages/instances';
 import pluginStudioAssets from './plugins/webpack-loaders/studio-assets';
+import pluginCrowdin from './plugins/crowdin/index';
 
 const require = createRequire(import.meta.url);
 
@@ -32,8 +33,7 @@ export default function monorepoPreset(
     docs,
     blog,
     pages,
-    roadmap,
-    workspaces,
+    crowdin,
     sitemap,
     svgr,
     theme = {
@@ -99,6 +99,11 @@ export default function monorepoPreset(
   // Push local plugins directly instead of relying on docusaurus.config.ts
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
   plugins.push(pluginStudioAssets as any);
+  
+  if (crowdin) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+    plugins.push([pluginCrowdin as any, crowdin]);
+  }
 
   if (Object.keys(rest).length > 0) {
     throw new Error(

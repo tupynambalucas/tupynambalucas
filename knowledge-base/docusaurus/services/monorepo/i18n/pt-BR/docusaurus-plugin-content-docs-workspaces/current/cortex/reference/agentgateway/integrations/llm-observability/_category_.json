@@ -1,8 +1,0 @@
-{
-  "label": "Observabilidade de LLM",
-  "position": 3,
-  "link": {
-    "type": "generated-index",
-    "description": "Plataformas de observabilidade incluindo Langfuse, LangSmith e Arize Phoenix."
-  }
-}

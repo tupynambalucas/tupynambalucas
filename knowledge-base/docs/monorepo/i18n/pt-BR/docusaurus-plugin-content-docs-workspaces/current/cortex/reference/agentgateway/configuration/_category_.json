@@ -1,8 +1,0 @@
-{
-  "label": "Configuração",
-  "position": 3,
-  "link": {
-    "type": "generated-index",
-    "description": "Configuração estática, gateways, listeners, rotas, backends e políticas do AgentGateway."
-  }
-}

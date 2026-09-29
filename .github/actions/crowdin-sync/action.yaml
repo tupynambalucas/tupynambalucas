@@ -1,0 +1,19 @@
+name: 'Crowdin Sync'
+description: 'Download translations from Crowdin for a given collection'
+inputs:
+  collection:
+    description: 'The collection to sync translations for'
+    required: true
+  crowdin_token:
+    description: 'Crowdin Personal Access Token'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Download Translations
+      shell: bash
+      env:
+        CROWDIN_PERSONAL_TOKEN: $\{{ inputs.crowdin_token }}
+        SYNC_TRANSLATIONS: 'true'
+      run: |
+        pnpm --filter @monorepo/kb-collections run sync-translations --collection $\{{ inputs.collection }}

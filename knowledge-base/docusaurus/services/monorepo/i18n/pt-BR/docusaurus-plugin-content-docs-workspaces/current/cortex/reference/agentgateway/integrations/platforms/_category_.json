@@ -1,8 +1,0 @@
-{
-  "label": "Plataformas",
-  "position": 9,
-  "link": {
-    "type": "generated-index",
-    "description": "Ambientes de implantação em AWS, Azure, Docker, Google Cloud e Kubernetes."
-  }
-}
