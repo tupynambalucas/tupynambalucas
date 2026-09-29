@@ -1,6 +1,7 @@
 import type { Config } from '@docusaurus/types';
 import type { MonorepoPresetOptions } from '@monorepo/kb-docusaurus-preset/options';
 import { getBaseThemeConfig } from '@monorepo/kb-docusaurus-preset/themeConfig';
+import { projectVariablesParseFrontMatter } from '@monorepo/kb-docusaurus-preset';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -65,6 +66,7 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
+    parseFrontMatter: projectVariablesParseFrontMatter,
     hooks: {
       onBrokenMarkdownImages: 'ignore',
       onBrokenMarkdownLinks: 'ignore',
