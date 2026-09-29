@@ -1,0 +1,28 @@
+---
+title: Contributing
+slug: /contributing
+---
+
+# Contributing Guide
+
+Contributions to the %PROJECT_NAME% monorepo are welcome. We adhere to rigorous engineering standards to maintain system stability, performance, and portability.
+
+## Code of Conduct
+
+All contributors, maintainers, and reviewers are expected to uphold respectful, constructive, and inclusive professional communication across all repositories and platforms.
+
+## Development Workflow
+
+1. **Fork or Branch**: Create a dedicated feature branch from `develop`. Never push directly to `main` or `develop`.
+2. **Package Management**: Always use `pnpm` (version 12+). Do not use `npm` or `yarn`.
+3. **Commit Messages**: Enforce [Conventional Commits](https://www.conventionalcommits.org/) (e.g. `feat:`, `fix:`, `docs:`, `chore:`).
+4. **Validation & Checks**:
+   - Run `pnpm lint` to execute ESLint across workspace packages.
+   - Run `pnpm typecheck` to verify TypeScript compiler correctness.
+   - Run `pnpm format:check` to ensure Prettier compliance.
+
+## Pull Request Lifecycle
+
+- Provide a concise description detailing the motivation, scope of changes, and verification steps.
+- Ensure automated GitHub Actions CI checks pass completely before requesting review.
+- Squash and merge or rebase cleanly onto the target branch according to repository policy.

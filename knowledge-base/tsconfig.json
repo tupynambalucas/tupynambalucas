@@ -5,6 +5,6 @@
     { "path": "./docusaurus" }
   ],
   "exclude": [
-    "references"
+    "references/**"
   ]
 }

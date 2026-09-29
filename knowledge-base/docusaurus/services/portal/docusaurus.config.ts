@@ -120,18 +120,13 @@ const config: Config = {
             sidebarPath: require.resolve('@monorepo/kb-docusaurus-preset/sidebars'),
           }
         ],
-        blog: [
-          {
-            id: 'default',
-            path: path.join(collectionsRoot, 'domains/portal/content/blog'),
-            exclude: ['releases/**'],
-          },
-          {
-            id: 'releases',
-            path: path.join(collectionsRoot, 'domains/portal/content/releases'),
-            routeBasePath: 'releases',
-          }
-        ]
+        blog: {
+          path: path.join(collectionsRoot, 'domains/portal/content/blog'),
+          routeBasePath: 'blog',
+          showReadingTime: true,
+          blogSidebarCount: 'ALL',
+          blogSidebarTitle: 'All posts',
+        }
       } satisfies MonorepoPresetOptions,
     ],
   ],

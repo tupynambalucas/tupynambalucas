@@ -22,9 +22,17 @@ export function getBaseThemeConfig(projectConfig: any): ThemeConfig {
           position: 'left',
           label: 'Documentation',
         },
-        { to: '/workspaces', label: 'Workspaces', position: 'left' },
-        { to: '/roadmap', label: 'Roadmap', position: 'right' },
-        { to: '/changelog', label: 'Changelog', position: 'right' },
+        {
+          to: '/community/support',
+          label: 'Community',
+          position: 'left',
+          activeBaseRegex: '/community/',
+        },
+        {
+          to: '/blog',
+          label: 'Blog',
+          position: 'left',
+        },
         {
           type: 'localeDropdown',
           position: 'right',
@@ -90,7 +98,7 @@ export function getBaseThemeConfig(projectConfig: any): ThemeConfig {
             },
             {
               label: 'Roadmap',
-              to: '/roadmap',
+              to: '/community/roadmap',
             },
           ],
         },
