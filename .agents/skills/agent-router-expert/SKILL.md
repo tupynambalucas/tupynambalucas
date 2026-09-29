@@ -111,6 +111,23 @@ the correct consolidation points for service-level guardrails.
 
 ---
 
+## 2.3. Grouped Directory Tree Pattern
+
+When an intermediate router directory (such as a bounded context or sub-domain hub) organizes child
+workspaces inside structural category folders (e.g. `packages/`, `services/`, `plugins/`):
+
+- Intermediate category folders without independent architecture MUST NOT receive their own
+  standalone `AGENTS.md` file (in compliance with the Placement Policy).
+- The parent router's `AGENTS.md` MUST reference both the category folder and all child workspaces
+  in an indented tree structure.
+- The parent category directory must be linked as a directory (e.g., `- [packages/](./packages/): ...`),
+  followed by indented items linking directly to each child workspace's `AGENTS.md`
+  (e.g., `  - [preset/](./packages/preset/AGENTS.md): ...`).
+- Each child Layer-3 `AGENTS.md` points its `<context-hierarchy>` parent attribute directly to the
+  parent router file (e.g., `../../AGENTS.md`).
+
+---
+
 ## 2.5. Required Skills Declaration Standard
 
 When an `AGENTS.md` file governs a workspace where agents perform documentation tasks requiring a specialized skill, the skill MUST be declared in a `Required Skill` (or `Required Skills`) section.

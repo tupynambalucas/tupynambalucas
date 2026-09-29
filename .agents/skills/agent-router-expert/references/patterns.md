@@ -58,6 +58,12 @@ This file defines the domain rules, local stack services, and workspace structur
 ## Bounded Context Navigation
 
 - Links to sub-workspaces (Core, services/api, services/web, etc.).
+- When workspaces are grouped under category folders, use a nested tree:
+  - [packages/](./packages/): Shared libraries and configuration modules.
+    - [preset/](./packages/preset/AGENTS.md): Reusable presets and plugin bundles.
+    - [theme/](./packages/theme/AGENTS.md): Presentation layer and shadowed components.
+  - [services/](./services/): Deployable applications and background processes.
+    - [portal/](./services/portal/AGENTS.md): Primary web application or portal service.
 
 ## Ubiquitous Language
 

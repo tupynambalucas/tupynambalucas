@@ -1,34 +1,33 @@
 <context-hierarchy>
-  <parent src="../AGENTS.md" type="bounded-context-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
   <system-instruction>
-    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
-    file-reading tools before proceeding.
+    AGENT: If you have not read "../../AGENTS.md" in this session, stop now and read it using your
+    file-reading tools before proceeding. Local constraints are mandatory.
   </system-instruction>
 </context-hierarchy>
 
-# Docusaurus Service Context
+# Sub-Domain: Portal Documentation Service
 
-This workspace ([monorepo/](./)) manages the main Docusaurus build engine for the %PROJECT_DOMAIN% knowledge base.
+This workspace ([portal/](./)) manages the primary Docusaurus documentation portal for the %PROJECT_DOMAIN% knowledge base.
 
 ---
 
 ## 1. Local Architecture
 
-This workspace is strictly an engine and DOES NOT contain raw markdown documentation. All content is dynamically consumed from the `../../../docs/monorepo/` workspace.
+This workspace is strictly a presentation and compilation engine. All documentation, community pages, and blog posts are dynamically consumed from the sibling collections workspace (`../../../collections/domains/portal/content/`).
 
 - [src/](./src/): Custom React components, page templates, and layouts.
   - [src/pages/](./src/pages/): MDX landing pages and custom layout files.
-- [scripts/](./scripts/): Task scripts orchestrating documentation dev/build pipelines.
-- [tooling/](./tooling/): Utility scripts compiling raw git history into changelogs, roadmaps, and syncing i18n translations.
-- [docusaurus.config.ts](./docusaurus.config.ts): Primary Docusaurus configuration.
+- [scripts/](./scripts/): Scripts orchestrating documentation dev/build pipelines.
+- [docusaurus.config.ts](./docusaurus.config.ts): Primary Docusaurus configuration wiring presets, collections, and plugins.
 
 ---
 
 ## 2. Workspace Guardrails
 
 1. **AST Variable Transformer**: The workspace uses the `remark-project-variables` AST plugin (provided by the preset). Agents MUST write agnostic tokens like `%PROJECT_DOMAIN%` instead of hardcoded brand names.
-2. **Translation Synchronization**: Docusaurus requires the `i18n` directory to be present locally. The `tooling/sync-i18n.ts` script automatically injects the translations from `../../../docs/monorepo/i18n` into this workspace at build/dev time. Agents MUST NOT permanently edit translation files inside this workspace; edits must be made in the `docs` workspace.
-3. **No Content Creation**: Agents MUST NOT create `handbook/`, `workspaces/`, or `roadmap/` directories inside this workspace. All documentation authoring must happen in the `knowledge-base/docs/monorepo/` sub-domain.
+2. **Translation Synchronization**: Docusaurus requires the `i18n/` directory to be present locally during build. The preset Crowdin plugin automatically copies translations from `../../../collections/domains/portal/translations/` into `i18n/`. Agents MUST NOT edit files in `i18n/` manually.
+3. **No Direct Content Creation**: Agents MUST NOT create `docs/`, `community/`, or `blog/` content directories inside this workspace. All documentation authoring must happen in the `knowledge-base/collections/domains/portal/content/` workspace.
 
 ---
 
@@ -42,8 +41,10 @@ When creating, updating, or reviewing any configuration or `.mdx` file within th
 
 Run these scripts via pnpm filters from the monorepo root:
 
-- `pnpm kb:docusaurus:monorepo:dev`: Runs the development server.
-- `pnpm kb:docusaurus:monorepo:build`: Executes the Docusaurus production build pipeline.
-- `pnpm kb:docusaurus:monorepo:typecheck`: Validates TypeScript type safety.
-- `pnpm kb:docusaurus:monorepo:generate:changelog`: Compiles the official changelog page.
-- `pnpm kb:docusaurus:monorepo:generate:roadmap`: Compiles the official roadmap page.
+- `pnpm kb:docusaurus:portal:dev`: Runs the development server on port 3002.
+- `pnpm kb:docusaurus:portal:dev:pt`: Runs development server for Portuguese locale.
+- `pnpm kb:docusaurus:portal:build`: Executes the Docusaurus production build for all locales (`en`, `pt-BR`).
+- `pnpm kb:docusaurus:portal:preview`: Builds and serves the static production output.
+- `pnpm kb:docusaurus:portal:typecheck`: Validates TypeScript type safety.
+- `pnpm kb:docusaurus:portal:lint`: Runs ESLint quality checks.
+- `pnpm kb:docusaurus:portal:clear`: Clears Docusaurus build caches.
