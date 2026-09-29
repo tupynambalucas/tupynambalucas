@@ -1,54 +1,78 @@
-# @monorepo/kb-docusaurus-monorepo
+# @monorepo/kb-docusaurus-portal
 
-This is the central, authoritative Docusaurus build engine for the %PROJECT_DOMAIN% project monorepo. Built with Docusaurus v3, it provides a high-performance, strictly-typed technical and product knowledge base.
-
----
-
-## Structure & Content
-
-This workspace strictly acts as a rendering engine. All raw documentation content is stored in the sibling `knowledge-base/docs/monorepo` workspace.
-
-- **[src/](./src/)**: Custom React components, page templates, and site-level CSS.
-- **[scripts/](./scripts/)**: Task scripts orchestrating documentation dev/build pipelines.
-- **[tooling/](./tooling/)**: Utility scripts compiling raw git history into changelogs, roadmaps, and i18n synchronization.
-- **[docusaurus.config.ts](./docusaurus.config.ts)**: Primary Docusaurus entrypoint (consumes the custom preset).
+Central Docusaurus documentation portal for %PROJECT_DOMAIN%. Built with Docusaurus v3 and Rspack, providing high-performance static site generation for technical documentation, community guides, and engineering releases.
 
 ---
 
-## AST Variables Plugin
+## Architecture & Content Ingestion
 
-This workspace utilizes a custom `remark-project-variables` plugin (via `@monorepo/kb-docusaurus-preset`) to prevent hardcoded brand names.
+This workspace acts purely as a presentation and compilation engine. All raw documentation, community guides, and blog articles are consumed dynamically from the sibling collections workspace (`knowledge-base/collections/domains/portal/content/`).
 
-- You MUST write agnostic tokens like `%PROJECT_DOMAIN%` in all `.mdx` files.
-- The plugin intercepts the AST (Abstract Syntax Tree) during build time and resolves the tokens using `project.config.json`.
-- This ensures the raw markdown remains copy-pasteable and generic for AI agents and template reuse.
+- **[src/pages/](./src/pages/)**: Interactive landing pages, custom layouts, and MDX entrypoints.
+- **[scripts/](./scripts/)**: Scripts managing dev server execution and production build routines.
+- **[docusaurus.config.ts](./docusaurus.config.ts)**: Primary configuration module configuring presets, content instances, and webpack aliases.
+
+---
+
+## AST Project Variables
+
+This workspace utilizes the `remark-project-variables` plugin (injected by `@monorepo/kb-docusaurus-preset`) to avoid hardcoded brand names.
+
+- Authors MUST use agnostic tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` in all `.mdx` files.
+- The plugin intercepts the AST during compilation and resolves tokens against `@monorepo/shared-config/project.config.json`.
+- This preserves content portability across environments and repositories.
+
+---
+
+## Localization & Crowdin Integration
+
+Localization is managed through Crowdin:
+
+1. **Source Content**: Authored in English (`en`) inside `collections/domains/portal/content/`.
+2. **Translation Sync**: The preset Crowdin plugin copies downloaded translations from `collections/domains/portal/translations/` directly into `i18n/` at build time.
+3. **CI/CD Workflow**: The `.github/actions/crowdin-sync` composite action runs during deploy pipelines to pull fresh translations prior to production builds.
 
 ---
 
 ## Local Development
 
-Execute commands from the monorepo root using pnpm filtering:
+Execute commands from the monorepo root using pnpm:
 
 ```bash
-pnpm kb:docusaurus:monorepo:dev     # Start in English (default) - http://localhost:3002
-pnpm kb:docusaurus:monorepo:dev:pt  # Start in Brazilian Portuguese (pt-BR)
+# Start development server on port 3002 (English)
+pnpm kb:docusaurus:portal:dev
+
+# Start development server in Brazilian Portuguese (pt-BR)
+pnpm kb:docusaurus:portal:dev:pt
+
+# Clear Docusaurus cache
+pnpm kb:docusaurus:portal:clear
 ```
 
 ---
 
-## Build Pipelines
+## Build & Preview
 
 ```bash
-pnpm kb:docusaurus:monorepo:build
-```
+# Production static site compilation for all locales (en, pt-BR)
+pnpm kb:docusaurus:portal:build
 
-The static site will be generated in the `build/` directory using an optimized SSG pipeline.
+# Build and preview production output locally
+pnpm kb:docusaurus:portal:preview
+
+# TypeScript type safety check
+pnpm kb:docusaurus:portal:typecheck
+
+# ESLint quality checks
+pnpm kb:docusaurus:portal:lint
+```
 
 ---
 
 ## Deployment
 
-The documentation is automatically deployed to Cloudflare Pages via GitHub Actions.
+The portal documentation is compiled and deployed via GitHub Actions:
 
-- **Workflow:** `.github/workflows/deploy-docs.yaml`
-- **Authoritative URL:** [https://docs.%PROJECT_DOMAIN%](https://docs.%PROJECT_DOMAIN%)
+- **Workflow**: `.github/workflows/deploy-docs.yaml`
+- **Composite Action**: `.github/actions/crowdin-sync`
+- **Public Domain**: `https://docs.%PROJECT_DOMAIN%`
