@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/preset" },
+    { "path": "./packages/theme" },
+    { "path": "./services/monorepo/tsconfig.build.json" }
+  ]
+}

@@ -1,0 +1,86 @@
+---
+title: Integração de IA
+sidebar_label: Integração de IA
+sidebar_position: 3
+---
+
+{ }
+
+# Integração de IA no %PROJECT_DOMAIN%
+
+A plataforma **%PROJECT_DOMAIN%** é construída desde o início para suportar fluxos de trabalho nativos de IA. Em vez de tratar os agentes como meras ferramentas de chat, o monorepo fornece uma infraestrutura conteinerizada que monta ambientes de código diretamente aos LLMs, conecta o estúdio de design aos agentes via Model Context Protocol (MCP) e garante paridade entre os runtimes do host e do container.
+
+---
+
+## 1. Visão Geral e Arquitetura
+
+Para uma visão de alto nível de como as ferramentas de IA e os sistemas de design se encaixam no monorepo global, consulte a **[Visão Geral da Arquitetura Técnica](/docs/explanation/architecture-overview)**.
+
+Nossa integração de IA baseia-se em três pilares principais:
+
+1. **Ecossistema MCP (`cortex/mcp`)**: Expõe a base de código e ferramentas cruciais do host (GitHub, navegador, documentações) para sessões ativas de LLM por meio de gateways Server-Sent Events (SSE).
+2. **Terminais de Desenvolvimento Conteinerizados (`cortex/agents`)**: Nós de CLI isolados que rodam a CLI Google Antigravity (`agy`) e a CLI GitHub Copilot em Docker. Eles se comunicam com o gateway MCP internamente.
+3. **Automação do Sistema de Design (`studio/penpot/aide`)**: Uma instância autohospedada do Penpot acoplada ao serviço de IA `aide`, permitindo a automação da geração de componentes e ativos vetoriais.
+
+---
+
+## 2. Ecossistema do Model Context Protocol (MCP)
+
+O ecossistema MCP fornece um gateway unificado e seguro permitindo que os agentes de IA executem ações e busquem contextos em tempo real.
+
+### Componentes Arquiteturais
+
+- **Fastify Ingress Gateway (`agentgateway`)**: Expõe endpoints HTTP internos representando cada servidor MCP. Ele coordena o roteamento na porta `8080` (host e rede interna).
+- **Adaptadores SSE Zero-Dependency**: Servidores stdio padrão são encapsulados em adaptadores Fastify customizados (`sse-adapter.ts`) para transmitir mensagens JSON-RPC via Server-Sent Events HTTP.
+
+### Servidores Configurados
+
+1. **GitHub MCP Server**: Permite que os agentes gerenciem branches, commits e pull requests diretamente do workspace.
+2. **Context7 MCP Server**: Consulta documentação técnica em tempo real para dependências (React 19, Fastify 5) para garantir exatidão.
+3. **Browser MCP Server (Playwright)**: Inicializa um navegador Chrome headless para executar auditorias de UI, capturar telas e testar frontends.
+4. **Docker Hub MCP Server**: Valida tags do Docker Hub upstream e atualiza manifestos de containers.
+
+:::info[Configuração Detalhada]
+Para registros completos de servidores, lógica de adaptadores Fastify SSE, roteamento e configurações, consulte o **[Guia de Instalação do Workspace Cortex](/workspaces/cortex)**.
+:::
+
+---
+
+## 3. Agentes de IA Conteinerizados
+
+Para evitar instalações manuais complexas e corrupção de estado na máquina host, executamos os terminais de IA dentro de containers Docker dedicados de longa duração.
+
+### Paridade e Estratégia de Montagem
+
+Os containers dos agentes montam caminhos cruciais do monorepo para garantir a paridade sem expor arquivos a pastas globais do host:
+
+- **Diretório de Trabalho do Monorepo**: Montado em `/workspace` para geração de código com latência zero.
+- **Docker-out-of-Docker (DooD)**: Monta o socket `/var/run/docker.sock` para compilar e testar imagens contra o daemon do host. Em ambientes Podman, o socket do host (geralmente `/run/user/1000/podman/podman.sock` para execução rootless ou `/var/run/podman/podman.sock`) é montado ou emulado para fornecer compatibilidade com a CLI do Docker.
+- **Persistência de Sessão**: Mapeia os dados do copilot e antigravity para manter as credenciais de autenticação ativas entre reinicializações de containers.
+- **Habilidades Compartilhadas**: A pasta `./skills/` compartilha as diretrizes contextuais (como `code-expert` e `docusaurus-kb-expert`) com os agentes.
+
+:::caution[Requisito de Sequência de Inicialização]
+O gateway e a stack do MCP devem estar em execução antes de iniciar a stack de agentes. Iniciar os agentes antes do gateway produzirá um erro de resolução de rede do Docker.
+:::
+
+:::info[Instalação Detalhada]
+Para mapeamentos de volumes, persistência de autenticação e tarefas do VS Code, consulte o **[Guia de Instalação do Workspace Cortex](/workspaces/cortex)**.
+:::
+
+---
+
+## 4. Integração Penpot & Aide AI
+
+Nosso estúdio de design colaborativo integra o assistente de IA **Aide** para sincronizar ativos visuais da marca com a implementação no código.
+
+### Ponte de Comunicação
+
+O Aide opera dentro da rede isolada `penpot-net` via WebSockets bidirecionais. Ele usa a porta `4402` para interagir com a API de Plugins do Penpot, permitindo que agentes executem auditorias de design e manipulação de camadas.
+
+### Protocolo de Sincronização Código-Design
+
+A geração de código a partir do design deve respeitar as seguintes regras:
+
+- **Design Baseado em Tokens**: Cores e tipografias devem referenciar as propriedades CSS customizadas declaradas em `src/tokens/`.
+- **Otimização de SVGs**: Ativos vetoriais devem ser compilados no registro central de componentes do Studio.
+- **Reuso de Componentes**: Priorize o uso de componentes React existentes em `@repo/hub/web` antes de gerar novos elementos visuais.

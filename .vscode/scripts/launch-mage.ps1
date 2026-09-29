@@ -1,13 +1,12 @@
 # .vscode/scripts/launch-cli.ps1
 
-# Limpa a tela para uma inicialização limpa
+# Clear the screen for a clean initiation
 Clear-Host
 
-Write-Host "Init Mage..." -ForegroundColor Cyan
+Write-Host "Tossing a coin to your Witcher..." -ForegroundColor DarkBlue
 
-# (Opcional) Aqui você poderia adicionar checagens lógicas, por exemplo:
-# Esperar o backend ou containers Docker subirem antes de iniciar a TUI
+# (Optional) Wait for backend or Docker containers
 # Start-Sleep -Seconds 2 
 
-Write-Host "Be ware o Mago..." -ForegroundColor Green
+Write-Host "Witcher senses tingling... Hide your bugs and monsters!" -ForegroundColor Red
 Write-Host "--------------------------------" -ForegroundColor DarkGray

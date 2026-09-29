@@ -1,0 +1,26 @@
+---
+title: ADR-003 Estratégia de Build Docker
+---
+
+# ADR-003: Builds Docker Multi-Stage com Turbo Prune e BuildKit Caching
+
+## Contexto
+
+O monorepo contém múltiplos microsserviços Node.js (por exemplo, servidores API, serviços MCP, web frontends) gerenciados via PNPM workspaces e Turborepo. Compilar essas imagens Docker concorrentemente via Skaffold anteriormente levava a ineficiências:
+
+1. Copiar todo o package.json raiz e workspaces acionava invalidações de cache em todos os serviços sempre que um pacote não relacionado era alterado.
+2. Comandos independentes de pnpm install dentro de cada contexto de build Docker desperdiçavam banda e duplicavam entradas de cache para dependências idênticas.
+
+## Decisão
+
+Nós padronizaremos todos os Dockerfiles Node.js no monorepo para usar uma arquitetura Multi-Stage aproveitando o pruning do Turborepo e montagens de cache do Docker BuildKit:
+
+1. **Turborepo Prune (`turbo prune --docker`)**: Um estágio inicial pruner cria um snapshot isolado e mínimo do workspace específico e suas dependências internas (out/json e out/full).
+2. **Cache Mount Compartilhado do BuildKit (`id=pnpm-store-shared`)**: Os estágios `builder` e deployer usam `--mount=type=cache,id=pnpm-store-shared,target=/pnpm/store`. Isso permite que builds concorrentes do Skaffold compartilhem o mesmo store virtual do PNPM no daemon host, garantindo que os pacotes sejam baixados exatamente uma vez.
+3. **Isolamento do Deployer (`pnpm deploy`)**: Builds de produção utilizam `pnpm --filter \<workspace\> --prod deploy` para extrair um ambiente de produção autocontido livre de dependências de desenvolvimento ou artefatos de código-fonte.
+
+## Consequências
+
+- Os tempos de build são reduzidos significativamente por meio de uma taxa de acerto de cache de camada de 90% e downloads de rede com zero duplicação.
+- As imagens Docker são incrivelmente leves, contendo apenas ativos compilados e dependências de produção.
+- Alterações em um workspace não invalidam o cache de build Docker de workspaces não relacionados.

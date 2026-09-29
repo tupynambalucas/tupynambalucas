@@ -22,7 +22,7 @@ resources:
   - ../../manifests/studio-memos.yaml
   - ../../manifests/studio-memos-seed.yaml
   - ../../manifests/docs-namespace.yaml
-  - ../../manifests/docs-docusaurus.yaml
+  - ../../manifests/kb-docusaurus-monorepo.yaml
 
 secretGenerator:
   - name: cortex-secrets

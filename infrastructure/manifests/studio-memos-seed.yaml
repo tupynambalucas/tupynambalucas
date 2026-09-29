@@ -71,21 +71,22 @@ spec:
                 console.log("[seed] Checking if admin user exists...");
                 const email = process.env.MEMOS_ADMIN_EMAIL || "admin@tupynambalucas.dev";
                 const password = process.env.MEMOS_ADMIN_PASSWORD || "Namba47913@";
+                const username = process.env.MEMOS_ADMIN_USERNAME || "tupynambalucasdev";
 
-                const res = await client.query("SELECT id FROM \"user\" WHERE username = $1", [email]);
+                const res = await client.query("SELECT id, username FROM \"user\" WHERE email = $1", [email]);
                 
                 if (res.rowCount === 0) {
                    console.log("[seed] Admin user not found. Creating...");
                    const hash = bcrypt.hashSync(password, 12);
                    await client.query(
                      "INSERT INTO \"user\" (username, role, email, nickname, password_hash, avatar_url, description) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-                     [email, "HOST", email, "Admin", hash, "", ""]
+                     [username, "HOST", email, "Admin", hash, "", ""]
                    );
                    console.log("[seed] Admin user seeded successfully!");
                 } else {
                    console.log("[seed] Admin user already exists. Updating password...");
                    const hash = bcrypt.hashSync(password, 12);
-                   await client.query("UPDATE \"user\" SET password_hash = $1 WHERE username = $2", [hash, email]);
+                   await client.query("UPDATE \"user\" SET password_hash = $1 WHERE email = $2", [hash, email]);
                    console.log("[seed] Admin password updated successfully!");
                 }
 

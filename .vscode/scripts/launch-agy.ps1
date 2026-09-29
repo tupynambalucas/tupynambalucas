@@ -1,16 +1,15 @@
 # .vscode/scripts/launch-cli.ps1
 
-# Limpa a tela para uma inicialização limpa
+# Clear the screen for a clean initiation
 Clear-Host
 
-Write-Host "Preparando ambiente da Workspace..." -ForegroundColor Cyan
+Write-Host "Disabling gravity modules... Please hold on to your keyboard." -ForegroundColor Cyan
 
-# (Opcional) Aqui você poderia adicionar checagens lógicas, por exemplo:
-# Esperar o backend ou containers Docker subirem antes de iniciar a TUI
+# (Optional) Wait for backend or Docker containers
 # Start-Sleep -Seconds 2 
 
-Write-Host "Iniciando Antigravity CLI..." -ForegroundColor Green
+Write-Host "Houston, we have zero gravity! Floating bugs might hit the ceiling..." -ForegroundColor Green
 Write-Host "--------------------------------" -ForegroundColor DarkGray
 
-# Executa o comando
+# Execute the CLI
 agy

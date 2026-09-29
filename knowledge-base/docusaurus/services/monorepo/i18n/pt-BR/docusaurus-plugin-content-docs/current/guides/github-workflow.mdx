@@ -1,0 +1,127 @@
+---
+title: Fluxo de Trabalho do GitHub
+description: Como colaborar, criar branches e lançar releases usando nossos padrões do GitHub e Git Flow.
+---
+
+# Fluxo de Trabalho do GitHub
+
+Este guia mostra como usar nosso modelo de ramificação (branching) e estratégia de release, combinando Git Flow com o GitHub CLI.
+
+## Modelo de Ramificação (Branching Model)
+
+Seguimos o modelo padrão do Git Flow para garantir a estabilidade do nosso código de produção, adaptado para a nossa estrutura de monorepo.
+
+| Branch          | Propósito                                                            | Estabilidade      |
+| :-------------- | :------------------------------------------------------------------- | :---------------- |
+| **`main`**      | Lançamentos de produção. Cada commit é uma tag de release.           | **Ultra Estável** |
+| **`develop`**   | Desenvolvimento do próximo release. Branch de integração.            | **Estável**       |
+| **`feature/*`** | Novos recursos ou alterações de UI. Criado a partir da `develop`.    | Experimental      |
+| **`bugfix/*`**  | Correções de bugs para o próximo ciclo de desenvolvimento.           | Experimental      |
+| **`release/*`** | Preparação para um novo release de produção.                         | Polimento Final   |
+| **`hotfix/*`**  | Correções de bugs críticos para a versão de produção.                | Urgente           |
+| **`support/*`** | Branches de suporte de longo prazo para releases principais antigos. | Estável           |
+
+### Configuração da CLI do Git Flow
+
+Nosso repositório local está configurado com os seguintes prefixos e regras de tags:
+
+```ini
+Branch name for production releases: main
+Branch name for "next release" development: develop
+Feature branch prefix: feature/
+Bugfix branch prefix: bugfix/
+Release branch prefix: release/
+Hotfix branch prefix: hotfix/
+Support branch prefix: support/
+Version tag prefix: v
+```
+
+---
+
+## Requisitos de Ferramental
+
+Para seguir este fluxo de trabalho de forma eficiente, recomendamos:
+
+1.  **Git Flow CLI (AVH Edition)**: Geralmente incluído no Git para Windows ou disponível via pacote `gitflow`.
+2.  **GitHub CLI (`gh`)**: Usado para Pull Requests, monitoramento de status e lançamentos oficiais.
+
+---
+
+### 1. Iniciando uma Nova Feature
+
+Sempre crie uma ramificação (branch) a partir da `develop`. Consulte a [Referência de Comandos](../reference/commands.mdx#git-e-controle-de-versão) para o comando `git flow` exato.
+
+### 2. Colaborando e Propondo Alterações
+
+Em vez de mesclar localmente, usamos **Pull Requests** para revisão de código e validação de CI.
+
+1.  **Envie sua branch (push)** para o repositório remoto.
+2.  **Crie um Pull Request** direcionado à `develop` (consulte a [Referência de Comandos](../reference/commands.mdx#git-e-controle-de-versão) para o comando `gh pr` correspondente).
+
+### 3. Estratégia de Mesclagem Sênior (Squash & Merge)
+
+Para manter o histórico da `develop` limpo e significativo, usamos **Squash Merges**. Isso combina todos os commits de uma branch de feature em um único commit bem descrito na `develop`.
+
+- **Ação**: Faça a mesclagem pela interface web do GitHub ou pela CLI usando o método `squash` (consulte a [Referência de Comandos](../reference/commands.mdx#git-e-controle-de-versão) para o comando CLI correspondente).
+
+---
+
+## Fluxo de Lançamento & Versionamento (Changesets)
+
+Usamos **Changesets** combinados com **GitHub Actions** para automatizar nosso versionamento, compilação de changelogs e Pull Requests de release. Os desenvolvedores não atualizam as versões dos pacotes manualmente nos arquivos `package.json`.
+
+### 1. Gerando um Changeset (Local)
+
+Quando seu recurso ou correção de bug estiver pronto e antes de abrir um Pull Request:
+
+1. Execute a ferramenta interativa de changeset a partir da raiz do repositório (consulte a [Referência de Comandos](../reference/commands.mdx#git-e-controle-de-versão)).
+2. Selecione o(s) pacote(s) que foram modificados usando a barra de espaço.
+3. Escolha o nível apropriado de atualização de SemVer (Major para alterações que quebram a compatibilidade, Minor para novos recursos compatíveis com versões anteriores ou Patch para correções de bugs).
+4. Forneça uma descrição técnica clara da alteração (em inglês, em conformidade com nossos padrões de commit).
+5. Um arquivo markdown temporário será criado no diretório `.changeset/` (ex: `.changeset/warm-dogs-run.md`).
+6. Commite este arquivo markdown junto com seu código e envie-o com sua branch de feature.
+
+:::tip[Mantenha os Changesets Pequenos]
+Crie um changeset por alteração isolada. Se uma branch de feature tiver várias correções ou adições independentes, você pode executar `pnpm version:changeset` várias vezes para gerar notas separadas para cada uma.
+:::
+
+### 2. Pipeline de Versionamento Automatizado (GitHub Actions)
+
+Nosso fluxo de trabalho de CI/CD lida com a atualização de versão automaticamente quando o código é integrado:
+
+1. **Pull Request & Integração**: Os desenvolvedores abrem um Pull Request direcionado à branch `develop`.
+2. **Mesclagem na `develop`**: Uma vez aprovado e mesclado na `develop`, a Action do GitHub **Manage Version Bumps and Releases** é acionada.
+3. **Geração de PR de Release**:
+   - O fluxo de trabalho analisa os arquivos `.changeset/*.md` presentes na branch.
+   - Ele calcula as novas versões, consome (exclui) os arquivos markdown temporários de changeset, atualiza os respectivos arquivos `package.json` e atualiza os changelogs dos pacotes locais.
+   - Ele commita automaticamente essas alterações e cria (ou atualiza) um Pull Request aberto no GitHub chamado `chore(release): version packages` direcionado à `develop`.
+
+### 3. Finalizando o Lançamento (Apenas Mantenedores)
+
+Para publicar e finalizar o lançamento:
+
+1. Abra o Pull Request automatizado `chore(release): version packages` no GitHub.
+2. Revise as alterações de versão e changelogs compilados.
+3. Mescle o Pull Request na `develop`. Como os arquivos de changeset já foram consumidos e excluídos, mesclar este PR consolida as novas versões dos pacotes no repositório.
+
+:::info[Sem Atualizações de Versão Manuais]
+Nunca edite o campo `"version"` no arquivo `package.json` de um pacote manualmente durante uma branch de feature normal. Sempre confie no `pnpm version:changeset` e deixe que o pipeline do GitHub Actions gerencie os lançamentos.
+:::
+
+---
+
+## Correções Críticas (Hotfixes)
+
+Se um bug for encontrado em produção:
+
+1.  Inicie e finalize uma branch de hotfix.
+2.  Consulte a [Referência de Comandos](../reference/commands.mdx#git-e-controle-de-versão) para os comandos exatos de `git flow hotfix`.
+3.  Sincronize tanto a `main` quanto a `develop`.
+
+---
+
+## Boas Práticas do Repositório
+
+- **Não faça commits diretos na `main` ou `develop`**: Sempre use branches de feature e PRs.
+- **Não faça Force Push**: Exceto em sua própria branch de feature isolada e se for estritamente necessário para um rebase.
+- **Não faça Mesclagens Sujas (Dirty Merges)**: Evite mesclar a `main` de volta na `feature/*`. Sempre faça **rebase** sobre a `develop` se sua branch de feature ficar desatualizada.

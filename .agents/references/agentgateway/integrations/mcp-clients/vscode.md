@@ -1,90 +1,39 @@
-# VS Code
+# Windows Terminal Integration & JSON Fragments
 
-Connect VS Code with GitHub Copilot to agentgateway
+This document describes how to manage Windows Terminal profiles locally within a repository without forcing users to manually edit their global Windows Terminal `settings.json` app configuration.
 
-Configure Visual Studio Code to use **agentgateway** via GitHub Copilot’s native MCP support.
+## The Problem
+Windows Terminal (`wt.exe`) **does not** support a command-line argument like `--settings ./local-settings.json` to load an arbitrary configuration file. The settings path is strictly hardcoded to the application's `LocalState` directory.
 
-## Before you begin
+## The Solution: JSON Fragment Extensions
+Windows Terminal supports **JSON Fragment Extensions**. This allows applications (or scripts) to drop small `.json` files containing profile definitions into a specific system folder. Windows Terminal dynamically reads these fragments and merges them into the user's available profiles.
 
-1. [Install and run agentgateway](../../quickstart/mcp.md).
-2. Confirm agentgateway is up by opening the [agentgateway UI](http://localhost:15000/ui).
-3. Use the MCP endpoint `http://localhost:3000/mcp/http` to connect your client to agentgateway. If you run agentgateway on a different host or port, replace `localhost:3000` in the examples accordingly.
-
-- Install **VS Code (1.92+)** with the **GitHub Copilot** extension.
-- Enable **GitHub Copilot Chat**.
-- In the GitHub Copilot Chat, make sure that **Agent Mode** is active (MCP tools are primarily utilized when Copilot is in “Agent” mode).
-
-## Server configuration
-
-Configure your MCP server in the `mcp.json` file in the root directory of your project. For more
-locations, refer to the [VS
-Code](https://code.visualstudio.com/docs/agent-customization/mcp-servers) docs. If your MCP server
-is running on a different host and port, update the URL accordingly.
-
-```
+### Fragment Structure
+A fragment file (e.g., `profiles.json`) looks like this:
+```json
 {
-  "servers": {
-    "agentgateway": {
-      "type": "http",
-      "url": "http://localhost:3000/mcp"
+  "profiles": [
+    {
+      "name": "Project X - Admin CLI",
+      "commandline": "pwsh.exe",
+      "elevate": true,
+      "startingDirectory": "D:\\projects\\tupynambalucas",
+      "colorScheme": "Campbell Powershell",
+      "icon": "ms-appx:///ProfileIcons/pwsh.png"
     }
-  }
+  ]
 }
 ```
 
-## Authentication
+### Where to Place Fragments
+To make Windows Terminal read your custom profiles without editing the main app, the JSON fragment must be placed (or symlinked) into:
+`%LOCALAPPDATA%\Microsoft\Windows Terminal\Fragments\{AppName}\{file-name}.json`
 
-You have two ways to handle security, depending on your setup: native MCP authentication flow or
-manual bearer token.
+*Note: `{AppName}` can be any custom folder name you choose for your project.*
 
-### Option 1: Native MCP authentication flow
+### Implementation Strategy for this Repository
+1. **Store locally:** Keep your custom `.json` profiles inside `.vscode/terminal-windows/Fragments/`.
+2. **Symlink script:** Create an initialization script (`setup-terminal.ps1`) that creates a Symbolic Link from the `.vscode` fragments folder to the `%LOCALAPPDATA%` fragments folder.
+3. **Usage:** Once linked, the VS Code tasks can simply call `wt.exe --profile "Project X - Admin CLI"` and Windows Terminal will instantly recognize it.
 
-If your agentgateway proxy is configured to use an OIDC/OAuth provider (like Okta or Entra ID), VS
-Code automatically detects the challenge and prompts you to “Sign In” via a browser pop-up.
-
-```
-{
-  "servers": {
-    "agentgateway": {
-      "type": "http",
-      "url": "http://localhost:3000/mcp"
-    }
-  }
-}
-```
-
-### Option 2: Manual bearer token
-
-If you prefer to explicitly pass a token, such as for local development or simple API key setups,
-use the `headers` object.
-
-```
-{
-  "servers": {
-    "agentgateway": {
-      "type": "http",
-      "url": "http://localhost:3000/mcp",
-      "headers": {
-        "Authorization": "Bearer your-token-here"
-      }
-    }
-  }
-}
-```
-
-## Verify the connection
-
-In agentgateway, run a configuration that includes the URL that you configured in the `mcp.json`
-file.
-
-In VS Code:
-
-1. **Reload Window:** Run `Cmd/Ctrl + Shift + P`, then search for and select **“Developer: Reload Window”**.
-2. **Open Chat:** Open the GitHub Copilot Chat panel.
-3. **Switch to Agent Mode:** Ensure the dropdown at the bottom of the chat is set to **Agent**.
-4. **Check Tools:** Click the **Tools** icon in the chat box menu. In the tools dropdown, filter for `agentgateway` and expand to view the MCP server’s available tools.
-5. **Test:** In the chat box, type `#` followed by a tool name, such as `#get_k8s_logs` to see it in action.
-
-[Devin Desktop](/docs/standalone/latest/integrations/mcp-clients/devin/ 'Devin Desktop')[Antigravity IDE](/docs/standalone/latest/integrations/mcp-clients/antigravity/ 'Antigravity IDE')
-
-Was this page helpful?
+This approach keeps terminal configurations version-controlled in the repository while seamlessly integrating with the user's local Windows Terminal app.

@@ -36,10 +36,10 @@ ENV DOCS_DIR=/app/docs
 COPY --from=deployer /prod/app ./
 COPY --from=builder /app/cortex/memory/services/api/dist ./dist
 # Use root context to copy docs since skaffold context is ..
-COPY docs/services/docusaurus/handbook ./docs/handbook
-COPY docs/services/docusaurus/workspaces ./docs/workspaces
-COPY docs/services/docusaurus/roadmap ./docs/roadmap
-COPY docs/services/docusaurus/releases ./docs/releases
+COPY knowledge-base/docs/monorepo/handbook ./docs/handbook
+COPY knowledge-base/docs/monorepo/workspaces ./docs/workspaces
+COPY knowledge-base/docs/monorepo/roadmap ./docs/roadmap
+COPY knowledge-base/docs/monorepo/releases ./docs/releases
 
 EXPOSE 3006
 CMD ["node", "dist/index.js"]

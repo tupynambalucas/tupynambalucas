@@ -1,0 +1,8 @@
+{
+  "label": "Resiliência",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Injeção de falhas, espelhamento de requisições, rate limits, retentativas e timeouts."
+  }
+}

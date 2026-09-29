@@ -1,0 +1,8 @@
+{
+  "label": "Roteamento & Controle de LLM",
+  "position": 6,
+  "link": {
+    "type": "generated-index",
+    "description": "Consumo de LLM, modelos de API, controles de custo, prompt guards e configurações de provedores."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Rede e Conectividade",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "Complementos de rede com cert-manager e ExternalDNS."
+  }
+}

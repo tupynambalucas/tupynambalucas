@@ -1,0 +1,64 @@
+---
+title: 'Retries'
+description: 'Configure automatic retry attempts for failed backend requests.'
+sidebar_position: 2
+---
+
+# Retries
+
+Configure automatic retry attempts for failed backend requests.
+
+Attaches to: [Route](https://agentgateway.dev/docs/standalone/latest/configuration/routes/ 'Route')
+
+[Route](https://agentgateway.dev/docs/standalone/latest/configuration/routes/ 'Route')
+
+Note
+
+Agentgateway supports more than one configuration style. Where a feature can also be configured in the simplified `llm` or `mcp` modes, the examples on this page show each option in tabs. For more information, see [Routing-based configuration](/workspaces/cortex/reference/agentgateway/llm/configuration-modes).
+
+When a backend request fails, agentgateway can be configured to _retry Retries can be configured with backoff strategies and specific conditions for when to retry._ the request.
+When a retry is attempted, a different backend will be preferred (if possible).
+
+Simplified (MCP)Routing-based
+
+```yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+mcp:
+  port: 3000
+  policies:
+    retry:
+      # total number of attempts allowed.
+      # Note: 1 attempt implies no retries; the initial attempt is included in the count.
+      attempts: 3
+      # Optional; if set, a delay between each additional attempt
+      backoff: 500ms
+      # A list of HTTP response codes to consider retry-able.
+      # In addition, retries are always permitted if the request to a backend was never started.
+      codes: [429, 500, 503]
+  targets:
+    - name: everything
+      stdio:
+        cmd: npx
+        args: ['@modelcontextprotocol/server-everything']
+yaml
+# yaml-language-server: $schema=https://agentgateway.dev/schema/config
+gateways:
+  default:
+    port: 3000
+routes:
+  - policies:
+      retry:
+        # total number of attempts allowed.
+        # Note: 1 attempt implies no retries; the initial attempt is included in the count.
+        attempts: 3
+        # Optional; if set, a delay between each additional attempt
+        backoff: 500ms
+        # A list of HTTP response codes to consider retry-able.
+        # In addition, retries are always permitted if the request to a backend was never started.
+        codes: [429, 500, 503]
+    backends:
+      - host: localhost:8080
+```
+
+When a request has retries enabled and an HTTP body, the request body will be buffered.
+If the total body size exceeds a threshold size, retries are disabled.

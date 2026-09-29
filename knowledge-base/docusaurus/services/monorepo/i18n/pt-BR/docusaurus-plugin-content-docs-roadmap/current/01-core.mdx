@@ -1,0 +1,35 @@
+---
+slug: /
+title: Arquitetura Core & Estratégia
+sidebar_label: Arquitetura Core
+---
+
+Esta seção descreve a arquitetura estratégica do monorepo, configurações de catálogo e metas de isolamento lógico multi-tenant para o projeto %PROJECT_DOMAIN%.
+
+## Foco de Desenvolvimento Atual: "Maestria em Instância Única"
+
+**ESTRATÉGIA CRÍTICA:** Nossa prioridade imediata e absoluta é entregar uma **aplicação de instância única completa, 100% funcional e polida** (`@repo/hub/*`).
+
+Embora tenhamos uma visão de longo prazo de nos tornarmos uma plataforma SaaS multi-tenant, **complexidades arquiteturais de SaaS não devem ser implementadas nesta fase.** Todo o desenvolvimento atual (base de código, esquemas de banco de dados, UI/UX) deve permanecer focado em produzir a melhor versão possível de um sistema autônomo para uma ecovila. A transição para um modelo SaaS completo (Fase 6 do Plano Mestre) só será considerada após a aplicação de instância única estar estável e totalmente operacional.
+
+---
+
+## Marcos Concluídos
+
+### Arquitetura de Monorepo & Configuração de Workspaces
+
+- **Segregação de Workspaces no Monorepo**: Estruturação das camadas de workspaces via PNPM Workspaces v11 e Turborepo, segregando os domínios `hub/`, `cortex/`, `studio/`, `tools/`, `renderer/`, `platform/` e `docs/`.
+- **Orquestração de Tarefas de Alta Performance**: Integração do **Turborepo** para orquestrar as pipelines do monorepo, permitindo caching inteligente de alvos e execução paralela de scripts.
+- **Herança de Configurações Unificada**: Configuração de arquivos base `tsconfig.base.json` e `eslint.config.ts` no nível da raiz, que são estendidos pelos pacotes individuais via extends do TSConfig e declarações de array de regras do ESLint.
+- **Node 22 & Configuração TypeScript ESM**: Conversão de todos os pacotes para usar ECMAScript Modules (`"type": "module"`) e compilação com target `ESNext` para suporte a sintaxes modernas.
+
+### Bounded Contexts & Segurança de Domínio
+
+- **Isolamento Estrito de Bounded Contexts**: Configuração de regras personalizadas de restrição de importação (`no-restricted-imports`) no `eslint.config.ts`, proibindo dependências cruzadas entre workspaces para garantir regras de negócio limpas e desacopladas.
+- **Integração do Padrão Domain-Core**: Estabeleceu o `packages/core` em `hub/` como a Fonte Única de Verdade (SSOT) para modelos de dados e validadores de schema.
+- **Gestão Unificada de Dependências via Catalogs**: Integração da funcionalidade Catalogs do PNPM v11 em `pnpm-workspace.yaml` para unificar versões de pacotes externos (como Fastify 5, React 19, TSX, ESLint) em todo o monorepo.
+
+## Foco Planejado
+
+- **Isolamento Lógico Multi-Tenant**: Garantir que as instâncias e o portal executem domínios completamente isolados.
+- **Evolução da Plataforma SaaS**: Transição de implantações de instância única para um modelo de marketplace multi-tenant centralizado, utilizando um roteador de borda (Edge Router) Traefik centralizado como ponto de entrada único para rotear dinamicamente requisições para ambientes backend isolados.

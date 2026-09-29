@@ -1,0 +1,45 @@
+---
+title: Inicializando um Novo Projeto
+---
+
+# Inicializando um Novo Projeto
+
+Este tutorial explica como inicializar uma nova instância do monorepo usando a CLI de provisionamento com reconhecimento de estado.
+
+## Pré-requisitos
+
+- Node.js (v22+)
+- pnpm (v9+)
+- Docker & Docker Compose (ou Podman)
+
+## Passo 1: Clonar o Repositório
+
+Clone o repositório de template na sua máquina local:
+
+```bash
+git clone https://github.com/%GITHUB_ORG%/%GITHUB_REPO%.git my-new-project
+cd my-new-project
+pnpm install
+```
+
+## Passo 2: Executar a CLI de Provisionamento
+
+Nosso repositório inclui uma CLI com reconhecimento de estado que renomeia automaticamente domínios, hosts internos e escopos de pacotes.
+
+```bash
+pnpm provision init
+```
+
+O assistente interativo solicitará:
+
+- Novo Domínio do Projeto (ex.: `minhaempresa.com`)
+- Nova Organização do GitHub
+- Novo Nome do Repositório do GitHub
+
+## Passo 3: Iniciar o Ambiente
+
+Após a conclusão do script de bootstrap, todo o monorepo é adaptado à sua nova marca.
+
+```bash
+pnpm dev
+```

@@ -3,6 +3,32 @@
   "tasks": [
     {
       "label": "Antigravity CLI",
+      "type": "process",
+      "command": "pwsh.exe",
+      "args": [
+        "-WindowStyle", "Hidden",
+        "-Command", "Start-Process wt.exe -ArgumentList '--window -1 --maximized --profile \"Tupynamba - Antigravity CLI\" -d \"${workspaceFolder}\" -- pwsh.exe -NoExit -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\launch-agy.ps1\"'"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+    {
+      "label": "Admin CLI",
+      "type": "process",
+      "command": "pwsh.exe",
+      "args": [
+        "-WindowStyle", "Hidden",
+        "-Command", "Start-Process cmd.exe -Verb RunAs -ArgumentList '/c start wt.exe --window -1 --profile \"Tupynamba - Admin CLI\" -d \"${workspaceFolder}\" -- pwsh.exe -NoExit -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\launch-mage.ps1\"'"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never"
+      }
+    },
+        {
+      "label": "Antigravity CLI (Old",
       "type": "shell",
       "command": "wt.exe --window -1 --maximized --profile \"Antigravity\" --startingDirectory \"${workspaceFolder}\" pwsh.exe -NoExit -ExecutionPolicy Bypass -File \"${workspaceFolder}/.vscode/scripts/launch-agy.ps1\"",
       "problemMatcher": [],
@@ -11,7 +37,7 @@
       }
     },
     {
-      "label": "Admin CLI",
+      "label": "Admin CLI (Old)",
       "type": "shell",
       "command": "wt.exe --window -1 --maximized --profile \"Admin\" --startingDirectory \"${workspaceFolder}\" pwsh.exe -NoExit -ExecutionPolicy Bypass -File \"${workspaceFolder}/.vscode/scripts/launch-admin.ps1\"",
       "problemMatcher": [],

@@ -1,0 +1,8 @@
+{
+  "label": "Referência de Observabilidade",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Métricas de referência e traces para AgentGateway."
+  }
+}

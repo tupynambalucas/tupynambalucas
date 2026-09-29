@@ -1,0 +1,8 @@
+{
+  "label": "Gerenciamento de Tráfego",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Buffer de corpo, respostas diretas, ExtProc, manipulação de cabeçalhos, matching, redirecionamentos e reescritas."
+  }
+}

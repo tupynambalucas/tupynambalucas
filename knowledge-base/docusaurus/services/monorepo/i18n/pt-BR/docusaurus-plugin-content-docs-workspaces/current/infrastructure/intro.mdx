@@ -1,0 +1,56 @@
+---
+title: Workspace Infrastructure
+description: Orquestração centralizada do Kubernetes e pipeline de implantação GitOps para o ecossistema.
+sidebar_position: 1
+---
+
+# Workspace Infrastructure
+
+Orquestração centralizada do Kubernetes e pipeline de implantação GitOps para o ecossistema `%PROJECT_DOMAIN%`.
+
+## Visão Geral
+
+Este workspace fornece uma abordagem unificada e nativa do Kubernetes usando **Skaffold** e **Kustomize**. Ele oferece recarregamento em tempo real (hot-reloading) para desenvolvimento local e implantações escaláveis para ambientes de produção.
+
+## Arquitetura
+
+A infraestrutura é dividida em três bounded contexts principais, todos orquestrados a partir de um único `skaffold.yaml`:
+
+1. **Platform (`platform-dev`)**: A camada fundacional de ingress, observabilidade e rede (Traefik, Grafana, OpenTelemetry, Cloudflare Tunnel).
+2. **Cortex (`cortex-dev`)**: A camada de inteligência de IA e serviços MCP.
+3. **Studio (`studio-dev`)**: Os serviços de design e documentação (Penpot, Memos).
+
+## Executando a Infraestrutura
+
+Você pode executar toda a infraestrutura do monorepo de uma só vez, ou iniciar módulos específicos. O Skaffold é configurado para resolver dependências automaticamente (ex: iniciar o Cortex iniciará automaticamente a camada Platform primeiro).
+
+### Executar Infraestrutura Completa
+
+Inicia todos os serviços no monorepo com hot-reloading ativado.
+
+```bash
+pnpm infra:dev
+```
+
+### Executar Infraestrutura Modular
+
+Inicia contextos específicos para economizar recursos locais:
+
+```bash
+# Iniciar apenas a camada Platform
+pnpm infra:platform:dev
+
+# Iniciar Platform + Serviços de IA
+pnpm infra:cortex:dev
+
+# Iniciar Platform + Ferramentas de Design
+pnpm infra:studio:dev
+```
+
+### Limpeza
+
+Para derrubar os componentes do cluster e limpar imagens e volumes locais:
+
+```bash
+pnpm infra:clean
+```

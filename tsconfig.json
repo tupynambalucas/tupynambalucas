@@ -3,7 +3,7 @@
   "references": [
     { "path": "./tsconfig.node.json" },
 
-    { "path": "./docs" },
+    { "path": "./knowledge-base" },
     { "path": "./renderer" },
     { "path": "./hub" },
     { "path": "./studio" },

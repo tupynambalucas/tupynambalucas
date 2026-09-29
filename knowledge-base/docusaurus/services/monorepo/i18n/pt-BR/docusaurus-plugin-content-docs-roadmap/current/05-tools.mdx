@@ -1,0 +1,24 @@
+---
+title: Tools (Automação do GitHub)
+sidebar_label: Ferramentas (GitHub)
+---
+
+{ }
+
+Esta seção detalha o ambiente conteinerizado para controle de versão Git e automação do GitHub CLI.
+
+## Marcos Concluídos
+
+### Integração de Scripts de Automação
+
+- **Scripts de Compilação TypeScript**: Integração de utilitários em TypeScript (`generate-changelog.ts` e `generate-roadmap.ts`) rodando sob `tsx` para compilar e atualizar logs e roadmaps diretamente no diretório raiz do repositório.
+
+### Isolamento de Ferramentas
+
+- **Containers Git e GitHub CLI**: Implantação de contêineres de serviços (`gh` e `git`) que isolam as credenciais SSH, identidades do autor Git e extensões do GitHub CLI da máquina hospedeira do desenvolvedor.
+- **Automação de Fluxo de Trabalho**: Configuração de scripts no escopo do workspace para iniciar, parar e resetar os contêineres de forma limpa via Docker Compose.
+
+## Foco Planejado
+
+- **Sincronização de Credenciais**: Otimizar a injeção segura de tokens PAT nos volumes locais do Docker.
+- **Validação de Pre-commit**: Adicionar verificações automáticas de tipo (type-checking) executadas a partir do container das ferramentas para evitar push de códigos com tipos inválidos.

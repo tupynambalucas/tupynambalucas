@@ -1,0 +1,8 @@
+{
+  "label": "Hub",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Documentação do workspace Hub, incluindo cliente web, API REST e biblioteca core."
+  }
+}

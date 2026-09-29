@@ -1,0 +1,58 @@
+---
+title: Como Fazer o Deploy
+description: Sequências de comandos de implantação passo a passo para clusters Kubernetes locais e de produção.
+sidebar_position: 2
+---
+
+# Como Fazer o Deploy
+
+Este guia descreve as sequências de comandos de implantação para liberar o ecossistema `%PROJECT_DOMAIN%` em ambientes locais e de produção usando **Skaffold** e **Kubernetes**.
+
+---
+
+## 1. Ambientes Kubernetes (Skaffold)
+
+As implantações em todos os contextos bounded (`platform`, `cortex`, `studio`) são gerenciadas via Skaffold, orquestrando as fases de build, tag e deploy usando manifestos do Kustomize.
+
+### 1.1. Implantações de Uso Único
+
+Para compilar todas as imagens do workspace e aplicar seus manifestos Kubernetes diretamente ao contexto de cluster ativo sem hot-reloading:
+
+```bash
+pnpm infra:up
+```
+
+Isso constrói os contêineres usando o cache do engine local, insere as tags de imagem nos manifestos e os aplica ao cluster.
+
+### 1.2. Desenvolvimento Contínuo (Live Reload)
+
+Para testes ativos de cluster com logs ao vivo e reimplantações automáticas quando o código-fonte muda:
+
+```bash
+pnpm infra:dev
+```
+
+### 1.3. Terminando Implantações de Cluster
+
+Para excluir todos os recursos implantados e alocações de namespace do cluster:
+
+```bash
+pnpm infra:clean
+```
+
+---
+
+## 2. Implantações de Produção
+
+Para ambientes de produção, usamos overlays do Kustomize localizados em `infrastructure/environments/prod`.
+
+1. Verifique se o seu contexto do `kubectl` aponta para o cluster de produção.
+2. Aplique os overlays de produção diretamente (ou via um operador GitOps como ArgoCD/Flux):
+
+```bash
+kubectl apply -k infrastructure/environments/prod/platform
+kubectl apply -k infrastructure/environments/prod/cortex
+kubectl apply -k infrastructure/environments/prod/studio
+```
+
+_Nota: Para produção, as imagens devem ser pré-construídas e enviadas para um registro remoto (por exemplo, via GitHub Actions) antes de aplicar os manifestos, em vez de construí-las localmente com o Skaffold._
