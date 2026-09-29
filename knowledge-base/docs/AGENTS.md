@@ -14,8 +14,8 @@ This sub-domain serves as a static, engine-agnostic markdown repository. It stor
 
 ## Content Organization
 
-- **monorepo/**: Content strictly used by the global `monorepo` service instance.
-- **github/**: READMEs and GitHub community files.
-- **templates/**: Templates ingested by the `renderer` workspace.
+- [monorepo/](./monorepo/): Content strictly used by the global `monorepo` service instance.
+- [github/](./github/): READMEs and GitHub community files.
+- [templates/](./templates/): Templates ingested by the `renderer` workspace.
 
 No JavaScript, TypeScript, or Node build files belong in this sub-domain.

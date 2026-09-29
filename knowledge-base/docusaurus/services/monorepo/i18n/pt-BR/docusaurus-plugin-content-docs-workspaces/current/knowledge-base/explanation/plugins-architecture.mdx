@@ -1,0 +1,44 @@
+---
+title: Arquitetura de Plugins
+sidebar_label: Arquitetura de Plugins
+sidebar_position: 1
+---
+
+# Arquitetura de Plugins de Documentação
+
+O workspace de documentação `%PROJECT_DOMAIN%` é estritamente alimentado pelo Docusaurus v3 e usa uma combinação de padrões React padrão e transformadores avançados de Árvore de Sintaxe Abstrata (AST).
+
+---
+
+## 1. Domain Plugin Wrappers (Arquitetura SSOT)
+
+Para impor a **Única Fonte de Verdade (SSOT)** e manter um `docusaurus.config.ts` limpo, o monorepo usa um Preset Customizado do Docusaurus (`knowledge-base/docusaurus/packages/preset/`). Este preset é o núcleo autoritário que encapsula e configura todas as engines de documentação subjacentes.
+
+Em vez de declarar os plugins principais do Docusaurus diretamente no array do preset, nós usamos **Domain Plugin Wrappers** (localizados em `preset/plugins/`):
+
+- `content-docs`
+- `content-blog`
+- `content-pages`
+
+### O Ciclo de Vida do Wrapper
+
+Cada wrapper de domínio importa o plugin nativo do Docusaurus (ex., `@docusaurus/plugin-content-docs`), mescla dinamicamente nossas regras corporativas, e então invoca o plugin nativo. Isso garante que **toda** instância de documentação - seja ela o handbook principal, o roadmap, ou as especificações de workspaces - seja forçada a passar por nossos pipelines de sanitização e injeção de AST automaticamente.
+
+1. **Validação de Opções**: Os wrappers reexportam `validateOptions` para satisfazer os validadores de schema estritos do Docusaurus.
+2. **Injeção de AST**: Os wrappers anexam automaticamente o plugin customizado `remark-project-variables` ao array `remarkPlugins`.
+3. **Preservação de Contexto**: Os wrappers retornam o nome original exato (ex., `docusaurus-plugin-content-docs`) para garantir que os componentes de UI em React resolvam corretamente os dados de contexto global durante a Geração do Lado do Servidor (SSG).
+
+---
+
+## 2. O Plugin `remark-project-variables`
+
+Para manter um **monorepo genérico e passível de copy-paste**, a documentação NÃO DEVE conter nomes de marca ou URLs hardcoded (ex., `example.com`). Em vez disso, os autores devem escrever tokens genéricos usando delimitadores de porcentagem, como `%PROJECT_DOMAIN%` ou `%PROJECT_NAME%`.
+
+### Como Funciona
+
+1. **Transformação AST**: O plugin customizado `remark-project-variables` se conecta ao pipeline de compilação unified/remark MDX.
+2. **Interceptação de Nós de Texto**: Ele percorre a AST do Markdown (`mdast`) usando `unist-util-visit`.
+3. **Resolução de Valor**: Ele intercepta nós do tipo `text`, `inlineCode`, `link` e `image`, e busca por padrões como `%PROJECT_DOMAIN%`.
+4. **Substituição**: Ele substitui esses tokens por valores reais extraídos de uma única fonte de verdade (`project.config.json`) _antes_ que o MDX seja compilado para React JSX.
+
+Essa arquitetura garante que embeddings de RAG de IA (como os vetores de `cortex/memory`) ingiram os arquivos de origem **agnósticos**, evitando a alucinação de marca quando o repositório for forkado ou aplicado a novos clientes.

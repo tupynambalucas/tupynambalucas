@@ -1,4 +1,4 @@
-# @monorepo/docs-preset
+# @monorepo/kb-docusaurus-preset
 
 Reusable Docusaurus preset encapsulating core plugins, AST transformers, navigation sidebars, and theme registration for the %PROJECT_DOMAIN% knowledge base.
 
@@ -6,4 +6,4 @@ Reusable Docusaurus preset encapsulating core plugins, AST transformers, navigat
 
 ## Usage
 
-This preset is consumed by the `@monorepo/docs-docusaurus` service. It is not intended to be used outside the monorepo.
+This preset is consumed by the `@monorepo/kb-docusaurus-monorepo` service. It is not intended to be used outside the monorepo.

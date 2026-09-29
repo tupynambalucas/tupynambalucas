@@ -14,7 +14,7 @@ This sub-domain contains the build infrastructure, React components, themes, and
 
 ## 1. Local Architecture
 
-- **packages/**: Contains the Docusaurus presets and themes.
-- **services/monorepo/**: The main Docusaurus service. Consumes files dynamically from the sibling `../docs` workspace.
+- [packages/](./packages/): Contains the Docusaurus presets and themes.
+- [services/monorepo/](./services/monorepo/AGENTS.md): The main Docusaurus service. Consumes files dynamically from the sibling `../docs` workspace.
 
 No raw documentation content (`.mdx` files representing tutorials or guides) should be stored here; all content must be externalized to the `knowledge-base/docs/` sub-domain.

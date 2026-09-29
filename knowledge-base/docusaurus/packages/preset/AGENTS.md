@@ -1,14 +1,14 @@
 <context-hierarchy>
-  <parent src="../AGENTS.md" type="bounded-context-rules" />
+  <parent src="../../AGENTS.md" type="bounded-context-rules" />
   <system-instruction>
-    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    AGENT: If you have not read "../../AGENTS.md" in this session, stop now and read it using your
     file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 
 # Sub-Domain: Docs Preset
 
-This workspace (`@monorepo/docs-preset`) is a reusable Docusaurus preset that encapsulates all plugins, sidebars, and theme configurations for the monorepo documentation.
+This workspace (`@monorepo/kb-docusaurus-preset`) is a reusable Docusaurus preset that encapsulates all plugins, sidebars, and theme configurations for the monorepo documentation.
 
 ---
 
