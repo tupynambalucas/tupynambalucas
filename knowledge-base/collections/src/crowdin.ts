@@ -3,9 +3,12 @@ import path from 'node:path';
 import extractZip from 'extract-zip';
 import { Client } from '@crowdin/crowdin-api-client';
 import { fileURLToPath } from 'node:url';
+import dotenv from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // Retorna o diretório resolvido para que o Plugin do Docusaurus saiba o que copiar
 export function getDomainTranslationsPath(domainName: string): string {
@@ -17,7 +20,7 @@ function getDomainConfig(domainName: string) {
   // For now, we use the env vars from .env
   return {
     projectId: Number(process.env.CROWDIN_PROJECT_ID),
-    outputDir: getDomainTranslationsPath(domainName)
+    outputDir: getDomainTranslationsPath(domainName),
   };
 }
 
@@ -42,7 +45,7 @@ export async function downloadDomainTranslations(domainName: string) {
     const build = await client.translationsApi.buildProject(projectId, {
       skipUntranslatedStrings: false,
       skipUntranslatedFiles: false,
-      exportApprovedOnly: false
+      exportApprovedOnly: false,
     });
 
     const buildId = build.data.id;
@@ -51,7 +54,7 @@ export async function downloadDomainTranslations(domainName: string) {
     // 2. Poll: Aguarda a conclusão do Job
     let status = 'inProgress';
     while (status === 'inProgress') {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       const check = await client.translationsApi.checkBuildStatus(projectId, buildId);
       status = check.data.status;
       if (status === 'failed') throw new Error('Falha no build do Crowdin.');
@@ -59,7 +62,7 @@ export async function downloadDomainTranslations(domainName: string) {
 
     // 3. Resgata a URL Segura de Download do ZIP gerado
     const downloadLink = await client.translationsApi.downloadTranslations(projectId, buildId);
-    
+
     // 4. Download do Arquivo
     const zipPath = path.join(__dirname, 'temp_translations.zip');
     console.log('[Crowdin SDK] Fazendo download do ZIP...');
@@ -70,7 +73,7 @@ export async function downloadDomainTranslations(domainName: string) {
     // 5. Descompactação na pasta do domínio (ex: domains/portal/translations)
     if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
     console.log(`[Crowdin SDK] Descompactando para ${outputDir}...`);
-    
+
     await extractZip(zipPath, { dir: outputDir });
     fs.unlinkSync(zipPath); // Limpa o ZIP temporário
 

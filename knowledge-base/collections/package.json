@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "main": "src/index.ts",
+  "scripts": {
+    "sync-translations": "tsx src/cli.ts"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./domains/*": "./domains/*",
@@ -11,10 +14,11 @@
   },
   "dependencies": {
     "@crowdin/crowdin-api-client": "catalog:docs-stack",
+    "dotenv": "catalog:",
     "extract-zip": "catalog:docs-stack"
   },
   "devDependencies": {
-    "typescript": "catalog:",
-    "@types/node": "catalog:"
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
   }
 }
