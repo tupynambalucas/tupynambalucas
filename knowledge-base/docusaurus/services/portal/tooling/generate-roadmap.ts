@@ -4,11 +4,11 @@ import { createRequire } from 'node:module';
 import projectConfig from '@monorepo/shared-config/project.config';
 
 const require = createRequire(import.meta.url);
-const kbPkgPath = require.resolve('@monorepo/kb-docusaurus-monorepo/package.json');
+const kbPkgPath = require.resolve('@monorepo/kb-collections/package.json');
 const kbDir = path.dirname(kbPkgPath);
 
-const ROADMAP_DIR = path.join(kbDir, '../../../docs/monorepo/roadmap');
-const ROADMAP_PATH = path.join(kbDir, '../../../../ROADMAP.md');
+const ROADMAP_DIR = path.join(kbDir, 'namespaces/portal/content/community/roadmap');
+const ROADMAP_PATH = path.join(kbDir, '../../ROADMAP.md');
 
 const ROADMAP_FILES = [
   '01-core.mdx',
@@ -17,6 +17,7 @@ const ROADMAP_FILES = [
   '04-studio.mdx',
   '05-tools.mdx',
   '06-docs.mdx',
+  '07-cortex.mdx',
 ];
 
 function generateRoadmap(): void {
