@@ -48,13 +48,6 @@ jobs:
             git push
           fi
 
-      - name: Sync Crowdin Translations
-        uses: ./.github/actions/crowdin-sync
-        with:
-          collection: portal
-          crowdin_token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
-          crowdin_project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
-
       - name: Build documentation
         run: pnpm kb:docusaurus:portal:build
         env:
