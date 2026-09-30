@@ -41,6 +41,7 @@
     "@docusaurus/plugin-sitemap": "catalog:docs-stack",
     "@docusaurus/plugin-svgr": "catalog:docs-stack",
     "@docusaurus/plugin-css-cascade-layers": "catalog:docs-stack",
+    "@docusaurus/utils": "catalog:docs-stack",
     "@mdx-js/react": "catalog:docs-stack",
     "@monorepo/studio-assets": "workspace:*",
     "react": "catalog:web-stack",

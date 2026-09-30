@@ -99,9 +99,9 @@ export default function monorepoPreset(
   // Push local plugins directly instead of relying on docusaurus.config.ts
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
   plugins.push(pluginStudioAssets as any);
-  
+
   if (crowdin) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     plugins.push([pluginCrowdin as any, crowdin]);
   }
 

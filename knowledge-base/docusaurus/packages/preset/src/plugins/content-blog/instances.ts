@@ -9,7 +9,7 @@ export function createBlogInstance(opts: Pick<MonorepoPresetOptions, 'blog'>): P
   const { blog } = opts;
 
   if (Array.isArray(blog)) {
-    blog.forEach(blogOpt => {
+    blog.forEach((blogOpt) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       plugins.push([require.resolve('./index.js'), blogOpt as any]);
     });

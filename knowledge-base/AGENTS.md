@@ -14,7 +14,7 @@ This bounded context orchestrates the developer knowledge base, centralizing bot
 
 ## 1. Local Architecture
 
-- [collections/](./collections/AGENTS.md): Sub-domain containing content collections, domain documentation, and Crowdin i18n SDK.
+- [collections/](./collections/AGENTS.md): Sub-domain containing content collections, namespace documentation, and Crowdin configuration.
 - [docusaurus/](./docusaurus/AGENTS.md): Sub-domain containing the Docusaurus build engine, presets, themes, and portal service.
 
 ---

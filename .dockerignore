@@ -42,10 +42,17 @@ skaffold.env
 # Documentation and Non-Code Folders
 !knowledge-base/
 !knowledge-base/**
-knowledge-base/docusaurus/services/monorepo/node_modules/
-knowledge-base/docusaurus/services/monorepo/.docusaurus/
-knowledge-base/docusaurus/services/monorepo/build/
-knowledge-base/docusaurus/services/monorepo/.turbo/
+knowledge-base/**/node_modules/
+knowledge-base/**/.docusaurus/
+knowledge-base/**/build/
+knowledge-base/**/.turbo/
+knowledge-base/**/changelog/
+knowledge-base/**/references/
+knowledge-base/docusaurus/services/portal/node_modules/
+knowledge-base/docusaurus/services/portal/.docusaurus/
+knowledge-base/docusaurus/services/portal/build/
+knowledge-base/docusaurus/services/portal/.turbo/
+knowledge-base/docusaurus/services/portal/changelog/
 .agents/
 .github/
 .system_generated/

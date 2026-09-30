@@ -16,7 +16,7 @@ This workspace (`@monorepo/kb-docusaurus-preset`) is a reusable Docusaurus prese
 
 1. **Dependency Ownership**: This package MUST own all `@docusaurus/plugin-*` and `@docusaurus/theme-*` dependencies. Consuming Docusaurus services MUST NOT declare them directly.
 2. **Sidebars Resolution**: Because `sidebarPath` in `plugin-content-docs` resolves relative to the consuming service root, `sidebarPath` MUST use `require.resolve()` pointing to the exported `sidebars/index.ts`.
-3. **Crowdin Plugin Integration**: The preset embeds `plugins/crowdin/index.ts`, automatically copying downloaded translations from the collections domain into the service `i18n` target directory during build.
+3. **Crowdin Plugin Integration**: The preset embeds `plugins/crowdin/index.ts`. It invokes the Crowdin CLI to sync translations bidirectionally and copies downloaded packages from the collections namespace into the service `i18n` target directory automatically during build.
 4. **No Service Coupling**: The preset MUST NOT assume the existence of specific files in consuming services unless exposed via `MonorepoPresetOptions`.
 
 ---

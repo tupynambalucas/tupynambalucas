@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 import projectConfig from '@monorepo/shared-config/project.config';
 
 import dotenv from 'dotenv';
-dotenv.config({ path: path.resolve(__dirname, '../../../../collections/.env') });
+dotenv.config();
 
 const require = createRequire(import.meta.url);
 
@@ -111,29 +111,50 @@ const config: Config = {
         docs: [
           {
             id: 'default',
-            path: path.join(collectionsRoot, 'domains/portal/content/docs'),
+            path: path.join(collectionsRoot, 'namespaces/portal/content/docs'),
             routeBasePath: 'docs',
             sidebarPath: require.resolve('@monorepo/kb-docusaurus-preset/sidebars'),
           },
           {
             id: 'community',
-            path: path.join(collectionsRoot, 'domains/portal/content/community'),
+            path: path.join(collectionsRoot, 'namespaces/portal/content/community'),
             routeBasePath: 'community',
             sidebarPath: require.resolve('@monorepo/kb-docusaurus-preset/sidebars'),
-          }
+          },
         ],
         blog: {
-          path: path.join(collectionsRoot, 'domains/portal/content/blog'),
+          path: path.join(collectionsRoot, 'namespaces/portal/content/blog'),
           routeBasePath: 'blog',
           showReadingTime: true,
           blogSidebarCount: 'ALL',
           blogSidebarTitle: 'All posts',
-        }
+        },
       } satisfies MonorepoPresetOptions,
     ],
   ],
 
   plugins: [
+    [
+      './src/plugins/changelog/index.ts',
+      {
+        blogTitle: `${projectConfig.PROJECT_NAME} Changelog`,
+        blogDescription: 'Keep yourself up-to-date about new features in every release',
+        blogSidebarCount: 'ALL',
+        blogSidebarTitle: 'Changelog',
+        routeBasePath: '/changelog',
+        showReadingTime: false,
+        postsPerPage: 20,
+        archiveBasePath: null,
+        authorsMapPath: 'authors.json',
+        feedOptions: {
+          type: 'all',
+          title: `${projectConfig.PROJECT_NAME} Changelog`,
+          description: 'Keep yourself up-to-date about new features in every release',
+          copyright: `Copyright © ${new Date().getFullYear()} ${projectConfig.PROJECT_DOMAIN}`,
+        },
+        onInlineAuthors: 'warn',
+      },
+    ],
     () => ({
       name: 'monorepo-webpack-alias-plugin',
       configureWebpack() {

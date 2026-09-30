@@ -99,6 +99,10 @@ build:
             dest: /app
           - src: 'shared/**/*'
             dest: /app
+          - src: 'CHANGELOG*.md'
+            dest: /app
+          - src: 'ROADMAP.md'
+            dest: /app
 manifests:
   kustomize:
     paths: [environments/local]

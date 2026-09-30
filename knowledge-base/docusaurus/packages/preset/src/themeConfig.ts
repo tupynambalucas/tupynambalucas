@@ -100,6 +100,10 @@ export function getBaseThemeConfig(projectConfig: any): ThemeConfig {
               label: 'Roadmap',
               to: '/community/roadmap',
             },
+            {
+              label: 'Changelog',
+              to: '/changelog',
+            },
           ],
         },
       ],

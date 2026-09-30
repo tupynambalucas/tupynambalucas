@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { spawnSync } from 'child_process';
 import net from 'net';
 
@@ -40,6 +41,14 @@ async function main(): Promise<void> {
       '[Docusaurus Build] Dev server not active on port 3002. Proceeding with docusaurus build...',
     );
   }
+
+  process.env.NODE_ENV = 'production';
+
+  console.info('[Docusaurus Build] Clearing previous build artifacts...');
+  spawnSync('pnpm', ['exec', 'docusaurus', 'clear'], {
+    stdio: 'inherit',
+    shell: true,
+  });
 
   const result = spawnSync('pnpm', ['exec', 'docusaurus', 'build'], {
     stdio: 'inherit',

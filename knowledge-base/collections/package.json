@@ -3,25 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "src/index.ts",
   "scripts": {
-    "sync-translations": "tsx src/cli.ts",
-    "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint ."
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./domains/*": "./domains/*",
+    "./namespaces/*": "./namespaces/*",
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@crowdin/crowdin-api-client": "catalog:docs-stack",
-    "dotenv": "catalog:",
-    "extract-zip": "catalog:docs-stack"
+    "@crowdin/cli": "catalog:docs-stack"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*",
-    "@types/node": "catalog:",
-    "typescript": "catalog:"
+    "@monorepo/shared-config": "workspace:*"
   }
 }

@@ -14,7 +14,7 @@ This workspace ([portal/](./)) manages the primary Docusaurus documentation port
 
 ## 1. Local Architecture
 
-This workspace is strictly a presentation and compilation engine. All documentation, community pages, and blog posts are dynamically consumed from the sibling collections workspace (`../../../collections/domains/portal/content/`).
+This workspace is strictly a presentation and compilation engine. All documentation, community pages, and blog posts are dynamically consumed from the sibling collections workspace (`../../../collections/namespaces/portal/content/`).
 
 - [src/](./src/): Custom React components, page templates, and layouts.
   - [src/pages/](./src/pages/): MDX landing pages and custom layout files.
@@ -26,8 +26,8 @@ This workspace is strictly a presentation and compilation engine. All documentat
 ## 2. Workspace Guardrails
 
 1. **AST Variable Transformer**: The workspace uses the `remark-project-variables` AST plugin (provided by the preset). Agents MUST write agnostic tokens like `%PROJECT_DOMAIN%` instead of hardcoded brand names.
-2. **Translation Synchronization**: Docusaurus requires the `i18n/` directory to be present locally during build. The preset Crowdin plugin automatically copies translations from `../../../collections/domains/portal/translations/` into `i18n/`. Agents MUST NOT edit files in `i18n/` manually.
-3. **No Direct Content Creation**: Agents MUST NOT create `docs/`, `community/`, or `blog/` content directories inside this workspace. All documentation authoring must happen in the `knowledge-base/collections/domains/portal/content/` workspace.
+2. **Translation Synchronization**: Docusaurus requires the `i18n/` directory to be present locally during build. The preset Crowdin plugin automatically invokes the Crowdin CLI to sync and copy translations from `../../../collections/namespaces/portal/translations/` into `i18n/`. Agents MUST NOT edit files in `i18n/` manually.
+3. **No Direct Content Creation**: Agents MUST NOT create `docs/`, `community/`, or `blog/` content directories inside this workspace. All documentation authoring must happen in the `knowledge-base/collections/namespaces/portal/content/` workspace.
 
 ---
 

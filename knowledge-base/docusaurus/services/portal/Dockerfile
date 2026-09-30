@@ -4,7 +4,7 @@ RUN corepack enable pnpm
 
 # Dependências (Builder)
 FROM base AS builder
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json CHANGELOG*.md ROADMAP.md ./
 COPY knowledge-base/ knowledge-base/
 COPY shared/ shared/
 COPY knowledge-base/collections/domains/portal/translations/ knowledge-base/docusaurus/services/portal/i18n/

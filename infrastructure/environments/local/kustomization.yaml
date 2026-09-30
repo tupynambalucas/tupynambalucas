@@ -22,7 +22,7 @@ resources:
   - ../../manifests/studio-memos.yaml
   - ../../manifests/studio-memos-seed.yaml
   - ../../manifests/docs-namespace.yaml
-  - ../../manifests/kb-docusaurus-monorepo.yaml
+  - ../../manifests/kb-docusaurus-portal.yaml
 
 secretGenerator:
   - name: cortex-secrets
@@ -35,6 +35,10 @@ secretGenerator:
       - ../../.env
   - name: studio-secrets
     namespace: studio
+    envs:
+      - ../../.env
+  - name: docs-secrets
+    namespace: docs
     envs:
       - ../../.env
 

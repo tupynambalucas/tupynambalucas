@@ -438,6 +438,8 @@ export default defineConfig([
       '**/vite-env.d.ts',
       '**/.docusaurus/**',
       '**/static/**',
+      '**/i18n/**',
+      '**/translations/**',
     ],
   },
 
