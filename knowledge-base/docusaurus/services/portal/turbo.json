@@ -4,13 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "env": [
-        "DOCUSAURUS_*",
-        "SYNC_TRANSLATIONS",
-        "CROWDIN_PROJECT_ID",
-        "CROWDIN_PERSONAL_TOKEN",
-        "CLOUDFLARE_R2_ASSETS_PUBLIC_URL"
-      ],
+      "env": ["DOCUSAURUS_*", "CLOUDFLARE_R2_ASSETS_PUBLIC_URL"],
       "outputs": ["build/**"]
     }
   }

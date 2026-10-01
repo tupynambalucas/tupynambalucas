@@ -30,7 +30,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@crowdin/cli": "catalog:docs-stack",
     "@monorepo/kb-collections": "workspace:*",
     "@monorepo/kb-docusaurus-theme": "workspace:*",
     "@monorepo/shared-config": "workspace:*",

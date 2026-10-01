@@ -48,27 +48,10 @@ jobs:
             git push
           fi
 
-      - name: Debug Secrets Injection
-        run: |
-          echo "Project ID Length: ${#PROJECT_ID}"
-          echo "Token Length: ${#TOKEN}"
-          if [ "${#PROJECT_ID}" -eq 0 ]; then
-            echo "❌ ERROR: CROWDIN_PROJECT_ID is empty!"
-          fi
-          if [ "${#TOKEN}" -eq 0 ]; then
-            echo "❌ ERROR: CROWDIN_PERSONAL_TOKEN is empty!"
-          fi
-        env:
-          PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID || vars.CROWDIN_PROJECT_ID }}
-          TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN || vars.CROWDIN_PERSONAL_TOKEN }}
-
       - name: Build documentation
         run: pnpm kb:docusaurus:portal:build
         env:
           CLOUDFLARE_R2_ASSETS_PUBLIC_URL: ${{ secrets.CLOUDFLARE_R2_ASSETS_PUBLIC_URL }}
-          SYNC_TRANSLATIONS: 'true'
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID || vars.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN || vars.CROWDIN_PERSONAL_TOKEN }}
 
       - name: Idempotent Deploy to Cloudflare Pages
         uses: ./.github/actions/deploy-cloudflare-pages

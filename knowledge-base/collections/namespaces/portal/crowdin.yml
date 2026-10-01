@@ -1,7 +1,0 @@
-
-"base_path": "."
-"preserve_hierarchy": true
-
-files:
-  - source: '/content/**/*.mdx'
-    translation: '/locales/%locale%/**/%original_file_name%'

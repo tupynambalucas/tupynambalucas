@@ -10,9 +10,6 @@
     "./namespaces/*": "./namespaces/*",
     "./package.json": "./package.json"
   },
-  "dependencies": {
-    "@crowdin/cli": "catalog:docs-stack"
-  },
   "devDependencies": {
     "@monorepo/shared-config": "workspace:*"
   }
