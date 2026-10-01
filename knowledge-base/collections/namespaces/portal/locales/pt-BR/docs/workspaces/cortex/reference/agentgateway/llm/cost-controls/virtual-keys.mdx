@@ -66,7 +66,7 @@ Set up virtual keys interactively through the Admin UI.
    ![Create virtual key drawer with name, auto-generated key value, and metadata](https://agentgateway.dev/img/ui-virtual-keys-new-dark.png)
 
 3. **Copy** the virtual key value. Give this key to your users to use in an `Authorization: Bearer
-   $VIRTUAL_KEY` header in subsequent requests through agentgateway.
+      $VIRTUAL_KEY` header in subsequent requests through agentgateway.
 
 The rest of this guide uses the equivalent config-file settings, which apply the same `apiKey`
 policy shown in the UI.
@@ -546,7 +546,7 @@ PromQL to the `/metrics` endpoint directly, so in standalone mode you run your o
 
 5. Estimate costs by multiplying token counts by your provider’s pricing. Input and output tokens are
    usually priced differently, so aggregate each type separately, then add the two results. Each `sum
-   by (user_id)` collapses the `gen_ai_token_type` label, so the `+` matches on `user_id`.
+      by (user_id)` collapses the `gen_ai_token_type` label, so the `+` matches on `user_id`.
    :::note[Note]
    Queries that use rate() or increase() over a range such as [24h] need that much scrape history to return meaningful values. While testing locally, query the raw _sum counters or use a shorter range such as [5m] . This query estimates cost for OpenAI GPT-3.5 by applying your own pricing to token counts. To have agentgateway compute the realized USD cost per request from a model cost catalog, see Model costs .
    :::
