@@ -4,4 +4,4 @@
 
 files:
   - source: '/content/**/*.mdx'
-    translation: '/translations/%locale%/**/%original_file_name%'
+    translation: '/locales/%locale%/**/%original_file_name%'

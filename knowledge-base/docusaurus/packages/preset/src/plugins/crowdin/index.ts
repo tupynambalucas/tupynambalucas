@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { execSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import type { LoadContext, Plugin } from '@docusaurus/types';
 
@@ -29,7 +28,6 @@ function syncFilesOptimized(src: string, dest: string) {
       if (fs.existsSync(destPath)) {
         const srcContent = fs.readFileSync(srcPath);
         const destContent = fs.readFileSync(destPath);
-        // Compare byte by byte
         if (srcContent.equals(destContent)) {
           shouldWrite = false;
         }
@@ -52,63 +50,17 @@ export default function pluginCrowdin(context: LoadContext, options: CrowdinOpti
       const collectionsPkg = require.resolve('@monorepo/kb-collections/package.json');
       const collectionsRoot = path.dirname(collectionsPkg);
       const namespacePath = path.join(collectionsRoot, 'namespaces', collection);
-      const source = path.join(namespacePath, 'translations');
+      const source = path.join(namespacePath, 'locales');
 
-      const hasTranslationsLocally = fs.existsSync(source);
-      const isDev = process.env.NODE_ENV === 'development';
-      const shouldSync = process.env.SYNC_TRANSLATIONS === 'true';
-
-      if (isDev && !shouldSync) {
-        console.info(
-          `[Crowdin Plugin] Development server detected. Skipping Crowdin translations check.`,
+      if (!fs.existsSync(source)) {
+        console.warn(
+          `[Crowdin Plugin] Locales directory not found at ${source}. Proceeding with default language only.`,
         );
-      } else if (shouldSync || !hasTranslationsLocally) {
-        console.info(`[Crowdin Plugin] Starting bidirectional sync with Crowdin...`);
-
-        const projectId = process.env.CROWDIN_PROJECT_ID;
-        const hasToken = !!process.env.CROWDIN_PERSONAL_TOKEN;
-
-        if (!projectId || !hasToken) {
-          throw new Error(
-            `[Crowdin Plugin] FATAL: Missing Crowdin credentials! Project ID: ${projectId || 'MISSING'}, Token present: ${hasToken}`,
-          );
-        }
-
-        try {
-          console.info(`[Crowdin Plugin] Uploading english sources...`);
-          const authArgs = `--project-id "${projectId}" --token "${process.env.CROWDIN_PERSONAL_TOKEN}"`;
-
-          execSync(`pnpm exec crowdin upload sources --config "crowdin.yml" ${authArgs}`, {
-            cwd: namespacePath,
-            stdio: 'inherit',
-          });
-
-          console.info(`[Crowdin Plugin] Downloading translations package...`);
-          try {
-            execSync(`pnpm exec crowdin download --config "crowdin.yml" ${authArgs}`, {
-              cwd: namespacePath,
-              stdio: 'inherit',
-            });
-          } catch (dlError: any) {
-            console.warn(
-              `[Crowdin Plugin] Download returned exit code ${dlError.status}. This usually means translations are not ready yet on Crowdin. Proceeding with build...`,
-            );
-          }
-        } catch (error) {
-          console.error(`[Crowdin Plugin] Crowdin CLI Error:`, error);
-          throw error;
-        }
-      } else {
-        console.info(
-          `[Crowdin Plugin] Local translations found for namespace '${collection}'. Skipping download.`,
-        );
+        return;
       }
 
-      // Sync the downloaded translations into the Docusaurus i18n directory optimized
-      if (fs.existsSync(source)) {
-        console.info(`[Crowdin Plugin] Synchronizing translations from ${source} to ${dest}...`);
-        syncFilesOptimized(source, dest);
-      }
+      console.info(`[Crowdin Plugin] Synchronizing locales from ${source} to ${dest}...`);
+      syncFilesOptimized(source, dest);
     },
   };
 }

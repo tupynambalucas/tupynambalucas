@@ -6,6 +6,5 @@ references/
 static/
 changelog/
 
-# Internationalization (Crowdin Sync)
+# Internationalization
 i18n/
-translations/
