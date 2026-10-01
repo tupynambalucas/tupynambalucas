@@ -77,7 +77,7 @@ export default function pluginStudioAssets(context: LoadContext, _options: Plugi
               resourceQuery: /original=/,
               use: [
                 {
-                  loader: require.resolve('./bucket-loader.ts'),
+                  loader: require.resolve('./bucket-loader.js'),
                 },
               ],
             },
