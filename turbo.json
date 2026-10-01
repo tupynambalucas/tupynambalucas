@@ -9,7 +9,13 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", "build/**"]
+      "outputs": ["dist/**", "build/**"],
+      "env": [
+        "SYNC_TRANSLATIONS",
+        "CROWDIN_PROJECT_ID",
+        "CROWDIN_PERSONAL_TOKEN",
+        "CLOUDFLARE_R2_ASSETS_PUBLIC_URL"
+      ]
     },
     "clean": {
       "cache": false
