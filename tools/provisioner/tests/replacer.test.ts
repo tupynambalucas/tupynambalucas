@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { applyReplacements } from '../src/core/replacer.js';
 import * as fs from 'node:fs';
 import * as glob from 'glob';

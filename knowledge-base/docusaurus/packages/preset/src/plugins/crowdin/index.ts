@@ -78,14 +78,14 @@ export default function pluginCrowdin(context: LoadContext, options: CrowdinOpti
           console.info(`[Crowdin Plugin] Uploading english sources...`);
           const authArgs = `--project-id "${projectId}" --token "${process.env.CROWDIN_PERSONAL_TOKEN}"`;
 
-          execSync(`npx crowdin upload sources --config crowdin.yml ${authArgs}`, {
+          execSync(`pnpm exec crowdin upload sources --config "crowdin.yml" ${authArgs}`, {
             cwd: namespacePath,
             stdio: 'inherit',
           });
 
           console.info(`[Crowdin Plugin] Downloading translations package...`);
           try {
-            execSync(`npx crowdin download --config crowdin.yml ${authArgs}`, {
+            execSync(`pnpm exec crowdin download --config "crowdin.yml" ${authArgs}`, {
               cwd: namespacePath,
               stdio: 'inherit',
             });

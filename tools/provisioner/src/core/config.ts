@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import * as path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import type { ProjectConfig } from '../types/index.js';
@@ -12,8 +12,8 @@ export async function loadProjectConfig(): Promise<ProjectConfig> {
 
   // Safe dynamic import for loading TS via tsx (which provisioner uses)
   const moduleUrl = pathToFileURL(configPath).toString();
-  const { ProjectConfig } = await import(moduleUrl);
-  return ProjectConfig as ProjectConfig;
+  const moduleExports = (await import(moduleUrl)) as { ProjectConfig: ProjectConfig };
+  return moduleExports.ProjectConfig;
 }
 
 export function saveProjectConfig(config: ProjectConfig): void {
