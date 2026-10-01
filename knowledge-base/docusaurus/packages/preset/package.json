@@ -30,6 +30,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@crowdin/cli": "catalog:docs-stack",
     "@monorepo/kb-collections": "workspace:*",
     "@monorepo/kb-docusaurus-theme": "workspace:*",
     "@monorepo/shared-config": "workspace:*",
@@ -38,27 +39,27 @@
   },
   "peerDependencies": {
     "@docusaurus/core": "catalog:docs-stack",
-    "@docusaurus/theme-classic": "catalog:docs-stack",
-    "@docusaurus/theme-common": "catalog:docs-stack",
-    "@docusaurus/theme-live-codeblock": "catalog:docs-stack",
-    "@docusaurus/theme-mermaid": "catalog:docs-stack",
-    "@docusaurus/theme-search-algolia": "catalog:docs-stack",
-    "@docusaurus/plugin-content-docs": "catalog:docs-stack",
     "@docusaurus/plugin-content-blog": "catalog:docs-stack",
+    "@docusaurus/plugin-content-docs": "catalog:docs-stack",
     "@docusaurus/plugin-content-pages": "catalog:docs-stack",
+    "@docusaurus/plugin-css-cascade-layers": "catalog:docs-stack",
     "@docusaurus/plugin-debug": "catalog:docs-stack",
     "@docusaurus/plugin-google-gtag": "catalog:docs-stack",
     "@docusaurus/plugin-google-tag-manager": "catalog:docs-stack",
     "@docusaurus/plugin-sitemap": "catalog:docs-stack",
     "@docusaurus/plugin-svgr": "catalog:docs-stack",
-    "@docusaurus/plugin-css-cascade-layers": "catalog:docs-stack",
+    "@docusaurus/theme-classic": "catalog:docs-stack",
+    "@docusaurus/theme-common": "catalog:docs-stack",
+    "@docusaurus/theme-live-codeblock": "catalog:docs-stack",
+    "@docusaurus/theme-mermaid": "catalog:docs-stack",
+    "@docusaurus/theme-search-algolia": "catalog:docs-stack",
     "react": "catalog:web-stack",
     "react-dom": "catalog:web-stack"
   },
   "devDependencies": {
-    "@docusaurus/types": "catalog:docs-stack",
     "@docusaurus/module-type-aliases": "catalog:docs-stack",
     "@docusaurus/tsconfig": "catalog:docs-stack",
+    "@docusaurus/types": "catalog:docs-stack",
     "@types/node": "catalog:",
     "@types/react": "catalog:web-stack",
     "typescript": "catalog:"
