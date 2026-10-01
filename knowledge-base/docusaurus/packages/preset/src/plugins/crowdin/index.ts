@@ -64,16 +64,28 @@ export default function pluginCrowdin(context: LoadContext, options: CrowdinOpti
         );
       } else if (shouldSync || !hasTranslationsLocally) {
         console.info(`[Crowdin Plugin] Starting bidirectional sync with Crowdin...`);
+
+        const projectId = process.env.CROWDIN_PROJECT_ID;
+        const hasToken = !!process.env.CROWDIN_PERSONAL_TOKEN;
+
+        if (!projectId || !hasToken) {
+          throw new Error(
+            `[Crowdin Plugin] FATAL: Missing Crowdin credentials! Project ID: ${projectId || 'MISSING'}, Token present: ${hasToken}`,
+          );
+        }
+
         try {
           console.info(`[Crowdin Plugin] Uploading english sources...`);
-          execSync('npx crowdin upload sources --config crowdin.yml', {
+          const authArgs = `--project-id "${projectId}" --token "${process.env.CROWDIN_PERSONAL_TOKEN}"`;
+
+          execSync(`npx crowdin upload sources --config crowdin.yml ${authArgs}`, {
             cwd: namespacePath,
             stdio: 'inherit',
           });
 
           console.info(`[Crowdin Plugin] Downloading translations package...`);
           try {
-            execSync('npx crowdin download --config crowdin.yml', {
+            execSync(`npx crowdin download --config crowdin.yml ${authArgs}`, {
               cwd: namespacePath,
               stdio: 'inherit',
             });
