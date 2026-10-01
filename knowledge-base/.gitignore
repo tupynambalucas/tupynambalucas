@@ -1,1 +1,11 @@
 references/
+
+# Docusaurus Services
+.docusaurus/
+.cache-loader/
+static/
+changelog/
+
+# Internationalization (Crowdin Sync)
+i18n/
+translations/
