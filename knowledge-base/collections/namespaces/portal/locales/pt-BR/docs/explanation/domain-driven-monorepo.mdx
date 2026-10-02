@@ -4,61 +4,61 @@ sidebar_label: Domain-Driven Monorepos
 sidebar_position: 2
 ---
 
-### Domain-Driven Monorepo Architecture
+### Arquitetura de Monorepo Baseada em Domínio
 
-The scalability of enterprise software ecosystems often faces two primary bottlenecks: the cognitive complexity of the business domain, and the friction imposed by codebase management infrastructure. As organizations grow, microservices distributed across multiple repositories (multirepos) or monolithic structures lacking clear boundaries tend to incur unsustainable technical debt.
+A escalabilidade de ecossistemas de software corporativo frequentemente enfrenta dois gargalos principais: a complexidade cognitiva do domínio de negócios e o atrito imposto pela infraestrutura de gerenciamento de código-fonte. À medida que as organizações crescem, microsserviços distribuídos em múltiplos repositórios (multirepos) ou estruturas monolíticas sem fronteiras claras tendem a acumular uma dívida técnica insustentável.
 
-The convergence of Domain-Driven Design (DDD)—specifically the strategic pattern of **Bounded Contexts**—and **Monorepo** architectures offers an elegant solution. By mapping logical business domains directly to physical folder boundaries, we establish an automated governance model that secures code reuse while ensuring independent evolution. This document details how `%PROJECT_DOMAIN%` materializes strategic domain-driven design within its monorepo.
-
----
-
-## 1. Domain-Driven Design (DDD) strategic foundations
-
-DDD aligns a software system's internal code model with the real-world business domains it supports. It rejects the fallacy of a single, unified canonical model across an entire system. Attempting to force a single definition for concepts like "Customer" or "Asset" across different departments leads to bloated, fragile code models.
-
-### 1.1 Concept Polysemy
-
-The phenomenon of polysemy (where a single term has multiple meanings depending on context) is the main catalyst for adopting Bounded Contexts. Forcing a single class or entity to serve multiple business interests violates the Single Responsibility Principle and causes tight coupling.
-
-In our monorepo, the concept of an **"Asset"** has completely different definitions depending on the context:
-
-* **Studio Context (`studio/`)**: An asset is a raw vector source file (Illustrator `.ai`, Blender `.blend`, PSD) or a compiled high-resolution raster image stored in Cloudflare R2.
-* **Renderer Context (`renderer/`)**: An asset is a dynamic, theme-aware, base64-encoded inline font asset or an SVG card compiled dynamically to bypass iframe sandboxes.
-* **Hub Context (`hub/`)**: An asset is a static, public CDN-cached URL serving portfolio content to the user's browser.
-
-Rather than creating a bloated, global `Asset` definition, each context maintains its own specialized representation, completely isolated from others.
-
-### 1.2 The Bounded Context
-
-A Bounded Context defines the explicit boundary inside which a domain model is valid. Inside this boundary, our Ubiquitous Language has precise and indisputable meanings. Within each bounded context in `%PROJECT_DOMAIN%`:
-
-* Domain terminologies are highly aligned with technical schemas, variables, and specs.
-* Developers have complete ownership and autonomy over the lifecycle of their context.
-* External contexts are completely shielded from internal implementation changes.
+A convergência do Domain-Driven Design (DDD) — especificamente o padrão estratégico de **Bounded Contexts** — e de arquiteturas de **Monorepo** oferece uma solução elegante. Ao mapear domínios de negócios lógicos diretamente para limites de pastas físicas, estabelecemos um modelo de governança automatizado que assegura o reaproveitamento de código enquanto garante a evolução independente. Este documento detalha como `%PROJECT_DOMAIN%` materializa o design estratégico guiado por domínio dentro de seu monorepo.
 
 ---
 
-## 2. Strategic Mappings in the Monorepo
+## 1. Fundamentos estratégicos do Domain-Driven Design (DDD)
 
-We categorize our contexts using DDD tactical classifications to prioritize technical investment and architecture:
+O DDD alinha o modelo de código interno de um sistema de software aos domínios de negócios do mundo real que ele suporta. Ele rejeita a falácia de um modelo canônico único e unificado em todo o sistema. Tentar forçar uma definição única para conceitos como "Customer" ou "Asset" em diferentes departamentos resulta em modelos de código inchados e frágeis.
 
-| Context                    | Strategic Classification | Architectural Approach                                                                                      |
-| :------------------------- | :----------------------- | :---------------------------------------------------------------------------------------------------------- |
-| **Renderer (`renderer/`)** | **Core Domain**          | Proprietary document compilation pipeline built with TypeScript and zero-dependency base64 embedded assets. |
-| **Hub (`hub/`)**           | **Core Domain**          | Personal portfolio web app, Fastify API, and data contract packages with strict schema validations.         |
-| **Cortex (`cortex/`)**     | **Supporting Domain**    | Unified AI ingress gateway, persistent vector memory indexes, downstream MCP adapters, and agent terminals. |
-| **Studio (`studio/`)**     | **Supporting Domain**    | Brand identity master vault, design tokens library, and R2 bucket command-line synchronizer.                |
-| **Platform (`platform/`)** | **Generic Domain**       | OpenTelemetry monitoring collector and Turborepo cache servers.                                             |
+### 1.1 Polissemia de Conceitos
+
+O fenômeno da polissemia (onde um único termo possui múltiplos significados dependendo do contexto) é o principal catalisador para a adoção de Bounded Contexts. Forçar uma única classe ou entidade a atender a múltiplos interesses de negócios viola o Princípio da Responsabilidade Única e causa forte acoplamento.
+
+Em nosso monorepo, o conceito de um **"Asset"** possui definições completamente diferentes dependendo do contexto:
+
+* **Studio Context (`studio/`)**: Um asset é um arquivo fonte vetorial bruto (Illustrator `.ai`, Blender `.blend`, PSD) ou uma imagem rasterizada de alta resolução compilada armazenada no Cloudflare R2.
+* **Renderer Context (`renderer/`)**: Um asset é um recurso de fonte embutida dinâmico, sensível a temas, codificado em base64 ou um cartão SVG compilado dinamicamente para contornar sandboxes de iframe.
+* **Hub Context (`hub/`)**: Um asset é uma URL estática pública com cache de CDN que serve o conteúdo do portfólio para o navegador do usuário.
+
+Em vez de criar uma definição global e inchada de `Asset`, cada contexto mantém sua própria representação especializada, completamente isolada das demais.
+
+### 1.2 O Bounded Context
+
+Um Bounded Context define o limite explícito dentro do qual um modelo de domínio é válido. Dentro deste limite, nossa Linguagem Onipresente possui significados precisos e indiscutíveis. Dentro de cada bounded context em `%PROJECT_DOMAIN%`:
+
+* As terminologias de domínio são altamente alinhadas com esquemas técnicos, variáveis e especificações.
+* Os desenvolvedores possuem propriedade e autonomia completas sobre o ciclo de vida de seu contexto.
+* Contextos externos são completamente blindados contra alterações de implementação interna.
 
 ---
 
-## 3. Physical Workspace Organization (PNPM Workspaces)
+## 2. Mapeamentos Estratégicos no Monorepo
 
-While DDD dictates the logical grouping of concepts, our monorepo provides the physical topology. We use **pnpm workspaces** to orchestrate dependencies, establishing a single source of truth for packages while ensuring strict logical separation.
+Categorizamos nossos contextos usando classificações táticas de DDD para priorizar investimentos técnicos e arquitetura:
 
-### 3.1 Folder Topology
+| Context                    | Strategic Classification | Architectural Approach                                                                                                           |
+| :------------------------- | :----------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| **Renderer (`renderer/`)** | **Core Domain**          | Pipeline proprietário de compilação de documentos construído com TypeScript e assets embutidos em base64 sem dependências.       |
+| **Hub (`hub/`)**           | **Core Domain**          | Aplicativo web de portfólio pessoal, API Fastify e pacotes de contrato de dados com validações de esquema estritas.              |
+| **Cortex (`cortex/`)**     | **Supporting Domain**    | Gateway de entrada de IA unificado, índices de memória vetorial persistentes, adaptadores MCP downstream e terminais de agentes. |
+| **Studio (`studio/`)**     | **Supporting Domain**    | Cofre mestre de identidade de marca, biblioteca de design tokens e sincronizador de linha de comando para bucket R2.             |
+| **Platform (`platform/`)** | **Generic Domain**       | Coletor de monitoramento OpenTelemetry e servidores de cache do Turborepo.                                                       |
 
-Our folder layout directly mirrors our Bounded Context map:
+---
+
+## 3. Organização do Workspace Físico (PNPM Workspaces)
+
+Embora o DDD dite o agrupamento lógico de conceitos, nosso monorepo fornece a topologia física. Utilizamos **pnpm workspaces** para orquestrar dependências, estabelecendo uma única fonte de verdade para pacotes enquanto garantimos uma separação lógica estrita.
+
+### 3.1 Topologia de Pastas
+
+Nossa disposição de pastas espelha diretamente nosso mapa de Bounded Context:
 
 ```text
 workspace/
@@ -75,74 +75,74 @@ workspace/
 └── knowledge-base/           # Knowledge Base Context (Docusaurus)
 ```
 
-We completely reject the anti-pattern of a global, catch-all `utils/` directory at the root. Such folders invariably degrade into systemic dumping grounds, triggering unnecessary global builds and violating logical boundaries. Any utility must remain encapsulated inside its origin context.
+Rejeitamos completamente o anti-padrão de um diretório `utils/` global e genérico na raiz. Tais pastas invariavelmente se degradam em depósitos sistêmicos, acionando builds globais desnecessários e violando limites lógicos. Qualquer utilitário deve permanecer encapsulado dentro de seu contexto de origem.
 
-### 3.2 Workspace Dependency Isolation
+### 3.2 Isolamento de Dependências do Workspace
 
-Workspaces declare internal dependencies explicitly using the `workspace:*` protocol. This prevents the resolving of internal packages through public registries and forces local symlinking. Under pnpm, this hard-linking architecture rejects phantom dependencies, ensuring a package can only import what is explicitly declared inside its own local `package.json`.
+Workspaces declaram dependências internas explicitamente usando o protocolo `workspace:*`. Isso evita a resolução de pacotes internos por meio de registros públicos e força o link simbólico local. Sob o pnpm, esta arquitetura de vinculação rígida rejeita dependências fantasmas, garantindo que um pacote só possa importar o que estiver explicitamente declarado dentro de seu próprio `package.json` local.
 
 ---
 
-## 4. Context Mapping & Integration
+## 4. Mapeamento de Contexto e Integração
 
-Bounded Contexts do not operate in absolute isolation; they must communicate through explicit relational patterns.
+Bounded Contexts não operam em isolamento absoluto; eles devem se comunicar por meio de padrões relacionais explícitos.
 
-### 4.1 Shared Kernel (Nucleu Partilhado)
+### 4.1 Shared Kernel (Núcleo Compartilhado)
 
-The **Shared Kernel** pattern is utilized when contexts share a stable portion of domain schemas or variables. In our system, **`@repo/studio/assets`** acts as a Shared Kernel. Both `@repo/hub/web` and `@/renderer` import design tokens and SVG icons directly from this package.
+O padrão **Shared Kernel** é utilizado quando contextos compartilham uma parte estável de esquemas de domínio ou variáveis. Em nosso sistema, **`@repo/studio/assets`** atua como um Shared Kernel. Tanto `@repo/hub/web` quanto `@/renderer` importam design tokens e ícones SVG diretamente deste pacote.
 
-Any change to these tokens triggers immediate build-time verification across both downstream consumer contexts, ensuring systemic visual consistency.
+Qualquer alteração nesses tokens aciona verificação imediata em tempo de build em ambos os contextos consumidores downstream, garantindo consistência visual sistêmica.
 
 ### 4.2 Anti-Corruption Layer (ACL)
 
-When a clean context must consume complex or raw external services, we introduce an **Anti-Corruption Layer (ACL)** to translate external inputs into the consumer's clean domain language.
+Quando um contexto limpo precisa consumir serviços externos complexos ou brutos, introduzimos uma **Anti-Corruption Layer (ACL)** para traduzir entradas externas para a linguagem de domínio limpa do consumidor.
 
-Our **`AgentGateway`** (under `/cortex/gateway`) acts as a network-level ACL. Downstream AI agent containers in `cortex/agents` execute complex, non-standard MCP commands. Instead of coupling the agents to raw endpoints, they communicate through the clean, federated `AgentGateway` ingress proxy, which translates and routes payloads seamlessly.
-
----
-
-## 5. Architectural Layering & Enforcement
-
-We enforce structural modularity dynamically to prevent spaghetti imports and ensure architecture integrity.
-
-### 5.1 Vertical vs. Horizontal Layering
-
-* **Vertical Boundaries**: Dictated by root workspace directories (e.g., code under `hub/` cannot perform direct, deep imports of file systems under `renderer/`).
-* **Horizontal Layering**: Internal architectural layers. For instance, the `@repo/hub/web` (UI/Feature layer) is completely decoupled from `@repo/hub/core` (Domain model layer), forcing the dependency flow downward.
-
-### 5.2 Automated Boundary Enforcement
-
-Left to social discipline alone, architectural boundaries will eventually decay under release pressure. We enforce boundaries programmatically using:
-
-* **Strict Linting Rules**: Configuring import boundary checkers to block illegal imports across domains.
-* **Dependency Cruising**: Utilizing topologist toolings to audit entire import graphs, blocking circular dependencies, and eliminating dead code.
-* **Type-only Imports**: Enforcing type safety by importing contracts dynamically rather than importing physical class implementations.
+Nosso **`AgentGateway`** (sob `/cortex/gateway`) atua como uma ACL em nível de rede. Containers de agentes de IA downstream em `cortex/agents` executam comandos MCP complexos e não padronizados. Em vez de acoplar os agentes a endpoints brutos, eles se comunicam através do proxy de entrada `AgentGateway` limpo e federado, que traduz e roteia payloads de forma transparente.
 
 ---
 
-## 6. Container Layout Patterns: Flat Services vs. Layered Domains
+## 5. Modularização e Execução Arquitetural
 
-When a Bounded Context includes containerized deployment units (managed locally via Podman Compose or Skaffold/Minikube Kubernetes manifests), the directory layout must be structured to match its architectural alignment:
+Aplicamos modularidade estrutural dinamicamente para evitar imports espaguete e garantir a integridade da arquitetura.
 
-### 6.1 Flat Services Layout
+### 5.1 Camadas Verticais vs. Horizontais
 
-A horizontal layout where all services are placed inside a flat `services/` directory.
+* **Limites Verticais**: Ditados pelos diretórios raiz do workspace (por exemplo, código sob `hub/` não pode realizar imports diretos e profundos de sistemas de arquivos sob `renderer/`).
+* **Camadas Horizontais**: Camadas arquiteturais internas. Por exemplo, o `@repo/hub/web` (camada de UI/Feature) é completamente desacoplado de `@repo/hub/core` (camada de modelo de domínio), forçando o fluxo de dependência para baixo.
 
-* **When to Use**: Applied to product-centric workspaces (e.g.,
-  [/hub](/docs/explanation/domain-driven-monorepo#31-folder-topology) and `studio/design`)
-  that represent standard web application stacks (Frontend Client, Backend API, Database, Cache).
-* **Rationale**: The services function as peer components of a single, highly coupled application.
-  Adding further structural layers would increase cognitive overhead without benefit.
+### 5.2 Execução Automatizada de Limites
 
-### 6.2 Layered Domain Layout
+Deixados apenas para a disciplina social, os limites arquiteturais eventualmente decairão sob a pressão de releases. Aplicamos limites programmaticamente usando:
 
-A vertical layout where services are grouped into sibling directories representing distinct
-architectural planes (e.g., `gateway/` for routing, `mcp/` for data planes, `agents/` for execution
-runtimes) at the root of the workspace.
+* **Regras de Lint Estritas**: Configuração de verificadores de limites de import para bloquear imports ilegais entre domínios.
+* **Dependency Cruising**: Utilização de ferramentas de topologia para auditar grafos de import inteiros, bloqueando dependências circulares e eliminando código morto.
+* **Imports Apenas de Tipos**: Aplicação de segurança de tipos importando contratos dinamicamente em vez de importar implementações físicas de classes.
 
-* **When to Use**: Applied to infrastructure-centric workspaces (e.g., `/cortex`) that
-  contain heterogeneous components with separate lifecycles, permission scopes, and deployment
-  requirements.
-* **Rationale**: Clarifies the structural hierarchy of complex platform integrations. It allows
-  developers to spin up specific layers (such as the gateway and data planes) independently of the
-  control planes (such as execution environments).
+---
+
+## 6. Padrões de Layout de Container: Serviços Planos vs. Domínios em Camadas
+
+Quando um Bounded Context inclui unidades de deploy conteinerizadas (gerenciadas localmente via Podman Compose ou manifestos Kubernetes do Skaffold/Minikube), o layout do diretório deve ser estruturado para corresponder ao seu alinhamento arquitetural:
+
+### 6.1 Layout de Serviços Planos
+
+Um layout horizontal onde todos os serviços são colocados dentro de um diretório `services/` plano.
+
+* **Quando Usar**: Aplicado a workspaces centrados em produtos (por exemplo,
+  [/hub](/docs/explanation/domain-driven-monorepo#31-folder-topology) e `studio/design`)
+  que representam pilhas de aplicações web padrão (Frontend Client, Backend API, Database, Cache).
+* **Fundamentação**: Os serviços funcionam como componentes pares de uma aplicação única e altamente acoplada.
+  Adicionar novas camadas estruturais aumentaria a sobrecarga cognitiva sem benefícios.
+
+### 6.2 Layout de Domínio em Camadas
+
+Um layout vertical onde os serviços são agrupados em diretórios irmãos representando planos
+arquiteturais distintos (por exemplo, `gateway/` para roteamento, `mcp/` para planos de dados, `agents/` para runtimes
+de execução) na raiz do workspace.
+
+* **Quando Usar**: Aplicado a workspaces centrados em infraestrutura (por exemplo, `/cortex`) que
+  contêm componentes heterogêneos com ciclos de vida, escopos de permissão e requisitos de
+  deploy separados.
+* **Fundamentação**: Esclarece a hierarquia estrutural de integrações de plataforma complexas. Isso permite
+  que desenvolvedores inicializem camadas específicas (como o gateway e os planos de dados) independentemente dos
+  planos de controle (como ambientes de execução).
