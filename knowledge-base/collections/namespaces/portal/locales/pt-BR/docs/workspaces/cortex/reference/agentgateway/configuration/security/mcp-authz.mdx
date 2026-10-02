@@ -73,7 +73,7 @@ routes:
 ```
 
 :::note[Note]
-Try out CEL expressions in the built-in CEL playground in the agentgateway admin UI before using them in your configuration.
+Experimente as expressões CEL no playground da CEL embutido na interface de administrador do agentgateway antes de usá-las na sua configuração.
 :::
 
 ## Role-based access with JWT claims
@@ -194,11 +194,11 @@ When you also configure MCP
 authentication, claims from the validated
 JWT are available to your rules as well:
 
-| Variable                                | Type     | Availability | Description                                                                 |
-| --------------------------------------- | -------- | ------------ | --------------------------------------------------------------------------- |
-| `jwt.sub`                               | `string` | Request-time | The `sub` (subject) claim from the JWT.                                     |
-| \`jwt.\<claim>\`\`     | `any`    | Request-time | Any top-level or nested JWT claim, such as `jwt.roles` or `jwt.nested.key`. |
-| `has(jwt.\<claim>)`)\` | `bool`   | Request-time | Whether a JWT claim is present.                                             |
+| Variable                                   | Type     | Availability | Description                                                                 |
+| ------------------------------------------ | -------- | ------------ | --------------------------------------------------------------------------- |
+| `jwt.sub`                                  | `string` | Request-time | The `sub` (subject) claim from the JWT.                                     |
+| \`jwt.\<claim>\`\`\`      | `any`    | Request-time | Any top-level or nested JWT claim, such as `jwt.roles` or `jwt.nested.key`. |
+| `has(jwt.\<claim>)`)\`)\` | `bool`   | Request-time | Whether a JWT claim is present.                                             |
 
 ### Tool arguments are not available during authorization
 
