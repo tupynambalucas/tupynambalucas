@@ -7,5 +7,4 @@ pull_request_labels:
 commit_message: 'chore(l10n): update translations [ci skip]'
 files:
   - source: /knowledge-base/collections/namespaces/portal/content/**/*.mdx
-    type: mdx
     translation: /knowledge-base/collections/namespaces/portal/locales/%locale%/**/%original_file_name%
