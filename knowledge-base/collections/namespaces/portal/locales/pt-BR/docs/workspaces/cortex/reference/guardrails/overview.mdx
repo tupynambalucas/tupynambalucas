@@ -1,6 +1,6 @@
 ---
-title: Guardrails ExtMCP Reference
-description: Technical reference for the cortex-mcp-guardrails gRPC service.
+title: Referência do Guardrails ExtMCP
+description: Referência técnica para o serviço gRPC cortex-mcp-guardrails.
 sidebar_position: 1
 diataxis_type: reference
 workspace: cortex
@@ -12,42 +12,42 @@ tags:
 
 # ExtMCP Guardrails
 
-The `cortex/mcp/guardrails` workspace provides the standalone gRPC ExtMCP policy processor for AgentGateway in the AI Cortex subsystem.
+O Workspace `cortex/mcp/guardrails` fornece o processador de política ExtMCP gRPC independente para o AgentGateway no subsistema AI Cortex.
 
-## Service Details
+## Detalhes do Serviço
 
-* **Protocol:** gRPC (`ext_mcp.proto`)
-* **Port:** `9001`
-* **Language:** Node.js 22 (TypeScript)
-* **Role:** Transparent Network Proxy & Request Validator
+* **Protocolo:** gRPC (`ext_mcp.proto`)
+* **Porta:** `9001`
+* **Linguagem:** Node.js 22 (TypeScript)
+* **Função:** Proxy de Rede Transparente e Validador de Requisições
 
-## Architecture
+## Arquitetura
 
-The Guardrails service implements the AgentGateway ExtMCP protocol to intercept Model Context Protocol (MCP) method calls before they reach downstream containers.
+O serviço Guardrails implementa o protocolo ExtMCP do AgentGateway para interceptar chamadas de método do Model Context Protocol (MCP) antes que elas cheguem aos containers de destino.
 
-It receives structured MCP-native payloads (JSON-RPC method name, parameters, etc.) rather than raw HTTP. This allows for precise inspection of tool calls (`tools/call`) and responses (`tools/list`).
+Ele recebe payloads estruturados nativos de MCP (nome do método JSON-RPC, parâmetros, etc.) em vez de HTTP puro. Isso permite a inspeção precisa de chamadas de ferramentas (`tools/call`) e respostas (`tools/list`).
 
-## Processors
+## Processadores
 
-### 1. Request Mutator (`request-mutator.ts`)
+### 1. Mutador de Requisições (`request-mutator.ts`)
 
-Hooks into the `tools/call` phase to act as a **Transparent Network Proxy**.
+Integra-se à fase `tools/call` para atuar como um **Proxy de Rede Transparente**.
 
-**Behavior:**
+**Comportamento:**
 
-* Recursively deep-scans all arguments in the JSON payload of *any* tool call.
-* Rewrites any string containing `localhost` or `127.0.0.1` to `host.docker.internal`.
-* Ensures seamless container-to-host connectivity without requiring the AI agent to understand the underlying Docker/Kubernetes networking model.
+* Examina profundamente e de forma recursiva todos os argumentos no payload JSON de *qualquer* chamada de ferramenta.
+* Reescreve qualquer string contendo `localhost` ou `127.0.0.1` para `host.docker.internal`.
+* Garante conectividade perfeita entre container e host sem exigir que o agente de IA compreenda o modelo de rede subjacente do Docker/Kubernetes.
 
-### 2. Response Enricher (`response-enricher.ts`)
+### 2. Enriquecedor de Respostas (`response-enricher.ts`)
 
-Hooks into the `tools/list` outbound phase.
+Integra-se à fase de saída `tools/list`.
 
-**Behavior:**
+**Comportamento:**
 
-* Acts as a pure pass-through (`{ pass: {} }`).
-* *Note:* In legacy versions, this processor injected markdown instructions into tool descriptions. This was removed to prevent schema bloat and preserve LLM context window efficiency. Agent instructions are now managed client-side via `.agents/rules`.
+* Atua como um pass-through puro (`{ pass: {} }`).
+* *Nota:* Em versões legadas, este processador injetava instruções em markdown nas descrições de ferramentas. Isso foi removido para evitar o inchaço do esquema e preservar a eficiência da janela de contexto do LLM. As instruções do agente agora são gerenciadas no lado do cliente via `.agents/rules`.
 
-## Fail-Safe Contract (Fail-Open)
+## Contrato Fail-Safe (Fail-Open)
 
-To maintain high availability across the Cortex data plane, all ExtMCP processors must catch internal exceptions (e.g., parsing errors) and gracefully fall back to a `{ pass: {} }` response. This ensures that a bug in the guardrail logic does not bring down the entire AI toolchain.
+Para manter alta disponibilidade no plano de dados do Cortex, todos os processadores ExtMCP devem capturar exceções internas (por exemplo, erros de parsing) e retornar graciosamente para uma resposta `{ pass: {} }`. Isso garante que um bug na lógica do guardrail não derrube todo o toolchain de IA.
