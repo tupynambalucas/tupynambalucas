@@ -61,9 +61,6 @@ catalog:
   '@types/unist': ^3.0.3
   unified: ^11.0.5
   dotenv: ^18.0.4
-  '@crowdin/cli': ^5.3.0
-  copyfiles: ^2.4.1
-  clsx: ^2.1.1
 
 catalogs:
   mcp-stack:
@@ -97,6 +94,7 @@ catalogs:
 
   web-stack:
     # Dependencies
+    'clsx': '^2.1.1'
     '@gsap/react': '^2.1.2'
     'gsap': ^3.15.0
     'react': ^19.3.0
@@ -121,13 +119,13 @@ catalogs:
     '@tailwindcss/postcss': ^4.3.3
 
   docs-stack:
+    '@crowdin/cli': '^5.3.0'
     '@docusaurus/core': '3.10.2'
     '@docusaurus/faster': '3.10.2'
     '@docusaurus/preset-classic': '3.10.2'
     '@docusaurus/theme-live-codeblock': '3.10.2'
     '@docusaurus/theme-mermaid': '3.10.2'
     '@mdx-js/react': ^3.1.1
-    'clsx': ^2.1.1
     'prism-react-renderer': ^2.4.1
     '@docusaurus/module-type-aliases': '3.10.2'
     '@docusaurus/tsconfig': '3.10.2'
@@ -146,7 +144,6 @@ catalogs:
     '@docusaurus/theme-classic': '3.10.2'
     '@docusaurus/theme-search-algolia': '3.10.2'
     '@docusaurus/theme-common': '3.10.2'
-    '@crowdin/cli': '^5.3.0'
     'node-fetch': '^2.7.0'
 
   api-stack:

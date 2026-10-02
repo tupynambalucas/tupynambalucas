@@ -409,9 +409,6 @@ catalogs:
     '@mdx-js/react':
       specifier: ^3.1.1
       version: 3.1.1
-    clsx:
-      specifier: ^2.1.1
-      version: 2.1.1
     prism-react-renderer:
       specifier: ^2.4.1
       version: 2.4.1
@@ -501,6 +498,9 @@ catalogs:
     '@vitejs/plugin-react-swc':
       specifier: ^4.3.3
       version: 4.3.3
+    clsx:
+      specifier: ^2.1.1
+      version: 2.1.1
     eslint-plugin-react-refresh:
       specifier: ^0.5.7
       version: 0.5.7
@@ -1151,7 +1151,7 @@ importers:
         specifier: workspace:*
         version: link:../../../../studio/assets
       clsx:
-        specifier: catalog:docs-stack
+        specifier: catalog:web-stack
         version: 2.1.1
       react:
         specifier: catalog:web-stack
@@ -1248,7 +1248,7 @@ importers:
         specifier: workspace:*
         version: link:../../../../studio/assets
       clsx:
-        specifier: catalog:docs-stack
+        specifier: catalog:web-stack
         version: 2.1.1
       dotenv:
         specifier: catalog:shared-stack
