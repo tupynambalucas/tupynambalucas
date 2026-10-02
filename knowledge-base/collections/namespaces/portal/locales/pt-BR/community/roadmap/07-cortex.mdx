@@ -3,34 +3,34 @@ title: Cortex (AI Workspace)
 sidebar_label: Cortex (AI Hub)
 ---
 
-This section outlines the strategic milestones and development timeline for the consolidated Cortex AI processing workspace.
+Esta seção descreve os marcos estratégicos e o cronograma de desenvolvimento para o workspace consolidado de processamento de IA do Cortex.
 
-## Completed Milestones
+## Marcos Concluídos
 
-### Workspace Unification
+### Unificação do Workspace
 
-* **AI Stack Consolidation**: Unified the AI ecosystem by co-locating the API Ingress Gateway, Model Context Protocol (MCP) data plane, and agent runtimes under `cortex/`. Removed legacy configurations from `/tools` and `/platform`.
-* **Layered Domain Reorganization**: Removed the redundant `core/` wrapper directory, restructuring the workspace into flat root-level domains: `gateway/`, `memory/`, `mcp/`, and `agents/`.
-* **Gateway Port Alignment**: Remapped container ports and updated internal agent settings to route traffic through Traefik -> AgentGateway on port `8080`.
-* **Database Startup Resiliency**: Implemented container healthchecks inside the compose manifest to ensure downstream adapters wait until databases are fully initialized before attempting socket connections.
+* **Consolidação da Stack de IA**: O ecossistema de IA foi unificado ao co-locar o API Ingress Gateway, o plano de dados do Model Context Protocol (MCP) e os runtimes de agentes em `cortex/`. Configurações legadas foram removidas de `/tools` e `/platform`.
+* **Reorganização de Domínios em Camadas**: O diretório de encapsulamento redundante `core/` foi removido, reestruturando o workspace em domínios planos no nível raiz: `gateway/`, `memory/`, `mcp/` e `agents/`.
+* **Alinhamento de Portas do Gateway**: As portas dos contêineres foram remapeadas e as configurações internas dos agentes foram atualizadas para rotear o tráfego por meio de Traefik -> AgentGateway na porta `8080`.
+* **Resiliência na Inicialização do Banco de Dados**: Verificações de integridade de contêineres foram implementadas dentro do manifesto compose para garantir que os adaptadores a jusante aguardem até que os bancos de dados estejam totalmente inicializados antes de tentar conexões de socket.
 
-### MCP and Documentation Expansion
+### Expansão do MCP e da Documentação
 
-* **New MCP Services**: Deployed new Playwright and Kubectl MCP services alongside Github, Firecrawl, Grafana, and Memory.
-* **Documentation Migration**: Successfully migrated the entire AgentGateway standalone documentation reference into the Cortex workspace documentation structure.
+* **Novos Serviços MCP**: Novos serviços MCP do Playwright e Kubectl foram deployed juntamente com Github, Firecrawl, Grafana e Memory.
+* **Migração da Documentação**: Toda a referência de documentação independente do AgentGateway foi migrada com sucesso para a estrutura de documentação do workspace do Cortex.
 
 ---
 
-## Planned Focus
+## Foco Planejado
 
-### MongoDB Vector RAG Memory Subsystem (High Priority)
+### Subsistência de Memória RAG Vetorial do MongoDB (Alta Prioridade)
 
-* **Database Layout**: Implement a self-hosted MongoDB persistent storage layer split across `chat_history`, `entities`, and `relations` collections.
-* **API & Core Libraries**: Code Mongoose schema validation models and Fastify API endpoints to handle transactional memory storage and `$vectorSearch` similarity queries.
-* **Visual Memory Dashboard**: Build an interactive React + Vite + Tailwind CSS dashboard within `cortex/memory/services/web` to render the Context Graph using React Flow.
-* **Docker-Only Execution**: Package the memory sub-stack so that database, API, and Web dashboard containers build and launch strictly via Docker Compose.
+* **Layout do Banco de Dados**: Implemente uma camada de armazenamento persistente do MongoDB auto-hospedada dividida nas coleções `chat_history`, `entities` e `relations`.
+* **API & Bibliotecas Principais**: Codifique modelos de validação de esquema do Mongoose e endpoints de API do Fastify para lidar com o armazenamento de memória transacional e consultas de similaridade `$vectorSearch`.
+* **Dashboard de Memória Visual**: Construa um dashboard interativo em React + Vite + Tailwind CSS dentro de `cortex/memory/services/web` para renderizar o Context Graph usando o React Flow.
+* **Execução Apenas em Docker**: Empacote a sub-stack de memória para que os contêineres do banco de dados, da API e do dashboard Web sejam construídos e iniciados estritamente via Docker Compose.
 
-### Validation & Decommissioning
+### Validação e Desativação
 
-* **E2E Agent Validation**: Validate volume mount integrity, OAuth token persistence, and tool connectivity from within containerized agent terminal shells.
-* **Host CLI Decommission**: Prune legacy configuration folders (`.agents/`, `.github/copilot/`) and decommission host-global agent installations once container environments are certified.
+* **Validação de Agentes E2E**: Valide a integridade da montagem de volumes, a persistência de tokens OAuth e a conectividade de ferramentas a partir de shells de terminais de agentes conteinerizados.
+* **Desativação da CLI do Host**: Remova pastas de configuração legadas (`.agents/`, `.github/copilot/`) e desative as instalações de agentes globais do host assim que os ambientes de contêiner forem certificados.
