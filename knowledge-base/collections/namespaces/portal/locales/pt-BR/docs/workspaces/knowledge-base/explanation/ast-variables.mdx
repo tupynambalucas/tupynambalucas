@@ -1,23 +1,23 @@
 ---
-title: AST Variables Compilation
-sidebar_label: AST Variables
+title: Compilação de Variáveis AST
+sidebar_label: Variáveis AST
 sidebar_position: 5
 ---
 
-# AST Variables Compilation
+# Compilação de Variáveis AST
 
-To ensure the monorepo remains fully copy-pasteable and generic for AI context injection, we enforce the usage of AST (Abstract Syntax Tree) Variables across the documentation hub.
+Para garantir que o monorepo permaneça totalmente copiável e genérico para injeção de contexto por IA, aplicamos o uso de Variáveis AST (Árvore de Sintaxe Abstrata) em todo o hub de documentação.
 
 ---
 
-## 1. The `remark-project-variables` Plugin
+## 1. O Plugin `remark-project-variables`
 
-Documentation authors and AI agents are strictly forbidden from hardcoding the brand domain (e.g., `example.com`). Instead, they must use agnostic tokens:
+Autores de documentação e agentes de IA são estritamente proibidos de inserir domínios de marca hardcoded (por exemplo, `example.com`). Em vez disso, eles devem usar tokens agnósticos:
 
 * `%PROJECT_DOMAIN%`
 * `%PROJECT_NAME%`
 * `%GITHUB_ORG%`
 
-The `remark-project-variables` plugin intercepts the Docusaurus MDX compilation pipeline, traverses the Markdown AST (`mdast`), and replaces these tokens with the active configurations found in `project.config.json` before rendering the final HTML.
+O plugin `remark-project-variables` intercepta o pipeline de compilação MDX do Docusaurus, percorre o AST do Markdown (`mdast`) e substitui esses tokens pelas configurações ativas encontradas em `project.config.json` antes de renderizar o HTML final.
 
-This prevents "Brand Hallucination" when the AI extracts context using RAG memory indexing.
+Isso evita "Alucinação de Marca" quando a IA extrai o contexto usando indexação de memória RAG.
