@@ -37,10 +37,6 @@ secretGenerator:
     namespace: studio
     envs:
       - ../../.env
-  - name: docs-secrets
-    namespace: docs
-    envs:
-      - ../../.env
 
 helmGlobals:
   chartHome: ../../charts
