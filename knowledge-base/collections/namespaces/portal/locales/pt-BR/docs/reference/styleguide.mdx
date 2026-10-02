@@ -1,81 +1,81 @@
 ---
-title: Style Guide & Standards
-description: Coding conventions, TypeScript rules, and quality requirements for maintaining a consistent and maintainable monorepo.
+title: Guia de Estilo e Padrões
+description: Convenções de código, regras do TypeScript e requisitos de qualidade para manter um monorepo consistente e sustentável.
 ---
 
-# Style Guide and Standards
+# Guia de Estilo e Padrões
 
-This document defines the strict coding conventions and quality requirements for the **%PROJECT_DOMAIN%** project. All code must adhere to these standards to ensure consistency and maintainability across the monorepo.
+Este documento define as convenções rígidas de código e os requisitos de qualidade para o projeto **%PROJECT_DOMAIN%**. Todo o código deve aderir a estes padrões para garantir consistência e sustentabilidade em todo o monorepo.
 
 ---
 
-## 1. Code Formatting (Prettier)
+## 1. Formatação de Código (Prettier)
 
-Code must follow the rules defined in `shared/config/prettierrc.json`:
+O código deve seguir as regras definidas em `shared/config/prettierrc.json`:
 
-* **Indentation:** 2 spaces.
-* **Semicolons:** Always use (true).
-* **Quotes:** Use single quotes (true), except in JSX.
-* **Trailing Comma:** Always use where possible (all).
-* **Line Width:** Maximum of 100 characters.
+* **Indentação:** 2 espaços.
+* **Ponto e vírgula:** Sempre usar (true).
+* **Aspas:** Use aspas simples (true), exceto em JSX.
+* **Vírgula final:** Sempre use quando possível (all).
+* **Largura da linha:** Máximo de 100 caracteres.
 
-## 2. TypeScript Rules (Strict Mode)
+## 2. Regras do TypeScript (Modo Estrito)
 
-We prioritize maximum type safety through a rigorous TypeScript configuration.
+Priorizamos a segurança máxima de tipos por meio de uma configuração rigorosa do TypeScript.
 
-* **Object Definitions:** Use `interface` for object definitions to ensure consistency. Type aliases are permitted for unions or utility types (e.g., `z.infer<>`).
-* **Arrays:** Use the `T[]` syntax instead of `Array\<T>`.
-* **Type Imports:** Always use `import type` for types. Import types separately from values (`style: separate-type-imports`).
-* **Unused Variables:** Prefix with an underscore (e.g., `_id`) to signal intent.
-* **Strict Typing:** The use of `any` is strictly forbidden.
-* **Comparisons:** Always use strict equality (`===`).
-* **Strict Booleans:** Boolean expressions must be explicit. Use `if (value !== undefined)` instead of `if (value)`.
-* **Safe Conversions:** Do not use `String(value)` or `${value}` on generic `unknown` or `object` types. Use explicit type guards for primitives to prevent `[object Object]` bugs.
-* **Type Assertions:** Avoid unnecessary type assertions (e.g., `value as T` when `value` is already `T`). The linter will flag these; remove them to keep code clean.
+* **Definições de Objetos:** Use `interface` para definições de objetos para garantir consistência. Aliases de tipos são permitidos para uniões ou tipos utilitários (por exemplo, `z.infer<>`).
+* **Arrays:** Use a sintaxe `T[]` em vez de `Array\<T>`.
+* **Importações de Tipos:** Sempre use `import type` para tipos. Importe tipos separadamente dos valores (`style: separate-type-imports`).
+* **Variáveis Não Utilizadas:** Prefixe com um sublinhado (por exemplo, `_id`) para sinalizar a intenção.
+* **Tipagem Estrita:** O uso de `any` é estritamente proibido.
+* **Comparações:** Sempre use igualdade estrita (`===`).
+* **Booleanos Estritos:** Expressões booleanas devem ser explícitas. Use `if (value !== undefined)` em vez de `if (value)`.
+* **Conversões Seguras:** Não use `String(value)` ou `${value}` em tipos genéricos `unknown` ou `object`. Use guardas de tipo explícitas para primitivos para evitar bugs do tipo `[object Object]`.
+* **Asserções de Tipo:** Evite asserções de tipo desnecessárias (por exemplo, `value as T` quando `value` já é `T`). O linter sinalizará isso; remova-os para manter o código limpo.
 
-## 3. Asynchronous Code Management (Critical)
+## 3. Gerenciamento de Código Assíncrono (Crítico)
 
-* **No Floating Promises:** Never leave promises "floating" without handling or awaiting.
-* **The `void` Operator:** When an async function is called for its side effects and is NOT awaited, prefix it with `void` (e.g., `void startServer()`). This signals intentional non-blocking execution.
-* **Fastify Handlers:** Route handlers should use the `FastifyZodHandler` type and return `Promise\<void>`. Use `void reply.send()` when not returning the reply directly.
-* **Fastify Plugins:** If a `FastifyPluginAsync` does not use `await`, remove the `async` keyword and return `Promise.resolve()` to comply with `require-await` while maintaining type integrity.
-* **Error Handling:** Every `await` operation must be within a `try/catch` block or part of a `.catch()` chain.
+* **Sem Promises Flutuantes:** Nunca deixe promises "flutuantes" sem tratamento ou `await`.
+* **O Operador `void`:** Quando uma função assíncrona for chamada por seus efeitos colaterais e NÃO for aguardada com `await`, prefixe-a com `void` (por exemplo, `void startServer()`). Isso sinaliza uma execução intencional não bloqueante.
+* **Handlers do Fastify:** Handlers de rota devem usar o tipo `FastifyZodHandler` e retornar `Promise\<void>`. Use `void reply.send()` quando não retornar a resposta diretamente.
+* **Plugins do Fastify:** Se um `FastifyPluginAsync` não usar `await`, remova a palavra-chave `async` e retorne `Promise.resolve()` para cumprir com `require-await` enquanto mantém a integridade dos tipos.
+* **Tratamento de Erros:** Cada operação com `await` deve estar dentro de um bloco `try/catch` ou fazer parte de uma cadeia `.catch()`.
 
-## 4. Package-Specific Standards
+## 4. Padrões Específicos de Pacotes
 
-### 4.1. Core Packages (`@repo/hub/core` / `@repo/hub/core`)
+### 4.1. Pacotes Principais (`@repo/hub/core` / `@repo/hub/core`)
 
-* **Zero Warnings:** These packages must have zero lint warnings or errors.
-* **Public APIs:** All exported members must have explicitly defined return types.
+* **Zero Avisos:** Estes pacotes devem ter zero avisos ou erros de lint.
+* **APIs Públicas:** Todos os membros exportados devem ter tipos de retorno explicitamente definidos.
 
 ### 4.2. API (Fastify)
 
-* **Naming:** Controllers and Services use `PascalCase` for classes and `camelCase` for methods.
-* **Mapping:** Controllers are responsible for mapping database models to Core DTOs via private methods.
+* **Nomenclatura:** Controladores e Serviços usam `PascalCase` para classes e `camelCase` para métodos.
+* **Mapeamento:** Os controladores são responsáveis por mapear modelos de banco de dados para DTOs do Core por meio de métodos privados.
 
 ### 4.3. Web (React)
 
-* **React 19 Patterns:** Use the `use()` hook for consuming promises and context when applicable, reducing `useEffect` boilerplate. Prefer **Server Actions** (if applicable) or optimized `action` props in forms for a smoother user experience.
-* **Global State:** Trigger async side-effects in Stores or Effects using the `void` operator for unawaited calls.
-* **Refs:** Accessing `ref.current` during render is strictly forbidden. When passing multiple refs to a child component, pass them individually rather than in a grouped object to avoid linter confusion and ensure clarity.
-* **Strict Booleans in UI:** In JSX, always use explicit comparisons: `{isValid === true && <Component />}` to avoid rendering `0` or `NaN` in the UI.
-* **State Syncing:** Avoid calling `setState` synchronously within `useEffect` if the update is derived from props or other state. Instead, sync state during render (the "prevProps" pattern) or initialize state with a function.
-* **List Keys:** Always use stable, unique IDs (e.g., `_id`) as keys in lists. Avoid using array indices unless the list is static and has no unique identifiers. If indices must be used, document the reason.
-* **Styling & Responsive Measures:** Use **CSS Modules** (`.module.css`). Utility classes from Tailwind are allowed inside modules via `@apply`. Adhere strictly to the **Responsive Standards** defined in Section 5.
-* **Console Logs:** `console.log` is forbidden and will fail the production build. Use `console.info/warn/error` sparingly.
+* **Padrões do React 19:** Use o hook `use()` para consumir promises e contexto quando aplicável, reduzindo o código boilerplate de `useEffect`. Prefira **Server Actions** (se aplicável) ou propriedades de `action` otimizadas em formulários para uma experiência de usuário mais fluida.
+* **Estado Global:** Acione efeitos colaterais assíncronos em Stores ou Effects usando o operador `void` para chamadas não aguardadas.
+* **Refs:** O acesso a `ref.current` durante a renderização é estritamente proibido. Ao passar múltiplas refs para um componente filho, passe-as individualmente em vez de em um objeto agrupado para evitar confusão do linter e garantir clareza.
+* **Booleanos Estritos na UI:** Em JSX, sempre use comparações explícitas: `{isValid === true && <Component />}` para evitar a renderização de `0` ou `NaN` na UI.
+* **Sincronização de Estado:** Evite chamar `setState` de forma síncrona dentro de `useEffect` se a atualização for derivada de props ou de outro estado. Em vez disso, sincronize o estado durante a renderização (o padrão "prevProps") ou inicialize o estado com uma função.
+* **Chaves de Listas:** Sempre use IDs estáveis e exclusivos (por exemplo, `_id`) como chaves em listas. Evite usar índices de array, a menos que a lista seja estática e não tenha identificadores exclusivos. Se os índices precisarem ser usados, documente o motivo.
+* **Estilização e Medidas Responsivas:** Use **CSS Modules** (`.module.css`). Classes utilitárias do Tailwind são permitidas dentro de módulos via `@apply`. Adira estritamente aos **Padrões Responsivos** definidos na Seção 5.
+* **Logs de Console:** `console.log` é proibido e fará com que o build de produção falhe. Use `console.info/warn/error` com moderação.
 
-## 5. CSS & Responsive Standards (Strict)
+## 5. Padrões de CSS e Responsividade (Rigorosos)
 
-To ensure a fluid, accessible, and modern user interface, the following rules are mandatory for all applications:
+Para garantir uma interface de usuário fluida, acessível e moderna, as seguintes regras são obrigatórias para todas as aplicações:
 
-* **No Pixels (`px`):** The use of fixed `px` values is strictly forbidden for sizing, spacing, and typography.
-  * *Exception:* `1px` is allowed for borders when a hairline effect is desired.
-* **Relative Typography:** Always use `rem` for font sizes. Never use `px` or `em` for typography.
-* **Fluid Spacing:** Use `rem` for consistent spacing or `clamp()` for fluid spacing that scales with the viewport.
-* **Structural Layouts:** Use modern layout primitives: `flexbox`, `grid`, `%`, `vw`, and `vh`.
-* **Logical Functions:** Leverage `clamp()`, `min()`, and `max()` to create boundaries for fluid elements without using media queries for every minor adjustment.
+* **Sem Pixels (`px`):** O uso de valores fixos em `px` é estritamente proibido para dimensionamento, espaçamento e tipografia.
+  * *Exceção:* `1px` é permitido para bordas quando um efeito de linha fina (hairline) for desejado.
+* **Tipografia Relativa:** Sempre use `rem` para tamanhos de fonte. Nunca use `px` ou `em` para tipografia.
+* **Espaçamento Fluido:** Use `rem` para espaçamento consistente ou `clamp()` para espaçamento fluido que se dimensiona com a viewport.
+* **Layouts Estruturais:** Use primitivas de layout modernas: `flexbox`, `grid`, `%`, `vw` e `vh`.
+* **Funções Lógicas:** Aproveite `clamp()`, `min()` e `max()` para criar limites para elementos fluidos sem usar media queries para cada pequeno ajuste.
 
-### Responsive Examples
+### Exemplos Responsivos
 
 ```css title="ResponsiveHero.module.css"
 .container {
@@ -114,39 +114,39 @@ export const ResponsiveHero = () => {
 };
 ```
 
-## 6. Naming Conventions
+## 6. Convenções de Nomenclatura
 
-* **Schemas:** Must end with `Schema` (e.g., `ProductSchema`).
-* **Files:** Follow the `name.type.ts` pattern (e.g., `auth.controller.ts`, `apiPlugin.ts`).
-* **Directories:** Use `camelCase` for directory names within source folders.
-
----
-
-## 7. Language Standards (Strict English-First)
-
-To maintain global accessibility, scalability, and code consistency across all contexts of the monorepo:
-
-* **Source Code & Comments:** All source code (variable names, functions, classes, interfaces, properties, schemas, files) and comments within code files MUST be written exclusively in **English (en-US)**.
-* **Documentation:** All technical and product documentation, READMEs, security guidelines, and architectural briefs MUST be written in English.
-* **Git History:** Commit messages and Pull Request titles/descriptions MUST follow the Conventional Commits specification and be written in English (see [Commit Conventions](./commit-conventions.mdx)).
-* **Localization & i18n Exceptions:** The ONLY exceptions are localization files (e.g., `i18n` configurations, translation tables, dictionary JSON files) and explicit mock data representing end-user text in Portuguese. All internal application logic and definitions must remain strictly in English.
+* **Schemas:** Devem terminar com `Schema` (por exemplo, `ProductSchema`).
+* **Arquivos:** Siga o padrão `name.type.ts` (por exemplo, `auth.controller.ts`, `apiPlugin.ts`).
+* **Diretórios:** Use `camelCase` para nomes de diretórios dentro de pastas de código-fonte.
 
 ---
 
-## 8. Code Block Standards (`live` blocks)
+## 7. Padrões de Idioma (Inglês Obrigatório em Primeiro Lugar)
 
-:::danger[Restricted Usage]
-The Docusaurus `live` code block (interactive editor) is EXCLUSIVELY reserved for this Style Guide. It must NOT be used in any other documentation page.
+Para manter a acessibilidade global, escalabilidade e consistência de código em todos os contextos do monorepo:
+
+* **Código-Fonte e Comentários:** Todo o código-fonte (nomes de variáveis, funções, classes, interfaces, propriedades, schemas, arquivos) e comentários dentro de arquivos de código DEVEM ser escritos exclusivamente em **Inglês (en-US)**.
+* **Documentação:** Toda a documentação técnica e de produto, READMEs, diretrizes de segurança e relatórios arquiteturais DEVEM ser escritos em inglês.
+* **Histórico do Git:** As mensagens de commit e os títulos/descrições de Pull Request DEVEM seguir a especificação Conventional Commits e ser escritos em inglês (consulte [Commit Conventions](./commit-conventions.mdx)).
+* **Exceções de Localização e i18n:** As ÚNICAS exceções são arquivos de localização (por exemplo, configurações de `i18n`, tabelas de tradução, arquivos JSON de dicionário) e dados mockados explícitos que representam texto do usuário final em português. Toda a lógica e definições internas da aplicação devem permanecer estritamente em inglês.
+
+---
+
+## 8. Padrões de Blocos de Código (blocos `live`)
+
+:::danger[Uso Restrito]
+O bloco de código `live` do Docusaurus (editor interativo) é EXCLUSIVAMENTE reservado para este Guia de Estilo. Ele NÃO deve ser usado em nenhuma outra página de documentação.
 :::
 
-Its purpose is strictly to demonstrate:
+Seu propósito é estritamente demonstrar:
 
-1. **React Components:** Following rigorous patterns (explicit booleans, strict types, etc.).
-2. **API Domain Structures:** Visualizing how domain models should be structured.
+1. **Componentes React:** Seguindo padrões rigorosos (booleanos explícitos, tipos estritos, etc.).
+2. **Estruturas de Domínio de API:** Visualizando como os modelos de domínio devem ser estruturados.
 
-### 8.1. Rigorous React & CSS Module Pattern Example
+### 8.1. Exemplo Rigoroso de Padrão de React e CSS Module
 
-The example below demonstrates our preferred pattern for interactive components using **CSS Modules**. It showcases the integration of state management, memoization, and asynchronous handling while strictly adhering to our TypeScript, boolean logic, and styling rules.
+O exemplo abaixo demonstra nosso padrão preferido para componentes interativos usando **CSS Modules**. Ele exibe a integração de gerenciamento de estado, memoização e tratamento assíncrono, aderindo estritamente às nossas regras de TypeScript, lógica booleana e estilização.
 
 ```css title="AdvancedCycleManager.module.css"
 .container {
@@ -403,4 +403,4 @@ function AdvancedCycleManager() {
 
 ---
 
-*Last Updated: June 2026*
+*Última atualização: Junho de 2026*
