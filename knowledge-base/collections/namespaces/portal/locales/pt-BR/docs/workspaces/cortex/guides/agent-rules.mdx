@@ -12,11 +12,11 @@ tags:
 
 ### Rules of Engagement for AI Agents
 
-The workspace defines strict behavioral logic for AI agents through structured context files. These guidelines ensure that all automated changes follow project-wide architectural standards and maintain technical integrity.
+O Workspace define uma lógica de comportamento estrita para agentes de IA por meio de arquivos de contexto estruturados. Essas diretrizes garantem que todas as alterações automatizadas sigam os padrões arquiteturais de todo o projeto e mantenham a integridade técnica.
 
 #### Operational Conventions
 
-* **Domain Core First**: Modification of shared schemas or data models must originate in the `core` packages (Single Source of Truth) before being propagated to application layers.
-* **Strict Typing & Linting**: Agents are strictly prohibited from using `any` or bypassing the project's rigorous TypeScript/ESLint configurations. Validation via `typecheck` is a mandatory step after code modification.
-* **Technological Minimalism**: Avoid suggesting external dependencies unless no native or already-implemented solution exists within the current stack (Fastify, React, Zustand, Zod).
-* **Conventional Documentation**: Documentation updates must follow a professional, senior tone, utilizing MDX features like Tabs for high-density information management.
+* **Domain Core First**: A modificação de schemas compartilhados ou modelos de dados deve originar-se nos pacotes `core` (Single Source of Truth) antes de ser propagada para as camadas de aplicação.
+* **Strict Typing & Linting**: É estritamente proibido que os agentes utilizem `any` ou contornem as configurações rigorosas de TypeScript/ESLint do projeto. A validação via `typecheck` é uma etapa obrigatória após a modificação de código.
+* **Technological Minimalism**: Evite sugerir dependências externas, a menos que não exista nenhuma solução nativa ou já implementada dentro do stack atual (Fastify, React, Zustand, Zod).
+* **Conventional Documentation**: As atualizações de documentação devem seguir um tom profissional e sênior, utilizando recursos do MDX como Tabs para o gerenciamento de informações de alta densidade.
