@@ -1,15 +1,15 @@
 ---
 title: Local Development Setup
-description: Follow these steps to get the %PROJECT_DOMAIN% monorepo running on your machine.
+description: Siga estas etapas para colocar o monorepo %PROJECT_DOMAIN% em execução em sua máquina.
 ---
 
 # Local Development Setup
 
-In this tutorial, we will set up the %PROJECT_DOMAIN% monorepo on your local machine. By the end of this lesson, you will have the complete development environment running and ready for you to build features.
+Neste tutorial, configure o monorepo %PROJECT_DOMAIN% em sua máquina local. Ao final desta lição, o ambiente de desenvolvimento completo estará em execução e pronto para a criação de recursos.
 
 ## Prerequisites
 
-Before we begin, ensure you have the following installed:
+Antes de começar, certifique-se de ter os seguintes itens instalados:
 
 * Node.js version 22
 * PNPM version 11
@@ -22,34 +22,34 @@ Before we begin, ensure you have the following installed:
 
 ## Step 1: Clone the Repository
 
-First, clone the repository to your local workspace and navigate into it.
+Primeiro, clone o repositório em seu workspace local e acesse-o.
 
 ```bash
 git clone https://github.com/%GITHUB_ORG%/%GITHUB_REPO%.git
 cd workspace
 ```
 
-You should see a directory structure containing folders like `docs`, `hub`, `cortex`, `renderer`, `studio`, `platform`, and `tools`.
+Você deve ver uma estrutura de diretórios contendo pastas como `docs`, `hub`, `cortex`, `renderer`, `studio`, `platform` e `tools`.
 
 ---
 
 ## Step 2: Install Dependencies
 
-Next, install the project dependencies. Since this is a monorepo, we use PNPM to install everything at once.
+Em seguida, instale as dependências do projeto. Como este é um monorepo, utilize o PNPM para instalar tudo de uma vez.
 
-Run the following command:
+Execute o seguinte comando:
 
 ```bash
 pnpm install
 ```
 
-When it finishes, you will see output confirming dependencies are linked to the content-addressable store.
+Quando o processo terminar, uma saída confirmará que as dependências estão vinculadas ao armazenamento de conteúdo endereçable.
 
 ---
 
 ## Step 3: Configure Environment Variables
 
-Each workspace manages its own local configuration. Copy the template `.env.example` files to create the active environment files:
+Cada workspace gerencia sua própria configuração local. Copie os arquivos de modelo `.env.example` para criar os arquivos de ambiente ativos:
 
 ```bash
 # Set up Infrastructure environment variables
@@ -60,21 +60,21 @@ cp hub/.env.example hub/.env
 ```
 
 :::info[Open and Edit Configuration]
-Open the newly created `.env` files and add any required tokens (e.g., `CLOUDFLARE_TUNNEL_TOKEN`) to access cloud services.
+Abra os arquivos `.env` recém-criados e adicione os tokens necessários (por exemplo, `CLOUDFLARE_TUNNEL_TOKEN`) para acessar os serviços em nuvem.
 :::
 
 ---
 
 ## Step 4: Configure Podman Machine
 
-Before starting any container workloads, initialize and start the default Podman machine (which will be used by Minikube):
+Antes de iniciar qualquer carga de trabalho de contêiner, inicialize e inicie a máquina Podman padrão (que será usada pelo Minikube):
 
 ```bash
 podman machine init
 podman machine start
 ```
 
-Verify that the container engine is active:
+Verifique se o mecanismo de contêiner está ativo:
 
 ```bash
 podman info
@@ -84,26 +84,26 @@ podman info
 
 ## Step 5: Start the Infrastructure
 
-To build all containers and deploy the full stack to your local Minikube cluster:
+Para compilar todos os contêineres e deploy do stack completo em seu cluster Minikube local:
 
 ```bash
 pnpm minikube:up
 pnpm infra:dev
 ```
 
-This command will:
+Este comando irá:
 
 1. Start the Minikube cluster.
 2. Trigger Skaffold to build all required images.
 3. Hydrate Kustomize manifests.
-4. Deploy the Platform, Cortex, and Studio layers.
+4. Deploy as camadas Platform, Cortex e Studio.
 5. Stream logs and hot-reload code changes automatically.
 
 ---
 
 ## Step 6: Verify Access
 
-Once the services are running, verify access via the Cloudflare edge routes (or `localhost` if running offline):
+Assim que os serviços estiverem em execução, verifique o acesso por meio das rotas de borda do Cloudflare (ou `localhost` se estiver executando offline):
 
 * **Grafana**: `https://grafana-dev.%PROJECT_DOMAIN%`
 * **AgentGateway**: `https://agentgateway-mcp-dev.%PROJECT_DOMAIN%`
@@ -113,8 +113,8 @@ Once the services are running, verify access via the Cloudflare edge routes (or 
 
 ## Next Steps
 
-For in-depth details on configuring Minikube network tunnels, Skaffold port forwarding, and environment variable resolution, see the [Local Development Setup Guide](/workspaces/infrastructure/guides/local-development).
+Para obter detalhes aprofundados sobre a configuração de túneis de rede do Minikube, encaminhamento de porta do Skaffold e resolução de variáveis de ambiente, consulte o [Local Development Setup Guide](/workspaces/infrastructure/guides/local-development).
 
 ## Conclusion
 
-Congratulations! You have successfully cloned the repository, configured environment variables, started Minikube, and launched the local Kubernetes infrastructure. You are now fully equipped to start building and contributing to the project.
+Parabéns! Você clonou o repositório com sucesso, configurou as variáveis de ambiente, iniciou o Minikube e lançou a infraestrutura do Kubernetes local. Agora você está totalmente equipado para começar a construir e contribuir com o projeto.
