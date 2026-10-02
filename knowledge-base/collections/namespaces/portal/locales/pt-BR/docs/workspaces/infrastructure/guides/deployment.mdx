@@ -1,40 +1,40 @@
 ---
-title: How to Deploy
-description: Step-by-step deployment sequences for local and production Kubernetes clusters.
+title: Como Fazer Deploy
+description: Sequências de deploy passo a passo para clusters do Kubernetes locais e de produção.
 sidebar_position: 2
 ---
 
-# How to Deploy
+# Como Fazer Deploy
 
-This guide outlines the deployment command sequences to release the `%PROJECT_DOMAIN%` ecosystem across local and production environments using **Skaffold** and **Kubernetes**.
+Este guia descreve as sequências de comandos de deploy para lançar o ecossistema `%PROJECT_DOMAIN%` em ambientes locais e de produção usando **Skaffold** e **Kubernetes**.
 
 ---
 
-## 1. Kubernetes Environments (Skaffold)
+## 1. Ambientes Kubernetes (Skaffold)
 
-Deployments across all bounded contexts (`platform`, `cortex`, `studio`) are managed via Skaffold, orchestrating the build, tag, and deploy phases using Kustomize manifests.
+Os deploys em todos os contextos delimitados (`platform`, `cortex`, `studio`) são gerenciados via Skaffold, orquestrando as fases de build, tag e deploy usando manifests do Kustomize.
 
-### 1.1. One-Time Deployments
+### 1.1. Deploys Únicos
 
-To compile all workspace images and apply their Kubernetes manifests directly to the active cluster context without hot-reloading:
+Para compilar todas as imagens do workspace e aplicar seus manifests do Kubernetes diretamente ao contexto do cluster ativo sem hot-reloading:
 
 ```bash
 pnpm infra:up
 ```
 
-This builds the containers using the local engine cache, hydrates the image tags inside the manifests, and applies them to the cluster.
+Isso constrói os containers usando o cache do engine local, hidrata as tags de imagem dentro dos manifests e os aplica ao cluster.
 
-### 1.2. Continuous Development (Live Reload)
+### 1.2. Desenvolvimento Contínuo (Live Reload)
 
-For active cluster testing with live logs and automatic redeploys when source code changes:
+Para testes ativos no cluster com logs em tempo real e redeploys automáticos quando o código-fonte for alterado:
 
 ```bash
 pnpm infra:dev
 ```
 
-### 1.3. Terminating Cluster Deployments
+### 1.3. Encerrando Deploys do Cluster
 
-To delete all deployed resources and namespace allocations from the cluster:
+Para excluir todos os recursos com deploy realizado e alocações de namespace do cluster:
 
 ```bash
 pnpm infra:clean
@@ -42,12 +42,12 @@ pnpm infra:clean
 
 ---
 
-## 2. Production Deployments
+## 2. Deploys de Produção
 
-For production environments, we use Kustomize overlays located in `infrastructure/environments/prod`.
+Para ambientes de produção, utilize os overlays do Kustomize localizados em `infrastructure/environments/prod`.
 
-1. Ensure your `kubectl` context points to your production cluster.
-2. Apply the production overlays directly (or via a GitOps operator like ArgoCD/Flux):
+1. Garanta que o seu contexto `kubectl` aponte para o seu cluster de produção.
+2. Aplique os overlays de produção diretamente (ou via um operador de GitOps como ArgoCD/Flux):
 
 ```bash
 kubectl apply -k infrastructure/environments/prod/platform
@@ -55,4 +55,4 @@ kubectl apply -k infrastructure/environments/prod/cortex
 kubectl apply -k infrastructure/environments/prod/studio
 ```
 
-*Note: For production, images should be pre-built and pushed to a remote registry (e.g., via GitHub Actions) before applying the manifests, rather than building them locally with Skaffold.*
+*Nota: Para produção, as imagens devem ser pré-construídas e enviadas para um registry remoto (por exemplo, via GitHub Actions) antes de aplicar os manifests, em vez de construí-las localmente com o Skaffold.*
