@@ -1,20 +1,20 @@
 ---
-title: Bootstrapping a New Project
+title: Inicializando um Novo Projeto
 ---
 
-# Bootstrapping a New Project
+# Inicializando um Novo Projeto
 
-This tutorial explains how to initialize a new instance of the monorepo using the state-aware provisioner CLI.
+Este tutorial explica como inicializar uma nova instância do monorepo usando a CLI do provisionador consciente de estado.
 
-## Prerequisites
+## Pré-requisitos
 
 * Node.js (v22+)
 * pnpm (v9+)
-* Docker & Docker Compose (or Podman)
+* Docker & Docker Compose (ou Podman)
 
-## Step 1: Clone the Repository
+## Passo 1: Clone o Repositório
 
-Clone the template repository to your local machine:
+Clone o repositório de template para sua máquina local:
 
 ```bash
 git clone https://github.com/%GITHUB_ORG%/%GITHUB_REPO%.git my-new-project
@@ -22,23 +22,23 @@ cd my-new-project
 pnpm install
 ```
 
-## Step 2: Run the Provisioner CLI
+## Passo 2: Execute a CLI do Provisionador
 
-Our repository ships with a state-aware CLI that automatically renames domains, internal hosts, and package scopes.
+Nosso repositório é fornecido com uma CLI consciente de estado que renomeia automaticamente domínios, hosts internos e escopos de pacotes.
 
 ```bash
 pnpm provision init
 ```
 
-The interactive wizard will ask you for:
+O assistente interativo solicitará:
 
-* New Project Domain (e.g., `mycompany.com`)
-* New GitHub Organization
-* New GitHub Repository Name
+* Domínio do Novo Projeto (ex.: `mycompany.com`)
+* Nova Organização do GitHub
+* Novo Nome do Repositório do GitHub
 
-## Step 3: Start the Environment
+## Passo 3: Inicie o Ambiente
 
-Once the bootstrap script completes, the entire monorepo is adapted to your new brand.
+Assim que o script de bootstrap for concluído, todo o monorepo será adaptado para sua nova marca.
 
 ```bash
 pnpm dev
