@@ -1,6 +1,6 @@
 ---
 title: Renderer Workspace Overview
-sidebar_label: Overview
+sidebar_label: Visão geral
 sidebar_position: 1
 slug: /renderer
 diataxis_type: overview
@@ -9,11 +9,11 @@ tags:
   - renderer
 ---
 
-The Renderer workspace contains the generic dynamic asset generator and document compilation engine. It is responsible for compiling markdown templates into production-grade documents across the monorepo and generating custom brand-consistent SVG cards.
+O Workspace Renderer contém o gerador de ativos dinâmicos genérico e o motor de compilação de documentos. Ele é responsável por compilar modelos em markdown em documentos prontos para produção em todo o monorepo e por gerar cartões SVG personalizados compatíveis com a marca.
 
 ---
 
-## Directory Structure
+## Estrutura de Diretórios
 
 ```text
 renderer/
@@ -37,20 +37,20 @@ renderer/
 
 ---
 
-## Core Architecture & Pipelines
+## Arquitetura Principal e Pipelines
 
-Unlike a simple ad-hoc generation script, the Renderer features an extensible **Pipeline Architecture** complying with the Open/Closed Principle (SOLID).
+Ao contrário de um script de geração ad-hoc simples, o Renderer possui uma **Pipeline Architecture** extensível que cumpre o Princípio Aberto/Fechado (SOLID).
 
-* **Extensible Registry**: Independent compilation targets (e.g., GitHub renderer READMEs, handbook manuals, or design systems specs) are registered inside `src/pipelines/index.ts`.
-* **Theme-separated Previews**: When executing compilation locally, the generator writes fully rendered light and dark versions into `generated/cards/` and `generated/docs/`. Light markdown previews reference light SVG assets, while dark previews reference dark SVGs, ensuring absolute high-fidelity theme testing.
+* **Registro Extensível**: Alvos de compilação independentes (por exemplo, READMEs do renderizador do GitHub, manuais de diretrizes ou especificações de design systems) são registrados dentro de `src/pipelines/index.ts`.
+* **Previa Separada por Tema**: Ao executar a compilação localmente, o gerador grava versões clara e escura totalmente renderizadas em `generated/cards/` e `generated/docs/`. As prévias em markdown claro fazem referência a ativos SVG claros, enquanto as prévias escuras fazem referência a SVGs escuros, garantindo testes de tema de alta fidelidade absoluta.
 
 ---
 
-## Scoped Operations
+## Operações com Escopo
 
-Run these scripts from the monorepo root to manage the renderer generator stack:
+Execute estes scripts a partir da raiz do monorepo para gerenciar a pilha do gerador do renderer:
 
-* `pnpm --filter @/renderer generate`: Runs the active document compilation pipelines locally, writing previews to `generated/`.
-* `pnpm --filter @/renderer clean`: Removes all compiled files, caches, and output build directories.
-* `pnpm --filter @/renderer typecheck`: Executes TypeScript compiler type validation.
-* `pnpm --filter @/renderer lint`: Performs static ESLint checks.
+* `pnpm --filter @/renderer generate`: Executa as pipelines de compilação de documentos ativas localmente, gravando prévias em `generated/`.
+* `pnpm --filter @/renderer clean`: Remove todos os arquivos compilados, caches e diretórios de build de saída.
+* `pnpm --filter @/renderer typecheck`: Executa a validação de tipos do compilador TypeScript.
+* `pnpm --filter @/renderer lint`: Executa verificações estáticas do ESLint.
