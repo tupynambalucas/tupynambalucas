@@ -6,6 +6,7 @@ files:
   # Knowledge Base: Portal
   # ---------------------------------------------------------
   - source: '/knowledge-base/collections/namespaces/portal/content/**/*.mdx'
+    type: 'mdx'
     translation: '/knowledge-base/collections/namespaces/portal/locales/%locale%/**/%original_file_name%'
 
   # ---------------------------------------------------------
@@ -13,3 +14,4 @@ files:
   # ---------------------------------------------------------
   # - source: '/knowledge-base/collections/namespaces/blog/content/**/*.mdx'
   #   translation: '/knowledge-base/collections/namespaces/blog/locales/%locale%/**/%original_file_name%'
+
