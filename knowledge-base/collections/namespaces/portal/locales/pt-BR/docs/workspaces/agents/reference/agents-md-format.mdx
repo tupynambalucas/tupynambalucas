@@ -1,20 +1,20 @@
 ---
-title: AGENTS.md Format Reference
-sidebar_label: AGENTS.md Format Reference
+title: Referência de Formato de AGENTS.md
+sidebar_label: Referência de Formato de AGENTS.md
 sidebar_position: 7
 ---
 
-# AGENTS.md Format Reference
+# Referência de Formato de AGENTS.md
 
-This reference specifies the syntax, structural schemas, and constraints for `AGENTS.md` context router files.
+Esta referência especifica a sintaxe, os esquemas estruturais e as restrições para arquivos de roteador de contexto `AGENTS.md`.
 
 ---
 
-## 1. Context Hierarchy Directive Specification
+## 1. Especificação de Diretiva de Hierarquia de Contexto
 
-The `\<context-hierarchy>` XML block must be the first element in any Layer-2 or Layer-3 file.
+O bloco XML `\<context-hierarchy>` deve ser o primeiro elemento em qualquer arquivo de Camada 2 ou Camada 3.
 
-### Schema
+### Esquema
 
 ```xml
 <context-hierarchy>
@@ -25,31 +25,31 @@ The `\<context-hierarchy>` XML block must be the first element in any Layer-2 or
 </context-hierarchy>
 ```
 
-### Attribute Reference
+### Referência de Atributos
 
-| Attribute | Required | Valid Values                            | Description                                                          |
-| :-------- | :------- | :-------------------------------------- | :------------------------------------------------------------------- |
-| `src`     | Yes      | Relative path                           | Path to parent `AGENTS.md` (e.g., `../AGENTS.md`, `../../AGENTS.md`) |
-| `type`    | Yes      | `global-rules`, `bounded-context-rules` | Semantic categorization of parent rules                              |
-
----
-
-## 2. Layer Specifications
-
-| Metric                  | Layer 1 (Global)                         | Layer 2 (Bounded Context)                    | Layer 3 (Sub-Domain)         |
-| :---------------------- | :--------------------------------------- | :------------------------------------------- | :--------------------------- |
-| **File Path**           | `/AGENTS.md`                             | `/[context]/AGENTS.md`                       | `/[context]/[sub]/AGENTS.md` |
-| **Line Budget**         | 80 lines                                 | 120 lines                                    | 100 lines                    |
-| **Hierarchy Tag**       | None                                     | Yes (points to `/AGENTS.md`)                 | Yes (points to Layer 1 & 2)  |
-| **Ubiquitous Language** | No                                       | Yes                                          | No (inherited)               |
-| **Required Skills**     | `agent-router-expert`, `markdown-expert` | Context-specific (e.g., `docusaurus-expert`) | No (inherited)               |
-| **Code Snippets**       | No                                       | Optional                                     | Yes                          |
+| Atributo | Obrigatório | Valores Válidos                         | Descrição                                                               |
+| :------- | :---------- | :-------------------------------------- | :---------------------------------------------------------------------- |
+| `src`    | Sim         | Caminho relativo                        | Caminho para o `AGENTS.md` pai (ex.: `../AGENTS.md`, `../../AGENTS.md`) |
+| `type`   | Sim         | `global-rules`, `bounded-context-rules` | Categorização semântica das regras pai                                  |
 
 ---
 
-## 3. Universal Constraints
+## 2. Especificações de Camada
 
-* **Language**: English (en-US) only.
-* **Emojis**: Strictly forbidden in all headings, lists, and prose.
-* **Paths**: Relative Markdown links only (`./relative/path.md`). Absolute filesystem paths and external URLs are strictly forbidden.
-* **Placeholders**: Prohibited (no `TODO`, `TBD`, or empty sections).
+| Métrica                      | Camada 1 (Global)                        | Camada 2 (Bounded Context)                         | Camada 3 (Subdomínio)              |
+| :--------------------------- | :--------------------------------------- | :------------------------------------------------- | :--------------------------------- |
+| **Caminho do Arquivo**       | `/AGENTS.md`                             | `/[context]/AGENTS.md`                             | `/[context]/[sub]/AGENTS.md`       |
+| **Limite de Linhas**         | 80 linhas                                | 120 linhas                                         | 100 linhas                         |
+| **Tag de Hierarquia**        | Nenhum                                   | Sim (aponta para `/AGENTS.md`)                     | Sim (aponta para as Camadas 1 e 2) |
+| **Linguagem Ubíqua**         | Não                                      | Sim                                                | Não (herdado)                      |
+| **Habilidades Obrigatórias** | `agent-router-expert`, `markdown-expert` | Específicas de contexto (ex.: `docusaurus-expert`) | Não (herdado)                      |
+| **Trechos de Código**        | Não                                      | Opcional                                           | Sim                                |
+
+---
+
+## 3. Restrições Universais
+
+* **Idioma**: Apenas inglês (en-US).
+* **Emojis**: Estritamente proibidos em todos os títulos, listas e textos corridos.
+* **Caminhos**: Apenas links Markdown relativos (`./relative/path.md`). Caminhos absolutos do sistema de arquivos e URLs externas são estritamente proibidos.
+* **Marcadores de Posição**: Proibidos (sem `TODO`, `TBD` ou seções vazias).
