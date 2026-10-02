@@ -1,6 +1,6 @@
 ---
 title: Shared Workspace
-sidebar_label: Overview
+sidebar_label: Visão geral
 sidebar_position: 1
 slug: /shared
 diataxis_type: overview
@@ -9,11 +9,11 @@ tags:
   - shared
 ---
 
-The Shared workspace acts as the global, foundational configuration and cross-context utility library of the %PROJECT_DOMAIN% monorepo. It houses centralized metadata, global formatting rules, and standard Git lifecycle configurations designed to be imported by any downstream workspace or package within the monorepo.
+O Workspace Shared atua como a configuração global e fundamental e biblioteca de utilitários entre contextos do monorepo %PROJECT_DOMAIN%. Ele abriga metadados centralizados, regras de formatação globais e configurações de ciclo de vida padrão do Git projetadas para serem importadas por qualquer workspace ou pacote downstream dentro do monorepo.
 
-By isolating configuration and lifecycle hooks inside a dedicated shared/ workspace, we prevent configuration drift, promote code styling consistency, and enable frictionless monorepo maintenance.
+Ao isolar a configuração e os ganchos de ciclo de vida dentro de um workspace shared/ dedicado, prevenimos a divergência de configuração, promovemos a consistência de estilo de código e habilitamos a manutenção descomplicada do monorepo.
 
-## Directory Structure
+## Estrutura de diretórios
 
 `shared/
 ├── config/              # Centralized configuration assets
@@ -27,27 +27,27 @@ By isolating configuration and lifecycle hooks inside a dedicated shared/ worksp
     ├── scripts/         # Hook execution scripts in TypeScript
     └── package.json     # Git hooks package (@monorepo/shared-git)`
 
-## Core Packages
+## Pacotes principais
 
-### @monorepo/shared-config (Centralized Project Settings)
+### @monorepo/shared-config (Configurações de projeto centralizadas)
 
-This package centralizes static configuration rules and project domains across the entire monorepo. Instead of duplicating config files inside every project workspace, each sub-workspace's sconfig.json and formatting tool configs inherit directly from this package.
+Este pacote centraliza regras de configuração estática e domínios de projeto em todo o monorepo. Em vez de duplicar arquivos de configuração dentro de cada workspace de projeto, o tsconfig.json e as configurações de ferramentas de formatação de cada sub-workspace herdam diretamente deste pacote.
 
-* **Unified Formatting**: Prettier configuration (prettierrc.json) and ignore rules (.prettierignore) reside here, ensuring perfect styling parity from a single location.
-* **Base TSConfig**: TypeScript base configurations ( sconfig.base.json) establish strict type-checking parameters and module resolutions for all sub-projects.
-* **Project Domains**: The project.config.json file serves as the Single Source of Truth (SSOT) for dynamic variables like %PROJECT_DOMAIN%, which are consumed during Markdown compilation and app runtime.
+* **Formatação unificada**: A configuração do Prettier (prettierrc.json) e as regras de ignore (.prettierignore) residem aqui, garantindo paridade de estilo perfeita a partir de um único local.
+* **TSConfig base**: As configurações base do TypeScript (tsconfig.base.json) estabelecem parâmetros estritos de verificação de tipos e resoluções de módulos para todos os subprocessos.
+* **Domínios de projeto**: O arquivo project.config.json serve como a Única Fonte da Verdade (SSOT) para variáveis dinâmicas como %PROJECT_DOMAIN%, que são consumidas durante a compilação de Markdown e o runtime da aplicação.
 
-### @monorepo/shared-git (Centralized Git Hooks)
+### @monorepo/shared-git (Ganchos do Git centralizados)
 
-This package houses our version control guardrails.
+Este pacote abriga nossas barreiras de proteção de controle de versão.
 
-* **Husky Integration**: Contains the core mappings inside the husky/ directory for standard Git lifecycle events (e.g., pre-commit, prepare-commit-msg).
-* **Cross-Platform Scripts**: Defines all execution scripts in TypeScript inside scripts/, rather than Bash, ensuring consistent operations across Windows, macOS, and Linux developer environments.
+* **Integração com o Husky**: Contém os mapeamentos principais dentro do diretório husky/ para eventos padrão do ciclo de vida do Git (por exemplo, pre-commit, prepare-commit-msg).
+* **Scripts multiplataforma**: Define todos os scripts de execução em TypeScript dentro de scripts/, em vez de Bash, garantindo operações consistentes nos ambientes de desenvolvedor Windows, macOS e Linux.
 
-## Workspace Management
+## Gerenciamento de workspaces
 
-The configurations inside the Shared workspace are consumed at the root and package levels. For example, the root package.json coordinates tool inheritance and utilizes @monorepo/shared-config to standardise Prettier across the entire ecosystem.
+As configurações dentro do workspace Shared são consumidas nos níveis raiz e de pacotes. Por exemplo, o package.json raiz coordena a herança de ferramentas e utiliza @monorepo/shared-config para padronizar o Prettier em todo o ecossistema.
 
-:::info[Foundational Dependency Rule]
-Files inside shared/ must always remain stateless, generic, and isolated from specific business logic or backend implementations. This context acts purely as the infrastructural base for developer ergonomics and version control.
+:::info[Regra de dependência fundamental]
+Os arquivos dentro de shared/ devem sempre permanecer sem estado, genéricos e isolados de lógica de negócios específica ou implementações de backend. Este contexto atua puramente como a base de infraestrutura para ergonomia do desenvolvedor e controle de versão.
 :::
