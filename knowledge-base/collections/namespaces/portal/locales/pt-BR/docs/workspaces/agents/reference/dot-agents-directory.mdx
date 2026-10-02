@@ -1,60 +1,60 @@
 ---
-title: .agents Directory Reference
-sidebar_label: .agents Directory Reference
+title: Referência do Diretório .agents
+sidebar_label: Referência do Diretório .agents
 sidebar_position: 8
 ---
 
-# `.agents/` Directory Reference
+# Referência do Diretório `.agents/`
 
-This reference details the folder structure, mechanics, and design boundaries of the central `.agents/` customization ecosystem inside the `%PROJECT_DOMAIN%` monorepo.
+Esta referência detalha a estrutura de pastas, a mecânica e os limites de design do ecossistema de personalização central `.agents/` dentro do monorepo `%PROJECT_DOMAIN%`.
 
-This directory is natively supported by the **Antigravity (AGY)** agent architecture and ensures that AI tools, skills, and rules remain modular, copy-pasteable, and completely self-contained.
+Este diretório é suportado nativamente pela arquitetura de agentes **Antigravity (AGY)** e garante que ferramentas, skills e regras de IA permaneçam modulares, reutilizáveis por copiar e colar e completamente autossuficientes.
 
 ---
 
-## 1. Directory Structure
+## 1. Estrutura do Diretório
 
-The `.agents/` bounded context restricts its content to the following distinct functional directories:
+O contexto delimitado `.agents/` restringe seu conteúdo aos seguintes diretórios funcionais distintos:
 
 ### `plugins/`
 
-Namespaced bundles that package AI capabilities into a single deployable unit.
+Pacotes com namespaces que empacotam capacidades de IA em uma única unidade passível de deploy.
 
-* **Purpose**: Encapsulating Model Context Protocol (MCP) server bindings alongside the rules that teach the AI how to use them.
-* **Example**: `.agents/plugins/cortex/plugin.json` loads the `agentgateway` MCP server and injects an `AGENTS.md` rule instructing the AI to prefer the `firecrawl_scrape` tool for web extraction.
-* **Rules**: Plugins MUST be self-contained. They cannot rely on external temporary files.
+* **Objetivo**: Encapsular associações de servidores do Model Context Protocol (MCP) junto com as regras que ensinam a IA a usá-las.
+* **Exemplo**: `.agents/plugins/cortex/plugin.json` carrega o servidor MCP `agentgateway` e injeta uma regra `AGENTS.md` instruindo a IA a preferir a ferramenta `firecrawl_scrape` para extração web.
+* **Regras**: Os plugins DEVEM ser autossuficientes. Eles não podem depender de arquivos temporários externos.
 
 ### `rules/`
 
-Guidelines and constraints that the AI must follow.
+Diretrizes e restrições que a IA deve seguir.
 
-* **Purpose**: Hierarchical and unconditional context injection.
-* **Mechanics**: Markdown files in this folder are automatically discovered by the Antigravity runtime and injected into the agent's context whenever the trigger conditions are met (or globally, if unconditionally active).
+* **Objetivo**: Injeção de contexto hierárquica e incondicional.
+* **Mecânica**: Arquivos Markdown nesta pasta são descobertos automaticamente pelo runtime do Antigravity e injetados no contexto do agente sempre que as condições de gatilho são atendidas (ou globalmente, se ativos incondicionalmente).
 
 ### `skills/`
 
-Progressive-disclosure runbooks and expert personas.
+Runbooks de divulgação progressiva e personas especializadas.
 
-* **Purpose**: Teaching the agent how to execute complex, multi-step tasks without exhausting the global context window.
-* **Mechanics**: Skills (e.g., `agent-router-expert`) are discovered by the agent as available tools. The agent reads the `SKILL.md` file *only* when activated by the user or by its own autonomous planning process.
+* **Objetivo**: Ensinar o agente a executar tarefas complexas e de múltiplas etapas sem esgotar a janela de contexto global.
+* **Mecânica**: As skills (por exemplo, `agent-router-expert`) são descobertas pelo agente como ferramentas disponíveis. O agente lê o arquivo `SKILL.md` *apenas* quando ativado pelo usuário ou por seu próprio processo de planejamento autônomo.
 
 ### `scripts/`
 
-Agent-authored utility scripts meant for repository manipulation.
+Scripts utilitários criados por agentes destinados à manipulação de repositórios.
 
-* **Purpose**: Version-controlled automation tasks.
-* **Constraint**: Agents are strictly forbidden from creating scratch scripts (`scratch.js`, `test.cjs`) in the root of the monorepo. They must place permanent scripts in `.agents/scripts/` or use their isolated internal `\<appDataDir>/brain/scratch/` directory.
+* **Objetivo**: Tarefas de automação controladas por versão.
+* **Restrição**: Os agentes são estritamente proibidos de criar scripts temporários (`scratch.js`, `test.cjs`) na raiz do monorepo. Eles devem colocar scripts permanentes em `.agents/scripts/` ou usar seu diretório interno isolado `\<appDataDir>/brain/scratch/`.
 
 ### `plans/`
 
-Temporary architectural planning documents.
+Documentos temporários de planejamento arquitetural.
 
-* **Purpose**: Markdown-based execution plans for complex refactors, outlining step-by-step checklists and tracking state across agent sessions.
+* **Objetivo**: Planos de execução baseados em Markdown para refatorações complexas, delineando listas de verificação passo a passo e rastreando o estado entre as sessões do agente.
 
 ---
 
-## 2. Core Operational Constraints
+## 2. Restrições Operacionais Principais
 
-1. **Self-Contained Logic**: Skills and Plugins must be 100% self-contained. Do not create relative links pointing to temporary plans or other transient context.
-2. **Generic Nomenclature**: Always use `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` templates instead of hardcoded brand names. This keeps the AI configuration portable and reusable across other corporate deployments.
-3. **No Nested `.agents` Folders**: To prevent context hallucination and configuration fragmentation, all AI orchestration logic must be centralized in the root `.agents/` folder. Creating isolated `.agents/` folders inside other bounded contexts (e.g., `platform/.agents/`) is forbidden; local context routing should be handled by `AGENTS.md` and standard `references/` directories.
+1. **Lógica Autossuficiente**: Skills e Plugins devem ser 100% autossuficientes. Não crie links relativos apontando para planos temporários ou outro contexto transitório.
+2. **Nomenclatura Genérica**: Sempre utilize os modelos `%PROJECT_DOMAIN%` e `%PROJECT_NAME%` em vez de nomes de marcas codificados rigidamente (hardcoded). Isso mantém a configuração de IA portátil e reutilizável em outros deploys corporativos.
+3. **Sem Pastas `.agents` Aninhadas**: Para evitar alucinação de contexto e fragmentação de configuração, toda a lógica de orquestração de IA deve ser centralizada na pasta raiz `.agents/`. A criação de pastas `.agents/` isoladas dentro de outros contextos delimitados (por exemplo, `platform/.agents/`) é proibida; o roteamento de contexto local deve ser gerenciado por `AGENTS.md` e diretórios `references/` padrão.
