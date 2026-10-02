@@ -1,37 +1,37 @@
 ---
-title: Release Process
+title: Processo de Release
 slug: /release-process
 ---
 
-# Release Process
+# Processo de Release
 
-This document outlines how %PROJECT_NAME% manages versioning, package releases, changelog generation, and breaking changes across monorepo workspaces.
+Este documento descreve como o %PROJECT_NAME% gerencia versionamento, releases de pacotes, geração de changelog e breaking changes em workspaces de monorepo.
 
 ## Semantic Versioning
 
-All workspace libraries, APIs, and container services follow [Semantic Versioning (SemVer)](https://semver.org/):
+Todas as bibliotecas, APIs e serviços de container do workspace seguem o [Semantic Versioning (SemVer)](https://semver.org/):
 
-* **MAJOR (`x.0.0`)**: Introduced on breaking architectural shifts, public API deprecations, or backwards-incompatible schemas.
-* **MINOR (`0.x.0`)**: Introduced on new features, additional API endpoints, or backwards-compatible functionality additions.
-* **PATCH (`0.0.x`)**: Introduced on bug fixes, security patches, dependency updates, and internal performance optimizations.
+* **MAJOR (`x.0.0`)**: Introduzido em mudanças arquiteturais drásticas, descontinuações de APIs públicas ou esquemas incompatíveis com versões anteriores.
+* **MINOR (`0.x.0`)**: Introduzido em novos recursos, endpoints de API adicionais ou adições de funcionalidade compatíveis com versões anteriores.
+* **PATCH (`0.0.x`)**: Introduzido em correções de bugs, patches de segurança, atualizações de dependências e otimizações internas de desempenho.
 
 ## Changesets Workflow
 
-We use `@changesets/cli` to track and automate package version bumps:
+Utilizamos o `@changesets/cli` para rastrear e automatizar incrementos de versão de pacotes:
 
-1. **Declare Changes**: When introducing user-facing or cross-package changes, generate a changeset:
+1. **Declarar Mudanças**: Ao introduzir alterações visíveis para o usuário ou entre pacotes, gere um changeset:
    ```bash
    pnpm version:changeset
    ```
-2. **Select Packages & Bump Types**: Specify whether packages require `patch`, `minor`, or `major` version bumps.
-3. **Automated Versioning**: During release cycles, Changesets consumes declared changelog entries, bumps `package.json` manifests, and generates release notes:
+2. **Selecionar Pacotes e Tipos de Incremento**: Especifique se os pacotes exigem incrementos de versão `patch`, `minor` ou `major`.
+3. **Versionamento Automatizado**: Durante os ciclos de release, o Changesets consome as entradas de changelog declaradas, atualiza os manifests do `package.json` e gera notas de release:
    ```bash
    pnpm version:bump
    ```
 
-## Automated Deployment Pipelines
+## Pipelines de Deploy Automatizados
 
-GitHub Actions workflows automatically build, package, and deploy artifacts upon merge into release branches:
+Os workflows do GitHub Actions compõem, empacotam e fazem o deploy de artefatos automaticamente após o merge em branchs de release:
 
-* **Documentation**: Built and deployed via Cloudflare Pages or Dockerized portal services.
-* **Microservices**: Containerized using Podman/Docker and deployed to target Kubernetes clusters via Skaffold and Helm manifests.
+* **Documentação**: Construída e implantada via Cloudflare Pages ou serviços de portal conteinerizados.
+* **Microsserviços**: Conteinerizados usando Podman/Docker e implantados em clusters do Kubernetes de destino por meio de manifests do Skaffold e Helm.
