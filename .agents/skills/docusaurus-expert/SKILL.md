@@ -1,21 +1,21 @@
 ---
 name: docusaurus-expert
-description: Use this skill to create, analyze, or update technical documentation in the knowledge-base/ workspace, ensuring MDX syntax compliance and strict adherence to the Diátaxis framework.
+description: Use this skill to create, analyze, or update technical documentation in the <docs-root>/ workspace, ensuring MDX syntax compliance and strict adherence to the Diátaxis framework.
 ---
 
 # Docusaurus Docs Expert
 
-This skill defines the authoritative standards, directory structures, design patterns, and validation workflows for the **workspace** Knowledge Base (`knowledge-base/`).
+This skill defines the authoritative standards, directory structures, design patterns, and validation workflows for the **workspace** Knowledge Base (`<docs-root>/`).
 
 ---
 
 ## 1. Directory Structure & Diátaxis Standards
 
-The `knowledge-base/` workspace officially adopts the **Diátaxis** framework. All documentation must be structured around user needs into four distinct quadrants. Do not organize files merely by topic.
+The `<docs-root>/` workspace officially adopts the **Diátaxis** framework. All documentation must be structured around user needs into four distinct quadrants. Do not organize files merely by topic.
 
 ### A. The Four Quadrants
 
-When creating or editing documentation, classify and place it in the appropriate quadrant (e.g., inside `knowledge-base/docs/monorepo/handbook/` or the appropriate workspace root):
+When creating or editing documentation, classify and place it in the appropriate quadrant (e.g., inside `<docs-root>/handbook/` or the appropriate workspace root):
 
 - `tutorials/`: Learning-oriented, practical lessons for beginners to acquire skills.
 - `guides/` (How-to guides): Goal-oriented, practical step-by-step directions to solve specific problems.
@@ -26,7 +26,7 @@ When creating or editing documentation, classify and place it in the appropriate
 
 When documenting specific domains or features that require multiple files:
 
-- **Sub-categorization**: Group the files inside a category subfolder within the appropriate quadrant (e.g., `knowledge-base/docs/monorepo/handbook/reference/<domain-name>/`).
+- **Sub-categorization**: Group the files inside a category subfolder within the appropriate quadrant (e.g., `<docs-root>/reference/<domain-name>/`).
 - **Docusaurus Categories**: You MUST create a `_category_.json` file inside these subfolders to generate sidebar dropdowns automatically.
 - **Single Files**: If a domain only requires a single document for a quadrant (e.g., one tutorial), place it directly at the root of the quadrant (e.g., `tutorials/<domain-name>-start.mdx`) without creating a dedicated subfolder.
 
@@ -76,13 +76,12 @@ All files placed inside the documentation directories MUST strictly adhere to th
 
 ---
 
-## 3. Localization Parity (pt-BR)
+## 3. Automated Localization (L10n)
 
-- **Absolute Synchronization**: Whenever you create, modify, rename, or delete an English document in the `knowledge-base/docs/` workspace, you MUST perform the exact same action on its Brazilian Portuguese (`pt-BR`) counterpart.
-- **Creation & Modification**: If a new EN document is created or an existing one is updated, you MUST immediately create or update the corresponding pt-BR file under `knowledge-base/docs/monorepo/i18n/pt-BR/` in the correct plugin subdirectory.
-- **Strict Fidelity**: Translations must be strictly faithful ("fiel ao pé da letra") to the English source. Do not summarize, paraphrase, omit sections, or add new content. The structure, headings, URLs, and meaning must perfectly mirror the English original.
-- **Review Requirement**: Even if you are just reviewing or doing minor fixes in EN documents, you MUST review and apply the same fixes to the pt-BR documents to ensure no parity gaps exist.
-- **Preservation**: Never translate frontmatter keys (except the values for `title`, `description`, and `sidebar_label`), component tags, HTML/JSX elements, or code block contents.
+- **English-Only Authoring**: You MUST author, update, and review documentation exclusively in English (the source language).
+- **No Manual Translation**: You MUST NOT create or edit localized target language files (e.g., `pt-BR`, `es`) manually.
+- **L10n Automation**: All localization is strictly handled asynchronously by external L10n pipelines (e.g., Crowdin, GitHub Apps). When you commit English source files to the `<docs-root>`, the L10n pipeline will automatically pull them, translate them, and open a Pull Request targeting the `locales/` directory.
+- **Translation Isolation**: Never attempt to fix typos or parity gaps in the localized target folders. Focus entirely on maintaining the structural integrity of the English source.
 
 ---
 
@@ -90,7 +89,7 @@ All files placed inside the documentation directories MUST strictly adhere to th
 
 - **No Intermediate Tests**: Do NOT run verification commands after each individual edit or file creation. Always batch all proposed modifications across all files first.
 - **Final Validation Only**: Execute the validation suite exactly ONCE at the end of the entire documentation task to test the build, types, and links.
-- **Strictly No Dev/Preview Servers**: Never start the development server (`pnpm kb:docusaurus:monorepo:dev`) or preview server (`pnpm kb:docusaurus:monorepo:preview`). The verification workflow consists solely of verifying successful compilation and error-free builds.
+- **Strictly No Dev/Preview Servers**: Never start the development server (`<dev-command>`) or preview server (`<preview-command>`). The verification workflow consists solely of verifying successful compilation and error-free builds.
 
 For the step-by-step validation pipeline instructions, refer to [references/workflow.md](references/workflow.md).
 
@@ -98,11 +97,11 @@ For the step-by-step validation pipeline instructions, refer to [references/work
 
 ## 5. Upstream/Vendor Documentation Adaptation
 
-When a task requires adapting official third-party or upstream documentation (e.g., AgentGateway, Traefik, Kubernetes) into the Docusaurus workspace, follow this specific pattern. This type of documentation serves as an **inherited technology reference** — it is not project-authored content, but an adapted mirror of official upstream docs kept inside the project for developer convenience and architectural reference.
+When a task requires adapting official third-party or upstream documentation (e.g., <upstream-tool>, Traefik, Kubernetes) into the Docusaurus workspace, follow this specific pattern. This type of documentation serves as an **inherited technology reference** — it is not project-authored content, but an adapted mirror of official upstream docs kept inside the project for developer convenience and architectural reference.
 
 ### A. Dedicated Category Placement & Navigation
 
-- Place all adapted upstream docs inside a **dedicated named subfolder** within `knowledge-base/docs/monorepo/workspaces/<workspace>/reference/`, for example: `knowledge-base/docs/monorepo/workspaces/cortex/reference/agentgateway/`.
+- Place all adapted upstream docs inside a **dedicated named subfolder** within `<docs-root>/reference/`, for example: `<docs-root>/reference/<upstream-tool>/`.
 - Every category and subcategory folder MUST include a `_category_.json` configured with a `generated-index` link:
   ```json
   {
@@ -120,7 +119,7 @@ When a task requires adapting official third-party or upstream documentation (e.
 ### B. Entrypoint Structure & About Folder Conversion
 
 - Scraped documentation often features an `about/` folder containing `index.md`, `introduction.md`, and `architecture.md`.
-- Convert this pattern into a single top-level `intro.mdx` file at the root of the technology reference folder (e.g., `knowledge-base/docs/monorepo/workspaces/cortex/reference/agentgateway/intro.mdx`).
+- Convert this pattern into a single top-level `intro.mdx` file at the root of the technology reference folder (e.g., `<docs-root>/reference/<upstream-tool>/intro.mdx`).
 - Include the Upstream Reference attribution banner, core concepts, motivation, and architecture diagrams in `intro.mdx`.
 - Conclude `intro.mdx` with a `<DocCardList />` component pointing to every subcategory and major reference document.
 
@@ -134,10 +133,10 @@ When a task requires adapting official third-party or upstream documentation (e.
 Upstream source files (typically obtained by scraping documentation websites) contain **web UI artifacts** that must be completely stripped before adapting the content:
 
 - Navigation headers (`[Skip to content]`, `Toggle theme`, `CTRL K`, navbar links).
-- Website announcement banners (e.g., `agentgateway has joined the Agentic AI Foundation — ...×`).
+- Website announcement banners (e.g., `<upstream-tool> has joined the Agentic AI Foundation — ...×`).
 - "Copy as Markdown" / "View as Markdown" / "Open in Claude" floating menus.
 - Empty fenced code blocks used as spacers (` ``` ` followed immediately by ` ``` `).
-- AI assistant widgets (`Ask AI`, `Agentgateway assistant`, `Rate limit reached`, `Start new conversation`).
+- AI assistant widgets (`Ask AI`, `<upstream-tool> assistant`, `Rate limit reached`, `Start new conversation`).
 - Page navigation UI (`↑↓ navigate`, `↵ select`, `esc dismiss`).
 - Feedback forms (`Was this page helpful?`, `What could be improved?`, `SkipSubmit`).
 - Inline glossary/tooltip injection artifacts (e.g., `backends**Backend** A destination service...` -> `backends`).
@@ -150,10 +149,10 @@ The actual technical content begins **after** this header noise, typically at th
 
 After stripping scrape artifacts, adapt all links:
 
-- **Internal cross-links** (relative paths like `../configuration/gateways.md` or `connect/index.md`): Convert to Docusaurus absolute paths pointing to the adapted location, e.g., `/workspaces/cortex/reference/agentgateway/configuration/gateways`. Remove `.md` and `.mdx` extensions from link targets as Docusaurus resolves them automatically.
-- **External upstream links** (e.g., `https://agentgateway.dev/docs/standalone/latest/mcp/...`): Preserve as-is. These are valid external references.
+- **Internal cross-links** (relative paths like `../configuration/gateways.md` or `connect/index.md`): Convert to Docusaurus absolute paths pointing to the adapted location, e.g., `/reference/<upstream-tool>/configuration/gateways`. Remove `.md` and `.mdx` extensions from link targets as Docusaurus resolves them automatically.
+- **External upstream links** (e.g., `https://example.com/docs/mcp/...`): Preserve as-is. These are valid external references.
 - **Valid Remote Images**: Preserve remote images that point to valid public URLs (`https://...`).
-- **Permalink anchor links** (e.g., `[Permalink for this section](https://agentgateway.dev/...#anchor)`): Strip the entire `[Permalink for this section](...)` inline link — these are website-specific UI elements with no documentation value.
+- **Permalink anchor links** (e.g., `[Permalink for this section](https://<upstream-tool>.dev/...#anchor)`): Strip the entire `[Permalink for this section](...)` inline link — these are website-specific UI elements with no documentation value.
 - **Broken local image references** (e.g., `![Agent](about.md)`): Remove entirely.
 
 ### F. Mermaid Diagram Adaptation
@@ -183,7 +182,7 @@ At the top of the root `intro.mdx` of the upstream docs category, include a noti
 
 ```mdx
 :::note[Upstream Reference]
-This section is an adapted mirror of the official [AgentGateway documentation](https://agentgateway.dev/docs/standalone/latest/).
+This section is an adapted mirror of the official [<Upstream Tool> documentation](https://example.com/docs/).
 Content has been reformatted for Docusaurus MDX compatibility. External links and technical content are preserved faithfully.
 :::
 ```

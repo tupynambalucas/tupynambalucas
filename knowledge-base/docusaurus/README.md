@@ -7,7 +7,7 @@ This directory houses the Docusaurus presets, themes, and deployable documentati
 ## Directory Architecture
 
 - **[packages/](./packages/)**: Shared internal Docusaurus libraries, presets, and presentation layers.
-  - **[preset/](./packages/preset/README.md)**: Custom preset (`@monorepo/kb-docusaurus-preset`) configuring Docusaurus plugins, remark AST transformations, sidebars, and Crowdin synchronization.
+  - **[preset/](./packages/preset/README.md)**: Custom preset (`@monorepo/kb-docusaurus-preset`) configuring Docusaurus plugins, remark AST transformations, sidebars, and L10n synchronization.
   - **[theme/](./packages/theme/README.md)**: Custom theme (`@monorepo/kb-docusaurus-theme`) implementing the Thin Orchestrator component-shadowing pattern.
 - **[services/](./services/)**: Deployable documentation applications and portal servers.
   - **[portal/](./services/portal/README.md)**: Primary documentation portal (`@monorepo/kb-docusaurus-portal`) consuming content dynamically from sibling collections.

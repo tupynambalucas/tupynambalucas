@@ -26,7 +26,7 @@ This workspace is strictly a presentation and compilation engine. All documentat
 ## 2. Workspace Guardrails
 
 1. **AST Variable Transformer**: The workspace uses the `remark-project-variables` AST plugin (provided by the preset). Agents MUST write agnostic tokens like `%PROJECT_DOMAIN%` instead of hardcoded brand names.
-2. **Translation Synchronization**: Docusaurus requires the `i18n/` directory to be present locally during build. The preset Crowdin plugin automatically invokes the Crowdin CLI to sync and copy translations from `../../../collections/namespaces/portal/translations/` into `i18n/`. Agents MUST NOT edit files in `i18n/` manually.
+2. **Translation Synchronization**: Docusaurus requires the `i18n/` directory to be present locally during build. The preset plugin acts as a bridge, copying L10n translations from `../../../collections/namespaces/portal/locales/` into `i18n/` before build. Agents MUST NOT edit files in `i18n/` manually.
 3. **No Direct Content Creation**: Agents MUST NOT create `docs/`, `community/`, or `blog/` content directories inside this workspace. All documentation authoring must happen in the `knowledge-base/collections/namespaces/portal/content/` workspace.
 
 ---

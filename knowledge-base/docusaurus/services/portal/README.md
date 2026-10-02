@@ -24,13 +24,13 @@ This workspace utilizes the `remark-project-variables` plugin (injected by `@mon
 
 ---
 
-## Localization & Crowdin Integration
+## Localization & L10n Integration
 
 Localization is managed through Crowdin:
 
 1. **Source Content**: Authored in English (`en`) inside `collections/namespaces/portal/content/`.
-2. **Translation Sync**: The preset Crowdin plugin utilizes the Crowdin CLI to upload new English strings and download translated archives into `collections/namespaces/portal/translations/`, before safely copying them directly into `i18n/` at build time.
-3. **CI/CD Workflow**: The environment variable `SYNC_TRANSLATIONS=true` triggers this bidirectional sync automatically during production builds.
+2. **Translation Sync**: Translations are synced via the Crowdin GitHub App which opens PRs targeting the `collections/namespaces/portal/locales/` directory. The preset plugin then gracefully bridges these files into the local `i18n/` directory at build time.
+3. **CI/CD Workflow**: The GitHub Action builds documentation statelessly based on the git commit, decoupling the build process from the Crowdin API.
 
 ---
 

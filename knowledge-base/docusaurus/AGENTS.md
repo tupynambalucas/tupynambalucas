@@ -15,7 +15,7 @@ This sub-domain contains the build infrastructure, preset abstractions, themed U
 ## 1. Local Architecture
 
 - [packages/](./packages/): Reusable internal Docusaurus libraries, presets, and UI themes.
-  - [preset/](./packages/preset/AGENTS.md): Unified preset bundling classic plugins, remark variables, sidebars, and Crowdin synchronization.
+  - [preset/](./packages/preset/AGENTS.md): Unified preset bundling classic plugins, remark variables, sidebars, and L10n synchronization.
   - [theme/](./packages/theme/AGENTS.md): Custom presentation layer implementing the Thin Orchestrator component-shadowing pattern.
 - [services/](./services/): Deployable documentation services and web applications.
   - [portal/](./services/portal/AGENTS.md): Primary Docusaurus documentation service consuming content from sibling collections.
