@@ -1,33 +1,33 @@
 ---
-title: Infrastructure Architecture
-description: The edge-to-cluster reverse proxy architecture, ingress topologies, and domain routing.
+title: Arquitetura de Infraestrutura
+description: A arquitetura de proxy reverso edge-to-cluster, topologias de ingress e roteamento de domínios.
 sidebar_position: 1
 ---
 
-# Infrastructure Architecture
+# Arquitetura de Infraestrutura
 
-%PROJECT_DOMAIN% utilizes a Kubernetes-native orchestration pipeline and an edge-to-cluster reverse proxy architecture to handle TLS termination, Zero Trust security, and request routing across bounded contexts.
+O %PROJECT_DOMAIN% utiliza um pipeline de orquestração nativo do Kubernetes e uma arquitetura de proxy reverso edge-to-cluster para gerenciar terminação TLS, segurança Zero Trust e roteamento de requisições entre contextos delimitados.
 
 ---
 
-## 1. Kubernetes Manifest Layout
+## 1. Layout de Manifestos do Kubernetes
 
-Workspaces that support Kubernetes deployment use a Kustomize-based directory layout mirroring their layered structure. All configurations reside within the centralized `infrastructure` bounded context.
+Workspaces que oferecem suporte a deploy no Kubernetes utilizam um layout de diretórios baseado em Kustomize que espelha sua estrutura em camadas. Todas as configurações residem dentro do contexto delimitado centralizado `infrastructure`.
 
-* **Path Schema**:
+* **Esquema de Caminho**:
   * `infrastructure/environments/\<env>/\<context>` (Kustomize Overlays)
   * `infrastructure/manifests/\<context>.yaml` (Deployments + Services + Ingress)
-* **Application**: Used universally across all contexts (`platform`, `cortex`, `studio`).
+* **Aplicação**: Utilizado universalmente em todos os contextos (`platform`, `cortex`, `studio`).
 
 ---
 
-## 2. Reverse Proxy & Request Routing
+## 2. Proxy Reverso e Roteamento de Requisições
 
-We use an edge-to-cluster reverse proxy architecture to handle public and internal request routing.
+Utilizamos uma arquitetura de proxy reverso edge-to-cluster para gerenciar o roteamento de requisições públicas e internas.
 
-### 2.1. Cloudflare Tunnel & Edge Topology
+### 2.1. Cloudflare Tunnel e Topologia Edge
 
-Public access to local and remote Kubernetes development environments is provided via **Cloudflare Tunnel** (`cloudflared`) integrated with **Cloudflare Zero Trust**:
+O acesso público a ambientes de desenvolvimento Kubernetes locais e remotos é fornecido via **Cloudflare Tunnel** (`cloudflared`) integrado ao **Cloudflare Zero Trust**:
 
 ```mermaid
 graph TD
@@ -39,28 +39,28 @@ graph TD
     Traefik -->|Service Routing| Penpot["penpot-frontend (studio)"]
 ```
 
-* **Edge TLS Termination:** Cloudflare Edge terminates public HTTPS for `*-dev.%PROJECT_DOMAIN%` using single-level wildcard SSL/TLS certificates (`*.%PROJECT_DOMAIN%`).
-* **Encrypted Tunnel Transport:** Traffic travels from Cloudflare Edge to the cluster via an encrypted QUIC connection handled by the `cloudflared` deployment in the `platform` namespace.
-* **Traefik Ingress Controller:** `cloudflared` forwards requests internally to Traefik on port 80 (`http://traefik.platform.svc.cluster.local:80`), which routes HTTP/gRPC payloads to target Services based on standard Kubernetes `Ingress` resources.
+* **Terminação TLS no Edge:** O Cloudflare Edge termina o HTTPS público para `*-dev.%PROJECT_DOMAIN%` usando certificados SSL/TLS coringa de nível único (`*.%PROJECT_DOMAIN%`).
+* **Transporte de Túnel Criptografado:** O tráfego trafega do Cloudflare Edge para o cluster por meio de uma conexão QUIC criptografada gerenciada pelo deploy do `cloudflared` no namespace `platform`.
+* **Traefik Ingress Controller:** O `cloudflared` encaminha as requisições internamente para o Traefik na porta 80 (`http://traefik.platform.svc.cluster.local:80`), que roteia payloads HTTP/gRPC para os Services de destino com base em recursos `Ingress` padrão do Kubernetes.
 
-### 2.2. Authoritative Development Domain Scheme
+### 2.2. Esquema de Domínio de Desenvolvimento Autoritativo
 
-All development services adopt a single-level hyphenated subdomain structure (`*-dev.%PROJECT_DOMAIN%`) to ensure 100% compatibility with free Universal SSL certificates:
+Todos os serviços de desenvolvimento adotam uma estrutura de subdomínio hifenizada de nível único (`*-dev.%PROJECT_DOMAIN%`) para garantir 100% de compatibilidade com certificados SSL universais gratuitos:
 
-| Domain Host                             | Target Service         | Namespace  | Purpose                                |
-| :-------------------------------------- | :--------------------- | :--------- | :------------------------------------- |
-| `agentgateway-dev.%PROJECT_DOMAIN%`     | `agentgateway:15000`   | `cortex`   | AgentGateway Admin UI & Control Plane  |
-| `agentgateway-mcp-dev.%PROJECT_DOMAIN%` | `agentgateway:8080`    | `cortex`   | Direct MCP Ingress Endpoint (`/mcp`)   |
-| `grafana-dev.%PROJECT_DOMAIN%`          | `grafana:3000`         | `platform` | Grafana Observability Dashboard        |
-| `headlamp-dev.%PROJECT_DOMAIN%`         | `headlamp:80`          | `platform` | Headlamp Kubernetes Dashboard          |
-| `traefik-dev.%PROJECT_DOMAIN%`          | `traefik:8082`         | `platform` | Traefik Ingress Dashboard              |
-| `penpot-dev.%PROJECT_DOMAIN%`           | `penpot-frontend:8080` | `studio`   | Penpot Design Tool                     |
-| `memos-dev.%PROJECT_DOMAIN%`            | `memos:5230`           | `studio`   | Memos Note-taking App                  |
-| `docs.%PROJECT_DOMAIN%`                 | Cloudflare Pages       | External   | Docusaurus Technical Documentation Hub |
+| Host do Domínio                         | Service de Destino     | Namespace  | Propósito                                          |
+| :-------------------------------------- | :--------------------- | :--------- | :------------------------------------------------- |
+| `agentgateway-dev.%PROJECT_DOMAIN%`     | `agentgateway:15000`   | `cortex`   | Interface de Admin e Control Plane do AgentGateway |
+| `agentgateway-mcp-dev.%PROJECT_DOMAIN%` | `agentgateway:8080`    | `cortex`   | Endpoint de Ingress MCP Direto (`/mcp`)            |
+| `grafana-dev.%PROJECT_DOMAIN%`          | `grafana:3000`         | `platform` | Dashboard de Observabilidade do Grafana            |
+| `headlamp-dev.%PROJECT_DOMAIN%`         | `headlamp:80`          | `platform` | Dashboard do Kubernetes do Headlamp                |
+| `traefik-dev.%PROJECT_DOMAIN%`          | `traefik:8082`         | `platform` | Dashboard do Ingress do Traefik                    |
+| `penpot-dev.%PROJECT_DOMAIN%`           | `penpot-frontend:8080` | `studio`   | Ferramenta de Design Penpot                        |
+| `memos-dev.%PROJECT_DOMAIN%`            | `memos:5230`           | `studio`   | Aplicativo de Notas Memos                          |
+| `docs.%PROJECT_DOMAIN%`                 | Cloudflare Pages       | Externo    | Central de Documentação Técnica do Docusaurus      |
 
-### 2.3. Cloudflare Access & Zero Trust Policies
+### 2.3. Políticas do Cloudflare Access e Zero Trust
 
-To secure development endpoints exposed via Cloudflare Tunnel:
+Para proteger os endpoints de desenvolvimento expostos via Cloudflare Tunnel:
 
-* **Web Dashboards (Grafana, Headlamp, Traefik, AgentGateway Admin):** Protected by Cloudflare Access **Email / One-Time PIN (OTP)** policies. Only authorized developer email addresses receive authentication PINs.
-* **AI & MCP Endpoints (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`):** Configured with a **Bypass** policy or Service Token authentication in Cloudflare Zero Trust with tunnel routing directed to `/mcp`. This enables non-browser clients (such as AI agents, CLI tools, and automated pipelines) to exchange JSON-RPC / SSE payloads without encountering interactive browser login redirects.
+* **Web Dashboards (Grafana, Headlamp, Traefik, Admin do AgentGateway):** Protegidos por políticas de **E-mail / PIN de Uso Único (OTP)** do Cloudflare Access. Apenas endereços de e-mail de desenvolvedores autorizados recebem PINs de autenticação.
+* **Endpoints de IA e MCP (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`):** Configurados com uma política de **Bypass** ou autenticação por Token de Serviço no Cloudflare Zero Trust com o roteamento do túnel direcionado para `/mcp`. Isso permite que clientes que não utilizam browser (como agentes de IA, ferramentas de CLI e pipelines automatizados) troquem payloads JSON-RPC / SSE sem encontrar redirecionamentos interativos de login do browser.
