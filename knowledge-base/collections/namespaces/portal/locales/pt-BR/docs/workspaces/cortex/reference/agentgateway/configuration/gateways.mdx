@@ -303,14 +303,14 @@ The `binds` field nests listeners and routes inside each port, which means a rou
 exactly one listener. Gateways invert that relationship: routes are top level and reference gateways
 by name.
 
-| Concept                                     | `binds`                                      | `gateways`                                                                                                |
-| ------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Port                                        | An entry in the `binds` list                 | A named entry in the `gateways` map                                                                       |
-| Listener                                    | `binds[].listeners[]`                        | `gateways.\<name>`gateways.\<name>.listeners[]\`, or the gateway itself |
-| HTTP routes                                 | Nested under `binds[].listeners[].routes`    | Top-level `routes`, attached with `gateways`                                                              |
-| TCP routes                                  | Nested under `binds[].listeners[].tcpRoutes` | Top-level `tcpRoutes`, attached with `gateways`                                                           |
-| Reuse across ports                          | Duplicate the route under each listener      | List several gateways in one route                                                                        |
-| LLM, MCP, and UI on the same port as routes | Not supported                                | Attach each section to the same gateway                                                                   |
+| Concept                                     | `binds`                                      | `gateways`                                                                                                                                  |
+| ------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Port                                        | An entry in the `binds` list                 | A named entry in the `gateways` map                                                                                                         |
+| Listener                                    | `binds[].listeners[]`                        | `gateways.\<name>`gateways.\<name>`gateways.\<name>.listeners[]\`, or the gateway itself |
+| HTTP routes                                 | Nested under `binds[].listeners[].routes`    | Top-level `routes`, attached with `gateways`                                                                                                |
+| TCP routes                                  | Nested under `binds[].listeners[].tcpRoutes` | Top-level `tcpRoutes`, attached with `gateways`                                                                                             |
+| Reuse across ports                          | Duplicate the route under each listener      | List several gateways in one route                                                                                                          |
+| LLM, MCP, and UI on the same port as routes | Not supported                                | Attach each section to the same gateway                                                                                                     |
 
 The following configuration uses `binds`.
 
@@ -354,8 +354,8 @@ To convert a configuration:
    `protocol`, `hostname`, and `tls` settings to the gateway too. If the bind had multiple listeners,
    keep them in the gateway’s `listeners` field and give each one a `name`.
 3. Unwrap each listener’s `policies` block. Gateways and listeners take policies as direct fields, so a
-   policy that was at `binds[].listeners[].policies.jwtAuth` moves to `gateways.\<name>.jwtAuth`..jwtAuth`. Route
-      and backend policies keep their `policies\` wrapper.
+   policy that was at `binds[].listeners[].policies.jwtAuth` moves to `gateways.\<name>.jwtAuth`..jwtAuth`..jwtAuth`. Route
+   and backend policies keep their `policies\` wrapper.
 4. Move `routes` and `tcpRoutes` to the top level. Add a `gateways` field to each route that names the
    gateway or the `\<gateway-name>/\<listener-name>` it serves.
 5. Replace deprecated `llm.port`, `llm.tls`, and `mcp.port` settings with a gateway that the `llm` and
