@@ -4,32 +4,32 @@ title: Core Architecture & Strategy
 sidebar_label: Core Architecture
 ---
 
-This section outlines the strategic monorepo architecture, catalog configurations, and logical multi-tenant isolation goals for the %PROJECT_DOMAIN% project.
+Esta seção descreve a arquitetura estratégica de monorepo, as configurações de catálogo e os objetivos lógicos de isolamento multi-tenant para o projeto %PROJECT_DOMAIN%.
 
-## Current Development Focus: "Single-Instance Mastery"
+## Foco de Desenvolvimento Atual: "Single-Instance Mastery"
 
-**CRITICAL STRATEGY:** Our immediate and absolute priority is to deliver a **complete, 100% functional, and polished single-instance application** (`@repo/hub/*`).
+**ESTRATÉGIA CRÍTICA:** Nossa prioridade imediata e absoluta é entregar uma **aplicação de instância única completa, 100% funcional e polida** (`@repo/hub/*`).
 
-While we have a long-term vision of becoming a multi-tenant SaaS platform, **SaaS architectural complexities must not be implemented at this stage.** All current development (codebase, database schemas, UI/UX) must remain focused on producing the best possible version of a standalone system for an ecovillage. The transition to a full SaaS model (Phase 6 of the Master Plan) will only be considered after the single-instance application is stable and fully operational.
+Embora tenhamos uma visão de longo prazo de nos tornarmos uma plataforma SaaS multi-tenant, **as complexidades arquiteturais de SaaS não devem ser implementadas neste estágio.** Todo o desenvolvimento atual (base de código, esquemas de banco de dados, UI/UX) deve permanecer focado em produzir a melhor versão possível de um sistema autônomo para uma ecovila. A transição para um modelo SaaS completo (Fase 6 do Plano Mestre) só será considerada após a aplicação de instância única estar estável e totalmente operacional.
 
 ---
 
-## Completed Milestones
+## Marcos Concluídos
 
 ### Monorepo Architecture & Workspace Setup
 
-* **Monorepo Workspace Segregation**: Structured workspace layers via PNPM Workspaces v11 and Turborepo, segregating `hub/`, `cortex/`, `studio/`, `tools/`, `renderer/`, `platform/`, and `docs/` domains.
-* **High-Performance Task Orchestration**: Integrated **Turborepo** to orchestrate pipelines, enabling smart target caching and parallel execution of scripts.
-* **Unified Configuration Inheritances**: Configured root-level `tsconfig.base.json` and `eslint.config.ts` extendable by workspace packages via TSConfig extends and ESLint config array definitions.
-* **Node 22 & TypeScript ESM Configuration**: Converted all packages to use ECMAScript Modules (`"type": "module"`) and compiled with target `ESNext` for modern syntax support.
+* **Segregação de Workspaces no Monorepo**: Camadas de workspace estruturadas via PNPM Workspaces v11 e Turborepo, segregando os domínios `hub/`, `cortex/`, `studio/`, `tools/`, `renderer/`, `platform/` e `docs/`.
+* **Orquestração de Tarefas de Alta Desempenho**: **Turborepo** integrado para orquestrar pipelines, permitindo o cache inteligente de alvos e a execução paralela de scripts.
+* **Heranças de Configuração Unificadas**: Configurados `tsconfig.base.json` e `eslint.config.ts` em nível de raiz, extensíveis por pacotes do workspace via extensões do TSConfig e definições de array de configuração do ESLint.
+* **Configuração do Node 22 & TypeScript ESM**: Todos os pacotes convertidos para usar Módulos ECMAScript (`"type": "module"`) e compilados com o alvo `ESNext` para suporte a sintaxe moderna.
 
-### Bounded Contexts & Domain Security
+### Contextos Delimitados e Segurança de Domínio
 
-* **Strict Bounded Context Isolation**: Configured custom ESLint import restrictions (`no-restricted-imports`) in `eslint.config.ts` preventing cross-workspace dependencies to guarantee clean, decoupled business logic.
-* **Domain-Core Pattern Integration**: Established `packages/core` in `hub/` as the Single Source of Truth (SSOT) for data models and schema validators.
-* **Unified Dependency Management via Catalogs**: Integrated PNPM v11 Catalogs feature in `pnpm-workspace.yaml` to govern third-party tool versions (e.g., Fastify 5, React 19, TSX, ESLint) across the entire monorepo.
+* **Isolamento Estrito de Contextos Delimitados**: Restrições de importação personalizadas do ESLint (`no-restricted-imports`) configuradas em `eslint.config.ts` para evitar dependências entre workspaces, garantindo uma lógica de negócios limpa e desacoplada.
+* **Integração do Padrão Domain-Core**: Estabelecido `packages/core` em `hub/` como a Fonte Única da Verdade (SSOT) para modelos de dados e validadores de esquema.
+* **Gerenciamento Unificado de Dependências via Catálogos**: Recurso de Catálogos do PNPM v11 integrado em `pnpm-workspace.yaml` para governar versões de ferramentas de terceiros (por exemplo, Fastify 5, React 19, TSX, ESLint) em todo o monorepo.
 
-## Planned Focus
+## Foco Planejado
 
-* **Logical Multi-Tenant Isolation**: Ensure instances and portal run completely isolated execution domains.
-* **SaaS Platform Evolution**: Transition from single-instance deployments to a centralized multi-tenant marketplace model, utilizing a centralized Traefik Edge Router as a single point of entry to dynamically route requests to isolated backend environments.
+* **Isolamento Multi-Tenant Lógico**: Garantir que instâncias e portais executem domínios de execução completamente isolados.
+* **Evolução da Plataforma SaaS**: Transição de deploys de instância única para um modelo de marketplace multi-tenant centralizado, utilizando um Traefik Edge Router centralizado como ponto único de entrada para rotear dinamicamente requisições para ambientes de backend isolados.
