@@ -83,9 +83,9 @@ build:
       docker: { dockerfile: knowledge-base/docusaurus/services/portal/Dockerfile }
       sync:
         manual:
-          - src: 'knowledge-base/collections/domains/portal/content/**/*'
+          - src: 'knowledge-base/collections/namespaces/portal/content/**/*'
             dest: /app
-          - src: 'knowledge-base/collections/domains/portal/translations/**/*'
+          - src: 'knowledge-base/collections/namespaces/portal/locales/**/*'
             dest: /app
           - src: 'knowledge-base/docusaurus/services/portal/src/**/*'
             dest: /app

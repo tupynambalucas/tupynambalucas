@@ -7,7 +7,6 @@ FROM base AS builder
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json CHANGELOG*.md ROADMAP.md ./
 COPY knowledge-base/ knowledge-base/
 COPY shared/ shared/
-COPY knowledge-base/collections/domains/portal/translations/ knowledge-base/docusaurus/services/portal/i18n/
 COPY studio/assets/ studio/assets/
 RUN pnpm install --filter=@monorepo/kb-docusaurus-portal...
 RUN pnpm --filter=@monorepo/kb-docusaurus-preset build && pnpm --filter=@monorepo/kb-docusaurus-theme build
@@ -20,3 +19,4 @@ WORKDIR /app/knowledge-base/docusaurus/services/portal
 EXPOSE 3002
 # Run the dev server with polling enabled for container compatibility
 CMD ["pnpm", "exec", "docusaurus", "start", "--host", "0.0.0.0", "--port", "3002", "--poll", "1000"]
+
