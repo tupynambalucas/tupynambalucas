@@ -1,10 +1,10 @@
 base_path: .
 preserve_hierarchy: true
-pull_request_title: "chore(l10n): synchronize translations"
+pull_request_title: 'chore(l10n): synchronize translations'
 pull_request_labels:
-  - "l10n"
-  - "documentation"
-commit_message: "chore(l10n): update translations [ci skip]"
+  - l10n
+  - documentation
+commit_message: 'chore(l10n): update translations [ci skip]'
 files:
   - source: /knowledge-base/collections/namespaces/portal/content/**/*.mdx
     type: mdx
