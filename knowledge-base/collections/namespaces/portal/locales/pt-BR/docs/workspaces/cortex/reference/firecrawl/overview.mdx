@@ -1,6 +1,6 @@
 ---
 title: Firecrawl MCP Adapter
-description: Complete reference for the cortex-firecrawl-mcp stateless Fastify adapter — tool schemas, environment configuration, URL routing rules, and architecture.
+description: Referência completa para o adaptador Fastify sem estado cortex-firecrawl-mcp — esquemas de ferramentas, configuração de ambiente, regras de roteamento de URL e arquitetura.
 sidebar_position: 1
 diataxis_type: reference
 workspace: cortex
@@ -10,13 +10,11 @@ tags:
   - scraping
 ---
 
-The **cortex-firecrawl-mcp** service is a stateless Fastify 5 adapter that bridges
-AgentGateway to the Firecrawl web-intelligence API. It exposes the full Firecrawl
-capability surface as six MCP tools over a Streamable HTTP transport.
+O serviço **cortex-firecrawl-mcp** é um adaptador Fastify 5 sem estado que conecta o AgentGateway à API de inteligência web Firecrawl. Ele expõe toda a superfície de recursos do Firecrawl como seis ferramentas MCP em um transporte HTTP Streamable.
 
 ---
 
-## Integration Topology
+## Topologia de Integração
 
 ```text
 AgentGateway (port 8080)
@@ -24,53 +22,48 @@ AgentGateway (port 8080)
         └── Firecrawl API (cloud: https://api.firecrawl.dev  |  self-hosted)
 ```
 
-Agents never call this service directly. All requests are federated through
-AgentGateway, which applies ExtMCP guardrail policies before dispatching.
+Os agentes nunca chamam este serviço diretamente. Todas as solicitações são federadas através do AgentGateway, que aplica políticas de proteção ExtMCP antes do envio.
 
 ---
 
-## Configuration
+## Configuração
 
-| Variable            | Required | Default                     | Description                                                                  |
-| :------------------ | :------: | :-------------------------- | :--------------------------------------------------------------------------- |
-| `FIRECRAWL_API_KEY` |    Yes   | —                           | API key for authenticating with the Firecrawl service.                       |
-| `FIRECRAWL_API_URL` |    No    | `https://api.firecrawl.dev` | Base URL for the Firecrawl API. Override to point at a self-hosted instance. |
-| `PORT`              |    No    | `8080`                      | HTTP port the Fastify server listens on.                                     |
-| `NODE_ENV`          |    No    | `development`               | Runtime environment flag.                                                    |
+| Variável            | Obrigatório | Padrão                      | Descrição                                                                                   |
+| :------------------ | :---------: | :-------------------------- | :------------------------------------------------------------------------------------------ |
+| `FIRECRAWL_API_KEY` |     Sim     | —                           | Chave de API para autenticação com o serviço Firecrawl.                                     |
+| `FIRECRAWL_API_URL` |     Não     | `https://api.firecrawl.dev` | URL base para a API do Firecrawl. Substitua para apontar para uma instância auto-hospedada. |
+| `PORT`              |     Não     | `8080`                      | Porta HTTP em que o servidor Fastify escuta.                                                |
+| `NODE_ENV`          |     Não     | `development`               | Flag do ambiente de runtime.                                                                |
 
-### Local Host Routing
+### Roteamento de Host Local
 
-When the service detects a `localhost` or `127.0.0.1` hostname in a tool argument
-URL, it automatically rewrites it to `host.docker.internal` so that containerized
-tool calls can reach processes on the developer's host machine.
+Quando o serviço detecta um nome de host `localhost` ou `127.0.0.1` na URL de um argumento de ferramenta, ele o reescreve automaticamente para `host.docker.internal` para que chamadas de ferramentas conteinerizadas possam alcançar processos na máquina host do desenvolvedor.
 
-Automatic port-to-application mapping used during rewriting:
+Mapeamento automático de porta para aplicação usado durante a reescrita:
 
-| Port   | Application             |
-| :----- | :---------------------- |
-| `3002` | Docusaurus docs site    |
-| `5173` | hub-web Vite dev server |
-| `3000` | hub-api Fastify service |
+| Porta  | Aplicação                                   |
+| :----- | :------------------------------------------ |
+| `3002` | Site de documentação do Docusaurus          |
+| `5173` | Servidor de desenvolvimento Vite do hub-web |
+| `3000` | Serviço Fastify do hub-api                  |
 
 ---
 
-## Transport
+## Transporte
 
-* **Path**: `/mcp`
-* **Protocol**: Streamable HTTP (MCP specification)
-* **Session model**: Stateless — `sessionIdGenerator` is set to `undefined`. Each
-  POST to `/mcp` instantiates a fresh MCP `Server` object and tears it down after
-  the response completes. No server-side session state is retained between requests.
+* **Caminho**: `/mcp`
+* **Protocolo**: HTTP Streamable (especificação MCP)
+* **Modelo de sessão**: Sem estado — `sessionIdGenerator` é definido como `undefined`. Cada POST para `/mcp` instancia um objeto `Server` MCP novo e o remove após a conclusão da resposta. Nenhum estado de sessão do lado do servidor é retido entre as solicitações.
 
 ---
 
-## Health Check
+## Verificação de Integridade
 
 ```
 GET /health
 ```
 
-Response:
+Resposta:
 
 ```json
 { "status": "healthy", "service": "cortex-firecrawl-mcp" }
@@ -78,114 +71,107 @@ Response:
 
 ---
 
-## Tools
+## Ferramentas
 
 ### `scrape`
 
-Fetches clean Markdown, HTML, or structured JSON from a single URL.
+Busca Markdown limpo, HTML ou JSON estruturado de uma única URL.
 
-| Parameter             | Type            | Required | Default        | Description                                                                   |
-| :-------------------- | :-------------- | :------: | :------------- | :---------------------------------------------------------------------------- |
-| `url`                 | `string`        |    Yes   | —              | Target URL to scrape.                                                         |
-| `formats`             | `array[string]` |    No    | `["markdown"]` | Output formats: `markdown`, `html`, `rawHtml`, `links`, `screenshot`, `json`. |
-| `onlyMainContent`     | `boolean`       |    No    | `true`         | Strip navigation, headers, footers, and boilerplate.                          |
-| `includeTags`         | `array[string]` |    No    | —              | HTML tags whose content is always included.                                   |
-| `excludeTags`         | `array[string]` |    No    | —              | HTML tags whose content is always excluded.                                   |
-| `waitFor`             | `number`        |    No    | —              | Milliseconds to wait for dynamic content before extracting.                   |
-| `mobile`              | `boolean`       |    No    | —              | Emulate a mobile browser viewport.                                            |
-| `skipTlsVerification` | `boolean`       |    No    | —              | Bypass TLS certificate validation.                                            |
+| Parâmetro             | Tipo            | Obrigatório | Padrão         | Descrição                                                                        |
+| :-------------------- | :-------------- | :---------: | :------------- | :------------------------------------------------------------------------------- |
+| `url`                 | `string`        |     Sim     | —              | URL de destino para scraping.                                                    |
+| `formats`             | `array[string]` |     Não     | `["markdown"]` | Formatos de saída: `markdown`, `html`, `rawHtml`, `links`, `screenshot`, `json`. |
+| `onlyMainContent`     | `boolean`       |     Não     | `true`         | Remove navegação, cabeçalhos, rodapés e conteúdo irrelevante.                    |
+| `includeTags`         | `array[string]` |     Não     | —              | Tags HTML cujos conteúdos são sempre incluídos.                                  |
+| `excludeTags`         | `array[string]` |     Não     | —              | Tags HTML cujos conteúdos são sempre excluídos.                                  |
+| `waitFor`             | `number`        |     Não     | —              | Milissegundos para aguardar o conteúdo dinâmico antes da extração.               |
+| `mobile`              | `boolean`       |     Não     | —              | Emula uma viewport de navegador móvel.                                           |
+| `skipTlsVerification` | `boolean`       |     Não     | —              | Ignora a validação do certificado TLS.                                           |
 
 ---
 
 ### `crawl`
 
-Recursively crawls all discoverable subpages from a base URL and returns their
-content.
+Realiza o rastreamento recursivo de todas as subpáginas descobríveis a partir de uma URL base e retorna o conteúdo delas.
 
-| Parameter            | Type            | Required | Default | Description                                     |
-| :------------------- | :-------------- | :------: | :------ | :---------------------------------------------- |
-| `url`                | `string`        |    Yes   | —       | Root URL to begin crawling.                     |
-| `limit`              | `number`        |    No    | `10`    | Maximum number of pages to crawl.               |
-| `maxDiscoveryDepth`  | `number`        |    No    | —       | Maximum link depth from the root URL.           |
-| `allowExternalLinks` | `boolean`       |    No    | —       | Follow links to external domains.               |
-| `allowSubdomains`    | `boolean`       |    No    | —       | Follow links to subdomains of the root domain.  |
-| `sitemap`            | `string`        |    No    | —       | Sitemap handling: `include`, `skip`, or `only`. |
-| `includePaths`       | `array[string]` |    No    | —       | URL path glob patterns to include.              |
-| `excludePaths`       | `array[string]` |    No    | —       | URL path glob patterns to exclude.              |
+| Parâmetro            | Tipo            | Obrigatório | Padrão | Descrição                                           |
+| :------------------- | :-------------- | :---------: | :----- | :-------------------------------------------------- |
+| `url`                | `string`        |     Sim     | —      | URL raiz para iniciar o rastreamento.               |
+| `limit`              | `number`        |     Não     | `10`   | Número máximo de páginas para rastrear.             |
+| `maxDiscoveryDepth`  | `number`        |     Não     | —      | Profundidade máxima de links a partir da URL raiz.  |
+| `allowExternalLinks` | `boolean`       |     Não     | —      | Segue links para domínios externos.                 |
+| `allowSubdomains`    | `boolean`       |     Não     | —      | Segue links para subdomínios do domínio raiz.       |
+| `sitemap`            | `string`        |     Não     | —      | Tratamento de sitemap: `include`, `skip` ou `only`. |
+| `includePaths`       | `array[string]` |     Não     | —      | Padrões glob de caminho de URL para incluir.        |
+| `excludePaths`       | `array[string]` |     Não     | —      | Padrões glob de caminho de URL para excluir.        |
 
 ---
 
 ### `search`
 
-Runs a web search and returns full Markdown-rendered results for each matching page.
+Executa uma pesquisa na web e retorna resultados completos renderizados em Markdown para cada página correspondente.
 
-| Parameter        | Type            | Required | Default | Description                                                   |
-| :--------------- | :-------------- | :------: | :------ | :------------------------------------------------------------ |
-| `query`          | `string`        |    Yes   | —       | Search query string.                                          |
-| `limit`          | `number`        |    No    | `5`     | Maximum number of results to return.                          |
-| `location`       | `string`        |    No    | —       | Country/region code for localized results (e.g., `US`, `BR`). |
-| `includeDomains` | `array[string]` |    No    | —       | Restrict results to these domains.                            |
-| `excludeDomains` | `array[string]` |    No    | —       | Exclude results from these domains.                           |
-| `scrapeResults`  | `boolean`       |    No    | `true`  | Fetch and render full page content for each result.           |
+| Parâmetro        | Tipo            | Obrigatório | Padrão | Descrição                                                                    |
+| :--------------- | :-------------- | :---------: | :----- | :--------------------------------------------------------------------------- |
+| `query`          | `string`        |     Sim     | —      | String de consulta de pesquisa.                                              |
+| `limit`          | `number`        |     Não     | `5`    | Número máximo de resultados para retornar.                                   |
+| `location`       | `string`        |     Não     | —      | Código de país/região para resultados localizados (por exemplo, `US`, `BR`). |
+| `includeDomains` | `array[string]` |     Não     | —      | Restringe os resultados a estes domínios.                                    |
+| `excludeDomains` | `array[string]` |     Não     | —      | Exclui resultados destes domínios.                                           |
+| `scrapeResults`  | `boolean`       |     Não     | `true` | Busca e renderiza o conteúdo completo da página para cada resultado.         |
 
 ---
 
 ### `map`
 
-Discovers all indexed URLs and sitemap routes for a given domain.
+Descobre todas as URLs indexadas e rotas de sitemap para um determinado domínio.
 
-| Parameter           | Type      | Required | Default | Description                                     |
-| :------------------ | :-------- | :------: | :------ | :---------------------------------------------- |
-| `url`               | `string`  |    Yes   | —       | Base URL of the site to map.                    |
-| `search`            | `string`  |    No    | —       | Filter discovered URLs by this keyword.         |
-| `limit`             | `number`  |    No    | `50`    | Maximum number of URLs to return.               |
-| `sitemap`           | `string`  |    No    | —       | Sitemap handling: `include`, `skip`, or `only`. |
-| `includeSubdomains` | `boolean` |    No    | —       | Include URLs from subdomains.                   |
+| Parâmetro           | Tipo      | Obrigatório | Padrão | Descrição                                           |
+| :------------------ | :-------- | :---------: | :----- | :-------------------------------------------------- |
+| `url`               | `string`  |     Sim     | —      | URL base do site a ser mapeado.                     |
+| `search`            | `string`  |     Não     | —      | Filtra as URLs descobertas por esta palavra-chave.  |
+| `limit`             | `number`  |     Não     | `50`   | Número máximo de URLs para retornar.                |
+| `sitemap`           | `string`  |     Não     | —      | Tratamento de sitemap: `include`, `skip` ou `only`. |
+| `includeSubdomains` | `boolean` |     Não     | —      | Inclui URLs de subdomínios.                         |
 
 ---
 
 ### `extract`
 
-Extracts structured JSON data matching a provided schema from one or more URLs.
+Extrai dados JSON estruturados correspondentes a um esquema fornecido de uma ou mais URLs.
 
-| Parameter            | Type            | Required | Default | Description                                             |
-| :------------------- | :-------------- | :------: | :------ | :------------------------------------------------------ |
-| `urls`               | `array[string]` |    Yes   | —       | List of URLs to extract data from.                      |
-| `prompt`             | `string`        |    No    | —       | Natural language description of the target data.        |
-| `schema`             | `object`        |    No    | —       | JSON Schema object defining the expected output shape.  |
-| `systemPrompt`       | `string`        |    No    | —       | Override the extraction system prompt.                  |
-| `allowExternalLinks` | `boolean`       |    No    | —       | Allow extraction from external links found on the page. |
+| Parâmetro            | Tipo            | Obrigatório | Padrão | Descrição                                                   |
+| :------------------- | :-------------- | :---------: | :----- | :---------------------------------------------------------- |
+| `urls`               | `array[string]` |     Sim     | —      | Lista de URLs para extrair dados.                           |
+| `prompt`             | `string`        |     Não     | —      | Descrição em linguagem natural dos dados de destino.        |
+| `schema`             | `object`        |     Não     | —      | Objeto JSON Schema que define o formato de saída esperado.  |
+| `systemPrompt`       | `string`        |     Não     | —      | Substitui o prompt de sistema de extração.                  |
+| `allowExternalLinks` | `boolean`       |     Não     | —      | Permite a extração de links externos encontrados na página. |
 
 ---
 
 ### `batch_scrape`
 
-Scrapes multiple URLs concurrently and returns results in the same order as input.
+Realiza o scraping de múltiplas URLs concorrentemente e retorna os resultados na mesma ordem da entrada.
 
-| Parameter         | Type            | Required | Default        | Description                                |
-| :---------------- | :-------------- | :------: | :------------- | :----------------------------------------- |
-| `urls`            | `array[string]` |    Yes   | —              | List of URLs to scrape.                    |
-| `formats`         | `array[string]` |    No    | `["markdown"]` | Output formats (same options as `scrape`). |
-| `onlyMainContent` | `boolean`       |    No    | `true`         | Strip boilerplate from all scraped pages.  |
+| Parâmetro         | Tipo            | Obrigatório | Padrão         | Descrição                                                   |
+| :---------------- | :-------------- | :---------: | :------------- | :---------------------------------------------------------- |
+| `urls`            | `array[string]` |     Sim     | —              | Lista de URLs para scraping.                                |
+| `formats`         | `array[string]` |     Não     | `["markdown"]` | Formatos de saída (mesmas opções do `scrape`).              |
+| `onlyMainContent` | `boolean`       |     Não     | `true`         | Remove o conteúdo irrelevante de todas as páginas raspadas. |
 
 ---
 
-## Architecture Notes
+## Notas de Arquitetura
 
-### Stateless Per-Request Server Instantiation
+### Instanciação de Servidor Sem Estado Por Solicitação
 
-Each POST request to `/mcp` creates a dedicated `@modelcontextprotocol/sdk` `Server`
-instance. The `sessionIdGenerator` option is explicitly set to `undefined`, which
-disables MCP session management. This design:
+Cada solicitação POST para `/mcp` cria uma instância dedicada de `Server` do `@modelcontextprotocol/sdk`. A opção `sessionIdGenerator` é definida explicitamente como `undefined`, o que desativa o gerenciamento de sessão do MCP. Este design:
 
-* Eliminates server-side memory growth from session accumulation.
-* Ensures horizontal scalability with no affinity requirements.
-* Means any session state required by multi-step workflows must be maintained by
-  the caller (AgentGateway or the agent itself).
+* Elimina o crescimento de memória no lado do servidor proveniente do acúmulo de sessões.
+* Garante escalabilidade horizontal sem requisitos de afinidade.
+* Significa que qualquer estado de sessão exigido por workflows de várias etapas deve ser mantido pelo chamador (AgentGateway ou o próprio agente).
 
-### Self-Hosted Firecrawl
+### Firecrawl Auto-Hospedado
 
-Set `FIRECRAWL_API_URL` to the internal address of a self-hosted Firecrawl instance
-to route all tool calls away from the cloud API. The `FIRECRAWL_API_KEY` is still
-required even for self-hosted deployments unless the self-hosted instance disables
-authentication.
+Defina `FIRECRAWL_API_URL` para o endereço interno de uma instância do Firecrawl auto-hospedada para direcionar todas as chamadas de ferramentas para longe da API em nuvem. A `FIRECRAWL_API_KEY` ainda é necessária mesmo para deploys auto-hospedados, a menos que a instância auto-hospedada desative a autenticação.
