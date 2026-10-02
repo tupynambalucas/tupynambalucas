@@ -85,7 +85,7 @@ When your feature or bug fix is ready and before opening a Pull Request:
 Create one changeset per isolated change. If a feature branch has multiple independent fixes or additions, you can run `pnpm version:changeset` multiple times to generate separate notes for each.
 :::
 
-### 2. 2. Automated Versioning Pipeline (GitHub Actions)
+### 2. Automated Versioning Pipeline (GitHub Actions)
 
 Our CI/CD workflow handles the version bumping automatically when code is integrated:
 
@@ -96,7 +96,7 @@ Our CI/CD workflow handles the version bumping automatically when code is integr
    * It calculates the new versions, consumes (deletes) the temporary changeset markdown files, bumps the respective `package.json` files, and updates the local package changelogs.
    * It automatically commits these changes and creates (or updates) an open Pull Request on GitHub named `chore(release): version packages` targeting `develop`.
 
-### 3) 3) 3) Finalizing the Release (Maintainers Only)
+### 3) 3) 3) 3) Finalizing the Release (Maintainers Only)
 
 To publish and finalize the release:
 
