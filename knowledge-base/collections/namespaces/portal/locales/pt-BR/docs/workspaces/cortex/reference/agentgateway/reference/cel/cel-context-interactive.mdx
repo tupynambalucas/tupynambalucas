@@ -341,6 +341,7 @@ The request's body, buffered up to `maxBufferSize`. If the body exceeds the max 
 this field is not available and will fail to evaluate.\
 Including this attribute in an expression will trigger the body to be buffered.\
 Including this attribute in an expression will trigger the body to be buffered.\
+Incluir esse atributo em uma expressão fará com que o corpo seja buffeed.\
 Incluir esse atributo em uma expressão fará com que o corpo seja buffeed.
 
 request.bodyPrefix
@@ -416,6 +417,7 @@ The response's body, buffered up to `maxBufferSize`. If the body exceeds the max
 this field is not available and will fail to evaluate.\
 Including this attribute in an expression will trigger the body to be buffered.\
 Including this attribute in an expression will trigger the body to be buffered.\
+Incluir esse atributo em uma expressão fará com que o corpo seja buffeed.\
 Incluir esse atributo em uma expressão fará com que o corpo seja buffeed.
 
 response.bodyPrefix
@@ -520,6 +522,9 @@ env
 object
 
 `env` contains selected process environment attributes exposed to CEL.\
+This does NOT expose raw environment variables, but rather a subset of well-known variables.\
+`env` contains selected process environment attributes exposed to CEL.\
+This does NOT expose raw environment variables, but rather a subset of well-known variables.\
 This does NOT expose raw environment variables, but rather a subset of well-known variables.\
 `env` contains selected process environment attributes exposed to CEL.\
 This does NOT expose raw environment variables, but rather a subset of well-known variables.\
@@ -723,6 +728,7 @@ llm.outputAudioTokens
 
 integer
 
+O número de tokens de áudio na saída/conclusão.\
 O número de tokens de áudio na saída/conclusão.\
 The number of text tokens in the input/prompt.\
 Note: this field is only set in multi-modal calls where the total token count is split out by\
@@ -1019,6 +1025,10 @@ object
 Effective model catalog rates in USD per 1M tokens after tier selection.\
 Unset when the model could not be priced.\
 Unset when the model could not be priced.\
+Desmarcar quando o modelo não pode ser precificado.\
+The realized USD cost of the request from the model cost catalog.\
+Unset when the model could not be priced.\
+Unset when the model could not be priced.\
 Desmarcar quando o modelo não pode ser precificado.
 
 llm.costRates.input
@@ -1138,6 +1148,8 @@ The original TCP peer IP address of the downstream connection.\
 The original TCP peer IP address of the downstream connection.\
 This can differ from the `address` when using tunneling protocols like PROXY.\
 The original TCP peer IP address of the downstream connection.\
+This can differ from the `address` when using tunneling protocols like PROXY.\
+The original TCP peer IP address of the downstream connection.\
 This can differ from the `address` when using tunneling protocols like PROXY.
 
 Validation
@@ -1151,6 +1163,8 @@ source.rawPort
 integer
 
 The original TCP peer port of the downstream connection.\
+The original TCP peer port of the downstream connection.\
+This can differ from the `port` when using tunneling protocols like PROXY.\
 The original TCP peer port of the downstream connection.\
 This can differ from the `port` when using tunneling protocols like PROXY.\
 The original TCP peer port of the downstream connection.\
@@ -1322,6 +1336,10 @@ object
 Request-time CEL only includes identity fields such as `tool`, `prompt`, or `resource`.\
 Post-request CEL may also include fields like `methodName`, `sessionId`, and tool payloads.\
 Post-request CEL may also include fields like `methodName`, `sessionId`, and tool payloads.\
+`mcp` contains attributes about the MCP request.\
+Request-time CEL only includes identity fields such as `tool`, `prompt`, or `resource`.\
+Post-request CEL may also include fields like `methodName`, `sessionId`, and tool payloads.\
+CEL pós-solicitação também pode incluir campos como `methodName`, `sessionId`, e ferramentas payloads.\
 `mcp` contains attributes about the MCP request.\
 Request-time CEL only includes identity fields such as `tool`, `prompt`, or `resource`.\
 Post-request CEL may also include fields like `methodName`, `sessionId`, and tool payloads.\
