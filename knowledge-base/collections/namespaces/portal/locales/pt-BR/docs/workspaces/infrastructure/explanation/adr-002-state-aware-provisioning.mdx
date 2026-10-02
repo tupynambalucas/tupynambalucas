@@ -4,19 +4,19 @@ title: ADR-002 State-Aware Provisioning
 
 # ADR-002: State-Aware Monorepo Provisioning
 
-## Context
+## Contexto
 
-Forks of the template monorepo must be renamed efficiently without manual find-and-replace processes that are prone to error.
+Forks do template monorepo devem ser renomeados eficientemente sem processos manuais de localizar e substituir que sejam propensos a erros.
 
-## Decision
+## Decisão
 
-We established `@monorepo/shared-config/project.config.json` as the Single Source of Truth (SSOT). The `tools/provisioner` workspace provides an interactive CLI (using Commander and Clack Prompts) that:
+Estabelecemos `@monorepo/shared-config/project.config.json` como a única fonte de verdade (SSOT). O workspace `tools/provisioner` fornece uma CLI interativa (usando Commander e Clack Prompts) que:
 
-1. Prompts the user for new variables.
-2. Updates the SSOT.
-3. Propagates the changes across `package.json`, `.env` files, Docker configs, and GitHub workflows.
+1. Solicita novas variáveis ao usuário.
+2. Atualiza a SSOT.
+3. Propaga as alterações em `package.json`, arquivos `.env`, configurações do Docker e workflows do GitHub.
 
-## Consequences
+## Consequências
 
-* Eliminates "template rot" and broken paths.
-* Ensures all new projects inherit the correct internal and public domains automatically.
+* Elimina a "deterioração de templates" e caminhos quebrados.
+* Garante que todos os novos projetos herdem os domínios internos e públicos corretos automaticamente.
