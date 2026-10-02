@@ -1,28 +1,28 @@
 ---
-title: AI Context Architecture
-sidebar_label: AI Context Architecture
+title: Arquitetura de Contexto de IA
+sidebar_label: Arquitetura de Contexto de IA
 sidebar_position: 4
 ---
 
-# AI Context Architecture in the Monorepo
+# Arquitetura de Contexto de IA no Monorepo
 
-The **%PROJECT_DOMAIN%** monorepo organizes machine instructions using a structured, hierarchical `AGENTS.md` context routing system. This architecture ensures AI coding agents (such as Google Antigravity CLI and Anthropic Claude Code) operate with maximum accuracy, zero context fragmentation, and strict adherence to domain boundaries.
-
----
-
-## 1. The Context Fragmentation Paradox
-
-In complex monorepos, providing machine context at every directory depth often introduces critical failure modes:
-
-* **Context Myopia**: An agent reading only a leaf-node configuration file acts without global architectural awareness, violating top-level constraints.
-* **Token Inefficiency & Noise**: Concatenating dozens of scattered instruction files exhausts the LLM context window before actionable task instructions are processed.
-* **Drift Entropy**: Maintaining domain rules and ubiquitous language in sync across dozens of natural language files is unmanageable.
-
-To eliminate these issues, the monorepo implements a **3-Layer Context Hierarchy**.
+O monorepo **%PROJECT_DOMAIN%** organiza instruções de máquina usando um sistema estruturado e hierárquico de roteamento de contexto `AGENTS.md`. Esta arquitetura garante que os agentes de codificação de IA (como Google Antigravity CLI e Anthropic Claude Code) operem com máxima precisão, fragmentação de contexto zero e adesão estrita aos limites de domínio.
 
 ---
 
-## 2. The 3-Layer Context Hierarchy
+## 1. O Paradox da Fragmentação de Contexto
+
+Em monorepos complexos, fornecer contexto de máquina em cada profundidade de diretório frequentemente introduz modos de falha críticos:
+
+* **Miopia de Contexto**: Um agente que lê apenas um arquivo de configuração de nó folha age sem consciência arquitetônica global, violando restrições de nível superior.
+* **Ineficácia de Tokens e Ruído**: Concatenar dezenas de arquivos de instrução espalhados esgota a janela de contexto do LLM antes que as instruções de tarefas acionáveis sejam processadas.
+* **Entropia de Deriva**: Manter regras de domínio e linguagem ubíqua em sincronia através de dezenas de arquivos em linguagem natural é improvável de ser gerenciado.
+
+Para eliminar esses problemas, o monorepo implementa uma **Hierarquia de Contexto de 3 Camadas**.
+
+---
+
+## 2. A Hierarquia de Contexto de 3 Camadas
 
 ```mermaid
 flowchart TD
@@ -54,26 +54,26 @@ flowchart TD
   Layer2 --> Layer3
 ```
 
-### Layer 1: Global Master Context (`/AGENTS.md`)
+### Camada 1: Contexto Mestre Global (`/AGENTS.md`)
 
-* **Scope**: Repository-wide rules, entrypoints, composable Skaffold modules, Prettier standards, zero-emoji rules, and global required skills.
-* **Line Budget**: Maximum 80 lines.
+* **Escopo**: Regras em todo o repositório, pontos de entrada, módulos Skaffold compósiveis, padrões Prettier, regras de zero emojis e habilidades globais necessárias.
+* **Orçamento de Linhas**: Máximo de 80 linhas.
 
-### Layer 2: Bounded Context Routers (`/[context]/AGENTS.md`)
+### Camada 2: Roteadores de Contexto Delimitado (`/[context]/AGENTS.md`)
 
-* **Scope**: Domain identity, ubiquitous language glossary, architectural topology, port allocation tables, and local lifecycle orchestration commands.
-* **Line Budget**: Maximum 120 lines.
+* **Escopo**: Identidade de domínio, glossário de linguagem ubíqua, topologia arquitetônica, tabelas de alocação de portas e comandos locais de orquestração de ciclo de vida.
+* **Orçamento de Linhas**: Máximo de 120 linhas.
 
-### Layer 3: Technical Sub-Domains (`/[context]/[sub]/AGENTS.md`)
+### Camada 3: Subdomínios Técnicos (`/[context]/[sub]/AGENTS.md`)
 
-* **Scope**: Technology-specific implementation patterns, concrete code snippets (Zod schemas, Fastify plugins, Zustand selectors), and scoped build scripts.
-* **Line Budget**: Maximum 100 lines.
+* **Escopo**: Padrões de implementação específicos de tecnologia, trechos de código concretos (esquemas Zod, plugins Fastify, seletores Zustand) e scripts de build escopados.
+* **Orçamento de Linhas**: Máximo de 100 linhas.
 
 ---
 
-## 3. The Context Hierarchy Directive
+## 3. A Diretiva de Hierarquia de Contexto
 
-To guarantee that agents operating in sub-directories never miss parent rules, every Layer-2 and Layer-3 file begins with an explicit XML directive:
+Para garantir que os agentes que operam em subdiretórios nunca percam as regras pai, cada arquivo da Camada 2 e da Camada 3 começa com uma diretiva XML explícita:
 
 ```xml
 <context-hierarchy>
@@ -85,30 +85,30 @@ To guarantee that agents operating in sub-directories never miss parent rules, e
 </context-hierarchy>
 ```
 
-When an agent accesses a local context file, the system instruction triggers an immediate tool call to load the parent file, establishing an unbroken chain of authority up to the monorepo root.
+Quando um agente acessa um arquivo de contexto local, a instrução do sistema dispara uma chamada de ferramenta imediata para carregar o arquivo pai, estabelecendo uma cadeia ininterrupta de autoridade até a raiz do monorepo.
 
 ---
 
-## 4. Alignment with Domain-Driven Design (DDD)
+## 4. Alinhamento com o Domain-Driven Design (DDD)
 
-Each Layer-2 file defines an explicit **Ubiquitous Language** glossary. This prevents agents from conflating terms across bounded contexts:
+Cada arquivo da Camada 2 define um glossário de **Linguagem Ubíqua** explícito. Isso evita que os agentes confundam termos entre contextos delimitados:
 
-* In the **Developer Hub (`hub/`)**, the authenticated user is strictly `Customer`.
-* In the **Studio (`studio/`)**, brand variables are strictly `Design Tokens`.
-* In the **AI Cortex (`cortex/`)**, system prompts are strictly `Personas`.
+* No **Developer Hub (`hub/`)**, o usuário autenticado é estritamente `Customer`.
+* No **Studio (`studio/`)**, as variáveis de marca são estritamente `Design Tokens`.
+* No **AI Cortex (`cortex/`)**, os prompts do sistema são estritamente `Personas`.
 
 ---
 
-## 5. The `.agents/` Customization Ecosystem
+## 5. O Ecossistema de Customização `.agents/`
 
-While `AGENTS.md` files provide hierarchical routing and guardrails, the **active behavior** of the AI is defined within the central `.agents/` directory at the root of the monorepo. This directory utilizes the Antigravity (AGY) customization architecture to inject new capabilities into the agent.
+Embora os arquivos `AGENTS.md` forneçam roteamento hierárquico e proteções, o **comportamento ativo** da IA é definido dentro do diretório central `.agents/` na raiz do monorepo. Este diretório utiliza a arquitetura de customização do Antigravity (AGY) para injetar novos recursos no agente.
 
-The `.agents/` directory is strictly divided into Domain-Driven Design components:
+O diretório `.agents/` é estritamente dividido em componentes de Domain-Driven Design:
 
-* **`plugins/`**: Packages that bundle Model Context Protocol (MCP) servers, lifecycle configurations, and contextual rules (e.g., the `cortex` plugin routing the agent to use `firecrawl`).
-* **`rules/`**: Global or conditional constraints automatically injected into the agent's prompt.
-* **`skills/`**: Progressive-disclosure runbooks (like `agent-router-expert`) that teach the AI how to execute complex, multi-step tasks.
-* **`scripts/`**: AI-authored automation scripts stored permanently for repo operations.
-* **`plans/`**: Temporary architectural planning documents.
+* **`plugins/`**: Pacotes que agrupam servidores do Model Context Protocol (MCP), configurações de ciclo de vida e regras contextuais (por exemplo, o plugin `cortex` roteando o agente para usar o `firecrawl`).
+* **`rules/`**: Restrições globais ou condicionais injetadas automaticamente no prompt do agente.
+* **`skills/`**: Manuais de execução de divulgação progressiva (como `agent-router-expert`) que ensinam a IA a executar tarefas complexas de várias etapas.
+* **`scripts/`**: Scripts de automação criados por IA armazenados permanentemente para operações do repositório.
+* **`plans/`**: Documentos de planejamento arquitetônico temporários.
 
-For a detailed technical breakdown of this folder, refer to the [`.agents/ Directory Reference`](/workspaces/agents/reference/dot-agents-directory).
+Para obter uma análise técnica detalhada desta pasta, consulte a [Referência do Diretório `.agents/`](/workspaces/agents/reference/dot-agents-directory).
