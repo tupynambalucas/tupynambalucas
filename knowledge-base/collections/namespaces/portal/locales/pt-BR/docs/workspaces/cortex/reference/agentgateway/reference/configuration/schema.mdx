@@ -2344,6 +2344,9 @@ string
 Controls which IP address families the DNS resolver will query for\
 upstream connections.\
 Accepted values: All, Auto, V4Preferred, V4Only, V6Only.\
+Controls which IP address families the DNS resolver will query for\
+upstream connections.\
+Accepted values: All, Auto, V4Preferred, V4Only, V6Only.\
 Defaults to Auto (IPv4-only when enableIpv6 is false, both when true).
 
 Validation
@@ -2355,6 +2358,8 @@ config.dns.edns0
 boolean
 
 Whether to enable EDNS0 (Extension Mechanisms for DNS) in the resolver.\
+When `None`, the system-provided resolver setting is preserved.\
+Can also be set via the `DNS_EDNS0` environment variable.\
 When `None`, the system-provided resolver setting is preserved.\
 Can also be set via the `DNS_EDNS0` environment variable.
 
@@ -2466,6 +2471,8 @@ config.session.key
 stringRequired
 
 The AES-256-GCM session protection key to be used for session tokens.\
+If not set, sessions will not be encrypted.\
+For example, generated via `openssl rand -hex 32`.\
 If not set, sessions will not be encrypted.\
 For example, generated via `openssl rand -hex 32`.
 
@@ -2772,6 +2779,8 @@ integer
 The maximum number of connections allowed in the pool, per hostname. If set, this will limit\
 the total number of connections kept alive to any given host.\
 Note: excess connections will still be created, they will just not remain idle.\
+If unset, there is no limit\
+Note: excess connections will still be created, they will just not remain idle.\
 If unset, there is no limit
 
 Validation
@@ -2993,6 +3002,7 @@ string
 
 Maximum duration a connection is allowed to remain open. After this duration,\
 the connection is gracefully closed after the current in-flight request completes.\
+Useful for ensuring even traffic distribution behind load balancers during scaling events.\
 Useful for ensuring even traffic distribution behind load balancers during scaling events.
 
 Validation
@@ -3959,6 +3969,7 @@ binds.listeners.routes.policies.mcpAuthentication.mode
 string
 
 A valid token, issued by a configured issuer, must be present.\
+This is the default option.\
 This is the default option.
 
 Validation
@@ -4018,8 +4029,10 @@ binds.listeners.routes.policies.mcpAuthentication.jwtValidationOptions.requiredC
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -4671,8 +4684,10 @@ binds.listeners.routes.policies.jwtAuth.providers.jwtValidationOptions.requiredC
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -5540,6 +5555,7 @@ binds.listeners.policies.oidc.redirectURI
 stringRequired
 
 Absolute callback URI handled by the gateway.\
+Absolute callback URI handled by the gateway.\
 This policy always redirects unauthenticated non-callback requests back through this login\
 flow.
 
@@ -6084,6 +6100,7 @@ llm.models.params.model
 string
 
 The model to send to the provider.\
+The model to send to the provider.\
 If unset, the same model will be used from the request.
 
 Validation
@@ -6094,6 +6111,7 @@ llm.models.params.apiKey
 
 object
 
+An API key to attach to the request.\
 An API key to attach to the request.\
 If unset this will be automatically detected from the environment.
 
@@ -6244,6 +6262,7 @@ llm.models.defaults
 object
 
 defaults allows setting default values for the request. If these are not present in the request body, they will be set.\
+To override even when set, use `overrides`.\
 To override even when set, use `overrides`.
 
 llm.models.overrides
@@ -6754,6 +6773,7 @@ llm.policies.oidc.redirectURI
 stringRequired
 
 Absolute callback URI handled by the gateway.\
+Absolute callback URI handled by the gateway.\
 This policy always redirects unauthenticated non-callback requests back through this login\
 flow.
 
@@ -6866,8 +6886,10 @@ llm.policies.jwtAuth.providers.jwtValidationOptions.requiredClaims
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -7449,6 +7471,7 @@ mcp.failureMode
 string
 
 Behavior when one or more MCP targets fail to initialize or fail during fanout.\
+Defaults to `failClosed`.\
 Defaults to `failClosed`.
 
 Validation
@@ -7878,6 +7901,7 @@ mcp.policies.mcpAuthentication.mode
 string
 
 A valid token, issued by a configured issuer, must be present.\
+This is the default option.\
 This is the default option.
 
 Validation
@@ -7937,8 +7961,10 @@ mcp.policies.mcpAuthentication.jwtValidationOptions.requiredClaims
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -8590,8 +8616,10 @@ mcp.policies.jwtAuth.providers.jwtValidationOptions.requiredClaims
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -9153,6 +9181,7 @@ policies
 object[]
 
 policies defines additional policies that can be attached to various other configurations.\
+policies defines additional policies that can be attached to various other configurations.\
 This is an advanced feature; users should typically use the inline `policies` field under route/gateway.
 
 policies.name
@@ -9222,6 +9251,9 @@ policies.phase
 string
 
 phase defines at what level the policy runs at. Gateway policies run pre-routing, while\
+Route policies apply post-routing.\
+Only a subset of policies are eligible as Gateway policies.\
+Gateway policies run pre-routing, while\
 Route policies apply post-routing.\
 Only a subset of policies are eligible as Gateway policies.\
 In general, normal (route level) policies should be used, except you need the policy to influence\
@@ -9656,6 +9688,7 @@ policies.policy.mcpAuthentication.mode
 string
 
 A valid token, issued by a configured issuer, must be present.\
+This is the default option.\
 This is the default option.
 
 Validation
@@ -9715,8 +9748,10 @@ policies.policy.mcpAuthentication.jwtValidationOptions.requiredClaims
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -10368,8 +10403,10 @@ policies.policy.jwtAuth.providers.jwtValidationOptions.requiredClaims
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -10466,6 +10503,7 @@ policies.policy.oidc.redirectURI
 
 stringRequired
 
+Absolute callback URI handled by the gateway.\
 Absolute callback URI handled by the gateway.\
 This policy always redirects unauthenticated non-callback requests back through this login\
 flow.
@@ -11511,6 +11549,7 @@ routeGroups.routes.policies.mcpAuthentication.mode
 string
 
 A valid token, issued by a configured issuer, must be present.\
+This is the default option.\
 This is the default option.
 
 Validation
@@ -11570,8 +11609,10 @@ routeGroups.routes.policies.mcpAuthentication.jwtValidationOptions.requiredClaim
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -12010,7 +12051,7 @@ routeGroups.routes.policies.localRateLimit
 
 object
 
-Rate limit incoming requests. State is kept local.
+Rate limit incoming requests. State is managed by a remote server.
 
 routeGroups.routes.policies.localRateLimit.conditional
 
@@ -12223,8 +12264,10 @@ routeGroups.routes.policies.jwtAuth.providers.jwtValidationOptions.requiredClaim
 string[]
 
 Claims that must be present in the token before validation.\
+Claims that must be present in the token before validation.\
 Only "exp", "nbf", "aud", "iss", "sub" are enforced; others\
 (including "iat" and "jti") are ignored.\
+Defaults to ["exp"].\
 Defaults to ["exp"]. Use an empty list to require no claims.
 
 Validation
@@ -12321,6 +12364,7 @@ routeGroups.routes.policies.oidc.redirectURI
 
 stringRequired
 
+Absolute callback URI handled by the gateway.\
 Absolute callback URI handled by the gateway.\
 This policy always redirects unauthenticated non-callback requests back through this login\
 flow.

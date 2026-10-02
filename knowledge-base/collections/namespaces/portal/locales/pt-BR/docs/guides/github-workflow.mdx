@@ -58,7 +58,7 @@ Instead of merging locally, we use **Pull Requests** for code review and CI vali
 1. **Push your branch** to the remote repository.
 2. **Create a Pull Request** targeting `develop` (refer to the [Command Reference](../reference/commands.mdx#git--version-control) for the `gh pr` command).
 
-### 3) Senior Merge Strategy (Squash & Merge)
+### 2) Automated Versioning Pipeline (GitHub Actions)
 
 To keep the `develop` history clean and meaningful, we use **Squash Merges**. This combines all commits from a feature branch into a single, well-described commit in `develop`.
 
@@ -96,7 +96,7 @@ Our CI/CD workflow handles the version bumping automatically when code is integr
    * It calculates the new versions, consumes (deletes) the temporary changeset markdown files, bumps the respective `package.json` files, and updates the local package changelogs.
    * It automatically commits these changes and creates (or updates) an open Pull Request on GitHub named `chore(release): version packages` targeting `develop`.
 
-### 3) Finalizing the Release (Maintainers Only)
+### 3) 3) Finalizing the Release (Maintainers Only)
 
 To publish and finalize the release:
 
