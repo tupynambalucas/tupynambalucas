@@ -8,42 +8,42 @@ tags:
   - renderer
 ---
 
-The Renderer workspace features a highly flexible and extensible Markdown template compilation engine designed to combine dynamic SVG graphic elements, base64-encoded typography, and token-interpolated textual files.
+O workspace do Renderer possui um mecanismo de compilação de modelos Markdown altamente flexível e extensível, projetado para combinar elementos gráficos SVG dinâmicos, tipografia codificada em base64 e arquivos textuais com interpolação de tokens.
 
 ---
 
-## Extensible Pipeline Flow
+## Fluxo de Pipeline Extensível
 
-The engine compiles documents using decoupled pipelines conforming to the Open/Closed Principle (SOLID). Standard pipelines, such as the `github-renderer.pipeline.ts`, orchestrate the document compilation process:
+O mecanismo compila documentos utilizando pipelines desacoplados em conformidade com o Princípio Aberto/Fechado (SOLID). Pipelines padrão, como o `github-renderer.pipeline.ts`, orquestram o processo de compilação de documentos:
 
-1. **Pipeline Execution**: The main runner (`src/index.ts`) launches the registered active pipelines.
-2. **Template Parsing**: Reads raw templates, such as `src/templates/docs/README.template.md` and the SVG card templates.
-3. **Token Substitution**: Scans for double curly brace placeholders (`\{\{ variable \}\}`) and replaces them with data resolved by the pipeline.
-4. **Typography Encoding**: Base64-encodes the local **Nunito** font file, inlining it as an embedded `@font-face` within SVG elements. This bypasses GitHub's strict HTML image sandbox and renders text with pixel-perfect brand fidelity.
-5. **Writing Output**: Compiles and outputs both flat SVG cards and final textual `.md` files to the monorepo root or package target directories.
-
----
-
-## Token Reference
-
-The following placeholders are supported inside the standard README template and are substituted dynamically:
-
-* **`\{\{ name \}\}`**: The developer's display name or login.
-* **`\{\{ user \}\}`**: The GitHub username/login.
-* **`\{\{ contributions \}\}`**: Total commits, issues, pull requests, and code reviews.
-* **`\{\{ stars \}\}`**: Aggregated stargazers count across all counted repositories.
-* **`\{\{ forks \}\}`**: Aggregated fork count across all counted repositories.
-* **`\{\{ lines_changed \}\}`**: Aggregated additions and deletions of code.
-* **`\{\{ views \}\}`**: Sum of traffic views from the past two weeks.
-* **`\{\{ repos \}\}`**: Number of active repositories contributed to.
+1. **Execução de Pipeline**: O executor principal (`src/index.ts`) inicializa os pipelines ativos registrados.
+2. **Análise de Modelo**: Lê modelos brutos, como `src/templates/docs/README.template.md` e os modelos de cartão SVG.
+3. **Substituição de Tokens**: Verifica marcadores de posição com chaves duplas (`\{\{ variable \}\}`) e os substitui por dados resolvidos pelo pipeline.
+4. **Codificação de Tipografia**: Codifica em base64 o arquivo de fonte local **Nunito**, incorporando-o como um `@font-face` embutido dentro de elementos SVG. Isso contorna o restrito sandbox de imagens HTML do GitHub e renderiza o texto com fidelidade de marca perfeita ao nível de pixel.
+5. **Gravação de Saída**: Compila e gera tanto cartões SVG planos quanto arquivos `.md` textuais finais na raiz do monorepo ou nos diretórios de destino do pacote.
 
 ---
 
-## Dual-Theme HTML Picture Integration
+## Referência de Tokens
 
-To support GitHub's light and dark color schemes natively within a single markdown document, the compiled `README.md` utilizes standard HTML `\<picture>` elements.
+Os seguintes marcadores de posição são suportados dentro do modelo README padrão e são substituídos dinamicamente:
 
-During compilation, the pipeline outputs separate light and dark SVGs to `generated/cards/` (flat flat copies: `overview-light.svg`, `overview-dark.svg`, `header-light.svg`, `header-dark.svg`), which are embedded in the markdown as follows:
+* **`\{\{ name \}\}`**: O nome de exibição ou login do desenvolvedor.
+* **`\{\{ user \}\}`**: O nome de usuário/login do GitHub.
+* **`\{\{ contributions \}\}`**: Total de commits, issues, pull requests e revisões de código.
+* **`\{\{ stars \}\}`**: Contagem agregada de stargazers em todos os repositórios contabilizados.
+* **`\{\{ forks \}\}`**: Contagem agregada de forks em todos os repositórios contabilizados.
+* **`\{\{ lines_changed \}\}`**: Adições e exclusões agregadas de código.
+* **`\{\{ views \}\}`**: Soma de visualizações de tráfego das últimas duas semanas.
+* **`\{\{ repos \}\}`**: Número de repositórios ativos aos quais contribuiu.
+
+---
+
+## Integração de Picture HTML com Tema Duplo
+
+Para suportar os esquemas de cores claro e escuro do GitHub nativamente em um único documento markdown, o `README.md` compilado utiliza elementos HTML `\<picture>` padrão.
+
+Durante a compilação, o pipeline gera SVGs claros e escuros separados em `generated/cards/` (cópias planas: `overview-light.svg`, `overview-dark.svg`, `header-light.svg`, `header-dark.svg`), que são embutidos no markdown da seguinte forma:
 
 ```html
 <picture>
@@ -59,8 +59,8 @@ During compilation, the pipeline outputs separate light and dark SVGs to `genera
 </picture>
 ```
 
-When GitHub renders the profile page:
+Quando o GitHub renderiza a página de perfil:
 
-* **Dark Mode**: Resolves to the `overview-dark.svg` card, rendering dark background and token-based colors.
-* **Light Mode**: Resolves to the `overview-light.svg` card, displaying high-contrast light colors.
-* This approach avoids using fragile URL hashes (`#gh-dark-mode-only`) and relies on native, clean file isolation for absolute rendering safety.
+* **Modo Escuro**: Resolve para o cartão `overview-dark.svg`, renderizando fundo escuro e cores baseadas em tokens.
+* **Modo Claro**: Resolve para o cartão `overview-light.svg`, exibindo cores claras de alto contraste.
+* Esta abordagem evita o uso de hashes de URL frágeis (`#gh-dark-mode-only`) e baseia-se no isolamento de arquivos limpo e nativo para segurança absoluta na renderização.
