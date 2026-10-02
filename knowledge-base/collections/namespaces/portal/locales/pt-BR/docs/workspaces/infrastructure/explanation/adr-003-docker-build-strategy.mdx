@@ -1,26 +1,26 @@
 ---
-title: ADR-003 Docker Build Strategy
+title: ADR-003 Estratégia de Build do Docker
 ---
 
-# ADR-003: Multi-Stage Docker Builds with Turbo Prune and BuildKit Caching
+# ADR-003: Builds Multi-Stage com Turbo Prune e Cache do BuildKit
 
-## Context
+## Contexto
 
-The monorepo contains multiple Node.js microservices (e.g., API servers, MCP services, web frontends) managed via PNPM workspaces and Turborepo. Building these Docker images concurrently via Skaffold previously led to inefficiencies:
+O monorepo contém múltiplos microsserviços em Node.js (por exemplo, servidores de API, serviços MCP, frontends web) gerenciados por meio de workspaces do PNPM e Turborepo. A execução concorrente desses builds de imagens Docker por meio do Skaffold resultava anteriormente em ineﬁciências:
 
-1. Copying the entire root package.json and workspaces triggered cache invalidations across all services whenever an unrelated package changed.
-2. Independent pnpm install commands within each Docker build context wasted bandwidth and duplicated cache entries for identical dependencies.
+1. Copiar todo o package.json raiz e os workspaces disparava invalidações de cache em todos os serviços sempre que um pacote não relacionado sofria alterações.
+2. Comandos pnpm install independentes dentro de cada contexto de build do Docker desperdiçavam largura de banda e duplicavam entradas de cache para dependências idênticas.
 
-## Decision
+## Decisão
 
-We will standardize all Node.js Dockerfiles in the monorepo to use a Multi-Stage architecture leveraging Turborepo pruning and Docker BuildKit cache mounts:
+Padronizaremos todos os Dockerfiles em Node.js no monorepo para utilizar uma arquitetura Multi-Stage aproveitando a poda do Turborepo e os montagens de cache do Docker BuildKit:
 
-1. **Turborepo Prune (`turbo prune --docker`)**: An initial pruner stage creates a minimal, isolated snapshot of the specific workspace and its internal dependencies (out/json and out/full).
-2. **Shared BuildKit Cache Mount (`id=pnpm-store-shared`)**: The `builder` and deployer stages use `--mount=type=cache,id=pnpm-store-shared,target=/pnpm/store`. This allows concurrent Skaffold builds to share the same virtual PNPM store on the host daemon, ensuring packages are downloaded exactly once.
-3. **Deployer Isolation (`pnpm deploy`)**: Production builds utilize `pnpm --filter \<workspace\> --prod deploy` to extract a self-contained production environment free of development dependencies or source artifacts.
+1. **Turborepo Prune (`turbo prune --docker`)**: Um estágio inicial de poda cria um snapshot mínimo e isolado do workspace específico e suas dependências internas (out/json e out/full).
+2. **Mount de Cache Compartilhado do BuildKit (`id=pnpm-store-shared`)**: Os estágios `builder` e deployer utilizam `--mount=type=cache,id=pnpm-store-shared,target=/pnpm/store`. Isso permite que builds concorrentes do Skaffold compartilhem o mesmo repositório virtual do PNPM no daemon host, garantindo que os pacotes sejam baixados exatamente uma vez.
+3. **Isolamento do Deployer (`pnpm deploy`)**: Os builds de produção utilizam `pnpm --filter \<workspace\> --prod deploy` para extrair um ambiente de produção autossuficiente, livre de dependências de desenvolvimento ou artefatos de código-fonte.
 
-## Consequences
+## Consequências
 
-* Build times are significantly reduced through a 90% layer cache hit rate and zero-duplication network downloads.
-* Docker images are incredibly lightweight, containing only compiled assets and production dependencies.
-* Changes in one workspace do not invalidate the Docker build cache of unrelated workspaces.
+* Os tempos de build são reduzidos significativamente por meio de uma taxa de acerto de cache de camada de 90% e downloads de rede sem duplicação.
+* As imagens Docker são incrivelmente leves, contendo apenas ativos compilados e dependências de produção.
+* Alterações em um workspace não invalidam o cache de build do Docker de workspaces não relacionados.
