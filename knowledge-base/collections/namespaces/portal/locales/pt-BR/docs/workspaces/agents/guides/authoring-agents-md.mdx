@@ -1,30 +1,30 @@
 ---
-title: Authoring AGENTS.md Files
-sidebar_label: Authoring AGENTS.md Files
+title: Criação de arquivos AGENTS.md
+sidebar_label: Criação de arquivos AGENTS.md
 sidebar_position: 6
 ---
 
-# Authoring AGENTS.md Context Files
+# Criação de arquivos de contexto AGENTS.md
 
-This guide explains how to create, refactor, and maintain `AGENTS.md` context router files across the monorepo.
-
----
-
-## 1. Determining the Appropriate Layer
-
-Before creating an `AGENTS.md` file, identify the target layer:
-
-1. **Monorepo Root**: Layer 1 (`/AGENTS.md`). Only one file exists at this layer.
-2. **Bounded Context Root**: Layer 2 (`/[context]/AGENTS.md`). Created for domain roots (`cortex`, `hub`, `platform`, `studio`, `tools`, `renderer`, `docs`).
-3. **Technical Sub-Domain**: Layer 3 (`/[context]/[sub]/AGENTS.md`). Created only for sub-workspaces with unique, non-duplicative technical rules (e.g., `services/api`, `packages/core`).
+Este guia explica como criar, refatorar e manter arquivos de roteamento de contexto `AGENTS.md` em todo o monorepo.
 
 ---
 
-## 2. Step-by-Step Authoring Workflow
+## 1. Determinação da camada apropriada
 
-### Step 1: Add the Context Hierarchy Directive
+Antes de criar um arquivo `AGENTS.md`, identifique a camada de destino:
 
-For Layer-2 and Layer-3 files, place the `\<context-hierarchy>` XML block at the very top:
+1. **Raiz do Monorepo**: Camada 1 (`/AGENTS.md`). Existe apenas um arquivo nesta camada.
+2. **Raiz de Contexto Delimitado**: Camada 2 (`/[context]/AGENTS.md`). Criado para raízes de domínio (`cortex`, `hub`, `platform`, `studio`, `tools`, `renderer`, `docs`).
+3. **Subdominídio Técnico**: Camada 3 (`/[context]/[sub]/AGENTS.md`). Criado apenas para sub-workspaces com regras técnicas exclusivas e não duplicativas (por exemplo, `services/api`, `packages/core`).
+
+---
+
+## 2. Workflow passo a passo de criação
+
+### Passo 1: Adicione a diretiva de hierarquia de contexto
+
+Para arquivos da Camada 2 e Camada 3, coloque o bloco XML `\<context-hierarchy>` bem no topo:
 
 ```xml
 <context-hierarchy>
@@ -36,9 +36,9 @@ For Layer-2 and Layer-3 files, place the `\<context-hierarchy>` XML block at the
 </context-hierarchy>
 ```
 
-### Step 2: Define the Ubiquitous Language (Layer 2 Only)
+### Passo 2: Defina a linguagem ubíqua (apenas na Camada 2)
 
-Include a table defining domain terms and forbidden synonyms:
+Inclua uma tabela definindo termos de domínio e sinônimos proibidos:
 
 ```markdown
 ## Ubiquitous Language
@@ -48,22 +48,22 @@ Include a table defining domain terms and forbidden synonyms:
 | `Customer` | The authenticated hub user | user, person, member |
 ```
 
-### Step 3: Write Imperative Guardrails
+### Passo 3: Escreva diretrizes imperativas
 
-Use strict imperative keywords (`MUST`, `NEVER`, `ALWAYS`) rather than descriptive prose:
+Use palavras-chave imperativas estritas (`MUST`, `NEVER`, `ALWAYS`) em vez de prosa descritiva:
 
-* **Correct**: `Controllers MUST inject Mongoose models into the repository constructor.`
-* **Incorrect**: `Controllers should probably use repositories.`
+* **Correto**: `Controllers MUST inject Mongoose models into the repository constructor.`
+* **Incorreto**: `Controllers should probably use repositories.`
 
-### Step 4: Validate Line Budget
+### Passo 4: Valide o limite de linhas
 
-* Layer 1: Max 80 lines.
-* Layer 2: Max 120 lines.
-* Layer 3: Max 100 lines.
+* Camada 1: Máximo de 80 linhas.
+* Camada 2: Máximo de 120 linhas.
+* Camada 3: Máximo de 100 linhas.
 
-### Step 5: Format with Prettier
+### Passo 5: Formate com o Prettier
 
-Run Prettier to format markdown and code blocks:
+Execute o Prettier para formatar blocos de markdown e código:
 
 ```bash
 pnpm exec prettier --write <path/to/AGENTS.md>
