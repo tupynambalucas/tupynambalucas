@@ -24,10 +24,13 @@ the key (optional).
 Additionally, authentication can run in three different modes:
 
 * **Strict**: A valid API key must be present.
-* **Optional** (default): If an API key exists, validate it.\
+* **Permissive**: Requests are never rejected.\
+  This setting is useful for usage of claims in later steps such as authorization or logging.\
   *Warning*: This allows requests without an API key!\
   *Warning*: This allows requests without an API key!
 * **Permissive**: Requests are never rejected. This setting is useful for usage of claims in later steps such as authorization or logging.\
+  *Warning*: This allows requests without an API key!\
+  **Optional** (default): If an API key exists, validate it.\
   *Warning*: This allows requests without an API key!\
   *Warning*: This allows requests without an API key!
 
