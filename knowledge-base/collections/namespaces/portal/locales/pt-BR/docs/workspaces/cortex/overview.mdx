@@ -1,6 +1,6 @@
 ---
 title: Cortex Workspace Overview
-sidebar_label: Overview
+sidebar_label: Visão Geral
 sidebar_position: 1
 slug: /cortex
 diataxis_type: overview
@@ -9,22 +9,22 @@ tags:
   - cortex
 ---
 
-The Cortex workspace represents the unified artificial intelligence Bounded Context of the project. It consolidates the API Ingress Gateway, persistent memory database layers, Model Context Protocol (MCP) data plane integrations, and isolated terminal agent execution environments.
+O Workspace Cortex representa o Bounded Context unificado de inteligência artificial do projeto. Ele consolida o API Ingress Gateway, as camadas de banco de dados de memória persistente, as integrações do plano de dados do Model Context Protocol (MCP) e ambientes isolados de execução de agentes de terminal.
 
 ---
 
-## Architecture Overview
+## Visão Geral da Arquitetura
 
-Cortex is organized using a layered domain architecture, dividing services into four distinct operational planes:
+O Cortex é organizado usando uma arquitetura de domínio em camadas, dividindo os serviços em quatro planos operacionais distintos:
 
-1. **Ingress Gateway Plane (`/gateway`)**: Exposes the visual playground and API endpoints for Downstream clients. Network traffic is routed via Traefik to the AgentGateway, which then federates requests to the MCP pods.
-2. **Memory Layer (`/memory`)**: Self-hosted MongoDB Vector RAG service providing short-term, long-term, and relational reasoning storage layers.
-3. **Data Plane (`/mcp`)**: Houses individual Model Context Protocol adapters (GitHub, Firecrawl, Grafana, Playwright, Memory, Kubectl) that stream tools to active LLM contexts.
-4. **Control Plane (`/agents`)**: Containerized agent shell terminals running the Google Antigravity CLI and GitHub Copilot CLI.
+1. **Plano Ingress Gateway (`/gateway`)**: Expõe o playground visual e os endpoints de API para clientes downstream. O tráfego de rede é roteado via Traefik para o AgentGateway, que então federas as requisições para os pods do MCP.
+2. **Camada de Memória (`/memory`)**: Serviço de RAG vetorial do MongoDB auto-hospedado que fornece camadas de armazenamento de raciocínio de curto prazo, longo prazo e relacional.
+3. **Plano de Dados (`/mcp`)**: Abriga adaptadores individuais do Model Context Protocol (GitHub, Firecrawl, Grafana, Playwright, Memory, Kubectl) que transmitem ferramentas para contextos de LLM ativos.
+4. **Plano de Controle (`/agents`)**: Terminais de shell de agentes conteinerizados executando a CLI do Google Antigravity e a CLI do GitHub Copilot.
 
 ---
 
-## Directory Layout
+## Disposição de Diretórios
 
 ```text
 cortex/
@@ -40,12 +40,12 @@ cortex/
 
 ---
 
-## Core Principles & Security
+## Princípios Principais e Segurança
 
-:::info[Layered Domain Isolation]
-Cortex isolates operational planes at the folder level, keeping lifecycle, network routing, and permission constraints distinct.
+:::info[Isolamento de Domínio em Camadas]
+O Cortex isola planos operacionais no nível de pasta, mantendo o ciclo de vida, o roteamento de rede e as restrições de permissão distintos.
 :::
 
-* **Network Sandboxing**: Agent sessions run inside an isolated Docker subnet. They only access local tools and files through the unified gateway proxy.
-* **Self-Hosted Memory**: Memory is kept private and local using a self-hosted MongoDB instance with Vector Search indexes, bypassing external data sharing.
-* **Configuration Parity**: Settings, settings profiles, and secrets are mounted into containers at runtime via environment configurations.
+* **Sandboxing de Rede**: As sessões de agentes são executadas dentro de uma sub-rede Docker isolada. Elas acessam ferramentas locais e arquivos apenas por meio do proxy de gateway unificado.
+* **Memória Auto-hospedada**: A memória é mantida privada e local usando uma instância do MongoDB auto-hospedada com índices de busca vetorial, contornando o compartilhamento externo de dados.
+* **Paridade de Configuração**: Configurações, perfis de configuração e segredos são montados em containers em runtime por meio de configurações de ambiente.
