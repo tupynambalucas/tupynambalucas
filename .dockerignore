@@ -46,13 +46,11 @@ knowledge-base/**/node_modules/
 knowledge-base/**/.docusaurus/
 knowledge-base/**/build/
 knowledge-base/**/.turbo/
-knowledge-base/**/changelog/
 knowledge-base/**/references/
 knowledge-base/docusaurus/services/portal/node_modules/
 knowledge-base/docusaurus/services/portal/.docusaurus/
 knowledge-base/docusaurus/services/portal/build/
 knowledge-base/docusaurus/services/portal/.turbo/
-knowledge-base/docusaurus/services/portal/changelog/
 .agents/
 .github/
 .system_generated/
