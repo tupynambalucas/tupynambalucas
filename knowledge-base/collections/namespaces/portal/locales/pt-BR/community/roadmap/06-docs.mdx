@@ -1,0 +1,28 @@
+---
+title: Knowledge Base (TupyDocs)
+sidebar_label: Knowledge Base
+---
+
+Esta seção detalha as referências de onboarding do portal central de desenvolvedores, diretrizes e ferramentas de paridade de tradução.
+
+## Marcos Concluídos
+
+### Mecanismo de Documentação e Layout
+
+* **Integração do Mecanismo Docusaurus**: O Docusaurus v3 foi configurado como nosso portal central de desenvolvedores (TupyDocs), fornecendo um mecanismo de documentação responsivo.
+* **Páginas de Componentes MDX Personalizadas**: Páginas MDX personalizadas foram programadas (por exemplo, ecossistema do Tools Workspace, Studio Branding) para explicar visualmente os workflows de arquitetura em monorepo.
+* **Barras Laterais de Navegação Esquerda**: Foram implementadas barras laterais geradas automaticamente com base em contexto e caminhos estruturados para todas as seções, simplificando a estrutura de navegação.
+
+### Localização e Paridade de Tradução
+
+* **Pipelines de Tradução Nativos**: Foi integrado o suporte a i18n, criando uma estrutura de localidade dual (fonte em inglês e cópias de tradução em português `pt-BR`) com protocolos de paridade de tradução.
+
+### Deploy de CI/CD
+
+* **Compilação Raiz Automatizada (Pausada)**: Foram criadas tarefas para compilar e enviar (`push`) `CHANGELOG.md` e `ROADMAP.md` para a raiz do repositório. Isso está desativado temporariamente no workflow do GitHub Actions (`deploy-docs.yaml`) e será refatorado em uma fase futura.
+
+## Foco Planejado
+
+* **Refatoração de Workflow e Compilador**: Redesenhe e reative o compilador de documentos modular (geração de changelog e roadmap) dentro do pipeline de deploy com resolução aprimorada de conflitos do Git e suítes de testes isoladas.
+* **Pipeline de Verificação de Tradução**: Automatize a verificação para garantir 100% de sincronização da documentação.
+* **Geração Automática de API**: Extraia blocos de documentação diretamente dos controladores de rotas do Fastify.

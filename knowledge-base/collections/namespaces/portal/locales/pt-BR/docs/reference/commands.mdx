@@ -1,0 +1,118 @@
+---
+title: Command Reference
+description: Centralized reference for all CLI commands, scripts, and orchestration workflows.
+sidebar_position: 2
+---
+
+# Command Reference
+
+This document serves as the **Single Source of Truth** for every CLI command, PNPM script, container command, and orchestration instruction used in the %PROJECT_DOMAIN% monorepo.
+
+## Monorepo Orchestration
+
+Scripts used to manage dependencies, cleaning, and workspace-wide tasks.
+
+* **`pnpm install`**: Installs all dependencies across the monorepo.
+* **`pnpm install --frozen-lockfile`**: Installs dependencies strictly from `pnpm-lock.yaml` (used in CI/CD).
+* **`pnpm project:clear`**: Clears all `node_modules` and build caches using `npkill`.
+
+### Dependency Management (Catalogs)
+
+All new dependencies must be added to a catalog (either the default catalog or a specific one) to ensure version consistency across the monorepo.
+
+**Adding to the Root Workspace:**
+Adding a dependency to the root `package.json` requires the `-w` (or `--ignore-workspace-root-check`) flag.
+
+* **`pnpm add \<package> -w --save-catalog`**: Adds a package to the root and saves its version to the default catalog.
+* **`pnpm add \<package> -w --save-catalog-name \<catalog_name>`**: Adds a package to the root and saves its version to a specific catalog.
+
+**Adding to a Specific Workspace:**
+Use the `--filter` flag to target a specific workspace package.
+
+* **`pnpm add \<package> --filter \<workspace> --save-catalog`**: Adds a package to a workspace and saves its version to the default catalog.
+* **`pnpm add \<package> --filter \<workspace> --save-catalog-name \<catalog_name>`**: Adds a package to a workspace and saves its version to a specific catalog.
+
+**Using an Existing Cataloged Package:**
+
+* **`pnpm add \<package>@catalog: --filter \<workspace>`**: Installs a package that is already defined in the default catalog into a specific workspace.
+
+---
+
+## Validation & Quality
+
+Scripts to ensure code quality and type safety.
+
+* **`pnpm typecheck`**: Runs parallel TypeScript validation across all workspaces via Turborepo.
+* **`pnpm lint`**: Runs ESLint validation across all workspaces.
+* **`pnpm build`**: Compiles a production build for all applications and packages.
+* **`pnpm format:check`**: Checks formatting across the entire monorepo.
+* **`pnpm format:write`**: Automatically fixes formatting issues across all files.
+
+---
+
+## Kubernetes Cluster Management (Minikube)
+
+Commands to control the local development Kubernetes cluster.
+
+* **`pnpm minikube:up`**: Starts the local Minikube cluster using the Podman driver and configures automatic mounting of the project directory.
+* **`pnpm minikube:tunnel`**: Starts the Minikube network tunnel to resolve LoadBalancer IP allocations.
+* **`pnpm minikube:status`**: Checks the status of the local Minikube cluster.
+* **`pnpm minikube:mount`**: Mounts the project workspace directory into the Minikube node.
+
+---
+
+## Kubernetes Deployments (Skaffold)
+
+Commands to build, deploy, and hot-reload components within the Kubernetes cluster. All workloads are orchestrated through the central Infrastructure workspace.
+
+* **`pnpm infra:dev`**: Deploys the entire stack (cortex, platform, studio, hub) to the cluster with live hot-reloading enabled.
+* **`pnpm infra:up`**: Runs a one-time build and deployment of the entire stack to the cluster without continuous watching.
+* **`pnpm infra:clean`**: Deletes all deployed resources from the cluster and cleans the Skaffold cache.
+* **`pnpm infra:platform:dev`**: Deploys only platform services with hot-reloading.
+* **`pnpm infra:cortex:dev`**: Deploys Platform + Cortex AI services to the cluster with hot-reloading.
+* **`pnpm infra:studio:dev`**: Deploys Platform + Studio tools (Penpot, Memos) to the cluster with hot-reloading.
+
+---
+
+## Developer Hub
+
+Commands for the Developer Hub (`hub/`) bounded context.
+
+* **`pnpm hub:dev`**: Starts local development servers (API on port 3006 and Web on port 5173).
+* **`pnpm hub:build`**: Compiles production builds for the API and Web.
+
+---
+
+## Renderer
+
+Commands for asset generation and rendering.
+
+* **`pnpm renderer:clean`**: Cleans compiled assets inside the renderer workspace.
+* **`pnpm renderer:generate`**: Recompiles dynamic renderer components and README templates.
+
+---
+
+## Documentation
+
+Commands for the Docusaurus Knowledge Base (`docs/`).
+
+* **`pnpm docs:dev`**: Starts the local English Docusaurus development server (port 3002) with HMR.
+* **`pnpm docs:dev:pt`**: Starts the Docusaurus server in Brazilian Portuguese (`pt-BR`).
+* **`pnpm docs:build`**: Compiles the documentation into static HTML/CSS for production.
+* **`pnpm docs:preview`**: Builds and serves a production preview of the documentation.
+* **`pnpm docs:down`**: Forcefully kills the documentation web server port.
+
+---
+
+## Git & Version Control
+
+Workflows for branching, committing, and releases.
+
+* **`git flow feature start \<name>`**: Starts a new feature branch from `develop`.
+* **`git push -u origin feature/\<name>`**: Pushes a feature branch to the remote repository.
+* **`gh pr create --base develop --fill --web`**: Creates a Pull Request targeting the `develop` branch.
+* **`gh pr merge --squash --delete-branch`**: Merges a PR using the squash-and-merge strategy.
+* **`git flow hotfix start \<name>`** / **`git flow hotfix finish \<name>`**: Manages emergency fixes against the `main` branch.
+* **`pnpm version:changeset`**: Generates a changeset file to track version bumps and changelogs.
+* **`pnpm version:bump`**: Bumps packages version based on changesets.
+* **`pnpm version:publish`**: Publishes all updated packages to registries.

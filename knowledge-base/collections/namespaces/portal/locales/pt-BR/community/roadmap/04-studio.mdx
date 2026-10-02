@@ -1,0 +1,24 @@
+---
+title: Studio (Design Hub)
+sidebar_label: Studio (Design)
+---
+
+Esta seção aborda o ambiente do Penpot, a automação de sincronização de design-tokens e o design de ativos de UI personalizados.
+
+## Marcos Concluídos
+
+### Ambiente de Design Colaborativo
+
+* **Self-Hosted Design Hub**: Implantação de uma instância em contêiner do Penpot v2 (espaço de trabalho de design compatível com o Aide) dentro do ambiente `@repo/studio/assets`, permitindo mockups de estilização colaborativa locais e seguros.
+* **Centralized Design System Packages**: Estruturação de `@repo/studio/assets` para servir como o pacote unificado para diretrizes de marca, estilos de tipografia, configurações de espaçamento e design tokens de paleta.
+
+### Pipelines de Ativos
+
+* **Branding Assets Export**: Padronização de ativos exportados (incluindo vetores SVG, marcas de logotipo e folhas de cores) nos repositórios do projeto, fornecendo modelos brutos para aplicações web.
+* **Brand Identity Realignment**: Reorganização da estrutura do espaço de trabalho de ativos para estabelecer um namespace canônico `brand` (agrupando logotipos, paletas, favicons, banners, diretrizes) e renomeação do diretório de fontes de design de `raw` para `sources`.
+* **Cloud-Based Asset Hosting**: Implementação de um mecanismo CLI de sincronização bidirecional de ativos em `@repo/studio/assets/bucket`, permitindo a replicação contínua de fontes de identidade de marca e ativos prontos para a web com o Cloudflare R2 Object Storage, eliminando ativos pesados do histórico do Git.
+
+## Foco Planejado
+
+* **Sync Integration**: Automatização do pipeline para sincronizar tokens do Penpot diretamente nos sistemas de design da base de código.
+* **Extended Suite Assets**: Design de bibliotecas personalizadas de ativos de marketing e UI.

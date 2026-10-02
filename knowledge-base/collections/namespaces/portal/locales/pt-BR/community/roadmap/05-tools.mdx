@@ -1,0 +1,23 @@
+---
+title: Tools (GitHub Automation)
+sidebar_label: Tools (GitHub)
+---
+
+Esta seção descreve os ambientes de automação do GitHub CLI e controle de versão Git conteinerizados.
+
+## Marcos Concluídos
+
+### Integrações de Scripts de Automação
+
+* **Scripts de Compilação Raiz do TypeScript**: Scripts integrados (`generate-changelog.ts` e `generate-roadmap.ts`) executados nativamente via `tsx` para compilar métricas do workspace e logs de alterações diretamente nos arquivos Markdown raiz.
+
+### Isolamento de Ferramentas
+
+* **Contêineres do Git e GitHub CLI**: Serviços de contêiner implantados (`gh` e `git`) que isolam configurações de identidade de controle de versão, credenciais SSH e extensões do GitHub das máquinas host dos desenvolvedores.
+* **Automação de Workflow**: Scripts configurados com escopo de workspace para iniciar, encerrar e redefinir ambientes git de forma limpa usando o Docker Compose.
+
+## Foco Planejado
+
+* **Sincronização de Credenciais**: Otimize a injeção segura de credenciais PAT dentro de volumes do Docker de desenvolvedores locais.
+* **Verificação de Tipos Pré-commit**: Adicione verificações de ganchos personalizados executadas a partir dos contêineres CLI de ferramentas para evitar que tipos inválidos sejam enviados.
+* **Sincronização de Metadados de Monorepo**: Desenvolva um script de sincronização automatizado (por exemplo, `tools/provisioner/src/sync-metadata.ts`) e integre-o ao CLI do Provisioner para atualizar e padronizar automaticamente todos os campos `package.json` do workspace com base nas variáveis de `project.config.json`.
