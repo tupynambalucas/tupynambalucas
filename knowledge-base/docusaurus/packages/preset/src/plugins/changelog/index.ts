@@ -108,10 +108,6 @@ const ChangelogPlugin: typeof pluginContentBlog = async function ChangelogPlugin
       return config;
     },
 
-    getThemePath() {
-      return path.resolve(__dirname, './theme');
-    },
-
     getPathsToWatch() {
       return [path.join(MonorepoRoot, 'CHANGELOG.md'), path.join(MonorepoRoot, 'CHANGELOG-*.md')];
     },

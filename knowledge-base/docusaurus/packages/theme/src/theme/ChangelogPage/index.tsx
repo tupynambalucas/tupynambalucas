@@ -14,7 +14,7 @@ import type { BlogSidebar } from '@docusaurus/plugin-content-blog';
 
 function BackToIndexLink() {
   const { metadata } = useBlogPost();
-  // @ts-expect-error: injected listPageLink
+  // @ts-expect-error
   const { listPageLink } = metadata;
   return (
     <Link to={listPageLink}>

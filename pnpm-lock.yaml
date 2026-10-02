@@ -1083,6 +1083,9 @@ importers:
       '@docusaurus/theme-search-algolia':
         specifier: catalog:docs-stack
         version: 3.10.2(db7a4f7df5cbeb462268cb0da0558d60)
+      '@docusaurus/utils':
+        specifier: catalog:docs-stack
+        version: 3.10.2(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sharp@0.35.4(@types/node@26.6.2))(supports-color@10.2.2)(svgo@3.3.5)
       '@monorepo/kb-collections':
         specifier: workspace:*
         version: link:../../../collections
@@ -1126,6 +1129,9 @@ importers:
 
   knowledge-base/docusaurus/packages/theme:
     dependencies:
+      '@docusaurus/plugin-content-blog':
+        specifier: catalog:docs-stack
+        version: 3.10.2(e5d2e12f9784e9c80cabd747bf5cc616)
       '@docusaurus/plugin-content-docs':
         specifier: catalog:docs-stack
         version: 3.10.2(@docusaurus/faster@3.10.2(@docusaurus/types@3.10.2(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sharp@0.35.4(@types/node@26.6.2))(supports-color@10.2.2)(svgo@3.3.5))(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(postcss@8.5.28)(sharp@0.35.4(@types/node@26.6.2))(svgo@3.3.5))(@mdx-js/react@3.1.1(@types/react@19.3.0)(react@19.3.0))(@rspack/core@1.7.12)(@swc/core@1.16.2)(@swc/html@1.16.2)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.28))(csso@5.0.5)(debug@4.4.3(supports-color@10.2.2))(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.28)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sharp@0.35.4(@types/node@26.6.2))(supports-color@10.2.2)(svgo@3.3.5)(typescript@6.0.3)

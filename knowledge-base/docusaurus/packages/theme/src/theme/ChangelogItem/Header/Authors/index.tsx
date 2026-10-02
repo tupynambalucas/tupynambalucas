@@ -21,7 +21,7 @@ export default function BlogPostAuthors({ className }: Props): ReactNode {
   const filteredAuthors = authors.slice(0, expanded ? authors.length : 10);
   return (
     <div className={clsx('margin-top--md margin-bottom--sm', styles.imageOnlyAuthorRow, className)}>
-      {filteredAuthors.map((author, idx) => (
+      {filteredAuthors.map((author: any, idx: number) => (
         <div className={styles.imageOnlyAuthorCol} key={idx}>
           <ChangelogItemHeaderAuthor
             author={{

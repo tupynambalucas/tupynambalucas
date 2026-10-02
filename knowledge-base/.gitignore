@@ -4,7 +4,6 @@ references/
 .docusaurus/
 .cache-loader/
 static/
-changelog/
 
 # Internationalization
 i18n/

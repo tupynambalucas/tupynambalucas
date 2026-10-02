@@ -18,25 +18,26 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@docusaurus/plugin-content-blog": "catalog:docs-stack",
     "@monorepo/studio-assets": "workspace:*",
-    "tailwindcss": "catalog:shared-stack",
-    "clsx": "catalog:docs-stack"
+    "clsx": "catalog:docs-stack",
+    "tailwindcss": "catalog:shared-stack"
   },
   "peerDependencies": {
+    "@docusaurus/plugin-content-docs": "catalog:docs-stack",
     "@docusaurus/theme-classic": "catalog:docs-stack",
+    "@docusaurus/theme-common": "catalog:docs-stack",
     "@docusaurus/theme-live-codeblock": "catalog:docs-stack",
     "@docusaurus/theme-mermaid": "catalog:docs-stack",
-    "@docusaurus/theme-common": "catalog:docs-stack",
-    "@docusaurus/plugin-content-docs": "catalog:docs-stack",
     "react": "catalog:web-stack",
     "react-dom": "catalog:web-stack"
   },
   "devDependencies": {
-    "@docusaurus/types": "catalog:docs-stack",
     "@docusaurus/module-type-aliases": "catalog:docs-stack",
     "@docusaurus/tsconfig": "catalog:docs-stack",
-    "@types/react": "catalog:web-stack",
+    "@docusaurus/types": "catalog:docs-stack",
     "@types/node": "catalog:",
+    "@types/react": "catalog:web-stack",
     "typescript": "catalog:"
   }
 }

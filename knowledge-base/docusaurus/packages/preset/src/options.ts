@@ -15,6 +15,7 @@ export type MonorepoPresetOptions = {
   docs?: false | DocsPluginOptions | DocsPluginOptions[];
   blog?: false | BlogPluginOptions | BlogPluginOptions[];
   pages?: false | PagesPluginOptions;
+  changelog?: false | BlogPluginOptions;
   crowdin?: false | { collection: string };
   sitemap?: false | SitemapPluginOptions;
   svgr?: false | SVGRPluginOptions;

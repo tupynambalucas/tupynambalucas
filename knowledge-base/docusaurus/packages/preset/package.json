@@ -20,6 +20,11 @@
     "./sidebars": {
       "import": "./dist/sidebars/index.js",
       "default": "./dist/sidebars/index.js"
+    },
+    "./plugins/changelog": {
+      "import": "./dist/plugins/changelog/index.js",
+      "default": "./dist/plugins/changelog/index.js",
+      "require": "./dist/plugins/changelog/index.js"
     }
   },
   "scripts": {
@@ -30,6 +35,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@docusaurus/utils": "catalog:docs-stack",
     "@monorepo/kb-collections": "workspace:*",
     "@monorepo/kb-docusaurus-theme": "workspace:*",
     "@monorepo/shared-config": "workspace:*",

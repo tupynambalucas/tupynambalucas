@@ -122,6 +122,24 @@ const config: Config = {
             sidebarPath: require.resolve('@monorepo/kb-docusaurus-preset/sidebars'),
           },
         ],
+        changelog: {
+          blogTitle: `${projectConfig.PROJECT_NAME} Changelog`,
+          blogDescription: 'Keep yourself up-to-date about new features in every release',
+          blogSidebarCount: 'ALL',
+          blogSidebarTitle: 'Changelog',
+          routeBasePath: '/changelog',
+          showReadingTime: false,
+          postsPerPage: 20,
+          archiveBasePath: null,
+          authorsMapPath: 'authors.json',
+          feedOptions: {
+            type: 'all',
+            title: `${projectConfig.PROJECT_NAME} Changelog`,
+            description: 'Keep yourself up-to-date about new features in every release',
+            copyright: `Copyright © ${new Date().getFullYear()} ${projectConfig.PROJECT_DOMAIN}`,
+          },
+          onInlineAuthors: 'warn',
+        },
         blog: {
           path: path.join(collectionsRoot, 'namespaces/portal/content/blog'),
           routeBasePath: 'blog',
@@ -134,27 +152,6 @@ const config: Config = {
   ],
 
   plugins: [
-    [
-      './src/plugins/changelog/index.ts',
-      {
-        blogTitle: `${projectConfig.PROJECT_NAME} Changelog`,
-        blogDescription: 'Keep yourself up-to-date about new features in every release',
-        blogSidebarCount: 'ALL',
-        blogSidebarTitle: 'Changelog',
-        routeBasePath: '/changelog',
-        showReadingTime: false,
-        postsPerPage: 20,
-        archiveBasePath: null,
-        authorsMapPath: 'authors.json',
-        feedOptions: {
-          type: 'all',
-          title: `${projectConfig.PROJECT_NAME} Changelog`,
-          description: 'Keep yourself up-to-date about new features in every release',
-          copyright: `Copyright © ${new Date().getFullYear()} ${projectConfig.PROJECT_DOMAIN}`,
-        },
-        onInlineAuthors: 'warn',
-      },
-    ],
     () => ({
       name: 'monorepo-webpack-alias-plugin',
       configureWebpack() {
