@@ -1,6 +1,6 @@
 ---
-title: Introduction
-description: Project introduction and overview.
+title: Introdução
+description: Introdução e visão geral do projeto.
 sidebar_position: 1
 ---
 
@@ -8,51 +8,51 @@ import DocCardList from '@theme/DocCardList';
 
 # %PROJECT_DOMAIN% Monorepo
 
-This repository is a monorepo containing a developer profile stats generator, personal website/hub, developer tools, design tokens, and documentation.
+Este repositório é um monorepo que contém um gerador de estatísticas de perfil de desenvolvedor, site/hub pessoal, ferramentas de desenvolvedor, design tokens e documentação.
 
 ---
 
-## 1. Product Overview & Value Proposition
+## 1. Visão Geral do Produto e Proposta de Valor
 
-The monorepo coordinates the developer's personal website (`hub`), automated stats visualizations (`renderer`), design systems (`studio`), AI processing hub (`cortex`), and automation tools (`tools`).
+O monorepo coordena o site pessoal do desenvolvedor (`hub`), visualizações de estatísticas automatizadas (`renderer`), sistemas de design (`studio`), hub de processamento de IA (`cortex`) e ferramentas de automação (`tools`).
 
-The primary customer-facing application is the **Developer Hub** (`@repo/hub/*`):
+A principal aplicação voltada para o cliente é o **Developer Hub** (`@repo/hub/*`):
 
-| For Visitors                                                        | For the Developer (Admin)                                            |
-| :------------------------------------------------------------------ | :------------------------------------------------------------------- |
-| **Portfolio**: View projects, code architectures, and highlights.   | **Blog Publishing**: Publish technical articles and case studies.    |
-| **Contact Form**: Securely submit messages or consulting queries.   | **Lead Collection**: Manage submissions and dashboard data.          |
-| **Services Catalog**: Request custom software development services. | **Profile Automation**: Automatically update GitHub metrics via Zig. |
-
----
-
-## 2. Operational Flow
-
-The portfolio website and stats generator operate on a streamlined workflow:
-
-1. **Portfolio Presentation**: Visitors explore the frontend `@repo/hub/web`, consuming blog posts and project highlights served by `@repo/hub/api`.
-2. **Contact Submission**: Form inputs are validated via Turnstile anti-spam keys, serialized using Zod schemas from `@repo/hub/core`, and persisted to a MongoDB instance.
-3. **Renderer Statistics Generation**: The `@/renderer` workspace compiles GitHub metrics using a native Zig CLI and dynamically overwrites the root `README.md` file.
+| Para Visitantes                                                                           | Para o Desenvolvedor (Admin)                                                     |
+| :---------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
+| **Portfólio**: Visualize projetos, arquiteturas de código e destaques.                    | **Publicação de Blog**: Publique artigos técnicos e estudos de caso.             |
+| **Formulário de Contato**: Envie mensagens ou consultas de consultoria com segurança.     | **Coleta de Leads**: Gerencie submissões e dados do painel.                      |
+| **Catálogo de Serviços**: Solicite serviços de desenvolvimento de software personalizado. | **Automação de Perfil**: Atualize automaticamente as métricas do GitHub via Zig. |
 
 ---
 
-## 3. Hosting & Deployment Strategy
+## 2. Fluxo Operacional
 
-The monorepo uses Cloudflare and standard VPS environments for zero-maintenance and high-performance operation.
+O site de portfólio e o gerador de estatísticas operam em um workflow simplificado:
 
-### Infrastructure & Hosting
-
-* **Cloudflare Pages**: The Docusaurus documentation hub (`docs/`) and the developer React SPA frontend (`hub/services/web`) are deployed to Cloudflare Pages for optimized CDN delivery.
-* **Hetzner Cloud VPS / Linux VPS**: The backend Fastify REST API (`hub/services/api`) and MongoDB/Redis compose stacks run on a lightweight VPS instance.
-* **DNS & SSL**: DNS routing and proxy protection are handled globally through Cloudflare.
+1. **Apresentação do Portfólio**: Os visitantes exploram o frontend `@repo/hub/web`, consumindo postagens de blog e destaques de projetos servidos por `@repo/hub/api`.
+2. **Envio de Contato**: As entradas do formulário são validadas por meio de chaves anti-spam do Turnstile, serializadas usando esquemas Zod de `@repo/hub/core` e persistidas em uma instância do MongoDB.
+3. **Geração de Estatísticas do Renderer**: O workspace `@/renderer` compila as métricas do GitHub usando uma CLI nativa em Zig e sobrescreve dinamicamente o arquivo `README.md` raiz.
 
 ---
 
-## 4. Architecture & Monorepo Workspaces
+## 3. Estratégia de Hospedagem e Deploy
 
-We use **PNPM Workspaces** with a **Context-Driven Root** layout to isolate our domains.
+O monorepo utiliza o Cloudflare e ambientes de VPS padrão para operação de zero manutenção e alto desempenho.
 
-For a comprehensive breakdown of our context philosophy, directory structure, and application roles, please read our dedicated architectural guides:
+### Infraestrutura e Hospedagem
+
+* **Cloudflare Pages**: O hub de documentação do Docusaurus (`docs/`) e o frontend de SPA React do desenvolvedor (`hub/services/web`) são deployed para o Cloudflare Pages para entrega otimizada via CDN.
+* **Hetzner Cloud VPS / Linux VPS**: A REST API do backend Fastify (`hub/services/api`) e as pilhas do compose do MongoDB/Redis são executadas em uma instância de VPS leve.
+* **DNS & SSL**: O roteamento de DNS e a proteção de proxy são gerenciados globalmente por meio do Cloudflare.
+
+---
+
+## 4. Arquitetura e Workspaces do Monorepo
+
+Utilizamos **PNPM Workspaces** com um layout de **Raiz Orientada a Contexto** para isolar nossos domínios.
+
+Para obter um detalhamento abrangente da nossa filosofia de contexto, estrutura de diretórios e funções de aplicação, leia nossos guias arquiteturais dedicados:
 
 <DocCardList
 items={[
@@ -74,27 +74,27 @@ items={[
 
 ---
 
-## 5. Standalone Workspaces
+## 5. Workspaces Independentes
 
-Our priority is the deployment and maintenance of:
+Nossa prioridade é o deploy e a manutenção de:
 
-* **`@repo/hub/*`**: Personal React/Fastify hub.
-* **`@/renderer`**: Zig-based GitHub profile stats compiler.
+* **`@repo/hub/*`**: Hub pessoal em React/Fastify.
+* **`@/renderer`**: Compilador de estatísticas de perfil do GitHub baseado em Zig.
 
 ---
 
-## 6. Quick Start
+## 6. Início Rápido
 
-Ensure you have **Node.js 22+**, **PNPM 11+**, **Zig**, **Podman** (with Compose extension), **Minikube**, and **Skaffold** installed.
+Certifique-se de ter **Node.js 22+**, **PNPM 11+**, **Zig**, **Podman** (com a extensão Compose), **Minikube** e **Skaffold** instalados.
 
-1. **Install Dependencies:**
+1. **Instale as Dependências:**
 
    ```bash
    pnpm install
    ```
 
-2. **Set Up Environment Files:**
-   Each workspace and service has its own environment file. Copy the example templates and add your local parameters:
+2. **Configure os Arquivos de Ambiente:**
+   Cada workspace e serviço possui seu próprio arquivo de ambiente. Copie os modelos de exemplo e adicione seus parâmetros locais:
 
    ```bash
    # Cortex configuration
@@ -104,29 +104,29 @@ Ensure you have **Node.js 22+**, **PNPM 11+**, **Zig**, **Podman** (with Compose
    cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
    ```
 
-3. **Start Local Infrastructure & Applications:**
-   We provide unified orchestration scripts via Turborepo and Skaffold. You can run in Podman Compose mode (`pnpm cortex:up` and `pnpm hub:dev`) or Kubernetes mode (`pnpm minikube:up` and `pnpm k8s:dev`).
-   See [MONOREPO.readme.md](https://github.com/workspace/workspace/blob/develop/MONOREPO.readme.md) or the [Command Reference](./reference/commands.mdx) for details.
+3. **Inicie a Infraestrutura e as Aplicações Locais:**
+   Fornecemos scripts de orquestração unificados via Turborepo e Skaffold. Você pode executar no modo Podman Compose (`pnpm cortex:up` e `pnpm hub:dev`) ou no modo Kubernetes (`pnpm minikube:up` e `pnpm k8s:dev`).
+   Consulte [MONOREPO.readme.md](https://github.com/workspace/workspace/blob/develop/MONOREPO.readme.md) ou a [Referência de Comandos](./reference/commands.mdx) para obter detalhes.
 
 ---
 
 ## 7. Diátaxis Framework
 
-A systematic approach to technical documentation authoring.
+Uma abordagem sistemática para a criação de documentação técnica.
 
-Diátaxis is a way of thinking about and doing documentation.
+Diátaxis é uma forma de pensar e fazer documentação.
 
-It prescribes approaches to content, architecture and form that emerge from a systematic approach to understanding the needs of documentation users.
+Ela prescreve abordagens para o conteúdo, arquitetura e formato que emergem de uma abordagem sistemática para entender as necessidades dos usuários da documentação.
 
-Diátaxis identifies four distinct needs, and four corresponding forms of documentation - *tutorials*, *how-to guides*, *technical reference* and *explanation*. It places them in a systematic relationship, and proposes that documentation should itself be organised around the structures of those needs.
+O Diátaxis identifica quatro necessidades distintas e quatro formas correspondentes de documentação — *tutoriais*, *guias práticos* (how-to guides), *referência técnica* e *explicação*. Ele os coloca em uma relação sistemática e propõe que a documentação deve ser organizada em torno das estruturas dessas necessidades.
 
-Diátaxis solves problems related to documentation *content* (what to write), *style* (how to write it) and *architecture* (how to organise it).
+O Diátaxis resolve problemas relacionados ao *conteúdo* da documentação (o que escrever), ao *estilo* (como escrever) e à *arquitetura* (como organizar).
 
-As well as serving the users of documentation, Diátaxis has value for documentation creators and maintainers. It is light-weight, easy to grasp and straightforward to apply. It doesn’t impose implementation constraints. It brings an active principle of quality to documentation that helps maintainers think effectively about their own work.
+Além de atender aos usuários da documentação, o Diátaxis tem valor para os criadores e mantenedores da documentação. Ele é leve, fácil de compreender e simples de aplicar. Ele não impõe restrições de implementação. Ele traz um princípio ativo de qualidade para a documentação que ajuda os mantenedores a pensarem de forma eficaz sobre seu próprio trabalho.
 
-### Getting Started
+### Primeiros Passos
 
-The best way to get started with Diátaxis is by applying it after reading a brief primer.
+A melhor maneira de começar com o Diátaxis é aplicá-lo após ler uma breve introdução.
 
 <DocCardList
 items={[
@@ -139,9 +139,9 @@ items={[
 ]}
 />
 
-### Practical Application
+### Aplicação Prática
 
-These pages will help make immediate, concrete sense of the approach.
+Estas páginas ajudarão a dar um sentido imediato e concreto à abordagem.
 
 <DocCardList
 items={[
@@ -190,9 +190,9 @@ items={[
 ]}
 />
 
-### Understanding Diátaxis
+### Entendendo o Diátaxis
 
-This section explores the theory and principles of Diátaxis more deeply, and sets forth the understanding of needs that underpin it.
+Esta seção explora a teoria e os princípios do Diátaxis mais profundamente e estabelece a compreensão das necessidades que o fundamentam.
 
 <DocCardList
 items={[
@@ -241,19 +241,19 @@ items={[
 ]}
 />
 
-Diátaxis is proven in practice. Its principles have been adopted successfully in hundreds of documentation projects.
+O Diátaxis é comprovado na prática. Seus princípios foram adotados com sucesso em centenas de projetos de documentação.
 
-:::info[Testimonial]
+:::info[Depoimento]
 
 —Greg Frileux, [Vonage](https://vonage.com/)
 :::
 
-:::info[Testimonial]
+:::info[Depoimento]
 
 — [Megan Sullivan](https://hachyderm.io/@meganesulli)
 :::
 
-:::info[Testimonial]
+:::info[Depoimento]
 
 — [Adam Schwartz](https://github.com/adamschwartz)
 :::
