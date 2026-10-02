@@ -1,17 +1,17 @@
 ---
 title: Bounded Contexts
-description: Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles in %PROJECT_DOMAIN%.
+description: Explicação detalhada de Bounded Contexts, Monorepo Structure e Workspace Roles em %PROJECT_DOMAIN%.
 ---
 
 # Bounded Contexts
 
-We use **PNPM Workspaces** with a **Context-Driven Root** layout to strictly isolate our business domains. This architecture ensures scalability and clear separation of concerns by organizing the codebase into distinct Bounded Contexts at the root.
+Utilizamos **PNPM Workspaces** com um layout **Context-Driven Root** para isolar estritamente nossos domínios de negócios. Esta arquitetura garante escalabilidade e clara separação de conceitos ao organizar a base de código em Bounded Contexts distintos na raiz.
 
 ---
 
 ## Monorepo Structure & Workspace Roles
 
-The monorepo distinguishes between different core contexts. The following diagram illustrates the workspace contexts, package relationships, and dependency flow:
+O monorepo distingue entre diferentes contextos principais. O diagrama a seguir ilustra os contextos do workspace, as relações entre pacotes e o fluxo de dependências:
 
 ```mermaid
 graph TD
@@ -44,24 +44,24 @@ graph TD
     H_API -.-> Cortex
 ```
 
-| Directory           | Package Name          | Role               | Responsibility                                                           |
-| :------------------ | :-------------------- | :----------------- | :----------------------------------------------------------------------- |
-| `hub/services/web`  | `@repo/hub/web`       | **Application**    | Personal portfolio React client, blog, and admin dashboard.              |
-| `hub/services/api`  | `@repo/hub/api`       | **Application**    | Fastify REST API serving blog posts and form handlers.                   |
-| `hub/packages/core` | `@repo/hub/core`      | **Library**        | SSOT for the Hub context (Zod validation, shared schemas).               |
-| `cortex/`           | `@/cortex`            | **Tooling**        | Unified AI gateway, MCP adapters, and agent runners.                     |
-| `renderer/`         | `@/renderer`          | **Application**    | TypeScript application compiling Markdown templates and generating SVGs. |
-| `studio/assets`     | `@repo/studio/assets` | **Library**        | Design tokens, logos, SVGs, and sync utilities.                          |
-| `tools/`            | `@repo/tools/*`       | **Tooling**        | Isolated Git version control and GitHub CLI automation.                  |
-| `platform/`         | `@/platform`          | **Infrastructure** | Telemetry monitoring and Turborepo cache servers.                        |
-| `knowledge-base/`   | `@/knowledge-base`    | **Docs Hub**       | Authoritative Docusaurus developer portal.                               |
+| Diretório           | Nome do Pacote        | Função             | Responsabilidade                                                                |
+| :------------------ | :-------------------- | :----------------- | :------------------------------------------------------------------------------ |
+| `hub/services/web`  | `@repo/hub/web`       | **Application**    | Cliente React de portfólio pessoal, blog e painel administrativo.               |
+| `hub/services/api`  | `@repo/hub/api`       | **Application**    | API REST em Fastify que serve postagens do blog e manipuladores de formulários. |
+| `hub/packages/core` | `@repo/hub/core`      | **Library**        | SSOT para o contexto do Hub (validação Zod, esquemas compartilhados).           |
+| `cortex/`           | `@/cortex`            | **Tooling**        | Gateway de IA unificado, adaptadores MCP e executores de agentes.               |
+| `renderer/`         | `@/renderer`          | **Application**    | Aplicação TypeScript que compila modelos Markdown e gera SVGs.                  |
+| `studio/assets`     | `@repo/studio/assets` | **Library**        | Design tokens, logotipos, SVGs e utilitários de sincronização.                  |
+| `tools/`            | `@repo/tools/*`       | **Tooling**        | Controle de versão Git isolado e automação via CLI do GitHub.                   |
+| `platform/`         | `@/platform`          | **Infrastructure** | Monitoramento de telemetria e servidores de cache do Turborepo.                 |
+| `knowledge-base/`   | `@/knowledge-base`    | **Docs Hub**       | Portal de desenvolvedor Docusaurus autoritativo.                                |
 
 ---
 
 ## Bounded Context Philosophy
 
-* **Context Isolation**: Each root directory (`hub/`, `cortex/`, `renderer/`, `studio/`, `tools/`, `platform/`, `knowledge-base/`) represents an isolated workspace context. Types, contracts, and configurations are encapsulated locally, referencing external libraries only through package boundaries.
-* **Strict Decoupling**: Business logic from the Developer Hub (`hub/`) is decoupled from the Profile Stats Compiler (`renderer/`) and the AI processing hub (`cortex/`).
+* **Context Isolation**: Cada diretório raiz (`hub/`, `cortex/`, `renderer/`, `studio/`, `tools/`, `platform/`, `knowledge-base/`) representa um contexto de workspace isolado. Tipos, contratos e configurações são encapsulados localmente, referenciando bibliotecas externas apenas através de limites de pacotes.
+* **Strict Decoupling**: A lógica de negócios do Developer Hub (`hub/`) é desacoplada do Profile Stats Compiler (`renderer/`) e do hub de processamento de IA (`cortex/`).
 
 ---
 
@@ -69,28 +69,28 @@ graph TD
 
 ### Hub Context (`hub/`)
 
-Manages personal portfolio frontend pages, blog operations, contact form persistence, and administrator options. For detailed documentation, see the **[Hub Workspace](/workspaces/hub)**.
+Gerencia páginas de frontend de portfólio pessoal, operações de blog, persistência de formulários de contato e opções de administrador. Para documentação detalhada, consulte o **[Hub Workspace](/workspaces/hub)**.
 
 ### Cortex Context (`cortex/`)
 
-The consolidated AI Bounded Context. Integrates the API gateway proxy, persistent memory indexes, downstream MCP adapters, and sandboxed AI developer terminal sessions. For detailed documentation, see the **[Cortex Workspace](/workspaces/cortex)**.
+O Bounded Context de IA consolidado. Integra o proxy de gateway de API, índices de memória persistente, adaptadores MCP downstream e sessões de terminal de desenvolvedor de IA em sandbox. Para documentação detalhada, consulte o **[Cortex Workspace](/workspaces/cortex)**.
 
 ### Renderer Context (`renderer/`)
 
-An extensible Dynamic Asset Generator and Document Compilation Engine built with TypeScript to compile markdown templates and render SVG charts. For detailed documentation, see the **[Renderer Workspace](/workspaces/renderer)**.
+Um gerador de assets dinâmico e motor de compilação de documentos extensível construído com TypeScript para compilar modelos markdown e renderizar gráficos SVG. Para documentação detalhada, consulte o **[Renderer Workspace](/workspaces/renderer)**.
 
 ### Studio Context (`studio/`)
 
-The single source of truth for visual identity, icons, and shared CSS variables. For detailed documentation, see the **[Studio Workspace](/workspaces/studio)**.
+A única fonte de verdade para identidade visual, ícones e variáveis CSS compartilhadas. Para documentação detalhada, consulte o **[Studio Workspace](/workspaces/studio)**.
 
 ### Tools Context (`tools/`)
 
-The developer automation workspace, isolating command-line tools like Git Flow and GitHub CLI. For detailed documentation, see the **[Tools Workspace](/workspaces/tools)**.
+O workspace de automação de desenvolvedor, isolando ferramentas de linha de comando como Git Flow e GitHub CLI. Para documentação detalhada, consulte o **[Tools Workspace](/workspaces/tools)**.
 
 ### Platform Context (`platform/`)
 
-Orchestrates OpenTelemetry pipelines and remote caching to accelerate developer builds. For detailed documentation, see the **[Platform Workspace](/workspaces/platform)**.
+Orquestra pipelines do OpenTelemetry e cache remoto para acelerar os builds do desenvolvedor. Para documentação detalhada, consulte o **[Platform Workspace](/workspaces/platform)**.
 
 ### Knowledge Base Context (`knowledge-base/`)
 
-The developer documentation hub. For detailed documentation, see the **[Knowledge Base Workspace](/workspaces/knowledge-base)**.
+O hub de documentação para desenvolvedores. Para documentação detalhada, consulte o **[Knowledge Base Workspace](/workspaces/knowledge-base)**.
