@@ -1,28 +1,28 @@
 ---
-title: Contributing
+title: Contribuição
 slug: /contributing
 ---
 
-# Contributing Guide
+# Guia de Contribuição
 
-Contributions to the %PROJECT_NAME% monorepo are welcome. We adhere to rigorous engineering standards to maintain system stability, performance, and portability.
+Contribuições para o monorepo %PROJECT_NAME% são bem-vindas. Aderimos a padrões rigorosos de engenharia para manter a estabilidade, o desempenho e a portabilidade do sistema.
 
-## Code of Conduct
+## Código de Conduta
 
-All contributors, maintainers, and reviewers are expected to uphold respectful, constructive, and inclusive professional communication across all repositories and platforms.
+Espera-se que todos os contribuidores, mantenedores e revisores mantenham uma comunicação profissional respeitosa, construtiva e inclusiva em todos os repositórios e plataformas.
 
-## Development Workflow
+## Workflow de Desenvolvimento
 
-1. **Fork or Branch**: Create a dedicated feature branch from `develop`. Never push directly to `main` or `develop`.
-2. **Package Management**: Always use `pnpm` (version 12+). Do not use `npm` or `yarn`.
-3. **Commit Messages**: Enforce [Conventional Commits](https://www.conventionalcommits.org/) (e.g. `feat:`, `fix:`, `docs:`, `chore:`).
-4. **Validation & Checks**:
-   * Run `pnpm lint` to execute ESLint across workspace packages.
-   * Run `pnpm typecheck` to verify TypeScript compiler correctness.
-   * Run `pnpm format:check` to ensure Prettier compliance.
+1. **Fork ou branch**: Crie uma branch de recurso dedicada a partir de `develop`. Nunca faça push diretamente para `main` ou `develop`.
+2. **Gerenciamento de pacotes**: Utilize sempre `pnpm` (versão 12+). Não utilize `npm` ou `yarn`.
+3. **Mensagens de commit**: Aplique o padrão [Conventional Commits](https://www.conventionalcommits.org/) (por exemplo, `feat:`, `fix:`, `docs:`, `chore:`).
+4. **Validação e Verificações**:
+   * Execute `pnpm lint` para executar o ESLint nos pacotes do workspace.
+   * Execute `pnpm typecheck` para verificar a correção do compilador TypeScript.
+   * Execute `pnpm format:check` para garantir a conformidade com o Prettier.
 
-## Pull Request Lifecycle
+## Ciclo de Vida do Pull Request
 
-* Provide a concise description detailing the motivation, scope of changes, and verification steps.
-* Ensure automated GitHub Actions CI checks pass completely before requesting review.
-* Squash and merge or rebase cleanly onto the target branch according to repository policy.
+* Forneça uma descrição concisa detalhando a motivação, o escopo das alterações e as etapas de verificação.
+* Certifique-se de que as verificações de CI do GitHub Actions sejam concluídas com sucesso antes de solicitar a revisão.
+* Faça squash and merge ou rebase de forma limpa na branch de destino de acordo com a política do repositório.
