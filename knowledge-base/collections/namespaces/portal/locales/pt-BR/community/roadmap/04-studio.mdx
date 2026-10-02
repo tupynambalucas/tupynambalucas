@@ -3,22 +3,22 @@ title: Studio (Design Hub)
 sidebar_label: Studio (Design)
 ---
 
-This section covers the Penpot environment, design-token sync automation, and custom UI asset design.
+Esta seção aborda o ambiente do Penpot, a automação de sincronização de design-tokens e o design de ativos de UI personalizados.
 
-## Completed Milestones
+## Marcos Concluídos
 
-### Collaborative Design Environment
+### Ambiente de Design Colaborativo
 
-* **Self-Hosted Design Hub**: Deployed a containerized Penpot v2 instance (Aide-supported design workspace) inside the `@repo/studio/assets` environment, enabling secure local collaborative styling mockups.
-* **Centralized Design System Packages**: Structured `@repo/studio/assets` to serve as the unified package for brand guidelines, typography styles, spacing configurations, and palette design tokens.
+* **Self-Hosted Design Hub**: Implantação de uma instância em contêiner do Penpot v2 (espaço de trabalho de design compatível com o Aide) dentro do ambiente `@repo/studio/assets`, permitindo mockups de estilização colaborativa locais e seguros.
+* **Centralized Design System Packages**: Estruturação de `@repo/studio/assets` para servir como o pacote unificado para diretrizes de marca, estilos de tipografia, configurações de espaçamento e design tokens de paleta.
 
-### Asset Pipelines
+### Pipelines de Ativos
 
-* **Branding Assets Export**: Standardized export assets (including SVG vectors, logo marks, and color sheets) in the project repositories, providing raw templates for web applications.
-* **Brand Identity Realignment**: Reorganized the assets workspace structure to establish a canonical `brand` namespace (grouping logos, palettes, favicons, banners, guidelines) and renamed the design sources directory from `raw` to `sources`.
-* **Cloud-Based Asset Hosting**: Implemented a bidirectional asset synchronization CLI engine under `@repo/studio/assets/bucket`, enabling seamless replication of brand-identity sources and web-ready assets with Cloudflare R2 Object Storage, eliminating heavy assets from Git history.
+* **Branding Assets Export**: Padronização de ativos exportados (incluindo vetores SVG, marcas de logotipo e folhas de cores) nos repositórios do projeto, fornecendo modelos brutos para aplicações web.
+* **Brand Identity Realignment**: Reorganização da estrutura do espaço de trabalho de ativos para estabelecer um namespace canônico `brand` (agrupando logotipos, paletas, favicons, banners, diretrizes) e renomeação do diretório de fontes de design de `raw` para `sources`.
+* **Cloud-Based Asset Hosting**: Implementação de um mecanismo CLI de sincronização bidirecional de ativos em `@repo/studio/assets/bucket`, permitindo a replicação contínua de fontes de identidade de marca e ativos prontos para a web com o Cloudflare R2 Object Storage, eliminando ativos pesados do histórico do Git.
 
-## Planned Focus
+## Foco Planejado
 
-* **Sync Integration**: Automate the pipeline to sync tokens from Penpot directly into codebase design systems.
-* **Extended Suite Assets**: Design custom marketing and UI asset libraries.
+* **Sync Integration**: Automatização do pipeline para sincronizar tokens do Penpot diretamente nos sistemas de design da base de código.
+* **Extended Suite Assets**: Design de bibliotecas personalizadas de ativos de marketing e UI.
