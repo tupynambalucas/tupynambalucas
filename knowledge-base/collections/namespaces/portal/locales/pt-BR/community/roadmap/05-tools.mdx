@@ -1,0 +1,23 @@
+---
+title: Tools (GitHub Automation)
+sidebar_label: Tools (GitHub)
+---
+
+This section outlines the containerized Git version control and GitHub CLI automation environments.
+
+## Completed Milestones
+
+### Automation Script Integrations
+
+* **TypeScript Root Compilation Scripts**: Integrated scripts (`generate-changelog.ts` and `generate-roadmap.ts`) running natively via `tsx` to compile workspace metrics and change logs directly to root Markdown files.
+
+### Tooling Isolation
+
+* **Git and GitHub CLI Containers**: Deployed container services (`gh` and `git`) that isolate version control identity configurations, SSH credentials, and GitHub extensions from developer host machines.
+* **Workflow Automation**: Configured workspace-scoped scripts to spin up, tear down, and reset git environments cleanly using Docker Compose.
+
+## Planned Focus
+
+* **Credential Synchronization**: Streamline secure PAT credential injection inside local developer Docker volumes.
+* **Pre-commit Type-checking**: Add custom hook checks running from tools CLI containers to prevent invalid types from being pushed.
+* **Monorepo Metadata Synchronization**: Develop an automated synchronization script (e.g., `tools/provisioner/src/sync-metadata.ts`) and integrate it into the Provisioner CLI to automatically update and standardize all workspace `package.json` fields based on `project.config.json` variables.
