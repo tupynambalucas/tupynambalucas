@@ -10,9 +10,9 @@ tags:
 
 ### Centralized Creative & Asset Workspace
 
-O pacote `@repo/studio/assets` serve como o repositório principal para todos os designs de marca, arquivos mestre de projetos brutos e assets de produção compilados e prontos para uso.
+O pacote `@repo/studio/assets` serve como o repositório principal para todos os designs de marca, arquivos mestre brutos de projetos e assets compilados prontos para produção.
 
-Para manter uma separação limpa entre criação e distribuição, o workspace é dividido em duas raízes principais: o diretório `creative/` e o diretório `assets/`.
+Para manter uma clara separação entre criação e distribuição, o workspace é dividido em duas raízes principais: o diretório `creative/` e o diretório `assets/`.
 
 ---
 
@@ -20,9 +20,9 @@ Para manter uma separação limpa entre criação e distribuição, o workspace 
 
 ### A. Raw Design Sources (`creative/`)
 
-O diretório `creative/` atua como nosso cofre de design privado. Ele abriga arquivos de origem brutos de softwares profissionais de produção. Estes arquivos representam o "trabalho em progresso" visual e o histórico do design da marca.
+O diretório `creative/` atua como nosso cofre de design privado. Ele abriga arquivos de origem brutos de softwares profissionais de produção. Estes arquivos representam o "work-in-progress" visual e o histórico do design da marca.
 
-* **Vector Graphics:** Arquivos mestre do Adobe Illustrator (`.ai`) para logotipos, exploração de tipografia e layouts de iconografia.
+* **Vector Graphics:** Arquivos mestre do Adobe Illustrator (`.ai`) para logotipos, exploração tipográfica e layouts de iconografia.
 * **Digital Imaging:** Modelos do Adobe Photoshop (`.psd`) para assets raster de alta fidelidade, mockups e materiais de marketing.
 * **3D Modeling:** Cenas mestre do Blender (`.blend`) para componentes de plataforma e visualizações espaciais (por exemplo, `Avokado.blend`).
 * **Video Editing:** Arquivos de projeto do Adobe Premiere (`.prproj`) para tutoriais e clipes de vídeo de marketing.
@@ -36,8 +36,8 @@ O diretório `creative/` atua como nosso cofre de design privado. Ele abriga arq
 
 O diretório `assets/` contém elementos estáticos finais, otimizados e prontos para a web, consumidos diretamente pelas nossas interfaces de cliente (como `@/hub`) e pipelines.
 
-* **Brand Elements:** Logos vetoriais, favicons, paletas oficiais e PDFs de diretrizes de marca.
-* **UI Elements:** Ícones SVG otimizados (`assets/icons/`) e ilustrações de UI raster (`assets/images/`).
+* **Brand Elements:** Logotipos vetoriais, favicons, paletas oficiais e PDFs de diretrizes de marca.
+* **UI Elements:** Ícones SVG otimizados (`assets/icons/`) e ilustrações raster de UI (`assets/images/`).
 * **3D Models:** Modelos GLB otimizados e mapas de ambiente HDRI (`assets/three/`).
 * **Typography:** Fontes variáveis seguras para a web e arquivos codificados em base64 (`assets/fonts/`).
 * **Styling Tokens:** Variáveis de folha de estilo CSS e constantes TypeScript (`assets/tokens/`).
@@ -45,7 +45,7 @@ O diretório `assets/` contém elementos estáticos finais, otimizados e prontos
 *Tracking & Storage:*
 
 * **Git Strategy:** Híbrido. SVGs leves, wrappers de ícones React, fontes, folhas de estilo e manifestos JSON são commitados no Git. PNGs binários pesados, imagens e arquivos GLB são ignorados.
-* **Cloud Storage:** Os arquivos binários são sincronizados com o bucket público `workspace-assets` e servidos via CDN.
+* **Cloud Storage:** Arquivos binários são sincronizados com o bucket público `workspace-assets` e servidos via CDN.
 
 ---
 
@@ -54,18 +54,18 @@ O diretório `assets/` contém elementos estáticos finais, otimizados e prontos
 A transição de modelos de design brutos dentro de `creative/` para entregáveis compilados dentro de `assets/` segue um pipeline padronizado:
 
 * **SVG Icon Compilation:** Vetores brutos são exportados, limpos e empacotados como componentes React dentro de `assets/icons/`.
-* **3D Assets Compilation:** Arquivos mestre do Blender são processados (baked) e exportados como arquivos GLB otimizados para `assets/three/`.
-* **Tokens Export:** Variáveis de design da marca são compiladas em constantes TypeScript e propriedades personalizadas dentro de `assets/tokens/`.
+* **3D Assets Compilation:** Arquivos mestre do Blender são gerados e exportados como arquivos GLB otimizados para `assets/three/`.
+* **Tokens Export:** Variáveis de design de marca são compiladas em constantes TypeScript e propriedades personalizadas dentro de `assets/tokens/`.
 
 #### Cloudflare R2 Asset Synchronizer
 
-Para manter nosso repositório Git leve, os assets estáticos prontos para produção não são commitados diretamente no codebase. Em vez disso, eles são sincronizados bidirecionalmente com o Cloudflare R2 Object Storage usando nosso pacote sincronizador CLI dedicado `@repo/studio/bucket`.
+Para manter nosso repositório Git leve, os assets estáticos prontos para produção não são commitados diretamente na base de código. Em vez disso, eles são sincronizados bidirecionalmente com o Cloudflare R2 Object Storage usando nosso pacote de sincronização CLI dedicado `@repo/studio/bucket`.
 
-Para obter informações detalhadas sobre nosso ecossistema de buckets, comandos CLI e arquitetura de sincronização, consulte a documentação [Cloudflare R2 Storage & Synchronizer](/workspaces/studio/reference/spec/cloudflare-storage).
+Para informações detalhadas sobre nosso ecossistema de buckets, comandos CLI e arquitetura de sincronização, consulte a documentação [Cloudflare R2 Storage & Synchronizer](/workspaces/studio/reference/spec/cloudflare-storage).
 
 #### Complete Directory Structure
 
-Abaixo está a estrutura de diretórios completa do workspace `studio/`:
+Abaixo está o layout completo do diretório do workspace `studio/`:
 
 ```text
 studio/
@@ -97,29 +97,29 @@ Para manter a consistência, os assets visuais da marca são organizados sob uma
 :::info[Asset Storage Policy]
 
 * **SVG Vector Files:** Commitados diretamente no Git dentro de `studio/design/assets/brand/logos/` (e `assets/brand/favicons/`). Os SVGs são baseados em texto, leves e podem ser compilados como componentes React dinâmicos.
-* **PNG & Binary Files:** Mantidos fora do Git para evitar o inchaço do repositório. Eles são armazenados em `studio/design/assets/brand/` e sincronizados para o bucket CDN do Cloudflare R2 por meio da CLI.
+* **PNG & Binary Files:** Mantidos fora do Git para evitar o inchaço do repositório. Eles são armazenados em `studio/design/assets/brand/` e sincronizados com o bucket CDN do Cloudflare R2 via CLI.
   :::
 
 #### Brand Directory Subfolders
 
 * **`brand/logos/`**: Logotipos vetoriais e raster (por exemplo, `logo-horizontal-positive.svg`, `logo-mark-purple.png`).
-* **`brand/palettes/`**: Arquivos de referência de paleta de cores visuais (por exemplo, `identity-palette.png`).
+* **`brand/palettes/`**: Arquivos de referência de paleta de cores visual (por exemplo, `identity-palette.png`).
 * **`brand/favicons/`**: Favicons de aplicativos e ícones de toque para dispositivos móveis (por exemplo, `favicon.ico`, `apple-touch-icon-gradient.png`).
-* **`brand/banners/`**: Banners oficiais da marca e capas OpenGraph sociais (por exemplo, `banner-github.png`, `og-default.png`).
+* **`brand/banners/`**: Banners oficiais da marca e capas sociais do OpenGraph (por exemplo, `banner-github.png`, `og-default.png`).
 * **`brand/guidelines/`**: Guias de estilo, livretos de marca e manuais de referência.
 
 #### Logo Naming Conventions
 
-Todos os nomes de arquivos de logotipo devem seguir o padrão `logo-[lockup]-[variant].[ext]` usando letras minúsculas e hifens:
+Todos os nomes de arquivos de logotipo devem seguir o padrão `logo-[lockup]-[variant].[ext]` usando letras minúsculas e hífens:
 
 ##### 1. Base Lockups
 
-* **`horizontal`**: Marca d'água/logotipo completo com disposição de texto horizontal.
+* **`horizontal`**: Marca do logotipo completa com arranjo de texto horizontal.
 * **`mark`**: Apenas o símbolo/ícone da marca.
 
 ##### 2. Variants
 
-* **`positive`**: Versão monocromática escura (preto ou cinza escuro) otimizada para fundos claros.
+* **`positive`**: Versão monocromática escura (preto ou cinza escuro) otimizada parafundos claros.
   * *Example:* `logo-horizontal-positive.svg` (React Component: `LogoHorizontalPositive`)
 * **`negative`**: Versão monocromática invertida (branco) otimizada para fundos escuros.
   * *Example:* `logo-horizontal-negative.svg` (React Component: `LogoHorizontalNegative`)
@@ -130,11 +130,11 @@ Todos os nomes de arquivos de logotipo devem seguir o padrão `logo-[lockup]-[va
 * **`expressive`**: Marca de estilo visual artístico para landing pages personalizadas.
   * *Example:* `logo-horizontal-expressive.svg`
 * **`multicolor`**: Múltiplos blocos de cores sólidas lado a lado.
-* **`alt`**: Ajustes especializados de layout ou configurações comemorativas.
+* **`alt`**: Ajustes de layout especializados ou configurações comemorativas.
 
 #### Favicon Naming Conventions
 
-* **Default Canonical**: `favicon.ico` (contêiner de múltiplas resoluções empacotado para suporte padrão a abas).
+* **Default Canonical**: `favicon.ico` (contêiner de múltiplas resoluções empacotado para suporte a abas padrão).
 * **Themed Favicons**: `favicon-[variant].[ext]` (por exemplo, `favicon-positive.ico`, `favicon-gradient.png`).
 * **Platform Specific**: `apple-touch-icon-[variant].png` (ícones de toque da Apple) e `safari-pinned-tab-[variant].svg` (vetores de aba fixada do Safari).
 
@@ -144,17 +144,17 @@ Todos os nomes de arquivos de logotipo devem seguir o padrão `logo-[lockup]-[va
 
 Para eliminar o armazenamento duplicado de arquivos em aplicações consumidoras como `@repo/hub/web`:
 
-* **In Development**: O servidor de desenvolvimento Vite intercepta requisições iniciadas com `/@studio-assets/` e serve os arquivos dinamicamente a partir do diretório do pacote de assets local em sua máquina.
-* **In Production (Build-Time Copying)**: O sistema de build da aplicação usa o `vite-plugin-static-copy` para replicar automaticamente arquivos de `node_modules/@repo/studio/assets/assets/brand/` para o diretório de saída de build `dist/` no momento do empacotamento.
+* **In Development**: O servidor de desenvolvimento Vite intercepta requisições iniciadas com `/@studio-assets/` e serve os arquivos dinamicamente a partir do diretório do pacote de assets local na sua máquina.
+* **In Production (Build-Time Copying)**: O sistema de build da aplicação usa `vite-plugin-static-copy` para replicar automaticamente arquivos de `node_modules/@repo/studio/assets/assets/brand/` para o diretório de saída do build `dist/` no momento do empacotamento.
 
 ---
 
 #### Namespaced Workspace Exports
 
-Pacotes internos acessam creative assets por meio de exports estritamente definidos para garantir o isolamento arquitetural:
+Pacotes internos acessam assets criativos por meio de exports estritamente definidos para garantir o isolamento arquitetural:
 
-* `@repo/studio/assets/icons`: Biblioteca SVG otimizada e registro de componentes Icon com curadoria.
-* `@repo/studio/assets/logos`: Logotipos de marca canônicos.
-* `@repo/studio/assets/brand/*`: Assets centrais da marca (paletas, favicons, banners).
-* `@repo/studio/assets/tokens`: Constantes de design com tipagem estrita para lógica JS/TS.
-* `@repo/studio/assets/theme.css`: Configuração de tema do Tailwind CSS com zero runtime.
+* `@repo/studio/assets/icons`: Biblioteca SVG otimizada e registro de componentes Icon curados.
+* `@repo/studio/assets/logos`: Logotipos canônicos da marca.
+* `@repo/studio/assets/brand/*`: Assets principais da marca (paletas, favicons, banners).
+* `@repo/studio/assets/tokens`: Constantes de design com tipagem forte para lógica JS/TS.
+* `@repo/studio/assets/theme.css`: Configuração de tema Tailwind CSS com zero runtime.
