@@ -10,3 +10,4 @@ files:
     translation: /knowledge-base/collections/namespaces/portal/locales/%locale%/**/%original_file_name%
   - source: /knowledge-base/collections/namespaces/portal/content/messages/**/*.json
     translation: /knowledge-base/collections/namespaces/portal/locales/%locale%/messages/**/%original_file_name%
+    type: chrome
