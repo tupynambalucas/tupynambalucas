@@ -9,6 +9,14 @@ export type CrowdinOptions = {
   collection: string;
 };
 
+// Map Crowdin source folders to Docusaurus i18n expected folders
+const I18N_MAPPING: Record<string, string> = {
+  docs: 'docusaurus-plugin-content-docs/current',
+  community: 'docusaurus-plugin-content-docs-community/current',
+  blog: 'docusaurus-plugin-content-blog',
+  pages: 'docusaurus-plugin-content-pages',
+};
+
 function syncFilesOptimized(src: string, dest: string) {
   if (!fs.existsSync(src)) return;
   if (!fs.existsSync(dest)) {
@@ -45,22 +53,48 @@ export default function pluginCrowdin(context: LoadContext, options: CrowdinOpti
     name: 'docusaurus-plugin-crowdin-unified',
     async loadContent() {
       const { collection } = options;
-      const dest = path.resolve(context.siteDir, 'i18n');
+      const destI18nRoot = path.resolve(context.siteDir, 'i18n');
 
       const collectionsPkg = require.resolve('@monorepo/kb-collections/package.json');
       const collectionsRoot = path.dirname(collectionsPkg);
       const namespacePath = path.join(collectionsRoot, 'namespaces', collection);
-      const source = path.join(namespacePath, 'locales');
+      const sourceLocalesRoot = path.join(namespacePath, 'locales');
 
-      if (!fs.existsSync(source)) {
+      if (!fs.existsSync(sourceLocalesRoot)) {
         console.warn(
-          `[Crowdin Plugin] Locales directory not found at ${source}. Proceeding with default language only.`,
+          `[Crowdin Plugin] Locales directory not found at ${sourceLocalesRoot}. Proceeding with default language only.`,
         );
         return;
       }
 
-      console.info(`[Crowdin Plugin] Synchronizing locales from ${source} to ${dest}...`);
-      syncFilesOptimized(source, dest);
+      console.info(
+        `[Crowdin Plugin] Synchronizing locales from ${sourceLocalesRoot} to ${destI18nRoot}...`,
+      );
+
+      const locales = fs.readdirSync(sourceLocalesRoot, { withFileTypes: true });
+      for (const locale of locales) {
+        if (!locale.isDirectory()) continue;
+        const localeSrcPath = path.join(sourceLocalesRoot, locale.name);
+        const localeDestPath = path.join(destI18nRoot, locale.name);
+
+        const contentTypes = fs.readdirSync(localeSrcPath, { withFileTypes: true });
+        for (const contentType of contentTypes) {
+          if (!contentType.isDirectory()) continue;
+
+          const mappedFolder = I18N_MAPPING[contentType.name];
+          if (mappedFolder) {
+            const mappedSrc = path.join(localeSrcPath, contentType.name);
+            const mappedDest = path.join(localeDestPath, mappedFolder);
+            syncFilesOptimized(mappedSrc, mappedDest);
+          } else {
+            // Fallback for custom or unmapped folders
+            syncFilesOptimized(
+              path.join(localeSrcPath, contentType.name),
+              path.join(localeDestPath, contentType.name),
+            );
+          }
+        }
+      }
     },
   };
 }
