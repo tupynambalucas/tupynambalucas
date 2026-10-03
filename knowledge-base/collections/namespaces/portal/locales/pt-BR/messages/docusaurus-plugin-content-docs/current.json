@@ -44,7 +44,7 @@
     "description": "The label for category 'Tutorials' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.studio-guides": {
-    "message": "Guias Práticos",
+    "message": "Guias práticos",
     "description": "The label for category 'How-To Guides' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.studio-reference": {
@@ -108,7 +108,7 @@
     "description": "The label for category 'Memory MCP' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.cortex-reference-memory.link.generated-index.description": {
-    "message": "Documentação de referência para o serviço de adaptador cortex-memory-mcp — esquemas de ferramentas, design de cliente de API e integração com o subsistema de memória.",
+    "message": "Documentação de referência para o serviço de adaptador cortex-memory-mcp — esquemas de ferramentas, design do cliente de API e integração com o subsistema de memória.",
     "description": "The generated-index page description for category 'Memory MCP' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.Guardrails ExtMCP": {
@@ -124,7 +124,7 @@
     "description": "The label for category 'Infrastructure' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.Infrastructure.link.generated-index.description": {
-    "message": "Orquestração centralizada do Kubernetes e pipeline de deployment GitOps.",
+    "message": "Orquestração centralizada do Kubernetes e pipeline de deploy GitOps.",
     "description": "The generated-index page description for category 'Infrastructure' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.infrastructure-guides": {
@@ -252,7 +252,7 @@
     "description": "The label for category 'Tutorials' in sidebar 'community'"
   },
   "sidebar.community.category.studio-guides": {
-    "message": "Guias Práticos",
+    "message": "Guias práticos",
     "description": "The label for category 'How-To Guides' in sidebar 'community'"
   },
   "sidebar.community.category.studio-reference": {
@@ -316,7 +316,7 @@
     "description": "The label for category 'Memory MCP' in sidebar 'community'"
   },
   "sidebar.community.category.cortex-reference-memory.link.generated-index.description": {
-    "message": "Documentação de referência para o serviço de adaptador cortex-memory-mcp — esquemas de ferramentas, design de cliente de API e integração com o subsistema de memória.",
+    "message": "Documentação de referência para o serviço de adaptador cortex-memory-mcp — esquemas de ferramentas, design do cliente de API e integração com o subsistema de memória.",
     "description": "The generated-index page description for category 'Memory MCP' in sidebar 'community'"
   },
   "sidebar.community.category.Guardrails ExtMCP": {
@@ -332,7 +332,7 @@
     "description": "The label for category 'Infrastructure' in sidebar 'community'"
   },
   "sidebar.community.category.Infrastructure.link.generated-index.description": {
-    "message": "Orquestração centralizada do Kubernetes e pipeline de deployment GitOps.",
+    "message": "Orquestração centralizada do Kubernetes e pipeline de deploy GitOps.",
     "description": "The generated-index page description for category 'Infrastructure' in sidebar 'community'"
   },
   "sidebar.community.category.infrastructure-guides": {
