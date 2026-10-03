@@ -1,0 +1,426 @@
+{
+  "version.label": {
+    "message": "Próximo",
+    "description": "The label for version current"
+  },
+  "sidebar.defaultSidebar.category.handbook-tutorials": {
+    "message": "Tutoriais",
+    "description": "The label for category 'Tutorials' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.handbook-guides": {
+    "message": "Guias práticos",
+    "description": "The label for category 'How-to Guides' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.handbook-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.handbook-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.handbook-explanation-principles": {
+    "message": "Princípios Arquiteturais",
+    "description": "The label for category 'Architectural Principles' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.workspaces": {
+    "message": "workspaces",
+    "description": "The label for category 'workspaces' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.hub": {
+    "message": "Hub",
+    "description": "The label for category 'Hub' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.hub-tutorials": {
+    "message": "Tutoriais",
+    "description": "The label for category 'Tutorials' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio": {
+    "message": "Studio (Design)",
+    "description": "The label for category 'Studio (Design)' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio-tutorials": {
+    "message": "Tutoriais",
+    "description": "The label for category 'Tutorials' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio-guides": {
+    "message": "Guias Práticos",
+    "description": "The label for category 'How-To Guides' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio-reference-spec": {
+    "message": "Especificações",
+    "description": "The label for category 'Specifications' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio-reference-methodology": {
+    "message": "Metodologia",
+    "description": "The label for category 'Methodology' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio-explanation-spec": {
+    "message": "Especificações",
+    "description": "The label for category 'Specifications' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.studio-explanation-methodology": {
+    "message": "Metodologia",
+    "description": "The label for category 'Methodology' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex": {
+    "message": "Cortex (AI Hub)",
+    "description": "The label for category 'Cortex (AI Hub)' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-reference-agentgateway": {
+    "message": "AgentGateway",
+    "description": "The label for category 'AgentGateway' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-reference-agentgateway.link.generated-index.description": {
+    "message": "Referência para o roteamento de proxy de ingress do AgentGateway e validação de políticas.",
+    "description": "The generated-index page description for category 'AgentGateway' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-reference-firecrawl": {
+    "message": "Firecrawl MCP",
+    "description": "The label for category 'Firecrawl MCP' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-reference-firecrawl.link.generated-index.description": {
+    "message": "Documentação de referência para o serviço de adaptador cortex-firecrawl-mcp — esquemas de ferramentas, configuração e padrões de integração.",
+    "description": "The generated-index page description for category 'Firecrawl MCP' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-reference-memory": {
+    "message": "Memory MCP",
+    "description": "The label for category 'Memory MCP' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.cortex-reference-memory.link.generated-index.description": {
+    "message": "Documentação de referência para o serviço de adaptador cortex-memory-mcp — esquemas de ferramentas, design de cliente de API e integração com o subsistema de memória.",
+    "description": "The generated-index page description for category 'Memory MCP' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.Guardrails ExtMCP": {
+    "message": "Guardrails ExtMCP",
+    "description": "The label for category 'Guardrails ExtMCP' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.Guardrails ExtMCP.link.generated-index.description": {
+    "message": "Documentação de referência para o serviço gRPC local cortex-mcp-guardrails.",
+    "description": "The generated-index page description for category 'Guardrails ExtMCP' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.Infrastructure": {
+    "message": "Infrastructure",
+    "description": "The label for category 'Infrastructure' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.Infrastructure.link.generated-index.description": {
+    "message": "Orquestração centralizada do Kubernetes e pipeline de deployment GitOps.",
+    "description": "The generated-index page description for category 'Infrastructure' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.infrastructure-guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.infrastructure-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.infrastructure-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.renderer": {
+    "message": "Renderer (Dynamic Assets)",
+    "description": "The label for category 'Renderer (Dynamic Assets)' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.renderer-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.docs": {
+    "message": "Docs (TupyDocs)",
+    "description": "The label for category 'Docs (TupyDocs)' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.docs-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.docs-explanation-diataxis": {
+    "message": "Documentação Diátaxis",
+    "description": "The label for category 'Documentação Diátaxis' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.docs-guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.docs-guides-diataxis": {
+    "message": "Documentação Diátaxis",
+    "description": "The label for category 'Documentação Diátaxis' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.docs-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.docs-reference-diataxis": {
+    "message": "Documentação Diátaxis",
+    "description": "The label for category 'Documentação Diátaxis' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.docs-tutorials": {
+    "message": "Tutoriais",
+    "description": "The label for category 'Tutorials' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.platform": {
+    "message": "Platform (Infrastructure)",
+    "description": "The label for category 'Platform (Infrastructure)' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.shared": {
+    "message": "Shared (Global)",
+    "description": "The label for category 'Shared (Global)' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.AI Agents Configuration": {
+    "message": "Configuração de AI Agents",
+    "description": "The label for category 'AI Agents Configuration' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.AI Agents Configuration.link.generated-index.description": {
+    "message": "Domínio autoritativo para configurações de agentic AI, skills, plugins e scripts de manipulação de repositório.",
+    "description": "The generated-index page description for category 'AI Agents Configuration' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.agents-guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.agents-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.agents-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.defaultSidebar.category.tools": {
+    "message": "Ferramentas (GitHub Automation)",
+    "description": "The label for category 'Tools (GitHub Automation)' in sidebar 'defaultSidebar'"
+  },
+  "sidebar.community.category.handbook-tutorials": {
+    "message": "Tutoriais",
+    "description": "The label for category 'Tutorials' in sidebar 'community'"
+  },
+  "sidebar.community.category.handbook-guides": {
+    "message": "Guias práticos",
+    "description": "The label for category 'How-to Guides' in sidebar 'community'"
+  },
+  "sidebar.community.category.handbook-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'community'"
+  },
+  "sidebar.community.category.handbook-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'community'"
+  },
+  "sidebar.community.category.handbook-explanation-principles": {
+    "message": "Princípios Arquiteturais",
+    "description": "The label for category 'Architectural Principles' in sidebar 'community'"
+  },
+  "sidebar.community.category.workspaces": {
+    "message": "workspaces",
+    "description": "The label for category 'workspaces' in sidebar 'community'"
+  },
+  "sidebar.community.category.hub": {
+    "message": "Hub",
+    "description": "The label for category 'Hub' in sidebar 'community'"
+  },
+  "sidebar.community.category.hub-tutorials": {
+    "message": "Tutoriais",
+    "description": "The label for category 'Tutorials' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio": {
+    "message": "Studio (Design)",
+    "description": "The label for category 'Studio (Design)' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio-tutorials": {
+    "message": "Tutoriais",
+    "description": "The label for category 'Tutorials' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio-guides": {
+    "message": "Guias Práticos",
+    "description": "The label for category 'How-To Guides' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio-reference-spec": {
+    "message": "Especificações",
+    "description": "The label for category 'Specifications' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio-reference-methodology": {
+    "message": "Metodologia",
+    "description": "The label for category 'Methodology' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio-explanation-spec": {
+    "message": "Especificações",
+    "description": "The label for category 'Specifications' in sidebar 'community'"
+  },
+  "sidebar.community.category.studio-explanation-methodology": {
+    "message": "Metodologia",
+    "description": "The label for category 'Methodology' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex": {
+    "message": "Cortex (AI Hub)",
+    "description": "The label for category 'Cortex (AI Hub)' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-reference-agentgateway": {
+    "message": "AgentGateway",
+    "description": "The label for category 'AgentGateway' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-reference-agentgateway.link.generated-index.description": {
+    "message": "Referência para o roteamento de proxy de ingress do AgentGateway e validação de políticas.",
+    "description": "The generated-index page description for category 'AgentGateway' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-reference-firecrawl": {
+    "message": "Firecrawl MCP",
+    "description": "The label for category 'Firecrawl MCP' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-reference-firecrawl.link.generated-index.description": {
+    "message": "Documentação de referência para o serviço de adaptador cortex-firecrawl-mcp — esquemas de ferramentas, configuração e padrões de integração.",
+    "description": "The generated-index page description for category 'Firecrawl MCP' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-reference-memory": {
+    "message": "Memory MCP",
+    "description": "The label for category 'Memory MCP' in sidebar 'community'"
+  },
+  "sidebar.community.category.cortex-reference-memory.link.generated-index.description": {
+    "message": "Documentação de referência para o serviço de adaptador cortex-memory-mcp — esquemas de ferramentas, design de cliente de API e integração com o subsistema de memória.",
+    "description": "The generated-index page description for category 'Memory MCP' in sidebar 'community'"
+  },
+  "sidebar.community.category.Guardrails ExtMCP": {
+    "message": "Guardrails ExtMCP",
+    "description": "The label for category 'Guardrails ExtMCP' in sidebar 'community'"
+  },
+  "sidebar.community.category.Guardrails ExtMCP.link.generated-index.description": {
+    "message": "Documentação de referência para o serviço gRPC local cortex-mcp-guardrails.",
+    "description": "The generated-index page description for category 'Guardrails ExtMCP' in sidebar 'community'"
+  },
+  "sidebar.community.category.Infrastructure": {
+    "message": "Infrastructure",
+    "description": "The label for category 'Infrastructure' in sidebar 'community'"
+  },
+  "sidebar.community.category.Infrastructure.link.generated-index.description": {
+    "message": "Orquestração centralizada do Kubernetes e pipeline de deployment GitOps.",
+    "description": "The generated-index page description for category 'Infrastructure' in sidebar 'community'"
+  },
+  "sidebar.community.category.infrastructure-guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'community'"
+  },
+  "sidebar.community.category.infrastructure-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'community'"
+  },
+  "sidebar.community.category.infrastructure-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'community'"
+  },
+  "sidebar.community.category.renderer": {
+    "message": "Renderer (Dynamic Assets)",
+    "description": "The label for category 'Renderer (Dynamic Assets)' in sidebar 'community'"
+  },
+  "sidebar.community.category.renderer-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'community'"
+  },
+  "sidebar.community.category.docs": {
+    "message": "Docs (TupyDocs)",
+    "description": "The label for category 'Docs (TupyDocs)' in sidebar 'community'"
+  },
+  "sidebar.community.category.docs-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'community'"
+  },
+  "sidebar.community.category.docs-explanation-diataxis": {
+    "message": "Documentação Diátaxis",
+    "description": "The label for category 'Documentação Diátaxis' in sidebar 'community'"
+  },
+  "sidebar.community.category.docs-guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'community'"
+  },
+  "sidebar.community.category.docs-guides-diataxis": {
+    "message": "Documentação Diátaxis",
+    "description": "The label for category 'Documentação Diátaxis' in sidebar 'community'"
+  },
+  "sidebar.community.category.docs-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'community'"
+  },
+  "sidebar.community.category.docs-reference-diataxis": {
+    "message": "Documentação Diátaxis",
+    "description": "The label for category 'Documentação Diátaxis' in sidebar 'community'"
+  },
+  "sidebar.community.category.docs-tutorials": {
+    "message": "Tutoriais",
+    "description": "The label for category 'Tutorials' in sidebar 'community'"
+  },
+  "sidebar.community.category.platform": {
+    "message": "Platform (Infrastructure)",
+    "description": "The label for category 'Platform (Infrastructure)' in sidebar 'community'"
+  },
+  "sidebar.community.category.shared": {
+    "message": "Shared (Global)",
+    "description": "The label for category 'Shared (Global)' in sidebar 'community'"
+  },
+  "sidebar.community.category.AI Agents Configuration": {
+    "message": "Configuração de AI Agents",
+    "description": "The label for category 'AI Agents Configuration' in sidebar 'community'"
+  },
+  "sidebar.community.category.AI Agents Configuration.link.generated-index.description": {
+    "message": "Domínio autoritativo para configurações de agentic AI, skills, plugins e scripts de manipulação de repositório.",
+    "description": "The generated-index page description for category 'AI Agents Configuration' in sidebar 'community'"
+  },
+  "sidebar.community.category.agents-guides": {
+    "message": "Guias",
+    "description": "The label for category 'Guides' in sidebar 'community'"
+  },
+  "sidebar.community.category.agents-reference": {
+    "message": "Referência",
+    "description": "The label for category 'Reference' in sidebar 'community'"
+  },
+  "sidebar.community.category.agents-explanation": {
+    "message": "Explicação",
+    "description": "The label for category 'Explanation' in sidebar 'community'"
+  },
+  "sidebar.community.category.tools": {
+    "message": "Ferramentas (GitHub Automation)",
+    "description": "The label for category 'Tools (GitHub Automation)' in sidebar 'community'"
+  },
+  "sidebar.community.link.Changelog": {
+    "message": "Changelog",
+    "description": "The label for link 'Changelog' in sidebar 'community', linking to '/changelog'"
+  }
+}
