@@ -20,11 +20,11 @@ Antes de criar um arquivo `AGENTS.md`, identifique a camada de destino:
 
 ---
 
-## 2. Workflow passo a passo de criação
+## 2. Workflow de criação passo a passo
 
 ### Passo 1: Adicione a diretiva de hierarquia de contexto
 
-Para arquivos da Camada 2 e Camada 3, coloque o bloco XML `\<context-hierarchy>` bem no topo:
+Para arquivos da Camada 2 e da Camada 3, coloque o bloco XML `\<context-hierarchy>` bem no topo:
 
 ```xml
 <context-hierarchy>
@@ -36,9 +36,9 @@ Para arquivos da Camada 2 e Camada 3, coloque o bloco XML `\<context-hierarchy>`
 </context-hierarchy>
 ```
 
-### Passo 2: Defina a linguagem ubíqua (apenas na Camada 2)
+### Passo 2: Defina a linguagem ubíqua (apenas para a Camada 2)
 
-Inclua uma tabela definindo termos de domínio e sinônimos proibidos:
+Inclua uma tabela definindo os termos do domínio e sinônimos proibidos:
 
 ```markdown
 ## Ubiquitous Language
@@ -63,7 +63,7 @@ Use palavras-chave imperativas estritas (`MUST`, `NEVER`, `ALWAYS`) em vez de pr
 
 ### Passo 5: Formate com o Prettier
 
-Execute o Prettier para formatar blocos de markdown e código:
+Execute o Prettier para formatar o markdown e os blocos de código:
 
 ```bash
 pnpm exec prettier --write <path/to/AGENTS.md>
