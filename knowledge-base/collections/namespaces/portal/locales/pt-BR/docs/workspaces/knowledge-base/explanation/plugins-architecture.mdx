@@ -4,29 +4,29 @@ sidebar_label: Arquitetura de Plugins
 sidebar_position: 1
 ---
 
-# Arquitetura de Plugins da Documentação
+# Arquitetura de Plugins de Documentação
 
-O workspace de documentação `%PROJECT_DOMAIN%` é alimentado estritamente pelo Docusaurus v3 e usa uma combinação de padrões padrão do React e transformadores avançados de Árvore de Sintaxe Abstrata (AST).
+O workspace de documentação `%PROJECT_DOMAIN%` é alimentado estritamente pelo Docusaurus v3 e utiliza uma combinação de padrões padrão do React e transformadores avançados de Árvore de Sintaxe Abstrata (AST).
 
 ---
 
 ## 1. Wrappers de Plugins de Domínio (Arquitetura SSOT)
 
-Para impor a **Single Source of Truth (SSOT)** e manter um `docusaurus.config.ts` limpo, o monorepo usa um Preset Customizado do Docusaurus (`@/docs/preset/`). Este preset é o núcleo autoritativo que encapsula e configura todos os motores de documentação subjacentes.
+Para aplicar o **Single Source of Truth (SSOT)** e manter um `docusaurus.config.ts` limpo, o monorepo utiliza um Preset Customizado do Docusaurus (`@/docs/preset/`). Este preset é o núcleo autoritativo que encapsula e configura todos os motores de documentação subjacentes.
 
-Em vez de declarar os plugins principais do Docusaurus diretamente no array de presets, usamos **Wrappers de Plugins de Domínio** (localizados em `preset/plugins/`):
+Em vez de declarar os plugins principais do Docusaurus diretamente no array de presets, utilizamos **Wrappers de Plugins de Domínio** (localizados em `preset/plugins/`):
 
 * `content-docs`
 * `content-blog`
 * `content-pages`
 
-### O Ciclo de Vida dos Wrappers
+### O Ciclo de Vida do Wrapper
 
-Cada wrapper de domínio importa o plugin nativo do Docusaurus (por exemplo, `@docusaurus/plugin-content-docs`), mescla dinamicamente nossas regras corporativas e, em seguida, invoca o plugin nativo. Isso garante que **todas** as instâncias de documentação — seja o manual principal, o roadmap ou as especificações dos workspaces — sejam forçadas a passar automaticamente pelas nossas pipelines de sanitização e injeção de AST.
+Cada wrapper de domínio importa o plugin nativo do Docusaurus (por exemplo, `@docusaurus/plugin-content-docs`), mescla dinamicamente nossas regras corporativas e, em seguida, invoca o plugin nativo. Isso garante que **todas** as instâncias de documentação — seja o manual principal, o roadmap ou as especificações de workspaces — sejam forçadas a passar automaticamente pelos nossos pipelines de sanitização e injeção de AST.
 
-1. **Validação de Opções**: Os wrappers reexportam `validateOptions` para atender aos validadores estritos de esquema do Docusaurus.
-2. **Injeção de AST**: Os wrappers anexam automaticamente o plugin personalizado `remark-project-variables` ao array `remarkPlugins`.
-3. **Preservação de Contexto**: Os wrappers retornam o nome original exato (por exemplo, `docusaurus-plugin-content-docs`) para garantir que os componentes de UI do React resolvam corretamente os dados de contexto global durante a Geração do Lado do Servidor (SSG).
+1. **Validação de Opções**: Os wrappers reexportam `validateOptions` para atender aos validadores de esquema estritos do Docusaurus.
+2. **Injeção de AST**: Os wrappers anexam automaticamente o plugin customizado `remark-project-variables` ao array `remarkPlugins`.
+3. **Preservação de Contexto**: Os wrappers retornam exatamente o nome original (por exemplo, `docusaurus-plugin-content-docs`) para garantir que os componentes de UI do React resolvam corretamente os dados de contexto global durante a Geração do Lado do Servidor (SSG).
 
 ---
 
@@ -36,9 +36,9 @@ Para manter um **monorepo genérico e pronto para copiar e colar**, a documenta�
 
 ### Como Funciona
 
-1. **Transformação de AST**: O plugin personalizado `remark-project-variables` se conecta à pipeline de compilação MDX unificada/remark.
-2. **Intercepção de Nó de Texto**: Ele percorre a AST do Markdown (`mdast`) usando `unist-util-visit`.
-3. **Resolução de Valores**: Ele intercepta nós dos tipos `text`, `inlineCode`, `link` e `image`, e busca por padrões como `%PROJECT_DOMAIN%`.
+1. **Transformação de AST**: O plugin customizado `remark-project-variables` se conecta ao pipeline de compilação MDX do unified/remark.
+2. **Intercepção de Nó de Texto**: Ele percorre a AST do Markdown (`mdast`) utilizando `unist-util-visit`.
+3. **Resolução de Valores**: Ele intercepta nós do tipo `text`, `inlineCode`, `link` e `image`, e busca por padrões como `%PROJECT_DOMAIN%`.
 4. **Substituição**: Ele substitui esses tokens por valores reais obtidos de uma única fonte de verdade (`project.config.json`) *antes* que o MDX seja compilado em React JSX.
 
-Esta arquitetura garante que os embeddings de RAG de IA (como os vetores de `cortex/memory`) processem os arquivos de origem **agnósticos**, evitando alucinações de marca quando o repositório for bifurcado (forked) ou aplicado a novos clientes.
+Esta arquitetura garante que os embeddings de IA RAG (como os vetores de `cortex/memory`) ingeriram os arquivos de origem **agnósticos**, evitando a alucinação de marcas quando o repositório for bifurcado ou aplicado a novos clientes.
