@@ -12,12 +12,12 @@ Este guia detalha como configurar sua estação de trabalho Windows local para e
 
 ## 1. Pré-requisitos
 
-Para testes locais no Kubernetes, validação de roteamento e deployment pipelines, usamos `minikube`, `kubectl` e `skaffold` instalados no host com o driver `podman` para recarregamento dinâmico em tempo de execução (hot-reloading) e deploy de cluster.
+Para testes locais no Kubernetes, validação de roteamento e pipelines de deploy, usamos `minikube`, `kubectl` e `skaffold` instalados no host com o driver `podman` para recarregamento dinâmico em tempo real e deploy em cluster.
 
 Instale as seguintes ferramentas em seu host Windows:
 
-* **kubectl**: Ferramenta de CLI para executar comandos em clusters Kubernetes.
-* **Skaffold**: Automatiza pipelines de build e deploy com recursos de recarregamento dinâmico (hot-reloading).
+* **kubectl**: Ferramenta CLI para executar comandos em clusters do Kubernetes.
+* **Skaffold**: Automatiza pipelines de build e deploy com recursos de recarregamento dinâmico.
 * **OpenLens**: Cliente visual de monitoramento de cluster.
 * **Minikube CLI**: Provisiona nós de cluster Kubernetes locais dentro do Podman.
 
@@ -27,8 +27,8 @@ Instale as seguintes ferramentas em seu host Windows:
 winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
 ```
 
-:::warning[Evite Executar o Skaffold via Containers]
-Embora você possa executar o Skaffold dentro de um container, isso requer a montagem de sockets de container e o remapeamento de hosts internos. Além disso, a sincronização de arquivos em tempo real frequentemente falha ao propagar eventos do sistema de arquivos através de limites de containers. Por esse motivo, a instalação do binário nativo do Skaffold localmente é estritamente obrigatória.
+:::warning[Evite Executar o Skaffold via Contêineres]
+Embora você possa executar o Skaffold dentro de um contêiner, isso exige a montagem de sockets de contêiner e o remapeamento de hosts internos. Além disso, a sincronização de arquivos em tempo real geralmente falha ao propagar eventos do sistema de arquivos através de limites de contêiner. Por esse motivo, a instalação do binário nativo do Skaffold localmente é estritamente obrigatória.
 :::
 
 ---
@@ -49,7 +49,7 @@ Isso executa o comando subjacente:
 minikube start --driver=podman --mount --mount-string ".:/workspace"
 ```
 
-:::info[Minikube Tunnel]
+:::info[Túnel do Minikube]
 
 ```bash
 pnpm minikube:tunnel
@@ -61,68 +61,68 @@ pnpm minikube:tunnel
 
 ## 3. Visualizando o Cluster
 
-Para monitorar o consumo de recursos, inspecionar logs e gerenciar namespaces visualmente, usamos o **OpenLens** ou o **Podman Desktop** no host Windows.
+Para monitorar o consumo de recursos, inspecionar logs e gerenciar namespaces visualmente, use o **OpenLens** ou o **Podman Desktop** no host Windows.
 
 1. Defina o contexto ativo para o perfil do Minikube em seu terminal:
    ```bash
    kubectl config use-context minikube
    ```
 2. Abra o **OpenLens** ou o **Podman Desktop**.
-3. Selecione o contexto do cluster chamado **minikube**.
+3. Selecione o contexto de cluster chamado **minikube**.
 
 ---
 
 ## 4. Orquestração Profissional com o Skaffold
 
-Usamos o **Skaffold** para automatizar os pipelines de build, deploy e recarregamento dinâmico (hot-reloading).
+Usamos o **Skaffold** para automatizar os pipelines de build, deploy e recarregamento dinâmico em tempo real.
 
 ### Iniciando o Cluster e os Workspaces
 
 Fornecemos scripts simplificados no `package.json` raiz para gerenciar o ciclo de vida:
 
-1. **Deploy and Run in the Background**:
+1. **Deploy e Execução em Segundo Plano**:
    Para compilar todas as imagens e fazer o deploy de todos os componentes de plataforma e cortex para o Minikube:
 
    ```bash
    pnpm infra:up
    ```
 
-2. **Continuous Development Mode (Live Hot-Reloading)**:
-   Para executar o Skaffold em modo de desenvolvimento, monitorando alterações no código-fonte e recarregando o código dinamicamente dentro dos pods em execução:
+2. **Modo de Desenvolvimento Contínuo (Recarregamento Dinâmico em Tempo Real)**:
+   Para executar o Skaffold em modo de desenvolvimento, monitorando alterações no código-fonte e recarregando o código automaticamente dentro dos pods em execução:
 
    ```bash
    pnpm infra:dev
    ```
 
-3. **Workspace Module Isolation**:
+3. **Isolamento de Módulo de Workspace**:
    Você pode fazer o deploy de workspaces específicos de forma independente para economizar recursos:
-   * **Deploy Cortex Only**: `pnpm infra:cortex:dev`
-   * **Deploy Platform Only**: `pnpm infra:platform:dev`
-   * **Deploy Studio Only**: `pnpm infra:studio:dev`
+   * **Fazer o deploy apenas do Cortex**: `pnpm infra:cortex:dev`
+   * **Fazer o deploy apenas da Plataforma**: `pnpm infra:platform:dev`
+   * **Fazer o deploy apenas do Studio**: `pnpm infra:studio:dev`
 
-4. **Stop and Clean Up**:
+4. **Parar e Limpar**:
    Para remover todos os recursos, namespaces e workloads implantados pelo Skaffold:
    ```bash
    pnpm infra:clean
    ```
 
-### Encaminhamento de Portas Local (Port Forwarding)
+### Encaminhamento de Porta Local
 
-O Skaffold configura automaticamente túneis de encaminhamento de porta direcionados aos **Services** do Kubernetes dentro do cluster, em vez de Pods efêmeros. Isso garante mapeamentos de porta locais estáveis que sobrevivem a reinicializações de containers.
+O Skaffold configura automaticamente túneis de encaminhamento de porta direcionados a **Services** do Kubernetes dentro do cluster, em vez de Pods efêmeros. Isso garante mapeamentos de porta locais estáveis que sobrevivem a reinicializações de contêineres.
 
-| Service              | Local Port | Namespace | Purpose                        |
-| :------------------- | :--------- | :-------- | :----------------------------- |
-| `agentgateway`       | `8080`     | `cortex`  | Unified MCP Ingress            |
-| `agentgateway admin` | `15000`    | `cortex`  | Gateway Management Web UI      |
-| `memory-api`         | `3006`     | `cortex`  | Memory Service REST API        |
-| `memory-web`         | `9006`     | `cortex`  | Frontend do Serviço de Memória |
-| `mcp-inspector`      | `6274`     | `cortex`  | MCP Inspector Sandbox          |
+| Service              | Local Port | Namespace | Purpose                   |
+| :------------------- | :--------- | :-------- | :------------------------ |
+| `agentgateway`       | `8080`     | `cortex`  | Unified MCP Ingress       |
+| `agentgateway admin` | `15000`    | `cortex`  | Gateway Management Web UI |
+| `memory-api`         | `3006`     | `cortex`  | Memory Service REST API   |
+| `memory-web`         | `9006`     | `cortex`  | Memory Service Frontend   |
+| `mcp-inspector`      | `6274`     | `cortex`  | MCP Inspector Sandbox     |
 
 ---
 
-## 5. Conectividade com a Antigravity CLI
+## 5. Conectividade da Antigravity CLI
 
-A **Antigravity CLI** conecta-se ao proxy de entrada (ingress) do Cortex (`agentgateway`) usando o endpoint do Cloudflare Tunnel definido em `.agents/mcp_config.json`:
+A **Antigravity CLI** conecta-se ao proxy de entrada do Cortex (`agentgateway`) usando o endpoint do túnel do Cloudflare definido em `.agents/mcp_config.json`:
 
 ```json
 "agentgateway": {
@@ -131,12 +131,12 @@ A **Antigravity CLI** conecta-se ao proxy de entrada (ingress) do Cortex (`agent
 }
 ```
 
-Esta configuração de cliente permite a descoberta e execução contínuas de ferramentas MCP em ambientes de host local e estações de trabalho de desenvolvedores remotos em qualquer rede:
+Esta configuração de cliente permite a descoberta e execução contínuas de ferramentas MCP em ambientes de host local e estações de trabalho de desenvolvedor remotas em qualquer rede:
 
-* **Cloudflare Tunnel Mode**: O tráfego é roteado com segurança via `cloudflared` para o Service `agentgateway` dentro do Minikube, sem a necessidade de encaminhamento de porta local ou modificações em `/etc/hosts`.
-* **Local Fallback Mode**: Ao trabalhar offline, o Skaffold encaminha a porta do Service `agentgateway` para `localhost:8080`.
+* **Modo Túnel do Cloudflare**: O tráfego é roteado com segurança via `cloudflared` para o Service `agentgateway` dentro do Minikube, sem exigir encaminhamento de porta local ou modificações no `/etc/hosts`.
+* **Modo de Fallback Local**: Ao trabalhar offline, o Skaffold encaminha a porta do Service `agentgateway` para `localhost:8080`.
 
-O `agentgateway` intercepta o payload JSON-RPC recebido, executa-o através das diretrizes de segurança (guardrails) CEL configuradas (via `mcp-guardrails` na porta `9001`) e o roteia para o microsserviço de destino com base nos alvos definidos em `cortex/gateway/config.yaml`.
+O `agentgateway` intercepta o payload JSON-RPC de entrada, executa-o por meio de guardrails CEL configurados (via `mcp-guardrails` na porta `9001`) e o roteia para o microsserviço de destino com base nos alvos definidos em `cortex/gateway/config.yaml`.
 
 ---
 
@@ -144,7 +144,7 @@ O `agentgateway` intercepta o payload JSON-RPC recebido, executa-o através das 
 
 Cada contexto de workspace gerencia seus próprios arquivos de ambiente em `\<workspace>/.env` ou `infrastructure/.env`.
 
-O Skaffold usa scripts do `dotenv-cli` para injetar esses valores como configurações de ambiente de build, que são então empacotadas em secrets do Kubernetes via Kustomize:
+O Skaffold usa scripts do `dotenv-cli` para injetar esses valores como configurações de ambiente de build, que são então empacotadas em segredos do Kubernetes por meio do Kustomize:
 
 ```yaml
 # infrastructure/manifests/cortex-memory.yaml (example)
@@ -156,7 +156,7 @@ secretGenerator:
       - .env
 ```
 
-:::warning[Conflito de Variáveis de Ambiente no Service do Kubernetes]
+:::warning[Colisão de Variáveis de Ambiente de Service do Kubernetes]
 
-Se sua aplicação tentar analisar `process.env.MCP_MEMORY_PORT` como um número de porta, ela retornará `NaN` e sofrerá falha (crash). Para evitar esse conflito, sempre adicione um prefixo ou renomeie as variáveis de ambiente de porta específicas da aplicação (por exemplo, use `MEMORY_MCP_PORT` em vez de `MCP_MEMORY_PORT`).
+Se sua aplicação tentar analisar `process.env.MCP_MEMORY_PORT` como um número de porta, ela retornará `NaN` e falhará. Para evitar essa colisão, sempre adicione um prefixo ou renomeie as variáveis de ambiente de porta específicas da aplicação (por exemplo, use `MEMORY_MCP_PORT` em vez de `MCP_MEMORY_PORT`).
 :::
