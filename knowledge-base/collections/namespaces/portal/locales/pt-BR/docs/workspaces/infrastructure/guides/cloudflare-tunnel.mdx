@@ -1,11 +1,11 @@
 ---
-title: Configuração de Cloudflare Tunnel & Access
-description: Como configurar o Cloudflare Tunnel (cloudflared) e as políticas do Cloudflare Zero Trust Access para roteamento de entrada seguro no Kubernetes.
+title: Configuração do Cloudflare Tunnel & Access
+description: Como configurar o Cloudflare Tunnel (`cloudflared`) e as políticas do Cloudflare Zero Trust Access para roteamento seguro de entrada no Kubernetes.
 ---
 
-# Configuração de Cloudflare Tunnel & Access
+# Configuração do Cloudflare Tunnel & Access
 
-Este guia detalha como configurar o **Cloudflare Tunnel** (`cloudflared`) e o **Cloudflare Zero Trust Access** para expor ambientes de desenvolvimento Kubernetes locais e remotos de forma segura via HTTPS confiável pelo navegador, sem modificar `/etc/hosts` ou abrir portas de roteador de entrada.
+Este guia detalha como configurar o **Cloudflare Tunnel** (`cloudflared`) e o **Cloudflare Zero Trust Access** para expor ambientes de desenvolvimento Kubernetes locais e remotos de forma segura via HTTPS confiável pelo navegador, sem modificar `/etc/hosts` ou abrir portas de entrada no roteador.
 
 ---
 
@@ -28,9 +28,9 @@ Para especificações técnicas completas sobre terminação TLS de borda, esque
 
 ---
 
-## 2. Rotas de Nome de Domínio Público
+## 2. Rotas de Hostname Público
 
-Na aba **Public Hostnames** da configuração do seu túnel, registre as seguintes rotas apontando para o Serviço Traefik Ingress Controller interno (`http://traefik.platform.svc.cluster.local:80`):
+Na aba **Public Hostnames** da configuração do seu túnel, registre as seguintes rotas apontando para o Serviço do Traefik Ingress Controller interno (`http://traefik.platform.svc.cluster.local:80`):
 
 | Subdomínio             | Domínio            | Tipo de Serviço | URL do Serviço                          | Caminho |
 | :--------------------- | :----------------- | :-------------- | :-------------------------------------- | :------ |
@@ -43,8 +43,8 @@ Na aba **Public Hostnames** da configuração do seu túnel, registre as seguint
 | `traefik-dev`          | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
 | `turbocache-dev`       | `%PROJECT_DOMAIN%` | `HTTP`          | `traefik.platform.svc.cluster.local:80` | `/`     |
 
-:::tip[Alternativa de Nome de Domínio Curinga Único]
-Em vez de criar nomes de domínio públicos individuais, você pode registrar um único nome de domínio público curinga `*.development` apontando para `http://traefik.platform.svc.cluster.local:80`.
+:::tip[Alternativa de Hostname com Curinga Único]
+Em vez de criar hostnames públicos individuais, você pode registrar um único hostname público curinga `*.development` apontando para `http://traefik.platform.svc.cluster.local:80`.
 :::
 
 ---
@@ -75,13 +75,13 @@ Para proteger os endpoints de desenvolvimento contra acesso público não autori
 
 1. No Cloudflare Zero Trust, navegue até **Access** -> **Applications** -> **Add an Application** -> **Self-hosted**.
 2. Atribua o domínio público (por exemplo, `grafana.development.%PROJECT_DOMAIN%`).
-3. Adicione uma política de **Allow** restringindo o acesso a endereços de e-mail de desenvolvedores autorizados via **One-Time PIN (OTP)**.
+3. Adicione uma política de **Allow** restringindo o acesso aos endereços de e-mail de desenvolvedores autorizados via **One-Time PIN (OTP)**.
 
-### IA Agent & MCP Ingress (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`)
+### AI Agent & MCP Ingress (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`)
 
 :::warning[Evitando Redirecionamentos de Login para Clientes Automatizados]
-Agentes de IA (como Antigravity, Cursor e ferramentas de CLI) se comunicam via streams JSON-RPC / SSE e não conseguem processar redirecionamentos interativos de login de navegador web.
+Agentes de IA (como Antigravity, Cursor e ferramentas CLI) se comunicam via fluxos JSON-RPC / SSE e não conseguem processar redirecionamentos interativos de login de navegadores web.
 :::
 
 1. Para `agentgateway-mcp-dev.%PROJECT_DOMAIN%`, configure uma Access Policy com **Action: Bypass** ou atribua um **Service Token** e defina o caminho do túnel como `/mcp`.
-2. Isso garante que clientes sem navegador possam trocar payloads diretamente, enquanto a segurança interna é aplicada por meio de guardrails CEL do AgentGateway e tokens de API.
+2. Isso garante que clientes que não usam navegador possam trocar payloads diretamente, enquanto a segurança interna é aplicada por meio de proteções CEL do AgentGateway e tokens de API.
