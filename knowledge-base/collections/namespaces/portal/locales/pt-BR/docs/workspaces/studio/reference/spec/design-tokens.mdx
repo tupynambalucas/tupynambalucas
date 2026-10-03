@@ -10,28 +10,27 @@ tags:
 
 ### Brand Design Tokens & Typography
 
-This document serves as the single source of truth for the technical design constants, color
-palettes, typography rules, and stylesheet integrations of the `%PROJECT_DOMAIN%` project.
+Este documento serve como a única fonte de verdade para as constantes de design técnico, paletas de cores, regras de tipografia e integrações de folhas de estilo do projeto `%PROJECT_DOMAIN%`.
 
 ---
 
 ## 1. Color Palette Tokens
 
-The system utilizes a developer-first dark mode default palette, supported by system colors representing type safety, compiler alerts, and logical hierarchies.
+O sistema utiliza uma paleta padrão no modo escuro voltada para desenvolvedores, suportada por cores do sistema que representam segurança de tipos, alertas do compilador e hierarquias lógicas.
 
-| Color Name       | Hex Code  | Visual Role   | Meaning & Strategic Use                                                    |
-| :--------------- | :-------- | :------------ | :------------------------------------------------------------------------- |
-| **Deep Indigo**  | `#4C4D9A` | Primary       | Represents backend stability, logic-first architecture, and system depths. |
-| **Royal Blue**   | `#2E55A3` | Secondary     | Represents type safety, network integrations, and continuous telemetry.    |
-| **Dusty Violet** | `#AA77A7` | Accent/CTA    | Highlights compiler alerts, interactive triggers, and key technical links. |
-| **Deep Dark**    | `#0F0F0F` | Surface Dark  | Default background color, mimicking modern developer IDE workspaces.       |
-| **Light Ice**    | `#F6F6F7` | Surface Light | Base light background for high-contrast print or daytime readability.      |
+| Color Name       | Hex Code  | Visual Role   | Meaning & Strategic Use                                                                           |
+| :--------------- | :-------- | :------------ | :------------------------------------------------------------------------------------------------ |
+| **Deep Indigo**  | `#4C4D9A` | Primary       | Representa a estabilidade do backend, arquitetura focada em lógica e as profundidades do sistema. |
+| **Royal Blue**   | `#2E55A3` | Secondary     | Representa segurança de tipos, integrações de rede e telemetria contínua.                         |
+| **Dusty Violet** | `#AA77A7` | Accent/CTA    | Destaca alertas do compilador, gatilhos interativos e links técnicos principais.                  |
+| **Deep Dark**    | `#0F0F0F` | Surface Dark  | Cor de fundo padrão, imitando workspaces de IDEs de desenvolvedores modernos.                     |
+| **Light Ice**    | `#F6F6F7` | Surface Light | Fundo claro base para impressão de alto contraste ou legibilidade diurna.                         |
 
 ---
 
 ## 2. Typography Specifications
 
-Typography is a critical structural element of the brand. We utilize a highly legible, variable-weight type family optimized for code and technical content.
+A tipografia é um elemento estrutural crítico da marca. Utilizamos uma família tipográfica de peso variável e alta legibilidade, otimizada para códigos e conteúdo técnico.
 
 * **Primary Font Family**: `Nunito`
 * **Format**: Variable Font (`woff2` container).
@@ -39,10 +38,10 @@ Typography is a critical structural element of the brand. We utilize a highly le
 
 ### Base64 Font Injection
 
-To ensure visual charts, GitHub Profile cards, and dynamically rendered SVG documents render with absolute pixel fidelity inside sandboxed HTML frames (which block external CDN font fetching):
+Para garantir que gráficos visuais, cartões do perfil do GitHub e documentos SVG renderizados dinamicamente sejam exibidos com fidelidade absoluta de pixels dentro de frames HTML isolados em sandbox (que bloqueiam a busca de fontes em CDNs externas):
 
-* All variable `Nunito` font assets are base64-encoded and embedded directly within the SVG style headers.
-* This zero-dependency font integration guarantees that our brand typography renders correctly in any sandboxed environment.
+* Todos os assets da fonte variável `Nunito` são codificados em base64 e embutidos diretamente nos cabeçalhos de estilo SVG.
+* Esta integração de fontes sem dependências garante que a tipografia da nossa marca seja renderizada corretamente em qualquer ambiente em sandbox.
 
 ---
 
@@ -50,7 +49,7 @@ To ensure visual charts, GitHub Profile cards, and dynamically rendered SVG docu
 
 ### JS/TS Design Tokens
 
-The colors, weights, and grids are defined in the design tokens library for consumption in TypeScript codebases:
+As cores, pesos e grades são definidos na biblioteca de design tokens para consumo em bases de código TypeScript:
 
 ```typescript
 // studio/design/assets/tokens/colors.ts
@@ -63,11 +62,11 @@ export const colors = {
 };
 ```
 
-These tokens govern our web client, renderer engine pipelines, and UI packages, ensuring complete alignment with our designs.
+Estes tokens governam nosso cliente web, pipelines do motor de renderização e pacotes de UI, garantindo alinhamento completo com nossos designs.
 
 ### CSS Theme Configuration
 
-Consuming packages import the stylesheets from the design package to load custom font variables:
+Os pacotes consumidores importam as folhas de estilo do pacote de design para carregar variáveis de fontes personalizadas:
 
 ```css
 @import '@repo/studio/assets/tokens.css';
