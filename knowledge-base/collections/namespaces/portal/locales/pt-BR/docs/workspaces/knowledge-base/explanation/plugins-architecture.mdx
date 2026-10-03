@@ -42,3 +42,19 @@ Para manter um **monorepo genérico e pronto para copiar e colar**, a documenta�
 4. **Substituição**: Ele substitui esses tokens por valores reais obtidos de uma única fonte de verdade (`project.config.json`) *antes* que o MDX seja compilado em React JSX.
 
 Esta arquitetura garante que os embeddings de IA RAG (como os vetores de `cortex/memory`) ingeriram os arquivos de origem **agnósticos**, evitando a alucinação de marcas quando o repositório for bifurcado ou aplicado a novos clientes.
+
+---
+
+## 3. Coleções Dinâmicas e Localização (L10n)
+
+Para suportar múltiplas instâncias de conteúdo e localização contínua orientada por GitOps, o monorepo implementa um **Locales Sync Plugin** dinâmico (`preset/plugins/locales-sync/`).
+
+### O Ciclo de Vida Dinâmico
+
+Em vez de verificar manualmente templates de interface do Docusaurus traduzidos e caminhos codificados de forma fixa, o `docusaurus.config.ts` usa uma propriedade `collection` personalizada no formato `[namespace]/[content]` (por exemplo, `portal/docs`):
+
+1. **Orquestração de Preset**: O Preset Personalizado intercepta as configurações de `docs` e `blog`, calcula o `path` absoluto para os arquivos markdown (`collections/namespaces/[namespace]/content/[content]`) e o injeta dinamicamente no engine.
+2. **Extração de Tradução**: O comando nativo do Docusaurus `write-translations` gera arquivos JSON de i18n do Chrome (como `code.json`, `theme/navbar.json`) que são armazenados com segurança em `collections/namespaces/[namespace]/content/messages/`.
+3. **Descompactação em Tempo de Compilação**: Durante a pipeline `kb:docusaurus:portal:build`, o `plugin-locales-sync` lê dinamicamente as pastas sincronizadas `locales/[locale]/` e as mapeia de volta para o formato nativo do engine do Docusaurus dentro de `i18n/[locale]/docusaurus-plugin-content-[type]-[id]/`.
+
+Este plugin garante a separação completa entre o conteúdo traduzido e o engine executável do Docusaurus, operando inteiramente com base em convenções de pastas do GitOps, sem mapeamentos codificados de forma fixa.
