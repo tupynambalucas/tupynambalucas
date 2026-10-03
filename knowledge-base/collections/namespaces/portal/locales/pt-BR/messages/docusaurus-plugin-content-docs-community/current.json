@@ -8,7 +8,7 @@
     "description": "The label for category 'Roadmap' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.Roadmap.link.generated-index.description": {
-    "message": "Exploração, planos de arquitetura e progresso de marcos em workspaces de monorepo.",
+    "message": "Exploração, planos de arquitetura e progresso de marcos através de workspaces do monorepo.",
     "description": "The generated-index page description for category 'Roadmap' in sidebar 'defaultSidebar'"
   },
   "sidebar.community.category.Roadmap": {
@@ -16,7 +16,7 @@
     "description": "The label for category 'Roadmap' in sidebar 'community'"
   },
   "sidebar.community.category.Roadmap.link.generated-index.description": {
-    "message": "Exploração, planos de arquitetura e progresso de marcos em workspaces de monorepo.",
+    "message": "Exploração, planos de arquitetura e progresso de marcos através de workspaces do monorepo.",
     "description": "The generated-index page description for category 'Roadmap' in sidebar 'community'"
   },
   "sidebar.community.link.Changelog": {
