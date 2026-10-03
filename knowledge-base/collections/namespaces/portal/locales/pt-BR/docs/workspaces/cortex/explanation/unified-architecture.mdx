@@ -1,5 +1,5 @@
 ---
-title: Arquitetura de IA Unificada e Sandboxing
+title: Arquitetura de IA Unificada & Sandboxing
 sidebar_label: Arquitetura Unificada
 sidebar_position: 1
 diataxis_type: explanation
@@ -12,9 +12,9 @@ O Workspace Cortex consolida todas as operações de inteligência artificial em
 
 ---
 
-## 1. Topologia de Rede e Isolamento
+## 1. Topologia de Rede & Isolamento
 
-Todos os serviços do Cortex são executados dentro do namespace `cortex` do Kubernetes. O tráfego de entrada entra através do Traefik (implantado no namespace `platform`) e é roteado através do AgentGateway antes de alcançar qualquer pod MCP downstream ou o subsistema de memória.
+Todos os serviços do Cortex executam dentro do namespace `cortex` do Kubernetes. O tráfego de entrada entra através do Traefik (deployed no namespace `platform`) e é roteado através do AgentGateway antes de alcançar qualquer pod MCP downstream ou o subsistema de memória.
 
 ```mermaid
 graph TD
@@ -62,8 +62,8 @@ graph TD
 
 ### Modelo de Isolamento
 
-* Toda a comunicação entre serviços usa nomes DNS do Kubernetes (por exemplo, `memory-api:3006`, `agentgateway:8080`). Nenhum serviço expõe uma NodePort diretamente para o host, exceto durante sessões locais de desenvolvimento com o Skaffold.
-* Os pods MCP downstream e os pods do Subsistema de Memória só são alcançáveis por meio do AgentGateway ou das IngressRoutes do Traefik. Nenhum acesso direto de pod para pod a partir de containers de agentes é permitido.
+* Toda a comunicação entre serviços utiliza nomes DNS do Kubernetes (por exemplo, `memory-api:3006`, `agentgateway:8080`). Nenhum serviço expõe um NodePort diretamente para o host, exceto durante sessões locais de desenvolvimento com o Skaffold.
+* Os pods MCP downstream e os pods do subsistema de memória só são alcançáveis através do AgentGateway ou das IngressRoutes do Traefik. Nenhum acesso direto de pod para pod a partir de containers de agentes é permitido.
 * O namespace `platform` hospeda o Traefik, o OpenTelemetry Collector e a pilha do Grafana. Os dados de telemetria fluem dos pods do Cortex para o namespace platform via OTLP.
 
 ---
@@ -99,16 +99,16 @@ cortex/
 
 ---
 
-## 3. Roteamento de Ingress e Federação de Ferramentas
+## 3. Roteamento de Ingress & Federação de Ferramentas
 
 O **AgentGateway** é o único ponto de entrada para todas as chamadas de ferramentas de IA. Ele valida, enriquece e roteia requisições através do seguinte pipeline:
 
 1. **Cloudflare Tunnel -> Traefik**: O tráfego HTTPS público entra através de um Cloudflare Tunnel que termina no Traefik Ingress Controller no namespace `platform`.
-2. **Traefik -> AgentGateway**: Uma IngressRoute encaminha o tráfego da API do agente para o pod do AgentGateway na porta `8080`.
-3. **ExtMCP Guardrails**: O AgentGateway delega cada requisição `tools/call` para o sidecar gRPC `mcp-guardrails`, que:
+2. **Traefik -> AgentGateway**: Uma IngressRoute encaminha o tráfego da API de agentes para o pod do AgentGateway na porta `8080`.
+3. **ExtMCP Guardrails**: O AgentGateway delega cada requisição `tools/call` para o sidecar gRPC `mcp-guardrails`, o qual:
    * Percorre recursivamente os argumentos da ferramenta e reescreve strings `localhost` / `127.0.0.1` para `host.docker.internal` como um proxy de rede transparente.
    * Retorna `{ pass: {} }` em qualquer exceção de parsing (contrato fail-open).
-4. **Despacho Downstream**: Requisições validadas são encaminhadas para o pod de adaptador MCP apropriado (por exemplo, `mcp-firecrawl`, `mcp-memory`) via DNS de serviço do Kubernetes.
+4. **Despacho Downstream**: Requisições validadas são encaminhadas para o pod adaptado de MCP apropriado (por exemplo, `mcp-firecrawl`, `mcp-memory`) via DNS de serviço do Kubernetes.
 
 ### Configuração de Ferramentas em Containers de Agentes
 
@@ -122,4 +122,4 @@ Os containers de agentes referenciam o AgentGateway como o único endpoint MCP:
 }
 ```
 
-O AgentGateway federada a requisição para o pod MCP downstream correto de forma transparente. Os agentes não precisam de URLs de serviços individuais.
+O AgentGateway federada a requisição para o pod MCP downstream correto de forma transparente. Os agentes não precisam de URLs de serviço individuais.
