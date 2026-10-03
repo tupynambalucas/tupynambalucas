@@ -9,17 +9,17 @@ tags:
   - platform
 ---
 
-O workspace da plataforma gerencia os serviços de backend operacionais que dão suporte à agregação de telemetria e ao cache de build para o desenvolvimento local e pipelines de CI/CD.
+O workspace Platform gerencia os serviços operacionais de backend que dão suporte à agregação de telemetria e ao cache de build para o desenvolvimento local e pipelines de CI/CD.
 
 ---
 
 ## Visão Geral da Arquitetura
 
-O workspace da plataforma gerencia três serviços de runtime principais:
+O workspace platform gerencia três serviços de runtime principais:
 
-1. **traefik**: O controlador de ingress do cluster e API Gateway, que gerencia o ingress de clientes externos e o roteamento interno entre serviços.
+1. **traefik**: O controlador de entrada (ingress) do cluster e API Gateway, que gerencia o tráfego de entrada de clientes externos e o roteamento interno entre serviços.
 2. **otel-collector**: Um OpenTelemetry Collector que agrega métricas de telemetria, logs e rastreamentos distribuídos, exportando-os para o Sentry e o Grafana Cloud.
-3. **turbocache**: Um servidor de cache remoto de alto desempenho que armazena artefatos de build e teste do Turborepo para acelerar os pipelines de compilação dos desenvolvedores.
+3. **turbocache**: Um servidor de cache remoto de alto desempenho que armazena artefatos de build e testes do Turborepo para acelerar os pipelines de compilação dos desenvolvedores.
 
 ---
 
@@ -42,12 +42,12 @@ platform/
 ## Diretrizes da Plataforma
 
 :::info[Independência de Serviços]
-Os serviços neste workspace devem expor endpoints genéricos e evitar acoplamento rígido com a lógica de aplicações específicas.
+Os serviços neste workspace devem expor endpoints genéricos e evitar forte acoplamento com a lógica de aplicações específicas.
 :::
 
 * **Orquestração com Docker**: Inicie sempre os serviços utilizando os comandos escopados definidos abaixo. Nunca execute dependências de containers manualmente.
-* **Telemetria Interna**: O OpenTelemetry Collector (`otel-collector`) serve como o ponto de entrada único para a telemetria do desenvolvedor. Todas as aplicações da plataforma em runtime DEVEM encaminhar estatísticas usando os protocolos OTLP.
-* **Persistência de Volumes**: Os arquivos de cache do Turborepo e os diretórios de estado do OpenTelemetry devem ser mapeados para diretórios do host local para evitar perda de dados entre reestruturações de build.
+* **Telemetria Interna**: O OpenTelemetry Collector (`otel-collector`) serve como o ponto de entrada único para a telemetria dos desenvolvedores. Todas as aplicações de plataforma em runtime DEVEM encaminhar estatísticas usando protocolos OTLP.
+* **Persistência de Volumes**: Os arquivos de cache do Turborepo e os diretórios de estado do OpenTelemetry devem ser mapeados para diretórios do host local para evitar perda de dados entre recompilações.
 
 ---
 
