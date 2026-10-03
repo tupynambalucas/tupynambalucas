@@ -14,36 +14,36 @@ O workspace do Renderer possui um mecanismo de compilação de modelos Markdown 
 
 ## Fluxo de Pipeline Extensível
 
-O mecanismo compila documentos utilizando pipelines desacoplados em conformidade com o Princípio Aberto/Fechado (SOLID). Pipelines padrão, como o `github-renderer.pipeline.ts`, orquestram o processo de compilação de documentos:
+O mecanismo compila documentos utilizando pipelines desacoplados que seguem o Princípio Aberto/Fechado (SOLID). Pipelines padrão, como o `github-renderer.pipeline.ts`, orquestram o processo de compilação de documentos:
 
-1. **Execução de Pipeline**: O executor principal (`src/index.ts`) inicializa os pipelines ativos registrados.
+1. **Execução do Pipeline**: O executor principal (`src/index.ts`) inicia os pipelines ativos registrados.
 2. **Análise de Modelo**: Lê modelos brutos, como `src/templates/docs/README.template.md` e os modelos de cartão SVG.
-3. **Substituição de Tokens**: Verifica marcadores de posição com chaves duplas (`\{\{ variable \}\}`) e os substitui por dados resolvidos pelo pipeline.
-4. **Codificação de Tipografia**: Codifica em base64 o arquivo de fonte local **Nunito**, incorporando-o como um `@font-face` embutido dentro de elementos SVG. Isso contorna o restrito sandbox de imagens HTML do GitHub e renderiza o texto com fidelidade de marca perfeita ao nível de pixel.
+3. **Substituição de Token**: Verifica espaços reservados com chaves duplas (`\{\{ variable \}\}`) e os substitui por dados resolvidos pelo pipeline.
+4. **Codificação de Tipografia**: Codifica em base64 o arquivo de fonte local **Nunito**, incorporando-o como um `@font-face` embutido dentro de elementos SVG. Isso contorna o sandbox restrito de imagens HTML do GitHub e renderiza o texto com fidelidade de marca perfeita ao nível de pixel.
 5. **Gravação de Saída**: Compila e gera tanto cartões SVG planos quanto arquivos `.md` textuais finais na raiz do monorepo ou nos diretórios de destino do pacote.
 
 ---
 
 ## Referência de Tokens
 
-Os seguintes marcadores de posição são suportados dentro do modelo README padrão e são substituídos dinamicamente:
+Os seguintes espaços reservados são suportados dentro do modelo README padrão e são substituídos dinamicamente:
 
 * **`\{\{ name \}\}`**: O nome de exibição ou login do desenvolvedor.
 * **`\{\{ user \}\}`**: O nome de usuário/login do GitHub.
 * **`\{\{ contributions \}\}`**: Total de commits, issues, pull requests e revisões de código.
-* **`\{\{ stars \}\}`**: Contagem agregada de stargazers em todos os repositórios contabilizados.
+* **`\{\{ stars \}\}`**: Contagem agregada de estrelas em todos os repositórios contabilizados.
 * **`\{\{ forks \}\}`**: Contagem agregada de forks em todos os repositórios contabilizados.
 * **`\{\{ lines_changed \}\}`**: Adições e exclusões agregadas de código.
-* **`\{\{ views \}\}`**: Soma de visualizações de tráfego das últimas duas semanas.
-* **`\{\{ repos \}\}`**: Número de repositórios ativos aos quais contribuiu.
+* **`\{\{ views \}\}`**: Soma das visualizações de tráfego das últimas duas semanas.
+* **`\{\{ repos \}\}`**: Número de repositórios ativos nos quais houve contribuição.
 
 ---
 
-## Integração de Picture HTML com Tema Duplo
+## Integração de Picture HTML com Tema Dual
 
-Para suportar os esquemas de cores claro e escuro do GitHub nativamente em um único documento markdown, o `README.md` compilado utiliza elementos HTML `\<picture>` padrão.
+Para suportar os esquemas de cores claro e escuro do GitHub nativamente em um único documento Markdown, o `README.md` compilado utiliza elementos HTML `\<picture>` padrão.
 
-Durante a compilação, o pipeline gera SVGs claros e escuros separados em `generated/cards/` (cópias planas: `overview-light.svg`, `overview-dark.svg`, `header-light.svg`, `header-dark.svg`), que são embutidos no markdown da seguinte forma:
+Durante a compilação, o pipeline gera SVGs separados para claro e escuro em `generated/cards/` (cópias planas: `overview-light.svg`, `overview-dark.svg`, `header-light.svg`, `header-dark.svg`), que são embutidos no Markdown da seguinte forma:
 
 ```html
 <picture>
@@ -59,8 +59,8 @@ Durante a compilação, o pipeline gera SVGs claros e escuros separados em `gene
 </picture>
 ```
 
-Quando o GitHub renderiza a página de perfil:
+Quando o GitHub renderiza a página do perfil:
 
 * **Modo Escuro**: Resolve para o cartão `overview-dark.svg`, renderizando fundo escuro e cores baseadas em tokens.
 * **Modo Claro**: Resolve para o cartão `overview-light.svg`, exibindo cores claras de alto contraste.
-* Esta abordagem evita o uso de hashes de URL frágeis (`#gh-dark-mode-only`) e baseia-se no isolamento de arquivos limpo e nativo para segurança absoluta na renderização.
+* Esta abordagem evita o uso de hashes de URL frágeis (`#gh-dark-mode-only`) e baseia-se no isolamento de arquivos nativo e limpo para absoluta segurança de renderização.
