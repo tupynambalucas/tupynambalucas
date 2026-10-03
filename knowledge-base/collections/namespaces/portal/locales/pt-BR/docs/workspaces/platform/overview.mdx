@@ -1,0 +1,62 @@
+---
+title: Visão Geral do Workspace da Plataforma
+sidebar_label: Visão Geral
+sidebar_position: 1
+slug: /platform
+diataxis_type: overview
+workspace: platform
+tags:
+  - platform
+---
+
+O workspace Platform gerencia os serviços operacionais de backend que dão suporte à agregação de telemetria e ao cache de build para o desenvolvimento local e pipelines de CI/CD.
+
+---
+
+## Visão Geral da Arquitetura
+
+O workspace platform gerencia três serviços de runtime principais:
+
+1. **traefik**: O controlador de entrada (ingress) do cluster e API Gateway, que gerencia o tráfego de entrada de clientes externos e o roteamento interno entre serviços.
+2. **otel-collector**: Um OpenTelemetry Collector que agrega métricas de telemetria, logs e rastreamentos distribuídos, exportando-os para o Sentry e o Grafana Cloud.
+3. **turbocache**: Um servidor de cache remoto de alto desempenho que armazena artefatos de build e testes do Turborepo para acelerar os pipelines de compilação dos desenvolvedores.
+
+---
+
+## Estrutura de Diretórios
+
+```text
+platform/
+├── infrastructure/
+│   ├── docker/          # Docker Compose configurations (compose.yaml)
+│   └── kubernetes/      # Kubernetes manifests (traefik, otel, turbocache)
+├── services/
+│   ├── monitor/         # Configuration schemas for the OTLP Collector
+│   └── turbocache/      # Dockerfiles and caching logic
+├── package.json         # Workspace package manifest with platform commands
+└── AGENTS.md            # Scoped developer and AI guidelines
+```
+
+---
+
+## Diretrizes da Plataforma
+
+:::info[Independência de Serviços]
+Os serviços neste workspace devem expor endpoints genéricos e evitar forte acoplamento com a lógica de aplicações específicas.
+:::
+
+* **Orquestração com Docker**: Inicie sempre os serviços utilizando os comandos escopados definidos abaixo. Nunca execute dependências de containers manualmente.
+* **Telemetria Interna**: O OpenTelemetry Collector (`otel-collector`) serve como o ponto de entrada único para a telemetria dos desenvolvedores. Todas as aplicações de plataforma em runtime DEVEM encaminhar estatísticas usando protocolos OTLP.
+* **Persistência de Volumes**: Os arquivos de cache do Turborepo e os diretórios de estado do OpenTelemetry devem ser mapeados para diretórios do host local para evitar perda de dados entre recompilações.
+
+---
+
+## Operações Locais
+
+Todas as operações são executadas a partir do diretório raiz do repositório:
+
+| Ação                | Comando               |
+| :------------------ | :-------------------- |
+| **Iniciar Stack**   | `pnpm platform:up`    |
+| **Parar Stack**     | `pnpm platform:down`  |
+| **Redefinir Dados** | `pnpm platform:reset` |

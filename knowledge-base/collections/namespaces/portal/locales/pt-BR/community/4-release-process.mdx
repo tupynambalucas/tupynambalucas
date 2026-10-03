@@ -1,0 +1,37 @@
+---
+title: Processo de Release
+slug: /release-process
+---
+
+# Processo de Release
+
+Este documento descreve como o %PROJECT_NAME% gerencia versionamento, releases de pacotes, geração de changelog e breaking changes em workspaces de monorepo.
+
+## Semantic Versioning
+
+Todas as bibliotecas, APIs e serviços de container do workspace seguem o [Semantic Versioning (SemVer)](https://semver.org/):
+
+* **MAJOR (`x.0.0`)**: Introduzido em mudanças arquiteturais drásticas, descontinuações de APIs públicas ou esquemas incompatíveis com versões anteriores.
+* **MINOR (`0.x.0`)**: Introduzido em novos recursos, endpoints de API adicionais ou adições de funcionalidade compatíveis com versões anteriores.
+* **PATCH (`0.0.x`)**: Introduzido em correções de bugs, patches de segurança, atualizações de dependências e otimizações internas de desempenho.
+
+## Changesets Workflow
+
+Utilizamos o `@changesets/cli` para rastrear e automatizar incrementos de versão de pacotes:
+
+1. **Declarar Mudanças**: Ao introduzir alterações visíveis para o usuário ou entre pacotes, gere um changeset:
+   ```bash
+   pnpm version:changeset
+   ```
+2. **Selecionar Pacotes e Tipos de Incremento**: Especifique se os pacotes exigem incrementos de versão `patch`, `minor` ou `major`.
+3. **Versionamento Automatizado**: Durante os ciclos de release, o Changesets consome as entradas de changelog declaradas, atualiza os manifests do `package.json` e gera notas de release:
+   ```bash
+   pnpm version:bump
+   ```
+
+## Pipelines de Deploy Automatizados
+
+Os workflows do GitHub Actions compõem, empacotam e fazem o deploy de artefatos automaticamente após o merge em branchs de release:
+
+* **Documentação**: Construída e implantada via Cloudflare Pages ou serviços de portal conteinerizados.
+* **Microsserviços**: Conteinerizados usando Podman/Docker e implantados em clusters do Kubernetes de destino por meio de manifests do Skaffold e Helm.

@@ -1,0 +1,120 @@
+---
+title: Local Development Setup
+description: Siga estas etapas para colocar o monorepo %PROJECT_DOMAIN% em execução em sua máquina.
+---
+
+# Local Development Setup
+
+Neste tutorial, configure o monorepo %PROJECT_DOMAIN% em sua máquina local. Ao final desta lição, o ambiente de desenvolvimento completo estará em execução e pronto para a criação de recursos.
+
+## Prerequisites
+
+Antes de começar, certifique-se de ter os seguintes itens instalados:
+
+* Node.js version 22
+* PNPM version 11
+* Podman Desktop + Podman CLI + Compose Extension (instead of Docker)
+* Minikube and kubectl (for Kubernetes cluster mode)
+* Skaffold (for Kubernetes deployment pipelines and hot-reloading)
+* Git
+
+---
+
+## Step 1: Clone the Repository
+
+Primeiro, clone o repositório em seu workspace local e acesse-o.
+
+```bash
+git clone https://github.com/%GITHUB_ORG%/%GITHUB_REPO%.git
+cd workspace
+```
+
+Você deve ver uma estrutura de diretórios contendo pastas como `docs`, `hub`, `cortex`, `renderer`, `studio`, `platform` e `tools`.
+
+---
+
+## Step 2: Install Dependencies
+
+Em seguida, instale as dependências do projeto. Como este é um monorepo, utilize o PNPM para instalar tudo de uma vez.
+
+Execute o seguinte comando:
+
+```bash
+pnpm install
+```
+
+Quando o processo terminar, uma saída confirmará que as dependências estão vinculadas ao armazenamento de conteúdo endereçable.
+
+---
+
+## Step 3: Configure Environment Variables
+
+Cada workspace gerencia sua própria configuração local. Copie os arquivos de modelo `.env.example` para criar os arquivos de ambiente ativos:
+
+```bash
+# Set up Infrastructure environment variables
+cp infrastructure/.env.example infrastructure/.env
+
+# Set up Hub environment variables
+cp hub/.env.example hub/.env
+```
+
+:::info[Open and Edit Configuration]
+Abra os arquivos `.env` recém-criados e adicione os tokens necessários (por exemplo, `CLOUDFLARE_TUNNEL_TOKEN`) para acessar os serviços em nuvem.
+:::
+
+---
+
+## Step 4: Configure Podman Machine
+
+Antes de iniciar qualquer carga de trabalho de contêiner, inicialize e inicie a máquina Podman padrão (que será usada pelo Minikube):
+
+```bash
+podman machine init
+podman machine start
+```
+
+Verifique se o mecanismo de contêiner está ativo:
+
+```bash
+podman info
+```
+
+---
+
+## Step 5: Start the Infrastructure
+
+Para compilar todos os contêineres e deploy do stack completo em seu cluster Minikube local:
+
+```bash
+pnpm minikube:up
+pnpm infra:dev
+```
+
+Este comando irá:
+
+1. Start the Minikube cluster.
+2. Trigger Skaffold to build all required images.
+3. Hydrate Kustomize manifests.
+4. Deploy as camadas Platform, Cortex e Studio.
+5. Stream logs and hot-reload code changes automatically.
+
+---
+
+## Step 6: Verify Access
+
+Assim que os serviços estiverem em execução, verifique o acesso por meio das rotas de borda do Cloudflare (ou `localhost` se estiver executando offline):
+
+* **Grafana**: `https://grafana-dev.%PROJECT_DOMAIN%`
+* **AgentGateway**: `https://agentgateway-mcp-dev.%PROJECT_DOMAIN%`
+* **Penpot**: `https://penpot-dev.%PROJECT_DOMAIN%`
+
+---
+
+## Next Steps
+
+Para obter detalhes aprofundados sobre a configuração de túneis de rede do Minikube, encaminhamento de porta do Skaffold e resolução de variáveis de ambiente, consulte o [Local Development Setup Guide](/workspaces/infrastructure/guides/local-development).
+
+## Conclusion
+
+Parabéns! Você clonou o repositório com sucesso, configurou as variáveis de ambiente, iniciou o Minikube e lançou a infraestrutura do Kubernetes local. Agora você está totalmente equipado para começar a construir e contribuir com o projeto.

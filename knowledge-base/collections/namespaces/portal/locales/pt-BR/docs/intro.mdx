@@ -1,0 +1,259 @@
+---
+title: Introdução
+description: Introdução e visão geral do projeto.
+sidebar_position: 1
+---
+
+import DocCardList from '@theme/DocCardList';
+
+# %PROJECT_DOMAIN% Monorepo
+
+Este repositório é um monorepo que contém um gerador de estatísticas de perfil de desenvolvedor, site/hub pessoal, ferramentas de desenvolvedor, design tokens e documentação.
+
+---
+
+## 1. Visão Geral do Produto e Proposta de Valor
+
+O monorepo coordena o site pessoal do desenvolvedor (`hub`), visualizações de estatísticas automatizadas (`renderer`), sistemas de design (`studio`), hub de processamento de IA (`cortex`) e ferramentas de automação (`tools`).
+
+A principal aplicação voltada para o cliente é o **Developer Hub** (`@repo/hub/*`):
+
+| Para Visitantes                                                                           | Para o Desenvolvedor (Admin)                                                     |
+| :---------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
+| **Portfólio**: Visualize projetos, arquiteturas de código e destaques.                    | **Publicação de Blog**: Publique artigos técnicos e estudos de caso.             |
+| **Formulário de Contato**: Envie mensagens ou consultas de consultoria com segurança.     | **Coleta de Leads**: Gerencie submissões e dados do painel.                      |
+| **Catálogo de Serviços**: Solicite serviços de desenvolvimento de software personalizado. | **Automação de Perfil**: Atualize automaticamente as métricas do GitHub via Zig. |
+
+---
+
+## 2. Fluxo Operacional
+
+O site de portfólio e o gerador de estatísticas operam em um workflow simplificado:
+
+1. **Apresentação do Portfólio**: Os visitantes exploram o frontend `@repo/hub/web`, consumindo postagens de blog e destaques de projetos servidos por `@repo/hub/api`.
+2. **Envio de Contato**: As entradas do formulário são validadas por meio de chaves anti-spam do Turnstile, serializadas usando esquemas Zod de `@repo/hub/core` e persistidas em uma instância do MongoDB.
+3. **Geração de Estatísticas do Renderer**: O workspace `@/renderer` compila as métricas do GitHub usando uma CLI nativa em Zig e sobrescreve dinamicamente o arquivo `README.md` raiz.
+
+---
+
+## 3. Estratégia de Hospedagem e Deploy
+
+O monorepo utiliza o Cloudflare e ambientes de VPS padrão para operação de zero manutenção e alto desempenho.
+
+### Infraestrutura e Hospedagem
+
+* **Cloudflare Pages**: O hub de documentação do Docusaurus (`docs/`) e o frontend de SPA React do desenvolvedor (`hub/services/web`) são deployed para o Cloudflare Pages para entrega otimizada via CDN.
+* **Hetzner Cloud VPS / Linux VPS**: A REST API do backend Fastify (`hub/services/api`) e as pilhas do compose do MongoDB/Redis são executadas em uma instância de VPS leve.
+* **DNS & SSL**: O roteamento de DNS e a proteção de proxy são gerenciados globalmente por meio do Cloudflare.
+
+---
+
+## 4. Arquitetura e Workspaces do Monorepo
+
+Utilizamos **PNPM Workspaces** com um layout de **Raiz Orientada a Contexto** para isolar nossos domínios.
+
+Para obter um detalhamento abrangente da nossa filosofia de contexto, estrutura de diretórios e funções de aplicação, leia nossos guias arquiteturais dedicados:
+
+<DocCardList
+items={[
+  {
+    type: 'link',
+    href: '/docs/explanation/bounded-contexts',
+    label: 'Bounded Context Architecture',
+    description:
+      'Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles.',
+  },
+  {
+    type: 'link',
+    href: '/docs/explanation/architecture-overview',
+    label: 'Architecture Overview',
+    description: 'Comprehensive technical stack and monorepo strategy overview.',
+  },
+]}
+/>
+
+---
+
+## 5. Workspaces Independentes
+
+Nossa prioridade é o deploy e a manutenção de:
+
+* **`@repo/hub/*`**: Hub pessoal em React/Fastify.
+* **`@/renderer`**: Compilador de estatísticas de perfil do GitHub baseado em Zig.
+
+---
+
+## 6. Início Rápido
+
+Certifique-se de ter **Node.js 22+**, **PNPM 11+**, **Zig**, **Podman** (com a extensão Compose), **Minikube** e **Skaffold** instalados.
+
+1. **Instale as Dependências:**
+
+   ```bash
+   pnpm install
+   ```
+
+2. **Configure os Arquivos de Ambiente:**
+   Cada workspace e serviço possui seu próprio arquivo de ambiente. Copie os modelos de exemplo e adicione seus parâmetros locais:
+
+   ```bash
+   # Cortex configuration
+   cp cortex/infrastructure/.env.example cortex/infrastructure/.env
+
+   # Hub configuration
+   cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
+   ```
+
+3. **Inicie a Infraestrutura e as Aplicações Locais:**
+   Fornecemos scripts de orquestração unificados via Turborepo e Skaffold. Você pode executar no modo Podman Compose (`pnpm cortex:up` e `pnpm hub:dev`) ou no modo Kubernetes (`pnpm minikube:up` e `pnpm k8s:dev`).
+   Consulte [MONOREPO.readme.md](https://github.com/workspace/workspace/blob/develop/MONOREPO.readme.md) ou a [Referência de Comandos](./reference/commands.mdx) para obter detalhes.
+
+---
+
+## 7. Diátaxis Framework
+
+Uma abordagem sistemática para a criação de documentação técnica.
+
+Diátaxis é uma forma de pensar e fazer documentação.
+
+Ela prescreve abordagens para o conteúdo, arquitetura e formato que emergem de uma abordagem sistemática para entender as necessidades dos usuários da documentação.
+
+O Diátaxis identifica quatro necessidades distintas e quatro formas correspondentes de documentação — *tutoriais*, *guias práticos* (how-to guides), *referência técnica* e *explicação*. Ele os coloca em uma relação sistemática e propõe que a documentação deve ser organizada em torno das estruturas dessas necessidades.
+
+O Diátaxis resolve problemas relacionados ao *conteúdo* da documentação (o que escrever), ao *estilo* (como escrever) e à *arquitetura* (como organizar).
+
+Além de atender aos usuários da documentação, o Diátaxis tem valor para os criadores e mantenedores da documentação. Ele é leve, fácil de compreender e simples de aplicar. Ele não impõe restrições de implementação. Ele traz um princípio ativo de qualidade para a documentação que ajuda os mantenedores a pensarem de forma eficaz sobre seu próprio trabalho.
+
+### Primeiros Passos
+
+A melhor maneira de começar com o Diátaxis é aplicá-lo após ler uma breve introdução.
+
+<DocCardList
+items={[
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/tutorials/diataxis-start',
+    label: 'Start Here',
+    description: 'A five-minute primer on the Diátaxis framework.',
+  },
+]}
+/>
+
+### Aplicação Prática
+
+Estas páginas ajudarão a dar um sentido imediato e concreto à abordagem.
+
+<DocCardList
+items={[
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/guides/diataxis/applying-diataxis',
+    label: 'Applying Diátaxis',
+    description: 'A practical overview of how to apply the framework.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/reference/diataxis/tutorials',
+    label: 'Tutorials',
+    description: 'Reference for writing learning-oriented tutorials.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/reference/diataxis/how-to-guides',
+    label: 'How-to Guides',
+    description: 'Reference for writing goal-oriented how-to guides.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/reference/diataxis/reference-docs',
+    label: 'Reference',
+    description: 'Reference for writing information-oriented reference docs.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/reference/diataxis/explanation-docs',
+    label: 'Explanation',
+    description: 'Reference for writing understanding-oriented explanation.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/reference/diataxis/compass',
+    label: 'The Compass',
+    description: 'A diagnostic tool for documentation quality.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/guides/diataxis/workflow',
+    label: 'Workflow',
+    description: 'How to use Diátaxis as a guide to documentation work.',
+  },
+]}
+/>
+
+### Entendendo o Diátaxis
+
+Esta seção explora a teoria e os princípios do Diátaxis mais profundamente e estabelece a compreensão das necessidades que o fundamentam.
+
+<DocCardList
+items={[
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/explanation/diataxis/theory',
+    label: 'Understanding Diátaxis',
+    description: 'Towards a theory of quality in documentation.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/explanation/diataxis/foundations',
+    label: 'Foundations',
+    description: 'The two dimensions that underpin the Diátaxis map.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/reference/diataxis/map',
+    label: 'The Map',
+    description: 'The two-dimensional structure of documentation.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/explanation/diataxis/quality',
+    label: 'Quality',
+    description: 'Towards a theory of quality in documentation.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/explanation/diataxis/tutorials-vs-how-to',
+    label: 'Tutorials and How-to Guides',
+    description: 'The difference between a tutorial and how-to guide.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/explanation/diataxis/reference-vs-explanation',
+    label: 'Reference and Explanation',
+    description: 'The difference between reference and explanation.',
+  },
+  {
+    type: 'link',
+    href: '/workspaces/knowledge-base/explanation/diataxis/complex-hierarchies',
+    label: 'Complex Hierarchies',
+    description: 'How Diátaxis works in complex documentation systems.',
+  },
+]}
+/>
+
+O Diátaxis é comprovado na prática. Seus princípios foram adotados com sucesso em centenas de projetos de documentação.
+
+:::info[Depoimento]
+
+—Greg Frileux, [Vonage](https://vonage.com/)
+:::
+
+:::info[Depoimento]
+
+— [Megan Sullivan](https://hachyderm.io/@meganesulli)
+:::
+
+:::info[Depoimento]
+
+— [Adam Schwartz](https://github.com/adamschwartz)
+:::

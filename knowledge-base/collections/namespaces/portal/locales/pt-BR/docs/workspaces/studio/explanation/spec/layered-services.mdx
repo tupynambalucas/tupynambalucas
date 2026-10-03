@@ -1,0 +1,84 @@
+---
+title: Serviços em Camadas (Penpot & Memos)
+sidebar_label: Serviços em Camadas
+sidebar_position: 3
+diataxis_type: explanation
+workspace: studio
+tags:
+  - studio
+---
+
+### Infraestrutura de Workspace Self-Hosted
+
+O projeto `%PROJECT_DOMAIN%` executa uma série de serviços em camadas self-hosted configurados em `studio/design/infrastructure/docker/compose.yaml` para garantir soberania absoluta de dados, colaboração e pipelines automatizados de design para código.
+
+---
+
+## 1. Design System do Penpot e Assistente Aide
+
+O `%PROJECT_DOMAIN%` utiliza uma stack distribuída do Penpot integrada ao Aide, um assistente de engenharia nativo de IA.
+
+### A. Arquitetura de Infraestrutura
+
+O ambiente do Penpot é orquestrado por meio de uma stack Docker multi-contêiner, utilizando backends baseados em nuvem para durabilidade.
+
+* **Orquestração:** Gerenciada via `studio/design/infrastructure/docker/compose.yaml` (Frontend, Backend, Exporter, Valkey, Aide).
+* **Camada de Banco de Dados:** Persistência em PostgreSQL hospedada no Neon.tech para integridade transacional serverless.
+* **Armazenamento de Objetos:** Ativos binários são persistidos em buckets do Cloudflare R2 compatíveis com S3, garantindo um footprint mínimo no Git. Consulte as especificações de [Armazenamento Cloudflare R2](/workspaces/studio/reference/spec/cloudflare-storage).
+
+### B. Aide: Integração Nativa de IA
+
+O Aide funciona como uma ponte do Model Context Protocol (MCP), permitindo que agentes de IA interajam diretamente com a API de Plugins do Penpot para consultas avançadas e transformações de layout.
+
+* **Protocolo:** Comunicação WebSocket bidirecional entre o servidor `@penpot/mcp` e o ambiente do Penpot.
+* **Segurança:** O Aide opera dentro da rede isolada `penpot-net`, fornecendo um gateway controlado para manipulação de design.
+* **Conectividade:** Utiliza a Porta 4402 para auditorias de design e sincronização em tempo real.
+
+### C. Scripts Operacionais
+
+A ponte do assistente de IA (Aide) é integrada diretamente na stack principal de orquestração do Docker. Execute `pnpm penpot:up` para inicializar toda a plataforma, incluindo o gateway do assistente.
+
+| Comando            | Responsabilidade Técnica                                                       |
+| :----------------- | :----------------------------------------------------------------------------- |
+| `pnpm penpot:up`   | Inicializa os serviços do editor Penpot e a ponte do Aide em `localhost:9005`. |
+| `pnpm penpot:down` | Encerra todos os contêineres do editor Penpot e auxiliares do Aide.            |
+
+### D. Regras Obrigatórias de Manipulação por IA
+
+* **Reutilização de Componentes:** Verifique sempre a biblioteca de componentes existente (Penpot) ou a biblioteca de UI (`hub/services/web/src/components`) antes de criar novos elementos. O Aide deve priorizar tokens e componentes do design system existentes.
+* **Lógica Token-First:** As exportações de design para código devem utilizar estritamente Propriedades Personalizadas CSS derivadas de `assets/tokens/` para cores, fontes e espaçamento.
+* **Otimização de SVG:** Garanta que o código SVG exportado esteja otimizado, siga os padrões de ícones do projeto e seja integrado por meio do registro `@repo/studio/assets/icons`.
+* **Hierarquia de Camadas:** A manutenção do agrupamento semântico é obrigatória. Os elementos devem ser organizados em páginas e frames claros (por exemplo, `Layout/Grid`, `Components/Buttons`).
+
+---
+
+## 2. Notas Colaborativas do Memos
+
+O Memos é um hub de notas open-source e self-hosted que serve como nosso quadro branco colaborativo e centro de compartilhamento de conhecimento para inspirações de design.
+
+### A. Arquitetura de Infraestrutura
+
+O serviço Memos é integrado como um serviço em camadas leve executado dentro do Docker:
+
+* **Orquestração:** Executado no Docker por meio da definição de serviço `memos` dentro de `studio/design/infrastructure/docker/compose.yaml`.
+* **Camada de Banco de Dados:** Configurado para utilizar um banco de dados serverless PostgreSQL dedicado hospedado no Neon.tech.
+* **Armazenamento de Arquivos Locais:** Uploads de imagens, backups e configurações são armazenados localmente dentro de `studio/design/memos/data` (que mapeia para `/var/opt/memos` dentro do contêiner).
+
+### B. Credenciais de Conexão
+
+O Memos acessa o banco de dados utilizando a string de conexão definida nas variáveis de ambiente:
+
+```env
+MEMOS_DRIVER=postgres
+MEMOS_DSN=postgresql://your_db_user:your_db_password@your_db_host/your_db_name?sslmode=require
+```
+
+### C. Script Operacional
+
+O Memos é iniciado automaticamente junto com o Penpot ao executar o comando da stack compose:
+
+```bash
+pnpm penpot:up
+```
+
+Acesse a interface web do Memos localmente em `http://localhost:5230`.

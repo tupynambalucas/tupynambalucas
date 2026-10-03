@@ -1,0 +1,58 @@
+---
+title: Single Source of Truth (SSOT)
+description: Desacoplamento e governança centralizada de esquemas e modelos compartilhados no monorepo %PROJECT_DOMAIN%.
+---
+
+# Single Source of Truth (SSOT)
+
+O princípio de Single Source of Truth (SSOT) garante que cada estrutura de dados, esquema e regra de negócio central seja definida em exatamente um local autoritativo, eliminando duplicação e problemas de sincronização entre diferentes aplicações no monorepo.
+
+---
+
+## 1. Conceito Arquitetural e Visão Geral
+
+Single Source of Truth (SSOT) é um paradigma de engenharia fundamental que estabelece que todos os componentes do sistema referenciam uma definição única e centralizada para modelos de dados, contratos de validação e constantes. Esse design previne estados de "cérebro dividido" (split-brain) onde pacotes independentes (como backends de API, filas de mensagens e interfaces de usuário) divergem em nomes de propriedades, tipos de dados ou limites de esquemas.
+
+Ao centralizar os esquemas centrais, nós:
+
+* Garantimos segurança de tipos completa do banco de dados até a UI.
+* Permitimos atualizações instantâneas de props e esquemas em todas as aplicações mediante modificações.
+* Reduzimos a duplicação de código e a sobrecarga de ferramentas.
+
+---
+
+## 2. Utilização Específica do Projeto
+
+Em %PROJECT_DOMAIN%, o princípio de SSOT é implementado nativamente por meio de nossa arquitetura de monorepo:
+
+### A. Bibliotecas Centrais (Core) Centralizadas
+
+Os workspaces `@repo/hub/core` e `@repo/hub/core` servem como a SSOT absoluta para seus respectivos contextos delimitados (bounded contexts). Qualquer esquema, interface ou tipo compartilhado por mais de uma aplicação (como API de backend e SPA web de frontend) deve ser declarado aqui primeiro, seguindo nossa diretriz de **Core First Design**.
+
+### B. Compartilhamento de Contratos e Tipos
+
+Aplicações downstream como `@repo/hub/api` (Fastify) e `@repo/hub/web` (React SPA) não mantêm interfaces de objeto de transferência de dados (DTO) ou modelos de banco de dados duplicados. Em vez disso, elas importam diretamente tipos, interfaces e classes do pacote core compartilhado:
+
+```typescript
+// Core package definition
+// hub/packages/core/src/domains/cycle/cycle.types.ts
+export interface ICycle {
+  id: string;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  status: 'active' | 'closed' | 'draft';
+}
+```
+
+```typescript
+// Consumed directly in downstream API
+// hub/services/api/src/domains/cycle/cycle.service.ts
+import type { ICycle } from '@repo/hub/core';
+```
+
+### C. Consistência de Validação de Esquema
+
+Esquemas de validação compartilhados são declarados uma única vez usando Zod dentro das bibliotecas core. A API de backend consome esses esquemas em seus controladores para validar payloads HTTP de entrada, enquanto a aplicação web de frontend utiliza os mesmos esquemas para validação de formulários no lado do cliente.
+
+Modificar um campo requer a atualização de um único arquivo no workspace core, o que se propaga automaticamente pela build pipeline durante a verificação em tempo de compilação, eliminando a sincronização manual de contratos de API.

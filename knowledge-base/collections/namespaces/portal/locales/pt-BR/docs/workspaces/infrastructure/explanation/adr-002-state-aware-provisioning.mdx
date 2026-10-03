@@ -1,0 +1,22 @@
+---
+title: ADR-002 State-Aware Provisioning
+---
+
+# ADR-002: State-Aware Monorepo Provisioning
+
+## Contexto
+
+Forks do template monorepo devem ser renomeados eficientemente sem processos manuais de localizar e substituir que sejam propensos a erros.
+
+## Decisão
+
+Estabelecemos `@monorepo/shared-config/project.config.json` como a única fonte de verdade (SSOT). O workspace `tools/provisioner` fornece uma CLI interativa (usando Commander e Clack Prompts) que:
+
+1. Solicita novas variáveis ao usuário.
+2. Atualiza a SSOT.
+3. Propaga as alterações por `package.json`, arquivos `.env`, configurações do Docker e workflows do GitHub.
+
+## Consequências
+
+* Elimina a "deterioração de templates" e caminhos quebrados.
+* Garante que todos os novos projetos herdem os domínios internos e públicos corretos automaticamente.

@@ -1,0 +1,51 @@
+---
+title: Cortex Workspace Overview
+sidebar_label: Visão geral
+sidebar_position: 1
+slug: /cortex
+diataxis_type: overview
+workspace: cortex
+tags:
+  - cortex
+---
+
+O Workspace Cortex representa o Bounded Context unificado de inteligência artificial do projeto. Ele consolida o API Ingress Gateway, as camadas de banco de dados de memória persistente, as integrações do plano de dados do Model Context Protocol (MCP) e os ambientes isolados de execução de agentes de terminal.
+
+---
+
+## Visão Geral da Arquitetura
+
+O Cortex é organizado usando uma arquitetura de domínio em camadas, dividindo os serviços em quatro planos operacionais distintos:
+
+1. **Plano do Ingress Gateway (`/gateway`)**: Expõe o playground visual e os endpoints de API para clientes Downstream. O tráfego de rede é roteado via Traefik para o AgentGateway, que então federas as requisições para os pods do MCP.
+2. **Camada de Memória (`/memory`)**: Serviço de RAG vetorial em MongoDB auto-hospedado que fornece camadas de armazenamento de raciocínio de curto prazo, longo prazo e relacional.
+3. **Plano de Dados (`/mcp`)**: Abarca adaptadores individuais do Model Context Protocol (GitHub, Firecrawl, Grafana, Playwright, Memory, Kubectl) que transmitem ferramentas para contextos ativos de LLM.
+4. **Plano de Controle (`/agents`)**: Terminais de shell de agentes conteinerizados executando a CLI do Google Antigravity e a CLI do GitHub Copilot.
+
+---
+
+## Disposição do Diretório
+
+```text
+cortex/
+├── gateway/             # API Ingress Gateway configuration and playground
+├── memory/              # Self-hosted MongoDB Vector RAG memory (core, api, web)
+├── mcp/                 # MCP server adapters (github, firecrawl, grafana, etc.)
+├── agents/              # AI agent CLI terminals (antigravity, copilot)
+├── infrastructure/
+│   └── docker/          # Docker Compose configurations and environment files
+├── package.json         # Workspace package manifest and scripts
+└── AGENTS.md            # Bounded context developer rules
+```
+
+---
+
+## Princípios Centrais e Segurança
+
+:::info[Isolamento de Domínio em Camadas]
+O Cortex isola os planos operacionais no nível de pasta, mantendo o ciclo de vida, o roteamento de rede e as restrições de permissão distintos.
+:::
+
+* **Sandboxing de Rede**: As sessões de agentes são executadas dentro de uma sub-rede Docker isolada. Elas acessam ferramentas e arquivos locais apenas por meio do proxy de gateway unificado.
+* **Memória Auto-hospedada**: A memória é mantida privada e local usando uma instância de MongoDB auto-hospedada com índices de Vector Search, ignorando o compartilhamento externo de dados.
+* **Paridade de Configuração**: Configurações, perfis de configuração e segredos são montados em containers em runtime por meio de configurações de ambiente.

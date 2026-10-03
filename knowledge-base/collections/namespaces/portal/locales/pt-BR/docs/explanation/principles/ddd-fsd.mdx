@@ -1,0 +1,67 @@
+---
+title: DDD & Feature-Sliced Design (FSD)
+description: Aproveitando os Bounded Contexts do Domain-Driven Design (DDD) e o Feature-Sliced Design (FSD) em frontends de %PROJECT_DOMAIN%.
+---
+
+# Domain-Driven Design (DDD) & Feature-Sliced Design (FSD)
+
+A arquitetura de frontend combina os bounded contexts do Domain-Driven Design (DDD) com a modularidade do Feature-Sliced Design (FSD) para alcançar aplicações escaláveis, robustas e desacopladas.
+
+---
+
+## 1. Conceito Arquitetural e Visão Geral
+
+### Domain-Driven Design (DDD)
+
+O Domain-Driven Design (DDD) organiza lógica de negócios complexa em módulos isolados e centrados no domínio chamados **Bounded Contexts**, onde cada domínio possui a integridade de seu modelo e seu vocabulário. Isso evita o acoplamento forte entre diferentes áreas da aplicação e mantém os modelos focados.
+
+### Feature-Sliced Design (FSD)
+
+O Feature-Sliced Design (FSD) é uma metodologia arquitetural moderna projetada especificamente para aplicações de frontend. Ele segrega o código em uma hierarquia padronizada de camadas, fatias (slices) e segmentos, estabelecendo fluxos de dependência unidirecionais estritos, prevenindo importações circulares e garantindo alta modularidade.
+
+Ao combinar a segregação de contexto do DDD com a separação de camadas do FSD, nossas aplicações continuam sustentáveis mesmo conforme o tamanho das equipes e o conjunto de features crescem.
+
+---
+
+## 2. Utilização Específica do Projeto
+
+Em %PROJECT_DOMAIN%, a combinação de DDD e FSD rege tanto a estrutura de pastas quanto as regras de importação:
+
+### A. Segregação por Bounded Context
+
+O monorepo é dividido em contextos distintos (como `hub/`, `cortex/`, `platform/`) no nível raiz. Esses limites garantem que os portais do hub de desenvolvedores (Hub) e os serviços globais de plataforma e IA do sistema (Cortex/Platform) permaneçam estrutural e logicamente independentes. Design tokens compartilhados ou ativos de marca são importados exclusivamente a partir do workspace `@repo/studio/assets`.
+
+### B. Hierarquia de Camadas de Frontend (FSD)
+
+Dentro de cada aplicação React de frontend, a base de código é estruturada em camadas arquiteturais estritas:
+
+```
+src/
+├── domains/              <-- Global Domains layer (e.g., auth, product, cycle)
+│   └── auth/
+│       ├── hooks/
+│       └── auth.store.ts
+├── features/             <-- User workflows and interactive modules (e.g., shop, admin)
+│   ├── shop/
+│   │   ├── domains/      <-- Feature-specific private domains (e.g., cart)
+│   │   └── components/
+│   └── admin/
+└── shared/               <-- Reusable agnostic utilities and common components
+    └── ui/               <-- Buttons, Modals, Loaders, Input components
+```
+
+* **Global Domains (`src/domains`)**: Representam conceitos centrais de negócios (por exemplo, `auth`, `product`, `cycle`). Esta camada abriga state stores do Zustand específicas do domínio, clientes de API do Axios e hooks de orquestração de domínio.
+* **Features (`src/features`)**: Abrigam workflows de usuários e módulos interativos da aplicação (por exemplo, `admin`, `shop`). As features orquestram múltiplos domínios subjacentes para entregar fluxos de aplicação de alto nível, mas permanecem estritamente isoladas de outras features.
+* **Domínios Privados Específicos de Feature (`src/features/*/domains`)**: Subdomínios dedicados inseridos dentro de uma feature específica (tal como um domínio de `cart` privado dentro da feature `shop`). Isso mantém o namespace global limpo e evita a poluição do domínio global.
+* **Shared UI Layer (`src/shared/ui`)**: Apresenta blocos de construção de UI reutilizáveis e agnósticos de domínio (tais como loaders, botões, inputs e modais) que contêm zero lógica de negócios.
+
+---
+
+## 3. Limites Estritos de Importação
+
+Para manter a escalabilidade a longo prazo, aplicamos limites estritos de importação unidirecional:
+
+1. **Fluxo Unidirecional**: O código só pode importar de camadas localizadas abaixo dele na hierarquia:
+   `Features` -> `Domains` -> `Shared`
+2. **Sem Importações Ascendentes**: É estritamente proibido que domínios globais ou componentes compartilhados importem de features.
+3. **Sem Importações Cruzadas entre Features**: Módulos de features não podem importar de outros módulos de features diretamente; eles só podem colaborar através de orquestração de página de alto nível ou inscrevendo-se em domínios globais compartilhados.

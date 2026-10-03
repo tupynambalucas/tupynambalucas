@@ -1,0 +1,80 @@
+---
+title: Hub Workspace (Developer Website)
+sidebar_label: Overview
+sidebar_position: 1
+slug: /hub
+diataxis_type: overview
+workspace: hub
+tags:
+  - hub
+---
+
+O Workspace Hub contém todas as aplicações e pacotes relacionados ao site pessoal de desenvolvimento. É a vitrine principal para %PROJECT_DOMAIN%, fornecendo um portfólio profissional, engine de blog, inventário de habilidades técnicas e sistemas de tratamento de formulário de contato.
+
+---
+
+## Directory Structure
+
+```text
+hub/
+├── services/
+│   ├── api/          # Fastify 5 REST API
+│   └── web/          # React 19 Single Page Application (SPA)
+├── packages/
+│   └── core/         # Shared Domain Model (SSOT)
+```
+
+---
+
+## Core Components & Architecture
+
+### `@repo/hub/core` (Domain SSOT)
+
+Todas as configurações de schema, validadores e tipos de negócio centrais são definidos neste pacote. Ao forçar tanto a REST API quanto o cliente web a herdarem definições desta camada central, impõe-se estrita paridade de Bounded Context e evita-se a duplicação de modelos.
+
+* **Technology Stack**: TypeScript, Zod.
+* **Key Files**: Definições de schema compartilhadas para posts de blog, projetos, submissões de contato e contas de usuário.
+
+### `@repo/hub/api` (Fastify 5 Engine)
+
+Uma REST API de alta performance construída com Fastify v5, implementando uma arquitetura de software em camadas desacoplada.
+
+* **Layered Design Flow**: `Controller ──> Service ──> Repository ──> Model`
+* **Key Integrations**:
+  * Conexão Mongoose com o banco de dados MongoDB local/em nuvem.
+  * Gerenciadores de cache Redis para limitação de taxa (rate-limiting), armazenamento de sessões e consultas rápidas.
+  * Hooks de validação Zod para requisições entrantes (body, query, params) e respostas saintes.
+* **Strict Guidelines**:
+  * Todas as operações assíncronas devem ser tratadas explicitamente.
+  * Verificações estritas de booleanos são impostas em todos os controllers da API (`if (value === true)`).
+
+### `@repo/hub/web` (React 19 Portal)
+
+A interface de portfólio do usuário, frontend do blog e dashboard administrativo construídos em React 19 e compilados com Vite.
+
+* **Technology Stack**: React 19, TypeScript, Vite, Zustand (gerenciamento de estado), Studio Tokens (integração de tema).
+* **Design Parity**: Herda variáveis de tema, cores e constantes de layout diretamente do pacote `@repo/studio/assets`.
+* **React 19 Features**: Implementa padrões modernos do React 19, utilizando o hook `use()` para carregamento de promises de recursos e garantindo comparações estritas de booleanos em todos os templates JSX.
+
+---
+
+## Database Configuration
+
+Para dar suporte ao armazenamento de submissões de contato e entrega de conteúdo de blog, o ambiente local executa um replica set do MongoDB orquestrado por Docker:
+
+* **Replica Set Name**: `rs0`
+* **Initiator Service**: `db-init` inicializa a configuração do replica set (`rs.initiate()`) após o MongoDB estar pronto.
+* **Cache Layer**: O container Redis lida com o armazenamento chave-valor de alta velocidade e limitação de taxa.
+
+---
+
+## Workspace Scripts
+
+Execute estes comandos a partir do diretório raiz para gerenciar o contexto do Hub:
+
+| Command          | Action                                                                                                                  |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| `pnpm hub:up`    | Inicia os containers do banco de dados local (MongoDB Replica Set) e Redis.                                             |
+| `pnpm hub:dev`   | Executa o servidor da API (via `tsx watch`) e o cliente web (via servidor de desenvolvimento do Vite) concorrentemente. |
+| `pnpm hub:down`  | Para e remove os containers Docker.                                                                                     |
+| `pnpm hub:reset` | Limpa os volumes do banco de dados e reinicia a infraestrutura.                                                         |

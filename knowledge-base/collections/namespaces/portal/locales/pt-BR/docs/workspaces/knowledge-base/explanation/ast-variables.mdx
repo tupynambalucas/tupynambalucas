@@ -1,0 +1,23 @@
+---
+title: Compilação de Variáveis AST
+sidebar_label: Variáveis AST
+sidebar_position: 5
+---
+
+# Compilação de Variáveis AST
+
+Para garantir que o monorepo permaneça totalmente copiável e genérico para injeção de contexto por IA, aplicamos o uso de Variáveis AST (Árvore de Sintaxe Abstrata) em todo o hub de documentação.
+
+---
+
+## 1. O Plugin `remark-project-variables`
+
+Autores de documentação e agentes de IA são estritamente proibidos de inserir domínios de marca hardcoded (por exemplo, `example.com`). Em vez disso, eles devem usar tokens agnósticos:
+
+* `%PROJECT_DOMAIN%`
+* `%PROJECT_NAME%`
+* `%GITHUB_ORG%`
+
+O plugin `remark-project-variables` intercepta o pipeline de compilação MDX do Docusaurus, percorre a AST do Markdown (`mdast`) e substitui esses tokens pelas configurações ativas encontradas em `project.config.json` antes de renderizar o HTML final.
+
+Isso evita "Alucinação de Marca" quando a IA extrai contexto usando indexação de memória RAG.
