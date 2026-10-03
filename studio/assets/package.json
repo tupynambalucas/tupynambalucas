@@ -1,6 +1,6 @@
 {
   "name": "@monorepo/studio-assets",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Canonical design tokens, icons, and visual brand assets.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",

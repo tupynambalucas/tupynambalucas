@@ -14,7 +14,7 @@ import type { BlogSidebar } from '@docusaurus/plugin-content-blog';
 
 function BackToIndexLink() {
   const { metadata } = useBlogPost();
-  // @ts-expect-error
+  // @ts-expect-error metadata doesn't type listPageLink but it exists
   const { listPageLink } = metadata;
   return (
     <Link to={listPageLink}>

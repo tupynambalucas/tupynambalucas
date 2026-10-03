@@ -45,9 +45,9 @@ with graph-level relationship mapping.
 
 Tracks linear conversational turns grouped by session identifier.
 
-* **Purpose**: Restores immediate conversational context when resuming active
+- **Purpose**: Restores immediate conversational context when resuming active
   threads.
-* **Key fields**: `sessionId` / `conversationId` (aliased), `agentId`, `role`
+- **Key fields**: `sessionId` / `conversationId` (aliased), `agentId`, `role`
   (`user` | `assistant` | `system`), `content`, `createdAt`.
 
 ### B. `entities` (Semantic Memory)
@@ -55,21 +55,21 @@ Tracks linear conversational turns grouped by session identifier.
 Represents discrete facts, user preferences, workspace concepts, and
 documentation chunks with vector embeddings.
 
-* **Purpose**: Acts as the primary semantic index. Each document is associated
+- **Purpose**: Acts as the primary semantic index. Each document is associated
   with a 128-dimensional float vector for similarity search.
-* **Key fields**: `name`, `type` (`workspace` | `doc_file` | `doc_chunk` |
+- **Key fields**: `name`, `type` (`workspace` | `doc_file` | `doc_chunk` |
   `chat_message`), `content`, `embedding` (`float[128]`), `metadata`.
-* **Vector index**: MongoDB `$vectorSearch` aggregation against the `embedding`
+- **Vector index**: MongoDB `$vectorSearch` aggregation against the `embedding`
   field. `numCandidates` is always set to at least 10x the `limit` value.
 
 ### C. `relations` (Graph Layer)
 
 Stores directed, weighted edges between entities.
 
-* **Purpose**: Creates an associative knowledge graph that links related concepts
+- **Purpose**: Creates an associative knowledge graph that links related concepts
   (e.g., a `doc_chunk` entity BELONGS_TO a `doc_file` entity).
-* **Relation types**: `BELONGS_TO`, `REFERENCES`, `DEPENDS_ON`.
-* **Key fields**: `fromId` (ObjectId), `toId` (ObjectId), `relationType`,
+- **Relation types**: `BELONGS_TO`, `REFERENCES`, `DEPENDS_ON`.
+- **Key fields**: `fromId` (ObjectId), `toId` (ObjectId), `relationType`,
   `weight` (numeric strength).
 
 ---
@@ -117,10 +117,10 @@ API endpoints involved:
 The knowledge graph is built from the documentation corpus and conversational
 artifacts. After the initial monorepo documentation sync:
 
-* **300** unique entity nodes
-* **384** graph connections
-* **4,503** text chunks across **534** source files
-* **6,209** total graph edges
+- **300** unique entity nodes
+- **384** graph connections
+- **4,503** text chunks across **534** source files
+- **6,209** total graph edges
 
 Node types and their typical relationships:
 
@@ -178,21 +178,21 @@ panel.
 The web dashboard at `https://memory-dev.%PROJECT_DOMAIN%` provides three
 interactive panels:
 
-* **Graph Topology**: Force-directed visualization of all entity nodes and their
+- **Graph Topology**: Force-directed visualization of all entity nodes and their
   relations. Supports filtering by node type and relation weight.
-* **RAG Playground**: Interactive `search_knowledge` form with similarity score
+- **RAG Playground**: Interactive `search_knowledge` form with similarity score
   display and raw chunk inspection.
-* **Episodic Memory Chat**: Browse and replay `chat_history` turns filtered by
+- **Episodic Memory Chat**: Browse and replay `chat_history` turns filtered by
   `sessionId`.
 
 ### Nginx Configuration
 
 `memory-web` Nginx performs the following:
 
-* Serves the React SPA bundle at `/`.
-* Reverse-proxies all `/api/*` requests to `memory-api:3006`.
-* Reverse-proxies `/healthz` directly to `memory-api:3006/health`.
-* Sets CSP, X-Frame-Options, and X-Content-Type-Options security headers.
+- Serves the React SPA bundle at `/`.
+- Reverse-proxies all `/api/*` requests to `memory-api:3006`.
+- Reverse-proxies `/healthz` directly to `memory-api:3006/health`.
+- Sets CSP, X-Frame-Options, and X-Content-Type-Options security headers.
 
 ---
 

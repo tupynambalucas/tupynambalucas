@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { type ReactNode, useState } from 'react';
 import clsx from 'clsx';
 import { useBlogPost } from '@docusaurus/plugin-content-blog/client';

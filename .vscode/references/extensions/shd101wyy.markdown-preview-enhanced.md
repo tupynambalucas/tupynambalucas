@@ -194,13 +194,13 @@ When false ignore and don't embed them.
 
 ### `markdown-preview-enhanced.HTML5EmbedUseImageSyntax`
 
-Enables video/audio embed with ![]() syntax (default).
+Enables video/audio embed with ![](<>) syntax (default).
 
 - **Default**: `true`
 
 ### `markdown-preview-enhanced.HTML5EmbedUseLinkSyntax`
 
-Enables video/audio embed with []() syntax.
+Enables video/audio embed with [](<>) syntax.
 
 - **Default**: `false`
 

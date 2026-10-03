@@ -1,6 +1,6 @@
 {
   "name": "@monorepo/hub-core",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Shared validation logic and business models for the Hub portfolio platform.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",

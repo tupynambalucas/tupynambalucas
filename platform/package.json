@@ -1,6 +1,6 @@
 {
   "name": "@monorepo/platform",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Core platform orchestration workspace managing cluster telemetry and build systems.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",

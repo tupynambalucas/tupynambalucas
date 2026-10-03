@@ -6,8 +6,11 @@ import { createDocsInstances } from './plugins/content-docs/instances';
 import { createBlogInstance } from './plugins/content-blog/instances';
 import { createPagesInstance } from './plugins/content-pages/instances';
 import pluginStudioAssets from './plugins/webpack-loaders/studio-assets';
-import pluginCrowdin from './plugins/crowdin/index';
-import pluginChangelog from './plugins/changelog/index';
+import path from 'node:path';
+import pluginLocalesSync, {
+  type LocalesSyncOptions,
+  type CollectionMapping,
+} from './plugins/locales-sync/index';
 
 const require = createRequire(import.meta.url);
 
@@ -33,9 +36,6 @@ export default function monorepoPreset(
     debug,
     docs,
     blog,
-    pages,
-    changelog,
-    crowdin,
     sitemap,
     svgr,
     theme = {
@@ -102,14 +102,42 @@ export default function monorepoPreset(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
   plugins.push(pluginStudioAssets as any);
 
-  if (changelog) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    plugins.push([pluginChangelog as any, changelog]);
+  const collectionsPkg = require.resolve('@monorepo/kb-collections/package.json');
+  const collectionsRoot = path.dirname(collectionsPkg);
+
+  const mappings: CollectionMapping[] = [];
+
+  const processCollection = (opt: Record<string, unknown>, pluginType: 'docs' | 'blog') => {
+    if (typeof opt.collection === 'string') {
+      const [collectionName, contentName] = opt.collection.split('/');
+      if (collectionName && contentName) {
+        opt.path = path.join(collectionsRoot, 'namespaces', collectionName, 'content', contentName);
+        mappings.push({
+          pluginType,
+          pluginId: (opt.id as string | undefined) ?? 'default',
+          collectionName,
+          contentName,
+        });
+        delete opt.collection;
+      }
+    }
+  };
+
+  if (Array.isArray(docs)) {
+    docs.forEach((d) => processCollection(d as Record<string, unknown>, 'docs'));
+  } else if (docs !== false && docs !== undefined) {
+    processCollection(docs as Record<string, unknown>, 'docs');
   }
 
-  if (crowdin) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    plugins.push([pluginCrowdin as any, crowdin]);
+  if (Array.isArray(blog)) {
+    blog.forEach((b) => processCollection(b as Record<string, unknown>, 'blog'));
+  } else if (blog !== false && blog !== undefined) {
+    processCollection(blog as Record<string, unknown>, 'blog');
+  }
+
+  if (mappings.length > 0) {
+    const localesSyncOpts: LocalesSyncOptions = { mappings };
+    plugins.push([pluginLocalesSync, localesSyncOpts] as PluginConfig);
   }
 
   if (Object.keys(rest).length > 0) {

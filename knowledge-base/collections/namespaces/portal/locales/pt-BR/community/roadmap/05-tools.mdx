@@ -9,15 +9,15 @@ Esta seção descreve os ambientes containerizados de controle de versão Git e 
 
 ### Integrações de Scripts de Automação
 
-* **Scripts de Compilação da Raiz em TypeScript**: Scripts integrados (`generate-changelog.ts` e `generate-roadmap.ts`) executados nativamente via `tsx` para compilar métricas do workspace e logs de alterações diretamente para arquivos Markdown na raiz.
+- **Scripts de Compilação da Raiz em TypeScript**: Scripts integrados (`generate-changelog.ts` e `generate-roadmap.ts`) executados nativamente via `tsx` para compilar métricas do workspace e logs de alterações diretamente para arquivos Markdown na raiz.
 
 ### Isolamento de Ferramentas
 
-* **Containers do Git e GitHub CLI**: Serviços de container implantados (`gh` e `git`) que isolam as configurações de identidade de controle de versão, credenciais SSH e extensões do GitHub das máquinas host dos desenvolvedores.
-* **Automação de Workflow**: Scripts configurados no escopo do workspace para iniciar, derrubar e redefinir ambientes git de forma limpa usando o Docker Compose.
+- **Containers do Git e GitHub CLI**: Serviços de container implantados (`gh` e `git`) que isolam as configurações de identidade de controle de versão, credenciais SSH e extensões do GitHub das máquinas host dos desenvolvedores.
+- **Automação de Workflow**: Scripts configurados no escopo do workspace para iniciar, derrubar e redefinir ambientes git de forma limpa usando o Docker Compose.
 
 ## Foco Planejado
 
-* **Sincronização de Credenciais**: Otimize a injeção segura de credenciais PAT dentro de volumes Docker locais de desenvolvedores.
-* **Verificação de Tipos Pré-commit**: Adicione verificações de ganchos personalizados executadas a partir dos containers CLI de ferramentas para evitar que tipos inválidos sejam enviados via push.
-* **Sincronização de Metadados do Monorepo**: Desenvolva um script de sincronização automatizado (por exemplo, `tools/provisioner/src/sync-metadata.ts`) e integre-o à Provisioner CLI para atualizar e padronizar automaticamente todos os campos `package.json` do workspace com base nas variáveis de `project.config.json`.
+- **Sincronização de Credenciais**: Otimize a injeção segura de credenciais PAT dentro de volumes Docker locais de desenvolvedores.
+- **Verificação de Tipos Pré-commit**: Adicione verificações de ganchos personalizados executadas a partir dos containers CLI de ferramentas para evitar que tipos inválidos sejam enviados via push.
+- **Sincronização de Metadados do Monorepo**: Desenvolva um script de sincronização automatizado (por exemplo, `tools/provisioner/src/sync-metadata.ts`) e integre-o à Provisioner CLI para atualizar e padronizar automaticamente todos os campos `package.json` do workspace com base nas variáveis de `project.config.json`.

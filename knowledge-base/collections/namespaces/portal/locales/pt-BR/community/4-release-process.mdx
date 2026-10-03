@@ -11,9 +11,9 @@ Este documento descreve como o %PROJECT_NAME% gerencia versionamento, releases d
 
 Todas as bibliotecas, APIs e serviços de container do workspace seguem o [Semantic Versioning (SemVer)](https://semver.org/):
 
-* **MAJOR (`x.0.0`)**: Introduzido em mudanças arquiteturais drásticas, descontinuações de APIs públicas ou esquemas incompatíveis com versões anteriores.
-* **MINOR (`0.x.0`)**: Introduzido em novos recursos, endpoints de API adicionais ou adições de funcionalidade compatíveis com versões anteriores.
-* **PATCH (`0.0.x`)**: Introduzido em correções de bugs, patches de segurança, atualizações de dependências e otimizações internas de desempenho.
+- **MAJOR (`x.0.0`)**: Introduzido em mudanças arquiteturais drásticas, descontinuações de APIs públicas ou esquemas incompatíveis com versões anteriores.
+- **MINOR (`0.x.0`)**: Introduzido em novos recursos, endpoints de API adicionais ou adições de funcionalidade compatíveis com versões anteriores.
+- **PATCH (`0.0.x`)**: Introduzido em correções de bugs, patches de segurança, atualizações de dependências e otimizações internas de desempenho.
 
 ## Changesets Workflow
 
@@ -33,5 +33,5 @@ Utilizamos o `@changesets/cli` para rastrear e automatizar incrementos de versã
 
 Os workflows do GitHub Actions compõem, empacotam e fazem o deploy de artefatos automaticamente após o merge em branchs de release:
 
-* **Documentação**: Construída e implantada via Cloudflare Pages ou serviços de portal conteinerizados.
-* **Microsserviços**: Conteinerizados usando Podman/Docker e implantados em clusters do Kubernetes de destino por meio de manifests do Skaffold e Helm.
+- **Documentação**: Construída e implantada via Cloudflare Pages ou serviços de portal conteinerizados.
+- **Microsserviços**: Conteinerizados usando Podman/Docker e implantados em clusters do Kubernetes de destino por meio de manifests do Skaffold e Helm.

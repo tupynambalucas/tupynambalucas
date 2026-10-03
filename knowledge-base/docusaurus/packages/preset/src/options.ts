@@ -10,13 +10,19 @@ import type { ThemeConfig as BaseThemeConfig } from '@docusaurus/types';
 import type { UserThemeConfig as ClassicThemeConfig } from '@docusaurus/theme-common';
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 
+export type MonorepoContentOptions<T> = T & { collection?: string };
+
 export type MonorepoPresetOptions = {
   debug?: boolean;
-  docs?: false | DocsPluginOptions | DocsPluginOptions[];
-  blog?: false | BlogPluginOptions | BlogPluginOptions[];
+  docs?:
+    | false
+    | MonorepoContentOptions<DocsPluginOptions>
+    | Array<MonorepoContentOptions<DocsPluginOptions>>;
+  blog?:
+    | false
+    | MonorepoContentOptions<BlogPluginOptions>
+    | Array<MonorepoContentOptions<BlogPluginOptions>>;
   pages?: false | PagesPluginOptions;
-  changelog?: false | BlogPluginOptions;
-  crowdin?: false | { collection: string };
   sitemap?: false | SitemapPluginOptions;
   svgr?: false | SVGRPluginOptions;
   theme?: ThemeOptions;

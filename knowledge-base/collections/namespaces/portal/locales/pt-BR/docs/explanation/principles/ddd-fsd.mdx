@@ -50,10 +50,10 @@ src/
     └── ui/               <-- Buttons, Modals, Loaders, Input components
 ```
 
-* **Global Domains (`src/domains`)**: Representam conceitos centrais de negócios (por exemplo, `auth`, `product`, `cycle`). Esta camada abriga state stores do Zustand específicas do domínio, clientes de API do Axios e hooks de orquestração de domínio.
-* **Features (`src/features`)**: Abrigam workflows de usuários e módulos interativos da aplicação (por exemplo, `admin`, `shop`). As features orquestram múltiplos domínios subjacentes para entregar fluxos de aplicação de alto nível, mas permanecem estritamente isoladas de outras features.
-* **Domínios Privados Específicos de Feature (`src/features/*/domains`)**: Subdomínios dedicados inseridos dentro de uma feature específica (tal como um domínio de `cart` privado dentro da feature `shop`). Isso mantém o namespace global limpo e evita a poluição do domínio global.
-* **Shared UI Layer (`src/shared/ui`)**: Apresenta blocos de construção de UI reutilizáveis e agnósticos de domínio (tais como loaders, botões, inputs e modais) que contêm zero lógica de negócios.
+- **Global Domains (`src/domains`)**: Representam conceitos centrais de negócios (por exemplo, `auth`, `product`, `cycle`). Esta camada abriga state stores do Zustand específicas do domínio, clientes de API do Axios e hooks de orquestração de domínio.
+- **Features (`src/features`)**: Abrigam workflows de usuários e módulos interativos da aplicação (por exemplo, `admin`, `shop`). As features orquestram múltiplos domínios subjacentes para entregar fluxos de aplicação de alto nível, mas permanecem estritamente isoladas de outras features.
+- **Domínios Privados Específicos de Feature (`src/features/*/domains`)**: Subdomínios dedicados inseridos dentro de uma feature específica (tal como um domínio de `cart` privado dentro da feature `shop`). Isso mantém o namespace global limpo e evita a poluição do domínio global.
+- **Shared UI Layer (`src/shared/ui`)**: Apresenta blocos de construção de UI reutilizáveis e agnósticos de domínio (tais como loaders, botões, inputs e modais) que contêm zero lógica de negócios.
 
 ---
 

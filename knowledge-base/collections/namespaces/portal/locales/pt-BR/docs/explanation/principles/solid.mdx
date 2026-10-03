@@ -22,17 +22,17 @@ Um módulo, classe ou função deve ter um, e apenas um, motivo para mudar, o qu
 Aplicamos uma arquitetura em camadas estrita:
 `Controller` -> `Service` -> `Repository` -> `Model`
 
-* **Controllers** lidam apenas com roteamento bruto de requisição/resposta, análise de payload e validação Zod.
-* **Services** orquestram exclusivamente regras de negócio, limites de transação e integrações.
-* **Repositories** lidam com consultas e mutações brutas de banco de dados.
-* **Models** definem definições de esquema do Mongoose e estruturas de validação.
+- **Controllers** lidam apenas com roteamento bruto de requisição/resposta, análise de payload e validação Zod.
+- **Services** orquestram exclusivamente regras de negócio, limites de transação e integrações.
+- **Repositories** lidam com consultas e mutações brutas de banco de dados.
+- **Models** definem definições de esquema do Mongoose e estruturas de validação.
 
 #### Frontend (Aplicativo Web React)
 
 Os componentes React são desacoplados do gerenciamento de estado e busca assíncrona:
 
-* **Zustand stores** são restritos a mutações de estado e disparos de ações brutas.
-* **Custom React hooks** (`src/domains/*/hooks`) lidam com seletores de estado e acionam ações, mantendo os componentes de UI do React estritamente focados na renderização.
+- **Zustand stores** são restritos a mutações de estado e disparos de ações brutas.
+- **Custom React hooks** (`src/domains/*/hooks`) lidam com seletores de estado e acionam ações, mantendo os componentes de UI do React estritamente focados na renderização.
 
 ---
 

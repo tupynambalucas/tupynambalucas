@@ -1,6 +1,6 @@
 {
   "name": "@monorepo/renderer",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Dynamic asset generation engine for GitHub README compilation and templates.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",

@@ -22,17 +22,17 @@ O `%PROJECT_DOMAIN%` utiliza uma stack distribuída do Penpot integrada ao Aide,
 
 O ambiente do Penpot é orquestrado por meio de uma stack Docker multi-contêiner, utilizando backends baseados em nuvem para durabilidade.
 
-* **Orquestração:** Gerenciada via `studio/design/infrastructure/docker/compose.yaml` (Frontend, Backend, Exporter, Valkey, Aide).
-* **Camada de Banco de Dados:** Persistência em PostgreSQL hospedada no Neon.tech para integridade transacional serverless.
-* **Armazenamento de Objetos:** Ativos binários são persistidos em buckets do Cloudflare R2 compatíveis com S3, garantindo um footprint mínimo no Git. Consulte as especificações de [Armazenamento Cloudflare R2](/workspaces/studio/reference/spec/cloudflare-storage).
+- **Orquestração:** Gerenciada via `studio/design/infrastructure/docker/compose.yaml` (Frontend, Backend, Exporter, Valkey, Aide).
+- **Camada de Banco de Dados:** Persistência em PostgreSQL hospedada no Neon.tech para integridade transacional serverless.
+- **Armazenamento de Objetos:** Ativos binários são persistidos em buckets do Cloudflare R2 compatíveis com S3, garantindo um footprint mínimo no Git. Consulte as especificações de [Armazenamento Cloudflare R2](/workspaces/studio/reference/spec/cloudflare-storage).
 
 ### B. Aide: Integração Nativa de IA
 
 O Aide funciona como uma ponte do Model Context Protocol (MCP), permitindo que agentes de IA interajam diretamente com a API de Plugins do Penpot para consultas avançadas e transformações de layout.
 
-* **Protocolo:** Comunicação WebSocket bidirecional entre o servidor `@penpot/mcp` e o ambiente do Penpot.
-* **Segurança:** O Aide opera dentro da rede isolada `penpot-net`, fornecendo um gateway controlado para manipulação de design.
-* **Conectividade:** Utiliza a Porta 4402 para auditorias de design e sincronização em tempo real.
+- **Protocolo:** Comunicação WebSocket bidirecional entre o servidor `@penpot/mcp` e o ambiente do Penpot.
+- **Segurança:** O Aide opera dentro da rede isolada `penpot-net`, fornecendo um gateway controlado para manipulação de design.
+- **Conectividade:** Utiliza a Porta 4402 para auditorias de design e sincronização em tempo real.
 
 ### C. Scripts Operacionais
 
@@ -45,10 +45,10 @@ A ponte do assistente de IA (Aide) é integrada diretamente na stack principal d
 
 ### D. Regras Obrigatórias de Manipulação por IA
 
-* **Reutilização de Componentes:** Verifique sempre a biblioteca de componentes existente (Penpot) ou a biblioteca de UI (`hub/services/web/src/components`) antes de criar novos elementos. O Aide deve priorizar tokens e componentes do design system existentes.
-* **Lógica Token-First:** As exportações de design para código devem utilizar estritamente Propriedades Personalizadas CSS derivadas de `assets/tokens/` para cores, fontes e espaçamento.
-* **Otimização de SVG:** Garanta que o código SVG exportado esteja otimizado, siga os padrões de ícones do projeto e seja integrado por meio do registro `@repo/studio/assets/icons`.
-* **Hierarquia de Camadas:** A manutenção do agrupamento semântico é obrigatória. Os elementos devem ser organizados em páginas e frames claros (por exemplo, `Layout/Grid`, `Components/Buttons`).
+- **Reutilização de Componentes:** Verifique sempre a biblioteca de componentes existente (Penpot) ou a biblioteca de UI (`hub/services/web/src/components`) antes de criar novos elementos. O Aide deve priorizar tokens e componentes do design system existentes.
+- **Lógica Token-First:** As exportações de design para código devem utilizar estritamente Propriedades Personalizadas CSS derivadas de `assets/tokens/` para cores, fontes e espaçamento.
+- **Otimização de SVG:** Garanta que o código SVG exportado esteja otimizado, siga os padrões de ícones do projeto e seja integrado por meio do registro `@repo/studio/assets/icons`.
+- **Hierarquia de Camadas:** A manutenção do agrupamento semântico é obrigatória. Os elementos devem ser organizados em páginas e frames claros (por exemplo, `Layout/Grid`, `Components/Buttons`).
 
 ---
 
@@ -60,9 +60,9 @@ O Memos é um hub de notas open-source e self-hosted que serve como nosso quadro
 
 O serviço Memos é integrado como um serviço em camadas leve executado dentro do Docker:
 
-* **Orquestração:** Executado no Docker por meio da definição de serviço `memos` dentro de `studio/design/infrastructure/docker/compose.yaml`.
-* **Camada de Banco de Dados:** Configurado para utilizar um banco de dados serverless PostgreSQL dedicado hospedado no Neon.tech.
-* **Armazenamento de Arquivos Locais:** Uploads de imagens, backups e configurações são armazenados localmente dentro de `studio/design/memos/data` (que mapeia para `/var/opt/memos` dentro do contêiner).
+- **Orquestração:** Executado no Docker por meio da definição de serviço `memos` dentro de `studio/design/infrastructure/docker/compose.yaml`.
+- **Camada de Banco de Dados:** Configurado para utilizar um banco de dados serverless PostgreSQL dedicado hospedado no Neon.tech.
+- **Armazenamento de Arquivos Locais:** Uploads de imagens, backups e configurações são armazenados localmente dentro de `studio/design/memos/data` (que mapeia para `/var/opt/memos` dentro do contêiner).
 
 ### B. Credenciais de Conexão
 

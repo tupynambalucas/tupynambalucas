@@ -45,9 +45,9 @@ platform/
 Os serviços neste workspace devem expor endpoints genéricos e evitar forte acoplamento com a lógica de aplicações específicas.
 :::
 
-* **Orquestração com Docker**: Inicie sempre os serviços utilizando os comandos escopados definidos abaixo. Nunca execute dependências de containers manualmente.
-* **Telemetria Interna**: O OpenTelemetry Collector (`otel-collector`) serve como o ponto de entrada único para a telemetria dos desenvolvedores. Todas as aplicações de plataforma em runtime DEVEM encaminhar estatísticas usando protocolos OTLP.
-* **Persistência de Volumes**: Os arquivos de cache do Turborepo e os diretórios de estado do OpenTelemetry devem ser mapeados para diretórios do host local para evitar perda de dados entre recompilações.
+- **Orquestração com Docker**: Inicie sempre os serviços utilizando os comandos escopados definidos abaixo. Nunca execute dependências de containers manualmente.
+- **Telemetria Interna**: O OpenTelemetry Collector (`otel-collector`) serve como o ponto de entrada único para a telemetria dos desenvolvedores. Todas as aplicações de plataforma em runtime DEVEM encaminhar estatísticas usando protocolos OTLP.
+- **Persistência de Volumes**: Os arquivos de cache do Turborepo e os diretórios de estado do OpenTelemetry devem ser mapeados para diretórios do host local para evitar perda de dados entre recompilações.
 
 ---
 
