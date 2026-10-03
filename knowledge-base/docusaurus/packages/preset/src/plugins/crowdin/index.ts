@@ -81,8 +81,8 @@ export default function pluginCrowdin(context: LoadContext, options: CrowdinOpti
         for (const contentType of contentTypes) {
           if (!contentType.isDirectory()) continue;
 
-          if (contentType.name === 'i18n-json') {
-            syncFilesOptimized(path.join(localeSrcPath, 'i18n-json'), localeDestPath);
+          if (contentType.name === 'messages') {
+            syncFilesOptimized(path.join(localeSrcPath, 'messages'), localeDestPath);
             continue;
           }
 

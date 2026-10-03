@@ -8,5 +8,5 @@ commit_message: "chore(l10n): update translations [ci skip]"
 files:
   - source: /knowledge-base/collections/namespaces/portal/content/**/*.mdx
     translation: /knowledge-base/collections/namespaces/portal/locales/%locale%/**/%original_file_name%
-  - source: /knowledge-base/collections/namespaces/portal/content/i18n-json/**/*.json
-    translation: /knowledge-base/collections/namespaces/portal/locales/%locale%/i18n-json/**/%original_file_name%
+  - source: /knowledge-base/collections/namespaces/portal/content/messages/**/*.json
+    translation: /knowledge-base/collections/namespaces/portal/locales/%locale%/messages/**/%original_file_name%
