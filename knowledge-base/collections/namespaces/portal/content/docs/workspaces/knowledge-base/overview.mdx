@@ -10,70 +10,48 @@ tags:
   - knowledge-base
 ---
 
-The Knowledge Base workspace manages the official documentation hub for the %PROJECT_DOMAIN% project, known as **%PROJECT_DOMAIN% Docs**. Built on Docusaurus v3, it serves as the central developer portal, housing architectural guidelines, style guides, product planning documents, and automated project changelogs and roadmaps.
+The Knowledge Base workspace manages the official documentation hub for the %PROJECT_DOMAIN% project, known as **%PROJECT_DOMAIN% Docs**. Built on Docusaurus v3, it serves as the central developer portal, housing architectural guidelines, style guides, product planning documents, and workspace references.
 
 ## Architecture
 
-The workspace implements a strict separation between raw markdown content and the Docusaurus rendering engine:
+The workspace implements a strict separation between raw markdown content collections and the Docusaurus rendering engine:
 
-```
+```text
 knowledge-base/
-├── docs/                     # Content Sub-domain (Engine-agnostic)
-│   └── monorepo/
-│       ├── handbook/         # General project handbook (Architecture, Style Guide, Guidelines)
-│       ├── roadmap/          # Modular roadmap source documents
-│       ├── releases/         # Blog-formatted release updates
-│       ├── workspaces/       # Modular workspace descriptions (this section)
-│       └── i18n/             # Internationalization configurations (Portuguese translations)
-└── docusaurus/               # Engine Sub-domain
-    ├── packages/
-    │   ├── preset/           # Custom Docusaurus preset and plugins
-    │   └── theme/            # Custom React theme overrides
-    └── services/monorepo/
-        ├── src/              # Custom react layout pages, assets, and styling components
-        ├── tooling/          # Utility scripts (i18n sync, changelog/roadmap compilers)
-        ├── sidebars.ts       # Main documentation sidebar rules
-        ├── sidebarsRoadmap.ts
-        ├── sidebarsWorkspaces.ts
-        └── docusaurus.config.ts # Master Docusaurus site configuration
+├── collections/                 # Content Sub-domain (Engine-agnostic)
+│   └── namespaces/
+│       └── portal/
+│           └── content/
+│               ├── blog/        # Changelogs and release posts
+│               ├── community/   # Community guidelines and contributing docs
+│               ├── docs/        # Monorepo architecture and workspace references
+│               └── pages/       # Custom React landing pages
+├── docusaurus/                  # Engine Sub-domain
+│   ├── packages/
+│   │   ├── preset/              # Custom Docusaurus preset and plugins
+│   │   └── theme/               # Swizzled React theme components and overrides
+│   └── services/
+│       └── portal/              # The main Docusaurus service application
+│           ├── src/             # Custom React layout components and assets
+│           ├── docusaurus.config.ts # Master Docusaurus site configuration
+│           └── sidebars.ts      # Main documentation sidebar rules
+└── crowdin.yml                  # Translation synchronization configuration
 ```
 
-## Core Architecture and Custom Plugins
+## Internationalization (i18n) and GitOps
 
-%PROJECT_DOMAIN% Docs is configured with a multi-instance documentation setup using Docusaurus plugins to segment the different areas of the developer portal with independent left sidebars:
+%PROJECT_DOMAIN% Docs fully supports English (`en`) and Portuguese (`pt-BR`) locales using a strict **Unidirectional GitOps Flow** managed by Crowdin.
 
-1.  **General Documentation (Docs)**: Located in `docs/monorepo/handbook/` and mapped to `/docs`. Governs high-level architectural briefs, security strategies, coding style guides, and master vision files.
-2.  **Strategic Roadmaps (Roadmap)**: Located in `docs/monorepo/roadmap/` and mapped to `/roadmap`. Governs context-specific milestones and goals.
-3.  **Workspaces (Workspaces)**: Located in `docs/monorepo/workspaces/` and mapped to `/workspaces`. Houses detailed modular descriptions of each package context.
-4.  **Changelog (Blog)**: Located in `docs/monorepo/releases/` and mapped to `/changelog`. Governs version history and release notes.
-
-## Internationalization (i18n)
-
-%PROJECT_DOMAIN% Docs fully supports English (`en`) and Portuguese (`pt-BR`) locales. Localized files mirror the structure of English documents inside the `docs/monorepo/i18n/` folder:
-
-- **General Docs**: `i18n/pt-BR/docusaurus-plugin-content-docs/current/`
-- **Roadmap Docs**: `i18n/pt-BR/docusaurus-plugin-content-docs-roadmap/current/`
-- **Workspaces Docs**: `i18n/pt-BR/docusaurus-plugin-content-docs-workspaces/current/`
-- **Changelog Posts**: `i18n/pt-BR/docusaurus-plugin-content-blog/`
-
-The engine pulls these translations automatically at build time using the `tooling/sync-i18n.ts` prebuild hook.
-
-## Automated Root Compilers
-
-To maintain clean repository standards, the documentation workspace features build-time script compiles to write unified markdown documentation at the repository root level:
-
-- **`generate-roadmap.ts`**: Aggregates all context files inside `roadmap/` and generates `/ROADMAP.md` at the repository root.
-- **`generate-changelog.ts`**: Parses the release blog posts under `releases/` and generates `/CHANGELOG.md` at the repository root.
-
-These files are automatically generated and committed via the `.github/workflows/deploy-docs.yaml` pipeline on every merge to develop.
+- **Source of Truth (English)**: The GitHub repository stores only the English source documents inside the `collections/` directory.
+- **Translation Engine (pt-BR)**: The Crowdin platform acts as the primary translation engine. It continuously generates translated artifacts and pushes them to the repository via automated Pull Requests targeting the `locales/` directory.
+- **Build Isolation**: During the build pipeline, a custom plugin dynamically synchronizes the `locales/` content directly into the Docusaurus `i18n/` engine directory. The `i18n/` directory is intentionally ignored by Git (`.gitignore`) to isolate the rendering engine from the content collections.
 
 ## Workspace Scripts
 
 Run these commands from the root directory to manage the documentation context:
 
-| Command                                          | Action                                                                                |
-| :----------------------------------------------- | :------------------------------------------------------------------------------------ |
-| `pnpm kb:docusaurus:monorepo:dev`                | Launches the local Docusaurus development server at `http://localhost:3002`.          |
-| `pnpm kb:docusaurus:monorepo:build`              | Compiles the production build of the Docusaurus portal (runs link check validations). |
-| `pnpm kb:docusaurus:monorepo:generate:roadmap`   | Manually triggers compiling the modular roadmap documents into the root `ROADMAP.md`. |
-| `pnpm kb:docusaurus:monorepo:generate:changelog` | Manually triggers compiling the release updates into the root `CHANGELOG.md`.         |
+| Command                           | Action                                                                                  |
+| :-------------------------------- | :-------------------------------------------------------------------------------------- |
+| `pnpm infra:dev`                  | Starts the entire Skaffold cluster, including the Docusaurus portal on port `3002`.     |
+| `pnpm kb:docusaurus:portal:dev`   | Launches the standalone local Docusaurus development server at `http://localhost:3002`. |
+| `pnpm kb:docusaurus:portal:build` | Compiles the production build of the Docusaurus portal and executes link validation.    |
