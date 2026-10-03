@@ -23,25 +23,25 @@ O Workspace `cortex/mcp/guardrails` fornece o processador de política ExtMCP gR
 
 ## Arquitetura
 
-O serviço Guardrails implementa o protocolo ExtMCP do AgentGateway para interceptar chamadas de método do Model Context Protocol (MCP) antes que elas cheguem aos containers de destino.
+O serviço Guardrails implementa o protocolo ExtMCP do AgentGateway para interceptar chamadas de método do Model Context Protocol (MCP) antes que elas atinjam os containers downstream.
 
-Ele recebe payloads estruturados nativos de MCP (nome do método JSON-RPC, parâmetros, etc.) em vez de HTTP puro. Isso permite a inspeção precisa de chamadas de ferramentas (`tools/call`) e respostas (`tools/list`).
+Ele recebe payloads nativos de MCP estruturados (nome do método JSON-RPC, parâmetros, etc.) em vez de HTTP bruto. Isso permite a inspeção precisa de chamadas de ferramentas (`tools/call`) e respostas (`tools/list`).
 
 ## Processadores
 
-### 1. Mutador de Requisições (`request-mutator.ts`)
+### 1. Mutador de Requisição (`request-mutator.ts`)
 
-Integra-se à fase `tools/call` para atuar como um **Proxy de Rede Transparente**.
+Realiza o gancho na fase `tools/call` para atuar como um **Proxy de Rede Transparente**.
 
 **Comportamento:**
 
-* Examina profundamente e de forma recursiva todos os argumentos no payload JSON de *qualquer* chamada de ferramenta.
+* Realiza varredura profunda recursiva em todos os argumentos no payload JSON de *qualquer* chamada de ferramenta.
 * Reescreve qualquer string contendo `localhost` ou `127.0.0.1` para `host.docker.internal`.
 * Garante conectividade perfeita entre container e host sem exigir que o agente de IA compreenda o modelo de rede subjacente do Docker/Kubernetes.
 
-### 2. Enriquecedor de Respostas (`response-enricher.ts`)
+### 2. Enriquecedor de Resposta (`response-enricher.ts`)
 
-Integra-se à fase de saída `tools/list`.
+Realiza o gancho na fase de saída `tools/list`.
 
 **Comportamento:**
 
@@ -50,4 +50,4 @@ Integra-se à fase de saída `tools/list`.
 
 ## Contrato Fail-Safe (Fail-Open)
 
-Para manter alta disponibilidade no plano de dados do Cortex, todos os processadores ExtMCP devem capturar exceções internas (por exemplo, erros de parsing) e retornar graciosamente para uma resposta `{ pass: {} }`. Isso garante que um bug na lógica do guardrail não derrube todo o toolchain de IA.
+Para manter alta disponibilidade no plano de dados do Cortex, todos os processadores ExtMCP devem capturar exceções internas (por exemplo, erros de parsing) e retornar graciosamente para uma resposta `{ pass: {} }`. Isso garante que um bug na lógica de guardrail não derrube todo o toolchain de IA.
