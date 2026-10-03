@@ -14,34 +14,34 @@ São fornecidos comandos padronizados para manter o Workspace do Cortex, gerenci
 
 ## 1. Comandos do Workspace
 
-Todos os comandos do Workspace do Cortex estão disponíveis na raiz do monorepo via `pnpm`.
+Todos os comandos do Workspace do Cortex estão disponíveis a partir da raiz do monorepo via `pnpm`.
 
-| Comando                 | Descrição                                                                                  |
-| :---------------------- | :----------------------------------------------------------------------------------------- |
-| `pnpm cortex:dev`       | Inicie os serviços do Cortex no Kubernetes usando o Skaffold (file-sync + hot reload).     |
-| `pnpm cortex:stop`      | Encerre o deployment ativo do Skaffold e remova os recursos do Kubernetes.                 |
-| `pnpm cortex:clean`     | Limpe o cache de build do Skaffold e remova os recursos obsoletos do Kubernetes.           |
-| `pnpm cortex:up`        | Inicie os serviços do Cortex usando o Docker Compose (standalone, sem Kubernetes).         |
-| `pnpm cortex:down`      | Encerre os serviços do Docker Compose.                                                     |
-| `pnpm cortex:logs`      | Transmita os logs agregados de todos os serviços do Docker Compose.                        |
-| `pnpm cortex:reset`     | Encerre os serviços, remova volumes não utilizados e reinicie a partir de um estado limpo. |
-| `pnpm cortex:typecheck` | Execute as verificações do compilador TypeScript em todos os pacotes do Cortex.            |
+| Comando                 | Descrição                                                                                     |
+| :---------------------- | :-------------------------------------------------------------------------------------------- |
+| `pnpm cortex:dev`       | Inicie os serviços do Cortex no Kubernetes usando o Skaffold (file-sync + hot reload).        |
+| `pnpm cortex:stop`      | Encerre o deploy ativo do Skaffold e remova os recursos do Kubernetes.                        |
+| `pnpm cortex:clean`     | Limpe o cache de build do Skaffold e remova os recursos obsoletos do Kubernetes.              |
+| `pnpm cortex:up`        | Inicie os serviços do Cortex usando o Docker Compose (standalone, sem Kubernetes).            |
+| `pnpm cortex:down`      | Encerre os serviços do Docker Compose.                                                        |
+| `pnpm cortex:logs`      | Transmita logs agregados de todos os serviços do Docker Compose.                              |
+| `pnpm cortex:reset`     | Encerre os serviços, remova os volumes não utilizados e reinicie a partir de um estado limpo. |
+| `pnpm cortex:typecheck` | Execute as verificações do compilador TypeScript em todos os pacotes do Cortex.               |
 
 ---
 
 ## 2. Workflow do Kubernetes / Skaffold
 
-O workflow de desenvolvimento principal usa o Skaffold com overlays do Kustomize localizados em `cortex/infrastructure/kubernetes/`.
+O workflow de desenvolvimento principal usa o Skaffold com sobreposições do Kustomize localizadas em `cortex/infrastructure/kubernetes/`.
 
-### Iniciando o Stack
+### Iniciando a Stack
 
 ```bash
 pnpm cortex:dev
 ```
 
-O Skaffold faz o build de todas as imagens de serviços, aplica o overlay `dev` do Kustomize e habilita o file-sync para iteração rápida. Os redirecionamentos de porta são configurados automaticamente para acesso de desenvolvimento local.
+O Skaffold faz o build de todas as imagens de serviço, aplica a sobreposição do Kustomize de `dev` e habilita o file-sync para iteração rápida. Os encaminhamentos de porta são configurados automaticamente para acesso de desenvolvimento local.
 
-### Encerrando o Stack
+### Encerrando a Stack
 
 ```bash
 pnpm cortex:stop
@@ -55,13 +55,13 @@ Encerra o processo do Skaffold e remove todos os recursos do Kubernetes no names
 pnpm cortex:clean
 ```
 
-Remove os caches de imagem do Skaffold e limpa os recursos obsoletos do Kubernetes. Use isto quando as imagens estiverem em um estado inconsistente ou após uma atualização de dependência.
+Remove os caches de imagem do Skaffold e limpa recursos obsoletos do Kubernetes. Use isto quando as imagens estiverem em um estado inconsistente ou após um upgrade de dependência.
 
 ---
 
 ## 3. Workflow Standalone do Docker Compose
 
-Para ambientes onde o Kubernetes não está disponível, o Docker Compose pode gerenciar todo o stack do Cortex de forma independente:
+Para ambientes onde o Kubernetes não está disponível, o Docker Compose pode gerenciar a stack completa do Cortex de forma independente:
 
 ```bash
 pnpm cortex:up    # Start all services
@@ -74,7 +74,7 @@ pnpm cortex:reset # Prune volumes and restart
 
 ## 4. Sincronização de Docs do Subsistema de Memória
 
-O serviço `memory-api` empacota o corpus de documentação no momento do build e faz a sincronização automática na inicialização. Para acionar uma ressincronização manual da base de conhecimento sem reiniciar:
+O serviço `memory-api` agrupa o corpus de documentação no momento do build e faz a sincronização automática na inicialização. Para disparar uma nova sincronização manual da base de conhecimento sem reiniciar:
 
 ### Via API
 
@@ -82,26 +82,26 @@ O serviço `memory-api` empacota o corpus de documentação no momento do build 
 curl -X POST http://localhost:3006/api/memory/ingest/docs
 ```
 
-Ao executar no Kubernetes com `pnpm cortex:dev`, o serviço `memory-api` tem sua porta redirecionada para `localhost:3006` automaticamente.
+Ao executar no Kubernetes com `pnpm cortex:dev`, o serviço `memory-api` tem sua porta encaminhada para `localhost:3006` automaticamente.
 
 ### Via Dashboard
 
-1. Abra o Memory Web Dashboard em `https://memory-dev.%PROJECT_DOMAIN%`.
+1. Abra o Dashboard Web de Memória em `https://memory-dev.%PROJECT_DOMAIN%`.
 2. Navegue até o painel **Graph Topology**.
 3. Clique no botão **Re-sync Docs**.
 
-A sincronização é idempotente: apenas os arquivos com hashes de conteúdo alterados são reincorporados.
+A sincronização é idempotente: apenas arquivos com hashes de conteúdo alterados são reincorporados.
 
 ---
 
 ## 5. Estrutura do Workspace
 
-| Caminho                             | Finalidade                                                        |
-| :---------------------------------- | :---------------------------------------------------------------- |
-| `cortex/gateway/`                   | Arquivos de configuração do AgentGateway (`config.yaml`).         |
-| `cortex/mcp/guardrails/`            | Serviço de guardrail gRPC do ExtMCP.                              |
-| `cortex/mcp/services/`              | Pacotes de adaptadores MCP individuais (firecrawl, memory, etc.). |
-| `cortex/memory/packages/core/`      | Modelos TypeScript compartilhados e schemas Zod.                  |
-| `cortex/memory/services/api/`       | Backend do `memory-api` em Fastify.                               |
-| `cortex/memory/services/web/`       | Dashboard em React do `memory-web`.                               |
-| `cortex/infrastructure/kubernetes/` | Configuração do Skaffold e manifestos do Kustomize.               |
+| Caminho                             | Finalidade                                                      |
+| :---------------------------------- | :-------------------------------------------------------------- |
+| `cortex/gateway/`                   | Arquivos de configuração do AgentGateway (`config.yaml`).       |
+| `cortex/mcp/guardrails/`            | Serviço de guardrail gRPC do ExtMCP.                            |
+| `cortex/mcp/services/`              | Pacotes de adaptador MCP individuais (firecrawl, memory, etc.). |
+| `cortex/memory/packages/core/`      | Modelos TypeScript compartilhados e schemas Zod.                |
+| `cortex/memory/services/api/`       | Backend `memory-api` em Fastify.                                |
+| `cortex/memory/services/web/`       | Dashboard React `memory-web`.                                   |
+| `cortex/infrastructure/kubernetes/` | Configuração do Skaffold e manifestos do Kustomize.             |
