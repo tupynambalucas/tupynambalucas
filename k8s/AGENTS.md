@@ -2,30 +2,36 @@
   <parent src="../AGENTS.md" type="global-rules" />
 </context-hierarchy>
 
-# Bounded Context: Centralized Infrastructure
+# Bounded Context: Kubernetes Orchestration
 
-This workspace (`infrastructure/`) manages the centralized Kubernetes orchestration, GitOps deployment pipeline, and localized Skaffold environments for the `tupynambalucas.dev` monorepo.
+This workspace (`k8s/`) manages the centralized Kubernetes orchestration, GitOps deployment manifests, and localized Skaffold environments for the `tupynambalucas.dev` monorepo.
 
 ## 1. Directory Architecture
 
-- **`skaffold.yaml`**: The master orchestration manifest defining all container build contexts (using relative paths) and modular execution profiles (Platform, Cortex, Studio).
-- **`manifests/`**: Base Kubernetes manifests (Namespaces, Deployments, Services, ConfigMaps, Ingresses) used across all environments.
-- **`environments/`**: Kustomize overlays.
-  - **`local/`**: Configured for local `minikube` development (uses `.dev` domains via tunnel, unencrypted HTTP internal routing, hot-reload configurations).
-  - **`prod/`**: Configured for production deployment (uses proper domains, TLS enforcement, production replica sets).
-- **`charts/`**: Local cache of essential Helm charts (e.g., Traefik) required for bootstrapping before external Helm repositories are available.
+- **`skaffold.yaml`**: The root orchestration manifest that includes the hub and corporate modules.
+- **`skaffold.hub.yaml`**: Orchestration for the hub stack (tools, observability, cortex, studio).
+- **`skaffold.corporate.yaml`**: Orchestration for the corporate stack (portal, api, web).
+- **`manifests/`**: Base Kubernetes manifests.
+  - **`namespaces/`**: Namespace definitions.
+  - **`hub/`**: Manifests for internal observability, networking, AI cortex, and design studio.
+  - **`corporate/`**: Manifests for public-facing products.
+- **`charts/`**: Vendored Helm charts (e.g., Traefik, AgentGateway).
+- **`overlays/`**: Kustomize overlays.
+  - **`dev/`**: Overlays for local development targeting `k3d-hub` and `k3d-corporate`.
+  - **`staging/`**: Cloud staging configurations.
+  - **`prod/`**: Cloud production configurations.
+- **`references/`**: Technical references and setup guides.
 
 ## 2. Infrastructure Modularity
 
-The infrastructure is broken down into modules that can be executed independently or as a whole:
+The infrastructure is broken down into two isolated environments that deploy to separate k3d clusters in development, eliminating cross-cluster runtime dependencies and port contention:
 
-- **`platform-dev`**: Always-on cluster infrastructure (Traefik, Cloudflare Tunnel, Cert-Manager, OpenTelemetry, Grafana, Loki, Prometheus, Tempo, Turbocache, Headlamp).
-- **`cortex-dev`**: AI processing hub (AgentGateway, MCP Services, Memory Vectors). _Automatically requires `platform-dev`._
-- **`studio-dev`**: Collaborative design tools (Penpot, Memos). _Automatically requires `platform-dev`._
+- **Hub**: Deploys to `k3d-hub`. Contains observability, Traefik, Cloudflared tunnel, Cortex MCP, and Studio tools.
+- **Corporate**: Deploys to `k3d-corporate`. Contains the main API, web frontend, and Docusaurus portal.
 
 ## 3. Operational Constraints
 
 - Agents MUST NEVER recreate `docker-compose` files. All deployments are orchestrated purely via Kubernetes and Skaffold.
-- Agents MUST use `pnpm --filter @monorepo/infrastructure ...` for all infrastructure operations.
-- Modifications to Traefik routing MUST be done through `IngressRoute` CRDs or Helm values, avoiding standard `Ingress` mappings to internal Traefik APIs.
-- PIDs limit constraint: When deploying locally on Windows Podman, keep heavy observability stacks scaled down or modular if the machine is low on resources.
+- Base manifests in `manifests/` MUST NOT contain environment-specific values. Ingress hosts, replicas, and resources are set via `overlays/`.
+- Local development utilizes `k3d`, not `minikube`.
+- Overlays MUST use `resources` and `patches` (not deprecated `bases` or `patchesStrategicMerge`).

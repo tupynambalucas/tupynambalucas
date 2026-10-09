@@ -1,0 +1,80 @@
+# MCP Playwright Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-playwright
+  namespace: cortex
+  labels:
+    app: mcp-playwright
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-playwright
+  template:
+    metadata:
+      labels:
+        app: mcp-playwright
+    spec:
+      containers:
+        - name: mcp-playwright
+          image: cortex-mcp-playwright:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '100m'
+            limits:
+              memory: '1Gi'
+              cpu: '500m'
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_PORT
+                  optional: true
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_HOST
+                  optional: true
+            - name: BROWSER
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_BROWSER
+                  optional: true
+            - name: HEADLESS
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_HEADLESS
+                  optional: true
+            - name: NO_SANDBOX
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_NO_SANDBOX
+                  optional: true
+            - name: ALLOWED_HOSTS
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: PLAYWRIGHT_MCP_ALLOWED_HOSTS
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-playwright
+  namespace: cortex
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: mcp-playwright

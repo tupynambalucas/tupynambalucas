@@ -198,7 +198,7 @@ Always-on cluster infrastructure, observability pipelines, and build acceleratio
 ## Getting Started
 
 > [!WARNING]
-> Before deploying, you must configure all environment variables via `infrastructure/.env`.
+> Before deploying, you must configure all environment variables via `k8s/.env`.
 
 ### Prerequisites
 

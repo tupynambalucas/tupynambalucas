@@ -1,79 +1,27 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
-  <system-instruction>
-    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
-    file-reading tools before proceeding. Global constraints are mandatory.
-  </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Developer Hub
+# Bounded Context: Corporate
 
-This file defines the domain rules, local stack services, and workspace structure for the personal **Developer Hub Bounded Context** (`hub/`).
+The `corporate/` workspace manages all public-facing products and services for the `tupynambalucas.dev` monorepo.
 
----
+## 1. Sub-Domains
 
-## 1. Bounded Context Navigation
+This context is divided into several sub-domains:
 
-Before editing or analyzing code in this context, read the local rules for the specific workspace:
+- `api/`: The primary backend REST API (Fastify).
+- `portal/`: The central knowledge base and documentation portal (Docusaurus).
+- `web/`: The main company website and frontend application (Vite/React).
+- `packages/`: Shared logic, schemas, and configurations strictly for corporate products.
+- `collections/`: Documentation content and assets structured for the portal.
 
-- **Core Library**: [packages/core/AGENTS.md](./packages/core/AGENTS.md) — Shared types, Zod schemas, and data validation rules.
-- **REST API**: [services/api/AGENTS.md](./services/api/AGENTS.md) — Fastify 5 route definitions, Mongoose models, and Mapped Repository logic.
-- **Web Client**: [services/web/AGENTS.md](./services/web/AGENTS.md) — React 19 visual client, Zustand state stores, and fluid CSS styling.
-- **MongoDB Data Node**: [services/mongodb/](./services/mongodb/) - Dockerfile and init scripts for the local `hub-mongodb` replica set.
-- **Redis Cache Node**: [services/redis/](./services/redis/) - Dockerfile for the local `hub-redis` caching layer.
-- **Workspace Documentation**: Refer to the developer website documentation in [docs/README.md](../docs/README.md).
+## 2. Constraints
 
----
+- Corporate services MUST NOT access internal Hub APIs directly without proper authentication and routing.
+- All deployments are managed through the `k8s/` manifests, targeting the `k3d-corporate` cluster in local development.
+- The `portal/` documentation MUST adhere to the Diátaxis framework.
 
-## 1.5. Ubiquitous Language
+## 3. Required Skill
 
-| Term       | Definition                                                                 | Forbidden Synonyms         |
-| :--------- | :------------------------------------------------------------------------- | :------------------------- |
-| `Customer` | The authenticated user of the developer hub platform                       | user, person, member       |
-| `Product`  | A catalog item or service offered through the hub                          | item, listing, offering    |
-| `Cycle`    | An active time-bound subscription window                                   | period, subscription, plan |
-| `Core`     | The `@monorepo/hub-core` shared Zod schema and TypeScript contract library | shared, common, utils      |
-
----
-
-## 2. Bounded Context Architecture
-
-The Hub context manages all personal developer website operations. It is architected for strict domain isolation and scalability.
-
-```mermaid
-graph TD
-    direction TD
-    subgraph Hub_Context
-        Web["@monorepo/hub-web (Vite/React)"]
-        API["@monorepo/hub-api (Fastify 5)"]
-        Core["@monorepo/hub-core (Zod library)"]
-    end
-    Web --> Core
-    API --> Core
-```
-
-- **Canonical Database**: The database connection parses Mongoose connection strings and dynamically overrides the database name to **`hubdb`** in all environments (development, staging, and production).
-- **Integrated Seeding (`SeedPlugin`)**: The initial administrator user creation is natively integrated into the Fastify server lifecycle as an idempotent onReady plugin. Local compose scripts only initialize the replica set.
-- **State & Action Segregation**: State management in the client strictly separates properties from actions in Zustand stores, exporting atomic selectors.
-
----
-
-## 3. Context Isolation Guardrails
-
-1. **No Cross-Context Imports**: You MUST NEVER import modules, constants, validation schemas, or helper functions from other bounded contexts like `renderer/`. All shared utilities or assets must be locally duplicated or centralized in global tooling workspaces if permitted.
-2. **Catalog Integrity**: All dependencies must declare versions using workspace catalogs (`catalog:web-stack`, `catalog:api-stack`, `catalog:shared-stack`, etc.) defined in `pnpm-workspace.yaml`.
-
----
-
-## 4. Local Lifecycle Commands
-
-Run these scripts from the monorepo root to manage the hub stack:
-
-- `pnpm hub:dev`: Boots the local compose databases (MongoDB + Redis), builds `@monorepo/hub-core`, and runs `@monorepo/hub-api` and `@monorepo/hub-web` concurrently.
-- `pnpm hub:up`: Boots only the MongoDB replica set (`Tupynambalucas-hub-db-dev`) and Redis (`Tupynambalucas-hub-redis-dev`) containers.
-- `pnpm hub:down`: Stops local Docker containers and releases localhost ports 3000 and 5173.
-- `pnpm hub:reset`: Clears local database volumes and rebuilds developer infrastructure containers.
-- `pnpm hub:prod`: Builds and launches the production stack (API + Web + Redis) using `.env.prod`.
-- `pnpm hub:prod:down`: Stops and tears down the production stack.
-- `pnpm hub:staging`: Builds and launches the staging stack using `.env.staging`.
-- `pnpm hub:staging:down`: Stops and tears down the staging stack.
+- **`docusaurus-expert`**: MUST be active when creating or modifying markdown documentation inside the `portal/` or `collections/` directories to ensure MDX syntax compliance.

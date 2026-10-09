@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../manifests/namespaces
+  - ../../../manifests/hub/observability
+  - ../../../manifests/hub/network
+  - ../../../manifests/hub/tools
+  - ../../../manifests/hub/studio/memos
+  - ../../../manifests/hub/studio/penpot
+  - ../../../manifests/hub/cortex/gateway
+  - ../../../manifests/hub/cortex/mcp/services
+  - ../../../manifests/hub/cortex/memory
+helmCharts:
+  - name: traefik
+    repo: ''
+    version: 26.0.0
+    releaseName: traefik
+    namespace: platform
+    includeCRDs: true
+    valuesFile: helm-values/traefik-values.yaml
+patches:
+  - path: patches/traefik-rbac-patch.json
+    target:
+      kind: ClusterRole
+      name: traefik-platform
+generatorOptions:
+  disableNameSuffixHash: true
+secretGenerator:
+  - name: platform-secrets
+    namespace: platform
+    envs:
+      - ../../../.env
+  - name: cortex-secrets
+    namespace: cortex
+    envs:
+      - ../../../.env

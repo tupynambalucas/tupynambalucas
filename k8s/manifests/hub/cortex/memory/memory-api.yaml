@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-api
+  namespace: cortex
+  labels:
+    app: memory-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-api
+  template:
+    metadata:
+      labels:
+        app: memory-api
+    spec:
+      initContainers:
+        - name: wait-for-mongodb
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for mongodb-db:27017 to be ready..."
+              until nc -z mongodb-db 27017; do
+                echo "Retrying..."
+                sleep 2
+              done
+              echo "mongodb-db is ready!"
+          resources:
+            requests:
+              memory: '16Mi'
+              cpu: '10m'
+            limits:
+              memory: '32Mi'
+              cpu: '50m'
+      containers:
+        - name: memory-api
+          image: cortex-memory-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3006
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '50m'
+            limits:
+              memory: '512Mi'
+              cpu: '300m'
+          env:
+            - name: PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_API_PORT
+                  optional: true
+            - name: HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_API_HOST
+                  optional: true
+            - name: NODE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: NODE_ENV
+                  optional: true
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MONGODB_URI
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memory-api
+  namespace: cortex
+spec:
+  ports:
+    - port: 3006
+      targetPort: 3006
+  selector:
+    app: memory-api

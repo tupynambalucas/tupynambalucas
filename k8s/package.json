@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/infrastructure",
+  "name": "@monorepo/k8s",
   "description": "Centralized Kubernetes Infrastructure via Skaffold and Kustomize",
   "version": "1.0.0",
   "scripts": {

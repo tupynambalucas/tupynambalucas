@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-web
+  namespace: cortex
+  labels:
+    app: memory-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-web
+  template:
+    metadata:
+      labels:
+        app: memory-web
+    spec:
+      containers:
+        - name: memory-web
+          image: cortex-memory-web:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9006
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memory-web
+  namespace: cortex
+spec:
+  ports:
+    - port: 9006
+      targetPort: 9006
+  selector:
+    app: memory-web
