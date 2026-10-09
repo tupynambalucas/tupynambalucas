@@ -1,0 +1,28 @@
+---
+title: Contribuição
+slug: /contributing
+---
+
+# Guia de Contribuição
+
+Contribuições para o monorepo Tupynambalucas são bem-vindas. Aderimos a padrões rigorosos de engenharia para manter a estabilidade, o desempenho e a portabilidade do sistema.
+
+## Código de Conduta
+
+Espera-se que todos os contribuidores, mantenedores e revisores mantenham uma comunicação profissional respeitosa, construtiva e inclusiva em todos os repositórios e plataformas.
+
+## Workflow de Desenvolvimento
+
+1. **Fork ou branch**: Crie uma branch de recurso dedicada a partir de `develop`. Nunca faça push diretamente para `main` ou `develop`.
+2. **Gerenciamento de pacotes**: Utilize sempre `pnpm` (versão 12+). Não utilize `npm` ou `yarn`.
+3. **Mensagens de commit**: Aplique o padrão [Conventional Commits](https://www.conventionalcommits.org/) (por exemplo, `feat:`, `fix:`, `docs:`, `chore:`).
+4. **Validação e Verificações**:
+   - Execute `pnpm lint` para executar o ESLint nos pacotes do workspace.
+   - Execute `pnpm typecheck` para verificar a correção do compilador TypeScript.
+   - Execute `pnpm format:check` para garantir a conformidade com o Prettier.
+
+## Ciclo de Vida do Pull Request
+
+- Forneça uma descrição concisa detalhando a motivação, o escopo das alterações e as etapas de verificação.
+- Certifique-se de que as verificações de CI do GitHub Actions sejam concluídas com sucesso antes de solicitar a revisão.
+- Faça squash and merge ou rebase de forma limpa na branch de destino de acordo com a política do repositório.
