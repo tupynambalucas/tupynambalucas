@@ -1,0 +1,28 @@
+---
+title: Release - v1.0.0
+date: 2026-10-03
+authors:
+  - tupynambalucas
+tags:
+  - release
+  - architecture
+  - l10n
+  - i18n
+slug: /releases/v1.0.0
+---
+
+Bem-vindo ao primeiro release principal oficial de %PROJECT_DOMAIN% (`v1.0.0`)! Esta atualização estabelece nossa arquitetura principal, infraestrutura de localização e unifica nossa estratégia de conteúdo.
+
+{/* truncate */}
+
+### Highlights
+
+* **Arquitetura de Conteúdo Unificada**: Unimos oficialmente o Changelog e o Blog em uma única linha do tempo cronológica. Todos os releases, atualizações e posts regulares agora são acessados em uma visualização unificada.
+* **Enterprise Localization Pipeline**:
+  * Reestruturamos nossa estratégia de tradução, extraindo as strings de interface do React do Docusaurus para uma pasta `messages/` dedicada e padrão de mercado.
+  * Implementamos um plugin unificado para descompactar automaticamente as traduções do Crowdin diretamente na estrutura de localidades nativa do Docusaurus.
+  * Mapeamos com sucesso as propriedades do Crowdin para o JSON do Docusaurus (`type: chrome`), evitando que os tradutores modifiquem chaves de sistema.
+  * Concluímos a primeira onda completa de localização em português (pt-BR) abrangendo Princípios de Marca, Design Tokens, Armazenamento Cloudflare e toda a Visão Geral da Base de Conhecimento.
+* **GitOps e Automação**: Endurecemos nossos workflows `.github/` para deploy sincronizado de traduções e princípios de arquitetura como código.
+
+Estamos prontos para escalar!
