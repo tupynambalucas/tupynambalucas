@@ -19,9 +19,7 @@ interface WebpackMock {
   ) => { apply: (...args: unknown[]) => void };
 }
 
-const webpack = require('webpack') as unknown as WebpackMock;
 const studioPath = path.dirname(require.resolve('@monorepo/studio-assets/package.json'));
-const collectionsRoot = path.dirname(require.resolve('@monorepo/kb-collections/package.json'));
 const studioSrcPath = path.join(studioPath, 'src');
 const staticPath = path.join(__dirname, 'static');
 
@@ -105,43 +103,22 @@ const config: Config = {
         liveCodeblock: {
           playgroundPosition: 'bottom',
         },
-        crowdin: {
-          collection: 'portal',
-        },
         docs: [
           {
             id: 'default',
-            path: path.join(collectionsRoot, 'namespaces/portal/content/docs'),
+            collection: 'portal/docs',
             routeBasePath: 'docs',
             sidebarPath: require.resolve('@monorepo/kb-docusaurus-preset/sidebars'),
           },
           {
             id: 'community',
-            path: path.join(collectionsRoot, 'namespaces/portal/content/community'),
+            collection: 'portal/community',
             routeBasePath: 'community',
             sidebarPath: require.resolve('@monorepo/kb-docusaurus-preset/sidebars'),
           },
         ],
-        changelog: {
-          blogTitle: `${projectConfig.PROJECT_NAME} Changelog`,
-          blogDescription: 'Keep yourself up-to-date about new features in every release',
-          blogSidebarCount: 'ALL',
-          blogSidebarTitle: 'Changelog',
-          routeBasePath: '/changelog',
-          showReadingTime: false,
-          postsPerPage: 20,
-          archiveBasePath: null,
-          authorsMapPath: 'authors.json',
-          feedOptions: {
-            type: 'all',
-            title: `${projectConfig.PROJECT_NAME} Changelog`,
-            description: 'Keep yourself up-to-date about new features in every release',
-            copyright: `Copyright © ${new Date().getFullYear()} ${projectConfig.PROJECT_DOMAIN}`,
-          },
-          onInlineAuthors: 'warn',
-        },
         blog: {
-          path: path.join(collectionsRoot, 'namespaces/portal/content/blog'),
+          collection: 'portal/blog',
           routeBasePath: 'blog',
           showReadingTime: true,
           blogSidebarCount: 'ALL',

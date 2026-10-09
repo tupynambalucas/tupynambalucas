@@ -42,9 +42,9 @@ O monorepo utiliza o Cloudflare e ambientes de VPS padrão para operação de ze
 
 ### Infraestrutura e Hospedagem
 
-* **Cloudflare Pages**: O hub de documentação do Docusaurus (`docs/`) e o frontend de SPA React do desenvolvedor (`hub/services/web`) são deployed para o Cloudflare Pages para entrega otimizada via CDN.
-* **Hetzner Cloud VPS / Linux VPS**: A REST API do backend Fastify (`hub/services/api`) e as pilhas do compose do MongoDB/Redis são executadas em uma instância de VPS leve.
-* **DNS & SSL**: O roteamento de DNS e a proteção de proxy são gerenciados globalmente por meio do Cloudflare.
+- **Cloudflare Pages**: O hub de documentação do Docusaurus (`docs/`) e o frontend de SPA React do desenvolvedor (`hub/services/web`) são deployed para o Cloudflare Pages para entrega otimizada via CDN.
+- **Hetzner Cloud VPS / Linux VPS**: A REST API do backend Fastify (`hub/services/api`) e as pilhas do compose do MongoDB/Redis são executadas em uma instância de VPS leve.
+- **DNS & SSL**: O roteamento de DNS e a proteção de proxy são gerenciados globalmente por meio do Cloudflare.
 
 ---
 
@@ -55,21 +55,21 @@ Utilizamos **PNPM Workspaces** com um layout de **Raiz Orientada a Contexto** pa
 Para obter um detalhamento abrangente da nossa filosofia de contexto, estrutura de diretórios e funções de aplicação, leia nossos guias arquiteturais dedicados:
 
 <DocCardList
-items={[
-  {
-    type: 'link',
-    href: '/docs/explanation/bounded-contexts',
-    label: 'Bounded Context Architecture',
-    description:
-      'Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles.',
-  },
-  {
-    type: 'link',
-    href: '/docs/explanation/architecture-overview',
-    label: 'Architecture Overview',
-    description: 'Comprehensive technical stack and monorepo strategy overview.',
-  },
-]}
+  items={[
+    {
+      type: 'link',
+      href: '/docs/explanation/bounded-contexts',
+      label: 'Bounded Context Architecture',
+      description:
+        'Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/architecture-overview',
+      label: 'Architecture Overview',
+      description: 'Comprehensive technical stack and monorepo strategy overview.',
+    },
+  ]}
 />
 
 ---
@@ -78,8 +78,8 @@ items={[
 
 Nossa prioridade é o deploy e a manutenção de:
 
-* **`@repo/hub/*`**: Hub pessoal em React/Fastify.
-* **`@/renderer`**: Compilador de estatísticas de perfil do GitHub baseado em Zig.
+- **`@repo/hub/*`**: Hub pessoal em React/Fastify.
+- **`@/renderer`**: Compilador de estatísticas de perfil do GitHub baseado em Zig.
 
 ---
 
@@ -118,9 +118,9 @@ Diátaxis é uma forma de pensar e fazer documentação.
 
 Ela prescreve abordagens para o conteúdo, arquitetura e formato que emergem de uma abordagem sistemática para entender as necessidades dos usuários da documentação.
 
-O Diátaxis identifica quatro necessidades distintas e quatro formas correspondentes de documentação — *tutoriais*, *guias práticos* (how-to guides), *referência técnica* e *explicação*. Ele os coloca em uma relação sistemática e propõe que a documentação deve ser organizada em torno das estruturas dessas necessidades.
+O Diátaxis identifica quatro necessidades distintas e quatro formas correspondentes de documentação — _tutoriais_, _guias práticos_ (how-to guides), _referência técnica_ e _explicação_. Ele os coloca em uma relação sistemática e propõe que a documentação deve ser organizada em torno das estruturas dessas necessidades.
 
-O Diátaxis resolve problemas relacionados ao *conteúdo* da documentação (o que escrever), ao *estilo* (como escrever) e à *arquitetura* (como organizar).
+O Diátaxis resolve problemas relacionados ao _conteúdo_ da documentação (o que escrever), ao _estilo_ (como escrever) e à _arquitetura_ (como organizar).
 
 Além de atender aos usuários da documentação, o Diátaxis tem valor para os criadores e mantenedores da documentação. Ele é leve, fácil de compreender e simples de aplicar. Ele não impõe restrições de implementação. Ele traz um princípio ativo de qualidade para a documentação que ajuda os mantenedores a pensarem de forma eficaz sobre seu próprio trabalho.
 
@@ -129,14 +129,14 @@ Além de atender aos usuários da documentação, o Diátaxis tem valor para os 
 A melhor maneira de começar com o Diátaxis é aplicá-lo após ler uma breve introdução.
 
 <DocCardList
-items={[
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/tutorials/diataxis-start',
-    label: 'Start Here',
-    description: 'A five-minute primer on the Diátaxis framework.',
-  },
-]}
+  items={[
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/tutorials/diataxis-start',
+      label: 'Start Here',
+      description: 'A five-minute primer on the Diátaxis framework.',
+    },
+  ]}
 />
 
 ### Aplicação Prática
@@ -144,50 +144,50 @@ items={[
 Estas páginas ajudarão a dar um sentido imediato e concreto à abordagem.
 
 <DocCardList
-items={[
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/guides/diataxis/applying-diataxis',
-    label: 'Applying Diátaxis',
-    description: 'A practical overview of how to apply the framework.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/reference/diataxis/tutorials',
-    label: 'Tutorials',
-    description: 'Reference for writing learning-oriented tutorials.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/reference/diataxis/how-to-guides',
-    label: 'How-to Guides',
-    description: 'Reference for writing goal-oriented how-to guides.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/reference/diataxis/reference-docs',
-    label: 'Reference',
-    description: 'Reference for writing information-oriented reference docs.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/reference/diataxis/explanation-docs',
-    label: 'Explanation',
-    description: 'Reference for writing understanding-oriented explanation.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/reference/diataxis/compass',
-    label: 'The Compass',
-    description: 'A diagnostic tool for documentation quality.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/guides/diataxis/workflow',
-    label: 'Workflow',
-    description: 'How to use Diátaxis as a guide to documentation work.',
-  },
-]}
+  items={[
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/guides/diataxis/applying-diataxis',
+      label: 'Applying Diátaxis',
+      description: 'A practical overview of how to apply the framework.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/reference/diataxis/tutorials',
+      label: 'Tutorials',
+      description: 'Reference for writing learning-oriented tutorials.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/reference/diataxis/how-to-guides',
+      label: 'How-to Guides',
+      description: 'Reference for writing goal-oriented how-to guides.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/reference/diataxis/reference-docs',
+      label: 'Reference',
+      description: 'Reference for writing information-oriented reference docs.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/reference/diataxis/explanation-docs',
+      label: 'Explanation',
+      description: 'Reference for writing understanding-oriented explanation.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/reference/diataxis/compass',
+      label: 'The Compass',
+      description: 'A diagnostic tool for documentation quality.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/guides/diataxis/workflow',
+      label: 'Workflow',
+      description: 'How to use Diátaxis as a guide to documentation work.',
+    },
+  ]}
 />
 
 ### Entendendo o Diátaxis
@@ -195,50 +195,50 @@ items={[
 Esta seção explora a teoria e os princípios do Diátaxis mais profundamente e estabelece a compreensão das necessidades que o fundamentam.
 
 <DocCardList
-items={[
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/explanation/diataxis/theory',
-    label: 'Understanding Diátaxis',
-    description: 'Towards a theory of quality in documentation.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/explanation/diataxis/foundations',
-    label: 'Foundations',
-    description: 'The two dimensions that underpin the Diátaxis map.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/reference/diataxis/map',
-    label: 'The Map',
-    description: 'The two-dimensional structure of documentation.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/explanation/diataxis/quality',
-    label: 'Quality',
-    description: 'Towards a theory of quality in documentation.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/explanation/diataxis/tutorials-vs-how-to',
-    label: 'Tutorials and How-to Guides',
-    description: 'The difference between a tutorial and how-to guide.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/explanation/diataxis/reference-vs-explanation',
-    label: 'Reference and Explanation',
-    description: 'The difference between reference and explanation.',
-  },
-  {
-    type: 'link',
-    href: '/workspaces/knowledge-base/explanation/diataxis/complex-hierarchies',
-    label: 'Complex Hierarchies',
-    description: 'How Diátaxis works in complex documentation systems.',
-  },
-]}
+  items={[
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/explanation/diataxis/theory',
+      label: 'Understanding Diátaxis',
+      description: 'Towards a theory of quality in documentation.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/explanation/diataxis/foundations',
+      label: 'Foundations',
+      description: 'The two dimensions that underpin the Diátaxis map.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/reference/diataxis/map',
+      label: 'The Map',
+      description: 'The two-dimensional structure of documentation.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/explanation/diataxis/quality',
+      label: 'Quality',
+      description: 'Towards a theory of quality in documentation.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/explanation/diataxis/tutorials-vs-how-to',
+      label: 'Tutorials and How-to Guides',
+      description: 'The difference between a tutorial and how-to guide.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/explanation/diataxis/reference-vs-explanation',
+      label: 'Reference and Explanation',
+      description: 'The difference between reference and explanation.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base/explanation/diataxis/complex-hierarchies',
+      label: 'Complex Hierarchies',
+      description: 'How Diátaxis works in complex documentation systems.',
+    },
+  ]}
 />
 
 O Diátaxis é comprovado na prática. Seus princípios foram adotados com sucesso em centenas de projetos de documentação.

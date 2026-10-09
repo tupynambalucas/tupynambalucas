@@ -14,10 +14,10 @@ O %PROJECT_DOMAIN% utiliza um pipeline de orquestração nativo do Kubernetes e 
 
 Workspaces que oferecem suporte a deploy no Kubernetes utilizam um layout de diretórios baseado em Kustomize que espelha sua estrutura em camadas. Todas as configurações residem dentro do contexto delimitado centralizado de `infrastructure`.
 
-* **Esquema de Caminho**:
-  * `infrastructure/environments/\<env>/\<context>` (Overlays do Kustomize)
-  * `infrastructure/manifests/\<context>.yaml` (Deployments + Services + Ingress)
-* **Aplicação**: Usado universalmente em todos os contextos (`platform`, `cortex`, `studio`).
+- **Esquema de Caminho**:
+  - `infrastructure/environments/\<env>/\<context>` (Overlays do Kustomize)
+  - `infrastructure/manifests/\<context>.yaml` (Deployments + Services + Ingress)
+- **Aplicação**: Usado universalmente em todos os contextos (`platform`, `cortex`, `studio`).
 
 ---
 
@@ -39,9 +39,9 @@ graph TD
     Traefik -->|Service Routing| Penpot["penpot-frontend (studio)"]
 ```
 
-* **Terminação TLS no Edge:** O Cloudflare Edge termina o HTTPS público para `*-dev.%PROJECT_DOMAIN%` utilizando certificados SSL/TLS coringa de nível único (`*.%PROJECT_DOMAIN%`).
-* **Transporte de Túnel Criptografado:** O tráfego trafega do Cloudflare Edge para o cluster através de uma conexão QUIC criptografada gerenciada pelo deploy do `cloudflared` no namespace `platform`.
-* **Traefik Ingress Controller:** O `cloudflared` encaminha as requisições internamente para o Traefik na porta 80 (`http://traefik.platform.svc.cluster.local:80`), que roteia payloads HTTP/gRPC para os Services de destino com base em recursos `Ingress` padrão do Kubernetes.
+- **Terminação TLS no Edge:** O Cloudflare Edge termina o HTTPS público para `*-dev.%PROJECT_DOMAIN%` utilizando certificados SSL/TLS coringa de nível único (`*.%PROJECT_DOMAIN%`).
+- **Transporte de Túnel Criptografado:** O tráfego trafega do Cloudflare Edge para o cluster através de uma conexão QUIC criptografada gerenciada pelo deploy do `cloudflared` no namespace `platform`.
+- **Traefik Ingress Controller:** O `cloudflared` encaminha as requisições internamente para o Traefik na porta 80 (`http://traefik.platform.svc.cluster.local:80`), que roteia payloads HTTP/gRPC para os Services de destino com base em recursos `Ingress` padrão do Kubernetes.
 
 ### 2.2. Esquema de Domínio de Desenvolvimento Autoritativo
 
@@ -62,5 +62,5 @@ Todos os serviços de desenvolvimento adotam uma estrutura de subdomínio hifeni
 
 Para proteger os endpoints de desenvolvimento expostos via Cloudflare Tunnel:
 
-* **Web Dashboards (Grafana, Headlamp, Traefik, AgentGateway Admin):** Protegidos por políticas de **E-mail / One-Time PIN (OTP)** do Cloudflare Access. Apenas endereços de e-mail de desenvolvedores autorizados recebem PINs de autenticação.
-* **Endpoints de IA e MCP (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`):** Configurados com uma política de **Bypass** ou autenticação por Service Token no Cloudflare Zero Trust com roteamento de túnel direcionado para `/mcp`. Isso permite que clientes que não são browsers (como agentes de IA, ferramentas de CLI e pipelines automatizados) troquem payloads JSON-RPC / SSE sem encontrar redirecionamentos interativos de login do browser.
+- **Web Dashboards (Grafana, Headlamp, Traefik, AgentGateway Admin):** Protegidos por políticas de **E-mail / One-Time PIN (OTP)** do Cloudflare Access. Apenas endereços de e-mail de desenvolvedores autorizados recebem PINs de autenticação.
+- **Endpoints de IA e MCP (`agentgateway-mcp-dev.%PROJECT_DOMAIN%`):** Configurados com uma política de **Bypass** ou autenticação por Service Token no Cloudflare Zero Trust com roteamento de túnel direcionado para `/mcp`. Isso permite que clientes que não são browsers (como agentes de IA, ferramentas de CLI e pipelines automatizados) troquem payloads JSON-RPC / SSE sem encontrar redirecionamentos interativos de login do browser.

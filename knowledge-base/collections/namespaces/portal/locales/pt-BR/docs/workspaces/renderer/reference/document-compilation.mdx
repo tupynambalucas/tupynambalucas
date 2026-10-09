@@ -28,14 +28,14 @@ O mecanismo compila documentos utilizando pipelines desacoplados que seguem o Pr
 
 Os seguintes espaços reservados são suportados dentro do modelo README padrão e são substituídos dinamicamente:
 
-* **`\{\{ name \}\}`**: O nome de exibição ou login do desenvolvedor.
-* **`\{\{ user \}\}`**: O nome de usuário/login do GitHub.
-* **`\{\{ contributions \}\}`**: Total de commits, issues, pull requests e revisões de código.
-* **`\{\{ stars \}\}`**: Contagem agregada de estrelas em todos os repositórios contabilizados.
-* **`\{\{ forks \}\}`**: Contagem agregada de forks em todos os repositórios contabilizados.
-* **`\{\{ lines_changed \}\}`**: Adições e exclusões agregadas de código.
-* **`\{\{ views \}\}`**: Soma das visualizações de tráfego das últimas duas semanas.
-* **`\{\{ repos \}\}`**: Número de repositórios ativos nos quais houve contribuição.
+- **`\{\{ name \}\}`**: O nome de exibição ou login do desenvolvedor.
+- **`\{\{ user \}\}`**: O nome de usuário/login do GitHub.
+- **`\{\{ contributions \}\}`**: Total de commits, issues, pull requests e revisões de código.
+- **`\{\{ stars \}\}`**: Contagem agregada de estrelas em todos os repositórios contabilizados.
+- **`\{\{ forks \}\}`**: Contagem agregada de forks em todos os repositórios contabilizados.
+- **`\{\{ lines_changed \}\}`**: Adições e exclusões agregadas de código.
+- **`\{\{ views \}\}`**: Soma das visualizações de tráfego das últimas duas semanas.
+- **`\{\{ repos \}\}`**: Número de repositórios ativos nos quais houve contribuição.
 
 ---
 
@@ -61,6 +61,6 @@ Durante a compilação, o pipeline gera SVGs separados para claro e escuro em `g
 
 Quando o GitHub renderiza a página do perfil:
 
-* **Modo Escuro**: Resolve para o cartão `overview-dark.svg`, renderizando fundo escuro e cores baseadas em tokens.
-* **Modo Claro**: Resolve para o cartão `overview-light.svg`, exibindo cores claras de alto contraste.
-* Esta abordagem evita o uso de hashes de URL frágeis (`#gh-dark-mode-only`) e baseia-se no isolamento de arquivos nativo e limpo para absoluta segurança de renderização.
+- **Modo Escuro**: Resolve para o cartão `overview-dark.svg`, renderizando fundo escuro e cores baseadas em tokens.
+- **Modo Claro**: Resolve para o cartão `overview-light.svg`, exibindo cores claras de alto contraste.
+- Esta abordagem evita o uso de hashes de URL frágeis (`#gh-dark-mode-only`) e baseia-se no isolamento de arquivos nativo e limpo para absoluta segurança de renderização.

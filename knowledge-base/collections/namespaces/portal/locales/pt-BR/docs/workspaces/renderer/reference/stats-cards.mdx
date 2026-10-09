@@ -22,8 +22,8 @@ Exibe contagens de métricas agregadas (Stars, Forks, contribuições de todo o 
 
 Exibe as porcentagens de linguagens ordenadas de forma decrescente pelo tamanho do arquivo.
 
-* **Barra de Progresso**: Acumula tamanhos para exibir uma barra multicolorida. A porcentagem de largura é formatada para exatamente 3 casas decimais na marcação do template.
-* **Itens de Lista**: Marcadores de lista individuais contendo nome, cor hexadecimal e porcentagem formatada para exatamente 2 casas decimais.
+- **Barra de Progresso**: Acumula tamanhos para exibir uma barra multicolorida. A porcentagem de largura é formatada para exatamente 3 casas decimais na marcação do template.
+- **Itens de Lista**: Marcadores de lista individuais contendo nome, cor hexadecimal e porcentagem formatada para exatamente 2 casas decimais.
 
 ### 3. Card de Cabeçalho (`header.svg`)
 
@@ -39,14 +39,14 @@ Para computar essas métricas, o engine TypeScript se comunica com o GitHub por 
 
 Devido ao limite da API do GitHub de 100 repositórios retornados por requisição, uma estratégia de divisão recursiva é aplicada:
 
-* O engine busca repositórios e contribuições ano a ano.
-* Se uma query retornar exatamente 100 repositórios, o intervalo é dividido por fatores primos (2 ou 3) em sub-intervalos (por exemplo, blocos de 6 ou 3 meses).
-* Esses sub-intervalos são consultados recursivamente até que a resposta fique abaixo do limite de 100 repositórios, evitando a omissão de dados.
+- O engine busca repositórios e contribuições ano a ano.
+- Se uma query retornar exatamente 100 repositórios, o intervalo é dividido por fatores primos (2 ou 3) em sub-intervalos (por exemplo, blocos de 6 ou 3 meses).
+- Esses sub-intervalos são consultados recursivamente até que a resposta fique abaixo do limite de 100 repositórios, evitando a omissão de dados.
 
 ### Resiliência de Conexão e Loop de Nova Tentativa da API
 
 Ao contrário de soluções legadas, o engine de renderização moderno possui proteção de rede robusta:
 
-* **Exponential Backoff**: Se o GitHub estiver compilando estatísticas ou limites de taxa forem acionados, o engine aguarda e tenta novamente usando atrasos exponenciais.
-* **Até 10 Tentativas**: O engine tenta novamente até 10 vezes em caso de falhas de rede ou de API antes de relatar erros.
-* **Proibição de Fallbacks de Git Clone**: Operações locais de git-clone são estritamente proibidas dentro do pacote do renderer para garantir tarefas de CI/CD leves e evitar o inchaço dos ambientes de build. Todos os dados são coletados exclusivamente por meio de conexões de API diretas e seguras.
+- **Exponential Backoff**: Se o GitHub estiver compilando estatísticas ou limites de taxa forem acionados, o engine aguarda e tenta novamente usando atrasos exponenciais.
+- **Até 10 Tentativas**: O engine tenta novamente até 10 vezes em caso de falhas de rede ou de API antes de relatar erros.
+- **Proibição de Fallbacks de Git Clone**: Operações locais de git-clone são estritamente proibidas dentro do pacote do renderer para garantir tarefas de CI/CD leves e evitar o inchaço dos ambientes de build. Todos os dados são coletados exclusivamente por meio de conexões de API diretas e seguras.

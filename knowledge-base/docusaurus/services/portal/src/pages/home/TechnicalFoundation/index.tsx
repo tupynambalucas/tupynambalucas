@@ -1,3 +1,4 @@
+/* eslint-disable @docusaurus/prefer-docusaurus-heading */
 import type { ReactNode } from 'react';
 import Translate from '@docusaurus/Translate';
 import TechCodeBlock from '../TechCodeBlock';

@@ -18,17 +18,17 @@ Para evitar cadastros e tentativas de login automatizados, utilizamos o **Cloudf
 
 O `AuthFeature` utiliza o componente `@marsidev/react-turnstile` no **Managed Mode**.
 
-* **Managed Mode**: Exibe uma caixa de seleção inteligente que verifica se o usuário é humano.
-* **State Management**: O botão de envio permanece desativado até que um `turnstileToken` válido seja emitido pelo widget.
-* **Isolation**: Cada formulário (Login/Registro) mantém sua própria instância do Turnstile por meio de chaves exclusivas do React para garantir uma validação nova ao alternar o modo.
+- **Managed Mode**: Exibe uma caixa de seleção inteligente que verifica se o usuário é humano.
+- **State Management**: O botão de envio permanece desativado até que um `turnstileToken` válido seja emitido pelo widget.
+- **Isolation**: Cada formulário (Login/Registro) mantém sua própria instância do Turnstile por meio de chaves exclusivas do React para garantir uma validação nova ao alternar o modo.
 
 ### 1.2. Validação no Lado do Servidor (Fastify 5)
 
 A API não confia apenas no estado do lado do cliente.
 
-* **Verification**: O `AuthService` realiza uma requisição POST segura para `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
-* **IP Validation**: O endereço IP do cliente é passado para o Cloudflare para detectar botnets baseadas em proxy.
-* **Mandatory DTOs**: O `LoginDTOSchema` e o `RegisterDTOSchema` em `@repo/hub/core` exigem estritamente o `turnstileToken`.
+- **Verification**: O `AuthService` realiza uma requisição POST segura para `https://challenges.cloudflare.com/turnstile/v0/siteverify`.
+- **IP Validation**: O endereço IP do cliente é passado para o Cloudflare para detectar botnets baseadas em proxy.
+- **Mandatory DTOs**: O `LoginDTOSchema` e o `RegisterDTOSchema` em `@repo/hub/core` exigem estritamente o `turnstileToken`.
 
 ---
 
@@ -40,17 +40,17 @@ Protegemos nossos endpoints de autenticação contra ataques de dicionário e ad
 
 Utilizando `@fastify/rate-limit`, aplicamos limites específicos de contexto a rotas sensíveis.
 
-* **Global Policy**: Um limite base de 100 requisições por minuto por IP para o uso geral da API.
-* **Strict Auth Policy**: As rotas `/api/auth/login` e `/api/auth/register` são limitadas a **5 tentativas por minuto por IP**.
-* **Return Code**: O excedente desses limites aciona uma resposta `429 (Too Many Requests)`.
+- **Global Policy**: Um limite base de 100 requisições por minuto por IP para o uso geral da API.
+- **Strict Auth Policy**: As rotas `/api/auth/login` e `/api/auth/register` são limitadas a **5 tentativas por minuto por IP**.
+- **Return Code**: O excedente desses limites aciona uma resposta `429 (Too Many Requests)`.
 
 ### 2.2. Lógica de Bloqueio de Conta
 
 Para evitar ataques direcionados a contas de usuários específicos:
 
-* **Max Attempts**: Após **5 tentativas consecutivas falhas**, a conta é bloqueada.
-* **Lock Duration**: A conta permanece inacessível por **15 minutos** (`lockUntil`).
-* **Persistence**: O estado de bloqueio é armazenado diretamente no modelo `User` do Mongoose (`loginAttempts`, `lockUntil`).
+- **Max Attempts**: Após **5 tentativas consecutivas falhas**, a conta é bloqueada.
+- **Lock Duration**: A conta permanece inacessível por **15 minutos** (`lockUntil`).
+- **Persistence**: O estado de bloqueio é armazenado diretamente no modelo `User` do Mongoose (`loginAttempts`, `lockUntil`).
 
 ---
 
@@ -60,14 +60,14 @@ Para evitar ataques direcionados a contas de usuários específicos:
 
 A API foi projetada para vazar o mínimo possível de informações sobre o estado do sistema para usuários não autenticados.
 
-* **Generic Errors**: Tanto "User Not Found" quanto "Invalid Password" retornam um código de erro unificado `INVALID_CREDENTIALS`.
-* **Uniform Response Time**: Comparações criptográficas (Bcrypt) são realizadas mesmo se o identificador do usuário não existir, prevenindo ataques de tempo (timing attacks).
+- **Generic Errors**: Tanto "User Not Found" quanto "Invalid Password" retornam um código de erro unificado `INVALID_CREDENTIALS`.
+- **Uniform Response Time**: Comparações criptográficas (Bcrypt) são realizadas mesmo se o identificador do usuário não existir, prevenindo ataques de tempo (timing attacks).
 
 ### 3.2. Comunicação Segura
 
-* **JWT (HS256)**: Todas as requisições autenticadas exigem um JSON Web Token assinado com um segredo simétrico forte.
-* **CSRF Protection**: `@fastify/csrf-protection` está ativado, exigindo um cabeçalho `CSRF-Token` para todas as requisições que alteram estado (POST, PUT, DELETE).
-* **HTTP-Only Cookies**: Os tokens de sessão são armazenados em cookies assinados e HTTP-only para mitigar roubo de token baseado em XSS.
+- **JWT (HS256)**: Todas as requisições autenticadas exigem um JSON Web Token assinado com um segredo simétrico forte.
+- **CSRF Protection**: `@fastify/csrf-protection` está ativado, exigindo um cabeçalho `CSRF-Token` para todas as requisições que alteram estado (POST, PUT, DELETE).
+- **HTTP-Only Cookies**: Os tokens de sessão são armazenados em cookies assinados e HTTP-only para mitigar roubo de token baseado em XSS.
 
 ---
 
@@ -96,4 +96,4 @@ As seguintes chaves de segurança são obrigatórias para a operação da stack 
 
 ---
 
-*Última atualização: Junho de 2026*
+_Última atualização: Junho de 2026_

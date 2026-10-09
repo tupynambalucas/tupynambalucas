@@ -14,3 +14,7 @@ core:
   description: "Core libraries, shared packages, and foundational utilities"
 instance:
   description: "Multi-instance architecture and services"
+l10n:
+  description: "Localization infrastructure and translations"
+i18n:
+  description: "Internationalization tooling and configuration"

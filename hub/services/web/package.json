@@ -1,6 +1,6 @@
 {
   "name": "@monorepo/hub-web",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Frontend React application for the personal portfolio and blog.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",

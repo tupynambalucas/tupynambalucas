@@ -49,9 +49,9 @@ Isso significa que tanto `http://memory-api:3006` quanto `http://memory-api:3006
 
 ## Transporte
 
-* **Caminho**: `/mcp`
-* **Protocolo**: HTTP com suporte a streaming (especificação MCP)
-* **Modelo de sessão**: Sem estado — `sessionIdGenerator` é `undefined`. Cada requisição POST para `/mcp` cria uma nova instância de `Server` do MCP que é destruída após a conclusão da resposta.
+- **Caminho**: `/mcp`
+- **Protocolo**: HTTP com suporte a streaming (especificação MCP)
+- **Modelo de sessão**: Sem estado — `sessionIdGenerator` é `undefined`. Cada requisição POST para `/mcp` cria uma nova instância de `Server` do MCP que é destruída após a conclusão da resposta.
 
 ---
 
@@ -171,10 +171,10 @@ Em cada inicialização do `memory-api`, o serviço verifica automaticamente o d
 
 Escala atual após a sincronização inicial da documentação do Monorepo:
 
-* **534** arquivos de origem ingeridos
-* **4.503** trechos de texto indexados
-* **6.209** arestas de grafo criadas
-* **300** nós de entidade exclusivos, **384** conexões de grafo
+- **534** arquivos de origem ingeridos
+- **4.503** trechos de texto indexados
+- **6.209** arestas de grafo criadas
+- **300** nós de entidade exclusivos, **384** conexões de grafo
 
 O pipeline de sincronização é idempotente: hashes de conteúdo são calculados antes da incorporação para ignorar documentos que não foram alterados desde a última sincronização.
 
@@ -200,6 +200,6 @@ Caminho de tráfego: Cloudflare Tunnel -> Traefik (namespace da plataforma) -> p
 
 O dashboard fornece três painéis:
 
-* **Graph Topology**: Visualização interativa de nós e arestas do grafo de conhecimento.
-* **RAG Playground**: Teste consultas `search_knowledge` e inspecione pontuações de similaridade.
-* **Episodic Memory Chat**: Navegue e reproduza turnos armazenados de `chat_history` por sessão.
+- **Graph Topology**: Visualização interativa de nós e arestas do grafo de conhecimento.
+- **RAG Playground**: Teste consultas `search_knowledge` e inspecione pontuações de similaridade.
+- **Episodic Memory Chat**: Navegue e reproduza turnos armazenados de `chat_history` por sessão.

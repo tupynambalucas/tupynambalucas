@@ -43,9 +43,9 @@ knowledge-base/
 
 O %PROJECT_DOMAIN% Docs oferece suporte completo aos locales de inglês (`en`) e português (`pt-BR`) usando um **Unidirectional GitOps Flow** estrito gerenciado pelo Crowdin.
 
-* **Source of Truth (English)**: O repositório do GitHub armazena apenas os documentos de origem em inglês dentro do diretório `collections/`.
-* **Translation Engine (pt-BR)**: A plataforma Crowdin atua como o principal mecanismo de tradução. Ela gera continuamente artefatos traduzidos e os envia para o repositório por meio de Pull Requests automatizados direcionados ao diretório `locales/`.
-* **Build Isolation**: Durante o build pipeline, um plugin personalizado sincroniza dinamicamente o conteúdo de `locales/` diretamente no diretório do mecanismo `i18n/` do Docusaurus. O diretório `i18n/` é intencionalmente ignorado pelo Git (`.gitignore`) para isolar o mecanismo de renderização das coleções de conteúdo.
+- **Source of Truth (English)**: O repositório do GitHub armazena apenas os documentos de origem em inglês dentro do diretório `collections/`.
+- **Translation Engine (pt-BR)**: A plataforma Crowdin atua como o principal mecanismo de tradução. Ela gera continuamente artefatos traduzidos e os envia para o repositório por meio de Pull Requests automatizados direcionados ao diretório `locales/`.
+- **Build Isolation**: Durante o build pipeline, um plugin personalizado sincroniza dinamicamente o conteúdo de `locales/` diretamente no diretório do mecanismo `i18n/` do Docusaurus. O diretório `i18n/` é intencionalmente ignorado pelo Git (`.gitignore`) para isolar o mecanismo de renderização das coleções de conteúdo.
 
 ## Scripts do Workspace
 

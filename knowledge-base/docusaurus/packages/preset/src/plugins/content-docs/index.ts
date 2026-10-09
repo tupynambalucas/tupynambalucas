@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unnecessary-condition */
 import type { LoadContext, Plugin } from '@docusaurus/types';
 import type { Options } from '@docusaurus/plugin-content-docs';
 import coreDocsPlugin, { validateOptions } from '@docusaurus/plugin-content-docs';

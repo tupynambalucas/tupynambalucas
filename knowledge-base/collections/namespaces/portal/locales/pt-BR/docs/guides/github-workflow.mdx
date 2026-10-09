@@ -62,7 +62,7 @@ Em vez de fazer o merge localmente, usamos **Pull Requests** para revisão de c�
 
 Para manter o histórico de `develop` limpo e significativo, usamos **Squash Merges**. Isso combina todos os commits de uma feature branch em um único commit bem descrito em `develop`.
 
-* **Ação**: Faça o merge via interface do GitHub ou CLI usando o método `squash` (consulte a [Referência de Comandos](../reference/commands.mdx#git--version-control) para obter o comando exato da CLI).
+- **Ação**: Faça o merge via interface do GitHub ou CLI usando o método `squash` (consulte a [Referência de Comandos](../reference/commands.mdx#git--version-control) para obter o comando exato da CLI).
 
 ---
 
@@ -92,9 +92,9 @@ Nosso workflow de CI/CD gerencia o incremento de versão automaticamente quando 
 1. **Pull Request e Integração**: Os desenvolvedores abrem um Pull Request direcionado à branch `develop`.
 2. **Merge em `develop`**: Uma vez aprovado e integrado em `develop`, a GitHub Action **Manage Version Bumps and Releases** é acionada.
 3. **Geração de PR de Lançamento**:
-   * O workflow analisa os arquivos `.changeset/*.md` presentes na branch.
-   * Ele calcula as novas versões, consome (exclui) os arquivos markdown temporários de changeset, atualiza os respectivos arquivos `package.json` e atualiza os changelogs locais dos pacotes.
-   * Ele faz o commit dessas alterações automaticamente e cria (ou atualiza) um Pull Request aberto no GitHub chamado `chore(release): version packages` direcionado a `develop`.
+   - O workflow analisa os arquivos `.changeset/*.md` presentes na branch.
+   - Ele calcula as novas versões, consome (exclui) os arquivos markdown temporários de changeset, atualiza os respectivos arquivos `package.json` e atualiza os changelogs locais dos pacotes.
+   - Ele faz o commit dessas alterações automaticamente e cria (ou atualiza) um Pull Request aberto no GitHub chamado `chore(release): version packages` direcionado a `develop`.
 
 ### 3) Finalizando o Lançamento (Apenas Mantenedores)
 
@@ -120,8 +120,8 @@ Se um bug for encontrado em produção:
 
 ---
 
-* **Sem commits diretos em `main` ou `develop`**: Sempre use feature branches e PRs.
-* **Sem Push Forçado**: A menos que seja em sua própria feature branch isolada e necessário para um rebase.
-* **Sem Merges Sujos**: Evite fazer o merge de `main` de volta em `feature/*`. Sempre faça o **rebase** em `develop` se sua feature branch ficar desatualizada.
+- **Sem commits diretos em `main` ou `develop`**: Sempre use feature branches e PRs.
+- **Sem Push Forçado**: A menos que seja em sua própria feature branch isolada e necessário para um rebase.
+- **Sem Merges Sujos**: Evite fazer o merge de `main` de volta em `feature/*`. Sempre faça o **rebase** em `develop` se sua feature branch ficar desatualizada.
 
 ---

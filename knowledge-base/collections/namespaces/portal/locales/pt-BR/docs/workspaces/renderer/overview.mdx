@@ -41,8 +41,8 @@ renderer/
 
 Ao contrário de um simples script de geração ad-hoc, o Renderer possui uma **Pipeline Architecture** extensível que cumpre o Princípio Aberto/Fechado (SOLID).
 
-* **Extensible Registry**: Independent compilation targets (e.g., GitHub renderer READMEs, handbook manuals, or design systems specs) are registered inside `src/pipelines/index.ts`.
-* **Theme-separated Previews**: When executing compilation locally, the generator writes fully rendered light and dark versions into `generated/cards/` and `generated/docs/`. Light markdown previews reference light SVG assets, while dark previews reference dark SVGs, ensuring absolute high-fidelity theme testing.
+- **Extensible Registry**: Independent compilation targets (e.g., GitHub renderer READMEs, handbook manuals, or design systems specs) are registered inside `src/pipelines/index.ts`.
+- **Theme-separated Previews**: When executing compilation locally, the generator writes fully rendered light and dark versions into `generated/cards/` and `generated/docs/`. Light markdown previews reference light SVG assets, while dark previews reference dark SVGs, ensuring absolute high-fidelity theme testing.
 
 ---
 
@@ -50,7 +50,7 @@ Ao contrário de um simples script de geração ad-hoc, o Renderer possui uma **
 
 Execute estes scripts a partir da raiz do monorepo para gerenciar o stack do gerador renderer:
 
-* `pnpm --filter @/renderer generate`: Executa as pipelines de compilação de documentos ativas localmente, gravando visualizações em `generated/`.
-* `pnpm --filter @/renderer clean`: Remove todos os arquivos compilados, caches e diretórios de build de saída.
-* `pnpm --filter @/renderer typecheck`: Executa a validação de tipos do compilador TypeScript.
-* `pnpm --filter @/renderer lint`: Executa verificações estáticas do ESLint.
+- `pnpm --filter @/renderer generate`: Executa as pipelines de compilação de documentos ativas localmente, gravando visualizações em `generated/`.
+- `pnpm --filter @/renderer clean`: Remove todos os arquivos compilados, caches e diretórios de build de saída.
+- `pnpm --filter @/renderer typecheck`: Executa a validação de tipos do compilador TypeScript.
+- `pnpm --filter @/renderer lint`: Executa verificações estáticas do ESLint.

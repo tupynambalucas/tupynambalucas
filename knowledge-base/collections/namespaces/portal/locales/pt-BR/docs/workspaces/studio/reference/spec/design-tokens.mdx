@@ -32,16 +32,16 @@ O sistema utiliza uma paleta padrão no modo escuro voltada para desenvolvedores
 
 A tipografia é um elemento estrutural crítico da marca. Utilizamos uma família tipográfica de peso variável e alta legibilidade, otimizada para códigos e conteúdo técnico.
 
-* **Primary Font Family**: `Nunito`
-* **Format**: Variable Font (`woff2` container).
-* **Fallback Stack**: `system-ui, -apple-system, sans-serif`.
+- **Primary Font Family**: `Nunito`
+- **Format**: Variable Font (`woff2` container).
+- **Fallback Stack**: `system-ui, -apple-system, sans-serif`.
 
 ### Base64 Font Injection
 
 Para garantir que gráficos visuais, cartões do perfil do GitHub e documentos SVG renderizados dinamicamente sejam exibidos com fidelidade absoluta de pixels dentro de frames HTML isolados em sandbox (que bloqueiam a busca de fontes em CDNs externas):
 
-* Todos os assets da fonte variável `Nunito` são codificados em base64 e embutidos diretamente nos cabeçalhos de estilo SVG.
-* Esta integração de fontes sem dependências garante que a tipografia da nossa marca seja renderizada corretamente em qualquer ambiente em sandbox.
+- Todos os assets da fonte variável `Nunito` são codificados em base64 e embutidos diretamente nos cabeçalhos de estilo SVG.
+- Esta integração de fontes sem dependências garante que a tipografia da nossa marca seja renderizada corretamente em qualquer ambiente em sandbox.
 
 ---
 

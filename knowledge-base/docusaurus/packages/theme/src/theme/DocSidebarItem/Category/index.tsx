@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { type ComponentProps, type ReactNode, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 import {

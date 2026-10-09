@@ -1,7 +1,7 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { ThemeConfig } from './options';
 
-export function getBaseThemeConfig(projectConfig: any): ThemeConfig {
+export function getBaseThemeConfig(projectConfig: Record<string, string>): ThemeConfig {
   return {
     image: 'brand/logos/logo-mark-negative.svg',
     colorMode: {
@@ -99,10 +99,6 @@ export function getBaseThemeConfig(projectConfig: any): ThemeConfig {
             {
               label: 'Roadmap',
               to: '/community/roadmap',
-            },
-            {
-              label: 'Changelog',
-              to: '/changelog',
             },
           ],
         },

@@ -16,10 +16,10 @@ Para testes locais no Kubernetes, validação de roteamento e pipelines de deplo
 
 Instale as seguintes ferramentas em seu host Windows:
 
-* **kubectl**: Ferramenta CLI para executar comandos em clusters do Kubernetes.
-* **Skaffold**: Automatiza pipelines de build e deploy com recursos de recarregamento dinâmico.
-* **OpenLens**: Cliente visual de monitoramento de cluster.
-* **Minikube CLI**: Provisiona nós de cluster Kubernetes locais dentro do Podman.
+- **kubectl**: Ferramenta CLI para executar comandos em clusters do Kubernetes.
+- **Skaffold**: Automatiza pipelines de build e deploy com recursos de recarregamento dinâmico.
+- **OpenLens**: Cliente visual de monitoramento de cluster.
+- **Minikube CLI**: Provisiona nós de cluster Kubernetes locais dentro do Podman.
 
 **Comando de instalação (PowerShell)**:
 
@@ -96,9 +96,9 @@ Fornecemos scripts simplificados no `package.json` raiz para gerenciar o ciclo d
 
 3. **Isolamento de Módulo de Workspace**:
    Você pode fazer o deploy de workspaces específicos de forma independente para economizar recursos:
-   * **Fazer o deploy apenas do Cortex**: `pnpm infra:cortex:dev`
-   * **Fazer o deploy apenas da Plataforma**: `pnpm infra:platform:dev`
-   * **Fazer o deploy apenas do Studio**: `pnpm infra:studio:dev`
+   - **Fazer o deploy apenas do Cortex**: `pnpm infra:cortex:dev`
+   - **Fazer o deploy apenas da Plataforma**: `pnpm infra:platform:dev`
+   - **Fazer o deploy apenas do Studio**: `pnpm infra:studio:dev`
 
 4. **Parar e Limpar**:
    Para remover todos os recursos, namespaces e workloads implantados pelo Skaffold:
@@ -133,8 +133,8 @@ A **Antigravity CLI** conecta-se ao proxy de entrada do Cortex (`agentgateway`) 
 
 Esta configuração de cliente permite a descoberta e execução contínuas de ferramentas MCP em ambientes de host local e estações de trabalho de desenvolvedor remotas em qualquer rede:
 
-* **Modo Túnel do Cloudflare**: O tráfego é roteado com segurança via `cloudflared` para o Service `agentgateway` dentro do Minikube, sem exigir encaminhamento de porta local ou modificações no `/etc/hosts`.
-* **Modo de Fallback Local**: Ao trabalhar offline, o Skaffold encaminha a porta do Service `agentgateway` para `localhost:8080`.
+- **Modo Túnel do Cloudflare**: O tráfego é roteado com segurança via `cloudflared` para o Service `agentgateway` dentro do Minikube, sem exigir encaminhamento de porta local ou modificações no `/etc/hosts`.
+- **Modo de Fallback Local**: Ao trabalhar offline, o Skaffold encaminha a porta do Service `agentgateway` para `localhost:8080`.
 
 O `agentgateway` intercepta o payload JSON-RPC de entrada, executa-o por meio de guardrails CEL configurados (via `mcp-guardrails` na porta `9001`) e o roteia para o microsserviço de destino com base nos alvos definidos em `cortex/gateway/config.yaml`.
 

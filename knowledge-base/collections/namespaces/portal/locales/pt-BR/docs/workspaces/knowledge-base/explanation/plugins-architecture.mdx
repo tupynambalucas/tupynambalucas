@@ -16,9 +16,9 @@ Para aplicar o **Single Source of Truth (SSOT)** e manter um `docusaurus.config.
 
 Em vez de declarar os plugins principais do Docusaurus diretamente no array de presets, utilizamos **Wrappers de Plugins de Domínio** (localizados em `preset/plugins/`):
 
-* `content-docs`
-* `content-blog`
-* `content-pages`
+- `content-docs`
+- `content-blog`
+- `content-pages`
 
 ### O Ciclo de Vida do Wrapper
 
@@ -39,7 +39,7 @@ Para manter um **monorepo genérico e pronto para copiar e colar**, a documenta�
 1. **Transformação de AST**: O plugin customizado `remark-project-variables` se conecta ao pipeline de compilação MDX do unified/remark.
 2. **Intercepção de Nó de Texto**: Ele percorre a AST do Markdown (`mdast`) utilizando `unist-util-visit`.
 3. **Resolução de Valores**: Ele intercepta nós do tipo `text`, `inlineCode`, `link` e `image`, e busca por padrões como `%PROJECT_DOMAIN%`.
-4. **Substituição**: Ele substitui esses tokens por valores reais obtidos de uma única fonte de verdade (`project.config.json`) *antes* que o MDX seja compilado em React JSX.
+4. **Substituição**: Ele substitui esses tokens por valores reais obtidos de uma única fonte de verdade (`project.config.json`) _antes_ que o MDX seja compilado em React JSX.
 
 Esta arquitetura garante que os embeddings de IA RAG (como os vetores de `cortex/memory`) ingeriram os arquivos de origem **agnósticos**, evitando a alucinação de marcas quando o repositório for bifurcado ou aplicado a novos clientes.
 
@@ -47,14 +47,14 @@ Esta arquitetura garante que os embeddings de IA RAG (como os vetores de `cortex
 
 ## 3. Coleções Dinâmicas e Localização (L10n)
 
-Para suportar múltiplas instâncias de conteúdo e localização contínua orientada por GitOps, o monorepo implementa um **Locales Sync Plugin** dinâmico (`preset/plugins/locales-sync/`).
+Para dar suporte a múltiplas instâncias de conteúdo e à localização contínua orientada por GitOps, o monorepo implementa um **Plugin Locales Sync** dinâmico (`preset/plugins/locales-sync/`).
 
 ### O Ciclo de Vida Dinâmico
 
-Em vez de verificar manualmente templates de interface do Docusaurus traduzidos e caminhos codificados de forma fixa, o `docusaurus.config.ts` usa uma propriedade `collection` personalizada no formato `[namespace]/[content]` (por exemplo, `portal/docs`):
+Em vez de fazer o check-in manual dos templates de UI traduzidos do Docusaurus e chumbados nos caminhos absolutos, o `docusaurus.config.ts` utiliza uma propriedade personalizada chamada `collection` no formato `[namespace]/[content]` (ex: `portal/docs`):
 
-1. **Orquestração de Preset**: O Preset Personalizado intercepta as configurações de `docs` e `blog`, calcula o `path` absoluto para os arquivos markdown (`collections/namespaces/[namespace]/content/[content]`) e o injeta dinamicamente no engine.
-2. **Extração de Tradução**: O comando nativo do Docusaurus `write-translations` gera arquivos JSON de i18n do Chrome (como `code.json`, `theme/navbar.json`) que são armazenados com segurança em `collections/namespaces/[namespace]/content/messages/`.
-3. **Descompactação em Tempo de Compilação**: Durante a pipeline `kb:docusaurus:portal:build`, o `plugin-locales-sync` lê dinamicamente as pastas sincronizadas `locales/[locale]/` e as mapeia de volta para o formato nativo do engine do Docusaurus dentro de `i18n/[locale]/docusaurus-plugin-content-[type]-[id]/`.
+1. **Orquestração pelo Preset**: O Preset Personalizado intercepta as configurações de `docs` e `blog`, calcula dinamicamente o `path` absoluto para os arquivos markdown (`collections/namespaces/[namespace]/content/[content]`) e o injeta diretamente no motor.
+2. **Extração de Traduções**: O comando nativo do Docusaurus `write-translations` extrai os arquivos JSON no formato Chrome i18n (como `code.json`, `theme/navbar.json`) e os armazena de forma segura em `collections/namespaces/[namespace]/content/messages/`.
+3. **Descompactação no Build**: Durante o pipeline `kb:docusaurus:portal:build`, o plugin `plugin-locales-sync` lê dinamicamente as pastas `locales/[locale]/` sincronizadas e as mapeia de volta para o formato nativo da engine Docusaurus dentro de `i18n/[locale]/docusaurus-plugin-content-[type]-[id]/`.
 
-Este plugin garante a separação completa entre o conteúdo traduzido e o engine executável do Docusaurus, operando inteiramente com base em convenções de pastas do GitOps, sem mapeamentos codificados de forma fixa.
+Este plugin garante a separação completa entre o conteúdo traduzido e a engine executável do Docusaurus, operando inteiramente sob convenções de diretório GitOps sem mapeamentos _hardcoded_.

@@ -20,36 +20,36 @@ O contexto delimitado de `.agents/` restringe seu conteúdo aos seguintes diret�
 
 Pacotes com namespaces que agrupam capacidades de IA em uma única unidade de deploy.
 
-* **Objetivo**: Encapsular bindings de servidores do Model Context Protocol (MCP) juntamente com as regras que ensinam a IA a usá-los.
-* **Exemplo**: `.agents/plugins/cortex/plugin.json` carrega o servidor MCP `agentgateway` e injeta uma regra `AGENTS.md` instruindo a IA a preferir a ferramenta `firecrawl_scrape` para extração da Web.
-* **Regras**: Os plugins DEVEM ser autossuficientes. Eles não podem depender de arquivos temporários externos.
+- **Objetivo**: Encapsular bindings de servidores do Model Context Protocol (MCP) juntamente com as regras que ensinam a IA a usá-los.
+- **Exemplo**: `.agents/plugins/cortex/plugin.json` carrega o servidor MCP `agentgateway` e injeta uma regra `AGENTS.md` instruindo a IA a preferir a ferramenta `firecrawl_scrape` para extração da Web.
+- **Regras**: Os plugins DEVEM ser autossuficientes. Eles não podem depender de arquivos temporários externos.
 
 ### `rules/`
 
 Diretrizes e restrições que a IA deve seguir.
 
-* **Objetivo**: Injeção de contexto hierárquica e incondicional.
-* **Mecânica**: Os arquivos Markdown nesta pasta são descobertos automaticamente pelo runtime do Antigravity e injetados no contexto do agente sempre que as condições de acionamento forem atendidas (ou globalmente, se ativos de forma incondicional).
+- **Objetivo**: Injeção de contexto hierárquica e incondicional.
+- **Mecânica**: Os arquivos Markdown nesta pasta são descobertos automaticamente pelo runtime do Antigravity e injetados no contexto do agente sempre que as condições de acionamento forem atendidas (ou globalmente, se ativos de forma incondicional).
 
 ### `skills/`
 
 Runbooks de divulgação progressiva e personas especializadas.
 
-* **Objetivo**: Ensinar o agente a executar tarefas complexas e de múltiplas etapas sem esgotar a janela de contexto global.
-* **Mecânica**: As skills (por exemplo, `agent-router-expert`) são descobertas pelo agente como ferramentas disponíveis. O agente lê o arquivo `SKILL.md` *apenas* quando ativado pelo usuário ou por seu próprio processo de planejamento autônomo.
+- **Objetivo**: Ensinar o agente a executar tarefas complexas e de múltiplas etapas sem esgotar a janela de contexto global.
+- **Mecânica**: As skills (por exemplo, `agent-router-expert`) são descobertas pelo agente como ferramentas disponíveis. O agente lê o arquivo `SKILL.md` _apenas_ quando ativado pelo usuário ou por seu próprio processo de planejamento autônomo.
 
 ### `scripts/`
 
 Scripts utilitários criados por agentes destinados à manipulação do repositório.
 
-* **Objetivo**: Tarefas de automação controladas por versão.
-* **Restrição**: Os agentes são estritamente proibidos de criar scripts de rascunho (`scratch.js`, `test.cjs`) na raiz do monorepo. Eles devem colocar scripts permanentes em `.agents/scripts/` ou usar seu diretório interno isolado `\<appDataDir>/brain/scratch/`.
+- **Objetivo**: Tarefas de automação controladas por versão.
+- **Restrição**: Os agentes são estritamente proibidos de criar scripts de rascunho (`scratch.js`, `test.cjs`) na raiz do monorepo. Eles devem colocar scripts permanentes em `.agents/scripts/` ou usar seu diretório interno isolado `\<appDataDir>/brain/scratch/`.
 
 ### `plans/`
 
 Documentos temporários de planejamento arquitetural.
 
-* **Objetivo**: Planos de execução baseados em Markdown para refatorações complexas, delineando listas de verificação passo a passo e rastreando o estado entre as sessões do agente.
+- **Objetivo**: Planos de execução baseados em Markdown para refatorações complexas, delineando listas de verificação passo a passo e rastreando o estado entre as sessões do agente.
 
 ---
 

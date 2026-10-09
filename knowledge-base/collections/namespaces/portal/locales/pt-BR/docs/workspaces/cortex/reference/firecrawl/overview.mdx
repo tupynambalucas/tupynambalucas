@@ -51,9 +51,9 @@ Mapeamento automático de porta para aplicativo usado durante a reescrita:
 
 ## Transporte
 
-* **Path**: `/mcp`
-* **Protocol**: Streamable HTTP (especificação MCP)
-* **Modelo de sessão**: Sem estado — `sessionIdGenerator` está definido como `undefined`. Cada POST para `/mcp` instancia um objeto `Server` MCP novo e o encerra após a conclusão da resposta. Nenhum estado de sessão do lado do servidor é retido entre as solicitações.
+- **Path**: `/mcp`
+- **Protocol**: Streamable HTTP (especificação MCP)
+- **Modelo de sessão**: Sem estado — `sessionIdGenerator` está definido como `undefined`. Cada POST para `/mcp` instancia um objeto `Server` MCP novo e o encerra após a conclusão da resposta. Nenhum estado de sessão do lado do servidor é retido entre as solicitações.
 
 ---
 
@@ -168,9 +168,9 @@ Realiza a raspagem de múltiplas URLs simultaneamente e retorna os resultados na
 
 Cada solicitação POST para `/mcp` cria uma instância de `Server` dedicada do `@modelcontextprotocol/sdk`. A opção `sessionIdGenerator` é explicitamente definida como `undefined`, o que desativa o gerenciamento de sessões MCP. Este design:
 
-* Elimina o crescimento de memória no lado do servidor decorrente do acúmulo de sessões.
-* Garante escalabilidade horizontal sem requisitos de afinidade.
-* Significa que qualquer estado de sessão exigido por workflows de várias etapas deve ser mantido pelo chamador (AgentGateway ou o próprio agente).
+- Elimina o crescimento de memória no lado do servidor decorrente do acúmulo de sessões.
+- Garante escalabilidade horizontal sem requisitos de afinidade.
+- Significa que qualquer estado de sessão exigido por workflows de várias etapas deve ser mantido pelo chamador (AgentGateway ou o próprio agente).
 
 ### Firecrawl Auto-Hospedado
 

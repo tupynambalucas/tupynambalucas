@@ -1,6 +1,6 @@
 {
   "name": "@monorepo/kb-docusaurus-preset",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Custom Docusaurus preset for the monorepo knowledge base.",
   "type": "module",
@@ -20,11 +20,6 @@
     "./sidebars": {
       "import": "./dist/sidebars/index.js",
       "default": "./dist/sidebars/index.js"
-    },
-    "./plugins/changelog": {
-      "import": "./dist/plugins/changelog/index.js",
-      "default": "./dist/plugins/changelog/index.js",
-      "require": "./dist/plugins/changelog/index.js"
     }
   },
   "scripts": {

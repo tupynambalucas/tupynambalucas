@@ -66,9 +66,9 @@ graph TD
     S3 -.->|implements| IF_Store
 ```
 
-* **`AssetSyncOrchestrator`**: Executa as sequências de sincronização, comparando itens do sistema de arquivos local com metadados remotos do S3.
-* **`GlobAssetDiscoveryService`**: Examina diretórios em busca de arquivos correspondentes aos padrões definidos no manifesto.
-* **`BucketStorageService`**: Envolve o SDK do cliente AWS S3 para ler cabeçalhos de metadados e fazer upload/download de fluxos.
+- **`AssetSyncOrchestrator`**: Executa as sequências de sincronização, comparando itens do sistema de arquivos local com metadados remotos do S3.
+- **`GlobAssetDiscoveryService`**: Examina diretórios em busca de arquivos correspondentes aos padrões definidos no manifesto.
+- **`BucketStorageService`**: Envolve o SDK do cliente AWS S3 para ler cabeçalhos de metadados e fazer upload/download de fluxos.
 
 ### B. Environment Configuration
 
@@ -94,9 +94,9 @@ CLOUDFLARE_R2_CREATIVE_BUCKET_NAME=workspace-creative
 
 Para operar dentro do nível gratuito do Cloudflare R2 (10 GB de armazenamento, 1 milhão de operações de Classe A/mês, 10 milhões de operações de Classe B/mês):
 
-* **Verificação de Hash**: A CLI calcula a soma de verificação MD5 dos arquivos locais e os compara com o ETag do objeto remoto. Ignora as transferências se houver correspondência.
-* **Descoberta Dinâmica de Arquivos**: Os arquivos são localizados dinamicamente usando o registro de manifesto `studio/design/assets/assets-manifest.json`.
-* **Comando de Sincronização**: Execute `pnpm studio:bucket` a partir da raiz do monorepo para acionar a interface do assistente.
+- **Verificação de Hash**: A CLI calcula a soma de verificação MD5 dos arquivos locais e os compara com o ETag do objeto remoto. Ignora as transferências se houver correspondência.
+- **Descoberta Dinâmica de Arquivos**: Os arquivos são localizados dinamicamente usando o registro de manifesto `studio/design/assets/assets-manifest.json`.
+- **Comando de Sincronização**: Execute `pnpm studio:bucket` a partir da raiz do monorepo para acionar a interface do assistente.
 
 ---
 

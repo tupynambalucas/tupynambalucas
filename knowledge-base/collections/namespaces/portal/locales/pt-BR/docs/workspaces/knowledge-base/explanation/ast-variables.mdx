@@ -14,9 +14,9 @@ Para garantir que o monorepo permaneça totalmente copiável e genérico para in
 
 Autores de documentação e agentes de IA são estritamente proibidos de inserir domínios de marca hardcoded (por exemplo, `example.com`). Em vez disso, eles devem usar tokens agnósticos:
 
-* `%PROJECT_DOMAIN%`
-* `%PROJECT_NAME%`
-* `%GITHUB_ORG%`
+- `%PROJECT_DOMAIN%`
+- `%PROJECT_NAME%`
+- `%GITHUB_ORG%`
 
 O plugin `remark-project-variables` intercepta o pipeline de compilação MDX do Docusaurus, percorre a AST do Markdown (`mdast`) e substitui esses tokens pelas configurações ativas encontradas em `project.config.json` antes de renderizar o HTML final.
 

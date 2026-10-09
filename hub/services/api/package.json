@@ -1,6 +1,6 @@
 {
   "name": "@monorepo/hub-api",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Backend REST API serving portfolio content and blog operations.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",

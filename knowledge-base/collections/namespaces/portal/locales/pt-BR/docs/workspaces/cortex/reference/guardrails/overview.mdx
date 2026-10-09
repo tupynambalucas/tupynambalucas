@@ -16,10 +16,10 @@ O Workspace `cortex/mcp/guardrails` fornece o processador de política ExtMCP gR
 
 ## Detalhes do Serviço
 
-* **Protocolo:** gRPC (`ext_mcp.proto`)
-* **Porta:** `9001`
-* **Linguagem:** Node.js 22 (TypeScript)
-* **Função:** Proxy de Rede Transparente e Validador de Requisições
+- **Protocolo:** gRPC (`ext_mcp.proto`)
+- **Porta:** `9001`
+- **Linguagem:** Node.js 22 (TypeScript)
+- **Função:** Proxy de Rede Transparente e Validador de Requisições
 
 ## Arquitetura
 
@@ -35,9 +35,9 @@ Realiza o gancho na fase `tools/call` para atuar como um **Proxy de Rede Transpa
 
 **Comportamento:**
 
-* Realiza varredura profunda recursiva em todos os argumentos no payload JSON de *qualquer* chamada de ferramenta.
-* Reescreve qualquer string contendo `localhost` ou `127.0.0.1` para `host.docker.internal`.
-* Garante conectividade perfeita entre container e host sem exigir que o agente de IA compreenda o modelo de rede subjacente do Docker/Kubernetes.
+- Realiza varredura profunda recursiva em todos os argumentos no payload JSON de _qualquer_ chamada de ferramenta.
+- Reescreve qualquer string contendo `localhost` ou `127.0.0.1` para `host.docker.internal`.
+- Garante conectividade perfeita entre container e host sem exigir que o agente de IA compreenda o modelo de rede subjacente do Docker/Kubernetes.
 
 ### 2. Enriquecedor de Resposta (`response-enricher.ts`)
 
@@ -45,8 +45,8 @@ Realiza o gancho na fase de saída `tools/list`.
 
 **Comportamento:**
 
-* Atua como um pass-through puro (`{ pass: {} }`).
-* *Nota:* Em versões legadas, este processador injetava instruções em markdown nas descrições de ferramentas. Isso foi removido para evitar o inchaço do esquema e preservar a eficiência da janela de contexto do LLM. As instruções do agente agora são gerenciadas no lado do cliente via `.agents/rules`.
+- Atua como um pass-through puro (`{ pass: {} }`).
+- _Nota:_ Em versões legadas, este processador injetava instruções em markdown nas descrições de ferramentas. Isso foi removido para evitar o inchaço do esquema e preservar a eficiência da janela de contexto do LLM. As instruções do agente agora são gerenciadas no lado do cliente via `.agents/rules`.
 
 ## Contrato Fail-Safe (Fail-Open)
 

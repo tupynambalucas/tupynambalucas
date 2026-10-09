@@ -42,3 +42,19 @@ To maintain a **copy-pasteable, generic monorepo**, the documentation MUST NOT c
 4. **Replacement**: It replaces those tokens with actual values pulled from a single source of truth (`project.config.json`) _before_ the MDX is compiled into React JSX.
 
 This architecture ensures that AI RAG embeddings (like the `cortex/memory` vectors) ingest the **agnostic** source files, avoiding brand hallucination when the repository is forked or applied to new clients.
+
+---
+
+## 3. Dynamic Collections and Localization (L10n)
+
+To support multiple content instances and seamless GitOps-driven localization, the monorepo implements a dynamic **Locales Sync Plugin** (`preset/plugins/locales-sync/`).
+
+### The Dynamic Lifecycle
+
+Instead of manually checking in translated Docusaurus UI templates and hardcoding paths, the `docusaurus.config.ts` uses a custom `collection` property in the format `[namespace]/[content]` (e.g., `portal/docs`):
+
+1. **Preset Orchestration**: The Custom Preset intercepts the `docs` and `blog` configurations, calculates the absolute `path` for the markdown files (`collections/namespaces/[namespace]/content/[content]`), and injects it dynamically into the engine.
+2. **Translation Extraction**: Native Docusaurus `write-translations` dumps Chrome i18n JSON files (like `code.json`, `theme/navbar.json`) which are stored securely in `collections/namespaces/[namespace]/content/messages/`.
+3. **Build-Time Unpacking**: During the `kb:docusaurus:portal:build` pipeline, the `plugin-locales-sync` dynamically reads the synchronized `locales/[locale]/` folders and maps them back into the native Docusaurus engine format inside `i18n/[locale]/docusaurus-plugin-content-[type]-[id]/`.
+
+This plugin ensures complete separation between translated content and the executable Docusaurus engine, operating entirely on GitOps folder conventions without hardcoded mappings.
