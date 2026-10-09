@@ -1,6 +1,6 @@
-# %PROJECT_NAME% Infrastructure
+# Tupynambalucas Infrastructure
 
-Centralized Kubernetes orchestration and GitOps deployment pipeline for the `%PROJECT_DOMAIN%` ecosystem.
+Centralized Kubernetes orchestration and GitOps deployment pipeline for the `tupynambalucas.dev` ecosystem.
 
 ## Overview
 

@@ -9,12 +9,12 @@
 <details>
 <summary><strong>Developer Overview: Monorepo Architecture & Services</strong></summary>
 
-# %PROJECT_DOMAIN% Monorepo
+# tupynambalucas.dev Monorepo
 
-High-performance, domain-driven monorepo powering the `%PROJECT_DOMAIN%` developer platform. Built on TypeScript, PNPM Workspaces, and Turborepo with Kubernetes-native orchestration via Skaffold.
+High-performance, domain-driven monorepo powering the `tupynambalucas.dev` developer platform. Built on TypeScript, PNPM Workspaces, and Turborepo with Kubernetes-native orchestration via Skaffold.
 
 > [!NOTE]
-> **Documentation:** Full architectural deep dives and developer guides are available at [%PROJECT_DOCS_URL%](%PROJECT_DOCS_URL%).
+> **Documentation:** Full architectural deep dives and developer guides are available at [https://docs.tupynambalucas.dev](https://docs.tupynambalucas.dev).
 
 ---
 
@@ -207,8 +207,8 @@ winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold
 ### Installation
 
 ```bash
-git clone https://github.com/%GITHUB_ORG%/%REPOSITORY_NAME%.git
-cd %REPOSITORY_NAME%
+git clone https://github.com/tupynambalucas/tupynambalucas.git
+cd tupynambalucas
 pnpm install
 ```
 

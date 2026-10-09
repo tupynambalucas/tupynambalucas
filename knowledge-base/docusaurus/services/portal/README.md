@@ -1,6 +1,6 @@
 # @monorepo/kb-docusaurus-portal
 
-Central Docusaurus documentation portal for %PROJECT_DOMAIN%. Built with Docusaurus v3 and Rspack, providing high-performance static site generation for technical documentation, community guides, and engineering releases.
+Central Docusaurus documentation portal for tupynambalucas.dev. Built with Docusaurus v3 and Rspack, providing high-performance static site generation for technical documentation, community guides, and engineering releases.
 
 ---
 
@@ -18,7 +18,7 @@ This workspace acts purely as a presentation and compilation engine. All raw doc
 
 This workspace utilizes the `remark-project-variables` plugin (injected by `@monorepo/kb-docusaurus-preset`) to avoid hardcoded brand names.
 
-- Authors MUST use agnostic tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` in all `.mdx` files.
+- Authors MUST use agnostic tokens like `tupynambalucas.dev` and `Tupynambalucas` in all `.mdx` files.
 - The plugin intercepts the AST during compilation and resolves tokens against `@monorepo/shared-config/project.config.json`.
 - This preserves content portability across environments and repositories.
 
@@ -74,4 +74,4 @@ pnpm kb:docusaurus:portal:lint
 The portal documentation is compiled and deployed via GitHub Actions:
 
 - **Workflow**: `.github/workflows/deploy-docs.yaml`
-- **Public Domain**: `https://docs.%PROJECT_DOMAIN%`
+- **Public Domain**: `https://docs.tupynambalucas.dev`

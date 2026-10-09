@@ -80,7 +80,7 @@ We will adopt the professional CLI pattern (Commander.js + `@clack/prompts`) ori
 **Files**: `docs/handbook/tutorials/local-development-setup.mdx`, `docs/handbook/intro.mdx`
 Contain `https://github.com/workspace/workspace.git` with no token substitution.
 
-**Recommendation**: Use `%GITHUB_ORG%/%GITHUB_REPO%` tokens and ensure `remark-project-variables` resolves them.
+**Recommendation**: Use `tupynambalucas/%GITHUB_REPO%` tokens and ensure `remark-project-variables` resolves them.
 
 ### 2.4. `code-expert` Skill — Stale Architecture References
 
@@ -102,7 +102,7 @@ Fully hardcoded with project-specific values.
 
 ### 3.1. `hub/AGENTS.md` — Token Inconsistency
 
-Uses `@%PROJECT_NAME%-hub/web` but the codebase uses `@monorepo/hub-web`.
+Uses `@Tupynambalucas-hub/web` but the codebase uses `@monorepo/hub-web`.
 **Recommendation**: Standardize `AGENTS.md` to use the literal package names defined in `package.json` (e.g., `@monorepo/hub-web`).
 
 ### 3.2. Docker Compose `extra_hosts` & Network Aliases
@@ -220,4 +220,4 @@ This guarantees that Skaffold handles the orchestration naturally, Helm handles 
 
 **Phase 3 — Fix Broken References & Agent Contexts**: 6. **Delete `code-expert` skill** (`rm -rf .agents/skills/code-expert`). _This is mandatory._ 7. Fix `bounded-contexts.mdx` to reflect current workspace structures. 8. Resolve `hub/AGENTS.md` package naming inconsistency.
 
-**Phase 4 — Enterprise Documentation Polish**: 9. Create ADRs (`adr-001` and `adr-002`) documenting the new architecture. 10. Add `%GITHUB_ORG%` / `%GITHUB_REPO%` tokens to MDX docs. 11. Translate Portuguese strings in `styleguide.mdx` to English. 12. Write `bootstrapping-a-new-project.mdx` tutorial.
+**Phase 4 — Enterprise Documentation Polish**: 9. Create ADRs (`adr-001` and `adr-002`) documenting the new architecture. 10. Add `tupynambalucas` / `%GITHUB_REPO%` tokens to MDX docs. 11. Translate Portuguese strings in `styleguide.mdx` to English. 12. Write `bootstrapping-a-new-project.mdx` tutorial.

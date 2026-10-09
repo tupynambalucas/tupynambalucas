@@ -152,6 +152,6 @@ export default function monorepoPreset(
 export type { MonorepoPresetOptions, ThemeConfig };
 
 export {
-  projectVariablesParseFrontMatter,
+  createProjectVariablesParseFrontMatter,
   replaceProjectVariables,
 } from './plugins/ast-transformers/remark-project-variables';

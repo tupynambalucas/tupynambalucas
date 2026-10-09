@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { LoadContext, Plugin } from '@docusaurus/types';
 import type { Options } from '@docusaurus/plugin-content-pages';
 import corePagesPlugin, { validateOptions } from '@docusaurus/plugin-content-pages';
@@ -12,7 +12,13 @@ export default async function customPagesPlugin(
 ): Promise<Plugin<any>> {
   const mergedOptions = {
     ...options,
-    remarkPlugins: [...(options.remarkPlugins! ?? []), projectVariablesPlugin],
+    remarkPlugins: [
+      ...(options.remarkPlugins ?? []),
+      [
+        projectVariablesPlugin,
+        { variables: context.siteConfig.customFields?.projectVariables ?? {} },
+      ],
+    ],
   };
 
   const instance = await (corePagesPlugin as any)(context, mergedOptions);

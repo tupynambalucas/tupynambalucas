@@ -39,14 +39,14 @@ This bounded context ([studio/](./)) defines domain rules, design tokens, asset 
 
 ### Service Mapping & Port Allocation
 
-| Service           | Internal Port | Host / Forwarded Port | Ingress Host                  | Protocol    |
-| :---------------- | :------------ | :-------------------- | :---------------------------- | :---------- |
-| `penpot-frontend` | 8080          | 9005                  | `penpot-dev.%PROJECT_DOMAIN%` | HTTP        |
-| `penpot-backend`  | 6060          | 6060                  | Internal Cluster DNS          | HTTP        |
-| `penpot-exporter` | 6061          | 6061                  | Internal Cluster DNS          | HTTP        |
-| `valkey`          | 6379          | 6379                  | Internal Cluster DNS          | TCP (Redis) |
-| `penpot-aide`     | 4400-4403     | 4400-4403             | Internal Cluster DNS          | HTTP / MCP  |
-| `memos`           | 5230          | 5230                  | `memos-dev.%PROJECT_DOMAIN%`  | HTTP        |
+| Service           | Internal Port | Host / Forwarded Port | Ingress Host                    | Protocol    |
+| :---------------- | :------------ | :-------------------- | :------------------------------ | :---------- |
+| `penpot-frontend` | 8080          | 9005                  | `penpot-dev.tupynambalucas.dev` | HTTP        |
+| `penpot-backend`  | 6060          | 6060                  | Internal Cluster DNS            | HTTP        |
+| `penpot-exporter` | 6061          | 6061                  | Internal Cluster DNS            | HTTP        |
+| `valkey`          | 6379          | 6379                  | Internal Cluster DNS            | TCP (Redis) |
+| `penpot-aide`     | 4400-4403     | 4400-4403             | Internal Cluster DNS            | HTTP / MCP  |
+| `memos`           | 5230          | 5230                  | `memos-dev.tupynambalucas.dev`  | HTTP        |
 
 ---
 

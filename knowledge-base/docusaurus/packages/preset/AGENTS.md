@@ -8,7 +8,7 @@
 
 # Sub-Domain: Docs Preset
 
-This workspace (`@monorepo/kb-docusaurus-preset`) is a reusable Docusaurus preset that encapsulates all plugins, sidebars, AST transformers, and L10n synchronization for the %PROJECT_DOMAIN% documentation.
+This workspace (`@monorepo/kb-docusaurus-preset`) is a reusable Docusaurus preset that encapsulates all plugins, sidebars, AST transformers, and L10n synchronization for the tupynambalucas.dev documentation.
 
 ---
 

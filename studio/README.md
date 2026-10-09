@@ -1,6 +1,6 @@
 # Design Studio Workspace
 
-The `studio/` directory houses brand identity management, design system tokens, asset synchronization pipelines, and self-hosted collaborative design infrastructure for the %PROJECT_DOMAIN% monorepo.
+The `studio/` directory houses brand identity management, design system tokens, asset synchronization pipelines, and self-hosted collaborative design infrastructure for the tupynambalucas.dev monorepo.
 
 ---
 

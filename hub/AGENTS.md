@@ -70,7 +70,7 @@ graph TD
 Run these scripts from the monorepo root to manage the hub stack:
 
 - `pnpm hub:dev`: Boots the local compose databases (MongoDB + Redis), builds `@monorepo/hub-core`, and runs `@monorepo/hub-api` and `@monorepo/hub-web` concurrently.
-- `pnpm hub:up`: Boots only the MongoDB replica set (`%PROJECT_NAME%-hub-db-dev`) and Redis (`%PROJECT_NAME%-hub-redis-dev`) containers.
+- `pnpm hub:up`: Boots only the MongoDB replica set (`Tupynambalucas-hub-db-dev`) and Redis (`Tupynambalucas-hub-redis-dev`) containers.
 - `pnpm hub:down`: Stops local Docker containers and releases localhost ports 3000 and 5173.
 - `pnpm hub:reset`: Clears local database volumes and rebuilds developer infrastructure containers.
 - `pnpm hub:prod`: Builds and launches the production stack (API + Web + Redis) using `.env.prod`.

@@ -1,6 +1,6 @@
 # Shared Configuration
 
-The @monorepo/shared-config workspace serves as the single source of truth (SSOT) for the %PROJECT_DOMAIN% identity, global code formatting rules, and TypeScript base configurations.
+The @monorepo/shared-config workspace serves as the single source of truth (SSOT) for the tupynambalucas.dev identity, global code formatting rules, and TypeScript base configurations.
 
 ## Features
 

@@ -1,6 +1,6 @@
 # Docusaurus Ecosystem
 
-This directory houses the Docusaurus presets, themes, and deployable documentation services responsible for rendering the static site generation platform for %PROJECT_DOMAIN%.
+This directory houses the Docusaurus presets, themes, and deployable documentation services responsible for rendering the static site generation platform for tupynambalucas.dev.
 
 ---
 

@@ -6,9 +6,23 @@ interface ValidationResult {
   errors: string[];
 }
 
+const MAX_SKILL_NAME_LENGTH = 64;
+const MAX_DESCRIPTION_LENGTH = 1024;
+const MAX_COMPATIBILITY_LENGTH = 500;
+const MAX_SKILL_MD_LINES = 500;
+
+const ALLOWED_FIELDS = new Set([
+  'name',
+  'description',
+  'license',
+  'allowed-tools',
+  'metadata',
+  'compatibility',
+]);
+
 function printUsage(): void {
   console.log(
-    'Usage: pnpm exec tsx .agents/skills/skill-expert/scripts/validate-skill.ts --path <skill-directory>',
+    'Usage: pnpm dlx tsx .agents/skills/skill-expert/scripts/validate-skill.ts --path <skill-directory>',
   );
 }
 
@@ -32,6 +46,119 @@ function findMdFiles(dir: string): string[] {
   return results;
 }
 
+interface ParsedFrontmatter {
+  data: Record<string, unknown>;
+  rawErrors: string[];
+}
+
+function parseYamlFrontmatter(rawYaml: string): ParsedFrontmatter {
+  const data: Record<string, unknown> = {};
+  const rawErrors: string[] = [];
+  const lines = rawYaml.split(/\r?\n/);
+
+  let currentKey: string | null = null;
+  let multilineType: 'folded' | 'literal' | null = null;
+  let multilineBuffer: string[] = [];
+  let inMetadataMap = false;
+  const metadataMap: Record<string, string> = {};
+
+  function flushMultiline(): void {
+    if (currentKey !== null) {
+      if (multilineType === 'folded') {
+        data[currentKey] = multilineBuffer.join(' ').trim();
+      } else if (multilineType === 'literal') {
+        data[currentKey] = multilineBuffer.join('\n').trim();
+      }
+    }
+    currentKey = null;
+    multilineType = null;
+    multilineBuffer = [];
+  }
+
+  function flushMetadata(): void {
+    if (inMetadataMap === true) {
+      data['metadata'] = { ...metadataMap };
+      inMetadataMap = false;
+    }
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (trimmed === '' || trimmed.startsWith('#')) {
+      continue;
+    }
+
+    // Check if indented under multiline scalar
+    if (multilineType !== null && (line.startsWith('  ') || line.startsWith('\t'))) {
+      multilineBuffer.push(trimmed);
+      continue;
+    } else if (multilineType !== null) {
+      flushMultiline();
+    }
+
+    // Check if indented under metadata map
+    if (inMetadataMap === true && (line.startsWith('  ') || line.startsWith('\t'))) {
+      const sep = trimmed.indexOf(':');
+      if (sep !== -1) {
+        const subKey = trimmed.slice(0, sep).trim();
+        let subVal = trimmed.slice(sep + 1).trim();
+        if (
+          (subVal.startsWith('"') && subVal.endsWith('"')) ||
+          (subVal.startsWith("'") && subVal.endsWith("'"))
+        ) {
+          subVal = subVal.slice(1, -1);
+        }
+        metadataMap[subKey] = subVal;
+      }
+      continue;
+    } else if (inMetadataMap === true) {
+      flushMetadata();
+    }
+
+    const colonIndex = line.indexOf(':');
+    if (colonIndex === -1) {
+      continue;
+    }
+
+    const key = line.slice(0, colonIndex).trim();
+    let val = line.slice(colonIndex + 1).trim();
+
+    if (key === 'metadata') {
+      if (val === '' || val === '{}') {
+        inMetadataMap = true;
+      }
+      continue;
+    }
+
+    if (val === '>' || val === '>-') {
+      currentKey = key;
+      multilineType = 'folded';
+      multilineBuffer = [];
+      continue;
+    }
+
+    if (val === '|' || val === '|-') {
+      currentKey = key;
+      multilineType = 'literal';
+      multilineBuffer = [];
+      continue;
+    }
+
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+      val = val.slice(1, -1);
+    }
+
+    data[key] = val;
+  }
+
+  flushMultiline();
+  flushMetadata();
+
+  return { data, rawErrors };
+}
+
 function validateSkillDir(targetDir: string): boolean {
   const absoluteTargetDir = path.resolve(targetDir);
   if (fs.existsSync(absoluteTargetDir) === false) {
@@ -39,10 +166,15 @@ function validateSkillDir(targetDir: string): boolean {
     return false;
   }
 
-  const skillMdPath = path.join(absoluteTargetDir, 'SKILL.md');
+  let skillMdPath = path.join(absoluteTargetDir, 'SKILL.md');
   if (fs.existsSync(skillMdPath) === false) {
-    console.error(`Error: Required file SKILL.md not found in ${absoluteTargetDir}`);
-    return false;
+    const lowercasePath = path.join(absoluteTargetDir, 'skill.md');
+    if (fs.existsSync(lowercasePath) === true) {
+      skillMdPath = lowercasePath;
+    } else {
+      console.error(`Error: Required file SKILL.md not found in ${absoluteTargetDir}`);
+      return false;
+    }
   }
 
   let hasErrors = false;
@@ -53,9 +185,9 @@ function validateSkillDir(targetDir: string): boolean {
   const skillMdContent = fs.readFileSync(skillMdPath, 'utf-8');
   const lineCount = skillMdContent.split(/\r?\n/).length;
 
-  if (lineCount >= 500) {
+  if (lineCount >= MAX_SKILL_MD_LINES) {
     skillMdErrors.push(
-      `SKILL.md has ${lineCount} lines, which exceeds the maximum limit of 500 lines.`,
+      `SKILL.md has ${lineCount} lines, which exceeds the maximum limit of ${MAX_SKILL_MD_LINES} lines.`,
     );
   }
 
@@ -69,80 +201,123 @@ function validateSkillDir(targetDir: string): boolean {
     );
   } else {
     const rawYaml = frontmatterMatch[1];
-    const lines = rawYaml.split(/\r?\n/);
-    const frontmatter: Record<string, string> = {};
+    const { data: frontmatter, rawErrors } = parseYamlFrontmatter(rawYaml);
+    skillMdErrors.push(...rawErrors);
 
-    for (const line of lines) {
-      if (!line.trim() || line.startsWith('#')) continue;
-      const separatorIndex = line.indexOf(':');
-      if (separatorIndex === -1) continue;
-      const key = line.slice(0, separatorIndex).trim();
-      let val = line.slice(separatorIndex + 1).trim();
-      if (
-        (val.startsWith('"') && val.endsWith('"')) ||
-        (val.startsWith("'") && val.endsWith("'"))
-      ) {
-        val = val.slice(1, -1);
-      }
-      frontmatter[key] = val;
+    // Validate allowed fields only (Spec strictness)
+    const presentKeys = Object.keys(frontmatter);
+    const extraFields = presentKeys.filter((k) => ALLOWED_FIELDS.has(k) === false);
+    if (extraFields.length > 0) {
+      const allowedSorted = Array.from(ALLOWED_FIELDS).sort().join(', ');
+      skillMdErrors.push(
+        `Unexpected fields in frontmatter: ${extraFields.sort().join(', ')}. Only [${allowedSorted}] are allowed.`,
+      );
     }
 
     // Name Validation
     if (frontmatter.name === undefined) {
-      skillMdErrors.push("Frontmatter is missing the required 'name' field.");
+      skillMdErrors.push("Missing required field in frontmatter: 'name'.");
+    } else if (typeof frontmatter.name !== 'string' || frontmatter.name.trim() === '') {
+      skillMdErrors.push("Field 'name' must be a non-empty string.");
     } else {
+      const name = frontmatter.name.trim();
       const parentDirName = path.basename(absoluteTargetDir);
-      if (frontmatter.name !== parentDirName) {
+      if (name !== parentDirName) {
+        skillMdErrors.push(`Directory name '${parentDirName}' must match skill name '${name}'.`);
+      }
+
+      if (name.length < 1 || name.length > MAX_SKILL_NAME_LENGTH) {
         skillMdErrors.push(
-          `The 'name' field in frontmatter ('${frontmatter.name}') must match the parent directory name ('${parentDirName}').`,
+          `Skill name '${name}' exceeds ${MAX_SKILL_NAME_LENGTH} character limit (${name.length} chars).`,
         );
       }
 
-      const nameLen = frontmatter.name.length;
-      if (nameLen < 1 || nameLen > 64) {
-        skillMdErrors.push(
-          `The 'name' field length (${nameLen}) must be between 1 and 64 characters.`,
-        );
+      if (name !== name.toLowerCase()) {
+        skillMdErrors.push(`Skill name '${name}' must be lowercase.`);
+      }
+
+      if (name.startsWith('-') === true || name.endsWith('-') === true) {
+        skillMdErrors.push('Skill name cannot start or end with a hyphen.');
+      }
+
+      if (name.includes('--') === true) {
+        skillMdErrors.push('Skill name cannot contain consecutive hyphens.');
       }
 
       const nameRegex = /^[a-z0-9-]+$/;
-      if (nameRegex.test(frontmatter.name) === false) {
+      if (nameRegex.test(name) === false) {
         skillMdErrors.push(
-          `The 'name' field ('${frontmatter.name}') must contain only lowercase alphanumeric characters (a-z, 0-9) and hyphens (-).`,
-        );
-      }
-
-      if (frontmatter.name.startsWith('-') === true || frontmatter.name.endsWith('-') === true) {
-        skillMdErrors.push(
-          `The 'name' field ('${frontmatter.name}') must not start or end with a hyphen.`,
-        );
-      }
-
-      if (frontmatter.name.includes('--') === true) {
-        skillMdErrors.push(
-          `The 'name' field ('${frontmatter.name}') must not contain consecutive hyphens.`,
+          `Skill name '${name}' contains invalid characters. Only letters, digits, and hyphens are allowed.`,
         );
       }
     }
 
     // Description Validation
     if (frontmatter.description === undefined) {
-      skillMdErrors.push("Frontmatter is missing the required 'description' field.");
+      skillMdErrors.push("Missing required field in frontmatter: 'description'.");
+    } else if (
+      typeof frontmatter.description !== 'string' ||
+      frontmatter.description.trim() === ''
+    ) {
+      skillMdErrors.push("Field 'description' must be a non-empty string.");
     } else {
-      const descLen = frontmatter.description.length;
-      if (descLen < 1 || descLen > 1024) {
+      const desc = frontmatter.description.trim();
+      if (desc.length > MAX_DESCRIPTION_LENGTH) {
         skillMdErrors.push(
-          `The 'description' field length (${descLen}) must be between 1 and 1024 characters.`,
+          `Description exceeds ${MAX_DESCRIPTION_LENGTH} character limit (${desc.length} chars).`,
         );
       }
-      if (frontmatter.description.trim() === '') {
-        skillMdErrors.push("The 'description' field must be non-empty.");
+    }
+
+    // Compatibility Validation
+    if (frontmatter.compatibility !== undefined) {
+      if (typeof frontmatter.compatibility !== 'string') {
+        skillMdErrors.push("Field 'compatibility' must be a string.");
+      } else if (frontmatter.compatibility.length > MAX_COMPATIBILITY_LENGTH) {
+        skillMdErrors.push(
+          `Compatibility exceeds ${MAX_COMPATIBILITY_LENGTH} character limit (${frontmatter.compatibility.length} chars).`,
+        );
+      }
+    }
+
+    // Allowed-Tools Validation
+    if (frontmatter['allowed-tools'] !== undefined) {
+      if (typeof frontmatter['allowed-tools'] !== 'string') {
+        skillMdErrors.push("Field 'allowed-tools' must be a space-separated string.");
+      }
+    }
+
+    // License Validation
+    if (frontmatter.license !== undefined && typeof frontmatter.license !== 'string') {
+      skillMdErrors.push("Field 'license' must be a string.");
+    }
+
+    // Metadata Validation
+    if (frontmatter.metadata !== undefined) {
+      if (
+        typeof frontmatter.metadata !== 'object' ||
+        frontmatter.metadata === null ||
+        Array.isArray(frontmatter.metadata)
+      ) {
+        skillMdErrors.push("Field 'metadata' must be a key-value mapping of strings.");
+      } else {
+        const meta = frontmatter.metadata as Record<string, unknown>;
+        for (const [mk, mv] of Object.entries(meta)) {
+          if (typeof mv !== 'string') {
+            skillMdErrors.push(
+              `Metadata entry '${mk}' must have a string value, received ${typeof mv}.`,
+            );
+          }
+        }
       }
     }
   }
 
   if (skillMdErrors.length > 0) {
-    results.push({ filePath: 'SKILL.md', errors: skillMdErrors });
+    results.push({
+      filePath: path.basename(skillMdPath),
+      errors: skillMdErrors,
+    });
     hasErrors = true;
   }
 
@@ -156,15 +331,12 @@ function validateSkillDir(targetDir: string): boolean {
     const content = fs.readFileSync(filePath, 'utf-8');
 
     // Check for Emojis
-    // Reset regex lastIndex
     emojiRegex.lastIndex = 0;
     const emojiMatches = content.match(emojiRegex);
     if (emojiMatches !== null) {
-      // Narrow down matches to verify they are real emojis and not standard numbers or simple punctuation
       const realEmojis = emojiMatches.filter((emoji) => {
-        // Exclude digits (0-9), asterisk, hash (often captured in loose emoji property matches)
         const charCode = emoji.charCodeAt(0);
-        if (charCode >= 48 && charCode <= 57) return false; // '0'-'9'
+        if (charCode >= 48 && charCode <= 57) return false;
         if (emoji === '*' || emoji === '#' || emoji === '©' || emoji === '®') return false;
         return true;
       });
@@ -174,25 +346,23 @@ function validateSkillDir(targetDir: string): boolean {
       }
     }
 
-    // Check for absolute paths and file:/// URLs
-    if (content.toLowerCase().includes('file:///')) {
-      fileErrors.push("Found forbidden 'file:///' link.");
+    // Scan markdown links for absolute targets and file:/// schemes
+    const markdownLinkRegex = /\[.*?\]\((.*?)\)/g;
+    let linkMatch;
+    while ((linkMatch = markdownLinkRegex.exec(content)) !== null) {
+      const url = linkMatch[1].trim();
+      if (url.toLowerCase().startsWith('file:///')) {
+        fileErrors.push(`Found forbidden 'file:///' link target: "${url}"`);
+      }
+      if (url.startsWith('/') === true && url.startsWith('//') === false) {
+        fileErrors.push(`Found forbidden absolute markdown link target: "${url}"`);
+      }
     }
 
     // Scan for windows drive letter patterns in links or plain text
     const driveLetterRegex = /\b[A-Za-z]:[\\/]/g;
     if (driveLetterRegex.test(content) === true) {
       fileErrors.push('Found absolute Windows file path (e.g. C:\\ or D:\\).');
-    }
-
-    // Scan markdown links for absolute targets
-    const markdownLinkRegex = /\[.*?\]\((.*?)\)/g;
-    let linkMatch;
-    while ((linkMatch = markdownLinkRegex.exec(content)) !== null) {
-      const url = linkMatch[1].trim();
-      if (url.startsWith('/') === true && url.startsWith('//') === false) {
-        fileErrors.push(`Found forbidden absolute markdown link target: "${url}"`);
-      }
     }
 
     if (fileErrors.length > 0) {

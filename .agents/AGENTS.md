@@ -8,7 +8,7 @@
 
 # Bounded Context: AI Agents Configuration
 
-This bounded context ([.agents/](./)) manages the lifecycle, personas, tools, and domain-specific knowledge for AI agents operating within the %PROJECT_DOMAIN% monorepo. It strictly adheres to the Antigravity (AGY) customization architecture.
+This bounded context ([.agents/](./)) manages the lifecycle, personas, tools, and domain-specific knowledge for AI agents operating within the tupynambalucas.dev monorepo. It strictly adheres to the Antigravity (AGY) customization architecture.
 
 ---
 
@@ -28,8 +28,9 @@ This bounded context ([.agents/](./)) manages the lifecycle, personas, tools, an
 2. **Script Location**: The [scripts/](./scripts/) directory is STRICTLY for scripts executed by AI agents (temporary or permanent). Agents MUST save their scripts here instead of the root directory. Transient scripts can optionally be saved in the agent's isolated `brain/scratch/` directory.
 3. **Cross-Boundary References**: Customizations inside [skills/](./skills/) or [plugins/](./plugins/) MUST be 100% self-contained. They MUST NOT contain relative links pointing to transient folders like [plans/](./plans/).
 4. **Plugin Encapsulation**: Any new MCP server integration MUST be encapsulated inside a named plugin directory within [plugins/](./plugins/) containing a `plugin.json` and `mcp_config.json`.
-5. **Generic Nomenclature**: All contextual configurations MUST use agnostic template variables (`%PROJECT_DOMAIN%`, `%PROJECT_NAME%`) rather than hardcoded brand names to preserve monorepo template portability.
+5. **Concrete Nomenclature**: All contextual configurations MUST use hardcoded, concrete project names and domains. The use of agnostic template variables (like `tupynambalucas.dev`, `Tupynambalucas`) is strictly forbidden outside of internal `knowledge-base` collections.
 6. **Environment Variables**: When generating or updating `.env.example` files, agents MUST replace all sensitive values with explicit uppercase placeholders matching the key name (e.g., `API_KEY=<YOUR_API_KEY>`). Agents MUST use native shell regex tools (e.g., `sed` or PowerShell `-replace`) to scrub these files and MUST NEVER use inline Node.js scripts parsing multiline strings, as cross-platform line-ending issues cause silent failures and secret leaks.
+7. **MCP Fallback Routing**: When the primary `cortex_agentgateway` (provided by the [cortex](./plugins/cortex/) plugin) or its MCP services return connection errors or are offline due to the infrastructure being down, agents MUST automatically fallback to using the local MCP tools provided by the [cortex-fallback](./plugins/cortex-fallback/) plugin.
 
 ---
 
@@ -44,4 +45,4 @@ When creating, updating, or analyzing custom Agent Skills within this bounded co
 When agents write technical documentation for the monorepo (specifically in the `knowledge-base/` workspace):
 
 1. **Diátaxis Framework**: All documentation MUST be structured into four quadrants (`tutorials`, `guides`, `reference`, `explanation`). The AI must activate the `docusaurus-expert` skill for exact formatting instructions.
-2. **AST Project Variables**: Agents MUST NOT hardcode project names or domains. Instead, they must use tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` which are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace). The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens during the build.
+2. **AST Project Variables**: Agents MUST use namespace-specific tokens (like `tupynambalucas.dev`) only inside `.mdx`/`.md` files within `knowledge-base/collections/namespaces/*/`. These tokens are dynamically replaced during the build by reading the `*.config.ts` file located at the root of that specific namespace. You MUST NOT use these tokens in global `AGENTS.md`, `README.md`, or skill files.

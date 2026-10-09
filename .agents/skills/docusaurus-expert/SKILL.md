@@ -70,7 +70,7 @@ All files placed inside the documentation directories MUST strictly adhere to th
 ### F. Project Variables Plugin
 
 - **No Hardcoded Brands**: You MUST NOT hardcode specific brand names or URLs in documentation content.
-- **AST Tokens**: Always use agnostic percentage-wrapped tokens like `%PROJECT_DOMAIN%` or `%PROJECT_NAME%`.
+- **AST Tokens**: Always use agnostic percentage-wrapped tokens like `tupynambalucas.dev` or `Tupynambalucas`.
 - **Centralized Config**: These variables are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace).
 - **Compilation**: The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens with the real values from the shared config during the build, keeping the repository generic and copy-pasteable.
 

@@ -1,12 +1,12 @@
-# %PROJECT_DOMAIN% Agents Context
+# tupynambalucas.dev Agents Context
 
 This document serves as the root context router for AI agents operating in the
-%PROJECT_DOMAIN% monorepo.
+tupynambalucas.dev monorepo.
 
 ## Repository Entry Points
 
 - [README.md](./README.md): Serves exclusively as the dynamic GitHub Profile view, which
-  is automatically updated by the `@%PROJECT_NAME%/renderer` workspace generator.
+  is automatically updated by the `@Tupynambalucas/renderer` workspace generator.
 - [MONOREPO.readme.md](./MONOREPO.readme.md): The official developer entry point and
   technical README for the repository.
 
@@ -58,7 +58,8 @@ The monorepo uses Skaffold v4beta11 with three composable modules defined in
   forbidden.
 - MUST format all files according to Prettier standards (2-space indent, max 100-character
   line width).
-- MUST NOT hardcode the project name or domain in any `AGENTS.md` or `README.md` files (except the root `README.md` and `MONOREPO.readme.md`). Agents MUST use agnostic tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` which are resolved via `@monorepo/shared-config/project.config.json`.
+- MUST hardcode the project name and domain in all `AGENTS.md` and `README.md` files (e.g., `Tupynambalucas`, `tupynambalucas.dev`).
+- MUST NOT use agnostic tokens like `tupynambalucas.dev` or `Tupynambalucas` outside of the `knowledge-base/collections` directory.
 
 ## Required Skills
 

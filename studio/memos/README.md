@@ -1,7 +1,7 @@
 # Memos Notes Platform
 
 The `studio/memos` workspace contains the container build definition for the Memos self-hosted
-note-taking service running in the `studio` Kubernetes namespace of the %PROJECT_DOMAIN% monorepo.
+note-taking service running in the `studio` Kubernetes namespace of the tupynambalucas.dev monorepo.
 
 ---
 
@@ -10,7 +10,7 @@ note-taking service running in the `studio` Kubernetes namespace of the %PROJECT
 - **Base Image**: `neosmemo/memos:stable` (Alpine-based Go binary)
 - **Database**: Neon Serverless Postgres (external, via `MEMOS_DRIVER` + `MEMOS_DSN`)
 - **Port**: `5230`
-- **Ingress Domain**: `memos-dev.%PROJECT_DOMAIN%`
+- **Ingress Domain**: `memos-dev.tupynambalucas.dev`
 
 ---
 
@@ -34,7 +34,7 @@ pnpm studio:dev
 pnpm studio:up
 ```
 
-Access the Memos UI at `http://localhost:5230` or `http://memos-dev.%PROJECT_DOMAIN%`.
+Access the Memos UI at `http://localhost:5230` or `http://memos-dev.tupynambalucas.dev`.
 
 ---
 

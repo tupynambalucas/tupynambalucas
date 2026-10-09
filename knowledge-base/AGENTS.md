@@ -8,7 +8,7 @@
 
 # Bounded Context: Knowledge Base
 
-This bounded context orchestrates the developer knowledge base, centralizing both the agnostic markdown documentation and the Docusaurus ecosystem for the %PROJECT_DOMAIN% monorepo.
+This bounded context orchestrates the developer knowledge base, centralizing both the agnostic markdown documentation and the Docusaurus ecosystem for the tupynambalucas.dev monorepo.
 
 ---
 

@@ -1,6 +1,6 @@
 # GitHub Tooling Ecosystem
 
-This workspace houses the containerized GitHub CLI (`gh`) and Git environments, alongside TypeScript automation scripts for repository management in the %PROJECT_DOMAIN% infrastructure.
+This workspace houses the containerized GitHub CLI (`gh`) and Git environments, alongside TypeScript automation scripts for repository management in the tupynambalucas.dev infrastructure.
 
 ## Architecture Overview
 

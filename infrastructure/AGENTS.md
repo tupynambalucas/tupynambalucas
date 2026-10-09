@@ -4,7 +4,7 @@
 
 # Bounded Context: Centralized Infrastructure
 
-This workspace (`infrastructure/`) manages the centralized Kubernetes orchestration, GitOps deployment pipeline, and localized Skaffold environments for the `%PROJECT_DOMAIN%` monorepo.
+This workspace (`infrastructure/`) manages the centralized Kubernetes orchestration, GitOps deployment pipeline, and localized Skaffold environments for the `tupynambalucas.dev` monorepo.
 
 ## 1. Directory Architecture
 

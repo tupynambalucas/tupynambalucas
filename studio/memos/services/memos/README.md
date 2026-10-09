@@ -13,7 +13,7 @@ self-hosted note-taking and knowledge base service.
 - **Database**: Neon Serverless Postgres (via `MEMOS_DRIVER=postgres` + `MEMOS_DSN`)
 - **Data Volume**: `/var/opt/memos` (local assets and attachments)
 - **User**: non-root UID `10001` (`nonroot`, enforced by upstream image)
-- **Ingress Domain**: `memos-dev.%PROJECT_DOMAIN%`
+- **Ingress Domain**: `memos-dev.tupynambalucas.dev`
 
 ---
 
@@ -32,4 +32,4 @@ Memos starts with the studio stack:
 pnpm studio:dev
 ```
 
-Access the Memos UI at `http://localhost:5230` or `http://memos-dev.%PROJECT_DOMAIN%`.
+Access the Memos UI at `http://localhost:5230` or `http://memos-dev.tupynambalucas.dev`.

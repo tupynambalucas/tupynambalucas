@@ -8,7 +8,7 @@
 
 # Sub-Domain: Portal Documentation Service
 
-This workspace ([portal/](./)) manages the primary Docusaurus documentation portal for the %PROJECT_DOMAIN% knowledge base.
+This workspace ([portal/](./)) manages the primary Docusaurus documentation portal for the tupynambalucas.dev knowledge base.
 
 ---
 
@@ -25,7 +25,7 @@ This workspace is strictly a presentation and compilation engine. All documentat
 
 ## 2. Workspace Guardrails
 
-1. **AST Variable Transformer**: The workspace uses the `remark-project-variables` AST plugin (provided by the preset). Agents MUST write agnostic tokens like `%PROJECT_DOMAIN%` instead of hardcoded brand names.
+1. **AST Variable Transformer**: The workspace uses the `remark-project-variables` AST plugin (provided by the preset). Agents MUST write agnostic tokens like `tupynambalucas.dev` instead of hardcoded brand names.
 2. **Translation Synchronization**: Docusaurus requires the `i18n/` directory to be present locally during build. The preset plugin acts as a bridge, copying L10n translations from `../../../collections/namespaces/portal/locales/` into `i18n/` before build. Agents MUST NOT edit files in `i18n/` manually.
 3. **No Direct Content Creation**: Agents MUST NOT create `docs/`, `community/`, or `blog/` content directories inside this workspace. All documentation authoring must happen in the `knowledge-base/collections/namespaces/portal/content/` workspace.
 

@@ -1,6 +1,6 @@
 # AI Agents Configuration Hub
 
-The `.agents/` directory is the Bounded Context for AI behavior customization, tool integration, and knowledge routing within the `%PROJECT_DOMAIN%` monorepo.
+The `.agents/` directory is the Bounded Context for AI behavior customization, tool integration, and knowledge routing within the `tupynambalucas.dev` monorepo.
 
 This directory is natively supported by the **Antigravity (AGY)** agent architecture and uses Domain-Driven Design (DDD) to encapsulate AI capabilities and constraints.
 
@@ -10,7 +10,7 @@ Our AI configuration is split into distinct logical units based on their lifecyc
 
 ### `plugins/`
 
-Namespaced bundles that package Skills, Rules, Hooks, and MCP Server Configurations into a single deployable unit. For example, the `cortex` plugin encapsulates the `agentgateway` MCP server connection alongside rules that teach the AI how to automatically use `firecrawl` and `context7` when requested.
+Namespaced bundles that package Skills, Rules, Hooks, and MCP Server Configurations into a single deployable unit. For example, the `cortex` plugin encapsulates the `agentgateway` MCP server connection alongside rules that teach the AI how to automatically use `firecrawl` and `context7` when requested. The `cortex-fallback` plugin provides local `pnpm`-driven instances of these same MCP servers for when the primary cluster infrastructure is offline.
 
 ### `rules/`
 
@@ -31,5 +31,5 @@ Temporary, markdown-based plan artifacts outlining execution steps for complex t
 ## Contribution Guidelines
 
 1. **Self-Contained Logic**: Skills and Plugins must be 100% self-contained. Do not create relative links pointing to temporary plans or other transient context.
-2. **Generic Nomenclature**: Always use `%PROJECT_DOMAIN%` and `%PROJECT_NAME%` templates instead of hardcoded brand names. This keeps the AI configuration portable and reusable across other corporate deployments.
+2. **Generic Nomenclature**: Always use `tupynambalucas.dev` and `Tupynambalucas` templates instead of hardcoded brand names. This keeps the AI configuration portable and reusable across other corporate deployments.
 3. **No Root Scripts**: Never place utility or scratch scripts in the root directory. Save permanent scripts to `scripts/` or use the isolated `.gemini/brain/scratch/` directory for transient execution.

@@ -10,7 +10,7 @@ Penpot web client, served by nginx.
 - **Base Image**: `penpotapp/frontend:2.17`
 - **Runtime**: nginx (embedded in upstream image)
 - **Port**: `8080`
-- **Ingress Domain**: `penpot-dev.%PROJECT_DOMAIN%`
+- **Ingress Domain**: `penpot-dev.tupynambalucas.dev`
 
 ---
 
@@ -29,4 +29,4 @@ The frontend starts with the studio stack. Access the Penpot UI:
 pnpm studio:dev
 ```
 
-Navigate to `http://localhost:9005` or `http://penpot-dev.%PROJECT_DOMAIN%`.
+Navigate to `http://localhost:9005` or `http://penpot-dev.tupynambalucas.dev`.

@@ -1,6 +1,6 @@
 # Cortex Memory Subsystem
 
-The `cortex/memory/` workspace provides the persistent memory architecture for AI agents in the %PROJECT_DOMAIN% monorepo, consolidating vector RAG retrieval, episodic chat persistence, associative knowledge graph modeling, and developer visualization.
+The `cortex/memory/` workspace provides the persistent memory architecture for AI agents in the tupynambalucas.dev monorepo, consolidating vector RAG retrieval, episodic chat persistence, associative knowledge graph modeling, and developer visualization.
 
 ---
 

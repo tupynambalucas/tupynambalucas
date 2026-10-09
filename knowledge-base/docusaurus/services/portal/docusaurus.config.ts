@@ -1,11 +1,11 @@
 import type { Config } from '@docusaurus/types';
 import type { MonorepoPresetOptions } from '@monorepo/kb-docusaurus-preset/options';
 import { getBaseThemeConfig } from '@monorepo/kb-docusaurus-preset/themeConfig';
-import { projectVariablesParseFrontMatter } from '@monorepo/kb-docusaurus-preset';
+import { createProjectVariablesParseFrontMatter } from '@monorepo/kb-docusaurus-preset';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import projectConfig from '@monorepo/shared-config/project.config';
+import projectConfig from '../../../../collections/namespaces/portal/portal.config';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -64,7 +64,9 @@ const config: Config = {
 
   markdown: {
     mermaid: true,
-    parseFrontMatter: projectVariablesParseFrontMatter,
+    parseFrontMatter: createProjectVariablesParseFrontMatter(
+      projectConfig as Record<string, string>,
+    ),
     hooks: {
       onBrokenMarkdownImages: 'ignore',
       onBrokenMarkdownLinks: 'ignore',
@@ -79,6 +81,7 @@ const config: Config = {
 
   customFields: {
     studioPath,
+    projectVariables: projectConfig,
   },
 
   i18n: {

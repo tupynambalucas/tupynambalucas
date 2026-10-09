@@ -4,7 +4,7 @@ All planned and completed milestones for each key workspace context in the tupyn
 
 ## Core Architecture & Strategy
 
-This section outlines the strategic monorepo architecture, catalog configurations, and logical multi-tenant isolation goals for the %PROJECT_DOMAIN% project.
+This section outlines the strategic monorepo architecture, catalog configurations, and logical multi-tenant isolation goals for the tupynambalucas.dev project.
 
 ## Current Development Focus: "Single-Instance Mastery"
 
@@ -36,7 +36,7 @@ While we have a long-term vision of becoming a multi-tenant SaaS platform, **Saa
 
 ---
 
-## Developer Hub (%PROJECT_DOMAIN%)
+## Developer Hub (tupynambalucas.dev)
 
 This section details the milestones and plans for the personal developer website, blog engine, contact systems, and administration dashboard.
 

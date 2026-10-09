@@ -1,6 +1,6 @@
 # Shared Context
 
-This bounded context provides foundational utilities, configuration definitions, and Git lifecycle scripts that are shared across all workspaces within the %PROJECT_DOMAIN% monorepo.
+This bounded context provides foundational utilities, configuration definitions, and Git lifecycle scripts that are shared across all workspaces within the tupynambalucas.dev monorepo.
 
 ## Workspaces
 

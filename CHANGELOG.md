@@ -4,7 +4,7 @@ All updates, improvements, and new features of tupynambalucas.dev documented in 
 
 ## v0.1.0 - Architecture Foundation & Monorepo Genesis (2026-05-05)
 
-This is the genesis release of the %PROJECT_DOMAIN% architecture foundation.
+This is the genesis release of the tupynambalucas.dev architecture foundation.
 
 {/* truncate */}
 

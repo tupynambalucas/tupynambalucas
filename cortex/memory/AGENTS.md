@@ -89,4 +89,4 @@ associative memory planes for AI agents.
 
 ## 5. Docs Ingestion & Vector Agnosticism
 
-The memory API synchronizes documentation by directly ingesting raw .mdx files from the docs/ workspace. It intentionally embeds unresolved templating tokens (such as %PROJECT_DOMAIN% and %PROJECT_NAME%) into the MongoDB Vector space. This architectural decision ensures the semantic knowledge base remains strictly brand-agnostic and perfectly generic for enterprise template reuse.
+The memory API synchronizes documentation by directly ingesting raw .mdx files from the docs/ workspace. It intentionally embeds unresolved templating tokens (such as tupynambalucas.dev and Tupynambalucas) into the MongoDB Vector space. This architectural decision ensures the semantic knowledge base remains strictly brand-agnostic and perfectly generic for enterprise template reuse.

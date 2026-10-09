@@ -8,7 +8,7 @@
 
 # Sub-Domain: Docusaurus Ecosystem
 
-This sub-domain contains the build infrastructure, preset abstractions, themed UI components, and deployable documentation services for %PROJECT_DOMAIN%.
+This sub-domain contains the build infrastructure, preset abstractions, themed UI components, and deployable documentation services for tupynambalucas.dev.
 
 ---
 

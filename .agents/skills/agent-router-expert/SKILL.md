@@ -42,9 +42,8 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### G. Project Variables
 
-- **No Hardcoded Brands**: Project names and domains MUST NOT be hardcoded in any `AGENTS.md` router file.
-- **AST Tokens**: Always use agnostic tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%`.
-- **Centralized Config**: These variables are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace) and are resolved automatically by the build plugins.
+- **Concrete Names Required**: Project names and domains MUST be hardcoded with their actual values (e.g., `Tupynambalucas`, `tupynambalucas.dev`) in all `AGENTS.md` router files.
+- **No Agnostic Tokens**: You MUST NOT use agnostic tokens like `tupynambalucas.dev` or `Tupynambalucas`. These are strictly prohibited outside of the Docusaurus internal collections.
 
 ---
 

@@ -8,7 +8,7 @@
 
 # Bounded Context: Shared
 
-This file defines the domain rules, architecture, and workspace navigation for the Shared bounded context in the %PROJECT_DOMAIN% monorepo. This bounded context holds cross-workspace utilities, configurations, and Git hooks.
+This file defines the domain rules, architecture, and workspace navigation for the Shared bounded context in the tupynambalucas.dev monorepo. This bounded context holds cross-workspace utilities, configurations, and Git hooks.
 
 ---
 

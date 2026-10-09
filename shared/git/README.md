@@ -1,6 +1,6 @@
 # Shared Git Utilities
 
-The @monorepo/shared-git workspace contains the standardized Git lifecycle hooks (via Husky) and TypeScript-based commit validation scripts for the %PROJECT_DOMAIN% monorepo.
+The @monorepo/shared-git workspace contains the standardized Git lifecycle hooks (via Husky) and TypeScript-based commit validation scripts for the tupynambalucas.dev monorepo.
 
 ## Directory Layout
 

@@ -1,6 +1,7 @@
-# Quickstart
-
-Create your first Agent Skill and see it work in VS Code.
+---
+title: 'Quickstart'
+description: 'Create your first Agent Skill and see it work in VS Code.'
+---
 
 In this tutorial, you'll create a skill that gives an agent the capability to roll dice using a random number generator.
 
@@ -8,20 +9,23 @@ In this tutorial, you'll create a skill that gives an agent the capability to ro
 
 - [VS Code](https://code.visualstudio.com/) with [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)
 
-> [!NOTE]
-> This tutorial uses VS Code, but Agent Skills are an open format. The same skill works in any compatible agent, including Claude Code and OpenAI Codex.
+<Note>
+  This tutorial uses VS Code, but Agent Skills are an open format. The same skill works in any
+  compatible agent, including Claude Code and OpenAI Codex.
+</Note>
 
 ## Create the skill
 
 A skill is a folder containing a `SKILL.md` file. VS Code looks for skills in `.agents/skills/` by default. Create `.agents/skills/roll-dice/SKILL.md` in your project:
 
-````markdown
+````markdown .agents/skills/roll-dice/SKILL.md
 ---
 name: roll-dice
 description: Roll dice using a random number generator. Use when asked to roll a die (d6, d20, etc.), roll dice, or generate a random dice roll.
 ---
 
-To roll a die, use the following command that generates a random number from 1 to the given number of sides:
+To roll a die, use the following command that generates a random number from 1
+to the given number of sides:
 
 ```bash
 echo $((RANDOM % <sides> + 1))
@@ -31,7 +35,8 @@ echo $((RANDOM % <sides> + 1))
 Get-Random -Minimum 1 -Maximum (<sides> + 1)
 ```
 
-Replace `<sides>` with the number of sides on the die (e.g., 6 for a standard die, 20 for a d20).
+Replace `<sides>` with the number of sides on the die (e.g., 6 for a standard
+die, 20 for a d20).
 ````
 
 That's it — one file, under 20 lines. Here's what each part does:
@@ -50,8 +55,11 @@ That's it — one file, under 20 lines. Here's what each part does:
 
 The agent should activate the `roll-dice` skill. It may ask for permission to run a terminal command — allow it. It will run the command and return a random number between 1 and 20.
 
-> [!NOTE]
-> Tool-use reliability varies across models — some follow skill instructions and run commands consistently, while others may attempt to answer on their own. If the agent responds without running a terminal command, try selecting a different model from the model dropdown.
+<Note>
+  Tool-use reliability varies across models — some follow skill instructions and run commands
+  consistently, while others may attempt to answer on their own. If the agent responds without
+  running a terminal command, try selecting a different model from the model dropdown.
+</Note>
 
 ## How it works
 
@@ -65,11 +73,11 @@ Here's what happened behind the scenes:
 
 This process uses **progressive disclosure** to let the agent access many skills without loading all their instructions up front.
 
-## Next Steps
+## Next steps
 
 You've created a working Agent Skill. From here:
 
-- [Best practices](best-practices.md) — How to write skills that are well-scoped and effective.
-- [Optimizing skill descriptions](optimizing-descriptions.md) — Test and improve your skill's description so it activates on the right prompts.
-- [Specification](https://agentskills.io/specification) — The complete format reference for `SKILL.md` files.
-- [Example skills](https://github.com/anthropics/skills) — Browse real-world skills on GitHub.
+- **[Best practices](/skill-creation/best-practices)** — How to write skills that are well-scoped and effective.
+- **[Optimizing skill descriptions](/skill-creation/optimizing-descriptions)** — Test and improve your skill's description so it activates on the right prompts.
+- **[Specification](/specification)** — The complete format reference for `SKILL.md` files.
+- **[Example skills](https://github.com/anthropics/skills)** — Browse real-world skills on GitHub.

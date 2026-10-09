@@ -138,7 +138,7 @@ Blog highlight post (`blog/releases/1.0/index.mdx`):
 
 ```mdx
 ---
-title: %PROJECT_NAME% 1.0
+title: Tupynambalucas 1.0
 authors: [tupynambalucas]
 tags: [release]
 date: 2026-10-20
@@ -192,7 +192,7 @@ Create `.changeset/config.json`:
 ```json
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "%GITHUB_ORG%/%REPOSITORY_NAME%" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "tupynambalucas/tupynambalucas" }],
   "commit": false,
   "access": "restricted",
   "baseBranch": "develop",

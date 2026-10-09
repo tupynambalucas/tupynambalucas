@@ -49,9 +49,8 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### H. Project Variables
 
-- **No Hardcoded Brands**: Project names and domains MUST NOT be hardcoded in any general `.md` file, EXCEPT for the root `README.md` and `MONOREPO.readme.md`.
-- **AST Tokens**: Always use agnostic tokens like `%PROJECT_DOMAIN%` and `%PROJECT_NAME%`.
-- **Centralized Config**: These variables are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace) and are compiled automatically by the repository's build plugins.
+- **Concrete Names Required**: Project names and domains MUST be hardcoded with their actual values (e.g., `Tupynambalucas`, `tupynambalucas.dev`) in all general `.md` files.
+- **No Agnostic Tokens**: You MUST NOT use agnostic tokens like `tupynambalucas.dev` or `Tupynambalucas`. These are strictly prohibited outside of the Docusaurus internal collections.
 
 ---
 

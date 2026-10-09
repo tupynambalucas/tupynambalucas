@@ -1,6 +1,6 @@
 # Workstation Provisioner CLI
 
-This workspace encapsulates the workstation bootstrapping, local virtualization configurations, and developer environment setup utilities for the %PROJECT_DOMAIN% monorepo.
+This workspace encapsulates the workstation bootstrapping, local virtualization configurations, and developer environment setup utilities for the tupynambalucas.dev monorepo.
 
 ---
 

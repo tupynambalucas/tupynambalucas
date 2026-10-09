@@ -1,7 +1,7 @@
 # Penpot Design Platform
 
 The `studio/penpot` workspace contains container build definitions for all Penpot v2 services
-running in the `studio` Kubernetes namespace of the %PROJECT_DOMAIN% monorepo.
+running in the `studio` Kubernetes namespace of the tupynambalucas.dev monorepo.
 
 ---
 
@@ -13,7 +13,7 @@ running in the `studio` Kubernetes namespace of the %PROJECT_DOMAIN% monorepo.
 - **Aide (MCP)**: `penpotapp/mcp:2.17` (AI assistant and MCP server)
 - **Cache**: `valkey/valkey:8.1-alpine` (Redis-compatible pub/sub)
 - **Database**: Neon Serverless Postgres (external, via `PENPOT_DATABASE_URI`)
-- **Ingress Domain**: `penpot-dev.%PROJECT_DOMAIN%`
+- **Ingress Domain**: `penpot-dev.tupynambalucas.dev`
 
 ---
 
@@ -41,7 +41,7 @@ pnpm studio:dev
 pnpm studio:up
 ```
 
-Access the Penpot UI at `http://localhost:9005` or `http://penpot-dev.%PROJECT_DOMAIN%`.
+Access the Penpot UI at `http://localhost:9005` or `http://penpot-dev.tupynambalucas.dev`.
 
 ---
 
