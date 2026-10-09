@@ -104,7 +104,7 @@ The directive contains:
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
   <system-instruction>
-    AGENT: You are operating in the [Bounded Context Name] bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    AGENT: You are operating in the [exact-directory-name] bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your
     file-reading tools before proceeding. Global constraints are mandatory.
   </system-instruction>
 </context-hierarchy>
@@ -117,7 +117,7 @@ The directive contains:
   <parent src="../../AGENTS.md" type="global-rules" />
   <parent src="../AGENTS.md" type="bounded-context-rules" />
   <system-instruction>
-    AGENT: You are operating in the [Sub-domain Name] module. If you have not read "../../AGENTS.md" and "../AGENTS.md" in this session, stop now
+    AGENT: You are operating in the [exact-directory-name] module. If you have not read "../../AGENTS.md" and "../AGENTS.md" in this session, stop now
     and read both files using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
@@ -126,6 +126,7 @@ The directive contains:
 ### Critical Rules
 
 - The directive MUST be the first content in the file, before the H1 heading.
+- The bounded context or module name in the `system-instruction` MUST exactly match the directory name it resides in (e.g., `k8s`, not `Kubernetes Orchestration`) to prevent path hallucination.
 - MUST use relative paths only. Absolute paths are forbidden.
 - MUST NOT reference external URLs.
 - MUST use imperative language in the system-instruction.

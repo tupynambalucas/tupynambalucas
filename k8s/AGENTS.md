@@ -1,12 +1,12 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
   <system-instruction>
-    AGENT: You are operating in the Kubernetes Orchestration bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your
+    AGENT: You are operating in the k8s bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your
     file-reading tools before proceeding. Global constraints are mandatory.
   </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Kubernetes Orchestration
+# Bounded Context: k8s
 
 This workspace (`k8s/`) manages the centralized Kubernetes orchestration, GitOps deployment manifests, and localized Skaffold environments for the `tupynambalucas.dev` monorepo.
 

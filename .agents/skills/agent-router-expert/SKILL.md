@@ -56,7 +56,7 @@ before proceeding and sets explicit bounded context constraints.
 - The directive MUST appear before the H1 heading.
 - The `src` attribute MUST use a relative path to the parent `AGENTS.md`.
 - The `<system-instruction>` MUST use imperative language ("stop now and read").
-- The `<system-instruction>` MUST explicitly declare the bounded context the agent is entering (e.g., "AGENT: You are operating in the Kubernetes Orchestration bounded context. You must read...").
+- The `<system-instruction>` MUST explicitly declare the bounded context using the **exact directory name** it resides in (e.g., "AGENT: You are operating in the `k8s` bounded context. You must read..."). This strict 1:1 mapping prevents path hallucination and grounds the agent's context.
 - The directive MUST NOT contain external URLs or absolute paths.
 
 See [references/syntax.md](references/syntax.md) for the complete directive syntax specification.
