@@ -1,6 +1,6 @@
-# GitOps Architecture & Orchestration
+# Kubernetes Infrastructure & GitOps
 
-This directory houses the authoritative Diátaxis documentation for the `tupynambalucas.dev` Kubernetes infrastructure, specifically detailing our **Separation of Deployers** pattern using Helm and Kustomize.
+This directory houses the authoritative Diátaxis documentation for the `tupynambalucas.dev` Kubernetes infrastructure, detailing our orchestrator configurations, manifest structures, and **Separation of Deployers** pattern.
 
 ## Diátaxis Structure
 
