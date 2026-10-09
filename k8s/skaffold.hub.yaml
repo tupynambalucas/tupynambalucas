@@ -81,7 +81,16 @@ build:
 manifests:
   kustomize:
     paths: [overlays/dev/hub]
-    buildArgs: [--load-restrictor=LoadRestrictionsNone, --enable-helm]
+    buildArgs: [--load-restrictor=LoadRestrictionsNone]
+  helm:
+    releases:
+      - name: traefik
+        repo: https://helm.traefik.io/traefik
+        remoteChart: traefik
+        version: 26.0.0
+        namespace: platform
+        valuesFiles:
+          - overlays/dev/hub/helm-values/traefik-values.yaml
 deploy:
   kubeContext: k3d-hub
   kubectl:

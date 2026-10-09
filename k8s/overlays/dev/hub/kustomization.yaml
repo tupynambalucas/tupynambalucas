@@ -10,19 +10,7 @@ resources:
   - ../../../manifests/hub/cortex/gateway
   - ../../../manifests/hub/cortex/mcp/services
   - ../../../manifests/hub/cortex/memory
-helmCharts:
-  - name: traefik
-    repo: ''
-    version: 26.0.0
-    releaseName: traefik
-    namespace: platform
-    includeCRDs: true
-    valuesFile: helm-values/traefik-values.yaml
 patches:
-  - path: patches/traefik-rbac-patch.json
-    target:
-      kind: ClusterRole
-      name: traefik-platform
   - path: patches/memory-ingress-patch.json
     target:
       kind: Ingress

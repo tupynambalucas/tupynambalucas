@@ -34,7 +34,7 @@ build:
 manifests:
   kustomize:
     paths: [overlays/dev/corporate]
-    buildArgs: [--load-restrictor=LoadRestrictionsNone, --enable-helm]
+    buildArgs: [--load-restrictor=LoadRestrictionsNone]
 deploy:
   kubeContext: k3d-corporate
   kubectl:
