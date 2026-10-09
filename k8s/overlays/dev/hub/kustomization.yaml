@@ -23,6 +23,10 @@ patches:
     target:
       kind: ClusterRole
       name: traefik-platform
+  - path: patches/memory-ingress-patch.json
+    target:
+      kind: Ingress
+      name: memory-ingress
 generatorOptions:
   disableNameSuffixHash: true
 secretGenerator:
