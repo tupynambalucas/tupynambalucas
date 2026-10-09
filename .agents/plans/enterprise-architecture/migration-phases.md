@@ -4,12 +4,16 @@ Execution order, validation, and rollback. Each phase ends in a state that works
 
 ## Phase 0: Preparation
 
-- Resolve the working tree: restore or regenerate the deleted `pnpm-lock.yaml` and commit or stash
-  the `package.json` changes.
-- Create the branch `chore/enterprise-architecture`.
-- Record a baseline: `pnpm install`, `pnpm -r typecheck`, and a successful docs build.
+- **Sync Main:** Ensure the `main` branch is fully synchronized with `develop` (`git checkout main`, `git merge develop`, `git push origin main`) to establish a clean baseline.
+- **Create Branch:** Checkout `develop` and create the branch `chore/enterprise-architecture`. All structural changes will happen here.
+- **Local Backup (Critical):** Before moving folders, create a full local backup of the repository using `rsync -a` or `cp -a` to a folder outside the Git working tree (e.g., `cp -a Tupynambalucas Tupynambalucas-backup`). This guarantees no unversioned configurations (like `.env`) or local logic are permanently lost if a `git clean -fd` or hard reset is required during the refactor.
+- **Handling Tracked vs Untracked Files:**
+  - Use `git mv` (or `git mv -k` to gracefully skip errors) exclusively for tracked files to preserve Git history.
+  - Ignored files like `node_modules` must _not_ be moved. Delete them and regenerate them using `pnpm install` after the restructure to ensure workspace symlinks rebuild correctly.
+  - Crucial unversioned files like `.env` must be moved manually (e.g., `cp infrastructure/.env k8s/.env`) by referring to the backup.
+- **Record a baseline:** `pnpm install`, `pnpm -r typecheck`, and a successful docs build.
 
-Rollback: delete the branch.
+Rollback: delete the branch and restore unversioned files from the backup.
 
 ## Phase 1: Ubuntu Environment
 
