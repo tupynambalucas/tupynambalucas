@@ -28,23 +28,23 @@
     "description": "The label of footer link with label=Command Reference linking to /docs/reference/commands"
   },
   "link.item.label.Hub Workspace": {
-    "message": "Workspace Hub",
+    "message": "Hub Workspace",
     "description": "The label of footer link with label=Hub Workspace linking to /workspaces/hub"
   },
   "link.item.label.Renderer Workspace": {
-    "message": "Workspace Renderer",
+    "message": "Renderer Workspace",
     "description": "The label of footer link with label=Renderer Workspace linking to /workspaces/renderer"
   },
   "link.item.label.Studio Workspace": {
-    "message": "Workspace Studio",
+    "message": "Studio Workspace",
     "description": "The label of footer link with label=Studio Workspace linking to /workspaces/studio"
   },
   "link.item.label.Tools Workspace": {
-    "message": "Workspace Tools",
+    "message": "Tools Workspace",
     "description": "The label of footer link with label=Tools Workspace linking to /workspaces/tools"
   },
   "link.item.label.Master Plan & Vision": {
-    "message": "Plano Mestre & Visão",
+    "message": "Plano Mestre e Visão",
     "description": "The label of footer link with label=Master Plan & Vision linking to /docs/intro"
   },
   "link.item.label.Roadmap": {
@@ -56,7 +56,7 @@
     "description": "The label of footer link with label=Changelog linking to /changelog"
   },
   "copyright": {
-    "message": "\n        <div class=\"footer__banner-container\">\n          <img src=\"/brand/logos/logo-horizontal-positive.svg\" alt=\"tupynambalucas.dev\" class=\"footer__banner\" />\n        </div>\n        <p>Copyright © 2026 tupynambalucas.dev. Engenharia de software de alto padrão e nível de produção. Desenvolvido com Docusaurus.</p>\n      ",
+    "message": "\n        <div class=\"footer__banner-container\">\n          <img src=\"/brand/logos/logo-horizontal-positive.svg\" alt=\"tupynambalucas.dev\" class=\"footer__banner\" />\n        </div>\n        <p>Copyright © 2026 tupynambalucas.dev. Engenharia de software de alto padrão e pronta para produção. Construído com Docusaurus.</p>\n      ",
     "description": "The footer copyright"
   }
 }

@@ -6,7 +6,7 @@
     "message": "Tupynambá Lucas"
   },
   "homepage.about.description": {
-    "message": "Desenvolvedor Fullstack com um perfil raro que combina mais de 10 anos de estudo em programação com uma profunda sensibilidade para design e UX/UI. Possuo expertise na arquitetura de soluções digitais completas, desenvolvendo aplicações de alta performance com TypeScript e escolhendo estrategicamente a tecnologia de banco de dados — PostgreSQL para estruturas relacionais ou MongoDB para cenários de alta flexibilidade — para garantir a escalabilidade e a eficiência do produto final."
+    "message": "Fullstack Developer com um perfil raro que combina mais de 10 anos de estudo em programação com uma profunda sensibilidade para design e UX/UI. Possuo experiência na arquitetura de soluções digitais completas, desenvolvendo aplicações de alta performance com TypeScript e escolhendo estrategicamente a tecnologia de banco de dados — PostgreSQL para estruturas relacionais ou MongoDB para cenários de alta flexibilidade — para garantir a escalabilidade e a eficiência do produto final."
   },
   "homepage.about.tech.code": {
     "message": "Código"
@@ -24,7 +24,7 @@
     "message": "Nosso Compromisso"
   },
   "conduct.pledge.p1": {
-    "message": "Eu, como criador e mantenedor de tupynambalucas.dev, comprometo-me a tornar a participação neste projeto uma experiência livre de<div>harassment</div> para todos, independentemente de idade, tamanho corporal, deficiência visível ou invisível, etnia, características sexuais, identidade e expressão de gênero, nível de experiência, educação, status socioeconômico, nacionalidade, aparência pessoal, raça, casta, cor, religião ou identidade e orientação sexual."
+    "message": "Como criador e maintainer de tupynambalucas.dev, comprometo-me a tornar a participação neste projeto uma experiência livre de assédio para todos, independentemente de idade, tamanho corporal, deficiência visível ou invisível, etnia, características sexuais, identidade e expressão de gênero, nível de experiência, educação, status socioeconômico, nacionalidade, aparência pessoal, raça, casta, cor, religião ou identidade e orientação sexual."
   },
   "conduct.pledge.p2": {
     "message": "Comprometo-me a agir e interagir de maneiras que contribuam para uma comunidade aberta, acolhedora, diversa, inclusiva e saudável."
@@ -33,10 +33,10 @@
     "message": "Responsabilidades de Aplicação"
   },
   "conduct.responsibilities.p1": {
-    "message": "Como mantenedor deste projeto, sou responsável por esclarecer e aplicar nossos padrões de comportamento aceitável e tomarei medidas Corretivas apropriadas e justas em resposta a qualquer comportamento que eu considere inapropriado, ameaçador, ofensivo ou nocivo."
+    "message": "Como maintainer deste projeto, sou responsável por esclarecer e fazer cumprir nossos padrões de comportamento aceitável e tomarei medidas corretivas apropriadas e justas em resposta a qualquer comportamento que eu considere inapropriado, ameaçador, ofensivo ou prejudicial."
   },
   "conduct.responsibilities.p2": {
-    "message": "Tenho o direito e a responsabilidade de remover, editar ou rejeitar comentários, commits, código, edições de wiki, <i>issues</i> e outras contribuições que não estejam alinhadas a este Código de Conduta, e comunicarei os motivos das decisões de moderação quando apropriado."
+    "message": "Tenho o direito e a responsabilidade de remover, editar ou rejeitar comentários, commits, código, edições de wiki, issues e outras contribuições que não estejam alinhadas a este Código de Conduta, e comunicarei os motivos das decisões de moderação quando apropriado."
   },
   "conduct.standards.title": {
     "message": "Nossos Padrões"
@@ -48,10 +48,10 @@
     "message": "Demonstrar empatia e gentileza em relação a outras pessoas."
   },
   "conduct.standards.positive.2": {
-    "message": "Respeitar diferentes opiniões, pontos de vista e experiências."
+    "message": "Respeitar opiniões, pontos de vista e experiências divergentes."
   },
   "conduct.standards.positive.3": {
-    "message": "Dar e aceitar com elegância feedbacks construtivos."
+    "message": "Dar e aceitar com elegância feedback construtivo."
   },
   "conduct.standards.positive.4": {
     "message": "Assumir a responsabilidade e pedir desculpas àqueles afetados por nossos erros, aprendendo com a experiência."
@@ -63,25 +63,25 @@
     "message": "Exemplos de comportamento inaceitável incluem:"
   },
   "conduct.standards.unacceptable.1": {
-    "message": "O uso de linguagem ou imagens sexualizadas, e atenção ou investidas sexuais de qualquer tipo."
+    "message": "O uso de linguagem ou imagens sexualizadas, e atenção ou avanços sexuais de qualquer tipo."
   },
   "conduct.standards.unacceptable.2": {
-    "message": "<i>Trolling</i>, comentários insultuosos ou depreciativos e ataques pessoais ou políticos."
+    "message": "Trolling, comentários insultuosos ou depreciativos e ataques pessoais ou políticos."
   },
   "conduct.standards.unacceptable.3": {
     "message": "Assédio público ou privado."
   },
   "conduct.standards.unacceptable.4": {
-    "message": "Publicar informações privadas de terceiros, como endereço físico ou de e-mail, sem a permissão explícita deles."
+    "message": "Publicar informações privadas de terceiros, como um endereço físico ou de e-mail, sem a permissão explícita deles."
   },
   "conduct.standards.unacceptable.5": {
-    "message": "Outra conduta que possa ser razoavelmente considerada inapropriada em um ambiente profissional."
+    "message": "Outra conduta que possa ser razoavelmente considerada inadequada em um ambiente profissional."
   },
   "conduct.scope.title": {
     "message": "Escopo"
   },
   "conduct.scope.p1": {
-    "message": "Este Código de Conduta aplica-se a todos os espaços da comunidade relacionados a tupynambalucas.dev, e também se aplica quando um indivíduo estiver representando oficialmente o projeto em espaços públicos."
+    "message": "Este Código de Conduta aplica-se a todos os espaços da comunidade relacionados a tupynambalucas.dev e também se aplica quando um indivíduo está representando oficialmente o projeto em espaços públicos."
   },
   "conduct.enforcement.title": {
     "message": "Aplicação"
@@ -90,13 +90,13 @@
     "message": "Casos de comportamento abusivo, de assédio ou de outra forma inaceitável podem ser relatados diretamente a mim em"
   },
   "conduct.enforcement.p1.2": {
-    "message": "Todas as reclamações serão revisadas e investigadas de forma rápida e justa."
+    "message": "Todas as reclamações serão analisadas e investigadas prontamente e de forma justa."
   },
   "conduct.enforcement.p2": {
     "message": "Sou obrigado a respeitar a privacidade e a segurança do denunciante de qualquer incidente."
   },
   "conduct.attribution.p1": {
-    "message": "Este Código de Conduta é adaptado do"
+    "message": "Este Código de Conduta é adaptado de"
   },
   "conduct.attribution.p1.2": {
     "message": "versão 2.1, disponível em:"
@@ -108,7 +108,7 @@
     "message": "Documentação de Engenharia Centralizada"
   },
   "homepage.hero.text.primary": {
-    "message": "Bem-vindo ao hub central de documentação para o monorepo {domain}. Esta plataforma serve como a única fonte da verdade para meu site pessoal, serviços de engenharia, motores de ativos dinâmicos e <i>workspaces</i> de desenvolvedor prontos para produção."
+    "message": "Bem-vindo à central de documentação do monorepo {domain}. Esta plataforma serve como a única fonte da verdade para o meu site pessoal, serviços de engenharia, motores de ativos dinâmicos e workspaces de desenvolvedor prontos para produção."
   },
   "homepage.button.docs": {
     "message": "Ver Documentação"
@@ -117,13 +117,13 @@
     "message": "Workspaces"
   },
   "homepage.button.github": {
-    "message": "Monorepo do GitHub"
+    "message": "GitHub Monorepo"
   },
   "homepage.profile.badge": {
     "message": "O Arquiteto"
   },
   "homepage.profile.bio": {
-    "message": "Engenheiro Full-Stack com mais de 10 anos de experiência e estudos em desenvolvimento de software, construindo sistemas de produção em TypeScript de ponta a ponta. Tomo decisões arquiteturais impulsionadas por requisitos, e não por tendências — selecionando o banco de dados, framework ou protocolo correto para cada problema. Minha expertise atual aprofunda-se em conjuntos de réplicas do MongoDB com transações ACID, mas recorro ao PostgreSQL ou Redis quando o domínio exige. Desenvolvo monorepos orientados a domínio orquestrados por Turborepo com dependências estritas gerenciadas por catálogo, entrego APIs de alto desempenho em Fastify com filas de trabalho suportadas por Redis, e crio frontends interativos com React 19, Three.js e GSAP. Minha infraestrutura roda em Docker e Kubernetes com <i>ingress</i> Traefik, pipelines de observabilidade instrumentados com OpenTelemetry exportando para o Grafana Cloud e promoção multi-ambiente de dev para produção. Arquiteto toolchains nativos de IA — federações de gateways MCP auto-hospedadas, runtimes de agentes conteinerizados e camadas de memória vetorial —, transformando workflows autônomos em infraestrutura de primeira classe. Todo repositório que possuo é entregue com CI/CD automatizado, Conventional Commits e segurança endurecida por design."
+    "message": "Full-Stack Engineer com mais de 10 anos de experiência e estudos em desenvolvimento de software, construindo sistemas de produção em TypeScript de ponta a ponta. Tomo decisões arquiteturais impulsionadas por requisitos, e não por tendências — selecionando o banco de dados, framework ou protocolo correto para cada problema. Minha expertise atual é aprofundada em conjuntos de réplicas do MongoDB com transações ACID, mas recorro ao PostgreSQL ou Redis quando o domínio exige. Desenvolvo monorepos orientados a domínio orquestrados pelo Turborepo com dependências estritas gerenciadas por catálogo, libero APIs de alto desempenho no Fastify com filas de tarefas respaldadas pelo Redis e crio frontends interativos com React 19, Three.js e GSAP. Minha infraestrutura roda em Docker e Kubernetes com roteamento Traefik, pipelines de observabilidade instrumentadas com OpenTelemetry exportando para o Grafana Cloud e promoção multi-ambiente de dev para produção. Arquiteto toolchains nativos de IA — federações de gateways MCP auto-hospedadas, runtimes de agentes conteinerizados e camadas de memória vetorial —, transformando workflows autônomos em infraestrutura de primeira classe. Todo repositório que possuo é entregue com CI/CD automatizado, Conventional Commits e segurança blindada por design."
   },
   "homepage.monorepo.title": {
     "message": "Mapa do Monorepo"
@@ -153,7 +153,7 @@
     "message": "Layout raiz orientado a contexto usando PNPM Workspaces e Turborepo para orquestração otimizada de tarefas."
   },
   "homepage.dosolo.item2.title": {
-    "message": "Núcleo de Domínio Tipado com Segurança"
+    "message": "Núcleo de Domínio Seguro contra Tipos"
   },
   "homepage.dosolo.item2.description": {
     "message": "Lógica de negócios e esquemas estritamente tipados definidos como fonte única da verdade para todas as aplicações."
@@ -162,14 +162,14 @@
     "message": "DevOps Nativo de IA"
   },
   "homepage.dosolo.item3.description": {
-    "message": "Profunda integração com o Model Context Protocol (MCP) e pontes de design para código para automação de alto contexto."
+    "message": "Integração profunda com Model Context Protocol (MCP) e pontes de design para código para automação de alto contexto."
   },
   "theme.ErrorPageContent.title": {
-    "message": "Esta página travou.",
+    "message": "Esta página sofreu uma falha.",
     "description": "The title of the fallback page when the page crashed"
   },
   "theme.BackToTopButton.buttonAriaLabel": {
-    "message": "Voltar ao topo",
+    "message": "Voltar para o topo",
     "description": "The ARIA label for the back to top button"
   },
   "theme.blog.archive.title": {
@@ -221,7 +221,7 @@
     "description": "The name for the dark color mode"
   },
   "theme.colorToggle.ariaLabel": {
-    "message": "Alternar entre modo escuro e claro (atualmente {mode})",
+    "message": "Alternar entre o modo escuro e claro (atualmente {mode})",
     "description": "The ARIA label for the color mode toggle"
   },
   "theme.docs.breadcrumbs.navAriaLabel": {
@@ -229,7 +229,7 @@
     "description": "The ARIA label for the breadcrumbs"
   },
   "theme.docs.paginator.navAriaLabel": {
-    "message": "Páginas de documentação",
+    "message": "Navegação das páginas de documentação",
     "description": "The ARIA label for the docs pagination"
   },
   "theme.docs.paginator.previous": {
@@ -237,11 +237,11 @@
     "description": "The label used to navigate to the previous doc"
   },
   "theme.docs.paginator.next": {
-    "message": "Próximo",
+    "message": "Próxima",
     "description": "The label used to navigate to the next doc"
   },
   "theme.docs.tagDocListPageTitle.nDocsTagged": {
-    "message": "Um documento marcado com a tag|{count} documentos marcados com a tag",
+    "message": "{count, plural, one {Um documento marcado} other {{count} documentos marcados}}",
     "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.docs.tagDocListPageTitle": {
@@ -252,7 +252,7 @@
     "message": "Versão: {versionLabel}"
   },
   "theme.docs.versions.unreleasedVersionLabel": {
-    "message": "Esta é a documentação não lançada para a versão {siteTitle} {versionLabel}.",
+    "message": "Esta é a documentação não lançada para a versão {versionLabel} de {siteTitle}.",
     "description": "The label used to tell the user that he's browsing an unreleased doc version"
   },
   "theme.docs.versions.unmaintainedVersionLabel": {
@@ -260,7 +260,7 @@
     "description": "The label used to tell the user that he's browsing an unmaintained doc version"
   },
   "theme.docs.versions.latestVersionSuggestionLabel": {
-    "message": "Para documentação atualizada, consulte o {latestVersionLink} ({versionLabel}).",
+    "message": "Para obter documentação atualizada, consulte {latestVersionLink} ({versionLabel}).",
     "description": "The label used to tell the user to check the latest version"
   },
   "theme.docs.versions.latestVersionLinkLabel": {
@@ -284,7 +284,7 @@
     "description": "The words used to describe by who the page has been last updated"
   },
   "theme.lastUpdated.lastUpdatedAtBy": {
-    "message": "Última atualização em {atDate} por {user}",
+    "message": "Última atualização{atDate}{byUser}",
     "description": "The sentence used to display when a page has been last updated, and by who"
   },
   "theme.navbar.mobileVersionsDropdown.label": {
@@ -292,7 +292,7 @@
     "description": "The label for the navbar versions dropdown on mobile view"
   },
   "theme.NotFound.title": {
-    "message": "Página não encontrada",
+    "message": "Página Não Encontrada",
     "description": "The title of the 404 page"
   },
   "theme.tags.tagsListLabel": {
@@ -340,7 +340,7 @@
     "description": "The ARIA label to collapse the sidebar category"
   },
   "theme.IconExternalLink.ariaLabel": {
-    "message": "(abre em uma nova aba)",
+    "message": "(abre em nova aba)",
     "description": "The ARIA label for the external link icon"
   },
   "theme.NavBar.navAriaLabel": {
@@ -352,7 +352,7 @@
     "description": "The label for the mobile language switcher dropdown"
   },
   "theme.NotFound.p1": {
-    "message": "Não foi possível encontrar o que você estava procurando.",
+    "message": "Não encontramos o que você estava procurando.",
     "description": "The first paragraph of the 404 page"
   },
   "theme.NotFound.p2": {
@@ -364,7 +364,7 @@
     "description": "The label used by the button on the collapsible TOC component"
   },
   "theme.blog.post.readMore": {
-    "message": "Leia mais",
+    "message": "Ler mais",
     "description": "The label used in blog post item excerpts to link to full blog posts"
   },
   "theme.blog.post.readMoreLabel": {
@@ -372,7 +372,7 @@
     "description": "The ARIA label for the link to full blog posts from excerpts"
   },
   "theme.blog.post.readingTime.plurals": {
-    "message": "Um minuto de leitura|{readingTime} minutos de leitura",
+    "message": "{readingTime, plural, one {Um minuto de leitura} other {{readingTime} min de leitura}}",
     "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.CodeBlock.copy": {
@@ -436,7 +436,7 @@
     "description": "The ARIA label and title attribute for expand button of doc sidebar"
   },
   "theme.Playground.liveEditor": {
-    "message": "Editor ao vivo",
+    "message": "Editor ao Vivo",
     "description": "The live editor label of the live codeblocks"
   },
   "theme.Playground.result": {
@@ -466,14 +466,14 @@
     "message": "Feed RSS"
   },
   "changelog.description": {
-    "message": "Inscreva-se por {rssLink} ou siga as versões em {githubLink} para ficar por dentro das novas atualizações!"
+    "message": "Inscreva-se por {rssLink} ou siga os lançamentos em {githubLink} para ficar por dentro das novas atualizações!"
   },
   "theme.blog.post.plurals": {
-    "message": "{count, plural, one {Um post} other {{count} posts}}",
+    "message": "{count, plural, one {Uma postagem} other {{count} postagens}}",
     "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.blog.tagTitle": {
-    "message": "{nPosts} com a tag \"{tagName}\"",
+    "message": "{nPosts} marcados com \"{tagName}\"",
     "description": "The title of the page for a blog tag"
   },
   "theme.blog.author.pageTitle": {
@@ -489,7 +489,7 @@
     "description": "The label of the link targeting the blog authors page"
   },
   "theme.blog.author.noPosts": {
-    "message": "Este autor ainda não escreveu nenhum post.",
+    "message": "Este autor ainda não escreveu nenhuma postagem.",
     "description": "The text for authors with 0 blog post"
   },
   "theme.contentVisibility.unlistedBanner.title": {
@@ -497,7 +497,7 @@
     "description": "The unlisted content banner title"
   },
   "theme.contentVisibility.unlistedBanner.message": {
-    "message": "Esta página não está listada. Os mecanismos de busca não a indexarão e apenas usuários com um link direto poderão acessá-la.",
+    "message": "Esta página não está listada. Os mecanismos de busca não a indexarão, e apenas usuários com um link direto poderão acessá-la.",
     "description": "The unlisted content banner message"
   },
   "theme.contentVisibility.draftBanner.title": {
@@ -505,7 +505,7 @@
     "description": "The draft content banner title"
   },
   "theme.contentVisibility.draftBanner.message": {
-    "message": "Esta página é um rascunho. Ela só estará visível no ambiente de desenvolvimento e será excluída do build de produção.",
+    "message": "Esta página é um rascunho. Ela será visível apenas no ambiente de desenvolvimento e excluída da versão de produção.",
     "description": "The draft content banner message"
   },
   "theme.docs.DocCard.categoryDescription.plurals": {
