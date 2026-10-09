@@ -51,11 +51,12 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 Every Layer-2 and Layer-3 `AGENTS.md` file MUST include a `<context-hierarchy>` XML block as the
 very first content in the file. This directive instructs AI agents to read the parent context file
-before proceeding.
+before proceeding and sets explicit bounded context constraints.
 
 - The directive MUST appear before the H1 heading.
 - The `src` attribute MUST use a relative path to the parent `AGENTS.md`.
 - The `<system-instruction>` MUST use imperative language ("stop now and read").
+- The `<system-instruction>` MUST explicitly declare the bounded context the agent is entering (e.g., "AGENT: You are operating in the Kubernetes Orchestration bounded context. You must read...").
 - The directive MUST NOT contain external URLs or absolute paths.
 
 See [references/syntax.md](references/syntax.md) for the complete directive syntax specification.
