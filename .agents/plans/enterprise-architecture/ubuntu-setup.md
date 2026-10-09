@@ -271,3 +271,20 @@ node --version
 pnpm --version
 curl -s localhost:5000/v2/_catalog
 ```
+
+## 8. Storage & Eviction Management
+
+When running heavy multi-cluster workloads in WSL2, the underlying virtual disk (`ext4.vhdx`) will grow. If the disk fills or hits kubelet eviction thresholds, Kubernetes nodes will transition to the `Evicted` or `NotReady` state.
+
+### Mitigation Strategies
+
+1. **Regular Pruning**: Frequently clean up unused Docker objects:
+   ```bash
+   docker system prune -a --volumes -f
+   ```
+2. **Kubelet Eviction Thresholds**: If using smaller WSL2 disks, you can override k3s eviction thresholds during cluster creation by appending `--k3s-arg` parameters.
+3. **Compact the VHDX**: Windows does not automatically shrink the WSL2 VHDX when files are deleted inside Linux. Periodically compact it from Windows PowerShell (stops WSL):
+   ```powershell
+   wsl --shutdown
+   Optimize-VHD -Path "C:\Users\<USER>\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\ext4.vhdx" -Mode Full
+   ```

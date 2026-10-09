@@ -177,7 +177,7 @@ metadata:
   name: hub
 build:
   platforms: ['linux/amd64']
-  local: { push: true, useDockerCLI: true, concurrency: 2 }
+  local: { push: true, useDockerCLI: true, concurrency: 2, tryImportMissing: true }
   artifacts:
     - image: platform-grafana
       context: ../hub/observability/grafana
@@ -211,7 +211,8 @@ portForward:
 
 Changes from the current file:
 
-- `push: false` becomes `push: true` against `localhost:5000` (the shared k3d registry).
+- `push: false` becomes `push: true` against `localhost:5000` (the shared k3d registry). Since k3d automatically links to this registry, images are instantly available to both clusters.
+- `tryImportMissing: true` is added as a Skaffold v2 best practice to prevent rebuilding artifacts that already exist locally, optimizing the dev loop.
 - Every `context`, `dockerfile`, and `sync` path follows the new tree.
 - `skaffold.hub.yaml` locks to `kubeContext: k3d-hub`.
 - `skaffold.corporate.yaml` locks to `kubeContext: k3d-corporate`.
@@ -225,7 +226,7 @@ Usage:
 | `skaffold dev` (from `k8s/`)              | Builds and deploys both stacks to their respective clusters. |
 
 Both clusters run their own Traefik ingress controller and Cloudflare Tunnel, eliminating any
-cross-cluster runtime dependencies in development.
+cross-cluster runtime dependencies and port contention in development (a known k3d pain point).
 
 ## 6. Cloud Delivery
 

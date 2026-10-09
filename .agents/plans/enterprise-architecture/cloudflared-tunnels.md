@@ -93,9 +93,8 @@ The `cloudflared` deployment in `manifests/hub/network/cloudflared.yaml` reads i
 - When the cluster is stopped, hostnames return a Cloudflare error. This is expected and cheap.
 - Webhooks from external services reach local code through the `-dev` hostnames, with real
   hostnames, cookies, and CORS behavior.
-- With the tunnel present, local access through ports 80 and 443 is optional but remains available
-  because k3d maps them. Skaffold `portForward` entries for `agentgateway`, `memory-api`, and
-  `penpot-frontend` stay as they are.
+- **Architectural Win (Multi-Cluster Port Contention)**: Running multiple clusters (`k3d-hub` and `k3d-corporate`) typically causes port binding conflicts on the host (e.g., both wanting `localhost:80`). Because Cloudflare tunnels establish outbound connections, _neither_ cluster requires port 80 or 443 to be mapped to the WSL2 host. Traefik remains purely internal, elegantly side-stepping a well-known k3d/WSL networking limitation.
+- With the tunnel present, local access through ports 80 and 443 is entirely bypassed. Skaffold `portForward` entries for specific services (`agentgateway`, `memory-api`, and `penpot-frontend`) can remain for direct debugging.
 - The dev tunnel exposes internal tools such as Grafana and Headlamp to the internet. Protect every
   `hub` hostname in `dev` with a Cloudflare Access policy that requires the team identity
   provider. Public `corporate` hostnames in `dev` can use a looser policy.
