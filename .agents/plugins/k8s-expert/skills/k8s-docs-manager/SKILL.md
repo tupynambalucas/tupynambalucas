@@ -1,11 +1,11 @@
 ---
 name: k8s-docs-manager
-description: Use this skill to create, update, and manage GitOps documentation inside the k8s/reference/ directory using the Diátaxis framework. Trigger this whenever infrastructure changes (Helm/Kustomize) occur to document the new state.
+description: Use this skill to create, update, and manage GitOps documentation inside the k8s/references/ directory using the Diátaxis framework. Trigger this whenever infrastructure changes (Helm/Kustomize) occur to document the new state.
 ---
 
 # K8s Documentation Manager
 
-This skill establishes the workflow for updating the Kubernetes documentation in the `k8s/reference/` directory to reflect the current state of the infrastructure.
+This skill establishes the workflow for updating the Kubernetes documentation in the `k8s/references/` directory to reflect the current state of the infrastructure.
 
 ## 1. Documentation Triggers
 
@@ -18,7 +18,7 @@ You MUST use this skill to update or create documentation when any of the follow
 
 ## 2. Diátaxis Framework Alignment
 
-All documentation MUST be placed into the appropriate quadrant within `k8s/reference/`:
+All documentation MUST be placed into the appropriate quadrant within `k8s/references/`:
 
 - **tutorials/**: Use for step-by-step setup instructions for new developers.
 - **guides/**: Use for goal-oriented tasks (e.g., "How to expose a new microservice", "How to inject RBAC rules").
@@ -37,6 +37,6 @@ All documentation MUST be placed into the appropriate quadrant within `k8s/refer
 When tasked with documenting an infrastructure change:
 
 1. Identify the type of knowledge (Tutorial, Guide, Reference, or Explanation).
-2. Determine the correct subdirectory in `k8s/reference/`.
+2. Determine the correct subdirectory in `k8s/references/`.
 3. Create or update the Markdown file.
-4. If creating a new file, ensure it is linked in the `k8s/reference/README.md` if necessary.
+4. If creating a new file, ensure it is linked in the `k8s/references/README.md` if necessary.
