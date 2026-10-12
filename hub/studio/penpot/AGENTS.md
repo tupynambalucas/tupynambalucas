@@ -2,9 +2,7 @@
   <parent src="../../AGENTS.md" type="global-rules" />
   <parent src="../AGENTS.md" type="bounded-context-rules" />
   <system-instruction>
-    AGENT: If you have not read "../../AGENTS.md" and "../AGENTS.md" in this session, stop now
-    and read both files using your file-reading tools before proceeding. Both global constraints
-    and bounded context rules are mandatory.
+    AGENT: You are operating in the penpot bounded context. If you have not read "../../AGENTS.md" and "../AGENTS.md" in this session, stop now and read both files using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 

@@ -1,8 +1,11 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: You are operating in the corporate bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your file-reading tools before proceeding.
+  </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Corporate
+# Bounded Context: corporate
 
 The `corporate/` workspace manages all public-facing products and services for the `tupynambalucas.dev` monorepo.
 

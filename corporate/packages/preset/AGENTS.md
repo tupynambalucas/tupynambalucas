@@ -1,8 +1,7 @@
 <context-hierarchy>
   <parent src="../../AGENTS.md" type="bounded-context-rules" />
   <system-instruction>
-    AGENT: If you have not read "../../AGENTS.md" in this session, stop now and read it using your
-    file-reading tools before proceeding.
+    AGENT: You are operating in the preset bounded context. If you have not read "../../AGENTS.md" in this session, stop now and read it using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 

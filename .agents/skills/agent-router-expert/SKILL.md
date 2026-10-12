@@ -13,8 +13,8 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### A. Tone of Voice
 
-- Maintain a senior, objective, and technical tone.
-- Avoid preambles, introductory chatter, or conclusion summaries.
+- Maintain a senior, objective, and technical tone at all times, including in conversational responses, logs, and documentation.
+- Avoid preambles, introductory chatter, or conclusion summaries in all communications.
 - Keep sentences concise, clear, and direct.
 
 ### B. Strict English-First
@@ -23,7 +23,7 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### C. Zero Emojis
 
-- Emojis are strictly forbidden in all technical documents, READMEs, and skill files to maintain a professional, corporate appearance.
+- Emojis are strictly forbidden in all agent conversational responses, chat messages, technical documents, READMEs, and skill files to maintain a professional, corporate appearance.
 
 ### D. Mermaid Diagram Standards
 

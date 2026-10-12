@@ -1,12 +1,11 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
   <system-instruction>
-    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
-    file-reading tools before proceeding. Global constraints are mandatory.
+    AGENT: You are operating in the studio bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Studio Context Router
+# Bounded Context: studio
 
 This bounded context ([studio/](./)) defines domain rules, design tokens, asset synchronization pipelines, and containerized design collaboration infrastructure for the **Studio Bounded Context**.
 

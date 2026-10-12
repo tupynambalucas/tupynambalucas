@@ -8,7 +8,7 @@ resources:
   - ../../../manifests/hub/studio/memos
   - ../../../manifests/hub/studio/penpot
   - ../../../manifests/hub/cortex/gateway
-  - ../../../manifests/hub/cortex/mcp/services
+  - ../../../manifests/hub/cortex/mcp
   - ../../../manifests/hub/cortex/memory
 patches:
   - path: patches/memory-ingress-patch.json

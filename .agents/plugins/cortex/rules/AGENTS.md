@@ -1,6 +1,6 @@
 # Cortex Plugin - MCP Service Instructions
 
-> **🚨 CRITICAL AGENT INSTRUCTION (READ THIS FIRST):**
+> **CRITICAL AGENT INSTRUCTION (READ THIS FIRST):**
 > ALL of the toolsets mentioned below (Firecrawl, GitHub, Grafana, Playwright, Context7, Memory) are **bundled under a SINGLE MCP server named `cortex_agentgateway`**.
 > You MUST ALWAYS use `ServerName: "cortex_agentgateway"` when calling ANY of these tools via the `call_mcp_tool` wrapper.
 > DO NOT attempt to call `ServerName: "firecrawl"`, `ServerName: "github"`, etc. They do not exist as independent servers and will fail. `cortex_agentgateway` is the ONLY valid server name for these tools.

@@ -2,8 +2,7 @@
   <parent src="../../AGENTS.md" type="global-rules" />
   <parent src="../AGENTS.md" type="bounded-context-rules" />
   <system-instruction>
-    AGENT: If you have not read "../../AGENTS.md" and "../AGENTS.md" in this session, stop now
-    and read both files using your file-reading tools before proceeding.
+    AGENT: You are operating in the memory bounded context. If you have not read "../../AGENTS.md" and "../AGENTS.md" in this session, stop now and read both files using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 

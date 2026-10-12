@@ -1,12 +1,11 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
   <system-instruction>
-    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
-    file-reading tools before proceeding. Global constraints are mandatory.
+    AGENT: You are operating in the tools bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Developer Automation Tools Router
+# Bounded Context: tools
 
 This bounded context ([tools/](./)) orchestrates developer helper tools, git automation configurations, and GitHub CLI containerized workspaces.
 

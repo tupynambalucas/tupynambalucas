@@ -1,12 +1,11 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
   <system-instruction>
-    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
-    file-reading tools before proceeding. Global constraints are mandatory.
+    AGENT: You are operating in the .agents bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: AI Agents Configuration
+# Bounded Context: .agents
 
 This bounded context ([.agents/](./)) manages the lifecycle, personas, tools, and domain-specific knowledge for AI agents operating within the tupynambalucas.dev monorepo. It strictly adheres to the Antigravity (AGY) customization architecture.
 

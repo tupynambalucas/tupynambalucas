@@ -44,10 +44,18 @@ spec:
         app: headlamp
     spec:
       serviceAccountName: headlamp
+      volumes:
+        - name: headlamp-config
+          configMap:
+            name: headlamp-config
       containers:
         - name: headlamp
-          image: platform-headlamp
+          image: ghcr.io/headlamp-k8s/headlamp:v0.41.0
           imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: headlamp-config
+              mountPath: /home/headlamp/.kube/config/config.yaml
+              subPath: headlamp-config.yaml
           args:
             - '-kubeconfig=/home/headlamp/.kube/config/config.yaml'
             - '-in-cluster'

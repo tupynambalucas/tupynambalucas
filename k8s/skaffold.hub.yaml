@@ -9,27 +9,6 @@ build:
     - image: platform-turbocache
       context: ../hub/tools/turbocache
       docker: { dockerfile: Dockerfile }
-    - image: platform-headlamp
-      context: ../hub/tools/headlamp
-      docker: { dockerfile: Dockerfile, target: dev }
-    - image: platform-otelcol-contrib
-      context: ../hub/observability/otelcol
-      docker: { dockerfile: Dockerfile }
-    - image: platform-prometheus
-      context: ../hub/observability/prometheus
-      docker: { dockerfile: Dockerfile }
-    - image: platform-loki
-      context: ../hub/observability/loki
-      docker: { dockerfile: Dockerfile }
-    - image: platform-tempo
-      context: ../hub/observability/tempo
-      docker: { dockerfile: Dockerfile }
-    - image: platform-grafana
-      context: ../hub/observability/grafana
-      docker: { dockerfile: Dockerfile, target: dev }
-    - image: cortex-gateway
-      context: ../hub/cortex/gateway
-      docker: { dockerfile: Dockerfile }
     - image: cortex-mcp-guardrails
       context: ..
       docker: { dockerfile: hub/cortex/mcp/guardrails/Dockerfile }

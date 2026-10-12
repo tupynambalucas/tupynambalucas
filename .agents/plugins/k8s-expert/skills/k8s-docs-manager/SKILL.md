@@ -22,7 +22,7 @@ All documentation MUST be placed into the appropriate quadrant within `k8s/refer
 
 - **tutorials/**: Use for step-by-step setup instructions for new developers.
 - **guides/**: Use for goal-oriented tasks (e.g., "How to expose a new microservice", "How to inject RBAC rules").
-- **reference/**: Use for technical specifications, manifest requirements, API versions, and schema definitions.
+- **reference/**: Use for pure technical specifications, manifest requirements, API versions, and schema definitions. Avoid using this quadrant if the document fits better as a guide or explanation, to prevent redundancy with the root `references/` name.
 - **explanation/**: Use for architectural decision records (ADRs) and deep dives (e.g., "Why we separate Helm and Kustomize").
 
 ## 3. Authoring Standards

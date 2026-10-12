@@ -1,8 +1,11 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
+  <system-instruction>
+    AGENT: You are operating in the hub bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your file-reading tools before proceeding.
+  </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Hub
+# Bounded Context: hub
 
 The `hub/` workspace contains the internal team context for the `tupynambalucas.dev` monorepo. It centralizes all internal services, tools, and observability stacks into a single, cohesive environment.
 
