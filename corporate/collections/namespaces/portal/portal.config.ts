@@ -5,6 +5,7 @@ export const ProjectConfig = {
   PROJECT_DOCS_URL: 'https://docs.tupynambalucas.dev',
   PROJECT_INTERNAL_HOST: 'tupynambalucas.internal',
   GITHUB_ORG: 'tupynambalucas',
+  GITHUB_REPO: 'tupynambalucas',
   REPOSITORY_NAME: 'tupynambalucas',
   REPOSITORY_OWNER: 'tupynambalucas',
   AUTHOR_NAME: 'Tupynambá Lucas Varela Rodrigues',

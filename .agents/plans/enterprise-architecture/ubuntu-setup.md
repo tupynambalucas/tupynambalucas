@@ -1,8 +1,12 @@
 # Ubuntu Native Environment Setup
 
-Configures WSL2 Ubuntu to run one k3d cluster named `dev` that hosts the `hub` and `corporate`
-bounded contexts. Source code lives on the Linux filesystem (`ext4`) to remove the NTFS and
+Configures WSL2 Ubuntu to run two k3d clusters, `hub` and `corporate`, that share one Docker network
+and one local registry. Source code lives on the Linux filesystem (`ext4`) to remove the NTFS and
 `gvproxy` bottlenecks that crashed the Skaffold proxy.
+
+Prerequisite: the branch is committed and pushed (see
+[Develop integration and Ubuntu readiness](../develop-integration-and-ubuntu-readiness.md),
+gate U0). Uncommitted work is not available inside Ubuntu.
 
 ## 1. WSL2 Preparation
 
@@ -23,9 +27,9 @@ bounded contexts. Source code lives on the Linux filesystem (`ext4`) to remove t
    localhostForwarding=true
 
    [experimental]
-   # Libera RAM cacheada de volta para o Windows gradualmente
+   # Gradually return cached RAM to Windows
    autoMemoryReclaim=gradual
-   # Evita que o disco virtual cresça indefinidamente sem encolher
+   # Allow the virtual disk to shrink after files are deleted
    sparseVhd=true
    ```
 
@@ -37,19 +41,45 @@ bounded contexts. Source code lives on the Linux filesystem (`ext4`) to remove t
    ```
 
 4. Restart WSL2 with `wsl --shutdown`.
-5. Clone the repository inside the Linux home directory, never under `/mnt/d`:
+5. Disable Docker Desktop WSL integration for this distribution (Docker Desktop, Settings,
+   Resources, WSL integration). Two Docker daemons conflict with the native engine.
+6. Configure Git identity and GitHub authentication inside Ubuntu:
+
+   ```bash
+   git config --global user.name "<YOUR_NAME>"
+   git config --global user.email "<YOUR_EMAIL>"
+   git config --global core.autocrlf input
+   gh auth login
+   ```
+
+7. Clone from GitHub into the Linux home directory, never under `/mnt`. Cloning from the Windows
+   path copies only committed history and sets `origin` to the Windows path:
 
    ```bash
    mkdir -p ~/projects && cd ~/projects
-   # Fast local clone from Windows disk preserving git history and origin:
-   git clone /mnt/d/projects/Tupynambalucas ~/projects/Tupynambalucas
-   cd ~/projects/Tupynambalucas
-   git config --global core.autocrlf input
+   git clone https://github.com/tupynambalucas/tupynambalucas.git
+   cd tupynambalucas
+   git checkout chore/enterprise-architecture
+   ```
+
+8. Raise the inotify limit for Skaffold sync and Docusaurus watchers:
+
+   ```bash
+   echo 'fs.inotify.max_user_watches=524288' | sudo tee /etc/sysctl.d/99-inotify.conf
+   sudo sysctl --system
    ```
 
 ## 2. Toolchain Installation
 
-Install all required developer tools inside Ubuntu:
+Install all required developer tools inside Ubuntu. Versions are pinned so a clean machine
+reproduces the same environment.
+
+### Build Prerequisites
+
+```bash
+sudo apt-get update
+sudo apt-get install -y build-essential python3 git jq unzip
+```
 
 ### Docker Engine
 
@@ -70,7 +100,7 @@ sudo usermod -aG docker $USER
 ### k3d
 
 ```bash
-curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.8.3 bash
 ```
 
 ### kubectl
@@ -87,13 +117,13 @@ sudo apt-get install -y kubectl
 ### Helm
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION=v3.16.4 bash
 ```
 
 ### Skaffold
 
 ```bash
-curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/v2.13.2/skaffold-linux-amd64
 sudo install skaffold /usr/local/bin/
 rm skaffold
 ```
@@ -104,7 +134,7 @@ rm skaffold
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt-get install -y nodejs
 corepack enable
-corepack prepare pnpm@latest --activate
+corepack prepare pnpm@12.6.0 --activate
 ```
 
 ## 3. Local Registry and Clusters
@@ -121,11 +151,15 @@ docker network create k3d-enterprise-net
 # 2. Create shared local registry
 k3d registry create registry.localhost --port 5000
 
+# 2b. Resolve the registry container name from the host
+echo '127.0.0.1 k3d-registry.localhost' | sudo tee -a /etc/hosts
+
 # 3. Create Hub cluster (internal tooling)
 k3d cluster create hub \
   --network k3d-enterprise-net \
   --servers 1 \
   --agents 1 \
+  --image rancher/k3s:v1.31.4-k3s1 \
   --registry-use k3d-registry.localhost:5000 \
   --k3s-arg "--disable=traefik@server:*"
 
@@ -134,6 +168,7 @@ k3d cluster create corporate \
   --network k3d-enterprise-net \
   --servers 1 \
   --agents 1 \
+  --image rancher/k3s:v1.31.4-k3s1 \
   --registry-use k3d-registry.localhost:5000 \
   --k3s-arg "--disable=traefik@server:*"
 
@@ -147,17 +182,18 @@ Setting up WSL2 and native Linux carries **zero risk of losing your existing pro
 
 1. **Storage Isolation**: Windows drives (`C:`, `D:`) and WSL2 disks are physically and logically
    independent. WSL2 stores its data inside a dedicated virtual disk (`ext4.vhdx`). Nothing done
-   inside Ubuntu can accidentally wipe or modify `D:\projects\tupynambalucas`.
+   inside Ubuntu can accidentally wipe or modify `C:\Users\tupyn\projects\tupynambalucas`.
 2. **Git Cloud Remote**: Your Git commits and branches are hosted securely on GitHub.
-3. **Safe Clone**: We clone into `~/projects/Tupynambalucas` inside Linux. The Windows repository
-   at `D:\projects\tupynambalucas` remains an untouched backup.
+3. **Safe Clone**: We clone into `~/projects/tupynambalucas` inside Linux. The Windows repository
+   at `C:\Users\tupyn\projects\tupynambalucas` remains an untouched backup.
 4. **Copying Untracked `.env` Secrets**:
    Copy uncommitted `.env` files from Windows directly into the Linux environment:
 
    ```bash
    # From inside Ubuntu:
-   cp /mnt/d/projects/Tupynambalucas/.env ~/projects/Tupynambalucas/.env 2>/dev/null || true
-   cp /mnt/d/projects/Tupynambalucas/infrastructure/.env ~/projects/Tupynambalucas/k8s/.env 2>/dev/null || true
+   cp /mnt/c/Users/tupyn/projects/tupynambalucas/.env ~/projects/tupynambalucas/.env 2>/dev/null || true
+    # Never copy infrastructure/.env: k8s/.env uses the new sectioned layout.
+    cp /mnt/c/Users/tupyn/projects/tupynambalucas/k8s/.env ~/projects/tupynambalucas/k8s/.env
    ```
 
 5. **Disaster Recovery (1-Command Full System Snapshot)**:
@@ -178,7 +214,7 @@ Setting up WSL2 and native Linux carries **zero risk of losing your existing pro
 
 6. **Direct Windows File Explorer Access**:
    You can inspect or copy files directly between Windows and Ubuntu at any time by entering
-   this path in Windows Explorer: `\\wsl$\Ubuntu\home\<USER>\projects\Tupynambalucas`.
+   this path in Windows Explorer: `\\wsl$\Ubuntu\home\<USER>\projects\tupynambalucas`.
 
 ## 5. IDE Integration (VS Code / Antigravity)
 
@@ -193,7 +229,7 @@ inside native Linux ext4.
 2. Open Windows Terminal (Ubuntu profile) and navigate to the project directory:
 
    ```bash
-   cd ~/projects/Tupynambalucas
+   cd ~/projects/tupynambalucas
    code .
    # or when using the Antigravity launcher:
    antigravity .
@@ -202,7 +238,7 @@ inside native Linux ext4.
    VS Code / Antigravity launches on Windows with `WSL: Ubuntu` displayed in the bottom-left corner.
 
 3. Alternatively, inside VS Code / Antigravity, press `Ctrl+Shift+P` -> select
-   `WSL: Open Folder in WSL...` -> enter `/home/<USER>/projects/Tupynambalucas`.
+   `WSL: Open Folder in WSL...` -> enter `/home/<USER>/projects/tupynambalucas`.
 
 ### Terminal and Tasks Integration
 

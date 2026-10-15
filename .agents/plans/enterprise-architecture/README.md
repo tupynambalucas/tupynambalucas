@@ -33,6 +33,5 @@ a Domain Driven Design (DDD) folder layout, and a Kubernetes manifest tree that 
 
 ## Related Plans
 
-- [Native Docker and k3d migration](../wsl-ubuntu-docker-k3d-native-migration.md): original
-  migration plan that this plan extends.
-- [Podman migration](../wsl-ubuntu-podman-migration.md): superseded by the native approach.
+- [Develop integration and Ubuntu readiness](../develop-integration-and-ubuntu-readiness.md):
+  audit findings, safe merge into develop, and Ubuntu readiness gates.

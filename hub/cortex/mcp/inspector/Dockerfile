@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN npm install -g @modelcontextprotocol/inspector@latest
 
-COPY cortex/mcp/inspector/mcp.json /app/mcp.json
+COPY hub/cortex/mcp/inspector/mcp.json /app/mcp.json
 
 ENV HOST=0.0.0.0
 ENV MCP_AUTO_OPEN_ENABLED=false

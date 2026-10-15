@@ -117,16 +117,6 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: agentgateway-dev.tupynambalucas.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
     - host: agentgateway.tupynambalucas.dev
       http:
         paths:
@@ -137,41 +127,7 @@ spec:
                 name: agentgateway
                 port:
                   number: 8080
-    - host: agentgateway-ingress-dev.tupynambalucas.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
-          - path: /v1
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 4000
     - host: agentgateway-ingress.tupynambalucas.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 8080
-          - path: /v1
-            pathType: Prefix
-            backend:
-              service:
-                name: agentgateway
-                port:
-                  number: 4000
-    - host: agentgateway-mcp-dev.tupynambalucas.dev
       http:
         paths:
           - path: /

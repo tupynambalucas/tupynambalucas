@@ -37,6 +37,11 @@ The infrastructure is broken down into two isolated environments that deploy to 
 - Base manifests in `manifests/` MUST NOT contain environment-specific values. Ingress hosts, replicas, and resources are set via `overlays/`.
 - Local development utilizes `k3d`, not `minikube`.
 - Overlays MUST use `resources` and `patches` (not deprecated `bases` or `patchesStrategicMerge`).
+- Base manifests declare production hostnames only. Overlays `dev` and `staging` replace Ingress hosts with inline JSON 6902 patches.
+- Every directory referenced under `resources:` MUST contain a `kustomization.yaml`.
+- Each service with configuration files MUST live in its own folder and generate its ConfigMap with `configMapGenerator`. Embedded `ConfigMap` resources are forbidden.
+- Third-party Helm charts MUST NOT be rendered by Kustomize (`--enable-helm` is forbidden).
+- Every overlay MUST render with `kubectl kustomize --load-restrictor=LoadRestrictionsNone` before a change is complete.
 
 ## Required Skills
 

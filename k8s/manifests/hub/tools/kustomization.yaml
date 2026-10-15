@@ -5,6 +5,6 @@ resources:
   - turbocache.yaml
 configMapGenerator:
   - name: headlamp-config
-    namespace: tools
+    namespace: platform
     files:
       - headlamp-config.yaml=headlamp-config.yaml

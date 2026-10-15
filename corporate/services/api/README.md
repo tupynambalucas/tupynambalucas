@@ -41,7 +41,7 @@ src/
 
 ## Environment Configuration
 
-Create a `.env.dev` or `.env.prod` file in this directory (or copy from the provided templates `.env.dev.example` / `.env.prod.example`). Key variables include:
+Configure the variables in the `CORPORATE API` section of `k8s/.env` (template: `k8s/.env.example`). Key variables include:
 
 ```properties
 # Server

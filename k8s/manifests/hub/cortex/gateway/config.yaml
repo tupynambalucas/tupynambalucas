@@ -22,12 +22,8 @@ mcp:
       allowOrigins:
         - '*'
         - 'https://agentgateway.tupynambalucas.dev'
-        - 'https://agentgateway-dev.tupynambalucas.dev'
-        - 'https://agentgateway-mcp-dev.tupynambalucas.dev'
         - 'https://agentgateway-mcp.tupynambalucas.dev'
-        - 'https://agentgateway-ingress-dev.tupynambalucas.dev'
         - 'https://agentgateway-ingress.tupynambalucas.dev'
-        - 'https://memory-dev.tupynambalucas.dev'
         - 'https://memory.tupynambalucas.dev'
       allowMethods:
         - '*'

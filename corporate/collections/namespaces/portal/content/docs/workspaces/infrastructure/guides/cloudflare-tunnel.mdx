@@ -53,7 +53,7 @@ Instead of creating individual public hostnames, you can register a single wildc
 
 1. Add the tunnel token to your platform environment file (`platform/infrastructure/.env`):
    ```env
-   CLOUDFLARE_TUNNEL_TOKEN=eyJ2Ijoi...
+   CLOUDFLARE_TUNNEL_TOKEN_HUB=eyJ2Ijoi...
    ```
 2. The `cloudflared` deployment in `platform/infrastructure/kubernetes/cloudflared.yaml` reads this secret and connects automatically:
    ```bash

@@ -53,7 +53,7 @@ Em vez de criar hostnames públicos individuais, você pode registrar um único 
 
 1. Adicione o token do túnel ao arquivo de ambiente da sua plataforma (`platform/infrastructure/.env`):
    ```env
-   CLOUDFLARE_TUNNEL_TOKEN=eyJ2Ijoi...
+   CLOUDFLARE_TUNNEL_TOKEN_HUB=eyJ2Ijoi...
    ```
 2. O `cloudflared` deployment em `platform/infrastructure/kubernetes/cloudflared.yaml` lê este secret e se conecta automaticamente:
    ```bash

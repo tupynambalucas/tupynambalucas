@@ -1,15 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../manifests/namespaces
+  - ../../../manifests/hub/namespaces
   - ../../../manifests/hub/observability
   - ../../../manifests/hub/network
   - ../../../manifests/hub/tools
-  - ../../../manifests/hub/studio/memos
-  - ../../../manifests/hub/studio/penpot
-  - ../../../manifests/hub/cortex/gateway
-  - ../../../manifests/hub/cortex/mcp
-  - ../../../manifests/hub/cortex/memory
+  - ../../../manifests/hub/studio
+  - ../../../manifests/hub/cortex
 generatorOptions:
   disableNameSuffixHash: true
 secretGenerator:

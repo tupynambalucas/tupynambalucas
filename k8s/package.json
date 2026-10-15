@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "skaffold dev --check-cluster-node-platforms=false",
-    "delete": "skaffold delete && podman builder prune -f && podman volume prune -f"
+    "delete": "skaffold delete"
   },
   "dependencies": {},
   "devDependencies": {}

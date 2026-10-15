@@ -13,7 +13,7 @@
 
 # Build artifacts (rebuilt inside the image)
 **/dist
-!cortex/mcp/services/*/dist
+!hub/cortex/mcp/services/*/dist
 **/build
 **/.turbo
 **/*.tsbuildinfo
@@ -40,17 +40,17 @@ skaffold.env
 **/Thumbs.db
 
 # Documentation and Non-Code Folders
-!knowledge-base/
-!knowledge-base/**
-knowledge-base/**/node_modules/
-knowledge-base/**/.docusaurus/
-knowledge-base/**/build/
-knowledge-base/**/.turbo/
-knowledge-base/**/references/
-knowledge-base/docusaurus/services/portal/node_modules/
-knowledge-base/docusaurus/services/portal/.docusaurus/
-knowledge-base/docusaurus/services/portal/build/
-knowledge-base/docusaurus/services/portal/.turbo/
+!corporate/
+!corporate/**
+corporate/**/node_modules/
+corporate/**/.docusaurus/
+corporate/**/build/
+corporate/**/.turbo/
+corporate/**/references/
+corporate/services/portal/node_modules/
+corporate/services/portal/.docusaurus/
+corporate/services/portal/build/
+corporate/services/portal/.turbo/
 .agents/
 .github/
 .system_generated/
@@ -58,6 +58,6 @@ knowledge-base/docusaurus/services/portal/.turbo/
 node_modules
 */*/node_modules
 */*/*/node_modules
-knowledge-base/docusaurus/packages/*/node_modules/
-knowledge-base/docusaurus/packages/*/dist/
+corporate/packages/*/node_modules/
+corporate/packages/*/dist/
 **/references

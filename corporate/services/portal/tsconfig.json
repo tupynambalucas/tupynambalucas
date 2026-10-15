@@ -3,8 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@monorepo/docs-preset/*": ["../../packages/preset/src/*"],
-      "@monorepo/docs-theme/*": ["../../packages/theme/src/*"]
+      "@monorepo/kb-docusaurus-preset": ["../../packages/preset/src/index.ts"],
+      "@monorepo/kb-docusaurus-preset/*": ["../../packages/preset/src/*"],
+      "@monorepo/kb-docusaurus-theme": ["../../packages/theme/src/index.ts"],
+      "@monorepo/kb-docusaurus-theme/*": ["../../packages/theme/src/*"]
     },
     "ignoreDeprecations": "6.0"
   },

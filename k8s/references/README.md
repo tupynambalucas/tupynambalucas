@@ -1,12 +1,19 @@
-# Kubernetes Infrastructure & GitOps
+# Kubernetes Infrastructure and GitOps
 
-This directory houses the authoritative Diátaxis documentation for the `tupynambalucas.dev` Kubernetes infrastructure, detailing our orchestrator configurations, manifest structures, and **Separation of Deployers** pattern.
+This directory houses the authoritative Diataxis documentation for the `tupynambalucas.dev` Kubernetes infrastructure, detailing orchestrator configuration, manifest structure, and the Separation of Deployers pattern.
 
-## Diátaxis Structure
+## Guides
 
-- **[tutorials/](./tutorials/)**: Step-by-step exercises for setting up the local cluster and orchestrator.
-- **[guides/](./guides/)**: How-to guides for common operations (e.g., how to add a new Helm chart, how to create a new Kustomize overlay).
-- **[reference/](./reference/)**: Technical specifications, API limits, and configuration schemas (Note: only for pure technical reference, otherwise use guides or explanation).
-- **[explanation/](./explanation/)**: Architectural decisions (e.g., why Helm is used exclusively for third-party charts, why `--enable-helm` is an anti-pattern).
+- [How to add a service](./guides/add-a-service.md): Procedure for adding a first-party service to the hub or corporate stack.
 
-> **Note**: This documentation is automatically maintained and enforced by the `k8s-expert` plugin skills whenever agents interact with the `k8s/` workspace.
+## Reference
+
+- [Environments and hostnames](./reference/environments-and-hostnames.md): Overlay matrix, hostname convention, Ingress patch table, namespaces, and secrets.
+
+## Explanation
+
+- [Directory structure conventions](./explanation/folder-structure.md): Component-per-folder layout and Kustomize base rules.
+- [Configuration as Code](./explanation/configuration-as-code.md): Native configuration files and `configMapGenerator`.
+- [Separation of Deployers](./explanation/separation-of-deployers.md): Helm for third-party charts, Kustomize for first-party manifests.
+
+> **Note**: This documentation is maintained through the `k8s-docs-manager` skill of the `k8s-expert` plugin whenever the `k8s/` workspace changes.

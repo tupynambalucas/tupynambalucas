@@ -13,7 +13,7 @@ k8s/
   manifests/
     namespaces/
     hub/
-      observability/
+      observability/            one folder per service, each with its own kustomization.yaml
       network/
       tools/
       studio/
@@ -21,9 +21,8 @@ k8s/
         memos/
       cortex/
         gateway/                agentgateway routing and values
-        memory/                 mongodb, memory-api, memory-web
-        mcp/                    guardrails, inspector, and adapter services
-          services/             context7, firecrawl, github, grafana, memory, playwright
+        memory/                 mongodb, api, web, ingress
+        mcp/                    flat folder: context7, firecrawl, github, grafana, guardrails, inspector, kubectl, memory, playwright
     corporate/
       portal/
       web/
@@ -40,25 +39,24 @@ k8s/
       hub/
       corporate/
   references/
-    skaffold/                   existing Skaffold reference docs
+    explanation/ guides/ reference/   Diataxis documentation
   .env.example
   AGENTS.md
   README.md
   package.json
 ```
 
-Each overlay folder holds a `kustomization.yaml`, a `patches/` folder with ingress hosts and
-resource settings, and a `helm-values/` folder when the overlay renders a chart.
+Each overlay folder holds a `kustomization.yaml` with inline Ingress host patches and a\r\n`helm-values/` folder when the overlay configures a third-party chart.
 
 ## 2. File Mapping
 
 | Current file in `infrastructure/`                                | New location in `k8s/`                                                                                            |
 | :--------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
 | `manifests/cert-manager-namespace.yaml`                          | removed, obsolete (cert-manager eliminated)                                                                       |
-| `manifests/cortex-namespace.yaml`                                | `manifests/namespaces/cortex.yaml`                                                                                |
-| `manifests/docs-namespace.yaml`                                  | `manifests/namespaces/docs.yaml`                                                                                  |
-| `manifests/platform-namespace.yaml`                              | `manifests/namespaces/platform.yaml`                                                                              |
-| `manifests/studio-namespace.yaml`                                | `manifests/namespaces/studio.yaml`                                                                                |
+| `manifests/cortex-namespace.yaml`                                | `manifests/hub/namespaces/cortex.yaml`                                                                            |
+| `manifests/docs-namespace.yaml`                                  | `manifests/corporate/namespaces/docs.yaml`                                                                        |
+| `manifests/platform-namespace.yaml`                              | `manifests/hub/namespaces/platform.yaml`                                                                          |
+| `manifests/studio-namespace.yaml`                                | `manifests/hub/namespaces/studio.yaml`                                                                            |
 | `manifests/platform-grafana.yaml`                                | `manifests/hub/observability/grafana.yaml`                                                                        |
 | `manifests/platform-prometheus.yaml`                             | `manifests/hub/observability/prometheus.yaml`                                                                     |
 | `manifests/platform-loki.yaml`                                   | `manifests/hub/observability/loki.yaml`                                                                           |
@@ -67,24 +65,24 @@ resource settings, and a `helm-values/` folder when the overlay renders a chart.
 | `manifests/platform-fluentbit.yaml`                              | `manifests/hub/observability/fluentbit.yaml`                                                                      |
 | `manifests/platform-kubestatemetrics.yaml`                       | `manifests/hub/observability/kube-state-metrics.yaml`                                                             |
 | `manifests/platform-cloudflared.yaml`                            | `manifests/hub/network/cloudflared.yaml`                                                                          |
-| `manifests/traefik-ingress.yaml`                                 | `manifests/hub/network/traefik-ingress.yaml`                                                                      |
+| `manifests/traefik-ingress.yaml`                                 | `manifests/hub/network/traefik.yaml`                                                                              |
 | `manifests/platform-headlamp.yaml`                               | `manifests/hub/tools/headlamp.yaml`                                                                               |
 | `manifests/platform-turbocache.yaml`                             | `manifests/hub/tools/turbocache.yaml`                                                                             |
 | `manifests/studio-penpot.yaml`                                   | `manifests/hub/studio/penpot/penpot.yaml`                                                                         |
-| `manifests/studio-penpot-seed.yaml`                              | `manifests/hub/studio/penpot/penpot-seed.yaml`                                                                    |
+| `manifests/studio-penpot-seed.yaml`                              | `manifests/hub/studio/penpot/seed.yaml`                                                                           |
 | `manifests/studio-memos.yaml`                                    | `manifests/hub/studio/memos/memos.yaml`                                                                           |
-| `manifests/studio-memos-seed.yaml`                               | `manifests/hub/studio/memos/memos-seed.yaml`                                                                      |
-| `manifests/cortex-mcp.yaml`                                      | split into `manifests/hub/cortex/mcp/` (`guardrails.yaml`, `inspector.yaml`, `services/*.yaml`)                   |
-| `manifests/cortex-memory.yaml`                                   | split into `manifests/hub/cortex/memory/` (`mongodb.yaml`, `memory-api.yaml`, `memory-web.yaml`)                  |
+| `manifests/studio-memos-seed.yaml`                               | `manifests/hub/studio/memos/seed.yaml`                                                                            |
+| `manifests/cortex-mcp.yaml`                                      | split into `manifests/hub/cortex/mcp/` (flat, clean file per service without redundant `mcp-` prefix)             |
+| `manifests/cortex-memory.yaml`                                   | split into `manifests/hub/cortex/memory/` (`mongodb.yaml`, `api.yaml`, `web.yaml`, `ingress.yaml`)                |
 | `manifests/kb-docusaurus-portal.yaml`                            | `manifests/corporate/portal/portal.yaml`                                                                          |
 | `charts/agentgateway`                                            | `charts/agentgateway`                                                                                             |
 | `charts/cert-manager-v1.14.4`                                    | removed, obsolete (cert-manager eliminated)                                                                       |
 | `charts/traefik-26.0.0`                                          | `charts/traefik-26.0.0`                                                                                           |
 | `environments/local/kustomization.yaml`                          | split into `overlays/dev/hub` and `overlays/dev/corporate`                                                        |
 | `environments/local/helm-values/traefik-values.yaml`             | `overlays/dev/hub/helm-values/traefik-values.yaml`                                                                |
-| `environments/local/traefik-rbac-patch.json`                     | `overlays/dev/hub/patches/traefik-rbac-patch.json`                                                                |
+| `environments/local/traefik-rbac-patch.json`                     | removed, RBAC is injected through `extraObjects` in `traefik-values.yaml`                                         |
 | `environments/local/charts/*`                                    | removed, duplicate of `charts/`                                                                                   |
-| `references/skaffold/*`                                          | `references/skaffold/*`                                                                                           |
+| `references/skaffold/*`                                          | replaced by `references/{guides,reference,explanation}`                                                           |
 | `skaffold.yaml`                                                  | split into the three Skaffold files (`k8s/skaffold.yaml`, `k8s/skaffold.hub.yaml`, `k8s/skaffold.corporate.yaml`) |
 | `.env`, `.env.example`, `AGENTS.md`, `README.md`, `package.json` | same names at `k8s/` root                                                                                         |
 
@@ -119,26 +117,20 @@ Example overlay:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../manifests/namespaces
+  - ../../../manifests/hub/namespaces
   - ../../../manifests/hub/observability
   - ../../../manifests/hub/network
   - ../../../manifests/hub/tools
   - ../../../manifests/hub/studio
   - ../../../manifests/hub/cortex
-helmCharts:
-  - name: traefik
-    repo: ''
-    version: 26.0.0
-    releaseName: traefik
-    namespace: platform
-    includeCRDs: true
-    valuesFile: helm-values/traefik-values.yaml
 patches:
-  - path: patches/ingress-hosts.yaml
-  - path: patches/traefik-rbac-patch.json
-    target:
-      kind: ClusterRole
-      name: traefik-platform
+  - target:
+      kind: Ingress
+      name: grafana-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: grafana-dev.tupynambalucas.dev
 generatorOptions:
   disableNameSuffixHash: true
 secretGenerator:
@@ -149,8 +141,7 @@ secretGenerator:
 ```
 
 Use `resources` and `patches`. The `bases` and `patchesStrategicMerge` fields are deprecated.
-Confirm how the vendored charts are referenced (`chartHome`) when moving them, because the
-current overlay already relies on `--enable-helm` and `--load-restrictor=LoadRestrictionsNone`.
+Ingress hosts are replaced with inline JSON 6902 patches in each overlay (see the Ingress patch table in `k8s/references`). Third-party Helm charts (Traefik) are not rendered by Kustomize. Skaffold and ArgoCD deploy them as a separate Helm release (Separation of Deployers), so `--enable-helm` is not used.
 
 ## 5. Skaffold
 
@@ -186,7 +177,7 @@ build:
 manifests:
   kustomize:
     paths: [overlays/dev/hub]
-    buildArgs: [--load-restrictor=LoadRestrictionsNone, --enable-helm]
+    buildArgs: [--load-restrictor=LoadRestrictionsNone]
 deploy:
   kubectl:
     hooks:

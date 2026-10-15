@@ -31,7 +31,7 @@ ENV NODE_ENV=production
 ENV PORT=8080
 
 COPY --from=deployer /prod/app ./
-COPY --from=builder /app/cortex/mcp/services/memory/dist ./dist
+COPY --from=builder /app/hub/cortex/mcp/services/memory/dist ./dist
 
 EXPOSE 8080
 CMD ["node", "dist/index.js"]

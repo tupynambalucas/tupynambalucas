@@ -1,3 +1,6 @@
+/// <reference types="@docusaurus/module-type-aliases" />
+/// <reference types="@docusaurus/theme-classic" />
+
 declare module '*.glb' {
   const src: string;
   export default src;

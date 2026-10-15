@@ -34,9 +34,9 @@ ENV MONGODB_URI=mongodb://cortex_admin:cortex_password_dev@mongodb-db:27017/cort
 ENV DOCS_DIR=/app/docs
 
 COPY --from=deployer /prod/app ./
-COPY --from=builder /app/cortex/memory/services/api/dist ./dist
+COPY --from=builder /app/hub/cortex/memory/services/api/dist ./dist
 # Use root context to copy docs since skaffold context is ..
-COPY knowledge-base/collections/namespaces/portal/content ./docs
+COPY corporate/collections/namespaces/portal/content ./docs
 
 EXPOSE 3006
 CMD ["node", "dist/index.js"]

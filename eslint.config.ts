@@ -50,20 +50,18 @@ export default defineConfig([
           alwaysTryTypes: true,
           project: [
             'tsconfig.json',
-            'knowledge-base/collections/tsconfig.json',
-            'knowledge-base/docusaurus/tsconfig.json',
-            'knowledge-base/docusaurus/packages/*/tsconfig.json',
-            'knowledge-base/docusaurus/services/*/tsconfig.json',
+            'corporate/collections/tsconfig.json',
+            'corporate/tsconfig.json',
+            'corporate/packages/*/tsconfig.json',
+            'corporate/services/*/tsconfig.json',
             'renderer/tsconfig.json',
-            'hub/services/*/tsconfig.json',
-            'hub/packages/*/tsconfig.json',
             'shared/*/tsconfig.json',
-            'studio/*/tsconfig.json',
+            'hub/studio/*/tsconfig.json',
             'tools/*/tsconfig.json',
-            'cortex/mcp/guardrails/tsconfig.json',
-            'cortex/mcp/services/*/tsconfig.json',
-            'cortex/memory/packages/*/tsconfig.json',
-            'cortex/memory/services/*/tsconfig.json',
+            'hub/cortex/mcp/guardrails/tsconfig.json',
+            'hub/cortex/mcp/services/*/tsconfig.json',
+            'hub/cortex/memory/packages/*/tsconfig.json',
+            'hub/cortex/memory/services/*/tsconfig.json',
           ],
         },
         node: {
@@ -152,8 +150,8 @@ export default defineConfig([
       '*.config.{js,mjs,ts}',
       '**/*.config.{js,mjs,cjs,ts}',
       '**/postcss.config.{js,mjs,cjs,ts}',
-      'knowledge-base/docusaurus/packages/preset/src/plugins/webpack-loaders/**/*.js',
-      'knowledge-base/docusaurus/services/portal/src/mock-asset.js',
+      'corporate/packages/preset/src/plugins/webpack-loaders/**/*.js',
+      'corporate/services/portal/src/mock-asset.js',
     ],
     languageOptions: {
       globals: {
@@ -203,8 +201,8 @@ export default defineConfig([
     files: [
       '**/api/**/*.{ts,tsx}',
       '**/services/api/**/*.{ts,tsx}',
-      'cortex/mcp/services/**/*.{ts,tsx}',
-      'cortex/mcp/guardrails/**/*.{ts,tsx}',
+      'hub/cortex/mcp/services/**/*.{ts,tsx}',
+      'hub/cortex/mcp/guardrails/**/*.{ts,tsx}',
     ],
     rules: {
       '@typescript-eslint/no-misused-promises': [
@@ -277,7 +275,7 @@ export default defineConfig([
   // ========================================================================
   {
     name: 'monorepo/studio-workspace',
-    files: ['studio/**/*.ts', 'studio/**/*.tsx'],
+    files: ['hub/studio/**/*.ts', 'hub/studio/**/*.tsx'],
     ignores: ['**/*.md/**', '**/*.mdx/**'],
     rules: {
       'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
@@ -306,8 +304,8 @@ export default defineConfig([
   // ========================================================================
   {
     name: 'monorepo/docs-workspace',
-    files: ['knowledge-base/**/*.{ts,tsx,js,jsx}'],
-    ignores: ['knowledge-base/collections/**/*.ts', 'knowledge-base/collections/**/*.tsx'],
+    files: ['corporate/**/*.{ts,tsx,js,jsx}'],
+    ignores: ['corporate/collections/**/*.ts', 'corporate/collections/**/*.tsx'],
     plugins: {
       '@docusaurus': eslintPluginDocusaurus as any,
     },

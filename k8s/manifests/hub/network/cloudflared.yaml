@@ -27,7 +27,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: platform-secrets
-                  key: CLOUDFLARE_TUNNEL_TOKEN
+                  key: CLOUDFLARE_TUNNEL_TOKEN_HUB
                   optional: true
           resources:
             requests:

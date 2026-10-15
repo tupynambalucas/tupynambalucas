@@ -129,7 +129,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: turbocache-dev.tupynambalucas.dev
+    - host: turbocache.tupynambalucas.dev
       http:
         paths:
           - path: /

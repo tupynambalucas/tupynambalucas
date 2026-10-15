@@ -35,12 +35,12 @@ flowchart TD
 Each cluster runs its own dedicated Cloudflare Tunnel connector pod. This cleanly isolates traffic
 and allows internal tools and public products to have completely independent ingress lifecycles:
 
-| Environment | Tunnel                             | Runs in                 | Token secret                                     |
-| :---------- | :--------------------------------- | :---------------------- | :----------------------------------------------- |
-| `dev`       | `dev-hub`                          | `k3d-hub` (local)       | `CLOUDFLARE_TUNNEL_TOKEN_HUB` from local `.env`  |
-| `dev`       | `dev-corporate`                    | `k3d-corporate` (local) | `CLOUDFLARE_TUNNEL_TOKEN_CORP` from local `.env` |
-| `staging`   | `staging-hub`, `staging-corporate` | One per cloud cluster   | Cluster secret store                             |
-| `prod`      | `prod-hub`, `prod-corporate`       | One per cloud cluster   | Cluster secret store                             |
+| Environment | Tunnel                             | Runs in                 | Token secret                                          |
+| :---------- | :--------------------------------- | :---------------------- | :---------------------------------------------------- |
+| `dev`       | `dev-hub`                          | `k3d-hub` (local)       | `CLOUDFLARE_TUNNEL_TOKEN_HUB` from local `.env`       |
+| `dev`       | `dev-corporate`                    | `k3d-corporate` (local) | `CLOUDFLARE_TUNNEL_TOKEN_CORPORATE` from local `.env` |
+| `staging`   | `staging-hub`, `staging-corporate` | One per cloud cluster   | Cluster secret store                                  |
+| `prod`      | `prod-hub`, `prod-corporate`       | One per cloud cluster   | Cluster secret store                                  |
 
 Rules:
 

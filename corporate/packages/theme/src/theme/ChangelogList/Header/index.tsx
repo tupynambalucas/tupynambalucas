@@ -2,15 +2,11 @@ import React, { type ReactNode } from 'react';
 import Translate from '@docusaurus/Translate';
 import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
-import projectConfig from '@monorepo/shared-config/project.config';
 import styles from './styles.module.css';
 
 function GitHubLink() {
   return (
-    <Link
-      href={`https://github.com/${projectConfig.GITHUB_ORG}/${projectConfig.REPOSITORY_NAME}`}
-      className={styles.github}
-    >
+    <Link href="https://github.com/tupynambalucas/tupynambalucas" className={styles.github}>
       <b>GitHub</b>
     </Link>
   );

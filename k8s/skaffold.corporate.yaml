@@ -35,6 +35,15 @@ manifests:
   kustomize:
     paths: [overlays/dev/corporate]
     buildArgs: [--load-restrictor=LoadRestrictionsNone]
+  helm:
+    releases:
+      - name: traefik
+        repo: https://helm.traefik.io/traefik
+        remoteChart: traefik
+        version: 26.0.0
+        namespace: docs
+        valuesFiles:
+          - overlays/dev/corporate/helm-values/traefik-values.yaml
 deploy:
   kubeContext: k3d-corporate
   kubectl:

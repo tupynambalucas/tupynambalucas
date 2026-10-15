@@ -20,9 +20,9 @@ COPY --from=pruner /app/out/full/ .
 RUN pnpm --filter @monorepo/cortex-memory-web... build
 
 FROM nginx:alpine AS runner
-COPY --from=builder /app/cortex/memory/services/web/dist /usr/share/nginx/html
+COPY --from=builder /app/hub/cortex/memory/services/web/dist /usr/share/nginx/html
 # context is root
-COPY cortex/memory/services/web/nginx.conf /etc/nginx/conf.d/default.conf
+COPY hub/cortex/memory/services/web/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 9006
 CMD ["nginx", "-g", "daemon off;"]

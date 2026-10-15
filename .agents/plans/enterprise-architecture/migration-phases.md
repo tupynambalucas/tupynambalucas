@@ -2,6 +2,10 @@
 
 Execution order, validation, and rollback. Each phase ends in a state that works on its own.
 
+> Status and the integration procedure for develop are tracked in
+> [Develop integration and Ubuntu readiness](../develop-integration-and-ubuntu-readiness.md).
+> Phases 0, 2, and 4 are already committed on chore/enterprise-architecture.
+
 ## Phase 0: Preparation
 
 - **Sync Main:** Ensure the `main` branch is fully synchronized with `develop` (`git checkout main`, `git merge develop`, `git push origin main`) to establish a clean baseline.
@@ -26,7 +30,7 @@ Validation:
 - `pnpm install` completes on the Linux clone.
 - Local registry responds on `localhost:5000`.
 
-Rollback: delete the clusters with `k3d cluster delete hub corporate && k3d registry delete enterprise-registry`. The Windows setup is untouched.
+Rollback: delete the clusters with `k3d cluster delete hub corporate && k3d registry delete k3d-registry.localhost && docker network rm k3d-enterprise-net`. The Windows setup is untouched.
 
 ## Phase 2: Infrastructure Refactor
 
@@ -45,7 +49,7 @@ Steps:
 
 Validation:
 
-- `kustomize build --enable-helm --load-restrictor=LoadRestrictionsNone overlays/dev/hub` and
+- `kubectl kustomize --load-restrictor=LoadRestrictionsNone overlays/dev/hub` and
   `overlays/dev/corporate` render without errors.
 - The rendered dev output matches the output of the old `environments/local` apart from file
   order. Compare with `diff` on the sorted resources.

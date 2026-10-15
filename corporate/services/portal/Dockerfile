@@ -5,16 +5,16 @@ RUN corepack enable pnpm
 # Dependências (Builder)
 FROM base AS builder
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json CHANGELOG*.md ROADMAP.md ./
-COPY knowledge-base/ knowledge-base/
+COPY corporate/ corporate/
 COPY shared/ shared/
-COPY studio/assets/ studio/assets/
+COPY hub/studio/assets/ hub/studio/assets/
 RUN pnpm install --filter=@monorepo/kb-docusaurus-portal...
 RUN pnpm --filter=@monorepo/kb-docusaurus-preset build && pnpm --filter=@monorepo/kb-docusaurus-theme build
 
 # Execução (Runner)
 FROM base AS runner
 COPY --from=builder /app /app
-WORKDIR /app/knowledge-base/docusaurus/services/portal
+WORKDIR /app/corporate/services/portal
 
 EXPOSE 3002
 # Run the dev server with polling enabled for container compatibility

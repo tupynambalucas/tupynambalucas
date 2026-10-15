@@ -5,7 +5,7 @@ import { createProjectVariablesParseFrontMatter } from '@monorepo/kb-docusaurus-
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
-import projectConfig from '../../../../collections/namespaces/portal/portal.config';
+import projectConfig from '../../collections/namespaces/portal/portal.config';
 
 import dotenv from 'dotenv';
 dotenv.config();

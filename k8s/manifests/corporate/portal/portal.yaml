@@ -47,7 +47,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-    - host: docs-dev.tupynambalucas.dev
+    - host: docs.tupynambalucas.dev
       http:
         paths:
           - path: /

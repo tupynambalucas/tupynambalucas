@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - context7.yaml
+  - firecrawl.yaml
+  - github.yaml
+  - grafana.yaml
+  - guardrails.yaml
+  - inspector.yaml
+  - kubectl.yaml
+  - memory.yaml
+  - playwright.yaml

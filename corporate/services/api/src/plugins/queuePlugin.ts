@@ -16,14 +16,13 @@ const queuePlugin: FastifyPluginAsync<QueuePluginOptions> = async (server, opts)
 
   // Schedule recurring jobs
   const scheduleJobs = async () => {
-    await cycleQueue.add(
-      'archive-expired-cycles',
-      {},
+    await cycleQueue.upsertJobScheduler(
+      'archive-expired-cycles-cron',
       {
-        repeat: {
-          pattern: '0 * * * *', // Every hour
-        },
-        jobId: 'archive-expired-cycles-cron',
+        pattern: '0 * * * *', // Every hour
+      },
+      {
+        name: 'archive-expired-cycles',
       },
     );
     server.log.info('[Queue] Job de arquivamento agendado.');

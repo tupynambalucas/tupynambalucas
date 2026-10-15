@@ -11,7 +11,7 @@ const sentryPlugin: FastifyPluginAsync = (server: FastifyInstance) => {
     dsn: server.config.SENTRY_DSN,
     integrations: [nodeProfilingIntegration()],
     tracesSampleRate: 1.0,
-    profilesSampleRate: 1.0,
+    profileSessionSampleRate: 1.0,
     environment: server.config.NODE_ENV,
     beforeSend(event, hint) {
       const error = hint.originalException;

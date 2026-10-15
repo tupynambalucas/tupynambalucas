@@ -1,15 +1,78 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../manifests/namespaces
+  - ../../../manifests/hub/namespaces
   - ../../../manifests/hub/observability
   - ../../../manifests/hub/network
   - ../../../manifests/hub/tools
-  - ../../../manifests/hub/studio/memos
-  - ../../../manifests/hub/studio/penpot
-  - ../../../manifests/hub/cortex/gateway
-  - ../../../manifests/hub/cortex/mcp
-  - ../../../manifests/hub/cortex/memory
+  - ../../../manifests/hub/studio
+  - ../../../manifests/hub/cortex
+patches:
+  - target:
+      kind: Ingress
+      name: traefik-dashboard-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: traefik-stg.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: grafana-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: grafana-stg.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: memos-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: memos-stg.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: penpot-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: penpot-stg.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: headlamp-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: headlamp-stg.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: turbocache-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: turbocache-stg.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: memory-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: memory-stg.tupynambalucas.dev
+      - op: replace
+        path: /spec/rules/1/host
+        value: memory-api-stg.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: agentgateway-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: agentgateway-stg.tupynambalucas.dev
+      - op: replace
+        path: /spec/rules/1/host
+        value: agentgateway-ingress-stg.tupynambalucas.dev
+      - op: replace
+        path: /spec/rules/2/host
+        value: agentgateway-mcp-stg.tupynambalucas.dev
 generatorOptions:
   disableNameSuffixHash: true
 secretGenerator:
