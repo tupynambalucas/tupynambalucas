@@ -19,7 +19,8 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### B. Strict English-First
 
-- All technical documentation, READMEs, architectural briefs, and code comments/examples MUST be written in English (en-US).
+- All code, configuration, technical documentation, READMEs, architectural briefs, code comments/examples, commit messages, and pull request descriptions MUST be written in English (en-US).
+- Conversational chat responses with the user MUST be conducted in Brazilian Portuguese (pt-BR).
 
 ### C. Zero Emojis
 
@@ -40,10 +41,10 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 - All files must comply with the root Prettier formatting rules (2-space indentation, max 100-character line width, hyphen-based unordered lists, and proper JavaScript/TypeScript code block styling).
 
-### G. Project Variables
+### G. Project Variables and Identifiers
 
-- **Concrete Names Required**: Project names and domains MUST be hardcoded with their actual values (e.g., `Tupynambalucas`, `tupynambalucas.dev`) in all `AGENTS.md` router files.
-- **No Agnostic Tokens**: You MUST NOT use agnostic tokens like `tupynambalucas.dev` or `Tupynambalucas`. These are strictly prohibited outside of the Docusaurus internal collections.
+- **Concrete Names Required**: Project names, package identifiers, and domains MUST use their actual concrete values corresponding to the target repository in all `AGENTS.md` router files.
+- **No Unresolved Placeholder Tokens**: You MUST NOT leave unresolved placeholder tokens (such as `%PROJECT_DOMAIN%`, `<TBD>`, or TODO markers) in router context files unless specifically processed by an automated templating engine.
 
 ---
 

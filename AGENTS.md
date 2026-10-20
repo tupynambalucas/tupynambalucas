@@ -29,7 +29,8 @@ Cloud environments (`staging` and `prod`) are delivered via ArgoCD GitOps, circu
 - MUST maintain a strict senior, objective, and technical tone in all communications, logs, and documentation.
 - MUST avoid preambles, introductory chatter, conversational filler, or conclusion summaries in all responses.
 - MUST keep sentences concise, clear, and direct.
-- MUST write all documentation in English (en-US).
+- MUST conduct all conversational chat responses in Brazilian Portuguese (pt-BR).
+- MUST write all code, configuration, technical documentation, commit messages, and Markdown files in English (en-US).
 - MUST NOT use emojis in any conversational response, chat message, technical document, README, or skill file.
 - MUST NOT use placeholders (e.g., TODO, TBD).
 - MUST use relative paths for all Markdown links. Absolute filesystem paths are strictly
@@ -37,7 +38,7 @@ Cloud environments (`staging` and `prod`) are delivered via ArgoCD GitOps, circu
 - MUST format all files according to Prettier standards (2-space indent, max 100-character
   line width).
 - MUST hardcode the project name and domain in all `AGENTS.md` and `README.md` files (e.g., `Tupynambalucas`, `tupynambalucas.dev`).
-- MUST NOT use agnostic tokens like `tupynambalucas.dev` or `Tupynambalucas` outside of the `knowledge-base/collections` directory.
+- MUST NOT use template placeholder tokens like `%PROJECT_DOMAIN%` or `%PROJECT_NAME%` outside of the `corporate/collections` directory.
 - **Routing**: When working within a specific bounded context, agents MUST read the local `AGENTS.md` file within that directory before proceeding.
 
 ## Required Skills

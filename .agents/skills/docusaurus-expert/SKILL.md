@@ -67,12 +67,12 @@ All files placed inside the documentation directories MUST strictly adhere to th
   - Use hyphens (`-`) for unordered list items; asterisks or pluses are forbidden.
   - Code blocks embedded in MDX must feature semicolons, trailing commas, single quotes for strings (except double quotes in JSX props), and parentheses for arrow functions.
 
-### F. Project Variables Plugin
+### F. Project Variables Plugin (Optional)
 
-- **No Hardcoded Brands**: You MUST NOT hardcode specific brand names or URLs in documentation content.
-- **AST Tokens**: Always use agnostic percentage-wrapped tokens like `tupynambalucas.dev` or `Tupynambalucas`.
-- **Centralized Config**: These variables are defined centrally in `@monorepo/shared-config/project.config.json` (located in the `shared/config/` workspace).
-- **Compilation**: The `remark-project-variables` plugin parses the MDX AST and automatically replaces these tokens with the real values from the shared config during the build, keeping the repository generic and copy-pasteable.
+- **Agnostic Content**: When a workspace supports dynamic AST tokens, avoid hardcoding brand names or URLs directly in reusable documentation content.
+- **AST Tokens**: Use configured percentage-wrapped tokens (e.g., `%PROJECT_DOMAIN%` or `%PROJECT_NAME%`) when an AST variable replacement plugin is present.
+- **Centralized Config**: Tokens should be defined centrally in the project's shared configuration module.
+- **Compilation**: The AST variable plugin automatically resolves these tokens to production values during the build.
 
 ---
 

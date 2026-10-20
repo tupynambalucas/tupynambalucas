@@ -24,7 +24,7 @@ This reference defines the verification steps required when creating, updating, 
 ### D. Required Skills Audit
 
 - Verify that the root `/AGENTS.md` declares both `agent-router-expert` and `markdown-expert` in a `Required Skills` section.
-- Verify that `docs/AGENTS.md` declares `docusaurus-expert` in a `Required Skill` section.
+- Verify that workspaces managing specialized documentation (e.g., Docusaurus portals) declare the appropriate skill (e.g., `docusaurus-expert`) in a `Required Skill` section.
 - Verify that all skill references use skill names only. The presence of any filesystem path (e.g., `.agents/skills/`, `../skills/`) in a skill declaration is a blocking violation.
 - Verify that Layer-3 files do NOT contain skill declarations (they inherit from parents).
 

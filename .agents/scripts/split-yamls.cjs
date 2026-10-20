@@ -1,11 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const srcMcp = 'C:\\Users\\tupyn\\projects\\tupynambalucas-backup\\infrastructure\\manifests\\cortex-mcp.yaml';
-const destMcpDir = 'C:\\Users\\tupyn\\projects\\tupynambalucas\\k8s\\manifests\\hub\\cortex\\mcp\\services';
+const srcMcp = process.env.SRC_MCP || process.argv[2];
+const destMcpDir = process.env.DEST_MCP_DIR || process.argv[3];
+const srcMemory = process.env.SRC_MEMORY || process.argv[4];
+const destMemoryDir = process.env.DEST_MEMORY_DIR || process.argv[5];
 
-const srcMemory = 'C:\\Users\\tupyn\\projects\\tupynambalucas-backup\\infrastructure\\manifests\\cortex-memory.yaml';
-const destMemoryDir = 'C:\\Users\\tupyn\\projects\\tupynambalucas\\k8s\\manifests\\hub\\cortex\\memory';
+if (!srcMcp || !destMcpDir || !srcMemory || !destMemoryDir) {
+  console.log('Usage: node split-yamls.cjs <srcMcp> <destMcpDir> <srcMemory> <destMemoryDir>');
+  process.exit(0);
+}
 
 // Ensure directories exist
 fs.mkdirSync(destMcpDir, { recursive: true });

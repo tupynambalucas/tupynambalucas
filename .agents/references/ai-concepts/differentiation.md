@@ -2,7 +2,7 @@
 
 This document establishes the official definitions, architectural distinctions, and relationships
 between Large Language Models (LLMs), AI Agents, Command Line Interfaces (CLIs), and the Model
-Context Protocol (MCP) as implemented within the **tupynambalucas** monorepo.
+Context Protocol (MCP) as implemented within modern AI-assisted monorepos and workspaces.
 
 ---
 
