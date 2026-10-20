@@ -44,10 +44,26 @@ COPY --from=builder /app .
 RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm --filter @monorepo/hub-api --prod deploy --legacy /prod/api
 
-# ---- Stage 5: Runner ----
-# Minimal production image with non-root user for security.
-FROM node:22-slim AS runner
+# ---- Stage 5: Dev Profile (Build & Run) ----
+FROM base AS dev
 WORKDIR /app
+ENV NODE_ENV=development
+ENV PORT=3000
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
+    pnpm install --frozen-lockfile
+COPY --from=pruner /app/out/full/ .
+RUN pnpm --filter @monorepo/hub-api... build
+WORKDIR /app/corporate/services/api
+EXPOSE 3000
+CMD ["pnpm", "dev"]
+
+# ---- Stage 6: Prod Profile (Run) ----
+# Minimal production image with non-root user for security.
+FROM node:22-slim AS prod
+WORKDIR /app
+ENV NODE_ENV=production
 
 # Create non-root system user
 RUN addgroup --system --gid 1001 nodejs \

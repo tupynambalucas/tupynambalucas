@@ -1,10 +1,17 @@
-FROM grafana/mcp-grafana:latest
+# =================================================================== #
+# hub/cortex/mcp/services/grafana — Grafana MCP service
+# =================================================================== #
 
-
+# ---- Stage 1: Base ----
+FROM grafana/mcp-grafana:latest AS base
 
 # AgentGateway expects the MCP services to run on port 8080.
 EXPOSE 8080
 
-# Use CMD to append arguments to the default ENTRYPOINT (which is /app/mcp-grafana).
-# Define the transport streamable-http, the port, and allow any host/origin.
+# ---- Stage 2: Dev Profile ----
+FROM base AS dev
+CMD ["-t", "streamable-http", "--address", "0.0.0.0:8080", "-allowed-hosts", "*", "-allowed-origins", "*"]
+
+# ---- Stage 3: Prod Profile ----
+FROM base AS prod
 CMD ["-t", "streamable-http", "--address", "0.0.0.0:8080", "-allowed-hosts", "*", "-allowed-origins", "*"]

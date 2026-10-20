@@ -1,4 +1,9 @@
-FROM node:22-alpine
+# =================================================================== #
+# hub/cortex/mcp/inspector — Model Context Protocol Inspector
+# =================================================================== #
+
+# ---- Stage 1: Base ----
+FROM node:22-alpine AS base
 
 WORKDIR /app
 
@@ -13,4 +18,10 @@ ENV DANGEROUSLY_BIND_ALL_INTERFACES=true
 
 EXPOSE 6274 6277
 
+# ---- Stage 2: Dev Profile ----
+FROM base AS dev
+ENTRYPOINT ["npx", "@modelcontextprotocol/inspector", "--config", "/app/mcp.json"]
+
+# ---- Stage 3: Prod Profile ----
+FROM base AS prod
 ENTRYPOINT ["npx", "@modelcontextprotocol/inspector", "--config", "/app/mcp.json"]

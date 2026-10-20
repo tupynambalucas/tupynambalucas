@@ -1,13 +1,20 @@
-FROM ducktors/turborepo-remote-cache:latest
+# =================================================================== #
+# hub/tools/turbocache — Turborepo Remote Cache
+# =================================================================== #
 
-# Expose the default server port
+# ---- Stage 1: Base ----
+FROM ducktors/turborepo-remote-cache:latest AS base
+
 EXPOSE 3000
 
-# We pass runtime environment variables via env_file in docker-compose
-
-# Create the local storage directory and set permissions if using "local" provider
 USER root
 RUN mkdir -p /data/cache && chown -R app:app /data/cache
 USER app
 
-# The start command is handled automatically by the base image entrypoint (tini + node)
+# ---- Stage 2: Dev Profile ----
+FROM base AS dev
+EXPOSE 3000
+
+# ---- Stage 3: Prod Profile ----
+FROM base AS prod
+EXPOSE 3000

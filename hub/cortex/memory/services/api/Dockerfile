@@ -25,12 +25,31 @@ COPY --from=builder /app .
 RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm --filter @monorepo/cortex-memory-api --prod deploy --legacy /prod/app
 
-FROM node:22-alpine AS runner
+# ---- Stage 5: Dev Profile (Build & Run) ----
+FROM base AS dev
 WORKDIR /app
 ENV NODE_ENV=development
 ENV PORT=3006
 ENV HOST=0.0.0.0
 ENV MONGODB_URI=mongodb://cortex_admin:cortex_password_dev@mongodb-db:27017/cortex_memory?authSource=admin
+ENV DOCS_DIR=/app/docs
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
+    pnpm install --frozen-lockfile
+COPY --from=pruner /app/out/full/ .
+RUN pnpm --filter @monorepo/cortex-memory-api... build
+COPY corporate/collections/namespaces/portal/content ./docs
+WORKDIR /app/hub/cortex/memory/services/api
+EXPOSE 3006
+CMD ["node", "dist/index.js"]
+
+# ---- Stage 6: Prod Profile (Run) ----
+FROM node:22-alpine AS prod
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=3006
+ENV HOST=0.0.0.0
 ENV DOCS_DIR=/app/docs
 
 COPY --from=deployer /prod/app ./
