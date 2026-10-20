@@ -22,35 +22,46 @@ Cloudflare Universal SSL covers one subdomain level, so environments use a suffi
 - JSON patches are used instead of strategic merge patches because `host` is a list element of `spec.rules`, which has no strategic merge key.
 - Rule indexes are positional. When a rule is added to or removed from a base Ingress, the patches in all four non-prod overlays MUST be updated.
 
-| Ingress                        | Namespace  | Rule indexes patched                                                   |
-| :----------------------------- | :--------- | :--------------------------------------------------------------------- |
-| `traefik-dashboard-ingress`    | `platform` | 0 (`traefik`)                                                          |
-| `grafana-ingress`              | `platform` | 0 (`grafana`)                                                          |
-| `headlamp-ingress`             | `platform` | 0 (`headlamp`)                                                         |
-| `turbocache-ingress`           | `platform` | 0 (`turbocache`)                                                       |
-| `memos-ingress`                | `studio`   | 0 (`memos`)                                                            |
-| `penpot-ingress`               | `studio`   | 0 (`penpot`)                                                           |
-| `memory-ingress`               | `cortex`   | 0 (`memory`), 1 (`memory-api`)                                         |
-| `agentgateway-ingress`         | `cortex`   | 0 (`agentgateway`), 1 (`agentgateway-ingress`), 2 (`agentgateway-mcp`) |
-| `kb-docusaurus-portal-ingress` | `docs`     | 0 (`docs`)                                                             |
+| Ingress                        | Namespace   | Rule indexes patched                                                   |
+| :----------------------------- | :---------- | :--------------------------------------------------------------------- |
+| `traefik-dashboard-ingress`    | `platform`  | 0 (`traefik`)                                                          |
+| `grafana-ingress`              | `platform`  | 0 (`grafana`)                                                          |
+| `headlamp-ingress`             | `platform`  | 0 (`headlamp`)                                                         |
+| `turbocache-ingress`           | `platform`  | 0 (`turbocache`)                                                       |
+| `memos-ingress`                | `studio`    | 0 (`memos`)                                                            |
+| `penpot-ingress`               | `studio`    | 0 (`penpot`)                                                           |
+| `memory-ingress`               | `cortex`    | 0 (`memory`), 1 (`memory-api`)                                         |
+| `agentgateway-ingress`         | `cortex`    | 0 (`agentgateway`), 1 (`agentgateway-ingress`), 2 (`agentgateway-mcp`) |
+| `web-ingress`                  | `corporate` | 0 (`web`)                                                              |
+| `api-ingress`                  | `corporate` | 0 (`api`)                                                              |
+| `kb-docusaurus-portal-ingress` | `docs`      | 0 (`docs`), `dev` only                                                 |
 
 ## Namespaces
 
-Defined in [manifests/namespaces](../../manifests/namespaces/kustomization.yaml). Names are stable because internal URLs such as `*.platform.svc` depend on them.
+Defined in [manifests/hub/namespaces](../../manifests/hub/namespaces/kustomization.yaml) and [manifests/corporate/namespaces](../../manifests/corporate/namespaces/kustomization.yaml). Names are stable because internal URLs such as `*.platform.svc` depend on them.
 
-| Namespace  | Contents                                                  |
-| :--------- | :-------------------------------------------------------- |
-| `platform` | Observability, Traefik, Cloudflared, Headlamp, Turbocache |
-| `cortex`   | AgentGateway, MCP services, Memory API and web, MongoDB   |
-| `studio`   | Penpot, Memos                                             |
-| `docs`     | Documentation portal                                      |
+| Namespace   | Contents                                                    |
+| :---------- | :---------------------------------------------------------- |
+| `platform`  | Observability, Traefik, Cloudflared, Headlamp, Turbocache   |
+| `cortex`    | AgentGateway, MCP services, Memory API and web, MongoDB     |
+| `studio`    | Penpot, Memos                                               |
+| `corporate` | Traefik, Cloudflared, Web, API, Redis, MongoDB (`dev` only) |
+| `docs`      | Documentation portal (`dev` only)                           |
 
 ## Secrets
 
 Each overlay generates its secrets from `k8s/.env` with `secretGenerator` and `generatorOptions.disableNameSuffixHash: true`:
 
-- Hub overlays generate `platform-secrets` and `cortex-secrets`.
-- Corporate overlays generate `docs-secrets`.
+- Hub overlays generate `platform-secrets`, `cortex-secrets`, and `studio-secrets`.
+- The `dev/corporate` overlay generates `corporate-secrets`. The `staging` and `prod` corporate
+  overlays do not generate secrets from `.env`. The cloud secret mechanism provides
+  `corporate-secrets`.
+
+## Documentation Portal
+
+The portal runs in Kubernetes only in `dev`, so Skaffold can hot reload it. In `staging` and
+`prod`, `deploy-docs.yaml` publishes it to Cloudflare Pages (`docs.tupynambalucas.dev`). It is not
+part of any cloud overlay or tunnel.
 
 ## Validation
 

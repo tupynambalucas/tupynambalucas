@@ -2,10 +2,23 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../../../manifests/corporate
-generatorOptions:
-  disableNameSuffixHash: true
-secretGenerator:
-  - name: docs-secrets
-    namespace: docs
-    envs:
-      - ../../../.env
+patches:
+  - target:
+      kind: Deployment
+      name: api
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: corporate-secrets
+              key: MONGO_URI
+  - target:
+      kind: Deployment
+      name: cloudflared
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2

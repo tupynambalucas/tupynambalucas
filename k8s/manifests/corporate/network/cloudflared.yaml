@@ -1,8 +1,8 @@
-apiVersion: apps/v1
+﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cloudflared
-  namespace: docs
+  namespace: corporate
   labels:
     app: cloudflared
 spec:
@@ -26,7 +26,7 @@ spec:
             - name: TUNNEL_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: docs-secrets
+                  name: corporate-secrets
                   key: CLOUDFLARE_TUNNEL_TOKEN_CORPORATE
                   optional: true
           resources:

@@ -64,6 +64,7 @@
     "github:services:reset": "pnpm --filter @monorepo/tools-github github:services:reset",
     "// Infrastructure Context": "----------------------------------------",
     "infra:dev": "pnpm --filter @monorepo/k8s dev",
+    "infra:build": "pnpm --filter @monorepo/k8s build",
     "infra:delete": "pnpm --filter @monorepo/k8s delete",
     "infra:stop": "pnpm infra:delete",
     "// CI/CD & Quality": "-------------------------------------------------",

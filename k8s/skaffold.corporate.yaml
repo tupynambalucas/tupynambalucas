@@ -6,9 +6,31 @@ build:
   platforms: ['linux/amd64']
   local: { push: true, useDockerCLI: true, tryImportMissing: true, concurrency: 2 }
   artifacts:
+    - image: corporate-api
+      context: ..
+      docker: { dockerfile: corporate/services/api/Dockerfile, target: dev }
+      sync:
+        manual:
+          - src: 'corporate/services/api/src/**/*'
+            dest: /app
+          - src: 'corporate/packages/**/*'
+            dest: /app
+    - image: corporate-web
+      context: ..
+      docker: { dockerfile: corporate/services/web/Dockerfile, target: dev }
+      sync:
+        manual:
+          - src: 'corporate/services/web/src/**/*'
+            dest: /app
+          - src: 'corporate/services/web/public/**/*'
+            dest: /app
+          - src: 'corporate/packages/**/*'
+            dest: /app
+          - src: 'hub/studio/assets/**/*'
+            dest: /app
     - image: kb-docusaurus-portal
       context: ..
-      docker: { dockerfile: corporate/services/portal/Dockerfile }
+      docker: { dockerfile: corporate/services/portal/Dockerfile, target: dev }
       sync:
         manual:
           - src: 'corporate/collections/namespaces/portal/content/**/*'
@@ -41,7 +63,7 @@ manifests:
         repo: https://helm.traefik.io/traefik
         remoteChart: traefik
         version: 26.0.0
-        namespace: docs
+        namespace: corporate
         valuesFiles:
           - overlays/dev/corporate/helm-values/traefik-values.yaml
 deploy:

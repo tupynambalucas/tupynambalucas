@@ -66,4 +66,4 @@ extraObjects:
     subjects:
       - kind: ServiceAccount
         name: traefik
-        namespace: docs
+        namespace: corporate

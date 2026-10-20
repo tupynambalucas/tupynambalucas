@@ -6,7 +6,6 @@ import { studioAssetsPlugin } from './plugins/studioAssets';
 
 export default defineConfig(({ mode }) => {
   return {
-    envDir: '../../infrastructure/docker',
     plugins: [
       studioAssetsPlugin(),
       tailwindcss(),
@@ -31,12 +30,12 @@ export default defineConfig(({ mode }) => {
     server: {
       host: true,
       port: 5173,
-      allowedHosts: ['elo.internal'],
+      allowedHosts: ['.tupynambalucas.dev', 'web'],
       open: true,
       cors: true,
       proxy: {
         '/api': {
-          target: 'http://localhost:3000',
+          target: process.env.API_PROXY_TARGET ?? 'http://localhost:3000',
           changeOrigin: true,
           secure: false,
         },
@@ -48,7 +47,7 @@ export default defineConfig(({ mode }) => {
       open: true,
       proxy: {
         '/api': {
-          target: 'http://localhost:3000',
+          target: process.env.API_PROXY_TARGET ?? 'http://localhost:3000',
           changeOrigin: true,
           secure: false,
         },

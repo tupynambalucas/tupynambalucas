@@ -5,15 +5,27 @@ resources:
 patches:
   - target:
       kind: Ingress
-      name: kb-docusaurus-portal-ingress
+      name: web-ingress
     patch: |-
       - op: replace
         path: /spec/rules/0/host
-        value: docs-stg.tupynambalucas.dev
-generatorOptions:
-  disableNameSuffixHash: true
-secretGenerator:
-  - name: docs-secrets
-    namespace: docs
-    envs:
-      - ../../../.env
+        value: web-stg.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: api-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: api-stg.tupynambalucas.dev
+  - target:
+      kind: Deployment
+      name: api
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: corporate-secrets
+              key: MONGO_URI

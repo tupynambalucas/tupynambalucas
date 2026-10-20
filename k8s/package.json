@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "skaffold dev --check-cluster-node-platforms=false",
+    "build": "skaffold build --check-cluster-node-platforms=false",
     "delete": "skaffold delete"
   },
   "dependencies": {},

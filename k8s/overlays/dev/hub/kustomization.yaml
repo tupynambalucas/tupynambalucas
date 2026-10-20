@@ -84,3 +84,7 @@ secretGenerator:
     namespace: cortex
     envs:
       - ../../../.env
+  - name: studio-secrets
+    namespace: studio
+    envs:
+      - ../../../.env

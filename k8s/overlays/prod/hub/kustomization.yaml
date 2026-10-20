@@ -7,6 +7,14 @@ resources:
   - ../../../manifests/hub/tools
   - ../../../manifests/hub/studio
   - ../../../manifests/hub/cortex
+patches:
+  - target:
+      kind: Deployment
+      name: cloudflared
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
 generatorOptions:
   disableNameSuffixHash: true
 secretGenerator:
@@ -16,5 +24,9 @@ secretGenerator:
       - ../../../.env
   - name: cortex-secrets
     namespace: cortex
+    envs:
+      - ../../../.env
+  - name: studio-secrets
+    namespace: studio
     envs:
       - ../../../.env
