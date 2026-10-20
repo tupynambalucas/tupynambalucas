@@ -5,7 +5,7 @@ and one local registry. Source code lives on the Linux filesystem (`ext4`) to re
 `gvproxy` bottlenecks that crashed the Skaffold proxy.
 
 Prerequisite: the branch is committed and pushed (see
-[Develop integration and Ubuntu readiness](../develop-integration-and-ubuntu-readiness.md),
+[Develop integration and Ubuntu readiness](./develop-integration-and-ubuntu-readiness.md),
 gate U0). Uncommitted work is not available inside Ubuntu.
 
 ## 1. WSL2 Preparation
@@ -13,7 +13,7 @@ gate U0). Uncommitted work is not available inside Ubuntu.
 1. Install the distribution from Windows PowerShell:
 
    ```powershell
-   wsl --install -d Ubuntu
+   wsl --install Ubuntu --name dev-ubuntu
    ```
 
 2. Limit WSL2 resources in `%UserProfile%\.wslconfig`. The `dev` cluster requests about 3.8 GB of
@@ -57,8 +57,8 @@ gate U0). Uncommitted work is not available inside Ubuntu.
 
    ```bash
    mkdir -p ~/projects && cd ~/projects
-   git clone https://github.com/tupynambalucas/tupynambalucas.git
-   cd tupynambalucas
+   git clone <repo-url>
+   cd <repo-name>
    git checkout chore/enterprise-architecture
    ```
 
@@ -128,6 +128,16 @@ sudo install skaffold /usr/local/bin/
 rm skaffold
 ```
 
+### kubeseal (Bitnami Sealed Secrets CLI)
+
+```bash
+KUBESEAL_VERSION="0.27.1"
+curl -OL "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz"
+tar -xvzf "kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz" kubeseal
+sudo install -m 755 kubeseal /usr/local/bin/kubeseal
+rm "kubeseal-${KUBESEAL_VERSION}-linux-amd64.tar.gz" kubeseal
+```
+
 ### Node.js (LTS v22) and pnpm
 
 ```bash
@@ -182,18 +192,18 @@ Setting up WSL2 and native Linux carries **zero risk of losing your existing pro
 
 1. **Storage Isolation**: Windows drives (`C:`, `D:`) and WSL2 disks are physically and logically
    independent. WSL2 stores its data inside a dedicated virtual disk (`ext4.vhdx`). Nothing done
-   inside Ubuntu can accidentally wipe or modify `C:\Users\tupyn\projects\tupynambalucas`.
+   inside Ubuntu can accidentally wipe or modify the Windows checkout directory.
 2. **Git Cloud Remote**: Your Git commits and branches are hosted securely on GitHub.
-3. **Safe Clone**: We clone into `~/projects/tupynambalucas` inside Linux. The Windows repository
-   at `C:\Users\tupyn\projects\tupynambalucas` remains an untouched backup.
+3. **Safe Clone**: We clone into `~/projects/<repo-name>` inside Linux. The Windows repository
+   remains an untouched backup.
 4. **Copying Untracked `.env` Secrets**:
    Copy uncommitted `.env` files from Windows directly into the Linux environment:
 
    ```bash
    # From inside Ubuntu:
-   cp /mnt/c/Users/tupyn/projects/tupynambalucas/.env ~/projects/tupynambalucas/.env 2>/dev/null || true
+   cp /mnt/c/path/to/windows/repo/.env ~/projects/<repo-name>/.env 2>/dev/null || true
     # Never copy infrastructure/.env: k8s/.env uses the new sectioned layout.
-    cp /mnt/c/Users/tupyn/projects/tupynambalucas/k8s/.env ~/projects/tupynambalucas/k8s/.env
+    cp /mnt/c/path/to/windows/repo/k8s/.env ~/projects/<repo-name>/k8s/.env
    ```
 
 5. **Disaster Recovery (1-Command Full System Snapshot)**:
@@ -203,18 +213,18 @@ Setting up WSL2 and native Linux carries **zero risk of losing your existing pro
    ```powershell
    # In Windows PowerShell (stops WSL and exports full snapshot):
    wsl --shutdown
-   wsl --export Ubuntu "D:\wsl-backup\ubuntu-dev-$(Get-Date -Format 'yyyyMMdd').tar"
+   wsl --export dev-ubuntu "D:\wsl-backup\dev-ubuntu-$(Get-Date -Format 'yyyyMMdd').tar"
    ```
 
    To restore the entire machine on any Windows computer:
 
    ```powershell
-   wsl --import Ubuntu-Restored "C:\WSL\Ubuntu" "D:\wsl-backup\ubuntu-dev-20261005.tar" --version 2
+   wsl --import dev-ubuntu "C:\WSL\dev-ubuntu" "D:\wsl-backup\dev-ubuntu-snapshot.tar" --version 2
    ```
 
 6. **Direct Windows File Explorer Access**:
    You can inspect or copy files directly between Windows and Ubuntu at any time by entering
-   this path in Windows Explorer: `\\wsl$\Ubuntu\home\<USER>\projects\tupynambalucas`.
+   this path in Windows Explorer: `\\wsl$\dev-ubuntu\home\<USER>\projects\<repo-name>`.
 
 ## 5. IDE Integration (VS Code / Antigravity)
 
@@ -229,7 +239,7 @@ inside native Linux ext4.
 2. Open Windows Terminal (Ubuntu profile) and navigate to the project directory:
 
    ```bash
-   cd ~/projects/tupynambalucas
+   cd ~/projects/<repo-name>
    code .
    # or when using the Antigravity launcher:
    antigravity .
@@ -238,7 +248,7 @@ inside native Linux ext4.
    VS Code / Antigravity launches on Windows with `WSL: Ubuntu` displayed in the bottom-left corner.
 
 3. Alternatively, inside VS Code / Antigravity, press `Ctrl+Shift+P` -> select
-   `WSL: Open Folder in WSL...` -> enter `/home/<USER>/projects/tupynambalucas`.
+   `WSL: Open Folder in WSL...` -> enter `/home/<USER>/projects/<repo-name>`.
 
 ### Terminal and Tasks Integration
 
@@ -262,7 +272,7 @@ When opened in WSL mode:
           "-WindowStyle",
           "Hidden",
           "-Command",
-          "Start-Process wt.exe -ArgumentList '--window -1 --maximized --profile \"Tupynamba - Antigravity CLI\" -d \"${workspaceFolder}\" -- pwsh.exe -NoExit -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\launch-agy.ps1\"'"
+          "Start-Process wt.exe -ArgumentList '--window -1 --maximized --profile \"Developer - Antigravity CLI\" -d \"${workspaceFolder}\" -- pwsh.exe -NoExit -ExecutionPolicy Bypass -File \"${workspaceFolder}\\.vscode\\scripts\\launch-agy.ps1\"'"
         ]
       },
       "linux": {

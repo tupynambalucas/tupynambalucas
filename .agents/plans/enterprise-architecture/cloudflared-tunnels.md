@@ -10,7 +10,7 @@ Cloudflare forwards requests for configured hostnames through it. No public IP, 
 router change is required.
 
 Use remotely managed tunnels. Hostnames and their targets are configured in the Cloudflare
-dashboard, and the pod needs only a token.
+dashboard or Zero Trust API, and the pod needs only a token.
 
 ```mermaid
 flowchart TD
@@ -35,12 +35,14 @@ flowchart TD
 Each cluster runs its own dedicated Cloudflare Tunnel connector pod. This cleanly isolates traffic
 and allows internal tools and public products to have completely independent ingress lifecycles:
 
-| Environment | Tunnel                             | Runs in                 | Token secret                                          |
-| :---------- | :--------------------------------- | :---------------------- | :---------------------------------------------------- |
-| `dev`       | `dev-hub`                          | `k3d-hub` (local)       | `CLOUDFLARE_TUNNEL_TOKEN_HUB` from local `.env`       |
-| `dev`       | `dev-corporate`                    | `k3d-corporate` (local) | `CLOUDFLARE_TUNNEL_TOKEN_CORPORATE` from local `.env` |
-| `staging`   | `staging-hub`, `staging-corporate` | One per cloud cluster   | Cluster secret store                                  |
-| `prod`      | `prod-hub`, `prod-corporate`       | One per cloud cluster   | Cluster secret store                                  |
+| Environment | Tunnel              | Runs in                 | Token secret                                          |
+| :---------- | :------------------ | :---------------------- | :---------------------------------------------------- |
+| `dev`       | `dev-hub`           | `k3d-hub` (local)       | `CLOUDFLARE_TUNNEL_TOKEN_HUB` from local `.env`       |
+| `dev`       | `dev-corporate`     | `k3d-corporate` (local) | `CLOUDFLARE_TUNNEL_TOKEN_CORPORATE` from local `.env` |
+| `staging`   | `staging-hub`       | Cloud Staging Hub       | `platform-secrets` (SealedSecret)                     |
+| `staging`   | `staging-corporate` | Cloud Staging Corporate | `corporate-secrets` (SealedSecret)                    |
+| `prod`      | `prod-hub`          | Cloud Prod Hub          | `platform-secrets` (SealedSecret)                     |
+| `prod`      | `prod-corporate`    | Cloud Prod Corporate    | `corporate-secrets` (SealedSecret)                    |
 
 Rules:
 
@@ -49,6 +51,8 @@ Rules:
   unambiguous.
 - Both local dev tunnels register under `tupynambalucas.dev` without conflict, as Cloudflare routes
   by exact hostname.
+- Detailed architectural justification and setup instructions are in
+  [Tunnel provisioning strategy](./tunnel-provisioning-strategy.md).
 
 ## 3. Dev Configuration
 
@@ -58,32 +62,36 @@ In local development, the two tunnels run concurrently inside `k3d-hub` and `k3d
 
 All target the in-cluster Traefik service on HTTP (`http://traefik.platform.svc.cluster.local:80`):
 
-| Hostname                            | Target Service                                 |
-| :---------------------------------- | :--------------------------------------------- |
-| `grafana-dev.tupynambalucas.dev`    | `http://traefik.platform.svc.cluster.local:80` |
-| `headlamp-dev.tupynambalucas.dev`   | same                                           |
-| `penpot-dev.tupynambalucas.dev`     | same                                           |
-| `memos-dev.tupynambalucas.dev`      | same                                           |
-| `memory-dev.tupynambalucas.dev`     | same                                           |
-| `memory-api-dev.tupynambalucas.dev` | same                                           |
-| `turbocache-dev.tupynambalucas.dev` | same                                           |
-| `traefik-dev.tupynambalucas.dev`    | same                                           |
+| Hostname                                      | Target Service                                 |
+| :-------------------------------------------- | :--------------------------------------------- |
+| `grafana-dev.tupynambalucas.dev`              | `http://traefik.platform.svc.cluster.local:80` |
+| `headlamp-dev.tupynambalucas.dev`             | same                                           |
+| `penpot-dev.tupynambalucas.dev`               | same                                           |
+| `memos-dev.tupynambalucas.dev`                | same                                           |
+| `memory-dev.tupynambalucas.dev`               | same                                           |
+| `memory-api-dev.tupynambalucas.dev`           | same                                           |
+| `turbocache-dev.tupynambalucas.dev`           | same                                           |
+| `traefik-dev.tupynambalucas.dev`              | same                                           |
+| `agentgateway-dev.tupynambalucas.dev`         | same                                           |
+| `agentgateway-ingress-dev.tupynambalucas.dev` | same                                           |
+| `agentgateway-mcp-dev.tupynambalucas.dev`     | same                                           |
 
 ### Tunnel `dev-corporate` Hostnames (Targeting Traefik in `k3d-corporate`)
 
-All target the in-cluster Traefik service in the corporate cluster (`http://traefik.docs.svc.cluster.local:80` or `corporate` namespace):
+All target the in-cluster Traefik service in the `corporate` namespace (`http://traefik.corporate.svc.cluster.local:80`):
 
-| Hostname                      | Target Service               |
-| :---------------------------- | :--------------------------- |
-| `docs-dev.tupynambalucas.dev` | in-cluster corporate Traefik |
-| `web-dev.tupynambalucas.dev`  | in-cluster corporate Traefik |
-| `api-dev.tupynambalucas.dev`  | in-cluster corporate Traefik |
+| Hostname                      | Target Service                                  |
+| :---------------------------- | :---------------------------------------------- |
+| `web-dev.tupynambalucas.dev`  | `http://traefik.corporate.svc.cluster.local:80` |
+| `api-dev.tupynambalucas.dev`  | `http://traefik.corporate.svc.cluster.local:80` |
+| `docs-dev.tupynambalucas.dev` | `http://traefik.corporate.svc.cluster.local:80` |
 
 Traefik routes by `Host` header inside each cluster, so every hostname points at its respective
 in-cluster Traefik service, and Ingress resources determine the backend pod.
 
 The `cloudflared` deployment in `manifests/hub/network/cloudflared.yaml` reads its token from
-`platform-secrets`. A parallel deployment in the corporate overlay reads from `corporate-secrets`.
+`platform-secrets`. A parallel deployment in `manifests/corporate/network/cloudflared.yaml` reads from
+`corporate-secrets`.
 
 ## 4. Behavior with Skaffold
 
@@ -129,9 +137,17 @@ Production requirements:
 Accepted trade-off: Cloudflare becomes a hard dependency for ingress. A Cloudflare outage makes the
 sites unreachable. All ingress TLS terminates directly at Cloudflare Edge.
 
-## 6. Validation
+## 6. Documentation Portal Exception
 
-1. `kubectl --context k3d-dev -n platform logs deploy/cloudflared` shows registered tunnel
+The documentation portal is not served through a tunnel in `staging` or `prod`. It is published to
+Cloudflare Pages (`docs.tupynambalucas.dev`) by the `deploy-docs.yaml` workflow. The portal runs in
+Kubernetes only in `dev`, behind the `dev-corporate` tunnel (`docs-dev.tupynambalucas.dev`), so
+Skaffold can hot reload it. The `staging-corporate` and `prod-corporate` tunnels publish only `web`
+and `api` hostnames.
+
+## 7. Validation
+
+1. `kubectl --context k3d-hub -n platform logs deploy/cloudflared` shows registered tunnel
    connections.
 2. `curl -I https://grafana-dev.tupynambalucas.dev` returns a response from Traefik, then the Access
    login when protected.

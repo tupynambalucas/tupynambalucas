@@ -2,24 +2,34 @@
 
 Execution order, validation, and rollback. Each phase ends in a state that works on its own.
 
-> Status and the integration procedure for develop are tracked in
-> [Develop integration and Ubuntu readiness](../develop-integration-and-ubuntu-readiness.md).
-> Phases 0, 2, and 4 are already committed on chore/enterprise-architecture.
+> **Status Summary**:
+>
+> - **Phase 0 (Preparation)**: Completed.
+> - **Phase 1 (Ubuntu Environment)**: In progress / ready for verification on WSL2.
+> - **Phase 2 (Infrastructure Refactor)**: Completed (all 6 overlays render cleanly; corporate
+>   manifests added; `studio-secrets` restored; cloudflared prod replicas set to 2).
+> - **Phase 3 (Cloudflare Dev Tunnels)**: In progress (provisioning `dev-hub` and `dev-corporate`
+>   tunnels via Zero Trust Dashboard).
+> - **Phase 4 (Monorepo Restructure)**: Completed (DDD structure in `hub/` and `corporate/` active;
+>   obsolete services removed; build and sync paths updated).
+> - **Phase 5 (Cloud Environments)**: Planned (Sealed Secrets, ArgoCD GitOps, Terraform).
 
-## Phase 0: Preparation
+---
 
-- **Sync Main:** Ensure the `main` branch is fully synchronized with `develop` (`git checkout main`, `git merge develop`, `git push origin main`) to establish a clean baseline.
-- **Create Branch:** Checkout `develop` and create the branch `chore/enterprise-architecture`. All structural changes will happen here.
-- **Local Backup (Critical):** Before moving folders, create a full local backup of the repository using `rsync -a` or `cp -a` to a folder outside the Git working tree (e.g., `cp -a Tupynambalucas Tupynambalucas-backup`). This guarantees no unversioned configurations (like `.env`) or local logic are permanently lost if a `git clean -fd` or hard reset is required during the refactor.
+## Phase 0: Preparation (Completed)
+
+- **Sync Main:** Synchronized `main` and `develop` to establish a clean baseline.
+- **Create Branch:** Created `chore/enterprise-architecture`.
+- **Local Backup (Critical):** Created full local backup in `tupynambalucas-backup` outside Git.
 - **Handling Tracked vs Untracked Files:**
-  - Use `git mv` (or `git mv -k` to gracefully skip errors) exclusively for tracked files to preserve Git history.
-  - Ignored files like `node_modules` must _not_ be moved. Delete them and regenerate them using `pnpm install` after the restructure to ensure workspace symlinks rebuild correctly.
-  - Crucial unversioned files like `.env` must be moved manually (e.g., `cp infrastructure/.env k8s/.env`) by referring to the backup.
-- **Record a baseline:** `pnpm install`, `pnpm -r typecheck`, and a successful docs build.
+  - Preserved git history via `git mv`.
+  - Regenerated `node_modules` via `pnpm install`.
+  - Migrated unversioned configurations from backup to `k8s/.env`.
+- **Baseline:** Recorded and validated.
 
-Rollback: delete the branch and restore unversioned files from the backup.
+---
 
-## Phase 1: Ubuntu Environment
+## Phase 1: Ubuntu Environment (Verification Ready)
 
 Follow [Ubuntu setup](./ubuntu-setup.md). Clone the repository into the Linux filesystem and copy
 the `.env` files.
@@ -30,77 +40,109 @@ Validation:
 - `pnpm install` completes on the Linux clone.
 - Local registry responds on `localhost:5000`.
 
-Rollback: delete the clusters with `k3d cluster delete hub corporate && k3d registry delete k3d-registry.localhost && docker network rm k3d-enterprise-net`. The Windows setup is untouched.
+Rollback: delete the clusters with:
+`k3d cluster delete hub corporate && k3d registry delete k3d-registry.localhost && docker network rm k3d-enterprise-net`.
 
-## Phase 2: Infrastructure Refactor
+---
 
-Follow [Infrastructure refactor](./infrastructure-refactor.md) without moving any monorepo
-context. Skaffold paths still point at the current `platform`, `studio`, `cortex`, and
-`knowledge-base` folders.
+## Phase 2: Infrastructure Refactor (Completed & Audited)
 
-Steps:
+Follow [Infrastructure refactor](./infrastructure-refactor.md) and
+[Enterprise architecture review](./enterprise-architecture-review.md).
 
-1. Rename `infrastructure/` to `k8s/` with `git mv`.
-2. Move manifests into the new tree and update the file mapping. Remove obsolete cert-manager
-   namespace and charts.
-3. Create `overlays/dev/hub` and `overlays/dev/corporate`, remove hostnames from the base.
-4. Split `skaffold.yaml` into the root and two module files.
-5. Update `pnpm-workspace.yaml`, root `package.json` scripts, and the `AGENTS.md` router.
+Executed Steps:
+
+1. Renamed `infrastructure/` to `k8s/`.
+2. Reorganized manifests into bounded contexts (`manifests/hub` and `manifests/corporate`).
+3. Removed obsolete `cert-manager` charts and namespaces.
+4. Added Kubernetes manifests for corporate products: `web`, `api`, `redis`, `mongodb` (dev),
+   and `portal` (dev).
+5. Created isolated namespace `corporate` for public stack and kept `docs` namespace for local dev portal.
+6. Generated `studio-secrets` across all hub overlays to unblock Penpot and Memos.
+7. Split Skaffold into root (`k8s/skaffold.yaml`), `skaffold.hub.yaml`, and `skaffold.corporate.yaml`.
+8. Configured `cloudflared` with 2 replicas in `prod/hub` and `prod/corporate` overlays.
 
 Validation:
 
-- `kubectl kustomize --load-restrictor=LoadRestrictionsNone overlays/dev/hub` and
-  `overlays/dev/corporate` render without errors.
-- The rendered dev output matches the output of the old `environments/local` apart from file
-  order. Compare with `diff` on the sorted resources.
-- `skaffold dev -f skaffold.hub.yaml` and `skaffold dev -f skaffold.corporate.yaml` reach healthy states and `-dev` hostnames respond through the tunnels.
+- `kubectl kustomize --load-restrictor=LoadRestrictionsNone k8s/overlays/<env>/<context>` renders with
+  exit code 0 across all 6 overlays (`dev/hub`, `dev/corporate`, `staging/hub`, `staging/corporate`,
+  `prod/hub`, `prod/corporate`).
 
-Rollback: revert the phase commits.
+---
 
-## Phase 3: Cloudflare
+## Phase 3: Cloudflare Dev Tunnels (Active)
 
-Follow [Cloudflared tunnels](./cloudflared-tunnels.md).
+Follow [Cloudflared tunnels](./cloudflared-tunnels.md) and
+[Tunnel provisioning strategy](./tunnel-provisioning-strategy.md).
 
-- Confirm the `dev-hub` and `dev-corporate` tunnels and public hostnames in Cloudflare dashboard.
-- Add Cloudflare Access policies to every `hub` hostname.
+Steps:
 
-Validation: tunnel logs show registered connections and each hostname answers.
+1. Create remotely-managed tunnel `dev-hub` in Cloudflare Zero Trust Dashboard and configure its
+   11 public hostnames pointing to `http://traefik.platform.svc.cluster.local:80`.
+2. Create remotely-managed tunnel `dev-corporate` in Cloudflare Zero Trust Dashboard and configure its
+   3 public hostnames (`docs-dev`, `web-dev`, `api-dev`) pointing to
+   `http://traefik.corporate.svc.cluster.local:80`.
+3. Save tokens into `k8s/.env` as `CLOUDFLARE_TUNNEL_TOKEN_HUB` and
+   `CLOUDFLARE_TUNNEL_TOKEN_CORPORATE`.
+4. Configure Cloudflare Zero Trust Access policies on all `hub` hostnames.
 
-## Phase 4: Monorepo Restructure
+Validation:
 
-Follow [Monorepo restructure](./monorepo-restructure.md). Do one context per commit, in this
-order:
+- Tunnel connector pods in `k3d-hub` and `k3d-corporate` show healthy connection logs.
+- `curl -I https://grafana-dev.tupynambalucas.dev` returns HTTP 200 or Cloudflare Access login.
 
-1. Remove `hub/infrastructure/docker` with `git rm`, move `hub/` to `corporate/`, then merge
-   `knowledge-base/` into it.
-2. Create the new `hub/` and dissolve `platform/` directly into `hub/observability/`,
-   `hub/tools/`, and `hub/network/`.
-3. Move `studio/` to `hub/studio/` and `cortex/` to `hub/cortex/`.
-4. Update the Skaffold artifact paths, Dockerfiles, workflows, and router files.
-5. Update the documentation pages that describe bounded contexts.
+---
 
-Validation after each commit:
+## Phase 4: Monorepo Restructure (Completed)
+
+Follow [Monorepo restructure](./monorepo-restructure.md).
+
+Executed Steps:
+
+1. Migrated `hub/services/web` and `hub/services/api` into `corporate/services/`.
+2. Merged `knowledge-base/` into `corporate/collections`, `corporate/packages`, and `corporate/services/portal`.
+3. Dissolved `platform/` directly into root subdomains: `hub/observability`, `hub/network`, `hub/tools`.
+4. Moved `studio/` into `hub/studio` and `cortex/` into `hub/cortex`.
+5. Removed obsolete compose scripts and custom Dockerfiles (`corporate/services/mongodb`, `corporate/services/redis`).
+6. Updated `pnpm-workspace.yaml`, Dockerfiles, `skaffold` configs, and context router files.
+
+Validation:
 
 - `pnpm install` and `pnpm -r typecheck` pass.
-- `skaffold build -f skaffold.hub.yaml` and `skaffold build -f skaffold.corporate.yaml` build artifacts.
+- Skaffold builds artifacts for both `hub` and `corporate`.
 
-Final validation: clean runs of both stacks on fresh `k3d-hub` and `k3d-corporate` clusters.
+---
 
-Rollback: revert the last commit. Each context move is independent.
+## Phase 5: Cloud Environments & Secrets Management (Planned)
 
-## Phase 5: Cloud Environments
+Follow [Secrets management](./secrets-management.md) and
+[Tunnel provisioning strategy](./tunnel-provisioning-strategy.md).
 
-- Add the `staging` and `prod` overlays for `hub` and `corporate` with their hostnames and
-  tunnels.
-- Provision the clusters with Terraform in `terraform/`.
-- Install ArgoCD and create one Application per overlay.
+Steps:
 
-Validation: ArgoCD reports every Application as Synced and Healthy.
+1. Provision cloud Kubernetes clusters (`staging` and `prod`) via Terraform in `terraform/`.
+2. Provision Cloudflare Tunnels (`staging-hub`, `staging-corporate`, `prod-hub`, `prod-corporate`)
+   and DNS records via Terraform.
+3. Install Bitnami Sealed Secrets controller in each cloud cluster with sync wave `-1`.
+4. Run `k8s/scripts/seal-secrets.sh` to seal environment secrets into
+   `overlays/<env>/<context>/sealed-secrets/`.
+5. Back up controller private keys immediately to secure off-cluster storage.
+6. Deploy ArgoCD and create Applications syncing `staging` and `prod` overlays from git.
+7. Verify documentation deployment workflow (`deploy-docs.yaml`) publishes `docs.tupynambalucas.dev`
+   to Cloudflare Pages.
+
+Validation:
+
+- ArgoCD reports all Applications as Synced and Healthy.
+- Ingress hostnames resolve securely through cloud tunnels.
+
+---
 
 ## Exit Criteria
 
-- One command starts the whole `dev` environment from a clean clone on Ubuntu.
+- One command starts the entire `dev` environment from a clean clone on Ubuntu.
 - No `-dev` hostname remains in `manifests/`.
-- `pnpm -r typecheck`, the docs build, and the renderer workflow pass.
-- No reference to `infrastructure/`, `knowledge-base/`, or root-level `platform/`, `studio/`,
-  `cortex/` remains in the repository.
+- All 6 overlays render with 0 errors via Kustomize.
+- Staging and prod clusters contain zero plain text secrets in Git.
+- `pnpm -r typecheck`, docs build, and renderer workflow pass cleanly.
+- No references to obsolete directories (`infrastructure/`, `knowledge-base/`, `platform/`).
