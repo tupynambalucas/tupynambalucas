@@ -89,7 +89,7 @@ Combine TailwindCSS v4 and CSS Modules. **The use of `px` is strictly forbidden*
 
 ### 1. Layered Responsibilities
 
-Code examples must align with: `Controller -> Service -> Repository -> Model`. All data schemas must reside in core packages (e.g., `@repo/hub/core`) first.
+Code examples must align with: `Controller -> Service -> Repository -> Model`. All data schemas must reside in core packages (e.g., `@repo/core`) first.
 
 ### 2. Dependency Injection
 

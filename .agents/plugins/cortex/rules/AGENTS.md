@@ -1,13 +1,12 @@
 # Cortex Plugin - MCP Service Instructions
 
-> **🚨 CRITICAL AGENT INSTRUCTION (READ THIS FIRST):**
+> **CRITICAL AGENT INSTRUCTION (READ THIS FIRST):**
 > ALL of the toolsets mentioned below (Firecrawl, GitHub, Grafana, Playwright, Context7, Memory) are **bundled under a SINGLE MCP server named `cortex_agentgateway`**.
 > You MUST ALWAYS use `ServerName: "cortex_agentgateway"` when calling ANY of these tools via the `call_mcp_tool` wrapper.
 > DO NOT attempt to call `ServerName: "firecrawl"`, `ServerName: "github"`, etc. They do not exist as independent servers and will fail. `cortex_agentgateway` is the ONLY valid server name for these tools.
 
-All services below are accessed through the single AgentGateway ingress at
-`agentgateway-mcp-dev.tupynambalucas.dev`. Do not pass credentials directly to any
-individual service tool.
+All services below are accessed through the single AgentGateway ingress endpoint.
+Do not pass credentials directly to any individual service tool.
 
 ---
 
@@ -32,10 +31,10 @@ autonomous research capabilities.
 ### Environment and Network Routing
 
 - **Transparent Network Proxying**: AgentGateway automatically intercepts tools arguments and rewrites `localhost` or `127.0.0.1` to `host.docker.internal`. Agents should simply use `localhost`.
-- Automatic target URL mapping for local applications (do not query the user for URLs):
-  - **knowledge-base** (Docusaurus dev server): `http://localhost:3002`
-  - **hub-web** (Vite/React dev server): `http://localhost:5173`
-  - **hub-api** (Fastify REST API): `http://localhost:3000`
+- Automatic target URL mapping for local applications (consult host workspace configuration):
+  - **documentation**: `http://localhost:3002` (or configured docs port)
+  - **web frontend**: `http://localhost:5173` (or configured dev server port)
+  - **backend api**: `http://localhost:3000` (or configured api port)
 
 ### Tool Execution Best Practices
 
@@ -87,10 +86,10 @@ inspect web pages, evaluate UI layouts, and extract structural accessibility tre
 ### Environment and Network Routing
 
 - **Transparent Network Proxying**: AgentGateway automatically intercepts tools arguments and rewrites `localhost` or `127.0.0.1` to `host.docker.internal`. Agents should simply use `localhost`.
-- Automatic target URL mapping for local applications (do not query the user for URLs):
-  - **knowledge-base** (Docusaurus dev server): `http://localhost:3002`
-  - **hub-web** (Vite/React dev server): `http://localhost:5173`
-  - **hub-api** (Fastify REST API): `http://localhost:3000`
+- Automatic target URL mapping for local applications (consult host workspace configuration):
+  - **documentation**: `http://localhost:3002` (or configured docs port)
+  - **web frontend**: `http://localhost:5173` (or configured dev server port)
+  - **backend api**: `http://localhost:3000` (or configured api port)
 
 ### Tool Execution Best Practices
 

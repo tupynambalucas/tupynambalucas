@@ -1,0 +1,258 @@
+---
+id: complex-hierarchies
+title: Diátaxis em hierarquias complexas
+sidebar_position: 6
+---
+
+# Diátaxis em hierarquias complexas
+
+## Estrutura do conteúdo de documentação
+
+A aplicação do Diátaxis à maioria da documentação é bastante direta.
+O produto que define o domínio de interesse possui limites claros, e é
+possível criar um arranjo de conteúdos de documentação que se pareça - por exemplo - com isto:
+
+```
+Home                      <- página inicial
+    Tutorial              <- página inicial
+        Part 1
+        Part 2
+        Part 3
+    How-to guides         <- página inicial
+        Install
+        Deploy
+        Scale
+    Reference             <- página inicial
+        Command-line tool
+        Available endpoints
+        API
+    Explanation           <- página inicial
+        Best practice recommendations
+        Security overview
+        Performance
+```
+
+Em cada caso, uma página inicial contém uma visão geral do conteúdo interno. O tutorial, por exemplo, descreve o que o tutorial tem a oferecer,
+fornecendo contexto para ele.
+
+### Adicionando uma camada de hierarquia
+
+Até mesmo conjuntos de documentação muito grandes podem usar isso de forma eficaz, embora após um
+tempo algum agrupamento de conteúdo dentro das seções possa ser prudente. Isso pode ser feito
+adicionando outra camada de hierarquia - por exemplo, para conseguir abordar
+diferentes opções de instalação separadamente:
+
+```
+Home                      <- página inicial
+    Tutorial              <- página inicial
+        Part 1
+        Part 2
+        Part 3
+    How-to guides         <- página inicial
+        Install           <- página inicial
+            Local installation
+            Docker
+            Virtual machine
+            Linux container
+        Deploy
+        Scale
+    Reference             <- página inicial
+        Command-line tool
+        Available endpoints
+        API
+    Explanation           <- página inicial
+        Best practice recommendations
+        Security overview
+        Performance
+```
+
+## Páginas de sumário
+
+Páginas de sumário - tipicamente uma página inicial e quaisquer páginas de aterrissagem - fornecem uma visão geral do material que abrangem.
+
+Existe uma arte em criar uma boa página de sumário. A experiência que elas proporcionam aos usuários merece atenção cuidadosa.
+
+### O problema das listas
+
+Listas com mais do que alguns itens são muito difíceis de ler para humanos, a menos que
+tenham uma ordem mecânica inerente - numérica ou alfabética. _Sete itens_
+_parecem ser um limite geral confortável._ Se você notar que está lidando com
+listas maiores do que isso em seus sumários, provavelmente precisa encontrar uma maneira de
+dividi-las em partes menores.
+
+Como sempre, o que mais importa é **a experiência do leitor**. O Diátaxis funciona
+porque atende bem às necessidades do usuário - se a sua execução do Diátaxis levar a
+formatos que pareçam desconfortáveis ou inadequados, então você precisa usá-lo
+de maneira diferente.
+
+### Visões gerais e texto introdutório
+
+**O conteúdo de uma página de aterrissagem deve ser lido como uma visão geral.**
+
+Ou seja, ele não deve simplesmente apresentar listas de outros conteúdos, mas sim
+apresentá-los. _Lembre-se de que você está sempre escrevendo para um usuário humano, e não_
+_cumprindo as exigências de um esquema._
+
+Títulos e trechos de texto introdutório chamam a atenção e fornecem contexto;
+por exemplo, uma **página de aterrissagem de how-to**:
+
+```
+How to guides
+=============
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Installation guides
+-------------------
+
+Pellentesque malesuada, ipsum ac mollis pellentesque, risus
+nunc ornare odio, et imperdiet dui mi et dui. Phasellus vel
+porta turpis. In feugiat ultricies ipsum.
+
+* Local installation       |
+* Docker                   |  links to
+* Virtual machines         |  the guides
+* Linux containers         |
+
+Deployment and scaling
+-----------------------
+
+Morbi sed scelerisque ligula. In dictum lacus quis felis
+facilisisvulputate. Quisque lacinia condimentum ipsum
+laoreet tempus.
+
+* Deploy an instance       |  links to
+* Scale your application   |  the guides
+```
+
+## Problemas bidimensionais
+
+Um problema mais difícil ocorre quando a estrutura delineada pelo Diátaxis encontra
+outra estrutura - frequentemente, uma estrutura de áreas de tópico dentro da
+documentação, ou quando a documentação atende a tipos de usuários muito diferentes.
+
+Por exemplo, podemos ter um produto que é usado em terra, no mar e no ar, e
+embora seja o mesmo produto, é usado de maneira bastante diferente em cada caso. E pode
+ser que um usuário que o utilize em terra tenha pouca probabilidade de usá-lo no mar.
+
+Ou, a documentação do produto atende às necessidades de:
+
+- usuários
+
+- desenvolvedores que constroem outros produtos ao redor dele
+
+- os colaboradores que ajudam a mantê-lo.
+
+O mesmo produto, mas preocupações muito diferentes.
+
+Um último exemplo: um produto que pode ser implantado em diferentes nuvens públicas,
+onde cada nuvem pública apresenta fluxos de trabalho, comandos, APIs,
+GUIs, restrições e assim por diante bastante diferentes. Embora seja o mesmo produto, no que diz respeito aos
+usuários em cada caso, o que eles precisam saber e fazer é muito
+diferente - o que eles precisam é de documentação não para o _produto_,
+mas sim
+
+- _product-on-public-cloud-one_
+
+- _product-on-public-cloud-two_
+
+- e assim por diante…
+
+Portanto, _poderíamos_ decidir por uma estrutura geral que faça o seguinte:
+
+```
+tutorial
+    for users on land
+        [...]
+    for users at sea
+        [...]
+    for users in the air
+        [...]
+[and then so on for how-to guides, reference and explanation]
+```
+
+ou talvez, em vez disso, isto:
+
+```
+for users on land
+    tutorial
+        [...]
+    how-to guides
+        [...]
+    reference
+        [...]
+    explanation
+        [...]
+for users at sea
+    [tutorial, how-to, reference, explanation sections]
+for users in the air
+    [tutorial, how-to, reference, explanation sections]
+```
+
+Qual é a melhor opção? Parece haver muita repetição em ambos os casos. E quanto
+ao material que pode ser compartilhado entre terra, mar e ar?
+
+### Qual _é_ o problema?
+
+Primeiramente, o problema não está de forma alguma limitado ao Diátaxis - haveria a
+dificuldade de gerenciar a documentação de qualquer maneira. No entanto, o Diátaxis certamente
+ajuda a revelar o problema, como faz em muitos casos. Ele o coloca em foco
+e exige que seja abordado.
+
+Em segundo lugar, a questão destaca um mal-entendido comum. O Diátaxis não é um
+esquema no qual a documentação deve ser encaixada - quatro caixas. Ele propõe quatro
+tipos diferentes de documentação, ao redor dos quais a documentação deve ser
+estruturada, mas isso não significa que deva haver simplesmente quatro divisões
+de documentação na hierarquia, uma para cada uma dessas categorias.
+
+## O Diátaxis como uma abordagem
+
+O Diátaxis pode ser claramente representado em um diagrama - mas ele não é
+o _mesmo_ que esse diagrama.
+
+Ele deve ser entendido como uma abordagem, uma maneira de trabalhar com a documentação,
+que identifica quatro necessidades diferentes e as utiliza para criar e estruturar
+a documentação de forma eficaz.
+
+Isso _tenderá_ a uma divisão estrutural clara, explícita nas quatro
+categorias - mas esse é um resultado típico da boa prática, e não o seu
+fim.
+
+## Pensamento centrado no usuário
+
+**O Diátaxis é fundamentado na atenção às necessidades do usuário**, e mais uma vez é essa
+preocupação que deve nos guiar.
+
+O que devemos documentar é o produto _como ele é para o usuário_, o produto como
+ele está em suas mãos e mentes. (Infelizmente para os criadores de produtos, a forma como eles
+os concebem é muito menos relevante.)
+
+O produto em terra, no mar e no ar são efetivamente três produtos diferentes,
+talvez para três usuários diferentes?
+
+Nesse caso, que esse seja o ponto de partida para pensar sobre isso.
+
+Se a documentação precisa atender às necessidades de usuários, desenvolvedores e
+colaboradores, como _eles_ enxergam o produto? Devemos presumir que um
+desenvolvedor que o incorpora em outros produtos normalmente precisará de um bom
+entendimento de como ele é usado, e que um colaborador precisa saber o que
+um desenvolvedor também sabe?
+
+Então talvez faça sentido ser mais flexível com a estrutura, em algumas partes
+(digamos, o tutorial) permitindo que o conteúdo voltado para o desenvolvedor siga o
+material voltado para o usuário, ao mesmo tempo em que separa completamente os how-to
+guides dos colaboradores de ambos.
+
+E assim por diante. Se a estrutura não for a estrutura simples e descomplicada com a qual
+começamos, isso não é um problema - desde que _haja_
+organização de acordo com os princípios do Diátaxis, de forma que a documentação não
+misture suas diferentes formas e finalidades.
+
+### Permita que a documentação seja complexa, se necessário
+
+A documentação deve ser tão complexa quanto precisar ser. Às vezes,
+ela terá estruturas complexas.
+
+Mas até mesmo estruturas complexas podem ser tornadas
+fáceis de navegar, desde que sejam lógicas e incorporem
+padrões que atendam às necessidades dos usuários.

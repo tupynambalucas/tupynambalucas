@@ -21,7 +21,7 @@ A fragment file (e.g., `profiles.json`) looks like this:
       "name": "Project X - Admin CLI",
       "commandline": "pwsh.exe",
       "elevate": true,
-      "startingDirectory": "D:\\projects\\tupynambalucas",
+      "startingDirectory": "${workspaceFolder}",
       "colorScheme": "Campbell Powershell",
       "icon": "ms-appx:///ProfileIcons/pwsh.png"
     }

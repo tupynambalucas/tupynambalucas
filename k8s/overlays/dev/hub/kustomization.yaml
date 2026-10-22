@@ -1,0 +1,90 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../manifests/hub/namespaces
+  - ../../../manifests/hub/observability
+  - ../../../manifests/hub/network
+  - ../../../manifests/hub/tools
+  - ../../../manifests/hub/studio
+  - ../../../manifests/hub/cortex
+patches:
+  - target:
+      kind: Ingress
+      name: traefik-dashboard-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: traefik-dev.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: grafana-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: grafana-dev.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: memos-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: memos-dev.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: penpot-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: penpot-dev.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: headlamp-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: headlamp-dev.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: turbocache-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: turbocache-dev.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: memory-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: memory-dev.tupynambalucas.dev
+      - op: replace
+        path: /spec/rules/1/host
+        value: memory-api-dev.tupynambalucas.dev
+  - target:
+      kind: Ingress
+      name: agentgateway-ingress
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: agentgateway-dev.tupynambalucas.dev
+      - op: replace
+        path: /spec/rules/1/host
+        value: agentgateway-ingress-dev.tupynambalucas.dev
+      - op: replace
+        path: /spec/rules/2/host
+        value: agentgateway-mcp-dev.tupynambalucas.dev
+generatorOptions:
+  disableNameSuffixHash: true
+secretGenerator:
+  - name: platform-secrets
+    namespace: platform
+    envs:
+      - ../../../.env
+  - name: cortex-secrets
+    namespace: cortex
+    envs:
+      - ../../../.env
+  - name: studio-secrets
+    namespace: studio
+    envs:
+      - ../../../.env

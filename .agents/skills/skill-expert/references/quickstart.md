@@ -77,7 +77,7 @@ This process uses **progressive disclosure** to let the agent access many skills
 
 You've created a working Agent Skill. From here:
 
-- **[Best practices](/skill-creation/best-practices)** — How to write skills that are well-scoped and effective.
-- **[Optimizing skill descriptions](/skill-creation/optimizing-descriptions)** — Test and improve your skill's description so it activates on the right prompts.
-- **[Specification](/specification)** — The complete format reference for `SKILL.md` files.
+- **[Best practices](./best-practices.md)** — How to write skills that are well-scoped and effective.
+- **[Optimizing skill descriptions](./optimizing-descriptions.md)** — Test and improve your skill's description so it activates on the right prompts.
+- **[Specification](./specification.md)** — The complete format reference for `SKILL.md` files.
 - **[Example skills](https://github.com/anthropics/skills)** — Browse real-world skills on GitHub.

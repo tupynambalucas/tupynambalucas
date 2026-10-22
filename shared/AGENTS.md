@@ -1,12 +1,11 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
   <system-instruction>
-    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
-    file-reading tools before proceeding. Global constraints are mandatory.
+    AGENT: You are operating in the shared bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Shared
+# Bounded Context: shared
 
 This file defines the domain rules, architecture, and workspace navigation for the Shared bounded context in the tupynambalucas.dev monorepo. This bounded context holds cross-workspace utilities, configurations, and Git hooks.
 

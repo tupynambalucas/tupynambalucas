@@ -1,0 +1,99 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: hub
+build:
+  platforms: ['linux/amd64']
+  local: { push: true, useDockerCLI: true, tryImportMissing: true, concurrency: 2 }
+  artifacts:
+    - image: platform-turbocache
+      context: ../hub/tools/turbocache
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: cortex-mcp-guardrails
+      context: ..
+      docker: { dockerfile: hub/cortex/mcp/guardrails/Dockerfile, target: dev }
+    - image: cortex-memory-api
+      context: ..
+      docker: { dockerfile: hub/cortex/memory/services/api/Dockerfile, target: dev }
+    - image: cortex-memory-web
+      context: ..
+      docker: { dockerfile: hub/cortex/memory/services/web/Dockerfile, target: dev }
+    - image: cortex-mcp-memory
+      context: ..
+      docker: { dockerfile: hub/cortex/mcp/services/memory/Dockerfile, target: dev }
+    - image: cortex-mcp-inspector
+      context: ..
+      docker: { dockerfile: hub/cortex/mcp/inspector/Dockerfile, target: dev }
+    - image: cortex-mcp-github
+      context: ..
+      docker: { dockerfile: hub/cortex/mcp/services/github/Dockerfile, target: dev }
+    - image: cortex-mcp-context7
+      context: ..
+      docker: { dockerfile: hub/cortex/mcp/services/context7/Dockerfile, target: dev }
+    - image: cortex-mcp-firecrawl
+      context: ..
+      docker: { dockerfile: hub/cortex/mcp/services/firecrawl/Dockerfile, target: dev }
+    - image: cortex-mcp-grafana
+      context: ..
+      docker: { dockerfile: hub/cortex/mcp/services/grafana/Dockerfile, target: dev }
+    - image: cortex-mcp-playwright
+      context: ..
+      docker: { dockerfile: hub/cortex/mcp/services/playwright/Dockerfile, target: dev }
+    - image: studio-penpot-frontend
+      context: ../hub/studio/penpot/services/frontend
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-penpot-backend
+      context: ../hub/studio/penpot/services/backend
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-penpot-exporter
+      context: ../hub/studio/penpot/services/exporter
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-penpot-aide
+      context: ../hub/studio/penpot/services/aide
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-penpot-valkey
+      context: ../hub/studio/penpot/services/valkey
+      docker: { dockerfile: Dockerfile, target: dev }
+    - image: studio-memos
+      context: ../hub/studio/memos/services/memos
+      docker: { dockerfile: Dockerfile, target: dev }
+manifests:
+  kustomize:
+    paths: [overlays/dev/hub]
+    buildArgs: [--load-restrictor=LoadRestrictionsNone]
+  helm:
+    releases:
+      - name: traefik
+        repo: https://helm.traefik.io/traefik
+        remoteChart: traefik
+        version: 26.0.0
+        namespace: platform
+        valuesFiles:
+          - overlays/dev/hub/helm-values/traefik-values.yaml
+deploy:
+  kubeContext: k3d-hub
+  kubectl:
+    hooks:
+      before:
+        - host:
+            command:
+              - kubectl
+              - apply
+              - -f
+              - https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+portForward:
+  - resourceType: service
+    resourceName: agentgateway
+    namespace: cortex
+    port: 8080
+    localPort: 8080
+  - resourceType: service
+    resourceName: memory-api
+    namespace: cortex
+    port: 3006
+    localPort: 3006
+  - resourceType: service
+    resourceName: penpot-frontend
+    namespace: studio
+    port: 9005
+    localPort: 9005

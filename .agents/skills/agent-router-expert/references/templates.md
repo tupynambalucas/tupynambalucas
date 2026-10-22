@@ -49,8 +49,9 @@ The monorepo uses Skaffold v4beta11 with three composable modules:
 
 ## Global Constraints
 
-- MUST write all documentation in English (en-US).
-- MUST NOT use emojis in any technical document, README, or skill file.
+- MUST conduct all conversational chat responses in Brazilian Portuguese (pt-BR).
+- MUST write all code, configuration, technical documentation, commit messages, and Markdown files in English (en-US).
+- MUST NOT use emojis in any conversational response, chat message, technical document, README, or skill file.
 - MUST NOT use placeholders (e.g., TODO, TBD).
 - MUST use relative paths for all Markdown links. Absolute filesystem paths are strictly forbidden.
 - MUST format all files according to Prettier standards.

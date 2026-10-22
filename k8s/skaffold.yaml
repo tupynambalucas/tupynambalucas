@@ -1,0 +1,9 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: root
+requires:
+  - configs: [hub]
+    path: skaffold.hub.yaml
+  - configs: [corporate]
+    path: skaffold.corporate.yaml

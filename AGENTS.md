@@ -3,63 +3,43 @@
 This document serves as the root context router for AI agents operating in the
 tupynambalucas.dev monorepo.
 
-## Repository Entry Points
+## Navigation
 
-- [README.md](./README.md): Serves exclusively as the dynamic GitHub Profile view, which
-  is automatically updated by the `@Tupynambalucas/renderer` workspace generator.
-- [MONOREPO.readme.md](./MONOREPO.readme.md): The official developer entry point and
-  technical README for the repository.
-
-## Bounded Contexts
-
+- [README.md](./README.md): Serves as the dynamic GitHub Profile view (updated by the `@Tupynambalucas/renderer` workspace) and contains the official developer entry point and technical architecture within a toggleable details block.
 - [.agents](./.agents/AGENTS.md): Authoritative domain for agentic AI configurations, skills, plugins, and repository manipulation scripts.
-- [cortex](./cortex/AGENTS.md): Unified AI processing hub housing the AgentGateway MCP
-  ingress proxy, MongoDB Vector RAG memory subsystem, MCP adapter services, and
-  containerized agent runtimes. Kubernetes namespace `cortex`, Skaffold module `cortex-dev`.
-- [platform](./platform/AGENTS.md): Always-on cluster infrastructure providing Traefik
-  ingress routing, Cloudflare Tunnel edge connectivity, cert-manager TLS automation,
-  OpenTelemetry observability pipelines (Prometheus, Loki, Tempo, Grafana), Headlamp
-  cluster dashboard, and Turbocache remote build cache. Kubernetes namespace `platform`,
-  Skaffold module `platform-dev`.
-- [studio](./studio/AGENTS.md): Brand identity management, design tokens, and
-  collaborative design infrastructure (Penpot v2, Memos), plus Cloudflare R2 asset
-  synchronization. Kubernetes namespace `studio`, Skaffold module `studio-dev`.
-- [hub](./hub/AGENTS.md): Developer website client (React 19), REST API (Fastify 5),
-  and Zod-based data core library.
-- [renderer](./renderer/AGENTS.md): Dynamic asset generator and document compilation
-  engine producing GitHub profile SVG cards and templated Markdown.
-- [knowledge-base](./knowledge-base/AGENTS.md): Docusaurus v3 knowledge base structured under the Diataxis
-  framework with English and Portuguese (pt-BR) localization.
+- [hub](./hub/AGENTS.md): Internal team context grouping `observability` (Grafana, Loki, Prometheus), `network` (Traefik, Cloudflared), `tools` (Headlamp), `studio` (Penpot, Memos, brand assets), and `cortex` (AgentGateway, Memory subsystem).
+- [corporate](./corporate/AGENTS.md): Public-facing products context housing the company website (React), API (Fastify), and documentation portal (Docusaurus).
+- [k8s](./k8s/AGENTS.md): Core infrastructure manifests organized by environment overlays (`dev`, `staging`, `prod`) and Helm charts.
+- [renderer](./renderer/AGENTS.md): Dynamic asset generator and document compilation engine producing GitHub profile SVG cards and templated Markdown.
 - [shared](./shared/AGENTS.md): Foundational cross-workspace utilities, global configurations, and Git hooks.
-- [tools](./tools/AGENTS.md): GitHub CLI automation, repository provisioning scripts,
-  and containerized Git environments.
+- [tools](./tools/AGENTS.md): GitHub CLI automation, repository provisioning scripts, and containerized Git environments.
 
-## Kubernetes Orchestration
+## Architecture
 
-The monorepo uses Skaffold v4beta11 with three composable modules defined in
-[skaffold.yaml](./skaffold.yaml):
+The monorepo uses Skaffold v4beta11 for local development (`dev` environment) across two isolated k3d clusters, configured in the `k8s/` directory:
 
-- `platform-dev` ([platform/skaffold.yaml](./platform/skaffold.yaml)): Base
-  infrastructure module. Required by all other modules.
-- `cortex-dev` ([cortex/skaffold.yaml](./cortex/skaffold.yaml)): AI services module.
-  Automatically starts `platform-dev`.
-- `studio-dev` ([studio/skaffold.yaml](./studio/skaffold.yaml)): Design services module.
-  Automatically starts `platform-dev`.
+- `root` ([k8s/skaffold.yaml](./k8s/skaffold.yaml)): Main orchestrator that requires the two modules below.
+- `hub` ([k8s/skaffold.hub.yaml](./k8s/skaffold.hub.yaml)): Deploys internal tools to the `k3d-hub` cluster.
+- `corporate` ([k8s/skaffold.corporate.yaml](./k8s/skaffold.corporate.yaml)): Deploys public products to the `k3d-corporate` cluster.
 
-## Global Constraints
+Cloud environments (`staging` and `prod`) are delivered via ArgoCD GitOps, circumventing Skaffold entirely.
 
-- MUST maintain a senior, objective, and technical tone in all documentation.
-- MUST avoid preambles, introductory chatter, or conclusion summaries.
+## Scoped Guardrails
+
+- MUST maintain a strict senior, objective, and technical tone in all communications, logs, and documentation.
+- MUST avoid preambles, introductory chatter, conversational filler, or conclusion summaries in all responses.
 - MUST keep sentences concise, clear, and direct.
-- MUST write all documentation in English (en-US).
-- MUST NOT use emojis in any technical document, README, or skill file.
+- MUST conduct all conversational chat responses in Brazilian Portuguese (pt-BR).
+- MUST write all code, configuration, technical documentation, commit messages, and Markdown files in English (en-US).
+- MUST NOT use emojis in any conversational response, chat message, technical document, README, or skill file.
 - MUST NOT use placeholders (e.g., TODO, TBD).
 - MUST use relative paths for all Markdown links. Absolute filesystem paths are strictly
   forbidden.
 - MUST format all files according to Prettier standards (2-space indent, max 100-character
   line width).
 - MUST hardcode the project name and domain in all `AGENTS.md` and `README.md` files (e.g., `Tupynambalucas`, `tupynambalucas.dev`).
-- MUST NOT use agnostic tokens like `tupynambalucas.dev` or `Tupynambalucas` outside of the `knowledge-base/collections` directory.
+- MUST NOT use template placeholder tokens like `%PROJECT_DOMAIN%` or `%PROJECT_NAME%` outside of the `corporate/collections` directory.
+- **Routing**: When working within a specific bounded context, agents MUST read the local `AGENTS.md` file within that directory before proceeding.
 
 ## Required Skills
 
@@ -75,8 +55,3 @@ by name before beginning:
 These skills are referenced by name only and are resolved by the active agent runtime. Do not
 reference skill files by filesystem path, as agents running in isolated container environments
 resolve skills exclusively by their registered name.
-
-## Routing
-
-When working within a specific bounded context, agents MUST read the local `AGENTS.md` file
-within that directory before proceeding.

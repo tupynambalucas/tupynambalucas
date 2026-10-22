@@ -1,0 +1,61 @@
+{
+  "name": "@monorepo/hub-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend REST API serving portfolio content and blog operations.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "dev": "tsx --watch --env-file-if-exists=../../../k8s/.env src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@monorepo/hub-core": "workspace:*",
+    "@fastify/cookie": "catalog:api-stack",
+    "@fastify/cors": "catalog:api-stack",
+    "@fastify/csrf-protection": "catalog:api-stack",
+    "@fastify/env": "catalog:api-stack",
+    "@fastify/jwt": "catalog:api-stack",
+    "@fastify/one-line-logger": "catalog:api-stack",
+    "@fastify/rate-limit": "catalog:api-stack",
+    "@fastify/session": "catalog:api-stack",
+    "@sentry/node": "catalog:api-stack",
+    "@sentry/profiling-node": "catalog:api-stack",
+    "bcrypt": "catalog:api-stack",
+    "bullmq": "catalog:api-stack",
+    "fastify": "catalog:api-stack",
+    "fastify-metrics": "catalog:api-stack",
+    "fastify-plugin": "catalog:api-stack",
+    "fastify-type-provider-zod": "catalog:api-stack",
+    "ioredis": "catalog:api-stack",
+    "mongoose": "catalog:api-stack",
+    "pino-roll": "catalog:api-stack",
+    "sdk-node-apis-efi": "catalog:api-stack",
+    "zod": "catalog:shared-stack",
+    "dotenv": "catalog:shared-stack"
+  },
+  "devDependencies": {
+    "@monorepo/shared-config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/bcrypt": "catalog:api-stack",
+    "prettier": "catalog:tooling-stack",
+    "eslint": "catalog:tooling-stack",
+    "typescript": "catalog:",
+    "tsx": "catalog:",
+    "rimraf": "catalog:"
+  },
+  "files": [
+    "dist"
+  ]
+}

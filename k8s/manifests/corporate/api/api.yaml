@@ -1,0 +1,129 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: corporate
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: corporate-api
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: SERVER_HOST
+              value: 0.0.0.0
+            - name: SERVER_PORT
+              value: '3000'
+            - name: REDIS_HOST
+              value: redis
+            - name: REDIS_PORT
+              value: '6379'
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: corporate-secrets
+                  key: JWT_SECRET
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: corporate-secrets
+                  key: SESSION_SECRET
+            - name: USER_SESSION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: corporate-secrets
+                  key: USER_SESSION_KEY
+            - name: ADMIN_USER_SEED
+              valueFrom:
+                secretKeyRef:
+                  name: corporate-secrets
+                  key: ADMIN_USER_SEED
+            - name: ADMIN_EMAIL_SEED
+              valueFrom:
+                secretKeyRef:
+                  name: corporate-secrets
+                  key: ADMIN_EMAIL_SEED
+            - name: ADMIN_PASS_SEED
+              valueFrom:
+                secretKeyRef:
+                  name: corporate-secrets
+                  key: ADMIN_PASS_SEED
+            - name: TURNSTILE_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: corporate-secrets
+                  key: TURNSTILE_SECRET_KEY
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: corporate-secrets
+                  key: SENTRY_DSN
+                  optional: true
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests:
+              memory: '128Mi'
+              cpu: '100m'
+            limits:
+              memory: '512Mi'
+              cpu: '500m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: corporate
+spec:
+  selector:
+    app: api
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ingress
+  namespace: corporate
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: api.tupynambalucas.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api
+                port:
+                  number: 3000

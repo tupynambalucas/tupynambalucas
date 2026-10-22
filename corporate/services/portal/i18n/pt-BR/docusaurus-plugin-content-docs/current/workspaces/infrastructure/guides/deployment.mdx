@@ -1,0 +1,58 @@
+---
+title: How to Deploy
+description: Sequências de deploy passo a passo para clusters do Kubernetes locais e de produção.
+sidebar_position: 2
+---
+
+# How to Deploy
+
+Este guia descreve as sequências de comandos de deploy para liberar o ecossistema `tupynambalucas.dev` em ambientes locais e de produção usando **Skaffold** e **Kubernetes**.
+
+---
+
+## 1. Ambientes Kubernetes (Skaffold)
+
+Os deploys em todos os contextos delimitados (`platform`, `cortex`, `studio`) são gerenciados via Skaffold, orquestrando as fases de build, tag e deploy usando manifests do Kustomize.
+
+### 1.1. Deploys Únicos
+
+Para compilar todas as imagens do workspace e aplicar seus manifests do Kubernetes diretamente ao contexto do cluster ativo sem recarregamento dinâmico:
+
+```bash
+pnpm infra:up
+```
+
+Isso compila os containers usando o cache do motor local, hidrata as tags de imagem dentro dos manifests e os aplica ao cluster.
+
+### 1.2. Desenvolvimento Contínuo (Recarregamento ao Vivo)
+
+Para testes ativos no cluster com logs em tempo real e novos deploys automáticos quando o código-fonte for alterado:
+
+```bash
+pnpm infra:dev
+```
+
+### 1.3. Encerrando Deploys no Cluster
+
+Para excluir todos os recursos com deploy realizado e as alocações de namespace do cluster:
+
+```bash
+pnpm infra:clean
+```
+
+---
+
+## 2. Deploys de Produção
+
+Para ambientes de produção, utilize as sobreposições (overlays) do Kustomize localizadas em `infrastructure/environments/prod`.
+
+1. Certifique-se de que o contexto do seu `kubectl` aponte para o seu cluster de produção.
+2. Aplique as sobreposições de produção diretamente (ou via um operador GitOps como ArgoCD/Flux):
+
+```bash
+kubectl apply -k infrastructure/environments/prod/platform
+kubectl apply -k infrastructure/environments/prod/cortex
+kubectl apply -k infrastructure/environments/prod/studio
+```
+
+_Nota: Para produção, as imagens devem ser pré-compiladas e enviadas para um registro remoto (por exemplo, via GitHub Actions) antes de aplicar os manifests, em vez de compilá-las localmente com o Skaffold._

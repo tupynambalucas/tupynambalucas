@@ -1,0 +1,106 @@
+---
+title: Design e Tamanhos de Logo
+description: Dimensões de logo, especificações de impressão e formatos de redes sociais para tupynambalucas.dev.
+sidebar_position: 2
+diataxis_type: reference
+workspace: studio
+tags:
+  - studio
+---
+
+# Padrões de Design e Dimensionamento de Logo
+
+Este documento estabelece os padrões de dimensionamento e as dimensões para deploy de logotipos da marca `tupynambalucas.dev` em aplicações digitais, perfis sociais, mídia impressa e suítes de software. Para garantir que nossos logotipos mantenham a fidelidade perfeita, desenvolvedores e designers devem seguir as dimensões padrão listadas abaixo.
+
+Para detalhes de desenvolvimento local em monorepo, consulte a documentação [Studio & Creative Assets](/workspaces/studio/reference/spec/creative-assets).
+
+---
+
+## 1. Visão Geral das Constantes de Dimensionamento
+
+Escolher as dimensões corretas do logo evita pixelação, mantém a legibilidade da marca e garante que os ativos visuais sejam escalados perfeitamente em vários tipos de tela e mídias impressas.
+
+- **Padrão de Resolução de Tela:** 72 DPI (pontos por polegada) é o padrão para exibições web e digitais.
+- **Padrão de Resolução de Impressão:** 300 DPI é necessário para reprodução limpa e nítida em itens físicos.
+- **Formatos Vetoriais (SVG):** Altamente recomendados para interfaces digitais porque escalam dinamicamente e compilam como componentes React dinâmicos.
+- **Formatos Rasterizados (PNG):** Preferidos para plataformas digitais que exigem transparência (como cabeçalhos de sites ou ícones de perfil de redes sociais).
+
+---
+
+## 2. Dimensionamento Padrão para Impressão
+
+Ao exportar logotipos para impressão, formatos vetoriais devem ser usados para evitar a perda de detalhes. Abaixo estão as dimensões recomendadas e os requisitos de DPI:
+
+| Material / Caso de Uso   | Dimensões Recomendadas (polegadas) | Alvo de DPI | Notas de Layout e Posicionamento                                              |
+| :----------------------- | :--------------------------------- | :---------- | :---------------------------------------------------------------------------- |
+| **Cartões de Visita**    | 1.5″ × 1.5″                        | 300 DPI     | Normalmente quadrado; posicionado no canto superior esquerdo ou centralizado. |
+| **Papel Timbrado**       | 2″ × 2″ ou menor                   | 300 DPI     | Escalonamento sutil (tamanho A4: 210mm x 297mm).                              |
+| **Folhetos e Panfletos** | 2.0″ a 3.0″ de largura             | 300 DPI     | Escala dependendo do layout geral.                                            |
+| **Pôsteres e Banners**   | 5.0″ a 12.0″ de largura (ou maior) | 300 DPI     | Ajuste dinamicamente para corresponder à tela do banner.                      |
+| **Camisetas / Mercch**   | 8″ × 10″ (centralizado)            | 300 DPI     | Vetor de alta resolução preferido.                                            |
+| **Embalagens / Rótulos** | 1″ a 3″ de largura                 | 300 DPI     | Ajuste com base na área do rótulo ou da embalagem.                            |
+
+### Contexto Adicional de Impressão
+
+- **Cartões de Visita (Tamanho Total do Cartão):** 3.5 in x 2.0 in (o logo em si costuma ter 0.75 in x 0.75 in).
+- **Canecas (Padrão 11 oz):** 7.5 in x 3.0 in.
+- **Bonés:** 3.0 in a 3.5 in de largura.
+- **Eco-bags (Tote Bags):** 14.0 in x 16.0 in.
+- **Posicionamentos em Camisetas:** Peito adulto (3.5 in x 3.5 in), peito infantil (3.3 in x 3.3 in), área máxima de impressão (14.0 in x 15.0 in) e logos de bolso (4.25 in x 5.25 in).
+- **Envelopes (Padrão/C4):** 22.9 cm x 32.4 cm (tamanho C4) ou 4.125 in x 9.5 in.
+
+---
+
+## 3. Dimensionamento para Web e Digital
+
+Para canais digitais, mantenha os tamanhos de arquivo minimizados (por exemplo, abaixo de 30 KB para assinaturas de e-mail) para reduzir o tempo de carregamento da página.
+
+| Caso de Uso Digital             | Dimensões Recomendadas (pixels) | Proporção de Tela | Recomendações de Formato                                     |
+| :------------------------------ | :------------------------------ | :---------------- | :----------------------------------------------------------- |
+| **Logo do Cabeçalho do Site**   | 250 × 100 px (média)            | Flexível          | PNG (para transparência) ou SVG.                             |
+| **Favicon**                     | 16 × 16 px ou 32 × 32 px        | 1:1               | ICO ou PNG transparente.                                     |
+| **Assinatura de E-mail**        | 320 × 100 px                    | 3.2:1             | Mantenha abaixo de 30 KB (normalmente 300-400px x 70-100px). |
+| **Ícone de Aplicativo Móvel**   | 512 × 512 px                    | 1:1               | Formato PNG preferido para lojas de aplicativos.             |
+| **Logo de Aplicativo Móvel**    | 864 × 864 px (design)           | 1:1               | Tamanho de tela usado para ativos de alta fidelidade.        |
+| **Ícone de Aplicativo Desktop** | 256 × 256 px                    | 1:1               | Formato vetorial recomendado para telas de alta resolução.   |
+| **Logo de Banner**              | 1800 × 200 px                   | 9:1               | Gráficos de banner orientados horizontalmente.               |
+| **Embalagem de Produto**        | 1920 × 1020 px                  | 16:9 (aprox.)     | Pré-visualizações digitais de alta definição.                |
+
+### Especificidades de CMS e Plataforma de E-commerce
+
+- **Cabeçalhos do WordPress:** Logotipos horizontais devem ter como alvo 250 x 45 px ou 250 x 55 px.
+- **Temas do Shopify:** O tema Parallax, por exemplo, recomenda 410 x 205 px.
+- **Templates do Squarespace:** O template do tema Bedford tem como alvo uma altura de logo de 100 px.
+
+---
+
+## 4. Dimensionamento para Redes Sociais
+
+Plataformas de mídia social comprimem arquivos enviados. Utilizar formatos PNG de alta qualidade (ou JPGs para o Instagram) produzirá o melhor resultado visual.
+
+| Plataforma Social | Dimensões da Foto de Perfil (px) | Dimensões da Capa / Banner (px) | Notas e Tipos de Arquivo                                  |
+| :---------------- | :------------------------------- | :------------------------------ | :-------------------------------------------------------- |
+| **Facebook**      | 170 × 170                        | 820 × 312                       | Use arquivos PNG para alta qualidade.                     |
+| **Instagram**     | 320 × 320                        | N/A                             | O Instagram converte todos os ativos para JPG.            |
+| **Twitter (X)**   | 400 × 400                        | 1500 × 500                      | Tamanho máximo de arquivo: 5 MB (PNG, JPG ou GIF).        |
+| **LinkedIn**      | 400 × 400                        | 1128 × 191                      | Tamanho máximo de arquivo: 10 MB (PNG, JPG ou GIF).       |
+| **YouTube**       | 800 × 800                        | 2560 × 1440                     | Tamanhos de banner para desktop/TV (PNG, JPG, GIF, BMP).  |
+| **Twitch**        | 1600 × 1600                      | N/A                             | Perfis quadrados de alta resolução.                       |
+| **Discord**       | 128 × 128                        | N/A                             | Mantenha a proporção de tela 1:1; tamanho máximo de 8 MB. |
+| **Pinterest**     | 165 × 165                        | 800 × 450                       | Painéis de perfil e vitrine.                              |
+| **TikTok**        | 200 × 200                        | N/A                             | Fotos de perfil cortadas em formato circular.             |
+
+---
+
+## 5. Recomendações de Tela para Softwares de Design
+
+Ao iniciar novos projetos de logo em suítes de edição profissionais, estabeleça os seguintes tamanhos de tela base:
+
+### Adobe Photoshop
+
+- **Tela Inicial Padrão:** 1000 × 600 px ou 500 × 500 px.
+- **Tela Escalável:** 1200 × 1200 px (permite redução de escala fácil sem distorção visual).
+
+### Adobe Illustrator
+
+- **Tela Padrão:** 320 × 500 px (otimizada para proporções de viewport móvel).

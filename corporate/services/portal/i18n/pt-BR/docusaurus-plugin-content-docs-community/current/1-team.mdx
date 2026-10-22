@@ -1,0 +1,32 @@
+---
+title: Equipe e Mantenedores
+slug: /team
+---
+
+# Equipe e Mantenedores
+
+O monorepo Tupynambalucas é mantido e desenvolvido por engenheiros dedicados e contribuidores de código aberto focados em arquitetura de software de nível de produção.
+
+## Mantenedores Principais
+
+- **Lucas Tupynambá** ([@tupynambalucas](https://github.com/tupynambalucas))
+  - Cargo: Arquiteto Líder e Mantenedor do Monorepo
+  - Foco: Arquitetura central, infraestrutura do AgentGateway MCP e experiência do desenvolvedor.
+
+## Propriedade de Workspaces
+
+O monorepo impõe governança de contexto delimitado entre os domínios:
+
+| Workspace            | Foco do Domínio                                | Tecnologia Principal                |
+| :------------------- | :--------------------------------------------- | :---------------------------------- |
+| **`knowledge-base`** | Documentação técnica e portal                  | Docusaurus v3, MDX, FSD             |
+| **`cortex`**         | Orquestração de agentes de IA e memória        | Fastify, MCP, Vector Search         |
+| **`platform`**       | Infraestrutura de Kubernetes e observabilidade | Traefik, OTel, Prometheus, Loki     |
+| **`studio`**         | Design system e tokens de marca                | Tailwind CSS, Penpot, Cloudflare R2 |
+| **`hub`**            | Aplicação web cliente e REST API               | React 19, Fastify 5, Zod            |
+| **`renderer`**       | Compilação de ativos e geração de cards        | TypeScript, Satori, SVG             |
+| **`tools`**          | Utilitários de CLI e workflows automatizados   | GitHub Actions, Shell, Node.js      |
+
+## Agradecimentos
+
+Agradecimentos especiais aos contribuidores de código aberto, criadores de ferramentas e parceiros de ecossistema que contribuem para as bibliotecas e infraestrutura que impulsionam o tupynambalucas.dev.

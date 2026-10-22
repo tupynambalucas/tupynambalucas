@@ -9,84 +9,87 @@ domain, with one overlay per environment and deploy target.
 k8s/
   skaffold.yaml                 root config, requires the two modules below
   skaffold.hub.yaml             hub artifacts and deploy
-  skaffold.corporate.yaml       corporate artifacts and deploy
+  skaffold.corporate.yaml       corporate artifacts (web, api, portal) and deploy
   manifests/
-    namespaces/
     hub/
-      observability/
-      network/
-      tools/
+      namespaces/               cortex, platform, studio
+      observability/            grafana, loki, prometheus, tempo, otelcol, fluentbit, kube-state-metrics
+      network/                  cloudflared, traefik
+      tools/                    headlamp, turbocache
       studio/
         penpot/
         memos/
       cortex/
-        gateway/                agentgateway routing and values
-        memory/                 mongodb, memory-api, memory-web
-        mcp/                    guardrails, inspector, and adapter services
-          services/             context7, firecrawl, github, grafana, memory, playwright
+        gateway/                agentgateway routing and config
+        memory/                 mongodb, api, web, ingress
+        mcp/                    context7, firecrawl, github, grafana, guardrails, inspector, kubectl, memory, playwright
     corporate/
-      portal/
-      web/
-      api/
-  charts/                       vendored Helm charts (agentgateway, traefik)
+      namespaces/               corporate
+      network/                  cloudflared
+      redis/                    redis deployment, pvc, service
+      api/                      api deployment, service, ingress
+      web/                      web deployment, service, ingress
+      mongodb/                  mongodb deployment, pvc, service (dev only)
+      portal/                   docusaurus portal deployment, service, ingress, namespace (dev only)
+  charts/                       vendored Helm charts (traefik-26.0.0, agentgateway)
   overlays/
     dev/
-      hub/
-      corporate/
+      hub/                      k3d-hub overlay with *-dev host patches and .env secretGenerator
+      corporate/                k3d-corporate overlay with *-dev host patches, portal, mongodb
     staging/
-      hub/
-      corporate/
+      hub/                      staging hub overlay with *-stg host patches
+      corporate/                staging corporate overlay with web-stg and api-stg host patches
     prod/
-      hub/
-      corporate/
+      hub/                      prod hub overlay (2 cloudflared replicas)
+      corporate/                prod corporate overlay (2 cloudflared replicas)
   references/
-    skaffold/                   existing Skaffold reference docs
+    explanation/ guides/ reference/   Diataxis documentation
   .env.example
   AGENTS.md
   README.md
   package.json
 ```
 
-Each overlay folder holds a `kustomization.yaml`, a `patches/` folder with ingress hosts and
-resource settings, and a `helm-values/` folder when the overlay renders a chart.
-
 ## 2. File Mapping
 
-| Current file in `infrastructure/`                                | New location in `k8s/`                                                                                            |
-| :--------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
-| `manifests/cert-manager-namespace.yaml`                          | removed, obsolete (cert-manager eliminated)                                                                       |
-| `manifests/cortex-namespace.yaml`                                | `manifests/namespaces/cortex.yaml`                                                                                |
-| `manifests/docs-namespace.yaml`                                  | `manifests/namespaces/docs.yaml`                                                                                  |
-| `manifests/platform-namespace.yaml`                              | `manifests/namespaces/platform.yaml`                                                                              |
-| `manifests/studio-namespace.yaml`                                | `manifests/namespaces/studio.yaml`                                                                                |
-| `manifests/platform-grafana.yaml`                                | `manifests/hub/observability/grafana.yaml`                                                                        |
-| `manifests/platform-prometheus.yaml`                             | `manifests/hub/observability/prometheus.yaml`                                                                     |
-| `manifests/platform-loki.yaml`                                   | `manifests/hub/observability/loki.yaml`                                                                           |
-| `manifests/platform-tempo.yaml`                                  | `manifests/hub/observability/tempo.yaml`                                                                          |
-| `manifests/platform-otelcol.yaml`                                | `manifests/hub/observability/otelcol.yaml`                                                                        |
-| `manifests/platform-fluentbit.yaml`                              | `manifests/hub/observability/fluentbit.yaml`                                                                      |
-| `manifests/platform-kubestatemetrics.yaml`                       | `manifests/hub/observability/kube-state-metrics.yaml`                                                             |
-| `manifests/platform-cloudflared.yaml`                            | `manifests/hub/network/cloudflared.yaml`                                                                          |
-| `manifests/traefik-ingress.yaml`                                 | `manifests/hub/network/traefik-ingress.yaml`                                                                      |
-| `manifests/platform-headlamp.yaml`                               | `manifests/hub/tools/headlamp.yaml`                                                                               |
-| `manifests/platform-turbocache.yaml`                             | `manifests/hub/tools/turbocache.yaml`                                                                             |
-| `manifests/studio-penpot.yaml`                                   | `manifests/hub/studio/penpot/penpot.yaml`                                                                         |
-| `manifests/studio-penpot-seed.yaml`                              | `manifests/hub/studio/penpot/penpot-seed.yaml`                                                                    |
-| `manifests/studio-memos.yaml`                                    | `manifests/hub/studio/memos/memos.yaml`                                                                           |
-| `manifests/studio-memos-seed.yaml`                               | `manifests/hub/studio/memos/memos-seed.yaml`                                                                      |
-| `manifests/cortex-mcp.yaml`                                      | split into `manifests/hub/cortex/mcp/` (`guardrails.yaml`, `inspector.yaml`, `services/*.yaml`)                   |
-| `manifests/cortex-memory.yaml`                                   | split into `manifests/hub/cortex/memory/` (`mongodb.yaml`, `memory-api.yaml`, `memory-web.yaml`)                  |
-| `manifests/kb-docusaurus-portal.yaml`                            | `manifests/corporate/portal/portal.yaml`                                                                          |
-| `charts/agentgateway`                                            | `charts/agentgateway`                                                                                             |
-| `charts/cert-manager-v1.14.4`                                    | removed, obsolete (cert-manager eliminated)                                                                       |
-| `charts/traefik-26.0.0`                                          | `charts/traefik-26.0.0`                                                                                           |
-| `environments/local/kustomization.yaml`                          | split into `overlays/dev/hub` and `overlays/dev/corporate`                                                        |
-| `environments/local/helm-values/traefik-values.yaml`             | `overlays/dev/hub/helm-values/traefik-values.yaml`                                                                |
-| `environments/local/traefik-rbac-patch.json`                     | `overlays/dev/hub/patches/traefik-rbac-patch.json`                                                                |
-| `environments/local/charts/*`                                    | removed, duplicate of `charts/`                                                                                   |
-| `references/skaffold/*`                                          | `references/skaffold/*`                                                                                           |
-| `skaffold.yaml`                                                  | split into the three Skaffold files (`k8s/skaffold.yaml`, `k8s/skaffold.hub.yaml`, `k8s/skaffold.corporate.yaml`) |
-| `.env`, `.env.example`, `AGENTS.md`, `README.md`, `package.json` | same names at `k8s/` root                                                                                         |
+| Current file in `infrastructure/`                                | New location in `k8s/`                                                                                          |
+| :--------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| `manifests/cert-manager-namespace.yaml`                          | removed, obsolete (cert-manager eliminated)                                                                     |
+| `manifests/cortex-namespace.yaml`                                | `manifests/hub/namespaces/cortex.yaml`                                                                          |
+| `manifests/docs-namespace.yaml`                                  | `manifests/corporate/portal/namespace.yaml` (dev only)                                                          |
+| `manifests/platform-namespace.yaml`                              | `manifests/hub/namespaces/platform.yaml`                                                                        |
+| `manifests/studio-namespace.yaml`                                | `manifests/hub/namespaces/studio.yaml`                                                                          |
+| `manifests/platform-grafana.yaml`                                | `manifests/hub/observability/grafana/grafana.yaml`                                                              |
+| `manifests/platform-prometheus.yaml`                             | `manifests/hub/observability/prometheus/prometheus.yaml`                                                        |
+| `manifests/platform-loki.yaml`                                   | `manifests/hub/observability/loki/loki.yaml`                                                                    |
+| `manifests/platform-tempo.yaml`                                  | `manifests/hub/observability/tempo/tempo.yaml`                                                                  |
+| `manifests/platform-otelcol.yaml`                                | `manifests/hub/observability/otelcol/otelcol.yaml`                                                              |
+| `manifests/platform-fluentbit.yaml`                              | `manifests/hub/observability/fluentbit/fluentbit.yaml`                                                          |
+| `manifests/platform-kubestatemetrics.yaml`                       | `manifests/hub/observability/kube-state-metrics.yaml`                                                           |
+| `manifests/platform-cloudflared.yaml`                            | `manifests/hub/network/cloudflared.yaml`                                                                        |
+| `manifests/traefik-ingress.yaml`                                 | `manifests/hub/network/traefik.yaml`                                                                            |
+| `manifests/platform-headlamp.yaml`                               | `manifests/hub/tools/headlamp.yaml`                                                                             |
+| `manifests/platform-turbocache.yaml`                             | `manifests/hub/tools/turbocache.yaml`                                                                           |
+| `manifests/studio-penpot.yaml`                                   | `manifests/hub/studio/penpot/penpot.yaml`                                                                       |
+| `manifests/studio-penpot-seed.yaml`                              | `manifests/hub/studio/penpot/seed.yaml`                                                                         |
+| `manifests/studio-memos.yaml`                                    | `manifests/hub/studio/memos/memos.yaml`                                                                         |
+| `manifests/studio-memos-seed.yaml`                               | `manifests/hub/studio/memos/seed.yaml`                                                                          |
+| `manifests/cortex-mcp.yaml`                                      | split into `manifests/hub/cortex/mcp/`                                                                          |
+| `manifests/cortex-memory.yaml`                                   | split into `manifests/hub/cortex/memory/` (`mongodb.yaml`, `api.yaml`, `web.yaml`, `ingress.yaml`)              |
+| `manifests/kb-docusaurus-portal.yaml`                            | `manifests/corporate/portal/portal.yaml` (dev only)                                                             |
+| _New: Corporate Web_                                             | `manifests/corporate/web/web.yaml`                                                                              |
+| _New: Corporate API_                                             | `manifests/corporate/api/api.yaml`                                                                              |
+| _New: Corporate Redis_                                           | `manifests/corporate/redis/redis.yaml`                                                                          |
+| _New: Corporate MongoDB (Dev)_                                   | `manifests/corporate/mongodb/mongodb.yaml`                                                                      |
+| `charts/agentgateway`                                            | `charts/agentgateway`                                                                                           |
+| `charts/cert-manager-v1.14.4`                                    | removed, obsolete (cert-manager eliminated)                                                                     |
+| `charts/traefik-26.0.0`                                          | `charts/traefik-26.0.0`                                                                                         |
+| `environments/local/kustomization.yaml`                          | split into `overlays/dev/hub` and `overlays/dev/corporate`                                                      |
+| `environments/local/helm-values/traefik-values.yaml`             | `overlays/dev/hub/helm-values/traefik-values.yaml` and `overlays/dev/corporate/helm-values/traefik-values.yaml` |
+| `environments/local/traefik-rbac-patch.json`                     | removed, RBAC injected through `extraObjects` in `traefik-values.yaml`                                          |
+| `environments/local/charts/*`                                    | removed, duplicate of `charts/`                                                                                 |
+| `skaffold.yaml`                                                  | split into `k8s/skaffold.yaml`, `k8s/skaffold.hub.yaml`, `k8s/skaffold.corporate.yaml`                          |
+| `.env`, `.env.example`, `AGENTS.md`, `README.md`, `package.json` | same names at `k8s/` root                                                                                       |
 
 ## 3. Base Manifest Rules
 
@@ -94,142 +97,56 @@ resource settings, and a `helm-values/` folder when the overlay renders a chart.
   debug log levels.
 - Ingress hosts, replicas, resource limits, log levels, and image references are set by overlay
   patches.
-- Namespaces keep their current names (`platform`, `cortex`, `studio`, `docs`). Renaming breaks
-  internal URLs such as `*.platform.svc` and is out of scope.
+- Namespaces:
+  - Hub: `platform`, `cortex`, `studio`.
+  - Corporate: `corporate` (for web, api, redis, traefik, cloudflared) and `docs` (`dev` only, for portal).
 
 ## 4. Overlays
 
-Every environment has a `hub` and a `corporate` overlay, so the same shape applies everywhere.
+Every environment has a `hub` and a `corporate` overlay:
 
-| Overlay             | Target cluster            | Hostnames | Tunnel              |
-| :------------------ | :------------------------ | :-------- | :------------------ |
-| `dev/hub`           | `k3d-hub`                 | `*-dev`   | `dev-hub`           |
-| `dev/corporate`     | `k3d-corporate`           | `*-dev`   | `dev-corporate`     |
-| `staging/hub`       | staging hub cluster       | `*-stg`   | `staging-hub`       |
-| `staging/corporate` | staging corporate cluster | `*-stg`   | `staging-corporate` |
-| `prod/hub`          | prod hub cluster          | clean     | `prod-hub`          |
-| `prod/corporate`    | prod corporate cluster    | clean     | `prod-corporate`    |
+| Overlay             | Target cluster            | Hostnames | Tunnel              | Cloudflared Replicas |
+| :------------------ | :------------------------ | :-------- | :------------------ | :------------------- |
+| `dev/hub`           | `k3d-hub`                 | `*-dev`   | `dev-hub`           | 1                    |
+| `dev/corporate`     | `k3d-corporate`           | `*-dev`   | `dev-corporate`     | 1                    |
+| `staging/hub`       | staging hub cluster       | `*-stg`   | `staging-hub`       | 1                    |
+| `staging/corporate` | staging corporate cluster | `*-stg`   | `staging-corporate` | 1                    |
+| `prod/hub`          | prod hub cluster          | clean     | `prod-hub`          | 2                    |
+| `prod/corporate`    | prod corporate cluster    | clean     | `prod-corporate`    | 2                    |
 
-In dev, each overlay deploys to its respective isolated k3d cluster (`k3d-hub` and `k3d-corporate`),
-matching production architecture. In the cloud, each overlay is a separate ArgoCD Application.
+In dev, secrets are populated via `secretGenerator` from `k8s/.env`:
 
-Example overlay:
+- Hub dev overlay generates `platform-secrets`, `cortex-secrets`, and `studio-secrets`.
+- Corporate dev overlay generates `corporate-secrets`.
 
-```yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ../../../manifests/namespaces
-  - ../../../manifests/hub/observability
-  - ../../../manifests/hub/network
-  - ../../../manifests/hub/tools
-  - ../../../manifests/hub/studio
-  - ../../../manifests/hub/cortex
-helmCharts:
-  - name: traefik
-    repo: ''
-    version: 26.0.0
-    releaseName: traefik
-    namespace: platform
-    includeCRDs: true
-    valuesFile: helm-values/traefik-values.yaml
-patches:
-  - path: patches/ingress-hosts.yaml
-  - path: patches/traefik-rbac-patch.json
-    target:
-      kind: ClusterRole
-      name: traefik-platform
-generatorOptions:
-  disableNameSuffixHash: true
-secretGenerator:
-  - name: platform-secrets
-    namespace: platform
-    envs:
-      - ../../../.env
-```
-
-Use `resources` and `patches`. The `bases` and `patchesStrategicMerge` fields are deprecated.
-Confirm how the vendored charts are referenced (`chartHome`) when moving them, because the
-current overlay already relies on `--enable-helm` and `--load-restrictor=LoadRestrictionsNone`.
+In staging and prod, secrets are managed via Bitnami Sealed Secrets (see
+[Secrets management](./secrets-management.md)).
 
 ## 5. Skaffold
 
-Skaffold is used only for local development, so it only targets `dev`.
+Skaffold is used only for local development (`dev`):
 
-```yaml
-# k8s/skaffold.yaml
-apiVersion: skaffold/v4beta11
-kind: Config
-metadata:
-  name: root
-requires:
-  - configs: [hub]
-    path: skaffold.hub.yaml
-  - configs: [corporate]
-    path: skaffold.corporate.yaml
-```
-
-```yaml
-# k8s/skaffold.hub.yaml
-apiVersion: skaffold/v4beta11
-kind: Config
-metadata:
-  name: hub
-build:
-  platforms: ['linux/amd64']
-  local: { push: true, useDockerCLI: true, concurrency: 2, tryImportMissing: true }
-  artifacts:
-    - image: platform-grafana
-      context: ../hub/observability/grafana
-      docker: { dockerfile: Dockerfile, target: dev }
-    # remaining hub artifacts keep their image names with updated paths
-manifests:
-  kustomize:
-    paths: [overlays/dev/hub]
-    buildArgs: [--load-restrictor=LoadRestrictionsNone, --enable-helm]
-deploy:
-  kubectl:
-    hooks:
-      before:
-        - host:
-            command:
-              - kubectl
-              - apply
-              - -f
-              - https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
-portForward:
-  - resourceType: service
-    resourceName: agentgateway
-    namespace: cortex
-    port: 8080
-    localPort: 8080
-```
-
-`skaffold.corporate.yaml` has the same shape with the `portal` artifact and the
-`overlays/dev/corporate` path. The `portal` sync rules move from `knowledge-base/...` to
-`corporate/...`.
-
-Changes from the current file:
-
-- `push: false` becomes `push: true` against `localhost:5000` (the shared k3d registry). Since k3d automatically links to this registry, images are instantly available to both clusters.
-- `tryImportMissing: true` is added as a Skaffold v2 best practice to prevent rebuilding artifacts that already exist locally, optimizing the dev loop.
-- Every `context`, `dockerfile`, and `sync` path follows the new tree.
-- `skaffold.hub.yaml` locks to `kubeContext: k3d-hub`.
-- `skaffold.corporate.yaml` locks to `kubeContext: k3d-corporate`.
+- `k8s/skaffold.yaml`: Root orchestrator requiring `skaffold.hub.yaml` and `skaffold.corporate.yaml`.
+- `k8s/skaffold.hub.yaml`:
+  - Builds platform and studio artifacts.
+  - Deploys `overlays/dev/hub` into `k3d-hub`.
+  - Installs Traefik Helm release in namespace `platform`.
+  - Port forwards `agentgateway`, `memory-api`, and `penpot-frontend`.
+- `k8s/skaffold.corporate.yaml`:
+  - Builds `corporate-api`, `corporate-web`, and `kb-docusaurus-portal`.
+  - Configures file sync for real-time hot reloading.
+  - Deploys `overlays/dev/corporate` into `k3d-corporate`.
+  - Installs Traefik Helm release in namespace `corporate`.
 
 Usage:
 
-| Command                                   | Result                                                       |
-| :---------------------------------------- | :----------------------------------------------------------- |
-| `skaffold dev -f skaffold.hub.yaml`       | Builds and deploys hub stack to `k3d-hub`.                   |
-| `skaffold dev -f skaffold.corporate.yaml` | Builds and deploys corporate stack to `k3d-corporate`.       |
-| `skaffold dev` (from `k8s/`)              | Builds and deploys both stacks to their respective clusters. |
-
-Both clusters run their own Traefik ingress controller and Cloudflare Tunnel, eliminating any
-cross-cluster runtime dependencies and port contention in development (a known k3d pain point).
+| Command                                   | Result                                                                    |
+| :---------------------------------------- | :------------------------------------------------------------------------ |
+| `skaffold dev -f skaffold.hub.yaml`       | Builds and deploys hub stack to `k3d-hub`.                                |
+| `skaffold dev -f skaffold.corporate.yaml` | Builds and deploys corporate stack to `k3d-corporate`.                    |
+| `skaffold dev` (from `k8s/`)              | Builds and deploys both stacks concurrently to their respective clusters. |
 
 ## 6. Cloud Delivery
 
-Staging and prod overlays are not run by Skaffold. ArgoCD runs in each environment and syncs one
-Application per overlay from this repository. Terraform provisions the clusters in a separate
-top-level `terraform/` folder.
+Staging and prod overlays are delivered via ArgoCD GitOps. Terraform provisions the cloud clusters,
+networking, and Cloudflare Zero Trust configurations.

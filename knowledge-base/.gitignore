@@ -1,9 +1,0 @@
-references/
-
-# Docusaurus Services
-.docusaurus/
-.cache-loader/
-static/
-
-# Internationalization
-i18n/

@@ -1,0 +1,26 @@
+---
+title: ADR-003 Docker Build Strategy
+---
+
+# ADR-003: Multi-Stage Docker Builds com Turbo Prune e BuildKit Caching
+
+## Context
+
+O monorepo contém múltiplos microsserviços Node.js (por exemplo, servidores de API, serviços MCP, frontends web) gerenciados via workspaces do PNPM e Turborepo. Anteriormente, a construção concorrente dessas imagens Docker via Skaffold gerava ineficiências:
+
+1. Copiar todo o package.json raiz e os workspaces acionava invalidações de cache em todos os serviços sempre que um pacote não relacionado sofria alterações.
+2. Comandos pnpm install independentes dentro de cada contexto de build do Docker desperdiçavam largura de banda e duplicavam entradas de cache para dependências idênticas.
+
+## Decision
+
+Padronizaremos todos os Dockerfiles Node.js no monorepo para utilizar uma arquitetura multi-stage que aproveita a limpeza (pruning) do Turborepo e os montagens de cache do Docker BuildKit:
+
+1. **Turborepo Prune (`turbo prune --docker`)**: Um estágio de pruner inicial cria um snapshot mínimo e isolado do workspace específico e de suas dependências internas (out/json e out/full).
+2. **Shared BuildKit Cache Mount (`id=pnpm-store-shared`)**: Os estágios `builder` e deployer utilizam `--mount=type=cache,id=pnpm-store-shared,target=/pnpm/store`. Isso permite que builds concorrentes do Skaffold compartilhem o mesmo repositório virtual do PNPM no daemon do host, garantindo que os pacotes sejam baixados exatamente uma vez.
+3. **Deployer Isolation (`pnpm deploy`)**: Os builds de produção utilizam `pnpm --filter \<workspace\> --prod deploy` para extrair um ambiente de produção autossuficiente, livre de dependências de desenvolvimento ou artefatos de código-fonte.
+
+## Consequences
+
+- Os tempos de build são significativamente reduzidos através de uma taxa de acerto de cache de camadas de 90% e downloads de rede sem duplicação.
+- As imagens Docker são incrivelmente leves, contendo apenas ativos compilados e dependências de produção.
+- Alterações em um workspace não invalidam o cache de build do Docker de workspaces não relacionados.

@@ -1,0 +1,162 @@
+---
+title: Configuração de Desenvolvimento Local
+description: Como configurar o Minikube e o Skaffold para o desenvolvimento local no Kubernetes.
+sidebar_position: 1
+---
+
+# Configuração de Desenvolvimento Local
+
+Este guia detalha como configurar sua estação de trabalho Windows local para executar o monorepo `Tupynambalucas` usando **Minikube**, **Skaffold** e **Podman**. Usamos exclusivamente uma abordagem de orquestração nativa do Kubernetes, o que significa que não há ambientes Docker Compose localizados.
+
+---
+
+## 1. Pré-requisitos
+
+Para testes locais no Kubernetes, validação de roteamento e pipelines de deploy, usamos `minikube`, `kubectl` e `skaffold` instalados no host com o driver `podman` para recarregamento dinâmico em tempo real e deploy em cluster.
+
+Instale as seguintes ferramentas em seu host Windows:
+
+- **kubectl**: Ferramenta CLI para executar comandos em clusters do Kubernetes.
+- **Skaffold**: Automatiza pipelines de build e deploy com recursos de recarregamento dinâmico.
+- **OpenLens**: Cliente visual de monitoramento de cluster.
+- **Minikube CLI**: Provisiona nós de cluster Kubernetes locais dentro do Podman.
+
+**Comando de instalação (PowerShell)**:
+
+```powershell
+winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold Lens.OpenLens
+```
+
+:::warning[Evite Executar o Skaffold via Contêineres]
+Embora você possa executar o Skaffold dentro de um contêiner, isso exige a montagem de sockets de contêiner e o remapeamento de hosts internos. Além disso, a sincronização de arquivos em tempo real geralmente falha ao propagar eventos do sistema de arquivos através de limites de contêiner. Por esse motivo, a instalação do binário nativo do Skaffold localmente é estritamente obrigatória.
+:::
+
+---
+
+## 2. Configuração do Cluster Local do Minikube
+
+### Criando o Cluster
+
+Para iniciar o cluster Minikube padrão usando o driver Podman e configurar a montagem do host local exigida pelos agentes de IA:
+
+```bash
+pnpm minikube:up
+```
+
+Isso executa o comando subjacente:
+
+```bash
+minikube start --driver=podman --mount --mount-string ".:/workspace"
+```
+
+:::info[Túnel do Minikube]
+
+```bash
+pnpm minikube:tunnel
+```
+
+:::
+
+---
+
+## 3. Visualizando o Cluster
+
+Para monitorar o consumo de recursos, inspecionar logs e gerenciar namespaces visualmente, use o **OpenLens** ou o **Podman Desktop** no host Windows.
+
+1. Defina o contexto ativo para o perfil do Minikube em seu terminal:
+   ```bash
+   kubectl config use-context minikube
+   ```
+2. Abra o **OpenLens** ou o **Podman Desktop**.
+3. Selecione o contexto de cluster chamado **minikube**.
+
+---
+
+## 4. Orquestração Profissional com o Skaffold
+
+Usamos o **Skaffold** para automatizar os pipelines de build, deploy e recarregamento dinâmico em tempo real.
+
+### Iniciando o Cluster e os Workspaces
+
+Fornecemos scripts simplificados no `package.json` raiz para gerenciar o ciclo de vida:
+
+1. **Deploy e Execução em Segundo Plano**:
+   Para compilar todas as imagens e fazer o deploy de todos os componentes de plataforma e cortex para o Minikube:
+
+   ```bash
+   pnpm infra:up
+   ```
+
+2. **Modo de Desenvolvimento Contínuo (Recarregamento Dinâmico em Tempo Real)**:
+   Para executar o Skaffold em modo de desenvolvimento, monitorando alterações no código-fonte e recarregando o código automaticamente dentro dos pods em execução:
+
+   ```bash
+   pnpm infra:dev
+   ```
+
+3. **Isolamento de Módulo de Workspace**:
+   Você pode fazer o deploy de workspaces específicos de forma independente para economizar recursos:
+   - **Fazer o deploy apenas do Cortex**: `pnpm infra:cortex:dev`
+   - **Fazer o deploy apenas da Plataforma**: `pnpm infra:platform:dev`
+   - **Fazer o deploy apenas do Studio**: `pnpm infra:studio:dev`
+
+4. **Parar e Limpar**:
+   Para remover todos os recursos, namespaces e workloads implantados pelo Skaffold:
+   ```bash
+   pnpm infra:clean
+   ```
+
+### Encaminhamento de Porta Local
+
+O Skaffold configura automaticamente túneis de encaminhamento de porta direcionados a **Services** do Kubernetes dentro do cluster, em vez de Pods efêmeros. Isso garante mapeamentos de porta locais estáveis que sobrevivem a reinicializações de contêineres.
+
+| Service              | Local Port | Namespace | Purpose                   |
+| :------------------- | :--------- | :-------- | :------------------------ |
+| `agentgateway`       | `8080`     | `cortex`  | Unified MCP Ingress       |
+| `agentgateway admin` | `15000`    | `cortex`  | Gateway Management Web UI |
+| `memory-api`         | `3006`     | `cortex`  | Memory Service REST API   |
+| `memory-web`         | `9006`     | `cortex`  | Memory Service Frontend   |
+| `mcp-inspector`      | `6274`     | `cortex`  | MCP Inspector Sandbox     |
+
+---
+
+## 5. Conectividade da Antigravity CLI
+
+A **Antigravity CLI** conecta-se ao proxy de entrada do Cortex (`agentgateway`) usando o endpoint do túnel do Cloudflare definido em `.agents/mcp_config.json`:
+
+```json
+"agentgateway": {
+  "url": "https://agentgateway-mcp-dev.tupynambalucas.dev",
+  "lifecycle": "eager"
+}
+```
+
+Esta configuração de cliente permite a descoberta e execução contínuas de ferramentas MCP em ambientes de host local e estações de trabalho de desenvolvedor remotas em qualquer rede:
+
+- **Modo Túnel do Cloudflare**: O tráfego é roteado com segurança via `cloudflared` para o Service `agentgateway` dentro do Minikube, sem exigir encaminhamento de porta local ou modificações no `/etc/hosts`.
+- **Modo de Fallback Local**: Ao trabalhar offline, o Skaffold encaminha a porta do Service `agentgateway` para `localhost:8080`.
+
+O `agentgateway` intercepta o payload JSON-RPC de entrada, executa-o por meio de guardrails CEL configurados (via `mcp-guardrails` na porta `9001`) e o roteia para o microsserviço de destino com base nos alvos definidos em `cortex/gateway/config.yaml`.
+
+---
+
+## 6. Gerenciamento de Variáveis de Ambiente
+
+Cada contexto de workspace gerencia seus próprios arquivos de ambiente em `\<workspace>/.env` ou `infrastructure/.env`.
+
+O Skaffold usa scripts do `dotenv-cli` para injetar esses valores como configurações de ambiente de build, que são então empacotadas em segredos do Kubernetes por meio do Kustomize:
+
+```yaml
+# infrastructure/manifests/cortex-memory.yaml (example)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+secretGenerator:
+  - name: cortex-secrets
+    envs:
+      - .env
+```
+
+:::warning[Colisão de Variáveis de Ambiente de Service do Kubernetes]
+
+Se sua aplicação tentar analisar `process.env.MCP_MEMORY_PORT` como um número de porta, ela retornará `NaN` e falhará. Para evitar essa colisão, sempre adicione um prefixo ou renomeie as variáveis de ambiente de porta específicas da aplicação (por exemplo, use `MEMORY_MCP_PORT` em vez de `MCP_MEMORY_PORT`).
+:::
