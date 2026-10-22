@@ -124,7 +124,7 @@
     "description": "The label for category 'Infrastructure' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.Infrastructure.link.generated-index.description": {
-    "message": "Orquestração centralizada do Kubernetes e pipeline de deploy GitOps.",
+    "message": "Orquestração centralizada do Kubernetes e pipeline de deployment GitOps.",
     "description": "The generated-index page description for category 'Infrastructure' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.infrastructure-guides": {
@@ -140,7 +140,7 @@
     "description": "The label for category 'Explanation' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.renderer": {
-    "message": "Renderer (Dynamic Assets)",
+    "message": "Renderer (Ativos Dinâmicos)",
     "description": "The label for category 'Renderer (Dynamic Assets)' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.renderer-reference": {
@@ -180,11 +180,11 @@
     "description": "The label for category 'Tutorials' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.platform": {
-    "message": "Platform (Infrastructure)",
+    "message": "Plataforma (Infraestrutura)",
     "description": "The label for category 'Platform (Infrastructure)' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.shared": {
-    "message": "Shared (Global)",
+    "message": "Compartilhado (Global)",
     "description": "The label for category 'Shared (Global)' in sidebar 'defaultSidebar'"
   },
   "sidebar.defaultSidebar.category.AI Agents Configuration": {
@@ -332,7 +332,7 @@
     "description": "The label for category 'Infrastructure' in sidebar 'community'"
   },
   "sidebar.community.category.Infrastructure.link.generated-index.description": {
-    "message": "Orquestração centralizada do Kubernetes e pipeline de deploy GitOps.",
+    "message": "Orquestração centralizada do Kubernetes e pipeline de deployment GitOps.",
     "description": "The generated-index page description for category 'Infrastructure' in sidebar 'community'"
   },
   "sidebar.community.category.infrastructure-guides": {
@@ -348,7 +348,7 @@
     "description": "The label for category 'Explanation' in sidebar 'community'"
   },
   "sidebar.community.category.renderer": {
-    "message": "Renderer (Dynamic Assets)",
+    "message": "Renderer (Ativos Dinâmicos)",
     "description": "The label for category 'Renderer (Dynamic Assets)' in sidebar 'community'"
   },
   "sidebar.community.category.renderer-reference": {
@@ -388,11 +388,11 @@
     "description": "The label for category 'Tutorials' in sidebar 'community'"
   },
   "sidebar.community.category.platform": {
-    "message": "Platform (Infrastructure)",
+    "message": "Plataforma (Infraestrutura)",
     "description": "The label for category 'Platform (Infrastructure)' in sidebar 'community'"
   },
   "sidebar.community.category.shared": {
-    "message": "Shared (Global)",
+    "message": "Compartilhado (Global)",
     "description": "The label for category 'Shared (Global)' in sidebar 'community'"
   },
   "sidebar.community.category.AI Agents Configuration": {
