@@ -451,7 +451,52 @@ extensions, and compilers execute inside the Linux container via the Remote WSL 
    - `ms-azuretools.vscode-docker`: Container inspection and registry management.
    - `redhat.vscode-yaml`: Schema validation for Kubernetes manifests.
 
-### Freelens Desktop Client on Windows
+### Creative Assets & Windows Desktop Software Interoperability
+
+Design and creative assets in `hub/studio/creative/` (Adobe Illustrator `.ai`, Photoshop `.psd`,
+Blender `.blend`, and Premiere projects) are authored using native Windows desktop applications.
+WSL2 provides transparent, bidirectional filesystem interoperability:
+
+#### 1. Windows File Explorer Access (Linux Node)
+
+Windows 11 displays a native **Linux** folder in the File Explorer sidebar containing all active
+distributions:
+
+```text
+\\wsl.localhost\tupynambalucasdev-ubuntu\home\tupy\projects\tupynambalucas\hub\studio\creative\
+```
+
+- Double-clicking any `.ai` or `.psd` file in Windows Explorer opens it directly inside Adobe
+  Illustrator or Photoshop on Windows.
+- Saving changes (`Ctrl+S`) writes directly to the Linux `ext4` filesystem. Git and the Antigravity
+  CLI inside Ubuntu detect modifications instantly.
+
+#### 2. Launching Windows Creative Apps from Ubuntu Terminal
+
+From the Ubuntu bash shell, you can open Windows File Explorer or trigger the default Windows
+application for any creative asset:
+
+```bash
+# Open File Explorer in the illustrator assets directory
+explorer.exe hub/studio/creative/illustrator
+
+# Launch Adobe Illustrator on Windows for a specific vector asset
+cmd.exe /c start "" "hub/studio/creative/illustrator/brand-tupynambalucas-identity.ai"
+```
+
+#### 3. Persistent Network Drive Mapping (`Z:`)
+
+For desktop applications that perform better with classic drive letter paths rather than UNC network
+paths, map the Linux project root to a Windows drive letter in Windows PowerShell:
+
+```powershell
+net use Z: \\wsl.localhost\tupynambalucasdev-ubuntu\home\tupy\projects\tupynambalucas /persistent:yes
+```
+
+Creative assets are then directly accessible in Adobe Creative Cloud as:
+`Z:\hub\studio\creative\illustrator\brand-tupynambalucas-identity.ai`.
+
+---
 
 Freelens runs as a desktop application on Windows and connects to the k3d clusters inside WSL2 via
 localhost port mirroring (`localhostForwarding=true` in `.wslconfig`).
