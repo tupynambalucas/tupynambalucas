@@ -230,6 +230,52 @@ k3d cluster create corporate \
 skaffold config set default-repo localhost:5000
 ```
 
+### Cluster Lifecycle: Stopping and Resuming After Reboot
+
+k3d clusters persist their state and local volumes across WSL2 shutdowns and Windows reboots.
+Containers are not deleted unless explicitly targeted with `k3d cluster delete`.
+
+#### 1. Stopping Clusters (Before Shutdown)
+
+To gracefully stop the clusters without losing state or data:
+
+```bash
+k3d cluster stop hub corporate
+```
+
+#### 2. Starting Clusters (After Reboot or WSL Start)
+
+When opening Ubuntu after a system reboot or `wsl --shutdown`:
+
+```bash
+# 1. Verify Docker daemon is active (started automatically by systemd)
+systemctl is-system-running
+
+# 2. Ensure the local registry container is running
+docker start k3d-registry.localhost 2>/dev/null || true
+
+# 3. Start both clusters simultaneously
+k3d cluster start hub corporate
+
+# 4. Verify node readiness
+kubectl --context k3d-hub get nodes
+kubectl --context k3d-corporate get nodes
+
+# 5. Resume Skaffold development loops
+skaffold dev -f k8s/skaffold.hub.yaml
+skaffold dev -f k8s/skaffold.corporate.yaml
+```
+
+#### 3. Recommended Bash Helpers (`~/.bashrc`)
+
+Add the following shortcuts to `~/.bashrc` inside Ubuntu for one-command lifecycle management:
+
+```bash
+alias k8s-start="docker start k3d-registry.localhost 2>/dev/null; k3d cluster start hub corporate"
+alias k8s-stop="k3d cluster stop hub corporate"
+alias k8s-status="k3d cluster list"
+```
+
 ---
 
 ## 5. Sequential Readiness Gates (U0 to U12)
