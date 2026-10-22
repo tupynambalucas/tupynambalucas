@@ -114,7 +114,7 @@ Runbook reference: [Tunnel provisioning runbook](./tunnel-provisioning-strategy.
 
 Runbook reference: [Ubuntu setup & readiness gates](./ubuntu-setup.md)
 
-- [ ] Select existing WSL2 distribution (`Ubuntu-26.04`) or create dedicated instance (`dev-ubuntu`).
+- [ ] Unregister old distribution and install dedicated instance (`tupynambalucasdev-ubuntu`) with user `tupy`.
 - [ ] Configure host `.wslconfig` (16GB RAM, 8 vCPUs) and enable `systemd=true` in `/etc/wsl.conf`.
 - [ ] Disable Docker Desktop WSL integration and install native Docker Engine.
 - [ ] Install pinned CLI tools: k3d v5.8.3, kubectl v1.31, Helm v3.16.4, Skaffold v2.13.2, kubeseal v0.27.1, Node 22, pnpm 12.6.0.

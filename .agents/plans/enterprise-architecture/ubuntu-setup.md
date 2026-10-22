@@ -20,24 +20,44 @@ Source code must live directly on the Linux native filesystem (`ext4`) inside WS
 the NTFS 9P translation latency and `gvproxy` network bottlenecks that cause Skaffold sync timeouts
 under Windows.
 
-### Distribution Selection
+### Distribution Lifecycle & Provisioning
 
-You can use the existing WSL2 distribution (`Ubuntu-26.04`) already installed on the system, or
-provision a clean dedicated instance:
+#### Step 1: Remove Stale Distributions (Optional Clean Slate)
 
-1. **Option A (Existing Distribution - Recommended)**:
-   Verify the existing distribution is running version 2:
+If removing an existing unused distribution (e.g., `Ubuntu-26.04`), unregister it from Windows PowerShell.
 
-   ```powershell
-   wsl --list --verbose
-   ```
+> [!WARNING]
+> Running `wsl --unregister` permanently deletes the virtual disk image (`ext4.vhdx`) for that distribution. Ensure no required files exist inside it before executing.
 
-2. **Option B (New Dedicated Instance)**:
-   If provisioning a fresh, isolated distribution:
+```powershell
+wsl --shutdown
+wsl --unregister Ubuntu-26.04
+```
 
-   ```powershell
-   wsl --install Ubuntu --name dev-ubuntu
-   ```
+#### Step 2: Install Dedicated Instance (`tupynambalucasdev-ubuntu`)
+
+Provision a clean Ubuntu LTS instance with the dedicated name:
+
+```powershell
+wsl --install Ubuntu-24.04 --name tupynambalucasdev-ubuntu
+```
+
+#### Step 3: Configure Default User (`tupy`) & Credentials
+
+During the initial initialization prompt, enter the requested credentials:
+
+- **UNIX username**: `tupy`
+- **Password**: `Namba47913@`
+
+Alternatively, configure the user and credentials non-interactively as root from Windows PowerShell:
+
+```powershell
+# Create user 'tupy' with sudo and docker group memberships
+wsl -d tupynambalucasdev-ubuntu -u root -e bash -c "useradd -m -s /bin/bash -G sudo tupy && echo 'tupy:Namba47913@' | chpasswd && printf '[boot]\nsystemd=true\n\n[user]\ndefault=tupy\n' > /etc/wsl.conf"
+
+# Restart WSL to apply systemd and default user settings
+wsl --shutdown
+```
 
 ### Host Resource Allocation (`%UserProfile%\.wslconfig`)
 
@@ -285,21 +305,21 @@ alias k8s-status="k3d cluster list"
 Execute these validation gates sequentially. Each gate defines an explicit command and pass
 condition before proceeding to the next.
 
-| Gate    | Action                                     | Verification Command                                                                                 | Pass Condition                                                        |
-| :------ | :----------------------------------------- | :--------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
-| **U0**  | Verify Windows branch committed and pushed | `git status --porcelain` on Windows                                                                  | Output empty, branch ahead by 0 commits.                              |
-| **U1**  | Verify backup and `.env` presence          | `test -f ~/projects/tupynambalucas/k8s/.env && echo OK`                                              | Prints `OK`.                                                          |
-| **U2**  | Verify WSL2 systemd daemon                 | `systemctl is-system-running`                                                                        | Returns `running`.                                                    |
-| **U3**  | Verify native Docker Engine                | `docker info --format '{{.ServerVersion}}'`                                                          | Reports native engine, not `desktop-linux`.                           |
-| **U4**  | Verify toolchain CLI versions              | `k3d --version && kubectl version --client && helm version && skaffold version`                      | All exit code 0.                                                      |
-| **U5**  | Verify Git branch & upstream               | `git rev-parse --abbrev-ref HEAD`                                                                    | Prints `chore/enterprise-architecture`.                               |
-| **U6**  | Workspace dependency install               | `pnpm install --frozen-lockfile`                                                                     | Exit code 0, Git hooks initialized.                                   |
-| **U7**  | Node status across both clusters           | `kubectl --context k3d-hub get nodes && kubectl --context k3d-corporate get nodes`                   | All nodes report `Ready`.                                             |
-| **U8**  | Registry image push smoke test             | `docker pull alpine && docker tag alpine localhost:5000/alpine && docker push localhost:5000/alpine` | Push finishes successfully.                                           |
-| **U9**  | Render all six overlays via Kustomize      | See command block below                                                                              | All 6 overlays return exit code 0.                                    |
-| **U10** | Launch Skaffold dev loops                  | `skaffold dev -f k8s/skaffold.hub.yaml` and `skaffold dev -f k8s/skaffold.corporate.yaml`            | Workloads reach `Running 1/1`; tunnels report `HEALTHY`.              |
-| **U11** | Open repository in VS Code Remote WSL      | `code ~/projects/tupynambalucas`                                                                     | Status bar displays `WSL: Ubuntu-26.04`; terminal defaults to `bash`. |
-| **U12** | Freelens cluster connectivity              | Windows Freelens connects to merged kubeconfig                                                       | Both `k3d-hub` and `k3d-corporate` show green health in sidebar.      |
+| Gate    | Action                                     | Verification Command                                                                                 | Pass Condition                                                                    |
+| :------ | :----------------------------------------- | :--------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
+| **U0**  | Verify Windows branch committed and pushed | `git status --porcelain` on Windows                                                                  | Output empty, branch ahead by 0 commits.                                          |
+| **U1**  | Verify backup and `.env` presence          | `test -f ~/projects/tupynambalucas/k8s/.env && echo OK`                                              | Prints `OK`.                                                                      |
+| **U2**  | Verify WSL2 systemd daemon                 | `systemctl is-system-running`                                                                        | Returns `running`.                                                                |
+| **U3**  | Verify native Docker Engine                | `docker info --format '{{.ServerVersion}}'`                                                          | Reports native engine, not `desktop-linux`.                                       |
+| **U4**  | Verify toolchain CLI versions              | `k3d --version && kubectl version --client && helm version && skaffold version`                      | All exit code 0.                                                                  |
+| **U5**  | Verify Git branch & upstream               | `git rev-parse --abbrev-ref HEAD`                                                                    | Prints `chore/enterprise-architecture`.                                           |
+| **U6**  | Workspace dependency install               | `pnpm install --frozen-lockfile`                                                                     | Exit code 0, Git hooks initialized.                                               |
+| **U7**  | Node status across both clusters           | `kubectl --context k3d-hub get nodes && kubectl --context k3d-corporate get nodes`                   | All nodes report `Ready`.                                                         |
+| **U8**  | Registry image push smoke test             | `docker pull alpine && docker tag alpine localhost:5000/alpine && docker push localhost:5000/alpine` | Push finishes successfully.                                                       |
+| **U9**  | Render all six overlays via Kustomize      | See command block below                                                                              | All 6 overlays return exit code 0.                                                |
+| **U10** | Launch Skaffold dev loops                  | `skaffold dev -f k8s/skaffold.hub.yaml` and `skaffold dev -f k8s/skaffold.corporate.yaml`            | Workloads reach `Running 1/1`; tunnels report `HEALTHY`.                          |
+| **U11** | Open repository in VS Code Remote WSL      | `code ~/projects/tupynambalucas`                                                                     | Status bar displays `WSL: tupynambalucasdev-ubuntu`; terminal defaults to `bash`. |
+| **U12** | Freelens cluster connectivity              | Windows Freelens connects to merged kubeconfig                                                       | Both `k3d-hub` and `k3d-corporate` show green health in sidebar.                  |
 
 ### Gate U9: Kustomize Validation Command
 
@@ -377,25 +397,55 @@ Once the readiness gates pass inside Ubuntu, promote the branch into `develop` a
 
 ---
 
-## 7. IDE Integration & Freelens Connectivity
+## 7. IDE Integration, Antigravity CLI & Freelens Connectivity
 
-### VS Code / Antigravity Remote Setup
+### Operating Antigravity CLI (`agy`) in WSL2 vs Windows
 
-Antigravity and VS Code communicate with WSL2 using the remote server architecture: the UI runs on
-Windows with GPU acceleration, while language servers, extensions, pnpm, and terminal shells run
-inside native Linux ext4.
+The monorepo code, native Docker daemon, and Kubernetes clusters run directly on the Linux `ext4`
+filesystem. Therefore, running the **Antigravity CLI inside Ubuntu WSL2** is the authoritative
+pattern.
+
+#### Architectural Rationale
+
+- **Direct Toolchain Access**: Running `agy` inside Ubuntu grants the agent direct access to `bash`,
+  the native Docker daemon socket (`/var/run/docker.sock`), `kubectl`, and the k3d contexts without
+  network proxies or WSL path translation.
+- **Maximum File I/O Throughput**: Editing files directly on `ext4` eliminates Windows-to-WSL 9P
+  filesystem latency.
+- **Hot-Reload Integration**: File modifications made by `agy` inside WSL trigger instant hot-reload
+  in Skaffold and the VS Code remote window.
+
+#### Installing Antigravity CLI inside Ubuntu
+
+Inside the Ubuntu terminal:
+
+```bash
+# Install Antigravity CLI globally via pnpm or npm
+pnpm add -g @google/antigravity-cli
+
+# Verify installation
+agy --version
+```
+
+### Opening the Project in VS Code / Antigravity Remote
+
+VS Code and Antigravity IDE run as native desktop applications on Windows, while language servers,
+extensions, and compilers execute inside the Linux container via the Remote WSL architecture:
 
 1. Install the **WSL** extension (`ms-vscode-remote.remote-wsl`) on Windows.
-2. Open terminal in Ubuntu and launch the workspace:
+2. From the terminal inside Ubuntu, navigate to the cloned project and launch VS Code:
 
    ```bash
    cd ~/projects/tupynambalucas
    code .
    ```
 
-3. The window opens with `WSL: Ubuntu-26.04` in the bottom-left corner. Integrated terminals
-   default to native Ubuntu bash.
-4. **Recommended In-WSL Extensions**:
+3. VS Code launches on Windows with `WSL: tupynambalucasdev-ubuntu` displayed in the bottom-left
+   corner.
+4. **Terminal Integration**:
+   Pressing `` Ctrl+` `` opens an integrated bash shell directly within `~/projects/tupynambalucas` as
+   user `tupy`. You can run `agy` directly inside this terminal.
+5. **Recommended In-WSL Extensions**:
    - `ms-kubernetes-tools.vscode-kubernetes-tools`: Full cluster explorer in the sidebar (pods,
      logs, helm, port-forwarding) reading `~/.kube/config`.
    - `ms-azuretools.vscode-docker`: Container inspection and registry management.
@@ -462,5 +512,5 @@ the disk hits kubelet eviction thresholds, Kubernetes nodes will transition to t
 
    ```powershell
    wsl --shutdown
-   wsl --export Ubuntu-26.04 "D:\wsl-backup\ubuntu-enterprise-$(Get-Date -Format 'yyyyMMdd').tar"
+   wsl --export tupynambalucasdev-ubuntu "D:\wsl-backup\ubuntu-enterprise-$(Get-Date -Format 'yyyyMMdd').tar"
    ```
