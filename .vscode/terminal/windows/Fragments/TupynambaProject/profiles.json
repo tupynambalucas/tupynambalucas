@@ -23,6 +23,15 @@
       "colorScheme": "One Half Light",
       "icon": "C:\\Users\\tupyn\\Documents\\Terminal\\Icons\\antigravity_icon.jpg",
       "tabTitle": "Antigravity CLI"
+    },
+    {
+      "name": "Tupynamba - Antigravity CLI (Ubuntu)",
+      "commandline": "wsl.exe -d tupynambalucasdev-ubuntu --cd ~/projects/tupynambalucas bash --login -c \"if command -v agy >/dev/null 2>&1; then agy; elif [ -f package.json ]; then pnpm agy; else echo 'Antigravity CLI not installed yet. Run: pnpm add -g @google/antigravity-cli'; exec bash; fi; exec bash\"",
+      "elevate": false,
+      "startingDirectory": "%__CD__%",
+      "colorScheme": "One Half Dark",
+      "icon": "C:\\Users\\tupyn\\Documents\\Terminal\\Icons\\antigravity_icon.jpg",
+      "tabTitle": "Antigravity CLI (Ubuntu)"
     }
   ]
 }
