@@ -208,21 +208,23 @@ k3d registry create registry.localhost --port 5000
 # 3. Host resolution for the registry
 echo '127.0.0.1 k3d-registry.localhost' | sudo tee -a /etc/hosts
 
-# 4. Hub Cluster (internal platform & observability)
+# 4. Hub Cluster (internal platform & observability - API port 6550)
 k3d cluster create hub \
   --network k3d-enterprise-net \
   --servers 1 \
   --agents 1 \
   --image rancher/k3s:v1.31.4-k3s1 \
+  --api-port 0.0.0.0:6550 \
   --registry-use k3d-registry.localhost:5000 \
   --k3s-arg "--disable=traefik@server:*"
 
-# 5. Corporate Cluster (external products & web workloads)
+# 5. Corporate Cluster (external products & web workloads - API port 6551)
 k3d cluster create corporate \
   --network k3d-enterprise-net \
   --servers 1 \
   --agents 1 \
   --image rancher/k3s:v1.31.4-k3s1 \
+  --api-port 0.0.0.0:6551 \
   --registry-use k3d-registry.localhost:5000 \
   --k3s-arg "--disable=traefik@server:*"
 
@@ -384,7 +386,7 @@ Windows with GPU acceleration, while language servers, extensions, pnpm, and ter
 inside native Linux ext4.
 
 1. Install the **WSL** extension (`ms-vscode-remote.remote-wsl`) on Windows.
-2. Open terminal in Ubuntu and run:
+2. Open terminal in Ubuntu and launch the workspace:
 
    ```bash
    cd ~/projects/tupynambalucas
@@ -393,21 +395,43 @@ inside native Linux ext4.
 
 3. The window opens with `WSL: Ubuntu-26.04` in the bottom-left corner. Integrated terminals
    default to native Ubuntu bash.
+4. **Recommended In-WSL Extensions**:
+   - `ms-kubernetes-tools.vscode-kubernetes-tools`: Full cluster explorer in the sidebar (pods,
+     logs, helm, port-forwarding) reading `~/.kube/config`.
+   - `ms-azuretools.vscode-docker`: Container inspection and registry management.
+   - `redhat.vscode-yaml`: Schema validation for Kubernetes manifests.
 
-### Freelens Desktop Client
+### Freelens Desktop Client on Windows
 
-Freelens runs on Windows and connects directly to both k3d clusters inside WSL2:
+Freelens runs as a desktop application on Windows and connects to the k3d clusters inside WSL2 via
+localhost port mirroring (`localhostForwarding=true` in `.wslconfig`).
 
-1. Merge cluster kubeconfigs inside Ubuntu:
+#### Kubeconfig Preparation
 
-   ```bash
-   k3d kubeconfig merge hub --kubeconfig-merge-default
-   k3d kubeconfig merge corporate --kubeconfig-merge-default --kubeconfig-switch-context
-   ```
+k3d generates addresses with `0.0.0.0` by default. Because Windows network sockets require
+`127.0.0.1`, sanitize the endpoint addresses and export the merged configuration directly to the
+Windows user profile from Ubuntu:
 
-2. In Windows Freelens, click **Add Cluster** and select the kubeconfig located at the network path:
-   `\\wsl$\Ubuntu-26.04\home\<USER>\.kube\config`.
-3. Freelens displays `k3d-hub` and `k3d-corporate` side-by-side in the cluster sidebar.
+```bash
+# 1. Merge contexts inside Ubuntu
+k3d kubeconfig merge hub --kubeconfig-merge-default
+k3d kubeconfig merge corporate --kubeconfig-merge-default --kubeconfig-switch-context
+sed -i 's/0.0.0.0/127.0.0.1/g' ~/.kube/config
+
+# 2. Export merged, sanitized kubeconfig directly to Windows user profile
+WIN_USER=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
+mkdir -p "/mnt/c/Users/${WIN_USER}/.kube"
+cp ~/.kube/config "/mnt/c/Users/${WIN_USER}/.kube/config"
+```
+
+#### Connecting Freelens
+
+1. Open Freelens on Windows.
+2. Freelens automatically discovers `%USERPROFILE%\.kube\config`.
+3. The cluster sidebar displays both clusters:
+   - `k3d-hub`: API endpoint `https://127.0.0.1:6550`
+   - `k3d-corporate`: API endpoint `https://127.0.0.1:6551`
+4. Both clusters connect instantly with full metrics, pod logs, and terminal exec capabilities.
 
 ---
 
