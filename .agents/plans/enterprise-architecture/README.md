@@ -34,7 +34,8 @@ authoritative [Enterprise Architecture Roadmap](./roadmap.md).
 ## Documents
 
 1. [Roadmap](./roadmap.md): Comprehensive execution status matrix, completed milestones, and pending actions.
-2. [Ubuntu setup](./ubuntu-setup.md): WSL2, Docker, k3d, registry, kubeconfig, Freelens.
+2. [Ubuntu setup & readiness gates](./ubuntu-setup.md): WSL2, Docker, k3d, registry, validation
+   gates (U0-U12), Git landing, and Freelens.
 3. [Enterprise structure](./enterprise-structure.md): topology, environments, domains, and
    deployment tooling.
 4. [Cloudflared tunnels](./cloudflared-tunnels.md): tunnel design for dev, staging, and prod.
@@ -47,5 +48,3 @@ authoritative [Enterprise Architecture Roadmap](./roadmap.md).
 9. [Secrets management](./secrets-management.md): Sealed Secrets GitOps architecture for staging and prod.
 10. [Tunnel provisioning strategy](./tunnel-provisioning-strategy.md): 6-tunnel architecture evaluation,
     origins mapping, and bootstrap runbook.
-11. [Develop integration & readiness gates](./develop-integration-and-ubuntu-readiness.md): Git landing
-    procedure and Ubuntu validation gates (U0-U12).

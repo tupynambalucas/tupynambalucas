@@ -26,15 +26,15 @@ flowchart LR
   class p1,git,p5 pending;
 ```
 
-| Phase           | Domain                  | Status          | Key Deliverable                                                     | Anchor Reference                                                                                                                                                               |
-| :-------------- | :---------------------- | :-------------- | :------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Phase 0**     | Preparation             | Completed       | Clean baseline, backup `tupynambalucas-backup`                      | [migration-phases.md#phase-0-preparation-completed](./migration-phases.md#phase-0-preparation-completed)                                                                       |
-| **Phase 2**     | Infrastructure Refactor | Completed       | Componentized `k8s/` manifests, 6 valid overlays                    | [infrastructure-refactor.md](./infrastructure-refactor.md)                                                                                                                     |
-| **Phase 4**     | Monorepo Restructure    | Completed       | DDD hierarchy (`hub/` & `corporate/`), clean workspace              | [monorepo-restructure.md](./monorepo-restructure.md)                                                                                                                           |
-| **Phase 3**     | Cloudflare Dev Tunnels  | **In Progress** | Remote tunnels `dev-hub` & `dev-corporate` active                   | [tunnel-provisioning-strategy.md#4-initial-bootstrap-runbook-first-instance-setup](./tunnel-provisioning-strategy.md#4-initial-bootstrap-runbook-first-instance-setup)         |
-| **Phase 1**     | Ubuntu Environment      | **Pending**     | WSL2 Ubuntu, k3d clusters, toolchain verification                   | [ubuntu-setup.md](./ubuntu-setup.md)                                                                                                                                           |
-| **Git Landing** | Branch Integration      | **Pending**     | Merge `chore/enterprise-architecture` into `develop` without squash | [develop-integration-and-ubuntu-readiness.md#2-procedure-land-the-branch-into-develop](./develop-integration-and-ubuntu-readiness.md#2-procedure-land-the-branch-into-develop) |
-| **Phase 5**     | Cloud Staging & Prod    | **Planned**     | Sealed Secrets, Terraform Zero Trust, ArgoCD GitOps                 | [secrets-management.md](./secrets-management.md)                                                                                                                               |
+| Phase           | Domain                  | Status          | Key Deliverable                                                     | Anchor Reference                                                                                                                                                       |
+| :-------------- | :---------------------- | :-------------- | :------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Phase 0**     | Preparation             | Completed       | Clean baseline, backup `tupynambalucas-backup`                      | [migration-phases.md#phase-0-preparation-completed](./migration-phases.md#phase-0-preparation-completed)                                                               |
+| **Phase 2**     | Infrastructure Refactor | Completed       | Componentized `k8s/` manifests, 6 valid overlays                    | [infrastructure-refactor.md](./infrastructure-refactor.md)                                                                                                             |
+| **Phase 4**     | Monorepo Restructure    | Completed       | DDD hierarchy (`hub/` & `corporate/`), clean workspace              | [monorepo-restructure.md](./monorepo-restructure.md)                                                                                                                   |
+| **Phase 3**     | Cloudflare Dev Tunnels  | **In Progress** | Remote tunnels `dev-hub` & `dev-corporate` active                   | [tunnel-provisioning-strategy.md#4-initial-bootstrap-runbook-first-instance-setup](./tunnel-provisioning-strategy.md#4-initial-bootstrap-runbook-first-instance-setup) |
+| **Phase 1**     | Ubuntu Environment      | **Pending**     | WSL2 Ubuntu, k3d clusters, toolchain verification                   | [ubuntu-setup.md](./ubuntu-setup.md)                                                                                                                                   |
+| **Git Landing** | Branch Integration      | **Pending**     | Merge `chore/enterprise-architecture` into `develop` without squash | [ubuntu-setup.md#6-branch-integration-procedure-landing-into-develop-and-main](./ubuntu-setup.md#6-branch-integration-procedure-landing-into-develop-and-main)         |
+| **Phase 5**     | Cloud Staging & Prod    | **Planned**     | Sealed Secrets, Terraform Zero Trust, ArgoCD GitOps                 | [secrets-management.md](./secrets-management.md)                                                                                                                       |
 
 ---
 
@@ -112,20 +112,21 @@ Runbook reference: [Tunnel provisioning runbook](./tunnel-provisioning-strategy.
 
 ### 3.2 Step 2: Native Ubuntu Dev Environment (Phase 1)
 
-Runbook reference: [Ubuntu setup guide](./ubuntu-setup.md) and [Readiness gates U0 to U12](./develop-integration-and-ubuntu-readiness.md#3-ubuntu-readiness-gates)
+Runbook reference: [Ubuntu setup & readiness gates](./ubuntu-setup.md)
 
-- [ ] Install WSL2 Ubuntu distribution (`dev-ubuntu`) and configure `.wslconfig` (16GB RAM, systemd).
+- [ ] Select existing WSL2 distribution (`Ubuntu-26.04`) or create dedicated instance (`dev-ubuntu`).
+- [ ] Configure host `.wslconfig` (16GB RAM, 8 vCPUs) and enable `systemd=true` in `/etc/wsl.conf`.
 - [ ] Disable Docker Desktop WSL integration and install native Docker Engine.
 - [ ] Install pinned CLI tools: k3d v5.8.3, kubectl v1.31, Helm v3.16.4, Skaffold v2.13.2, kubeseal v0.27.1, Node 22, pnpm 12.6.0.
 - [ ] Create shared Docker network `k3d-enterprise-net` and local registry `registry.localhost:5000`.
 - [ ] Create isolated clusters `hub` and `corporate` without host port bindings.
 - [ ] Clone repository into `~/projects/tupynambalucas` on `ext4` and copy `k8s/.env` from Windows checkout.
-- [ ] Run `skaffold dev -f skaffold.hub.yaml` and `skaffold dev -f skaffold.corporate.yaml`.
+- [ ] Run `skaffold dev -f k8s/skaffold.hub.yaml` and `skaffold dev -f k8s/skaffold.corporate.yaml`.
 - [ ] Verify tunnel pod logs report registered edge connections.
 
 ### 3.3 Step 3: Git Branch Landing
 
-Runbook reference: [Landing into develop and main](./develop-integration-and-ubuntu-readiness.md#2-procedure-land-the-branch-into-develop)
+Runbook reference: [Landing into develop and main](./ubuntu-setup.md#6-branch-integration-procedure-landing-into-develop-and-main)
 
 - [ ] Run quality gates: `pnpm install --frozen-lockfile` and `pnpm -r typecheck`.
 - [ ] Stage and commit working tree on `chore/enterprise-architecture` (ensure `.env` is uncommitted).
