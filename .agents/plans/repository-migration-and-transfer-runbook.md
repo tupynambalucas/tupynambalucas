@@ -94,6 +94,7 @@ git status
 - [x] All changes cleanly committed following Conventional Commits.
 - [x] Branch `develop` pushed to origin.
 - [x] Branch `develop` merged into `main` and pushed to origin.
-- [ ] Repository transferred to `tupynambalucas-dev` organization on GitHub.
-- [ ] Local Windows folder renamed to `platform`.
-- [ ] Local Git remote updated to `git@github.com:tupynambalucas-dev/platform.git`.
+- [x] Repository transferred to `tupynambalucas-dev` organization on GitHub.
+- [x] Local Windows folder renamed to `platform` (`tupynambalucas-dev\platform`).
+- [x] Local Git remote updated to `https://github.com/tupynambalucas-dev/platform.git`.
+- [x] Functional teams RBAC synchronized (`core-engineers: push`, `infra-ops: maintain`, `creative-team: push`).
