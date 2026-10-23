@@ -45,6 +45,12 @@ authoritative [Enterprise Architecture Roadmap](./roadmap.md).
 7. [Migration phases](./migration-phases.md): execution order, validation, and rollback.
 8. [Enterprise architecture review](./enterprise-architecture-review.md): post-migration audit,
    regression fixes, and domain analysis.
-9. [Secrets management](./secrets-management.md): Sealed Secrets GitOps architecture for staging and prod.
+9. [Secrets management](./secrets-management.md): Multi-provider secrets architecture evaluating Infisical, Google Cloud Secret Manager, and GitHub Environment Secrets.
 10. [Tunnel provisioning strategy](./tunnel-provisioning-strategy.md): 6-tunnel architecture evaluation,
     origins mapping, and bootstrap runbook.
+11. [GitHub governance & storage architecture](./github-governance-and-storage.md): Organization RBAC,
+    unified Windows/WSL2 Git auth, SSH commit signing, and native ext4 vs. NTFS storage analysis.
+12. [Corporate restructure](./corporate-restructure.md): collections as a package, kind-first content
+    layout, UI string extraction, `services/website` rename, and sub-domain boundary options.
+13. [GitHub organization plugin](./github-organization-plugin.md): Enterprise plugin architecture
+    combining github-mcp-server with the github-org-manager skill for teams, RBAC, and rulesets.

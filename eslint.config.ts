@@ -30,7 +30,7 @@ export default defineConfig([
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['vite.config.ts'],
+          allowDefaultProject: ['vite.config.ts', 'vitest.config.ts'],
           noWarnOnMultipleProjects: true,
         },
         tsconfigRootDir: __dirname,
@@ -172,7 +172,7 @@ export default defineConfig([
   },
 
   // ========================================================================
-  // 4. DOMAIN CORE - Regras para @monorepo-*/core (Strict Logic)
+  // 4. DOMAIN CORE - Regras para @tupynambalucas-dev-*/core (Strict Logic)
   // ========================================================================
   {
     name: 'monorepo/domain-core',

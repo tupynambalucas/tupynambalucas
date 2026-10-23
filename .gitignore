@@ -60,6 +60,7 @@ gha-creds-*.json
 
 # Turborepo
 .turbo
+.docusaurus/
 
 # --- Persistent runtime ---
 data/

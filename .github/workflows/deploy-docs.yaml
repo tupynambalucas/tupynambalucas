@@ -29,12 +29,12 @@ jobs:
         with:
           node-version: 22
           frozen-lockfile: 'false'
-          filter: '@monorepo/kb-docusaurus-portal...'
+          filter: '@tupynambalucas-dev/corporate-portal...'
 
       - name: Generate Global Documents
         run: |
-          pnpm kb:docusaurus:portal:generate:changelog
-          pnpm kb:docusaurus:portal:generate:roadmap
+          pnpm portal:generate:changelog
+          pnpm portal:generate:roadmap
 
       - name: Commit and Push Compiled Documents
         run: |
@@ -49,7 +49,7 @@ jobs:
           fi
 
       - name: Build documentation
-        run: pnpm kb:docusaurus:portal:build
+        run: pnpm portal:build
         env:
           CLOUDFLARE_R2_ASSETS_PUBLIC_URL: ${{ secrets.CLOUDFLARE_R2_ASSETS_PUBLIC_URL }}
 
