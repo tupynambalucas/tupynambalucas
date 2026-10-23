@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-db
+  namespace: cortex
+  labels:
+    app: mongodb-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-db
+  template:
+    metadata:
+      labels:
+        app: mongodb-db
+    spec:
+      containers:
+        - name: mongodb-db
+          image: mongo:7
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              memory: '256Mi'
+              cpu: '100m'
+            limits:
+              memory: '1Gi'
+              cpu: '500m'
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_ROOT_USERNAME
+                  optional: true
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_ROOT_PASSWORD
+                  optional: true
+            - name: MONGO_INITDB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: MEMORY_MONGO_INITDB_DATABASE
+                  optional: true
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
+      volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+  namespace: cortex
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-db
+  namespace: cortex
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongodb-db

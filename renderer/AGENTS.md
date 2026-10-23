@@ -1,12 +1,11 @@
 <context-hierarchy>
   <parent src="../AGENTS.md" type="global-rules" />
   <system-instruction>
-    AGENT: If you have not read "../AGENTS.md" in this session, stop now and read it using your
-    file-reading tools before proceeding. Global constraints are mandatory.
+    AGENT: You are operating in the renderer bounded context. If you have not read "../AGENTS.md" in this session, stop now and read it using your file-reading tools before proceeding.
   </system-instruction>
 </context-hierarchy>
 
-# Bounded Context: Renderer Workspace
+# Bounded Context: renderer
 
 This workspace (`@/renderer`) manages the generic dynamic asset generator and
 document compilation engine, responsible for generating custom visual SVG cards and compiling

@@ -1,0 +1,56 @@
+# MCP Guardrails Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-guardrails
+  namespace: cortex
+  labels:
+    app: mcp-guardrails
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-guardrails
+  template:
+    metadata:
+      labels:
+        app: mcp-guardrails
+    spec:
+      containers:
+        - name: mcp-guardrails
+          image: cortex-mcp-guardrails:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9001
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
+          env:
+            - name: GUARDRAILS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: GUARDRAILS_PORT
+                  optional: true
+            - name: GUARDRAILS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: GUARDRAILS_HOST
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-guardrails
+  namespace: cortex
+spec:
+  ports:
+    - port: 9001
+      targetPort: 9001
+  selector:
+    app: mcp-guardrails

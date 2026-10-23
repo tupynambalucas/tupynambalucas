@@ -31,4 +31,4 @@ runs:
         RENDERER_GH_PAT: ${{ inputs.github_token }}
         GITHUB_ACTIONS: 'true'
         TARGET_BRANCH: ${{ inputs.target_branch }}
-      run: pnpm --filter @monorepo/renderer generate
+      run: pnpm --filter @tupynambalucas-dev/renderer generate

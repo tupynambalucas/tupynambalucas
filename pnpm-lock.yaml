@@ -556,7 +556,7 @@ importers:
       '@eslint/js':
         specifier: catalog:tooling-stack
         version: 10.0.1(eslint@10.11.0(jiti@2.7.0)(supports-color@10.2.2))
-      '@monorepo/shared-config':
+      '@tupynambalucas-dev/shared-config':
         specifier: workspace:*
         version: link:shared/config
       '@types/node':
@@ -620,423 +620,38 @@ importers:
         specifier: 'catalog:'
         version: 4.149.0(@types/node@26.6.4)
 
-  cortex/mcp/guardrails:
-    dependencies:
-      '@grpc/grpc-js':
-        specifier: catalog:api-stack
-        version: 1.14.6
-      '@grpc/proto-loader':
-        specifier: catalog:api-stack
-        version: 0.8.1
+  corporate/collections:
     devDependencies:
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  cortex/mcp/services/firecrawl:
-    dependencies:
-      '@modelcontextprotocol/sdk':
-        specifier: catalog:mcp-stack
-        version: 1.32.1(supports-color@10.2.2)(zod@4.6.5)
-      dotenv:
-        specifier: catalog:shared-stack
-        version: 18.0.6
-      fastify:
-        specifier: catalog:api-stack
-        version: 5.12.5
-      firecrawl:
-        specifier: catalog:mcp-stack
-        version: 4.45.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
-      zod:
-        specifier: catalog:shared-stack
-        version: 4.6.5
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../../../shared/config
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      rimraf:
-        specifier: 'catalog:'
-        version: 6.1.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  cortex/mcp/services/memory:
-    dependencies:
-      '@modelcontextprotocol/sdk':
-        specifier: catalog:mcp-stack
-        version: 1.32.1(supports-color@10.2.2)(zod@4.6.5)
-      '@monorepo/cortex-memory-core':
-        specifier: workspace:*
-        version: link:../../../memory/packages/core
-      dotenv:
-        specifier: catalog:shared-stack
-        version: 18.0.6
-      fastify:
-        specifier: catalog:api-stack
-        version: 5.12.5
-      zod:
-        specifier: catalog:shared-stack
-        version: 4.6.5
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../../../shared/config
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      rimraf:
-        specifier: 'catalog:'
-        version: 6.1.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  cortex/memory/packages/core:
-    dependencies:
-      zod:
-        specifier: catalog:shared-stack
-        version: 4.6.5
-    devDependencies:
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      rimraf:
-        specifier: 'catalog:'
-        version: 6.1.3
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  cortex/memory/services/api:
-    dependencies:
-      '@fastify/cors':
-        specifier: catalog:api-stack
-        version: 11.3.1
-      '@fastify/env':
-        specifier: catalog:api-stack
-        version: 7.0.0
-      '@fastify/sse':
-        specifier: catalog:api-stack
-        version: 0.6.1(fastify@5.12.5)
-      '@monorepo/cortex-memory-core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      fastify:
-        specifier: catalog:api-stack
-        version: 5.12.5
-      fastify-plugin:
-        specifier: catalog:api-stack
-        version: 6.0.0
-      gray-matter:
-        specifier: 'catalog:'
-        version: 4.0.3
-      mongoose:
-        specifier: catalog:api-stack
-        version: 9.11.1
-      zod:
-        specifier: catalog:shared-stack
-        version: 4.6.5
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../../../shared/config
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      rimraf:
-        specifier: 'catalog:'
-        version: 6.1.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  cortex/memory/services/web:
-    dependencies:
-      '@monorepo/cortex-memory-core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@monorepo/studio-assets':
-        specifier: workspace:*
-        version: link:../../../../studio/assets
-      axios:
-        specifier: catalog:shared-stack
-        version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
-      lucide-react:
-        specifier: catalog:web-stack
-        version: 1.53.0(@types/react@19.3.0)(react@19.3.0)
-      react:
-        specifier: catalog:web-stack
-        version: 19.3.0
-      react-dom:
-        specifier: catalog:web-stack
-        version: 19.3.0(react@19.3.0)
-      react-force-graph-2d:
-        specifier: catalog:web-stack
-        version: 1.29.2(react@19.3.0)
-      zustand:
-        specifier: catalog:web-stack
-        version: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../../../shared/config
-      '@tailwindcss/vite':
-        specifier: catalog:web-stack
-        version: 4.3.3(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15))
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      '@types/react':
-        specifier: catalog:web-stack
-        version: 19.3.0
-      '@types/react-dom':
-        specifier: catalog:web-stack
-        version: 19.3.0(@types/react@19.3.0)
-      '@vitejs/plugin-react-swc':
-        specifier: catalog:web-stack
-        version: 4.3.3(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15))
-      rimraf:
-        specifier: 'catalog:'
-        version: 6.1.3
-      tailwindcss:
-        specifier: catalog:shared-stack
-        version: 4.3.3
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-      vite:
-        specifier: catalog:web-stack
-        version: 8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
-      vite-plugin-svgr:
-        specifier: catalog:web-stack
-        version: 5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15))
-
-  hub/packages/core:
-    dependencies:
-      zod:
-        specifier: catalog:shared-stack
-        version: 4.6.5
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../../shared/config
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      eslint:
-        specifier: catalog:tooling-stack
-        version: 10.11.0(jiti@2.7.0)(supports-color@10.2.2)
-      prettier:
-        specifier: catalog:tooling-stack
-        version: 3.9.9
-      rimraf:
-        specifier: 'catalog:'
-        version: 6.1.3
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  hub/services/api:
-    dependencies:
-      '@fastify/cookie':
-        specifier: catalog:api-stack
-        version: 11.1.3
-      '@fastify/cors':
-        specifier: catalog:api-stack
-        version: 11.3.1
-      '@fastify/csrf-protection':
-        specifier: catalog:api-stack
-        version: 8.0.1
-      '@fastify/env':
-        specifier: catalog:api-stack
-        version: 7.0.0
-      '@fastify/jwt':
-        specifier: catalog:api-stack
-        version: 10.2.4
-      '@fastify/one-line-logger':
-        specifier: catalog:api-stack
-        version: 2.2.0
-      '@fastify/rate-limit':
-        specifier: catalog:api-stack
-        version: 11.2.1
-      '@fastify/session':
-        specifier: catalog:api-stack
-        version: 11.1.3
-      '@monorepo/hub-core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@sentry/node':
-        specifier: catalog:api-stack
-        version: 11.6.0(@babel/core@7.29.7(supports-color@10.2.2))(webpack@5.111.1(@swc/core@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(sharp@0.35.5(@types/node@26.6.4))(svgo@3.3.5))
-      '@sentry/profiling-node':
-        specifier: catalog:api-stack
-        version: 11.6.0(@babel/core@7.29.7(supports-color@10.2.2))(webpack@5.111.1(@swc/core@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(sharp@0.35.5(@types/node@26.6.4))(svgo@3.3.5))
-      bcrypt:
-        specifier: catalog:api-stack
-        version: 6.0.0
-      bullmq:
-        specifier: catalog:api-stack
-        version: 6.3.11(ioredis@6.0.0(supports-color@10.2.2))
-      dotenv:
-        specifier: catalog:shared-stack
-        version: 18.0.6
-      fastify:
-        specifier: catalog:api-stack
-        version: 5.12.5
-      fastify-metrics:
-        specifier: catalog:api-stack
-        version: 14.1.0(fastify@5.12.5)
-      fastify-plugin:
-        specifier: catalog:api-stack
-        version: 6.0.0
-      fastify-type-provider-zod:
-        specifier: catalog:api-stack
-        version: 7.0.0(@fastify/swagger@9.9.1(supports-color@10.2.2))(fastify@5.12.5)(openapi-types@12.1.3)(zod@4.6.5)
-      ioredis:
-        specifier: catalog:api-stack
-        version: 6.0.0(supports-color@10.2.2)
-      mongoose:
-        specifier: catalog:api-stack
-        version: 9.11.1
-      pino-roll:
-        specifier: catalog:api-stack
-        version: 4.0.0
-      sdk-node-apis-efi:
-        specifier: catalog:api-stack
-        version: 2.0.1(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
-      zod:
-        specifier: catalog:shared-stack
-        version: 4.6.5
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../../shared/config
-      '@types/bcrypt':
-        specifier: catalog:api-stack
-        version: 6.0.0
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      eslint:
-        specifier: catalog:tooling-stack
-        version: 10.11.0(jiti@2.7.0)(supports-color@10.2.2)
-      prettier:
-        specifier: catalog:tooling-stack
-        version: 3.9.9
-      rimraf:
-        specifier: 'catalog:'
-        version: 6.1.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  hub/services/web:
-    dependencies:
-      '@gsap/react':
-        specifier: catalog:web-stack
-        version: 2.1.2(gsap@3.15.0)(react@19.3.0)
-      '@marsidev/react-turnstile':
-        specifier: catalog:web-stack
-        version: 1.6.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      '@monorepo/hub-core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@monorepo/studio-assets':
-        specifier: workspace:*
-        version: link:../../../studio/assets
-      axios:
-        specifier: catalog:shared-stack
-        version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
-      date-fns:
-        specifier: catalog:shared-stack
-        version: 4.4.0
-      gsap:
-        specifier: catalog:web-stack
-        version: 3.15.0
-      i18next:
-        specifier: catalog:web-stack
-        version: 26.4.2(typescript@6.0.3)
-      react:
-        specifier: catalog:web-stack
-        version: 19.3.0
-      react-datepicker:
-        specifier: catalog:web-stack
-        version: 9.1.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
-      react-dom:
-        specifier: catalog:web-stack
-        version: 19.3.0(react@19.3.0)
-      react-i18next:
-        specifier: catalog:web-stack
-        version: 17.0.16(i18next@26.4.2(typescript@6.0.3))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
-      zustand:
-        specifier: catalog:web-stack
-        version: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../../shared/config
-      '@tailwindcss/vite':
-        specifier: catalog:web-stack
-        version: 4.3.3(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15))
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.6.4
-      '@types/react':
-        specifier: catalog:web-stack
-        version: 19.3.0
-      '@types/react-dom':
-        specifier: catalog:web-stack
-        version: 19.3.0(@types/react@19.3.0)
-      '@vitejs/plugin-react-swc':
-        specifier: catalog:web-stack
-        version: 4.3.3(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15))
-      eslint:
-        specifier: catalog:tooling-stack
-        version: 10.11.0(jiti@2.7.0)(supports-color@10.2.2)
-      prettier:
-        specifier: catalog:tooling-stack
-        version: 3.9.9
-      tailwindcss:
-        specifier: catalog:shared-stack
-        version: 4.3.3
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-      vite:
-        specifier: catalog:web-stack
-        version: 8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
-      vite-plugin-svgr:
-        specifier: catalog:web-stack
-        version: 5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15))
-
-  infrastructure: {}
-
-  knowledge-base/collections:
-    devDependencies:
-      '@monorepo/shared-config':
+      '@tupynambalucas-dev/shared-config':
         specifier: workspace:*
         version: link:../../shared/config
 
-  knowledge-base/docusaurus/packages/preset:
+  corporate/packages/core:
+    dependencies:
+      zod:
+        specifier: catalog:shared-stack
+        version: 4.6.5
+    devDependencies:
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../shared/config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      eslint:
+        specifier: catalog:tooling-stack
+        version: 10.11.0(jiti@2.7.0)(supports-color@10.2.2)
+      prettier:
+        specifier: catalog:tooling-stack
+        version: 3.9.9
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.1.3
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  corporate/packages/preset:
     dependencies:
       '@docusaurus/core':
         specifier: catalog:docs-stack
@@ -1086,18 +701,18 @@ importers:
       '@docusaurus/utils':
         specifier: catalog:docs-stack
         version: 3.10.2(@swc/core@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sharp@0.35.5(@types/node@26.6.4))(supports-color@10.2.2)(svgo@3.3.5)
-      '@monorepo/kb-collections':
+      '@tupynambalucas-dev/corporate-collections':
         specifier: workspace:*
-        version: link:../../../collections
-      '@monorepo/kb-docusaurus-theme':
+        version: link:../../collections
+      '@tupynambalucas-dev/corporate-theme':
         specifier: workspace:*
         version: link:../theme
-      '@monorepo/shared-config':
+      '@tupynambalucas-dev/shared-config':
         specifier: workspace:*
-        version: link:../../../../shared/config
-      '@monorepo/studio-assets':
+        version: link:../../../shared/config
+      '@tupynambalucas-dev/studio-assets':
         specifier: workspace:*
-        version: link:../../../../studio/assets
+        version: link:../../../hub/studio/assets
       prism-react-renderer:
         specifier: catalog:docs-stack
         version: 2.4.1(react@19.3.0)
@@ -1127,7 +742,7 @@ importers:
         specifier: 'catalog:'
         version: 6.0.3
 
-  knowledge-base/docusaurus/packages/theme:
+  corporate/packages/theme:
     dependencies:
       '@docusaurus/plugin-content-blog':
         specifier: catalog:docs-stack
@@ -1147,9 +762,9 @@ importers:
       '@docusaurus/theme-mermaid':
         specifier: catalog:docs-stack
         version: 3.10.2(@docusaurus/plugin-content-docs@3.10.2(@mdx-js/react@3.1.1(@types/react@19.3.0)(react@19.3.0))(@swc/core@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(debug@4.4.3(supports-color@10.2.2))(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sharp@0.35.5(@types/node@26.6.4))(supports-color@10.2.2)(svgo@3.3.5)(typescript@6.0.3))(@mdx-js/react@3.1.1(@types/react@19.3.0)(react@19.3.0))(@swc/core@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(debug@4.4.3(supports-color@10.2.2))(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sharp@0.35.5(@types/node@26.6.4))(supports-color@10.2.2)(svgo@3.3.5)(typescript@6.0.3)
-      '@monorepo/studio-assets':
+      '@tupynambalucas-dev/studio-assets':
         specifier: workspace:*
-        version: link:../../../../studio/assets
+        version: link:../../../hub/studio/assets
       clsx:
         specifier: catalog:web-stack
         version: 2.1.1
@@ -1182,7 +797,104 @@ importers:
         specifier: 'catalog:'
         version: 6.0.3
 
-  knowledge-base/docusaurus/services/portal:
+  corporate/services/api:
+    dependencies:
+      '@fastify/cookie':
+        specifier: catalog:api-stack
+        version: 11.1.3
+      '@fastify/cors':
+        specifier: catalog:api-stack
+        version: 11.3.1
+      '@fastify/csrf-protection':
+        specifier: catalog:api-stack
+        version: 8.0.1
+      '@fastify/env':
+        specifier: catalog:api-stack
+        version: 7.0.0
+      '@fastify/jwt':
+        specifier: catalog:api-stack
+        version: 10.2.4
+      '@fastify/one-line-logger':
+        specifier: catalog:api-stack
+        version: 2.2.0
+      '@fastify/rate-limit':
+        specifier: catalog:api-stack
+        version: 11.2.1
+      '@fastify/session':
+        specifier: catalog:api-stack
+        version: 11.1.3
+      '@sentry/node':
+        specifier: catalog:api-stack
+        version: 11.6.0(@babel/core@7.29.7(supports-color@10.2.2))(webpack@5.111.1(@swc/core@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(sharp@0.35.5(@types/node@26.6.4))(svgo@3.3.5))
+      '@sentry/profiling-node':
+        specifier: catalog:api-stack
+        version: 11.6.0(@babel/core@7.29.7(supports-color@10.2.2))(webpack@5.111.1(@swc/core@1.16.13)(clean-css@5.3.3)(cssnano@6.1.2(postcss@8.5.29))(csso@5.0.5)(esbuild@0.28.2)(html-minifier-terser@7.2.0)(lightningcss@1.33.0)(postcss@8.5.29)(sharp@0.35.5(@types/node@26.6.4))(svgo@3.3.5))
+      '@tupynambalucas-dev/corporate-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      bcrypt:
+        specifier: catalog:api-stack
+        version: 6.0.0
+      bullmq:
+        specifier: catalog:api-stack
+        version: 6.3.11(ioredis@6.0.0(supports-color@10.2.2))
+      dotenv:
+        specifier: catalog:shared-stack
+        version: 18.0.6
+      fastify:
+        specifier: catalog:api-stack
+        version: 5.12.5
+      fastify-metrics:
+        specifier: catalog:api-stack
+        version: 14.1.0(fastify@5.12.5)
+      fastify-plugin:
+        specifier: catalog:api-stack
+        version: 6.0.0
+      fastify-type-provider-zod:
+        specifier: catalog:api-stack
+        version: 7.0.0(@fastify/swagger@9.9.1(supports-color@10.2.2))(fastify@5.12.5)(openapi-types@12.1.3)(zod@4.6.5)
+      ioredis:
+        specifier: catalog:api-stack
+        version: 6.0.0(supports-color@10.2.2)
+      mongoose:
+        specifier: catalog:api-stack
+        version: 9.11.1
+      pino-roll:
+        specifier: catalog:api-stack
+        version: 4.0.0
+      sdk-node-apis-efi:
+        specifier: catalog:api-stack
+        version: 2.0.1(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+      zod:
+        specifier: catalog:shared-stack
+        version: 4.6.5
+    devDependencies:
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../shared/config
+      '@types/bcrypt':
+        specifier: catalog:api-stack
+        version: 6.0.0
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      eslint:
+        specifier: catalog:tooling-stack
+        version: 10.11.0(jiti@2.7.0)(supports-color@10.2.2)
+      prettier:
+        specifier: catalog:tooling-stack
+        version: 3.9.9
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.1.3
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  corporate/services/portal:
     dependencies:
       '@docusaurus/core':
         specifier: catalog:docs-stack
@@ -1238,15 +950,21 @@ importers:
       '@mdx-js/react':
         specifier: catalog:docs-stack
         version: 3.1.1(@types/react@19.3.0)(react@19.3.0)
-      '@monorepo/kb-docusaurus-preset':
+      '@tupynambalucas-dev/corporate-collections':
+        specifier: workspace:*
+        version: link:../../collections
+      '@tupynambalucas-dev/corporate-preset':
         specifier: workspace:*
         version: link:../../packages/preset
-      '@monorepo/shared-config':
+      '@tupynambalucas-dev/corporate-theme':
         specifier: workspace:*
-        version: link:../../../../shared/config
-      '@monorepo/studio-assets':
+        version: link:../../packages/theme
+      '@tupynambalucas-dev/shared-config':
         specifier: workspace:*
-        version: link:../../../../studio/assets
+        version: link:../../../shared/config
+      '@tupynambalucas-dev/studio-assets':
+        specifier: workspace:*
+        version: link:../../../hub/studio/assets
       clsx:
         specifier: catalog:web-stack
         version: 2.1.1
@@ -1294,13 +1012,361 @@ importers:
         specifier: 'catalog:'
         version: 11.0.5
 
-  platform: {}
+  corporate/services/web:
+    dependencies:
+      '@gsap/react':
+        specifier: catalog:web-stack
+        version: 2.1.2(gsap@3.15.0)(react@19.3.0)
+      '@marsidev/react-turnstile':
+        specifier: catalog:web-stack
+        version: 1.6.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@tupynambalucas-dev/corporate-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@tupynambalucas-dev/studio-assets':
+        specifier: workspace:*
+        version: link:../../../hub/studio/assets
+      axios:
+        specifier: catalog:shared-stack
+        version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+      date-fns:
+        specifier: catalog:shared-stack
+        version: 4.4.0
+      gsap:
+        specifier: catalog:web-stack
+        version: 3.15.0
+      i18next:
+        specifier: catalog:web-stack
+        version: 26.4.2(typescript@6.0.3)
+      react:
+        specifier: catalog:web-stack
+        version: 19.3.0
+      react-datepicker:
+        specifier: catalog:web-stack
+        version: 9.1.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react-dom:
+        specifier: catalog:web-stack
+        version: 19.3.0(react@19.3.0)
+      react-i18next:
+        specifier: catalog:web-stack
+        version: 17.0.16(i18next@26.4.2(typescript@6.0.3))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
+      zustand:
+        specifier: catalog:web-stack
+        version: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+    devDependencies:
+      '@tailwindcss/vite':
+        specifier: catalog:web-stack
+        version: 4.3.3(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../shared/config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      '@types/react':
+        specifier: catalog:web-stack
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: catalog:web-stack
+        version: 19.3.0(@types/react@19.3.0)
+      '@vitejs/plugin-react-swc':
+        specifier: catalog:web-stack
+        version: 4.3.3(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+      eslint:
+        specifier: catalog:tooling-stack
+        version: 10.11.0(jiti@2.7.0)(supports-color@10.2.2)
+      prettier:
+        specifier: catalog:tooling-stack
+        version: 3.9.9
+      tailwindcss:
+        specifier: catalog:shared-stack
+        version: 4.3.3
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vite:
+        specifier: catalog:web-stack
+        version: 8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
+      vite-plugin-svgr:
+        specifier: catalog:web-stack
+        version: 5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+
+  hub/cortex/mcp/guardrails:
+    dependencies:
+      '@grpc/grpc-js':
+        specifier: catalog:api-stack
+        version: 1.14.6
+      '@grpc/proto-loader':
+        specifier: catalog:api-stack
+        version: 0.8.1
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  hub/cortex/mcp/services/firecrawl:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: catalog:mcp-stack
+        version: 1.32.1(supports-color@10.2.2)(zod@4.6.5)
+      dotenv:
+        specifier: catalog:shared-stack
+        version: 18.0.6
+      fastify:
+        specifier: catalog:api-stack
+        version: 5.12.5
+      firecrawl:
+        specifier: catalog:mcp-stack
+        version: 4.45.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+      zod:
+        specifier: catalog:shared-stack
+        version: 4.6.5
+    devDependencies:
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../../../shared/config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.1.3
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  hub/cortex/mcp/services/memory:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: catalog:mcp-stack
+        version: 1.32.1(supports-color@10.2.2)(zod@4.6.5)
+      '@tupynambalucas-dev/cortex-memory-core':
+        specifier: workspace:*
+        version: link:../../../memory/packages/core
+      dotenv:
+        specifier: catalog:shared-stack
+        version: 18.0.6
+      fastify:
+        specifier: catalog:api-stack
+        version: 5.12.5
+      zod:
+        specifier: catalog:shared-stack
+        version: 4.6.5
+    devDependencies:
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../../../shared/config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.1.3
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  hub/cortex/memory/packages/core:
+    dependencies:
+      zod:
+        specifier: catalog:shared-stack
+        version: 4.6.5
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.1.3
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  hub/cortex/memory/services/api:
+    dependencies:
+      '@fastify/cors':
+        specifier: catalog:api-stack
+        version: 11.3.1
+      '@fastify/env':
+        specifier: catalog:api-stack
+        version: 7.0.0
+      '@fastify/sse':
+        specifier: catalog:api-stack
+        version: 0.6.1(fastify@5.12.5)
+      '@tupynambalucas-dev/cortex-memory-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      fastify:
+        specifier: catalog:api-stack
+        version: 5.12.5
+      fastify-plugin:
+        specifier: catalog:api-stack
+        version: 6.0.0
+      gray-matter:
+        specifier: 'catalog:'
+        version: 4.0.3
+      mongoose:
+        specifier: catalog:api-stack
+        version: 9.11.1
+      zod:
+        specifier: catalog:shared-stack
+        version: 4.6.5
+    devDependencies:
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../../../shared/config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.1.3
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  hub/cortex/memory/services/web:
+    dependencies:
+      '@tupynambalucas-dev/cortex-memory-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@tupynambalucas-dev/studio-assets':
+        specifier: workspace:*
+        version: link:../../../../studio/assets
+      axios:
+        specifier: catalog:shared-stack
+        version: 1.20.0(debug@4.4.3(supports-color@10.2.2))(supports-color@10.2.2)
+      lucide-react:
+        specifier: catalog:web-stack
+        version: 1.53.0(@types/react@19.3.0)(react@19.3.0)
+      react:
+        specifier: catalog:web-stack
+        version: 19.3.0
+      react-dom:
+        specifier: catalog:web-stack
+        version: 19.3.0(react@19.3.0)
+      react-force-graph-2d:
+        specifier: catalog:web-stack
+        version: 1.29.2(react@19.3.0)
+      zustand:
+        specifier: catalog:web-stack
+        version: 5.0.15(@types/react@19.3.0)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+    devDependencies:
+      '@tailwindcss/vite':
+        specifier: catalog:web-stack
+        version: 4.3.3(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../../../shared/config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.4
+      '@types/react':
+        specifier: catalog:web-stack
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: catalog:web-stack
+        version: 19.3.0(@types/react@19.3.0)
+      '@vitejs/plugin-react-swc':
+        specifier: catalog:web-stack
+        version: 4.3.3(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.1.3
+      tailwindcss:
+        specifier: catalog:shared-stack
+        version: 4.3.3
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vite:
+        specifier: catalog:web-stack
+        version: 8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
+      vite-plugin-svgr:
+        specifier: catalog:web-stack
+        version: 5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+
+  hub/studio/assets:
+    dependencies:
+      react:
+        specifier: catalog:web-stack
+        version: 19.3.0
+      react-dom:
+        specifier: catalog:web-stack
+        version: 19.3.0(react@19.3.0)
+      react-icons:
+        specifier: catalog:studio-stack
+        version: 5.7.0(react@19.3.0)
+    devDependencies:
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../shared/config
+      '@types/react':
+        specifier: catalog:web-stack
+        version: 19.3.0
+      '@types/react-dom':
+        specifier: catalog:web-stack
+        version: 19.3.0(@types/react@19.3.0)
+      tailwindcss:
+        specifier: catalog:shared-stack
+        version: 4.3.3
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  hub/studio/bucket:
+    dependencies:
+      '@aws-sdk/client-s3':
+        specifier: 'catalog:'
+        version: 3.1148.0
+      '@clack/prompts':
+        specifier: 'catalog:'
+        version: 1.8.1
+      '@smithy/node-http-handler':
+        specifier: 'catalog:'
+        version: 4.12.1
+      dotenv:
+        specifier: catalog:shared-stack
+        version: 18.0.6
+      glob:
+        specifier: 'catalog:'
+        version: 13.0.6
+      mime-types:
+        specifier: 'catalog:'
+        version: 3.0.2
+    devDependencies:
+      '@tupynambalucas-dev/shared-config':
+        specifier: workspace:*
+        version: link:../../../shared/config
+      '@types/glob':
+        specifier: 'catalog:'
+        version: 9.0.0
+      '@types/mime-types':
+        specifier: 'catalog:'
+        version: 3.0.1
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  k8s: {}
 
   renderer:
     dependencies:
-      '@monorepo/studio-assets':
+      '@tupynambalucas-dev/studio-assets':
         specifier: workspace:*
-        version: link:../studio/assets
+        version: link:../hub/studio/assets
       dotenv:
         specifier: catalog:shared-stack
         version: 18.0.6
@@ -1308,7 +1374,7 @@ importers:
         specifier: catalog:shared-stack
         version: 4.6.5
     devDependencies:
-      '@monorepo/shared-config':
+      '@tupynambalucas-dev/shared-config':
         specifier: workspace:*
         version: link:../shared/config
       '@types/node':
@@ -1330,75 +1396,13 @@ importers:
         specifier: 'catalog:'
         version: 9.1.7
 
-  studio/assets:
-    dependencies:
-      react:
-        specifier: catalog:web-stack
-        version: 19.3.0
-      react-dom:
-        specifier: catalog:web-stack
-        version: 19.3.0(react@19.3.0)
-      react-icons:
-        specifier: catalog:studio-stack
-        version: 5.7.0(react@19.3.0)
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../shared/config
-      '@types/react':
-        specifier: catalog:web-stack
-        version: 19.3.0
-      '@types/react-dom':
-        specifier: catalog:web-stack
-        version: 19.3.0(@types/react@19.3.0)
-      tailwindcss:
-        specifier: catalog:shared-stack
-        version: 4.3.3
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  studio/bucket:
-    dependencies:
-      '@aws-sdk/client-s3':
-        specifier: 'catalog:'
-        version: 3.1148.0
-      '@clack/prompts':
-        specifier: 'catalog:'
-        version: 1.8.1
-      '@smithy/node-http-handler':
-        specifier: 'catalog:'
-        version: 4.12.1
-      dotenv:
-        specifier: catalog:shared-stack
-        version: 18.0.6
-      glob:
-        specifier: 'catalog:'
-        version: 13.0.6
-      mime-types:
-        specifier: 'catalog:'
-        version: 3.0.2
-    devDependencies:
-      '@monorepo/shared-config':
-        specifier: workspace:*
-        version: link:../../shared/config
-      '@types/glob':
-        specifier: 'catalog:'
-        version: 9.0.0
-      '@types/mime-types':
-        specifier: 'catalog:'
-        version: 3.0.1
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
   tools/github:
     dependencies:
-      '@monorepo/kb-docusaurus-portal':
+      '@tupynambalucas-dev/corporate-portal':
         specifier: workspace:*
-        version: link:../../knowledge-base/docusaurus/services/portal
+        version: link:../../corporate/services/portal
     devDependencies:
-      '@monorepo/shared-config':
+      '@tupynambalucas-dev/shared-config':
         specifier: workspace:*
         version: link:../../shared/config
       '@types/node':
@@ -20923,7 +20927,7 @@ snapshots:
       postcss: 8.5.29
       tailwindcss: 4.3.3
 
-  '@tailwindcss/vite@4.3.3(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15))':
+  '@tailwindcss/vite@4.3.3(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))':
     dependencies:
       '@tailwindcss/node': 4.3.3
       '@tailwindcss/oxide': 4.3.3
@@ -21536,7 +21540,7 @@ snapshots:
       d3-selection: 3.0.0
       d3-transition: 3.0.1(d3-selection@3.0.0)
 
-  '@vitejs/plugin-react-swc@4.3.3(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15))':
+  '@vitejs/plugin-react-swc@4.3.3(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       '@swc/core': 1.16.13
@@ -27597,7 +27601,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-plugin-svgr@5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.4)(jiti@2.7.0)(tsx@4.23.15)):
+  vite-plugin-svgr@5.2.0(supports-color@10.2.2)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)):
     dependencies:
       '@rollup/pluginutils': 5.4.0
       '@svgr/core': 8.1.0(supports-color@10.2.2)(typescript@6.0.3)

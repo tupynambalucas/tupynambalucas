@@ -1,0 +1,47 @@
+---
+title: AgentGateway Ingress
+description: Referência para o roteamento de proxy de ingress do AgentGateway e validação de políticas.
+sidebar_position: 1
+---
+
+# AgentGateway Ingress
+
+O AgentGateway é o Ingress Gateway central do Model Context Protocol (MCP) para o subsistema de IA Cortex no monorepo Tupynambalucas. Ele atua como o proxy de API primário, gerenciando roteamento, políticas de CORS, barreiras de proteção gRPC do ExtMCP e telemetria administrativa.
+
+## Propósito e Arquitetura
+
+Em vez de agentes de IA se conectarem diretamente a servidores MCP downstream individuais, todas as chamadas de ferramentas são roteadas através do AgentGateway. Esta arquitetura centralizada fornece:
+
+- **Ingress Unificado**: Um único endpoint de API exposto para frontends de agentes.
+- **Roteamento Dinâmico**: Resolução automática e encaminhamento para serviços de destino downstream.
+- **Aplicação de Políticas**: Integração com processadores de barreiras de proteção gRPC do ExtMCP para validar e alterar payloads de chamadas de ferramentas antes que eles atinjam os adaptadores de destino.
+- **Observabilidade**: Métricas do Prometheus centralizadas e rastreamento distribuído do OpenTelemetry.
+
+## Destinos de Roteamento
+
+O AgentGateway é configurado para rotear chamadas de ferramentas para os seguintes adaptadores MCP downstream:
+
+- **`github`**: Roteado para `http://mcp-github:8080/mcp`
+- **`context7`**: Roteado para `https://mcp.context7.com/mcp`
+- **`firecrawl`**: Roteado para `http://mcp-firecrawl:8080/mcp`
+- **`grafana`**: Roteado para `http://mcp-grafana:8080/mcp`
+- **`playwright`**: Roteado para `http://mcp-playwright:8080/mcp`
+- **`memory`**: Roteado para `http://mcp-memory:8080/mcp`
+
+## Integração de Barreiras de Proteção
+
+O AgentGateway aplica estritamente políticas de runtime conectando-se ao processador de barreiras de proteção do ExtMCP em `mcp-guardrails:9001`.
+
+- **Política Fail-Open**: O gateway é configurado com `failOpen` habilitado. Se o serviço de barreira de proteção estiver temporariamente inacessível, o AgentGateway permitirá que a chamada da ferramenta prossiga, garantindo alta disponibilidade e evitando interrupções no serviço.
+
+## Alocação de Portas
+
+O contêiner expõe as seguintes portas para comunicação no cluster:
+
+- **`443` / `8080`**: Tráfego de ingress principal (HTTP streamable).
+- **`15000`**: Interface administrativa e verificações de integridade.
+- **`15001`**: Endpoint de estatísticas do Prometheus.
+
+## Observabilidade
+
+A telemetria de rastreamento distribuído é exportada ativamente para o coletor do OpenTelemetry em `http://otel-collector:4317` (resolvida via o DNS do cluster da plataforma `otel-collector.platform.svc.cluster.local`), integrando perfeitamente o AgentGateway à stack de observabilidade mais ampla do Grafana.

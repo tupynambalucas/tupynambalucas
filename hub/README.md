@@ -1,75 +1,24 @@
-# Tupynambá Lucas - Developer Hub Workspace
+# Tupynambalucas Hub
 
-This directory manages the developer hub workspace, which implements the personal web portfolio, blog engine, contact services, and administrator dashboard.
+The Hub workspace encapsulates all internal operations, telemetry, and collaborative tooling for the `tupynambalucas.dev` team. It is strictly separated from public-facing products to ensure security and operational isolation.
 
----
+## Architecture
 
-## Workspace Structure
+The Hub is divided into functional domains:
 
-The workspace is organized into the following packages and services:
+- **Cortex**: Advanced AI Agent routing (AgentGateway), Model Context Protocol (MCP) toolsets, and persistent Memory vectors.
+- **Network**: Ingress control and secure tunneling via Traefik and Cloudflare.
+- **Observability**: Comprehensive telemetry gathering and visualization using Grafana, Loki, Prometheus, Tempo, and OpenTelemetry.
+- **Studio**: Self-hosted collaborative environments including Penpot for design and Memos for internal notes.
+- **Tools**: Essential developer utilities like Headlamp (Kubernetes UI) and Turbocache (remote build caching).
 
-### 1. [Developer Web Client](./services/web/README.md) (`services/web/`)
+## Development
 
-A React 19 Single Page Application serving the customer-facing portfolio website, blog, and admin dashboard.
+The Hub services are orchestrated via Skaffold and deployed to their own dedicated local cluster (`k3d-hub`).
 
-- **Detailed Guide:** Refer to the [Web Client README](./services/web/README.md).
+To spin up the entire Hub ecosystem locally:
 
-### 2. [Hub REST API](./services/api/README.md) (`services/api/`)
-
-A Fastify 5 REST API handling domain routing, database persistence, blog content delivery, and contact form handlers.
-
-- **Detailed Guide:** Refer to the [REST API README](./services/api/README.md).
-
-### 3. [Hub Core Library](./packages/core/README.md) (`packages/core/`)
-
-The Single Source of Truth (SSOT) for shared schemas, data validation rules (Zod), and type definitions used across web and api services.
-
-- **Detailed Guide:** Refer to the [Core Library README](./packages/core/README.md).
-
-### 4. Infrastructure Services (`services/mongodb/`, `services/redis/`)
-
-Docker configurations and initialization scripts for the local `hub-mongodb` replica set and `hub-redis` caching layer.
-
----
-
-## Technical & Domain Isolation
-
-To comply with monorepo architectural guidelines, the hub workspace is completely decoupled from other packages. Cross-workspace relative imports are restricted to designated dependencies in `package.json`.
-
----
-
-## Quick Start & Dev Setup
-
-Ensure you have initialized the local infrastructure first:
-
-1. **Configure environment files:**
-   Copy templates and add your local secrets inside the services:
-
-   ```bash
-   cp hub/infrastructure/docker/.env.example hub/infrastructure/docker/.env.dev
-   ```
-
-2. **Start database infrastructure (MongoDB, Redis):**
-
-   ```bash
-   pnpm hub:up
-   ```
-
-3. **Run development services:**
-   ```bash
-   pnpm hub:dev
-   ```
-
----
-
-## Lifecycle Commands
-
-Manage the workspace from the monorepo root:
-
-- `pnpm hub:up`: Boots MongoDB and Redis Docker containers in detached mode.
-- `pnpm hub:down`: Tears down the infrastructure containers.
-- `pnpm hub:dev`: Runs the API and Web applications concurrently in development mode.
-- `pnpm hub:build`: Compiles all TypeScript files in the hub workspace.
-- `pnpm hub:typecheck`: Validates TypeScript type safety.
-- `pnpm hub:lint`: Runs linter across all hub sub-packages.
-- `pnpm hub:reset`: Clears Docker volumes and database caches and recreates containers.
+```bash
+cd ../k8s
+skaffold dev -f skaffold.hub.yaml
+```

@@ -1,0 +1,14 @@
+{
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@tupynambalucas-dev/corporate-preset": ["../../packages/preset/src/index.ts"],
+      "@tupynambalucas-dev/corporate-preset/*": ["../../packages/preset/src/*"],
+      "@tupynambalucas-dev/corporate-theme": ["../../packages/theme/src/index.ts"],
+      "@tupynambalucas-dev/corporate-theme/*": ["../../packages/theme/src/*"]
+    },
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src", "preset", "scripts", "tooling", "docusaurus.config.ts"]
+}

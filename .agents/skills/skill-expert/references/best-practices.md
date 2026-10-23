@@ -44,7 +44,7 @@ Even a single pass of execute-then-revise noticeably improves quality, and compl
   follows them anyway), or too many options presented without a clear default.
 </Tip>
 
-For a more structured approach to iteration, including test cases, assertions, and grading, see [Evaluating skill output quality](/skill-creation/evaluating-skills).
+For a more structured approach to iteration, including test cases, assertions, and grading, see [Evaluating skill output quality](./evaluating-skills.md).
 
 ## Spending context wisely
 
@@ -78,7 +78,7 @@ with pdfplumber.open("file.pdf") as pdf:
 ```
 ````
 
-Ask yourself about each piece of content: "Would the agent get this wrong without this instruction?" If the answer is no, cut it. If you're unsure, test it. And if the agent already handles the entire task well without the skill, the skill may not be adding value. See [Evaluating skill output quality](/skill-creation/evaluating-skills) for how to test this systematically.
+Ask yourself about each piece of content: "Would the agent get this wrong without this instruction?" If the answer is no, cut it. If you're unsure, test it. And if the agent already handles the entire task well without the skill, the skill may not be adding value. See [Evaluating skill output quality](./evaluating-skills.md) for how to test this systematically.
 
 ### Design coherent units
 
@@ -90,9 +90,9 @@ Overly comprehensive skills can hurt more than they help — the agent struggles
 
 ### Structure large skills with progressive disclosure
 
-The [specification](/specification#progressive-disclosure) recommends keeping `SKILL.md` under 500 lines and 5,000 tokens — just the core instructions the agent needs on every run. When a skill legitimately needs more content, move detailed reference material to separate files in `references/` or similar directories.
+The [specification](./specification.md#progressive-disclosure) recommends keeping `SKILL.md` under 500 lines and 5,000 tokens — just the core instructions the agent needs on every run. When a skill legitimately needs more content, move detailed reference material to separate files in `references/` or similar directories.
 
-The key is telling the agent _when_ to load each file. "Read `references/api-errors.md` if the API returns a non-200 status code" is more useful than a generic "see references/ for details." This lets the agent load context on demand rather than up front, which is how [progressive disclosure](/specification#progressive-disclosure) is designed to work.
+The key is telling the agent _when_ to load each file. "Read `references/api-errors.md` if the API returns a non-200 status code" is more useful than a generic "see references/ for details." This lets the agent load context on demand rather than up front, which is how [progressive disclosure](./specification.md#progressive-disclosure) is designed to work.
 
 ## Calibrating control
 
@@ -278,13 +278,13 @@ The key ingredient is step 3: a validation script that checks the plan (`field_v
 
 ### Bundling reusable scripts
 
-When [iterating on a skill](/skill-creation/evaluating-skills), compare the agent's execution traces across test cases. If you notice the agent independently reinventing the same logic each run — building charts, parsing a specific format, validating output — that's a signal to write a tested script once and bundle it in `scripts/`.
+When [iterating on a skill](./evaluating-skills.md), compare the agent's execution traces across test cases. If you notice the agent independently reinventing the same logic each run — building charts, parsing a specific format, validating output — that's a signal to write a tested script once and bundle it in `scripts/`.
 
-For more on designing and bundling scripts, see [Using scripts in skills](/skill-creation/using-scripts).
+For more on designing and bundling scripts, see [Using scripts in skills](./using-scripts.md).
 
 ## Next steps
 
 Once you have a working skill, two guides can help you refine it further:
 
-- **[Evaluating skill output quality](/skill-creation/evaluating-skills)** — Set up test cases, grade results, and iterate systematically.
-- **[Optimizing skill descriptions](/skill-creation/optimizing-descriptions)** — Test and improve your skill's `description` field so it triggers on the right prompts.
+- **[Evaluating skill output quality](./evaluating-skills.md)** — Set up test cases, grade results, and iterate systematically.
+- **[Optimizing skill descriptions](./optimizing-descriptions.md)** — Test and improve your skill's `description` field so it triggers on the right prompts.

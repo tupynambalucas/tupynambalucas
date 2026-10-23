@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/tools-github",
+  "name": "@tupynambalucas-dev/tools-github",
   "version": "1.0.0",
   "private": true,
   "description": "GitHub CLI automation and repository management tools.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "scripts": {
@@ -19,10 +19,10 @@
     "github:services:reset": "podman compose -f infrastructure/docker/compose.yaml down --volumes && podman compose -f infrastructure/docker/compose.yaml up -d --build gh git"
   },
   "dependencies": {
-    "@monorepo/kb-docusaurus-portal": "workspace:*"
+    "@tupynambalucas-dev/corporate-portal": "workspace:*"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"

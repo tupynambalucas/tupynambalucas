@@ -1,0 +1,30 @@
+---
+title: Developer Hub (%PROJECT_DOMAIN%)
+sidebar_label: Developer Hub
+---
+
+Esta seção detalha os marcos e planos para o site pessoal do desenvolvedor, mecanismo de blog, sistemas de contato e painel de administração.
+
+---
+
+## Marcos Concluídos
+
+### Arquitetura e Configuração de Serviços
+
+- **Modular Workspace Layout**: Estabelecida uma separação sólida da base de código, dividindo o hub em `services/web` (cliente React), `services/api` (mecanismo Fastify) e `packages/core` (esquemas de validação Zod e contratos compartilhados).
+- **Decoupled Local Infrastructure**: Inicializadas configurações locais conteinerizadas para um conjunto de réplicas do MongoDB (`rs0`) e banco de dados Redis para gerenciar armazenamento persistente e pipelines de cache.
+
+---
+
+## Foco Planejado
+
+### Portfólio e Vitrine do Desenvolvedor
+
+- **Interactive Project Showcase**: Construção de uma grade visual elegante exibindo trabalhos anteriores, resumos arquitetônicos e links de produção.
+- **Technical Skills Inventory**: Projeto de uma matriz visual responsiva mapeando competências de programação (TypeScript, React, Zig, Fastify, Docker, Bancos de dados) utilizando variáveis de estilo dos tokens do estúdio.
+
+### Sistemas de Conteúdo e Comunicação
+
+- **Developer Blog Engine**: Programação de um mecanismo de conteúdo dinâmico para publicar artigos, tutoriais técnicos e estudos de caso de arquitetura.
+- **Contact Forms & Services Pipeline**: Implementação de formulários estruturados permitindo que visitantes solicitem serviços de desenvolvimento freelancer ou consultorias, apoiados por camadas anti-spam verificadas do Cloudflare Turnstile e disparos de e-mail transacional.
+- **Secure Dashboard**: Desenvolvimento de um painel administrativo para gerenciar postagens de blog, visualizar leads de contato recebidos e rastrear análises diretamente do cliente web.

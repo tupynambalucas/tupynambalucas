@@ -1,0 +1,12 @@
+{
+  "extends": "@tupynambalucas-dev/shared-config/tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "paths": {
+      "@tupynambalucas-dev/cortex-memory-core": ["../../packages/core/src/index.ts"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

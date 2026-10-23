@@ -1,0 +1,16 @@
+{
+  "extends": "@tupynambalucas-dev/shared-config/tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "composite": true,
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

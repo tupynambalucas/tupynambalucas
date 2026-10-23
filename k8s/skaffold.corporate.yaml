@@ -1,0 +1,79 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+metadata:
+  name: corporate
+build:
+  platforms: ['linux/amd64']
+  local: { push: true, useDockerCLI: true, tryImportMissing: true, concurrency: 2 }
+  artifacts:
+    - image: corporate-api
+      context: ..
+      docker: { dockerfile: corporate/services/api/Dockerfile, target: dev }
+      sync:
+        manual:
+          - src: 'corporate/services/api/src/**/*'
+            dest: /app
+          - src: 'corporate/packages/**/*'
+            dest: /app
+    - image: corporate-web
+      context: ..
+      docker: { dockerfile: corporate/services/web/Dockerfile, target: dev }
+      sync:
+        manual:
+          - src: 'corporate/services/web/src/**/*'
+            dest: /app
+          - src: 'corporate/services/web/public/**/*'
+            dest: /app
+          - src: 'corporate/packages/**/*'
+            dest: /app
+          - src: 'hub/studio/assets/**/*'
+            dest: /app
+    - image: kb-docusaurus-portal
+      context: ..
+      docker: { dockerfile: corporate/services/portal/Dockerfile, target: dev }
+      sync:
+        manual:
+          - src: 'corporate/collections/namespaces/portal/content/**/*'
+            dest: /app
+          - src: 'corporate/collections/namespaces/portal/locales/**/*'
+            dest: /app
+          - src: 'corporate/services/portal/src/**/*'
+            dest: /app
+          - src: 'corporate/services/portal/static/**/*'
+            dest: /app
+          - src: 'corporate/services/portal/docusaurus.config.ts'
+            dest: /app
+          - src: 'corporate/packages/**/*'
+            dest: /app
+          - src: 'hub/studio/assets/**/*'
+            dest: /app
+          - src: 'shared/**/*'
+            dest: /app
+          - src: 'CHANGELOG*.md'
+            dest: /app
+          - src: 'ROADMAP.md'
+            dest: /app
+manifests:
+  kustomize:
+    paths: [overlays/dev/corporate]
+    buildArgs: [--load-restrictor=LoadRestrictionsNone]
+  helm:
+    releases:
+      - name: traefik
+        repo: https://helm.traefik.io/traefik
+        remoteChart: traefik
+        version: 26.0.0
+        namespace: corporate
+        valuesFiles:
+          - overlays/dev/corporate/helm-values/traefik-values.yaml
+deploy:
+  kubeContext: k3d-corporate
+  kubectl:
+    hooks:
+      before:
+        - host:
+            command:
+              - kubectl
+              - apply
+              - -f
+              - https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml

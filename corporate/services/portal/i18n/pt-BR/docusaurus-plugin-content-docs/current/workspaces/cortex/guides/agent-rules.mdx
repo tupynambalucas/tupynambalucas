@@ -1,0 +1,22 @@
+---
+title: Rules of Engagement
+sidebar_label: Rules of Engagement
+sidebar_position: 1
+diataxis_type: how-to
+workspace: cortex
+tags:
+  - cortex
+---
+
+{}
+
+### Rules of Engagement for AI Agents
+
+O Workspace define uma lógica comportamental estrita para agentes de IA por meio de arquivos de contexto estruturados. Estas diretrizes garantem que todas as alterações automatizadas sigam os padrões arquiteturais de todo o projeto e mantenham a integridade técnica.
+
+#### Operational Conventions
+
+- **Domain Core First**: A modificação de esquemas compartilhados ou modelos de dados deve originar-se nos pacotes `core` (Single Source of Truth) antes de ser propagada para as camadas de aplicação.
+- **Strict Typing & Linting**: É estritamente proibido que os agentes utilizem `any` ou contornem as configurações rigorosas de TypeScript/ESLint do projeto. A validação por meio de `typecheck` é uma etapa obrigatória após a modificação de código.
+- **Technological Minimalism**: Evite sugerir dependências externas, a menos que não exista nenhuma solução nativa ou já implementada dentro da stack atual (Fastify, React, Zustand, Zod).
+- **Conventional Documentation**: As atualizações de documentação devem seguir um tom profissional e sênior, utilizando recursos do MDX como Tabs para o gerenciamento de informações de alta densidade.

@@ -1,0 +1,55 @@
+# MCP Inspector Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-inspector
+  namespace: cortex
+  labels:
+    app: mcp-inspector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp-inspector
+  template:
+    metadata:
+      labels:
+        app: mcp-inspector
+    spec:
+      containers:
+        - name: mcp-inspector
+          image: cortex-mcp-inspector:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6274
+            - containerPort: 6277
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '25m'
+            limits:
+              memory: '256Mi'
+              cpu: '200m'
+          env:
+            - name: DANGEROUSLY_BIND_ALL_INTERFACES
+              valueFrom:
+                secretKeyRef:
+                  name: cortex-secrets
+                  key: DANGEROUSLY_BIND_ALL_INTERFACES
+                  optional: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-inspector
+  namespace: cortex
+spec:
+  ports:
+    - name: client
+      port: 6274
+      targetPort: 6274
+    - name: server
+      port: 6277
+      targetPort: 6277
+  selector:
+    app: mcp-inspector

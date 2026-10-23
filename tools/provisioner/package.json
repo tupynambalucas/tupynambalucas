@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/tools-provisioner",
+  "name": "@tupynambalucas-dev/tools-provisioner",
   "version": "1.0.0",
   "private": true,
   "description": "Workstation provisioner CLI for initializing local development environments.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "scripts": {

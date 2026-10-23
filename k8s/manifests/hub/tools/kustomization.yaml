@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - headlamp.yaml
+  - turbocache.yaml
+configMapGenerator:
+  - name: headlamp-config
+    namespace: platform
+    files:
+      - headlamp-config.yaml=headlamp-config.yaml

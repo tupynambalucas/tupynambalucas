@@ -13,17 +13,18 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### A. Tone of Voice
 
-- Maintain a senior, objective, and technical tone.
-- Avoid preambles, introductory chatter, or conclusion summaries.
+- Maintain a senior, objective, and technical tone at all times, including in conversational responses, logs, and documentation.
+- Avoid preambles, introductory chatter, or conclusion summaries in all communications.
 - Keep sentences concise, clear, and direct.
 
 ### B. Strict English-First
 
-- All technical documentation, READMEs, architectural briefs, and code comments/examples MUST be written in English (en-US).
+- All code, configuration, technical documentation, READMEs, architectural briefs, code comments/examples, commit messages, and pull request descriptions MUST be written in English (en-US).
+- Conversational chat responses with the user MUST be conducted in Brazilian Portuguese (pt-BR).
 
 ### C. Zero Emojis
 
-- Emojis are strictly forbidden in all technical documents, READMEs, and skill files to maintain a professional, corporate appearance.
+- Emojis are strictly forbidden in all agent conversational responses, chat messages, technical documents, READMEs, and skill files to maintain a professional, corporate appearance.
 
 ### D. Mermaid Diagram Standards
 
@@ -40,10 +41,10 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 - All files must comply with the root Prettier formatting rules (2-space indentation, max 100-character line width, hyphen-based unordered lists, and proper JavaScript/TypeScript code block styling).
 
-### G. Project Variables
+### G. Project Variables and Identifiers
 
-- **Concrete Names Required**: Project names and domains MUST be hardcoded with their actual values (e.g., `Tupynambalucas`, `tupynambalucas.dev`) in all `AGENTS.md` router files.
-- **No Agnostic Tokens**: You MUST NOT use agnostic tokens like `tupynambalucas.dev` or `Tupynambalucas`. These are strictly prohibited outside of the Docusaurus internal collections.
+- **Concrete Names Required**: Project names, package identifiers, and domains MUST use their actual concrete values corresponding to the target repository in all `AGENTS.md` router files.
+- **No Unresolved Placeholder Tokens**: You MUST NOT leave unresolved placeholder tokens (such as `%PROJECT_DOMAIN%`, `<TBD>`, or TODO markers) in router context files unless specifically processed by an automated templating engine.
 
 ---
 
@@ -51,11 +52,12 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 Every Layer-2 and Layer-3 `AGENTS.md` file MUST include a `<context-hierarchy>` XML block as the
 very first content in the file. This directive instructs AI agents to read the parent context file
-before proceeding.
+before proceeding and sets explicit bounded context constraints.
 
 - The directive MUST appear before the H1 heading.
 - The `src` attribute MUST use a relative path to the parent `AGENTS.md`.
 - The `<system-instruction>` MUST use imperative language ("stop now and read").
+- The `<system-instruction>` MUST explicitly declare the bounded context using the **exact directory name** it resides in (e.g., "AGENT: You are operating in the `k8s` bounded context. You must read..."). This strict 1:1 mapping prevents path hallucination and grounds the agent's context.
 - The directive MUST NOT contain external URLs or absolute paths.
 
 See [references/syntax.md](references/syntax.md) for the complete directive syntax specification.

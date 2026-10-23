@@ -1,0 +1,39 @@
+{
+  "name": "@tupynambalucas-dev/studio-bucket",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cloudflare R2 synchronization engine for design studio assets.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
+  },
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "bucket": "tsx src/bucket.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "catalog:",
+    "@clack/prompts": "catalog:",
+    "@smithy/node-http-handler": "catalog:",
+    "dotenv": "catalog:shared-stack",
+    "glob": "catalog:",
+    "mime-types": "catalog:"
+  },
+  "devDependencies": {
+    "@tupynambalucas-dev/shared-config": "workspace:*",
+    "@types/glob": "catalog:",
+    "@types/mime-types": "catalog:",
+    "typescript": "catalog:"
+  }
+}

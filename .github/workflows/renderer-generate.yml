@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: 22
           frozen-lockfile: 'true'
-          filter: '@monorepo/renderer...'
+          filter: '@tupynambalucas-dev/renderer...'
 
       - name: Generate and Publish Documents
         uses: ./.github/actions/generate-renderer

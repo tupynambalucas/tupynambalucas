@@ -19,21 +19,18 @@ minimumReleaseAgeExclude:
   - wrangler@4.108.0
 
 packages:
-  - 'hub/services/*'
-  - 'hub/packages/*'
-  - 'shared/*'
-  - 'studio/*'
-  - 'tools/*'
-  - 'infrastructure'
-  - 'platform'
-  - 'knowledge-base/collections'
-  - 'knowledge-base/docusaurus/packages/*'
-  - 'knowledge-base/docusaurus/services/*'
+  - 'corporate/collections'
+  - 'corporate/packages/*'
+  - 'corporate/services/*'
+  - 'hub/studio/*'
+  - 'hub/cortex/mcp/guardrails'
+  - 'hub/cortex/mcp/services/*'
+  - 'hub/cortex/memory/packages/*'
+  - 'hub/cortex/memory/services/*'
+  - 'k8s'
   - 'renderer'
-  - 'cortex/mcp/guardrails'
-  - 'cortex/mcp/services/*'
-  - 'cortex/memory/packages/*'
-  - 'cortex/memory/services/*'
+  - 'shared/*'
+  - 'tools/*'
 
 catalog:
   '@types/node': ^26.6.2

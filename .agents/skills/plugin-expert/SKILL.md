@@ -118,4 +118,4 @@ When tasked with creating a new plugin, follow this exact workflow:
 
 - **Name Mismatches**: The `name` field in `plugin.json` MUST exactly match the plugin's folder name.
 - **Cross-Surface Sync**: Plugins installed via Antigravity 2.0 or CLI are synchronized. Be aware that global plugins (`~/.gemini/config/plugins/`) affect all workspaces, while `.agents/plugins/` only affects the current project.
-- **Portability**: Do not use absolute paths (e.g., `C:\Users\...` or `/home/...`) inside `mcp_config.json` or `plugin.json` if the plugin is meant to be shared across machines. Use relative paths or environment variables, except for `hooks.json` command execution paths which explicitly require absolute paths in the current engine version.
+- **Portability**: Do not use absolute paths (e.g., `<absolute-windows-path>` or `/home/...`) inside `mcp_config.json` or `plugin.json` if the plugin is meant to be shared across machines. Use relative paths or environment variables, except for `hooks.json` command execution paths which explicitly require absolute paths in the current engine version.

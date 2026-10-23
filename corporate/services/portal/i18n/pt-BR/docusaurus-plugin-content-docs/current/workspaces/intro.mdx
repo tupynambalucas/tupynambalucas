@@ -1,0 +1,77 @@
+---
+slug: /
+title: Introdução aos Workspaces
+sidebar_label: Introdução
+sidebar_position: 1
+diataxis_type: overview
+workspace: intro.mdx
+tags:
+  - intro.mdx
+---
+
+import DocCardList from '@theme/DocCardList';
+
+# Central de Documentação dos Workspaces
+
+Bem-vindo à **Central de Documentação dos Workspaces de %PROJECT_DOMAIN%**. Esta seção fornece análises aprofundadas dedicadas à arquitetura, ao design e à engenharia interna de cada Bounded Context dentro do monorepo.
+
+Para decisões arquiteturais de alto nível do projeto e princípios globais, consulte o [Manual de Arquitetura](/docs/explanation/architecture-overview).
+
+---
+
+## Explorar Workspaces
+
+Selecione um workspace abaixo para ler sua documentação técnica e visão geral:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/workspaces/hub',
+      label: 'Hub Workspace',
+      description: 'Portal web pessoal, motor de blog e catálogo de serviços.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/cortex',
+      label: 'Cortex Workspace',
+      description: 'Central de processamento de IA unificada: gateway, memória, MCP e agentes.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/renderer',
+      label: 'Renderer Workspace',
+      description: 'Gerador de ativos dinâmicos e motor de compilação de documentos extensível.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/studio',
+      label: 'Studio Workspace',
+      description: 'Identidade visual, design tokens e sistema de design Penpot auto-hospedado.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/tools',
+      label: 'Tools Workspace',
+      description: 'Ambientes isolados de controle de versão Git e automação via GitHub CLI.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/platform',
+      label: 'Platform Workspace',
+      description: 'Coletor de monitoramento OpenTelemetry e serviços de cache do Turborepo.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/knowledge-base',
+      label: 'Knowledge Base Workspace',
+      description: 'Portal do desenvolvedor e base de conhecimento arquitetural do Docusaurus.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/shared',
+      label: 'Shared Workspace',
+      description: 'Paridade de configuração global e utilitários abrangentes para o monorepo.',
+    },
+  ]}
+/>

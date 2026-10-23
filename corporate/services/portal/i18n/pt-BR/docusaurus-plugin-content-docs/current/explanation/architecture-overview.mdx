@@ -1,0 +1,247 @@
+---
+title: Visão geral
+description: Visão geral abrangente da estrutura de monorepo, contextos delimitados e pilha de tecnologia de %PROJECT_DOMAIN%.
+sidebar_position: 1
+---
+
+import DocCardList from '@theme/DocCardList';
+
+# Arquitetura Técnica
+
+## 1. Sumário Executivo
+
+%PROJECT_DOMAIN% é um portal de desenvolvedor pessoal, portfólio, blog e motor de automação. O sistema é construído sobre uma arquitetura de **Monorepo** usando **PNPM Workspaces** e **Turborepo**, priorizando alta performance, tipagem estrita e isolamento de domínio por meio de uma estratégia de **Bounded Context**.
+
+A arquitetura foi projetada para hospedar o site do hub de desenvolvedores (`hub`) e o compilador de estatísticas automatizado (`renderer`), logicamente desacoplados no nível raiz.
+
+---
+
+## 2. Estrutura do Monorepo & Contextos Delimitados
+
+A base de código de %PROJECT_DOMAIN% é organizada em **Domain Contexts** no nível raiz. Para obter um detalhamento completo das funções da aplicação, filosofia de contexto e estruturas de diretórios, consulte o guia de Bounded Context:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: './bounded-contexts',
+      label: 'Bounded Context & Workspace Roles',
+      description:
+        'Detailed explanation of Bounded Contexts, Monorepo Structure, and Workspace Roles.',
+    },
+  ]}
+/>
+
+---
+
+## 3. Estratégia de Build & Resolução do Workspace
+
+Empregamos uma **Arquitetura Híbrida de Alta Performance** otimizada pelo **Turborepo** para gerenciar dependências internas e a orquestração de tarefas.
+
+### 3.1. Orquestração de Tarefas (Turborepo)
+
+O **Turborepo** é o motor por trás da produtividade do nosso monorepo. Ele gerencia:
+
+- **Grafo de Dependências:** Identifica automaticamente quais pacotes precisam ser compilados ou verificados com base nas alterações locais.
+- **Acoplamento de Infraestrutura:** Orquestra serviços de suporte como pré-requisitos para o desenvolvimento de aplicações (por exemplo, `pnpm hub:up` ou `pnpm cortex:up` inicializa bancos de dados/serviços de suporte antes da API).
+- **Cache:** Acelera builds, verificação de tipos e linting ignorando módulos inalterados.
+- **Saídas Unificadas:** Padroniza os artefatos de build em `dist/` (para aplicações e core) e `build/` (para o Docusaurus).
+
+---
+
+## 4. Comandos Operacionais
+
+Utilizamos uma interface CLI unificada definida no **package.json** raiz para orquestrar e gerenciar o monorepo em todos os ambientes (**development**, **staging** e **production**).
+
+Para obter uma lista de referência completa de scripts de orquestração, comandos de serviços e workflows da stack de desenvolvimento, consulte a Referência de Comandos:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '../reference/commands',
+      label: 'Command Reference',
+      description:
+        'Centralized reference for all CLI commands, scripts, and orchestration workflows.',
+    },
+  ]}
+/>
+
+---
+
+## 5. Princípios Arquiteturais
+
+Para garantir extrema manutenibilidade, legibilidade de longo prazo e limites limpos entre nossos contextos de domínio, %PROJECT_DOMAIN% segue quatro princípios arquiteturais fundamentais.
+
+Clique em qualquer card abaixo para explorar uma análise detalhada de cada princípio:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/docs/explanation/principles/solid',
+      label: 'SOLID Principles',
+      description:
+        'Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/principles/ssot',
+      label: 'Single Source of Truth (SSOT)',
+      description:
+        'Ensuring that every data element has a single, unambiguous, and authoritative representation.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/principles/inherited-configuration',
+      label: 'Inherited Configuration',
+      description:
+        'Cascading hierarchical settings across workspace contexts to promote reuse and strict defaults.',
+    },
+    {
+      type: 'link',
+      href: '/docs/explanation/principles/ddd-fsd',
+      label: 'DDD & Feature-Sliced Design (FSD)',
+      description:
+        'Applying Domain-Driven Design and Feature-Sliced Design principles for modular and scalable codebase organization.',
+    },
+  ]}
+/>
+
+---
+
+## 6. Pilha de Tecnologia
+
+### 6.1. Gerenciamento de Pacotes & Orquestração
+
+- **Runtime**: Node.js 22+ (LTS).
+- **Gerenciador de Pacotes**: PNPM v11 (Gerenciamento estrito de dependências via symlinks e armazenamento de conteúdo por hard-link).
+- **Gerenciamento de Dependências**: **PNPM Catalogs** (Controle de versão centralizado para dependências compartilhadas em todo o workspace usando o protocolo `catalog:`).
+- **Orquestrador de Tarefas**: **Turborepo** (Cache otimizado e execução paralela).
+- **Ferramentas**: TypeScript 6, ESLint 10 (Flat Config), Prettier 3, Vite 8, Zig.
+
+### 6.2. Backend (Camada de API)
+
+- **Framework**: Fastify v5 (Otimizado para alto throughput).
+- **ORM/ODM**: Mongoose com MongoDB (Replica Set habilitado para transações ACID).
+- **Validação**: Zod (Integrado via pacotes core específicos de domínio).
+- **Processamento**: BullMQ + Redis para tarefas assíncronas.
+
+### 6.3. Frontend (Camada de UI)
+
+- **Framework**: React 19.
+- **Gerenciamento de Estado**: Zustand (Estado atômico e performático usando Slices e Selectors).
+- **Estilização**: TailwindCSS v4 + CSS Modules para estilos escopados.
+- **Animações**: GSAP (Feedback interativo de alta fidelidade).
+
+---
+
+## 7. Padrões Arquiteturais
+
+### 7.1. Responsabilidades em Camadas (Backend)
+
+Cada domínio segue uma hierarquia estrita para isolar responsabilidades:
+Controller -> Service -> Repository -> Model
+
+- **Controller**: Lida com E/S de HTTP, definições de rotas e validação de esquemas Zod.
+- **Service**: Orquestra regras de negócio, lógica complexa e transações entre múltiplos modelos.
+- **Repository**: Abstrai a lógica de persistência de dados (Repository Pattern) para manter os serviçosagnósticos em relação ao banco de dados.
+- **Model**: Define a estrutura do banco de dados Mongoose e as regras de integridade de dados.
+
+#### Exemplo de Implementação (Repository Pattern)
+
+Para manter a tipagem estrita e o desacoplamento, os repositórios recebem o modelo Mongoose por injeção de dependência.
+
+```typescript
+// hub/services/api/src/domains/auth/auth.repository.ts
+import type { Model } from 'mongoose';
+import type { IUser } from '@repo/hub/core';
+
+export class AuthRepository {
+  constructor(private readonly userModel: Model<IUser>) {}
+
+  async findByEmail(email: string): Promise<IUser | null> {
+    return this.userModel.findOne({ email }).exec();
+  }
+
+  async create(data: Partial<IUser>): Promise<IUser> {
+    return this.userModel.create(data);
+  }
+}
+```
+
+### 7.2. Orquestração de Estado do Frontend (Zustand & FSD)
+
+Para evitar stores monolíticas e re-renderizações desnecessárias no React 19, o frontend adota um **Atomic Selectors Pattern** estrito associado a **Domain Hooks**:
+
+1. **Separação entre Estado e Ações**: A store do Zustand separa o `state` das `actions`. A lógica de domínio pura (como cálculos) é extraída da store para manter a **Single Source of Truth** e a testabilidade.
+2. **Atomic Selectors**: Exportações monolíticas (`export const useAuthStore = create(...)`) são encapsuladas em hooks específicos.
+3. **Domain Hooks (`src/domains/*/hooks`)**: Os seletores são expuestos como hooks individuais (por exemplo, `useAuthUser()`, `useProductActions()`). Isso garante que um componente seja re-renderizado apenas quando a fatia exata de estado à qual ele está inscrito for alterada.
+
+#### Exemplo de Implementação (Zustand Atomic Selectors)
+
+```typescript
+// hub/services/web/src/domains/cart/hooks/useCart.ts
+import { useCartStore } from '../cart.store';
+
+// Atomic Selectors
+export const useCartItems = () => useCartStore((state) => state.items);
+export const useCartActions = () => useCartStore((state) => state.actions);
+
+// Derived State Selector (Never stored in state)
+export const useCartTotal = () =>
+  useCartStore((state) => state.items.reduce((acc, item) => acc + calculateItemPrice(item), 0));
+```
+
+### 7.3. Injeção de Dependência
+
+Gerenciamento modular por meio de decoradores do Fastify e um registro centralizado para desacoplar componentes e facilitar testes.
+
+---
+
+## 8. Infraestrutura & Deploy
+
+Projetado para **Excelência Auto-Hospedada**, nossa orquestração nativa de Kubernetes, pipelines de desenvolvimento do Skaffold, estratégia de variáveis de ambiente e padrões de rede são gerenciados centralmente no workspace de Infraestrutura.
+
+Para obter um guia abrangente e detalhado sobre estruturas de diretórios, deploy no Minikube, roteamento de túnel do Cloudflare e overlays do Kustomize, explore a documentação dedicada do workspace de Infraestrutura:
+
+<DocCardList
+  items={[
+    {
+      type: 'link',
+      href: '/workspaces/infrastructure/intro',
+      label: 'Infrastructure Workspace',
+      description:
+        'Explore the centralized Kubernetes orchestration, GitOps deployment pipelines, and edge-to-cluster networking topology.',
+    },
+    {
+      type: 'link',
+      href: '/workspaces/infrastructure/guides/local-development',
+      label: 'Local Development Setup',
+      description:
+        'Learn how to run the monorepo locally using Minikube and Skaffold for live hot-reloading.',
+    },
+  ]}
+/>
+
+---
+
+## 9. Studio & Automação de IA (Arquitetura)
+
+Os workspaces Studio e Cortex fornecem a infraestrutura para alinhamento de design a código, pipelines de automação e engenharia assistida por IA.
+
+- **Alinhamento de Design & Ativos**: Gerenciado no **[Studio Workspace](/workspaces/studio)**.
+- **Ponte Contextual de IA & Ingress**: Gerenciado no **[Cortex Workspace](/workspaces/cortex)**.
+
+---
+
+## 10. Padrões de Segurança
+
+%PROJECT_DOMAIN% segue uma estratégia de segurança em múltiplas camadas. Para obter detalhes de implementação, consulte o documento de **[Arquitetura de Segurança](/docs/reference/security)**.
+
+- **Proteção contra Bots**: Integração com o Cloudflare Turnstile para todos os pontos de entrada de autenticação.
+- **Mitigação de Força Bruta**: Limitação de taxa baseada em IP e lógica de bloqueio de contas.
+- **Tipagem Estrita**: Modo estrito do TypeScript habilitado em todo o projeto.
+- **Integridade de Build**: Aprovações automatizadas de scripts de build via `pnpm.onlyBuiltDependencies`.
+- **Integridade de Dados**: MongoDB Replica Set (`rs0`) para confiabilidade transacional e conformidade com ACID.
+- **Validação**: Validação estrita com Zod em cada ponto de entrada (requisições de API, variáveis de ambiente, contratos internos).

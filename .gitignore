@@ -60,6 +60,7 @@ gha-creds-*.json
 
 # Turborepo
 .turbo
+.docusaurus/
 
 # --- Persistent runtime ---
 data/
@@ -67,3 +68,5 @@ logs/
 
 
 
+*-backup/
+tupynambalucas-backup/

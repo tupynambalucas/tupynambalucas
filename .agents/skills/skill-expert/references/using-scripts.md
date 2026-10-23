@@ -89,7 +89,7 @@ When an existing package already does what you need, you can reference it direct
 **Tips for one-off commands in skills:**
 
 - **Pin versions** (e.g., `pnpm dlx eslint@9.0.0`) so the command behaves the same over time.
-- **State prerequisites** in your `SKILL.md` (e.g., "Requires Node.js 18+") rather than assuming the agent's environment has them. For runtime-level requirements, use the [`compatibility` frontmatter field](/specification#compatibility-field).
+- **State prerequisites** in your `SKILL.md` (e.g., "Requires Node.js 18+") rather than assuming the agent's environment has them. For runtime-level requirements, use the [`compatibility` frontmatter field](./specification.md#compatibility-field).
 - **Move complex commands into scripts.** A one-off command works well when you're invoking a tool with a few flags. When a command grows complex enough that it's hard to get right on the first try, a tested script in `scripts/` is more reliable.
 
 ## Referencing scripts from `SKILL.md`

@@ -88,7 +88,7 @@ graph TD
     Memos --> NeonDB
   end
 
-  subgraph HubServices ["Hub Services (Podman)"]
+  subgraph HubServices ["Hub Services (k3d-hub)"]
     HubWeb["Web Client (React 19)"]
     HubAPI["REST API (Fastify 5)"]
     HubCore["Core Library (Zod)"]
@@ -121,11 +121,11 @@ graph TD
 
 Personal developer portal, blog engine, and administration dashboard.
 
-| Package              | Role        | Stack                                     |
-| :------------------- | :---------- | :---------------------------------------- |
-| `@monorepo/hub-web`  | Application | React 19, Vite 8, Zustand, TailwindCSS v4 |
-| `@monorepo/hub-api`  | Application | Fastify 5, Mongoose, BullMQ, Zod          |
-| `@monorepo/hub-core` | Library     | Zod schemas, shared contracts (SSOT)      |
+| Package                              | Role        | Stack                                     |
+| :----------------------------------- | :---------- | :---------------------------------------- |
+| `@tupynambalucas-dev/corporate-web`  | Application | React 19, Vite 8, Zustand, TailwindCSS v4 |
+| `@tupynambalucas-dev/corporate-api`  | Application | Fastify 5, Mongoose, BullMQ, Zod          |
+| `@tupynambalucas-dev/corporate-core` | Library     | Zod schemas, shared contracts (SSOT)      |
 
 ### [Cortex](./cortex/README.md)
 
@@ -142,12 +142,12 @@ Unified AI processing hub with MCP gateway federation, vector memory, and agent 
 
 Brand identity management, collaborative design infrastructure, and asset synchronization.
 
-| Package / Service         | Role          | Stack                                        |
-| :------------------------ | :------------ | :------------------------------------------- |
-| `@monorepo/studio-assets` | Library       | CSS tokens, React SVG icons                  |
-| `@monorepo/studio-bucket` | CLI Tool      | AWS SDK (Cloudflare R2), Glob                |
-| Penpot v2 (5 containers)  | Design Engine | Frontend, Backend, Exporter, Valkey, Aide AI |
-| Memos                     | Notes         | Lightweight collaborative notes              |
+| Package / Service                   | Role          | Stack                                        |
+| :---------------------------------- | :------------ | :------------------------------------------- |
+| `@tupynambalucas-dev/studio-assets` | Library       | CSS tokens, React SVG icons                  |
+| `@tupynambalucas-dev/studio-bucket` | CLI Tool      | AWS SDK (Cloudflare R2), Glob                |
+| Penpot v2 (5 containers)            | Design Engine | Frontend, Backend, Exporter, Valkey, Aide AI |
+| Memos                               | Notes         | Lightweight collaborative notes              |
 
 ### [Platform](./platform/README.md)
 
@@ -164,14 +164,13 @@ Always-on cluster infrastructure, observability pipelines, and build acceleratio
 | Headlamp                | 4466 | Kubernetes cluster administration UI    |
 | Turbocache              | 3000 | Turborepo remote build cache            |
 | cloudflared             | -    | Cloudflare Tunnel for Zero Trust access |
-| cert-manager            | -    | Automated TLS via Let's Encrypt DNS-01  |
 
 ### Workspace Utilities
 
 - **[`renderer/`](./renderer/README.md)**: Dynamic asset generator compiling GitHub profile stats into SVG cards and templated Markdown documents.
 - **[`shared/`](./shared/README.md)**: Foundational utilities, global configuration, and Git lifecycle hooks.
 - **[`tools/`](./tools/README.md)**: Developer automation, repository provisioning scripts, and containerized Git environments.
-- **[`knowledge-base/`](./knowledge-base/README.md)**: Centralized knowledge base built with Docusaurus v3 under the Diataxis framework.
+- **[`corporate/`](./corporate/README.md)**: Public products: company website, API, and the Docusaurus v3 documentation portal under the Diataxis framework.
 
 ---
 
@@ -184,8 +183,8 @@ Always-on cluster infrastructure, observability pipelines, and build acceleratio
 | **Task Orchestrator** | Turborepo (parallel pipelines, remote caching via Turbocache)    |
 | **Backend**           | Fastify 5, Mongoose, BullMQ, Zod                                 |
 | **Frontend**          | React 19, Vite 8, Zustand, TailwindCSS v4, GSAP, Three.js        |
-| **Containers**        | Podman (Hub), Kubernetes v1.30+, Skaffold v4beta11               |
-| **Ingress**           | Traefik v3.1, Cloudflare Tunnel, cert-manager (DNS-01 ACME)      |
+| **Containers**        | Docker, k3d, Kubernetes v1.31, Skaffold v4beta11                 |
+| **Ingress**           | Traefik v3.1, Cloudflare Tunnel                                  |
 | **Observability**     | OpenTelemetry Collector, Prometheus, Grafana Loki, Grafana Tempo |
 | **AI Infrastructure** | AgentGateway (Go), MCP protocol, MongoDB Vector Search           |
 | **Design**            | Penpot v2 (self-hosted), Memos, Cloudflare R2                    |
@@ -198,18 +197,15 @@ Always-on cluster infrastructure, observability pipelines, and build acceleratio
 ## Getting Started
 
 > [!WARNING]
-> Before deploying, you must configure all environment variables via `infrastructure/.env`.
+> Before deploying, you must configure all environment variables via `k8s/.env`.
 
 ### Prerequisites
 
-Install the following on your development machine:
+Install the following inside Ubuntu (WSL2). See the Ubuntu setup plan for pinned versions:
 
 ```bash
-# Package management and container runtime
-winget install RedHat.Podman-Desktop RedHat.Podman
-
-# Kubernetes toolchain
-winget install Kubernetes.minikube Kubernetes.kubectl Google.Skaffold
+# Container runtime and Kubernetes toolchain
+docker, k3d, kubectl, helm, skaffold
 ```
 
 ### Installation
@@ -226,30 +222,22 @@ pnpm install
 
 The monorepo uses a unified Kubernetes-native orchestration model. All infrastructure commands are defined in the root [`package.json`](./package.json) and executed via `pnpm`.
 
-### Kubernetes (Skaffold + Minikube)
+### Kubernetes (Skaffold + k3d)
 
-Deploy the complete development cluster with automatic port forwarding and hot-reloading:
+Two isolated k3d clusters run locally: `k3d-hub` (internal tools) and `k3d-corporate` (public products). Each has its own Traefik ingress and Cloudflare Tunnel.
 
 ```bash
-pnpm minikube:up
-pnpm minikube:tunnel    # Required in a separate terminal for LoadBalancer IPs
+# Hub stack (platform + cortex + studio)
+skaffold dev -f k8s/skaffold.hub.yaml
 
-# Deploy and stream the full stack (platform + cortex + studio)
+# Corporate stack (portal)
+skaffold dev -f k8s/skaffold.corporate.yaml
+
+# Both stacks
 pnpm infra:dev
 
 # Tear down all cluster resources
 pnpm infra:delete
-```
-
-### Hub Services (Podman)
-
-The Hub workspace uses standalone Podman containers for local development:
-
-```bash
-pnpm hub:dev            # API + Web + DB with hot-reload
-pnpm hub:up             # Start containers only
-pnpm hub:down           # Stop containers
-pnpm hub:reset          # Reset containers and volumes
 ```
 
 ---

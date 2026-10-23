@@ -1,0 +1,18 @@
+{
+  "extends": "@tupynambalucas-dev/shared-config/tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "useDefineForClassFields": true,
+    "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@features/*": ["./src/features/*"],
+      "@domains/*": ["./src/domains/*"],
+      "@tupynambalucas-dev/cortex-memory-core": ["../../packages/core/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/types/**/*.d.ts", "vite.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}

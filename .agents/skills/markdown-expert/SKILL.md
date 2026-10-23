@@ -19,7 +19,8 @@ The following rules apply to all documentation tasks, regardless of file extensi
 
 ### B. Strict English-First
 
-- All technical documentation, READMEs, architectural briefs, and code comments/examples MUST be written in English (en-US).
+- All code, configuration, technical documentation, READMEs, architectural briefs, code comments/examples, commit messages, and pull request descriptions MUST be written in English (en-US).
+- Conversational chat responses with the user MUST be conducted in Brazilian Portuguese (pt-BR).
 
 ### C. Zero Emojis
 
@@ -47,10 +48,10 @@ The following rules apply to all documentation tasks, regardless of file extensi
   1. Standard relative paths (e.g., `./relative-file.md` or `../sibling/file.md`).
   2. Fully-qualified public web URLs with explicit domains (e.g., `https://example.com` or external domain references).
 
-### H. Project Variables
+### H. Project Variables and Identifiers
 
-- **Concrete Names Required**: Project names and domains MUST be hardcoded with their actual values (e.g., `Tupynambalucas`, `tupynambalucas.dev`) in all general `.md` files.
-- **No Agnostic Tokens**: You MUST NOT use agnostic tokens like `tupynambalucas.dev` or `Tupynambalucas`. These are strictly prohibited outside of the Docusaurus internal collections.
+- **Concrete Names Required**: Project names, package identifiers, and domains MUST use their actual concrete values corresponding to the target repository in all general `.md` files.
+- **No Unresolved Placeholder Tokens**: Do NOT leave unresolved placeholder tokens (such as `%PROJECT_DOMAIN%` or generic `<PLACEHOLDER>`) in production documentation files unless the workspace explicitly uses an AST template compilation pipeline.
 
 ---
 

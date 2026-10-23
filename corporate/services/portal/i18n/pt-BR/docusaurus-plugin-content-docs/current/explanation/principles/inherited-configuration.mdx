@@ -1,0 +1,70 @@
+---
+title: Configuração Herdada
+description: Governança de ferramentas e herança de configuração em nível de raiz no monorepo %PROJECT_DOMAIN%.
+---
+
+# Configuração Herdada
+
+A Configuração Herdada centraliza a governança de ferramentas e regras de compilação na raiz do monorepo, permitindo que aplicações downstream estendam configurações compartilhadas sem duplicar definições.
+
+---
+
+## 1. Conceito Arquitetural e Visão Geral
+
+Gerenciar linting, compilação e formatação individualmente por pacote em um monorepo inevitavelmente leva à divergência de ferramentas e a um estilo de código inconsistente. Centralizar as configurações de ferramentas na raiz e fazer com que os workspaces individuais as estendam garante diretrizes de qualidade de código estritas e unificadas, reduzindo drasticamente o código boilerplate de configuração do workspace.
+
+Este layout permite impor padrões estritos de workspace (como formatação de código no nível do Airbnb, verificações estritas do TypeScript e limites seguros de pacotes) em um único arquivo de configuração de origem, mantendo todos os aplicativos e pacotes limpos e previsíveis.
+
+---
+
+## 2. Utilização Específica do Projeto
+
+Em %PROJECT_DOMAIN%, todas as ferramentas e configurações são orquestradas centralmente a partir da raiz:
+
+### A. Governança Unificada do ESLint
+
+As regras do ESLint 9 (Flat Config) são centralizadas na raiz do monorepo. Pacotes individuais importam e estendem esta configuração base em seus arquivos locais `eslint.config.js`, garantindo que limites de segurança, guias de estilo e padrões de qualidade de código sejam aplicados uniformemente em todos os projetos:
+
+```javascript
+// Local eslint.config.js extending root Flat Config
+import baseConfig from '../../eslint.config.js';
+
+export default [
+  ...baseConfig,
+  {
+    files: ['**/*.ts'],
+    rules: {
+      // Local package-specific overrides if necessary
+    },
+  },
+];
+```
+
+### B. Configurações do TypeScript em Cascata
+
+Os arquivos `tsconfig.json` em nível de raiz definem o rigor de linha de base:
+
+- `strict: true`
+- `noImplicitAny: true`
+- `noFallthroughCasesInSwitch: true`
+
+Os workspaces estendem essas configurações compartilhadas por meio da propriedade `extends`, personalizando apenas bibliotecas específicas de runtime ou ambientes de destino (como Node.js vs. contextos de DOM/browser):
+
+```json
+// hub/services/web/tsconfig.json
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"]
+  }
+}
+```
+
+### C. Regras de Formatação Consolidadas
+
+O estilo de código é governado globalmente por um único arquivo de configuração do Prettier na raiz do monorepo. As regras de formato do Prettier são aplicadas consistentemente a todos os arquivos TypeScript, JSON, CSS e Markdown em toda a estrutura do workspace, garantindo um layout completamente consistente sem regras ad-hoc.
+
+### D. Governança de Orquestração de Tarefas
+
+O Turborepo depende de um arquivo `turbo.json` em nível de raiz para modelar o grafo de dependência do workspace. Isso unifica as definições de pipeline de tarefas (como `build`, `lint`, `typecheck`) e garante que as otimizações de cache e os pipelines de tarefas de destino se comportem de forma idêntica em todos os workspaces.

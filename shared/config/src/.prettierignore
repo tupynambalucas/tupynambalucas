@@ -10,3 +10,5 @@
 **/.vscode-test/**
 **/out/**
 **/.dockerignore
+k8s/charts/**
+**/templates/**
