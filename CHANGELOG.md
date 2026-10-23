@@ -4,7 +4,7 @@ All updates, improvements, and new features of tupynambalucas.dev documented in 
 
 ## Release - v1.0.0 (2026-10-03)
 
-This is the genesis release of the tupynambalucas.dev architecture foundation.
+Welcome to the first official major release of %PROJECT_DOMAIN% (`v1.0.0`)! This update establishes our core architecture, localization infrastructure, and unifies our content strategy.
 
 {/* truncate */}
 
