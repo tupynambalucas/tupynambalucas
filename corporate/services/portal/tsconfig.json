@@ -3,10 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@monorepo/kb-docusaurus-preset": ["../../packages/preset/src/index.ts"],
-      "@monorepo/kb-docusaurus-preset/*": ["../../packages/preset/src/*"],
-      "@monorepo/kb-docusaurus-theme": ["../../packages/theme/src/index.ts"],
-      "@monorepo/kb-docusaurus-theme/*": ["../../packages/theme/src/*"]
+      "@tupynambalucas-dev/corporate-preset": ["../../packages/preset/src/index.ts"],
+      "@tupynambalucas-dev/corporate-preset/*": ["../../packages/preset/src/*"],
+      "@tupynambalucas-dev/corporate-theme": ["../../packages/theme/src/index.ts"],
+      "@tupynambalucas-dev/corporate-theme/*": ["../../packages/theme/src/*"]
     },
     "ignoreDeprecations": "6.0"
   },

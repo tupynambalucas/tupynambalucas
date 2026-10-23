@@ -1,4 +1,4 @@
-@import '@monorepo/studio-assets/tokens.css' layer(theme);
+@import '@tupynambalucas-dev/studio-assets/tokens.css' layer(theme);
 
 .section {
   display: flex;

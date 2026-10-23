@@ -5,7 +5,7 @@ import LandingSection from './home/HeroSection';
 import CodeOfConductSection from './home/CodeOfConductSection';
 import MonorepoSection from './home/MonorepoMap';
 import FromSoilSection from './home/TechnicalFoundation';
-import projectConfig from '@monorepo/shared-config/project.config';
+import projectConfig from '@tupynambalucas-dev/shared-config/project.config';
 
 export default function HomePage(): ReactNode {
   return (

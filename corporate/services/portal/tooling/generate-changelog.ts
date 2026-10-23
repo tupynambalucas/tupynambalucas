@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-import projectConfig from '@monorepo/shared-config/project.config';
+import projectConfig from '@tupynambalucas-dev/shared-config/project.config';
 
 const require = createRequire(import.meta.url);
-const kbPkgPath = require.resolve('@monorepo/kb-collections/package.json');
+const kbPkgPath = require.resolve('@tupynambalucas-dev/corporate-collections/package.json');
 const kbDir = path.dirname(kbPkgPath);
 
 const RELEASES_DIR = path.join(kbDir, 'namespaces/portal/content/blog/releases');

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './styles.module.css';
-import projectConfig from '@monorepo/shared-config/project.config';
+import projectConfig from '@tupynambalucas-dev/shared-config/project.config';
 
 interface ArchitectureDiagramProps {
   onSelect?: (id: string) => void;
