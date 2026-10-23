@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.node.json" },
+
+    { "path": "./corporate" },
+    { "path": "./renderer" },
+    { "path": "./hub/cortex" },
+    { "path": "./hub/studio" },
+    { "path": "./tools" },
+    { "path": "./shared" }
+  ]
+}

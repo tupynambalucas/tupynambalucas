@@ -1,0 +1,20 @@
+{
+  "name": "@tupynambalucas-dev/shared-git",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Git hooks and commit conventions shared across the monorepo.",
+  "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
+  "license": "MIT",
+  "homepage": "https://docs.tupynambalucas.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+  },
+  "type": "module",
+  "scripts": {
+    "prepare": "cd ../.. && husky shared/git/husky"
+  },
+  "devDependencies": {
+    "husky": "catalog:"
+  }
+}

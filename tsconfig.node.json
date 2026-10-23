@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true,
+    "target": "ES2022",
+    "lib": ["ES2022", "ESNext"],
+    "types": ["node"]
+  },
+  "include": [
+    "eslint.config.ts",
+    "*.config.{js,mjs,ts}",
+    "services/*.config.{js,mjs,ts}",
+    "studio/scripts/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist", "**/apps/**/src", "**/packages/**/src", "studio/src"]
+}
