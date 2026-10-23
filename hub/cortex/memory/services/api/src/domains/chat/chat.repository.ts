@@ -1,5 +1,8 @@
 import { ChatHistoryModel } from '../../models/chat-history.model.js';
-import type { ChatHistorySession, StoreChatMessageDTO } from '@monorepo/cortex-memory-core';
+import type {
+  ChatHistorySession,
+  StoreChatMessageDTO,
+} from '@tupynambalucas-dev/cortex-memory-core';
 
 export class ChatRepository {
   async addMessage(dto: StoreChatMessageDTO): Promise<ChatHistorySession> {

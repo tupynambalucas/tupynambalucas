@@ -1,5 +1,9 @@
 import { create } from 'zustand';
-import type { GraphDataDTO, SearchResultDTO, GraphNode } from '@monorepo/cortex-memory-core';
+import type {
+  GraphDataDTO,
+  SearchResultDTO,
+  GraphNode,
+} from '@tupynambalucas-dev/cortex-memory-core';
 import { memoryApi, type ChatMessage } from './memory.api';
 
 interface MemoryState {

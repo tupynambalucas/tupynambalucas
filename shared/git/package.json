@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/shared-git",
+  "name": "@tupynambalucas-dev/shared-git",
   "version": "1.0.0",
   "private": true,
   "description": "Git hooks and commit conventions shared across the monorepo.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "scripts": {

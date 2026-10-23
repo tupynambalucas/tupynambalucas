@@ -7,7 +7,7 @@ FROM base AS pruner
 WORKDIR /app
 RUN pnpm add -g turbo@latest
 COPY . .
-RUN turbo prune @monorepo/cortex-mcp-guardrails --docker
+RUN turbo prune @tupynambalucas-dev/cortex-mcp-guardrails --docker
 
 FROM base AS builder
 WORKDIR /app
@@ -17,13 +17,13 @@ RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm install --frozen-lockfile
 
 COPY --from=pruner /app/out/full/ .
-RUN pnpm --filter @monorepo/cortex-mcp-guardrails... build
+RUN pnpm --filter @tupynambalucas-dev/cortex-mcp-guardrails... build
 
 FROM base AS deployer
 WORKDIR /app
 COPY --from=builder /app .
 RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
-    pnpm --filter @monorepo/cortex-mcp-guardrails --prod deploy --legacy /prod/app
+    pnpm --filter @tupynambalucas-dev/cortex-mcp-guardrails --prod deploy --legacy /prod/app
 
 # ---- Stage 5: Dev Profile (Build & Run) ----
 FROM base AS dev
@@ -34,7 +34,7 @@ COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
-RUN pnpm --filter @monorepo/cortex-mcp-guardrails... build
+RUN pnpm --filter @tupynambalucas-dev/cortex-mcp-guardrails... build
 WORKDIR /app/hub/cortex/mcp/guardrails
 EXPOSE 9001
 CMD ["node", "dist/index.js"]

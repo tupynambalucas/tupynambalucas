@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/studio-bucket",
+  "name": "@tupynambalucas-dev/studio-bucket",
   "version": "1.0.0",
   "private": true,
   "description": "Cloudflare R2 synchronization engine for design studio assets.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "files": [
@@ -31,7 +31,7 @@
     "mime-types": "catalog:"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
     "@types/glob": "catalog:",
     "@types/mime-types": "catalog:",
     "typescript": "catalog:"

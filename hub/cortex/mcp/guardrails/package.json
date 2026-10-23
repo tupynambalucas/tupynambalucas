@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/cortex-mcp-guardrails",
+  "name": "@tupynambalucas-dev/cortex-mcp-guardrails",
   "version": "1.0.0",
   "private": true,
   "description": "MCP guardrails server providing context validation and safety enforcement for AI agents.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "main": "dist/index.js",
   "files": [

@@ -7,7 +7,7 @@ FROM base AS pruner
 WORKDIR /app
 RUN pnpm add -g turbo@latest
 COPY . .
-RUN turbo prune @monorepo/cortex-memory-web --docker
+RUN turbo prune @tupynambalucas-dev/cortex-memory-web --docker
 
 FROM base AS builder
 WORKDIR /app
@@ -17,7 +17,7 @@ RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm install --frozen-lockfile
 
 COPY --from=pruner /app/out/full/ .
-RUN pnpm --filter @monorepo/cortex-memory-web... build
+RUN pnpm --filter @tupynambalucas-dev/cortex-memory-web... build
 
 # ---- Stage 4: Dev Profile (Build & Run) ----
 FROM base AS dev
@@ -28,7 +28,7 @@ COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
-RUN pnpm --filter @monorepo/cortex-memory-web... build
+RUN pnpm --filter @tupynambalucas-dev/cortex-memory-web... build
 WORKDIR /app/hub/cortex/memory/services/web
 EXPOSE 9006
 CMD ["pnpm", "dev", "--host", "0.0.0.0", "--port", "9006"]

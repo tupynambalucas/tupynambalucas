@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/cortex-mcp-memory",
+  "name": "@tupynambalucas-dev/cortex-mcp-memory",
   "version": "1.0.0",
   "private": true,
   "description": "MCP integration for Cortex memory enabling semantic search and context retrieval.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -25,13 +25,13 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "catalog:mcp-stack",
-    "@monorepo/cortex-memory-core": "workspace:*",
+    "@tupynambalucas-dev/cortex-memory-core": "workspace:*",
     "dotenv": "catalog:shared-stack",
     "fastify": "catalog:api-stack",
     "zod": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:",
     "tsx": "catalog:",

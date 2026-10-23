@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/cortex-memory-web",
+  "name": "@tupynambalucas-dev/cortex-memory-web",
   "version": "1.0.0",
   "private": true,
   "description": "Frontend web interface for Cortex memory and vector management.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "scripts": {
@@ -21,8 +21,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@monorepo/cortex-memory-core": "workspace:*",
-    "@monorepo/studio-assets": "workspace:*",
+    "@tupynambalucas-dev/cortex-memory-core": "workspace:*",
+    "@tupynambalucas-dev/studio-assets": "workspace:*",
     "axios": "catalog:shared-stack",
     "lucide-react": "catalog:web-stack",
     "react": "catalog:web-stack",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:web-stack",
-    "@monorepo/shared-config": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:web-stack",
     "@types/react-dom": "catalog:web-stack",

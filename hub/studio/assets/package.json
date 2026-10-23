@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/studio-assets",
+  "name": "@tupynambalucas-dev/studio-assets",
   "version": "1.0.0",
   "private": true,
   "description": "Canonical design tokens, icons, and visual brand assets.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "exports": {
@@ -39,7 +39,7 @@
     "react-icons": "catalog:studio-stack"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
     "@types/react": "catalog:web-stack",
     "@types/react-dom": "catalog:web-stack",
     "tailwindcss": "catalog:shared-stack",

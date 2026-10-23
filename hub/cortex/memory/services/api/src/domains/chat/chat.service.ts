@@ -1,5 +1,8 @@
 import type { ChatRepository } from './chat.repository.js';
-import type { ChatHistorySession, StoreChatMessageDTO } from '@monorepo/cortex-memory-core';
+import type {
+  ChatHistorySession,
+  StoreChatMessageDTO,
+} from '@tupynambalucas-dev/cortex-memory-core';
 
 export class ChatService {
   constructor(private readonly repository: ChatRepository) {}

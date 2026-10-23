@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/cortex-memory-api",
+  "name": "@tupynambalucas-dev/cortex-memory-api",
   "version": "1.0.0",
   "private": true,
   "description": "Backend REST API for Cortex memory subsystem and vector retrieval.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -27,7 +27,7 @@
     "@fastify/cors": "catalog:api-stack",
     "@fastify/env": "catalog:api-stack",
     "@fastify/sse": "catalog:api-stack",
-    "@monorepo/cortex-memory-core": "workspace:*",
+    "@tupynambalucas-dev/cortex-memory-core": "workspace:*",
     "fastify": "catalog:api-stack",
     "fastify-plugin": "catalog:api-stack",
     "gray-matter": "catalog:",
@@ -35,7 +35,7 @@
     "zod": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:",
     "tsx": "catalog:",

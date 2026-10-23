@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { GraphDataDTO, SearchResultDTO } from '@monorepo/cortex-memory-core';
+import type { GraphDataDTO, SearchResultDTO } from '@tupynambalucas-dev/cortex-memory-core';
 
 const envApiUrl = import.meta.env.VITE_API_URL as string | undefined;
 const API_BASE =
