@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/hub-web",
+  "name": "@tupynambalucas-dev/corporate-web",
   "version": "1.0.0",
   "private": true,
   "description": "Frontend React application for the personal portfolio and blog.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "scripts": {
@@ -21,8 +21,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@monorepo/hub-core": "workspace:*",
-    "@monorepo/studio-assets": "workspace:*",
+    "@tupynambalucas-dev/corporate-core": "workspace:*",
+    "@tupynambalucas-dev/studio-assets": "workspace:*",
     "@gsap/react": "catalog:web-stack",
     "gsap": "catalog:web-stack",
     "react": "catalog:web-stack",
@@ -36,7 +36,7 @@
     "@marsidev/react-turnstile": "catalog:web-stack"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
     "prettier": "catalog:tooling-stack",
     "eslint": "catalog:tooling-stack",
     "@types/node": "catalog:",

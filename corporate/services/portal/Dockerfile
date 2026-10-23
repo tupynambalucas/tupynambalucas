@@ -1,5 +1,5 @@
 # =================================================================== #
-# @monorepo/kb-docusaurus-portal — Multi-Stage Dockerfile
+# @tupynambalucas-dev/corporate-portal — Multi-Stage Dockerfile
 # Stages:
 # - base: Shared Node.js runtime and Corepack/pnpm setup
 # - builder: Workspace dependencies compilation and static build
@@ -18,8 +18,8 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json CHANGELOG*.md RO
 COPY corporate/ corporate/
 COPY shared/ shared/
 COPY hub/studio/assets/ hub/studio/assets/
-RUN pnpm install --filter=@monorepo/kb-docusaurus-portal...
-RUN pnpm --filter @monorepo/kb-docusaurus-portal... build
+RUN pnpm install --filter=@tupynambalucas-dev/corporate-portal...
+RUN pnpm --filter @tupynambalucas-dev/corporate-portal... build
 
 # ---- Stage 3: Dev Profile (Build & Run) ----
 FROM base AS dev

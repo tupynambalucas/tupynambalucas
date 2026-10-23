@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { IProduct } from '@monorepo/hub-core';
+import type { IProduct } from '@tupynambalucas-dev/corporate-core';
 
 export interface CartItem extends IProduct {
   amount: number; // For 'unidade', it's the count. For 'kg', it's grams.

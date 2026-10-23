@@ -1,4 +1,4 @@
-# @monorepo/kb-collections
+# @tupynambalucas-dev/corporate-collections
 
 Decoupled content repository and translation configuration for the %PROJECT_DOMAIN% knowledge base.
 

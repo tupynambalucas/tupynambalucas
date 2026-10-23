@@ -1,4 +1,4 @@
-# @monorepo/kb-docusaurus-theme
+# @tupynambalucas-dev/corporate-theme
 
 Custom Docusaurus theme plugin implementing the Thin Orchestrator pattern. It dynamically merges `@docusaurus/theme-classic`, `@docusaurus/theme-live-codeblock`, and `@docusaurus/theme-mermaid`, while allowing targeted component shadowing in `src/theme/`.
 
@@ -15,7 +15,7 @@ Custom Docusaurus theme plugin implementing the Thin Orchestrator pattern. It dy
 
 ## Usage
 
-This theme is automatically registered and configured by `@monorepo/kb-docusaurus-preset`.
+This theme is automatically registered and configured by `@tupynambalucas-dev/corporate-preset`.
 
 ---
 

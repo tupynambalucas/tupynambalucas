@@ -1,5 +1,5 @@
 import { api } from '@/lib/axios';
-import type { ICycle } from '@monorepo/hub-core';
+import type { ICycle } from '@tupynambalucas-dev/corporate-core';
 
 export const cycleApi = {
   getActive: async () => {

@@ -1,7 +1,7 @@
 import type { Config } from '@docusaurus/types';
-import type { MonorepoPresetOptions } from '@monorepo/kb-docusaurus-preset/options';
-import { getBaseThemeConfig } from '@monorepo/kb-docusaurus-preset/themeConfig';
-import { createProjectVariablesParseFrontMatter } from '@monorepo/kb-docusaurus-preset';
+import type { MonorepoPresetOptions } from '@tupynambalucas-dev/corporate-preset/options';
+import { getBaseThemeConfig } from '@tupynambalucas-dev/corporate-preset/themeConfig';
+import { createProjectVariablesParseFrontMatter } from '@tupynambalucas-dev/corporate-preset';
 import path from 'node:path';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
@@ -19,7 +19,7 @@ interface WebpackMock {
   ) => { apply: (...args: unknown[]) => void };
 }
 
-const studioPath = path.dirname(require.resolve('@monorepo/studio-assets/package.json'));
+const studioPath = path.dirname(require.resolve('@tupynambalucas-dev/studio-assets/package.json'));
 const studioSrcPath = path.join(studioPath, 'src');
 const staticPath = path.join(__dirname, 'static');
 
@@ -74,7 +74,7 @@ const config: Config = {
   },
 
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    v4: false, // Improve compatibility with the upcoming Docusaurus v4
   },
 
   staticDirectories: ['static'],
@@ -101,7 +101,7 @@ const config: Config = {
 
   presets: [
     [
-      require.resolve('@monorepo/kb-docusaurus-preset'),
+      require.resolve('@tupynambalucas-dev/corporate-preset'),
       {
         liveCodeblock: {
           playgroundPosition: 'bottom',
@@ -111,13 +111,13 @@ const config: Config = {
             id: 'default',
             collection: 'portal/docs',
             routeBasePath: 'docs',
-            sidebarPath: require.resolve('@monorepo/kb-docusaurus-preset/sidebars'),
+            sidebarPath: require.resolve('@tupynambalucas-dev/corporate-preset/sidebars'),
           },
           {
             id: 'community',
             collection: 'portal/community',
             routeBasePath: 'community',
-            sidebarPath: require.resolve('@monorepo/kb-docusaurus-preset/sidebars'),
+            sidebarPath: require.resolve('@tupynambalucas-dev/corporate-preset/sidebars'),
           },
         ],
         blog: {

@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/kb-collections",
+  "name": "@tupynambalucas-dev/corporate-collections",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -11,6 +11,6 @@
     "./package.json": "./package.json"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*"
+    "@tupynambalucas-dev/shared-config": "workspace:*"
   }
 }

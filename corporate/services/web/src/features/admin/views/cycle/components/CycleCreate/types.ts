@@ -1,4 +1,4 @@
-import type { IProduct } from '@monorepo/hub-core';
+import type { IProduct } from '@tupynambalucas-dev/corporate-core';
 import type { FailedLine } from './parseList';
 
 export interface FixingItem {

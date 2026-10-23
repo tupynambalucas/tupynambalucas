@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { AdminContainer } from '../../components';
-import { faUsers } from '@monorepo/studio-assets/icons';
+import { faUsers } from '@tupynambalucas-dev/studio-assets/icons';
 
 const CustomersView: FC = () => {
   return (

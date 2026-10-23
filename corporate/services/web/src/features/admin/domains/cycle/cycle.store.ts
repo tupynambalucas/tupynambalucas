@@ -3,7 +3,11 @@ import { adminCycleApi } from './cycle.api';
 import { useCycleStore as usePublicCycleStore } from '@/domains/cycle';
 import { useProductStore } from '@/domains/product';
 import { getErrorMessage } from '@/utils/errorHelper';
-import { type IProduct, type CycleResponse, CycleResponseSchema } from '@monorepo/hub-core';
+import {
+  type IProduct,
+  type CycleResponse,
+  CycleResponseSchema,
+} from '@tupynambalucas-dev/corporate-core';
 
 export interface CycleFormData {
   products: IProduct[];

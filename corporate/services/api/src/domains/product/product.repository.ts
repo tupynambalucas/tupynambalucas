@@ -9,7 +9,7 @@ import type {
 } from 'mongoose';
 import type { IProductDocument } from '../../models/product.model.js';
 import type { IProductRepository, ProductKey } from './product.repository.interface.js';
-import type { IProduct } from '@monorepo/hub-core';
+import type { IProduct } from '@tupynambalucas-dev/corporate-core';
 
 export class ProductRepository implements IProductRepository {
   constructor(private readonly model: Model<IProductDocument>) {}

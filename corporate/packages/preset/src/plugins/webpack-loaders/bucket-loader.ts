@@ -19,7 +19,7 @@ export default function bucketLoader(this: any, source: string): string {
   const normalizedOriginal = original.replace(/\\/g, '/');
 
   // Load assets manifest
-  const manifestPath = require.resolve('@monorepo/studio-assets/assets-manifest.json');
+  const manifestPath = require.resolve('@tupynambalucas-dev/studio-assets/assets-manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const buildFolders = manifest.buckets.assets.docs as string[];
   const folderNames = buildFolders.map((f: string) => f.replace(/^\//, ''));

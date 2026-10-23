@@ -1,5 +1,5 @@
 # =================================================================== #
-# @monorepo/hub-web — Production Dockerfile
+# @tupynambalucas-dev/corporate-web — Production Dockerfile
 # Multi-stage build: Turborepo prune → Vite build → Nginx serve.
 # Build context: MONOREPO ROOT (../../ relative to this file).
 # VITE_* variables are injected at build time via Docker ARG.
@@ -12,13 +12,13 @@ ENV PATH="$PNPM_HOME:$PNPM_HOME/bin:$PATH"
 RUN corepack enable pnpm
 
 # ---- Stage 2: Pruner ----
-# Extracts ONLY files needed by @monorepo/hub-web and its workspace deps
-# (@monorepo/hub-core, @monorepo/studio-assets).
+# Extracts ONLY files needed by @tupynambalucas-dev/corporate-web and its workspace deps
+# (@tupynambalucas-dev/corporate-core, @tupynambalucas-dev/studio-assets).
 FROM base AS pruner
 WORKDIR /app
 RUN pnpm add -g turbo@latest
 COPY . .
-RUN turbo prune @monorepo/hub-web --docker
+RUN turbo prune @tupynambalucas-dev/corporate-web --docker
 
 # ---- Stage 3: Builder ----
 # Injects VITE_* variables as build-time ARGs — they are statically
@@ -39,7 +39,7 @@ RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
 
 # Copy full source and build
 COPY --from=pruner /app/out/full/ .
-RUN pnpm --filter @monorepo/hub-web... build
+RUN pnpm --filter @tupynambalucas-dev/corporate-web... build
 
 # ---- Stage 4: Dev Profile (Build & Run) ----
 FROM base AS dev
@@ -52,7 +52,7 @@ COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN --mount=type=cache,id=pnpm-store-shared,target=/pnpm/store \
     pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
-RUN pnpm --filter @monorepo/hub-web... build
+RUN pnpm --filter @tupynambalucas-dev/corporate-web... build
 WORKDIR /app/corporate/services/web
 EXPOSE 5173
 CMD ["pnpm", "dev", "--host", "0.0.0.0", "--port", "5173"]

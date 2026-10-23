@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/kb-docusaurus-theme",
+  "name": "@tupynambalucas-dev/corporate-theme",
   "version": "1.0.0",
   "private": true,
   "description": "Custom Docusaurus theme plugin (Thin Orchestrator) for the monorepo knowledge base.",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@docusaurus/plugin-content-blog": "catalog:docs-stack",
-    "@monorepo/studio-assets": "workspace:*",
+    "@tupynambalucas-dev/studio-assets": "workspace:*",
     "clsx": "catalog:web-stack",
     "tailwindcss": "catalog:shared-stack"
   },

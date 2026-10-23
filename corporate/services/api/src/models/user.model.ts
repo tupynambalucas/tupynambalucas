@@ -1,6 +1,6 @@
 import { Schema, model, type Document } from 'mongoose';
 import bcrypt from 'bcrypt';
-import type { IUser } from '@monorepo/hub-core';
+import type { IUser } from '@tupynambalucas-dev/corporate-core';
 
 export interface IUserDocument extends Omit<IUser, '_id'>, Document {
   password?: string;

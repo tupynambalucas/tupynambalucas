@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import { AdminContainer } from '../../components';
-import { faChartSimple } from '@monorepo/studio-assets/icons';
+import { faChartSimple } from '@tupynambalucas-dev/studio-assets/icons';
 
 const ReportsView: FC = () => {
   return (

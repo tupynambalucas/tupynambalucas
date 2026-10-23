@@ -57,7 +57,8 @@ export default function pluginLocalesSync(
       const { mappings } = options;
       const destI18nRoot = path.resolve(context.siteDir, 'i18n');
 
-      const collectionsPkg = require.resolve('@monorepo/kb-collections/package.json');
+      const collectionsPkg =
+        require.resolve('@tupynambalucas-dev/corporate-collections/package.json');
       const collectionsRoot = path.dirname(collectionsPkg);
 
       const processedNamespaces = new Set<string>();

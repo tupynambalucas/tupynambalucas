@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/kb-docusaurus-preset",
+  "name": "@tupynambalucas-dev/corporate-preset",
   "version": "1.0.0",
   "private": true,
   "description": "Custom Docusaurus preset for the monorepo knowledge base.",
@@ -31,10 +31,10 @@
   },
   "dependencies": {
     "@docusaurus/utils": "catalog:docs-stack",
-    "@monorepo/kb-collections": "workspace:*",
-    "@monorepo/kb-docusaurus-theme": "workspace:*",
-    "@monorepo/shared-config": "workspace:*",
-    "@monorepo/studio-assets": "workspace:*",
+    "@tupynambalucas-dev/corporate-collections": "workspace:*",
+    "@tupynambalucas-dev/corporate-theme": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
+    "@tupynambalucas-dev/studio-assets": "workspace:*",
     "prism-react-renderer": "catalog:docs-stack"
   },
   "peerDependencies": {

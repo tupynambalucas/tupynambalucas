@@ -1,4 +1,4 @@
-# @monorepo/kb-docusaurus-preset
+# @tupynambalucas-dev/corporate-preset
 
 Reusable Docusaurus preset encapsulating core plugins, AST transformers, navigation sidebars, and L10n translation synchronization for tupynambalucas.dev.
 
@@ -15,15 +15,15 @@ Reusable Docusaurus preset encapsulating core plugins, AST transformers, navigat
 
 ## Usage
 
-This preset is consumed by the `@monorepo/kb-docusaurus-portal` service. It is not intended to be used outside the monorepo.
+This preset is consumed by the `@tupynambalucas-dev/corporate-portal` service. It is not intended to be used outside the monorepo.
 
 ```ts
-import type { MonorepoPresetOptions } from '@monorepo/kb-docusaurus-preset/options';
+import type { MonorepoPresetOptions } from '@tupynambalucas-dev/corporate-preset/options';
 
 // Inside docusaurus.config.ts
 presets: [
   [
-    require.resolve('@monorepo/kb-docusaurus-preset'),
+    require.resolve('@tupynambalucas-dev/corporate-preset'),
     {
       crowdin: { collection: 'portal' },
       docs: [/* ... */],

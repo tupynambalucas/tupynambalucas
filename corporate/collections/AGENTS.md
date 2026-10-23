@@ -7,7 +7,7 @@
 
 # Sub-Domain: Knowledge Base Collections
 
-This workspace (`@monorepo/kb-collections`) provides decoupled content collections organized by Feature-Sliced Design (FSD) namespaces, along with Crowdin configurations for automated translation synchronization.
+This workspace (`@tupynambalucas-dev/corporate-collections`) provides decoupled content collections organized by Feature-Sliced Design (FSD) namespaces, along with Crowdin configurations for automated translation synchronization.
 
 ---
 

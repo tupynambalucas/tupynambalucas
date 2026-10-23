@@ -10,7 +10,7 @@ import {
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import '@fastify/session';
 import '@fastify/jwt';
-import { type IUser } from '@monorepo/hub-core';
+import { type IUser } from '@tupynambalucas-dev/corporate-core';
 
 import { AuthController } from '../domains/auth/auth.controller.js';
 import { CycleController } from '../domains/cycle/cycle.controller.js';

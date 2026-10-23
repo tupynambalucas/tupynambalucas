@@ -1,4 +1,4 @@
-import { translations } from '@monorepo/hub-core';
+import { translations } from '@tupynambalucas-dev/corporate-core';
 
 export const ptBR = {
   translation: {

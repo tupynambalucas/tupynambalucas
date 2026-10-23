@@ -7,7 +7,7 @@
 
 # Sub-Domain: Docs Theme
 
-This workspace (`@monorepo/kb-docusaurus-theme`) implements a custom Docusaurus theme plugin using the Thin Orchestrator pattern.
+This workspace (`@tupynambalucas-dev/corporate-theme`) implements a custom Docusaurus theme plugin using the Thin Orchestrator pattern.
 
 ---
 

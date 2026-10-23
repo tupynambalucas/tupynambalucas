@@ -4,7 +4,7 @@ import { useCyclesNavigation } from '../../cycle.navigation';
 import { parseProductList, type FailedLine } from './parseList';
 import { createFixingItems, processFixedItems } from './fixErrors';
 import type { FixingItem } from './types';
-import type { IProduct } from '@monorepo/hub-core';
+import type { IProduct } from '@tupynambalucas-dev/corporate-core';
 
 export const useCycleCreate = () => {
   const { currentStep, setStep, resetNavigation } = useCyclesNavigation();

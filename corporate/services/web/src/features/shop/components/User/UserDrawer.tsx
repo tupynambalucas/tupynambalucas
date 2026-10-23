@@ -8,7 +8,7 @@ import {
   faList,
   faUser,
   faArrowRightFromBracket,
-} from '@monorepo/studio-assets/icons';
+} from '@tupynambalucas-dev/studio-assets/icons';
 
 interface UserDrawerProps {
   isOpen: boolean;

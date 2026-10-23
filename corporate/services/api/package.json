@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/hub-api",
+  "name": "@tupynambalucas-dev/corporate-api",
   "version": "1.0.0",
   "private": true,
   "description": "Backend REST API serving portfolio content and blog operations.",
@@ -8,7 +8,7 @@
   "homepage": "https://docs.tupynambalucas.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
+    "url": "git+https://github.com/tupynambalucas-dev/platform.git"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -21,7 +21,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@monorepo/hub-core": "workspace:*",
+    "@tupynambalucas-dev/corporate-core": "workspace:*",
     "@fastify/cookie": "catalog:api-stack",
     "@fastify/cors": "catalog:api-stack",
     "@fastify/csrf-protection": "catalog:api-stack",
@@ -46,7 +46,7 @@
     "dotenv": "catalog:shared-stack"
   },
   "devDependencies": {
-    "@monorepo/shared-config": "workspace:*",
+    "@tupynambalucas-dev/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/bcrypt": "catalog:api-stack",
     "prettier": "catalog:tooling-stack",

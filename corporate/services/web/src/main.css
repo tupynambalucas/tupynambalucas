@@ -1,8 +1,8 @@
 @import 'tailwindcss';
-@import '@monorepo/studio-assets/theme.css';
+@import '@tupynambalucas-dev/studio-assets/theme.css';
 
 /* 
-  @monorepo/studio-assets/theme.css already includes:
+  @tupynambalucas-dev/studio-assets/theme.css already includes:
   - Nunito Font Configuration
   - Brand Color Palette (@theme)
   - Base Typography and Resets (@layer base)

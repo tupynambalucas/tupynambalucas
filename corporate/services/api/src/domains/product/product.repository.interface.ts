@@ -7,7 +7,7 @@ import type {
   mongo,
 } from 'mongoose';
 import type { IProductDocument } from '../../models/product.model.js';
-import type { IProduct } from '@monorepo/hub-core';
+import type { IProduct } from '@tupynambalucas-dev/corporate-core';
 
 export interface ProductKey {
   name: string;

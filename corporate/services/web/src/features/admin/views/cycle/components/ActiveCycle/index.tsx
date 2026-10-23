@@ -11,8 +11,8 @@ import {
   faTrash,
   faPen,
   faCircle,
-} from '@monorepo/studio-assets/icons';
-import type { IProduct } from '@monorepo/hub-core';
+} from '@tupynambalucas-dev/studio-assets/icons';
+import type { IProduct } from '@tupynambalucas-dev/corporate-core';
 import { AdminContainer, ProductSearchFilter } from '../../../../components';
 
 export const ActiveCycleDashboard = () => {

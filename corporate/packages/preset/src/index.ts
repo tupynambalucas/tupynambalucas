@@ -39,7 +39,7 @@ export default function monorepoPreset(
     sitemap,
     svgr,
     theme = {
-      customCss: [require.resolve('@monorepo/kb-docusaurus-theme/src/css/custom.css')],
+      customCss: [require.resolve('@tupynambalucas-dev/corporate-theme/src/css/custom.css')],
     },
     liveCodeblock,
     gtag,
@@ -62,7 +62,7 @@ export default function monorepoPreset(
   }
 
   // LOCAL OVERRIDE LAYER
-  themes.push(makePluginConfig(require.resolve('@monorepo/kb-docusaurus-theme'), {}));
+  themes.push(makePluginConfig(require.resolve('@tupynambalucas-dev/corporate-theme'), {}));
 
   if ('gtag' in themeConfig) {
     throw new Error(
@@ -102,7 +102,7 @@ export default function monorepoPreset(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
   plugins.push(pluginStudioAssets as any);
 
-  const collectionsPkg = require.resolve('@monorepo/kb-collections/package.json');
+  const collectionsPkg = require.resolve('@tupynambalucas-dev/corporate-collections/package.json');
   const collectionsRoot = path.dirname(collectionsPkg);
 
   const mappings: CollectionMapping[] = [];
