@@ -8,7 +8,7 @@ This section outlines the strategic monorepo architecture, catalog configuration
 
 ## Current Development Focus: "Single-Instance Mastery"
 
-**CRITICAL STRATEGY:** Our immediate and absolute priority is to deliver a **complete, 100% functional, and polished single-instance application** (`@repo/hub/*`).
+**CRITICAL STRATEGY:** Our immediate and absolute priority is to deliver a **complete, 100% functional, and polished single-instance application** (`@tupynambalucas-dev/corporate-*`).
 
 While we have a long-term vision of becoming a multi-tenant SaaS platform, **SaaS architectural complexities must not be implemented at this stage.** All current development (codebase, database schemas, UI/UX) must remain focused on producing the best possible version of a standalone system for an ecovillage. The transition to a full SaaS model (Phase 6 of the Master Plan) will only be considered after the single-instance application is stable and fully operational.
 
@@ -18,7 +18,7 @@ While we have a long-term vision of becoming a multi-tenant SaaS platform, **Saa
 
 ### Monorepo Architecture & Workspace Setup
 
-- **Monorepo Workspace Segregation**: Structured workspace layers via PNPM Workspaces v11 and Turborepo, segregating `hub/`, `cortex/`, `studio/`, `tools/`, `renderer/`, `platform/`, and `docs/` domains.
+- **Monorepo Workspace Segregation**: Structured workspace layers via PNPM Workspaces v11 and Turborepo, segregating `corporate/`, `hub/`, `k8s/`, `tools/`, `renderer/`, and `shared/` domains.
 - **High-Performance Task Orchestration**: Integrated **Turborepo** to orchestrate pipelines, enabling smart target caching and parallel execution of scripts.
 - **Unified Configuration Inheritances**: Configured root-level `tsconfig.base.json` and `eslint.config.ts` extendable by workspace packages via TSConfig extends and ESLint config array definitions.
 - **Node 22 & TypeScript ESM Configuration**: Converted all packages to use ECMAScript Modules (`"type": "module"`) and compiled with target `ESNext` for modern syntax support.
@@ -26,7 +26,7 @@ While we have a long-term vision of becoming a multi-tenant SaaS platform, **Saa
 ### Bounded Contexts & Domain Security
 
 - **Strict Bounded Context Isolation**: Configured custom ESLint import restrictions (`no-restricted-imports`) in `eslint.config.ts` preventing cross-workspace dependencies to guarantee clean, decoupled business logic.
-- **Domain-Core Pattern Integration**: Established `packages/core` in `hub/` as the Single Source of Truth (SSOT) for data models and schema validators.
+- **Domain-Core Pattern Integration**: Established `packages/core` in `corporate/` as the Single Source of Truth (SSOT) for data models and schema validators.
 - **Unified Dependency Management via Catalogs**: Integrated PNPM v11 Catalogs feature in `pnpm-workspace.yaml` to govern third-party tool versions (e.g., Fastify 5, React 19, TSX, ESLint) across the entire monorepo.
 
 ## Planned Focus
@@ -107,14 +107,14 @@ This section covers the Penpot environment, design-token sync automation, and cu
 
 ### Collaborative Design Environment
 
-- **Self-Hosted Design Hub**: Deployed a containerized Penpot v2 instance (Aide-supported design workspace) inside the `@repo/studio/assets` environment, enabling secure local collaborative styling mockups.
-- **Centralized Design System Packages**: Structured `@repo/studio/assets` to serve as the unified package for brand guidelines, typography styles, spacing configurations, and palette design tokens.
+- **Self-Hosted Design Hub**: Deployed a containerized Penpot v2 instance (Aide-supported design workspace) inside the `@tupynambalucas-dev/studio-assets` environment, enabling secure local collaborative styling mockups.
+- **Centralized Design System Packages**: Structured `@tupynambalucas-dev/studio-assets` to serve as the unified package for brand guidelines, typography styles, spacing configurations, and palette design tokens.
 
 ### Asset Pipelines
 
 - **Branding Assets Export**: Standardized export assets (including SVG vectors, logo marks, and color sheets) in the project repositories, providing raw templates for web applications.
 - **Brand Identity Realignment**: Reorganized the assets workspace structure to establish a canonical `brand` namespace (grouping logos, palettes, favicons, banners, guidelines) and renamed the design sources directory from `raw` to `sources`.
-- **Cloud-Based Asset Hosting**: Implemented a bidirectional asset synchronization CLI engine under `@repo/studio/assets/bucket`, enabling seamless replication of brand-identity sources and web-ready assets with Cloudflare R2 Object Storage, eliminating heavy assets from Git history.
+- **Cloud-Based Asset Hosting**: Implemented a bidirectional asset synchronization CLI engine under `@tupynambalucas-dev/studio-bucket`, enabling seamless replication of brand-identity sources and web-ready assets with Cloudflare R2 Object Storage, eliminating heavy assets from Git history.
 
 ## Planned Focus
 
