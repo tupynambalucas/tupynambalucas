@@ -22,9 +22,9 @@ The phenomenon of polysemy (where a single term has multiple meanings depending 
 
 In our monorepo, the concept of an **"Asset"** has completely different definitions depending on the context:
 
-- **Studio Context (`studio/`)**: An asset is a raw vector source file (Illustrator `.ai`, Blender `.blend`, PSD) or a compiled high-resolution raster image stored in Cloudflare R2.
+- **Studio Context (`hub/studio/`)**: An asset is a raw vector source file (Illustrator `.ai`, Blender `.blend`, PSD) or a compiled high-resolution raster image stored in Cloudflare R2.
 - **Renderer Context (`renderer/`)**: An asset is a dynamic, theme-aware, base64-encoded inline font asset or an SVG card compiled dynamically to bypass iframe sandboxes.
-- **Hub Context (`hub/`)**: An asset is a static, public CDN-cached URL serving portfolio content to the user's browser.
+- **Corporate Context (`corporate/`)**: An asset is a static, public CDN-cached URL serving corporate branding content to the user's browser.
 
 Rather than creating a bloated, global `Asset` definition, each context maintains its own specialized representation, completely isolated from others.
 
@@ -42,13 +42,13 @@ A Bounded Context defines the explicit boundary inside which a domain model is v
 
 We categorize our contexts using DDD tactical classifications to prioritize technical investment and architecture:
 
-| Context                    | Strategic Classification | Architectural Approach                                                                                      |
-| :------------------------- | :----------------------- | :---------------------------------------------------------------------------------------------------------- |
-| **Renderer (`renderer/`)** | **Core Domain**          | Proprietary document compilation pipeline built with TypeScript and zero-dependency base64 embedded assets. |
-| **Hub (`hub/`)**           | **Core Domain**          | Personal portfolio web app, Fastify API, and data contract packages with strict schema validations.         |
-| **Cortex (`cortex/`)**     | **Supporting Domain**    | Unified AI ingress gateway, persistent vector memory indexes, downstream MCP adapters, and agent terminals. |
-| **Studio (`studio/`)**     | **Supporting Domain**    | Brand identity master vault, design tokens library, and R2 bucket command-line synchronizer.                |
-| **Platform (`platform/`)** | **Generic Domain**       | OpenTelemetry monitoring collector and Turborepo cache servers.                                             |
+| Context                      | Strategic Classification | Architectural Approach                                                                                    |
+| :--------------------------- | :----------------------- | :-------------------------------------------------------------------------------------------------------- |
+| **Corporate (`corporate/`)** | **Core Domain**          | Public enterprise web portal, Fastify API services, domain schemas, and Docusaurus knowledge base.        |
+| **Renderer (`renderer/`)**   | **Core Domain**          | Proprietary document compilation pipeline built with TypeScript and zero-dependency embedded assets.      |
+| **Hub (`hub/`)**             | **Supporting Domain**    | Internal developer platform grouping Cortex AI, Studio design tokens, observability, and network routing. |
+| **Shared (`shared/`)**       | **Generic Domain**       | Cross-cutting foundational configurations, shared linting/TypeScript presets, and Git hooks.              |
+| **Tools (`tools/`)**         | **Generic Domain**       | Infrastructure provisioning scripts, GitHub automation CLI, and workspace developer tooling.              |
 
 ---
 
@@ -62,17 +62,20 @@ Our folder layout directly mirrors our Bounded Context map:
 
 ```text
 workspace/
-├── hub/                      # Hub Context (Portfolio Web & API)
-│   ├── services/web/         # Web Application (React)
-│   ├── services/api/         # API Backend (Fastify)
-│   └── packages/core/        # Data validation contracts (Zod)
-├── cortex/                   # Cortex Context (AI Ingress, Memory, MCP, Agents)
-├── renderer/                 # Renderer Context (Asset & Document Pipeline)
-├── studio/                   # Studio Context (Design System & Master Assets)
-│   └── assets/               # CSS Tokens, SVG Logos, & CLI Synchronizer
-├── platform/                 # Platform Context (OTel, Cache)
-├── tools/                    # Tools Context (GitHub Automation CLI)
-└── knowledge-base/           # Knowledge Base Context (Docusaurus)
+├── corporate/                # Corporate Context (@%GITHUB_ORG%/corporate-*)
+│   ├── collections/          # Docusaurus Documentation Portal & Knowledge Base
+│   ├── packages/core/        # Data validation contracts (Zod)
+│   └── services/             # Public Web (React) & API (Fastify)
+├── hub/                      # Hub Context (Internal Platform & Tooling)
+│   ├── cortex/               # AI Ingress (AgentGateway), Vector Memory, MCP Servers
+│   ├── studio/               # Design System Tokens (@%GITHUB_ORG%/studio-assets) & Bucket CLI
+│   ├── observability/        # Grafana, Loki, Prometheus, Tempo
+│   ├── network/              # Traefik, Cloudflare Tunnels
+│   └── tools/                # Headlamp Kubernetes Dashboard
+├── renderer/                 # Renderer Context (@%GITHUB_ORG%/renderer)
+├── shared/                   # Shared Kernel Configurations (@%GITHUB_ORG%/shared-*)
+├── tools/                    # Tooling Context (@%GITHUB_ORG%/tools-*)
+└── k8s/                      # Infrastructure Manifests & GitOps Overlays (@%GITHUB_ORG%/k8s)
 ```
 
 We completely reject the anti-pattern of a global, catch-all `utils/` directory at the root. Such folders invariably degrade into systemic dumping grounds, triggering unnecessary global builds and violating logical boundaries. Any utility must remain encapsulated inside its origin context.
@@ -89,7 +92,7 @@ Bounded Contexts do not operate in absolute isolation; they must communicate thr
 
 ### 4.1 Shared Kernel (Nucleu Partilhado)
 
-The **Shared Kernel** pattern is utilized when contexts share a stable portion of domain schemas or variables. In our system, **`@repo/studio/assets`** acts as a Shared Kernel. Both `@repo/hub/web` and `@/renderer` import design tokens and SVG icons directly from this package.
+The **Shared Kernel** pattern is utilized when contexts share a stable portion of domain schemas or variables. In our system, **`@%GITHUB_ORG%/studio-assets`** acts as a Shared Kernel. Both `@%GITHUB_ORG%/corporate-web` and `@%GITHUB_ORG%/renderer` import design tokens and SVG icons directly from this package.
 
 Any change to these tokens triggers immediate build-time verification across both downstream consumer contexts, ensuring systemic visual consistency.
 
@@ -97,7 +100,7 @@ Any change to these tokens triggers immediate build-time verification across bot
 
 When a clean context must consume complex or raw external services, we introduce an **Anti-Corruption Layer (ACL)** to translate external inputs into the consumer's clean domain language.
 
-Our **`AgentGateway`** (under `/cortex/gateway`) acts as a network-level ACL. Downstream AI agent containers in `cortex/agents` execute complex, non-standard MCP commands. Instead of coupling the agents to raw endpoints, they communicate through the clean, federated `AgentGateway` ingress proxy, which translates and routes payloads seamlessly.
+Our **`AgentGateway`** (under `hub/cortex/`) acts as a network-level ACL. Downstream AI agent containers execute complex, non-standard MCP commands. Instead of coupling the agents to raw endpoints, they communicate through the clean, federated `AgentGateway` ingress proxy, which translates and routes payloads seamlessly.
 
 ---
 
@@ -107,8 +110,8 @@ We enforce structural modularity dynamically to prevent spaghetti imports and en
 
 ### 5.1 Vertical vs. Horizontal Layering
 
-- **Vertical Boundaries**: Dictated by root workspace directories (e.g., code under `hub/` cannot perform direct, deep imports of file systems under `renderer/`).
-- **Horizontal Layering**: Internal architectural layers. For instance, the `@repo/hub/web` (UI/Feature layer) is completely decoupled from `@repo/hub/core` (Domain model layer), forcing the dependency flow downward.
+- **Vertical Boundaries**: Dictated by root workspace directories (e.g., code under `corporate/` cannot perform direct, deep imports of file systems under `hub/`).
+- **Horizontal Layering**: Internal architectural layers. For instance, the `@%GITHUB_ORG%/corporate-web` (UI/Feature layer) is completely decoupled from `@%GITHUB_ORG%/corporate-core` (Domain model layer), forcing the dependency flow downward.
 
 ### 5.2 Automated Boundary Enforcement
 
@@ -129,7 +132,7 @@ When a Bounded Context includes containerized deployment units (managed locally 
 A horizontal layout where all services are placed inside a flat `services/` directory.
 
 - **When to Use**: Applied to product-centric workspaces (e.g.,
-  [/hub](/docs/explanation/domain-driven-monorepo#31-folder-topology) and `studio/design`)
+  `corporate/services/` and `hub/studio/`)
   that represent standard web application stacks (Frontend Client, Backend API, Database, Cache).
 - **Rationale**: The services function as peer components of a single, highly coupled application.
   Adding further structural layers would increase cognitive overhead without benefit.
@@ -140,7 +143,7 @@ A vertical layout where services are grouped into sibling directories representi
 architectural planes (e.g., `gateway/` for routing, `mcp/` for data planes, `agents/` for execution
 runtimes) at the root of the workspace.
 
-- **When to Use**: Applied to infrastructure-centric workspaces (e.g., `/cortex`) that
+- **When to Use**: Applied to infrastructure-centric workspaces (e.g., `hub/cortex/`) that
   contain heterogeneous components with separate lifecycles, permission scopes, and deployment
   requirements.
 - **Rationale**: Clarifies the structural hierarchy of complex platform integrations. It allows

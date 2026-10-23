@@ -1,0 +1,155 @@
+---
+title: Package Scopes & Naming Conventions
+description: Authoritative reference for enterprise NPM scopes, workspace package taxonomy, and registry governance in the monorepo.
+sidebar_position: 5
+---
+
+# Package Scopes & Naming Conventions
+
+This document defines the official **Single Source of Truth (SSOT)** for package naming conventions, NPM scoping standards, and registry governance across the %PROJECT_DOMAIN% monorepo.
+
+:::info[Architectural Standard]
+The monorepo enforces a **Hierarchical Bounded Context Scoping Standard**. All packages are owned by the organizational enterprise scope `@%GITHUB_ORG%/`, followed by a deterministic prefix indicating their architectural Bounded Context.
+:::
+
+---
+
+## 1. Enterprise Scope Hierarchy
+
+The package naming taxonomy directly mirrors the domain topology of the ecosystem:
+
+```text
+@%GITHUB_ORG%/<context>-<project>
+├── @%GITHUB_ORG%/platform             # Root Monorepo Orchestrator
+├── @%GITHUB_ORG%/corporate-*          # Corporate Products & Documentation
+├── @%GITHUB_ORG%/cortex-*             # AI Subsystem & MCP Federation
+├── @%GITHUB_ORG%/studio-*             # Design System & Creative Assets
+├── @%GITHUB_ORG%/shared-*             # Cross-Cutting Foundations & SSOT
+└── @%GITHUB_ORG%/tools-*              # Automation CLI & Tooling
+```
+
+### 1.1 Root Package Identity
+
+The root workspace is formally registered as:
+
+- **Package Identifier**: `@%GITHUB_ORG%/platform`
+- **GitHub Repository**: `%GITHUB_ORG%/%REPOSITORY_NAME%`
+- **Classification**: Internal Developer Platform (IDP) and task orchestrator.
+
+The root package manages global dev engines (`pnpm`), orchestration pipelines (`turbo`), and unified lint/format configurations.
+
+---
+
+## 2. Monorepo Package Inventory
+
+The monorepo contains 22 workspace packages organized into isolated Bounded Contexts:
+
+### A. Corporate Context (`corporate/`)
+
+Houses public-facing digital products, commercial APIs, and knowledge base infrastructure.
+
+| Package Name                          | Physical Location           | Classification  | Responsibility                                          |
+| :------------------------------------ | :-------------------------- | :-------------- | :------------------------------------------------------ |
+| `@%GITHUB_ORG%/corporate-web`         | `corporate/services/web`    | Application     | React 19 showcase & e-commerce client.                  |
+| `@%GITHUB_ORG%/corporate-api`         | `corporate/services/api`    | Service         | Fastify 5 REST API & transactional backend.             |
+| `@%GITHUB_ORG%/corporate-core`        | `corporate/packages/core`   | Library         | Shared domain entities, contracts, and Zod schemas.     |
+| `@%GITHUB_ORG%/corporate-portal`      | `corporate/services/portal` | Application     | Docusaurus developer documentation portal.              |
+| `@%GITHUB_ORG%/corporate-collections` | `corporate/collections`     | Content Library | Decoupled documentation collections & translation sets. |
+| `@%GITHUB_ORG%/corporate-preset`      | `corporate/packages/preset` | Plugin Library  | Reusable Docusaurus preset with AST loaders & plugins.  |
+| `@%GITHUB_ORG%/corporate-theme`       | `corporate/packages/theme`  | UI Library      | Custom Docusaurus components, styling, and layouts.     |
+
+### B. Cortex Context (`hub/cortex/`)
+
+Houses the AI cognitive engine, persistent vector memory, and Model Context Protocol (MCP) toolchains.
+
+| Package Name                          | Physical Location                   | Classification | Responsibility                                             |
+| :------------------------------------ | :---------------------------------- | :------------- | :--------------------------------------------------------- |
+| `@%GITHUB_ORG%/cortex-memory-core`    | `hub/cortex/memory/packages/core`   | Library        | MongoDB Vector RAG schemas & graph algorithms.             |
+| `@%GITHUB_ORG%/cortex-memory-api`     | `hub/cortex/memory/services/api`    | Service        | Fastify memory ingestion & semantic search API.            |
+| `@%GITHUB_ORG%/cortex-memory-web`     | `hub/cortex/memory/services/web`    | Application    | Graph explorer and memory visualization dashboard.         |
+| `@%GITHUB_ORG%/cortex-mcp-guardrails` | `hub/cortex/mcp/guardrails`         | MCP Service    | CEL security policy validator and prompt filter.           |
+| `@%GITHUB_ORG%/cortex-mcp-firecrawl`  | `hub/cortex/mcp/services/firecrawl` | MCP Adapter    | Web scraping and content extraction gateway adapter.       |
+| `@%GITHUB_ORG%/cortex-mcp-memory`     | `hub/cortex/mcp/services/memory`    | MCP Adapter    | Native MCP tool server exposing semantic vector retrieval. |
+
+### C. Studio Context (`hub/studio/`)
+
+Houses design assets, brand identity tokens, and media distribution tooling.
+
+| Package Name                  | Physical Location   | Classification | Responsibility                                       |
+| :---------------------------- | :------------------ | :------------- | :--------------------------------------------------- |
+| `@%GITHUB_ORG%/studio-assets` | `hub/studio/assets` | Design Library | CSS design tokens, SVG logo marks, and typography.   |
+| `@%GITHUB_ORG%/studio-bucket` | `hub/studio/bucket` | CLI Tool       | Cloudflare R2 binary bucket synchronization utility. |
+
+### D. Shared Foundation Context (`shared/`)
+
+Houses repository-wide single-source-of-truth constants and developer lifecycle automation.
+
+| Package Name                  | Physical Location | Classification     | Responsibility                                       |
+| :---------------------------- | :---------------- | :----------------- | :--------------------------------------------------- |
+| `@%GITHUB_ORG%/shared-config` | `shared/config`   | Config Library     | Prettier rules, TSConfig base, and project metadata. |
+| `@%GITHUB_ORG%/shared-git`    | `shared/git`      | Automation Library | Husky lifecycle hooks and commit message linters.    |
+
+### E. Tooling & Infrastructure Contexts (`tools/`, `k8s/`, `renderer/`)
+
+Houses operational automation, profile rendering, and cloud delivery manifests.
+
+| Package Name                      | Physical Location   | Classification | Responsibility                                               |
+| :-------------------------------- | :------------------ | :------------- | :----------------------------------------------------------- |
+| `@%GITHUB_ORG%/tools-provisioner` | `tools/provisioner` | CLI Tool       | Interactive scaffolding CLI for new workspaces and configs.  |
+| `@%GITHUB_ORG%/tools-github`      | `tools/github`      | CLI Tool       | Containerized GitHub automation and RBAC scripts.            |
+| `@%GITHUB_ORG%/renderer`          | `renderer`          | Pipeline Tool  | Dynamic GitHub SVG profile card and README compiler.         |
+| `@%GITHUB_ORG%/k8s`               | `k8s`               | Manifest Suite | Multi-cluster Helm charts, Kustomize overlays, and Skaffold. |
+
+---
+
+## 3. Workspace Dependency Protocol
+
+All cross-package dependencies within the monorepo MUST declare the `workspace:*` protocol:
+
+```json
+{
+  "dependencies": {
+    "@%GITHUB_ORG%/corporate-core": "workspace:*",
+    "@%GITHUB_ORG%/studio-assets": "workspace:*"
+  },
+  "devDependencies": {
+    "@%GITHUB_ORG%/shared-config": "workspace:*"
+  }
+}
+```
+
+:::tip[Semantic Version Replacement]
+When packages are packed or published, `pnpm` automatically substitutes the `workspace:*` wildcard with the exact resolved SemVer version of the target package.
+:::
+
+---
+
+## 4. Security & Registry Governance
+
+The scoping architecture is explicitly designed to satisfy zero-trust supply-chain requirements:
+
+### 4.1 Dependency Confusion Prevention
+
+In public package registries, unscoped packages or generic scopes (such as `@shared` or `@tools`) are subject to **Dependency Confusion attacks**, where malicious actors claim the namespace on `npmjs.com` with inflated SemVer numbers.
+
+- **Mandatory Ownership**: Every internal package resides under `@%GITHUB_ORG%/`.
+- **Public Reservation**: The organization scope `@%GITHUB_ORG%` is claimed and verified on `npmjs.com`, precluding any external registration under the namespace.
+
+### 4.2 GitHub Packages Registry Compliance
+
+The GitHub Packages npm registry (`npm.pkg.github.com`) enforces a strict namespace constraint: **the package scope must strictly equal the repository owner or organization name**.
+
+- Any attempt to publish `@shared/config` or `@cortex/memory` to GitHub Packages returns `HTTP 403 Forbidden`.
+- Using `@%GITHUB_ORG%/<context>-<package>` ensures 100% native compatibility with GitHub Packages publishing workflows without registry aliasing workarounds.
+
+---
+
+## 5. AI Agent Cognitive Routing
+
+Autonomous coding agents (such as Antigravity, Gemini CLI, and Claude Code) operate under strict token window constraints.
+
+The deterministic prefixing model accelerates agent reasoning:
+
+1. **Immediate Domain Inference**: When an agent encounters `import \{ schema \} from '@%GITHUB_ORG%/cortex-memory-core'`, it deduces the target Bounded Context in a single token evaluation step.
+2. **Blast Radius Containment**: Agents can be constrained via ESLint boundary rules to prevent unauthorized cross-boundary imports (e.g., forbidding `@%GITHUB_ORG%/corporate-web` from importing internal adapters of `@%GITHUB_ORG%/cortex-mcp-guardrails`).
+3. **Parity with Context Hierarchy**: The package taxonomy aligns 1:1 with the 3-layer `AGENTS.md` context routing rules, allowing agents to locate authoritative rulesets predictably.

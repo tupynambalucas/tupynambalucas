@@ -1,5 +1,5 @@
 ---
-title: Knowledge Base Workspace (tupynambalucas.dev Docs)
+title: Knowledge Base Workspace (%PROJECT_DOMAIN% Docs)
 sidebar_label: Overview
 sidebar_position: 1
 slug: /knowledge-base
@@ -10,7 +10,7 @@ tags:
   - knowledge-base
 ---
 
-O Workspace Knowledge Base gerencia o hub de documentação oficial para o projeto tupynambalucas.dev, conhecido como **tupynambalucas.dev Docs**. Construído sobre o Docusaurus v3, ele serve como o portal central de desenvolvedores, abrigando diretrizes arquiteturais, guias de estilo, documentos de planejamento de produto e changelogs e roadmaps automatizados de projetos.
+O Workspace Knowledge Base gerencia o hub de documentação oficial para o projeto %PROJECT_DOMAIN%, conhecido como **%PROJECT_DOMAIN% Docs**. Construído sobre o Docusaurus v3, ele serve como o portal central de desenvolvedores, abrigando diretrizes arquiteturais, guias de estilo, documentos de planejamento de produto e changelogs e roadmaps automatizados de projetos.
 
 ## Architecture
 
@@ -22,10 +22,11 @@ knowledge-base/
 │   └── namespaces/
 │       └── portal/
 │           └── content/
-│               ├── blog/        # Changelogs and release posts
+│               ├── blog/        # Unified blog for regular posts and releases
 │               ├── community/   # Community guidelines and contributing docs
 │               ├── docs/        # Monorepo architecture and workspace references
-│               └── pages/       # Custom React landing pages
+│               └── messages/    # Extracted Docusaurus UI JSON templates (Chrome i18n format)
+│               ├─ pages/       # Custom React landing pages
 ├── docusaurus/                  # Engine Sub-domain
 │   ├── packages/
 │   │   ├── preset/              # Custom Docusaurus preset and plugins
@@ -40,7 +41,7 @@ knowledge-base/
 
 ## Internacionalização (i18n) e GitOps
 
-O tupynambalucas.dev Docs oferece suporte completo aos locales de inglês (`en`) e português (`pt-BR`) usando um **Unidirectional GitOps Flow** estrito gerenciado pelo Crowdin.
+O %PROJECT_DOMAIN% Docs oferece suporte completo aos locales de inglês (`en`) e português (`pt-BR`) usando um **Unidirectional GitOps Flow** estrito gerenciado pelo Crowdin.
 
 - **Source of Truth (English)**: O repositório do GitHub armazena apenas os documentos de origem em inglês dentro do diretório `collections/`.
 - **Translation Engine (pt-BR)**: A plataforma Crowdin atua como o principal mecanismo de tradução. Ela gera continuamente artefatos traduzidos e os envia para o repositório por meio de Pull Requests automatizados direcionados ao diretório `locales/`.

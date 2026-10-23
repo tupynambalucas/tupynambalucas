@@ -17,7 +17,7 @@ This will teach us how the different layers (Core, API, Web) interact within our
 
 We will start in the Core layer, which holds our domain models and pure functions.
 
-Navigate to `workspaces/hub/packages/core/src/` and create a new file named `greeter.ts`.
+Navigate to `corporate/packages/core/src/` and create a new file named `greeter.ts`.
 
 Add the following code:
 
@@ -27,7 +27,7 @@ export function getGreeting(name: string): string {
 }
 ```
 
-Now, let's export it so other packages can use it. Open `workspaces/hub/packages/core/src/index.ts` and add:
+Now, let's export it so other packages can use it. Open `corporate/packages/core/src/index.ts` and add:
 
 ```typescript
 export * from './greeter';
@@ -37,13 +37,13 @@ export * from './greeter';
 
 Next, we will move to the API layer to create an endpoint that uses our new core function.
 
-Navigate to `workspaces/hub/apps/api/src/routes/` and create a new file named `greet.ts`.
+Navigate to `corporate/services/api/src/routes/` and create a new file named `greet.ts`.
 
 Add the following Fastify route:
 
 ```typescript
 import { FastifyInstance } from 'fastify';
-import { getGreeting } from '@repo/hub/core';
+import { getGreeting } from '@tupynambalucas-dev/corporate-core';
 
 export default async function (fastify: FastifyInstance) {
   fastify.get('/greet', async (request, reply) => {
@@ -58,7 +58,7 @@ export default async function (fastify: FastifyInstance) {
 
 Finally, we will display this greeting in our React frontend.
 
-Navigate to `workspaces/hub/apps/web/src/components/` and create `GreetingPanel.tsx`.
+Navigate to `corporate/services/web/src/components/` and create `GreetingPanel.tsx`.
 
 Add the following React component:
 
@@ -88,7 +88,7 @@ export function GreetingPanel() {
 Now, we will run the development server to see our feature in action.
 
 ```bash
-pnpm dev --filter=@repo/hub/*
+pnpm corporate:dev
 ```
 
 Open your browser to `http://localhost:3000`. You should see your new component rendering the text:

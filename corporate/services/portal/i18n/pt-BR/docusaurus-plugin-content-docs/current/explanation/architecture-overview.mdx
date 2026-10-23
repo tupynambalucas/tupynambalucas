@@ -1,6 +1,6 @@
 ---
 title: Visão geral
-description: Visão geral abrangente da estrutura de monorepo, contextos delimitados e pilha de tecnologia de tupynambalucas.dev.
+description: Visão geral abrangente da estrutura de monorepo, contextos delimitados e pilha de tecnologia de %PROJECT_DOMAIN%.
 sidebar_position: 1
 ---
 
@@ -10,7 +10,7 @@ import DocCardList from '@theme/DocCardList';
 
 ## 1. Sumário Executivo
 
-tupynambalucas.dev é um portal de desenvolvedor pessoal, portfólio, blog e motor de automação. O sistema é construído sobre uma arquitetura de **Monorepo** usando **PNPM Workspaces** e **Turborepo**, priorizando alta performance, tipagem estrita e isolamento de domínio por meio de uma estratégia de **Bounded Context**.
+%PROJECT_DOMAIN% é um portal de desenvolvedor pessoal, portfólio, blog e motor de automação. O sistema é construído sobre uma arquitetura de **Monorepo** usando **PNPM Workspaces** e **Turborepo**, priorizando alta performance, tipagem estrita e isolamento de domínio por meio de uma estratégia de **Bounded Context**.
 
 A arquitetura foi projetada para hospedar o site do hub de desenvolvedores (`hub`) e o compilador de estatísticas automatizado (`renderer`), logicamente desacoplados no nível raiz.
 
@@ -18,7 +18,7 @@ A arquitetura foi projetada para hospedar o site do hub de desenvolvedores (`hub
 
 ## 2. Estrutura do Monorepo & Contextos Delimitados
 
-A base de código de tupynambalucas.dev é organizada em **Domain Contexts** no nível raiz. Para obter um detalhamento completo das funções da aplicação, filosofia de contexto e estruturas de diretórios, consulte o guia de Bounded Context:
+A base de código de %PROJECT_DOMAIN% é organizada em **Domain Contexts** no nível raiz. Para obter um detalhamento completo das funções da aplicação, filosofia de contexto e estruturas de diretórios, consulte o guia de Bounded Context:
 
 <DocCardList
   items={[
@@ -71,7 +71,7 @@ Para obter uma lista de referência completa de scripts de orquestração, coman
 
 ## 5. Princípios Arquiteturais
 
-Para garantir extrema manutenibilidade, legibilidade de longo prazo e limites limpos entre nossos contextos de domínio, tupynambalucas.dev segue quatro princípios arquiteturais fundamentais.
+Para garantir extrema manutenibilidade, legibilidade de longo prazo e limites limpos entre nossos contextos de domínio, %PROJECT_DOMAIN% segue quatro princípios arquiteturais fundamentais.
 
 Clique em qualquer card abaixo para explorar uma análise detalhada de cada princípio:
 
@@ -237,7 +237,7 @@ Os workspaces Studio e Cortex fornecem a infraestrutura para alinhamento de desi
 
 ## 10. Padrões de Segurança
 
-tupynambalucas.dev segue uma estratégia de segurança em múltiplas camadas. Para obter detalhes de implementação, consulte o documento de **[Arquitetura de Segurança](/docs/reference/security)**.
+%PROJECT_DOMAIN% segue uma estratégia de segurança em múltiplas camadas. Para obter detalhes de implementação, consulte o documento de **[Arquitetura de Segurança](/docs/reference/security)**.
 
 - **Proteção contra Bots**: Integração com o Cloudflare Turnstile para todos os pontos de entrada de autenticação.
 - **Mitigação de Força Bruta**: Limitação de taxa baseada em IP e lógica de bloqueio de contas.

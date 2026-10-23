@@ -1,4 +1,4 @@
-import projectConfig from '@monorepo/shared-config/project.config';
+import projectConfig from '@tupynambalucas-dev/shared-config/project.config';
 
 export interface WorkspaceInfo {
   id: string;
@@ -18,7 +18,7 @@ export const MONOREPO_OVERVIEW: WorkspaceInfo = {
     'A high-performance, strictly-typed monorepo built on PNPM Workspaces and Turborepo. This architecture enforces strict domain isolation while sharing critical core logic.',
   stack: ['PNPM v11', 'Turborepo', 'TypeScript 6', 'ESLint 10', 'Zig'],
   responsibilities: [
-    'Single Source of Truth (SSOT) via /hub/packages/core',
+    'Single Source of Truth (SSOT) via /corporate/packages/core',
     'Automated Task Orchestration',
     'Context-Driven Development isolation',
     'Shared Design Tokens & Visual Assets',
@@ -28,7 +28,7 @@ export const MONOREPO_OVERVIEW: WorkspaceInfo = {
     description:
       'Um monorepo de alta performance e tipagem estrita construído com PNPM Workspaces e Turborepo. Esta arquitetura impõe um isolamento rigoroso de domínios enquanto compartilha lógica core crítica.',
     responsibilities: [
-      'Fonte Única de Verdade (SSOT) via /hub/packages/core',
+      'Fonte Única de Verdade (SSOT) via /corporate/packages/core',
       'Orquestração de Tarefas Automatizada',
       'Isolamento de Desenvolvimento Orientado a Contexto',
       'Tokens de Design e Ativos Visuais Compartilhados',
@@ -112,26 +112,53 @@ export const WORKSPACES: Record<string, WorkspaceInfo> = {
       ],
     },
   },
+  corporate: {
+    id: 'corporate',
+    name: 'Corporate Context',
+    path: '/workspaces/corporate',
+    description:
+      'Public-facing enterprise products context housing the company website, corporate REST API, and developer portal. Enforces strict domain contracts and domain-driven service boundaries.',
+    stack: ['React 19', 'Fastify v5', 'Docusaurus v3', 'Zustand', 'TailwindCSS v4'],
+    responsibilities: [
+      'Customer Web Application',
+      'Corporate REST API Backend',
+      'Enterprise Documentation Portal',
+      'Domain-Driven Shared Packages',
+    ],
+    ptBR: {
+      name: 'Contexto Corporativo',
+      description:
+        'Contexto de produtos corporativos voltados ao público, abrigando a aplicação web da empresa, API REST corporativa e portal do desenvolvedor. Impõe contratos de domínio estritos e limites de serviços DDD.',
+      responsibilities: [
+        'Aplicação Web do Cliente',
+        'Backend de API REST Corporativa',
+        'Portal de Documentação Enterprise',
+        'Pacotes Compartilhados Orientados a Domínio',
+      ],
+    },
+  },
   hub: {
     id: 'hub',
     name: 'Hub Context',
     path: '/workspaces/hub',
     description:
-      'Personal developer portal orchestrating the frontend portfolio, blog engine, and administration dashboard. It features a scalable REST API backend and strictly validated shared contracts.',
-    stack: ['React 19', 'Fastify v5', 'MongoDB', 'Zustand', 'TailwindCSS v4'],
+      'Internal team operations context grouping enterprise observability, ingress networking, studio design assets, and the cortex AI subsystem.',
+    stack: ['Traefik', 'Grafana', 'Prometheus', 'Loki', 'Penpot'],
     responsibilities: [
-      'Personal Portfolio frontend',
-      'REST API backend',
-      'Zod validation & shared contracts',
+      'Internal Observability & Metrics',
+      'Team Ingress & Network Routing',
+      'Design Studio Assets & Bucket Sync',
+      'Cortex Subsystem Integration',
     ],
     ptBR: {
       name: 'Contexto do Hub',
       description:
-        'Portal pessoal do desenvolvedor que orquestra o portfólio frontend, motor de blog e painel administrativo. Apresenta um backend de API REST escalável e contratos estritamente validados.',
+        'Contexto de operações internas de equipe agrupando observabilidade empresarial, redes de ingress, ativos de design studio e o subsistema de IA cortex.',
       responsibilities: [
-        'Frontend do Portfólio',
-        'Backend da API REST',
-        'Validação Zod e contratos compartilhados',
+        'Observabilidade e Métricas Internas',
+        'Roteamento de Rede e Ingress de Equipe',
+        'Ativos do Studio de Design e Sync de Bucket',
+        'Integração com Subsistema Cortex',
       ],
     },
   },

@@ -30,7 +30,7 @@ mcp-memory  (Fastify MCP adapter, port 8080)
   └── delegates all tool calls to memory-api:3006/api/memory/*
 ```
 
-Public access: `https://memory-dev.tupynambalucas.dev`
+Public access: `https://memory-dev.%PROJECT_DOMAIN%`
 Traffic path: Cloudflare Tunnel -> Traefik (platform namespace) ->
 `memory-web` Nginx -> `memory-api:3006`
 
@@ -175,7 +175,7 @@ panel.
 
 ## 6. Memory Web Dashboard
 
-The web dashboard at `https://memory-dev.tupynambalucas.dev` provides three
+The web dashboard at `https://memory-dev.%PROJECT_DOMAIN%` provides three
 interactive panels:
 
 - **Graph Topology**: Force-directed visualization of all entity nodes and their

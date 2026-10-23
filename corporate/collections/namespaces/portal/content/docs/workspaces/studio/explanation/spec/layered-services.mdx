@@ -45,9 +45,9 @@ The AI assistant bridge (Aide) is built directly into the core docker orchestrat
 
 ### D. Mandatory AI Manipulation Rules
 
-- **Component Reuse:** Always check the existing component library (Penpot) or the UI library (`hub/services/web/src/components`) before creating new elements. Aide must prioritize existing design system tokens and components.
+- **Component Reuse:** Always check the existing component library (Penpot) or the UI library (`corporate/services/web/src/components`) before creating new elements. Aide must prioritize existing design system tokens and components.
 - **Token-First Logic:** Design-to-code exports must strictly utilize CSS Custom Properties derived from `assets/tokens/` for colors, fonts, and spacing.
-- **SVG Optimization:** Ensure exported SVG code is optimized, follows the project's icon standards, and is integrated via the `@repo/studio/assets/icons` registry.
+- **SVG Optimization:** Ensure exported SVG code is optimized, follows the project's icon standards, and is integrated via the `@tupynambalucas-dev/studio-assets/icons` registry.
 - **Layer Hierarchy:** Maintenance of semantic grouping is mandatory. Elements must be organized into clear pages and frames (e.g., `Layout/Grid`, `Components/Buttons`).
 
 ---

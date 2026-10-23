@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Configuração de Desenvolvimento Local
 
-Este guia detalha como configurar sua estação de trabalho Windows local para executar o monorepo `Tupynambalucas` usando **Minikube**, **Skaffold** e **Podman**. Usamos exclusivamente uma abordagem de orquestração nativa do Kubernetes, o que significa que não há ambientes Docker Compose localizados.
+Este guia detalha como configurar sua estação de trabalho Windows local para executar o monorepo `%PROJECT_NAME%` usando **Minikube**, **Skaffold** e **Podman**. Usamos exclusivamente uma abordagem de orquestração nativa do Kubernetes, o que significa que não há ambientes Docker Compose localizados.
 
 ---
 
@@ -126,7 +126,7 @@ A **Antigravity CLI** conecta-se ao proxy de entrada do Cortex (`agentgateway`) 
 
 ```json
 "agentgateway": {
-  "url": "https://agentgateway-mcp-dev.tupynambalucas.dev",
+  "url": "https://agentgateway-mcp-dev.%PROJECT_DOMAIN%",
   "lifecycle": "eager"
 }
 ```

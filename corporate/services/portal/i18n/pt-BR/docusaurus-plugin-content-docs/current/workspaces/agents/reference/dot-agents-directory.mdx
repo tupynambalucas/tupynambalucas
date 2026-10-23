@@ -6,7 +6,7 @@ sidebar_position: 8
 
 # Referência do Diretório `.agents/`
 
-Esta referência detalha a estrutura de pastas, a mecânica e os limites de design do ecossistema central de customização `.agents/` dentro do monorepo `tupynambalucas.dev`.
+Esta referência detalha a estrutura de pastas, a mecânica e os limites de design do ecossistema central de customização `.agents/` dentro do monorepo `%PROJECT_DOMAIN%`.
 
 Este diretório é suportado nativamente pela arquitetura de agentes **Antigravity (AGY)** e garante que ferramentas, skills e regras de IA permaneçam modulares, copiáveis e completamente autossuficientes.
 
@@ -56,5 +56,5 @@ Documentos temporários de planejamento arquitetural.
 ## 2. Restrições Operacionais Principais
 
 1. **Lógica Autossuficiente**: Skills e Plugins devem ser 100% autossuficientes. Não crie links relativos apontando para planos temporários ou outro contexto transitório.
-2. **Nomenclatura Genérica**: Sempre use os modelos `tupynambalucas.dev` e `Tupynambalucas` em vez de nomes de marca fixos. Isso mantém a configuração de IA portátil e reutilizável em outros deploys corporativos.
+2. **Nomenclatura Genérica**: Sempre use os modelos `%PROJECT_DOMAIN%` e `%PROJECT_NAME%` em vez de nomes de marca fixos. Isso mantém a configuração de IA portátil e reutilizável em outros deploys corporativos.
 3. **Sem Pastas `.agents` Aninhadas**: Para evitar alucinação de contexto e fragmentação de configuração, toda a lógica de orquestração de IA deve ser centralizada na pasta raiz `.agents/`. A criação de pastas `.agents/` isoladas dentro de outros contextos delimitados (por exemplo, `platform/.agents/`) é proibida; o roteamento de contexto local deve ser gerenciado por `AGENTS.md` e diretórios `references/` padrão.

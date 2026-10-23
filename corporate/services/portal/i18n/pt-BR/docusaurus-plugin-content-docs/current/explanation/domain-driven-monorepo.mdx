@@ -8,7 +8,7 @@ sidebar_position: 2
 
 A escalabilidade de ecossistemas de software corporativo frequentemente enfrenta dois gargalos principais: a complexidade cognitiva do domínio de negócios e o atrito imposto pela infraestrutura de gerenciamento de código-fonte. À medida que as organizações crescem, microsserviços distribuídos em múltiplos repositórios (multirepos) ou estruturas monolíticas sem fronteiras claras tendem a acumular uma dívida técnica insustentável.
 
-A convergência do Domain-Driven Design (DDD) — especificamente o padrão estratégico de **Bounded Contexts** — e de arquiteturas de **Monorepo** oferece uma solução elegante. Ao mapear domínios de negócios lógicos diretamente para limites de pastas físicas, estabelecemos um modelo de governança automatizado que assegura o reaproveitamento de código enquanto garante a evolução independente. Este documento detalha como `tupynambalucas.dev` materializa o design estratégico guiado por domínio dentro de seu monorepo.
+A convergência do Domain-Driven Design (DDD) — especificamente o padrão estratégico de **Bounded Contexts** — e de arquiteturas de **Monorepo** oferece uma solução elegante. Ao mapear domínios de negócios lógicos diretamente para limites de pastas físicas, estabelecemos um modelo de governança automatizado que assegura o reaproveitamento de código enquanto garante a evolução independente. Este documento detalha como `%PROJECT_DOMAIN%` materializa o design estratégico guiado por domínio dentro de seu monorepo.
 
 ---
 
@@ -30,7 +30,7 @@ Em vez de criar uma definição global e inchada de `Asset`, cada contexto mant�
 
 ### 1.2 O Bounded Context
 
-Um Bounded Context define o limite explícito dentro do qual um modelo de domínio é válido. Dentro deste limite, nossa Linguagem Onipresente possui significados precisos e indiscutíveis. Dentro de cada bounded context em `tupynambalucas.dev`:
+Um Bounded Context define o limite explícito dentro do qual um modelo de domínio é válido. Dentro deste limite, nossa Linguagem Onipresente possui significados precisos e indiscutíveis. Dentro de cada bounded context em `%PROJECT_DOMAIN%`:
 
 - As terminologias de domínio são altamente alinhadas com esquemas técnicos, variáveis e especificações.
 - Os desenvolvedores possuem propriedade e autonomia completas sobre o ciclo de vida de seu contexto.

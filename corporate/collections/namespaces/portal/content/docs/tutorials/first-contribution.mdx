@@ -30,11 +30,11 @@ Switched to a new branch 'feature/tutorial-contribution'
 
 ## Step 2: Make a Code Change
 
-For this exercise, we will add a small comment to one of our configuration files. Open `docs/package.json` in your editor.
+For this exercise, we will add a small comment to one of our configuration files. Open `corporate/services/portal/package.json` in your editor.
 
 At the bottom of the file, add a simple metadata field or comment (if supported) just for testing. Alternatively, open a markdown file and add a whitespace character. For this tutorial, we will edit a markdown file.
 
-Open `docs/README.md` and add the following text at the bottom:
+Open `corporate/services/portal/README.md` and add the following text at the bottom:
 
 ```md
 {/_ This is a test contribution _/}
@@ -52,7 +52,7 @@ Run the following command:
 pnpm version:changeset
 ```
 
-You will be prompted to select the package that changed. Use the arrow keys to find `@/docs`, press `Space` to select it, and press `Enter`.
+You will be prompted to select the package that changed. Use the arrow keys to find `@tupynambalucas-dev/corporate-portal`, press `Space` to select it, and press `Enter`.
 
 When asked for the bump type, choose `patch`.
 When asked for a summary, type: `test: add tutorial contribution comment`.
@@ -64,8 +64,8 @@ The tool will confirm the creation of a temporary markdown file in the `.changes
 Now we will stage both our modified file and the newly generated changeset file, and commit them.
 
 ```bash
-git add docs/README.md .changeset/
-git commit -m "test(docs): add tutorial contribution comment"
+git add corporate/services/portal/README.md .changeset/
+git commit -m "test(corporate): add tutorial contribution comment"
 ```
 
 Our local Git hooks will automatically intercept the commit, running the selective typechecker and linter.
@@ -77,7 +77,7 @@ You should see output similar to this:
 ✔ Running tasks for staged files...
 ✔ Applying modifications...
 ✔ Cleaning up...
-[feature/tutorial-contribution 1a2b3c4] test(docs): add tutorial contribution comment
+[feature/tutorial-contribution 1a2b3c4] test(corporate): add tutorial contribution comment
  2 files changed, 8 insertions(+)
 ```
 
@@ -98,7 +98,7 @@ gh pr create --base develop --title "test: tutorial contribution" --body "Testin
 The CLI will output the URL of your new Pull Request:
 
 ```
-https://github.com/workspace/%PROJECT_DOMAIN%/pull/1
+https://github.com/%GITHUB_ORG%/%REPOSITORY_NAME%/pull/1
 ```
 
 ## Conclusion

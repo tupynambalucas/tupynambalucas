@@ -16,26 +16,30 @@ The Hub workspace contains all applications and packages related to the personal
 ## Directory Structure
 
 ```text
-hub/
+corporate/
 ├── services/
 │   ├── api/          # Fastify 5 REST API
-│   └── web/          # React 19 Single Page Application (SPA)
+│   ├── web/          # React 19 Single Page Application (SPA)
+│   └── portal/       # Docusaurus Developer Portal
 ├── packages/
-│   └── core/         # Shared Domain Model (SSOT)
+│   ├── core/         # Shared Domain Model (SSOT)
+│   ├── preset/       # Docusaurus Corporate Preset
+│   └── theme/        # Shared Docusaurus Theme
+└── collections/      # Documentation Collections & Namespaces
 ```
 
 ---
 
 ## Core Components & Architecture
 
-### `@repo/hub/core` (Domain SSOT)
+### `@tupynambalucas-dev/corporate-core` (Domain SSOT)
 
 All schema configurations, validators, and core business types are defined in this package. By forcing both the REST API and the Web Client to inherit definitions from this core layer, we enforce strict Bounded Context parity and prevent model duplication.
 
 - **Technology Stack**: TypeScript, Zod.
 - **Key Files**: Shared schema definitions for blog posts, projects, contact submissions, and user accounts.
 
-### `@repo/hub/api` (Fastify 5 Engine)
+### `@tupynambalucas-dev/corporate-api` (Fastify 5 Engine)
 
 A high-performance REST API built with Fastify v5, implementing a decoupled, layered software architecture.
 
@@ -48,12 +52,12 @@ A high-performance REST API built with Fastify v5, implementing a decoupled, lay
   - All asynchronous operations must be explicitly handled.
   - Strict boolean checks are enforced throughout the API controllers (`if (value === true)`).
 
-### `@repo/hub/web` (React 19 Portal)
+### `@tupynambalucas-dev/corporate-web` (React 19 Portal)
 
 The user portfolio interface, blog frontend, and administrative dashboard built on React 19 and compiled with Vite.
 
 - **Technology Stack**: React 19, TypeScript, Vite, Zustand (state management), Studio Tokens (theme integration).
-- **Design Parity**: Inherits theme variables, colors, and layout constants directly from the `@repo/studio/assets` package.
+- **Design Parity**: Inherits theme variables, colors, and layout constants directly from the `@tupynambalucas-dev/studio-assets` package.
 - **React 19 Features**: Implements modern React 19 standards, utilizing the `use()` hook for loading resource promises, and ensuring strict boolean comparisons in all JSX templates.
 
 ---

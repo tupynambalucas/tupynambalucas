@@ -27,27 +27,26 @@ To eliminate these issues, the monorepo implements a **3-Layer Context Hierarchy
 ```mermaid
 flowchart TD
   subgraph Layer1 ["Layer 1: Global Master Context (/AGENTS.md)"]
-    L1Rules["Global Constraints, Repository Entrypoints, Composable Module Map, Required Skills"]
+    L1Rules["Global Constraints, Repository Entrypoints, Architecture Map, Required Skills"]
   end
 
   subgraph Layer2 ["Layer 2: Bounded Context Routers (/[context]/AGENTS.md)"]
-    L2Cortex["cortex/AGENTS.md"]
+    L2Corporate["corporate/AGENTS.md"]
     L2Hub["hub/AGENTS.md"]
-    L2Platform["platform/AGENTS.md"]
-    L2Studio["studio/AGENTS.md"]
-    L2Tools["tools/AGENTS.md"]
+    L2K8s["k8s/AGENTS.md"]
     L2Renderer["renderer/AGENTS.md"]
-    L2Docs["docs/AGENTS.md"]
+    L2Shared["shared/AGENTS.md"]
+    L2Tools["tools/AGENTS.md"]
+    L2Agents[".agents/AGENTS.md"]
   end
 
   subgraph Layer3 ["Layer 3: Technical Sub-Domains (/[context]/[sub]/AGENTS.md)"]
-    L3GW["cortex/gateway/AGENTS.md"]
-    L3Infra["cortex/infrastructure/AGENTS.md"]
-    L3MCP["cortex/mcp/AGENTS.md"]
-    L3Mem["cortex/memory/AGENTS.md"]
-    L3HCore["hub/packages/core/AGENTS.md"]
-    L3HApi["hub/services/api/AGENTS.md"]
-    L3HWeb["hub/services/web/AGENTS.md"]
+    L3CorpWeb["corporate/services/web/AGENTS.md"]
+    L3CorpApi["corporate/services/api/AGENTS.md"]
+    L3CorpPortal["corporate/services/portal/AGENTS.md"]
+    L3CorpCore["corporate/packages/core/AGENTS.md"]
+    L3HubCortex["hub/cortex/AGENTS.md"]
+    L3HubStudio["hub/studio/AGENTS.md"]
   end
 
   Layer1 --> Layer2
@@ -93,8 +92,8 @@ When an agent accesses a local context file, the system instruction triggers an 
 
 Each Layer-2 file defines an explicit **Ubiquitous Language** glossary. This prevents agents from conflating terms across bounded contexts:
 
-- In the **Developer Hub (`hub/`)**, the authenticated user is strictly `Customer`.
-- In the **Studio (`studio/`)**, brand variables are strictly `Design Tokens`.
+- In the **Corporate Context (`corporate/`)**, public-facing applications and APIs are managed.
+- In the **Internal Hub (`hub/`)**, telemetry, studio assets, and AI pipelines are maintained.
 - In the **AI Cortex (`cortex/`)**, system prompts are strictly `Personas`.
 
 ---

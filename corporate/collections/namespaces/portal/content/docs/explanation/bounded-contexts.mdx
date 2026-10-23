@@ -17,51 +17,51 @@ The monorepo distinguishes between different core contexts. The following diagra
 graph TD
     direction TB
     Root["%PROJECT_DOMAIN% Monorepo"]
+    Root --> Corporate["Corporate Context: /corporate"]
     Root --> Hub["Hub Context: /hub"]
-    Root --> Cortex["Cortex Context: /cortex"]
     Root --> Renderer["Renderer Context: /renderer"]
-    Root --> Studio["Studio Context: /studio"]
     Root --> Tools["Tools Context: /tools"]
-    Root --> Platform["Platform Context: /platform"]
-    Root --> Knowledge["Knowledge Base: /knowledge-base"]
+    Root --> K8s["Infrastructure Context: /k8s"]
+    Root --> Shared["Shared Context: /shared"]
 
-    Hub --> H_Web["Web App: React"]
-    Hub --> H_API["API: Fastify"]
-    Hub --> H_Core["Core Library"]
+    Corporate --> C_Web["Web App: React"]
+    Corporate --> C_API["API: Fastify"]
+    Corporate --> C_Core["Core Library"]
+    Corporate --> C_Portal["Portal: Docusaurus"]
+
+    Hub --> Cortex["Cortex: AI Subsystem"]
+    Hub --> Studio["Studio: Design System"]
 
     Cortex --> Gateway["Ingress Gateway"]
     Cortex --> Memory["Vector RAG Memory"]
     Cortex --> MCP["MCP Adapters"]
-    Cortex --> Agents["Terminal Agents"]
-
-    Renderer --> R_Gen["TypeScript Generator"]
 
     Studio --> Tokens["Design Tokens"]
     Studio --> Assets["Brand Assets"]
 
-    H_Web --> Studio
-    P_Zig -.-> Tools
-    H_API -.-> Cortex
+    C_Web --> Studio
+    C_API -.-> Cortex
 ```
 
-| Directory           | Package Name          | Role               | Responsibility                                                           |
-| :------------------ | :-------------------- | :----------------- | :----------------------------------------------------------------------- |
-| `hub/services/web`  | `@repo/hub/web`       | **Application**    | Personal portfolio React client, blog, and admin dashboard.              |
-| `hub/services/api`  | `@repo/hub/api`       | **Application**    | Fastify REST API serving blog posts and form handlers.                   |
-| `hub/packages/core` | `@repo/hub/core`      | **Library**        | SSOT for the Hub context (Zod validation, shared schemas).               |
-| `cortex/`           | `@/cortex`            | **Tooling**        | Unified AI gateway, MCP adapters, and agent runners.                     |
-| `renderer/`         | `@/renderer`          | **Application**    | TypeScript application compiling Markdown templates and generating SVGs. |
-| `studio/assets`     | `@repo/studio/assets` | **Library**        | Design tokens, logos, SVGs, and sync utilities.                          |
-| `tools/`            | `@repo/tools/*`       | **Tooling**        | Isolated Git version control and GitHub CLI automation.                  |
-| `platform/`         | `@/platform`          | **Infrastructure** | Telemetry monitoring and Turborepo cache servers.                        |
-| `knowledge-base/`   | `@/knowledge-base`    | **Docs Hub**       | Authoritative Docusaurus developer portal.                               |
+| Directory                   | Package Name                           | Role            | Responsibility                                                           |
+| :-------------------------- | :------------------------------------- | :-------------- | :----------------------------------------------------------------------- |
+| `corporate/services/web`    | `@tupynambalucas-dev/corporate-web`    | **Application** | Corporate public web portal and customer-facing interface.               |
+| `corporate/services/api`    | `@tupynambalucas-dev/corporate-api`    | **Application** | Enterprise Fastify REST API serving business logic and data models.      |
+| `corporate/packages/core`   | `@tupynambalucas-dev/corporate-core`   | **Library**     | SSOT domain schemas and Zod validators for corporate applications.       |
+| `corporate/services/portal` | `@tupynambalucas-dev/corporate-portal` | **Docs Hub**    | Authoritative Docusaurus developer portal and knowledge hub.             |
+| `hub/cortex/`               | `@tupynambalucas-dev/cortex-*`         | **Tooling**     | Unified AI gateway, MCP adapters, and vector memory.                     |
+| `hub/studio/assets`         | `@tupynambalucas-dev/studio-assets`    | **Library**     | Design tokens, logos, SVGs, and brand styling assets.                    |
+| `hub/studio/bucket`         | `@tupynambalucas-dev/studio-bucket`    | **Tooling**     | Bidirectional Cloudflare R2 object storage CLI synchronizer.             |
+| `renderer/`                 | `@tupynambalucas-dev/renderer`         | **Application** | Dynamic asset generator and document compilation engine.                 |
+| `tools/`                    | `@tupynambalucas-dev/tools-*`          | **Tooling**     | Development utilities and GitHub CLI automation scripts.                 |
+| `shared/`                   | `@tupynambalucas-dev/shared-*`         | **Library**     | Cross-workspace shared configurations, project constants, and git hooks. |
 
 ---
 
 ## Bounded Context Philosophy
 
-- **Context Isolation**: Each root directory (`hub/`, `cortex/`, `renderer/`, `studio/`, `tools/`, `platform/`, `knowledge-base/`) represents an isolated workspace context. Types, contracts, and configurations are encapsulated locally, referencing external libraries only through package boundaries.
-- **Strict Decoupling**: Business logic from the Developer Hub (`hub/`) is decoupled from the Profile Stats Compiler (`renderer/`) and the AI processing hub (`cortex/`).
+- **Context Isolation**: Each root directory (`corporate/`, `hub/`, `renderer/`, `tools/`, `k8s/`, `shared/`) represents an isolated workspace context. Types, contracts, and configurations are encapsulated locally, referencing external libraries only through package boundaries.
+- **Strict Decoupling**: Business logic from the Corporate Context (`corporate/`) is decoupled from the Profile Stats Compiler (`renderer/`) and the internal Hub (`hub/`).
 
 ---
 

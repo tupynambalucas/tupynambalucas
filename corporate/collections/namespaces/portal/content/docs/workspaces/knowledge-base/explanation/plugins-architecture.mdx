@@ -12,9 +12,9 @@ The `%PROJECT_DOMAIN%` documentation workspace is strictly powered by Docusaurus
 
 ## 1. Domain Plugin Wrappers (SSOT Architecture)
 
-To enforce the **Single Source of Truth (SSOT)** and maintain a clean `docusaurus.config.ts`, the monorepo uses a Custom Docusaurus Preset (`@/docs/preset/`). This preset is the authoritative core that encapsulates and configures all underlying documentation engines.
+To enforce the **Single Source of Truth (SSOT)** and maintain a clean `docusaurus.config.ts`, the monorepo uses a Custom Docusaurus Preset (`@tupynambalucas-dev/corporate-preset`). This preset is the authoritative core that encapsulates and configures all underlying documentation engines.
 
-Instead of declaring Docusaurus core plugins directly in the preset array, we use **Domain Plugin Wrappers** (located in `preset/plugins/`):
+Instead of declaring Docusaurus core plugins directly in the preset array, we use **Domain Plugin Wrappers** (located in `corporate/packages/preset/src/plugins/`):
 
 - `content-docs`
 - `content-blog`
@@ -47,7 +47,7 @@ This architecture ensures that AI RAG embeddings (like the `cortex/memory` vecto
 
 ## 3. Dynamic Collections and Localization (L10n)
 
-To support multiple content instances and seamless GitOps-driven localization, the monorepo implements a dynamic **Locales Sync Plugin** (`preset/plugins/locales-sync/`).
+To support multiple content instances and seamless GitOps-driven localization, the monorepo implements a dynamic **Locales Sync Plugin** (`corporate/packages/preset/src/plugins/locales-sync/`).
 
 ### The Dynamic Lifecycle
 
@@ -55,6 +55,6 @@ Instead of manually checking in translated Docusaurus UI templates and hardcodin
 
 1. **Preset Orchestration**: The Custom Preset intercepts the `docs` and `blog` configurations, calculates the absolute `path` for the markdown files (`collections/namespaces/[namespace]/content/[content]`), and injects it dynamically into the engine.
 2. **Translation Extraction**: Native Docusaurus `write-translations` dumps Chrome i18n JSON files (like `code.json`, `theme/navbar.json`) which are stored securely in `collections/namespaces/[namespace]/content/messages/`.
-3. **Build-Time Unpacking**: During the `kb:docusaurus:portal:build` pipeline, the `plugin-locales-sync` dynamically reads the synchronized `locales/[locale]/` folders and maps them back into the native Docusaurus engine format inside `i18n/[locale]/docusaurus-plugin-content-[type]-[id]/`.
+3. **Build-Time Unpacking**: During the `pnpm portal:build` pipeline, the `plugin-locales-sync` dynamically reads the synchronized `locales/[locale]/` folders and maps them back into the native Docusaurus engine format inside `i18n/[locale]/docusaurus-plugin-content-[type]-[id]/`.
 
 This plugin ensures complete separation between translated content and the executable Docusaurus engine, operating entirely on GitOps folder conventions without hardcoded mappings.

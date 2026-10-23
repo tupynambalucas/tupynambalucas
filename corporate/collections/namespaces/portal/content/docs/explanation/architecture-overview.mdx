@@ -153,9 +153,9 @@ Controller -> Service -> Repository -> Model
 To maintain strict typing and decoupling, repositories receive the Mongoose model via dependency injection.
 
 ```typescript
-// hub/services/api/src/domains/auth/auth.repository.ts
+// corporate/services/api/src/domains/auth/auth.repository.ts
 import type { Model } from 'mongoose';
-import type { IUser } from '@repo/hub/core';
+import type { IUser } from '@tupynambalucas-dev/corporate-core';
 
 export class AuthRepository {
   constructor(private readonly userModel: Model<IUser>) {}
@@ -181,7 +181,7 @@ To prevent monolithic stores and unnecessary re-renders in React 19, the fronten
 #### Implementation Example (Zustand Atomic Selectors)
 
 ```typescript
-// hub/services/web/src/domains/cart/hooks/useCart.ts
+// corporate/services/web/src/domains/cart/hooks/useCart.ts
 import { useCartStore } from '../cart.store';
 
 // Atomic Selectors

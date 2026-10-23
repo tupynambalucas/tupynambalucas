@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Arquitetura de Plugins de Documentação
 
-O workspace de documentação `tupynambalucas.dev` é alimentado estritamente pelo Docusaurus v3 e utiliza uma combinação de padrões padrão do React e transformadores avançados de Árvore de Sintaxe Abstrata (AST).
+O workspace de documentação `%PROJECT_DOMAIN%` é alimentado estritamente pelo Docusaurus v3 e utiliza uma combinação de padrões padrão do React e transformadores avançados de Árvore de Sintaxe Abstrata (AST).
 
 ---
 
@@ -32,13 +32,13 @@ Cada wrapper de domínio importa o plugin nativo do Docusaurus (por exemplo, `@d
 
 ## 2. O Plugin `remark-project-variables`
 
-Para manter um **monorepo genérico e pronto para copiar e colar**, a documentação NÃO DEVE conter nomes de marcas ou URLs hardcoded (por exemplo, `example.com`). Em vez disso, os autores devem escrever tokens genéricos usando wrappers de porcentagem, como `tupynambalucas.dev` ou `Tupynambalucas`.
+Para manter um **monorepo genérico e pronto para copiar e colar**, a documentação NÃO DEVE conter nomes de marcas ou URLs hardcoded (por exemplo, `example.com`). Em vez disso, os autores devem escrever tokens genéricos usando wrappers de porcentagem, como `%PROJECT_DOMAIN%` ou `%PROJECT_NAME%`.
 
 ### Como Funciona
 
 1. **Transformação de AST**: O plugin customizado `remark-project-variables` se conecta ao pipeline de compilação MDX do unified/remark.
 2. **Intercepção de Nó de Texto**: Ele percorre a AST do Markdown (`mdast`) utilizando `unist-util-visit`.
-3. **Resolução de Valores**: Ele intercepta nós do tipo `text`, `inlineCode`, `link` e `image`, e busca por padrões como `tupynambalucas.dev`.
+3. **Resolução de Valores**: Ele intercepta nós do tipo `text`, `inlineCode`, `link` e `image`, e busca por padrões como `%PROJECT_DOMAIN%`.
 4. **Substituição**: Ele substitui esses tokens por valores reais obtidos de uma única fonte de verdade (`project.config.json`) _antes_ que o MDX seja compilado em React JSX.
 
 Esta arquitetura garante que os embeddings de IA RAG (como os vetores de `cortex/memory`) ingeriram os arquivos de origem **agnósticos**, evitando a alucinação de marcas quando o repositório for bifurcado ou aplicado a novos clientes.

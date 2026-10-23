@@ -1,11 +1,11 @@
 ---
 title: Local Development Setup
-description: Siga estas etapas para colocar o monorepo tupynambalucas.dev em execução em sua máquina.
+description: Siga estas etapas para colocar o monorepo %PROJECT_DOMAIN% em execução em sua máquina.
 ---
 
 # Local Development Setup
 
-Neste tutorial, configure o monorepo tupynambalucas.dev em sua máquina local. Ao final desta lição, o ambiente de desenvolvimento completo estará em execução e pronto para a criação de recursos.
+Neste tutorial, configure o monorepo %PROJECT_DOMAIN% em sua máquina local. Ao final desta lição, o ambiente de desenvolvimento completo estará em execução e pronto para a criação de recursos.
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
 Primeiro, clone o repositório em seu workspace local e acesse-o.
 
 ```bash
-git clone https://github.com/tupynambalucas/%GITHUB_REPO%.git
+git clone https://github.com/%GITHUB_ORG%/%GITHUB_REPO%.git
 cd workspace
 ```
 
@@ -105,9 +105,9 @@ Este comando irá:
 
 Assim que os serviços estiverem em execução, verifique o acesso por meio das rotas de borda do Cloudflare (ou `localhost` se estiver executando offline):
 
-- **Grafana**: `https://grafana-dev.tupynambalucas.dev`
-- **AgentGateway**: `https://agentgateway-mcp-dev.tupynambalucas.dev`
-- **Penpot**: `https://penpot-dev.tupynambalucas.dev`
+- **Grafana**: `https://grafana-dev.%PROJECT_DOMAIN%`
+- **AgentGateway**: `https://agentgateway-mcp-dev.%PROJECT_DOMAIN%`
+- **Penpot**: `https://penpot-dev.%PROJECT_DOMAIN%`
 
 ---
 

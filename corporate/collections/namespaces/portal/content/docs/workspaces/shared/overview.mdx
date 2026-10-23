@@ -21,15 +21,15 @@ By isolating configuration and lifecycle hooks inside a dedicated shared/ worksp
 │   ├── .prettierignore  # Base Prettier ignore rules
 │   ├── tsconfig.base.json # Shared base TypeScript compilation rules
 │   ├── project.config.json # Single source of truth for project domains
-│   └── package.json     # Configuration package (@monorepo/shared-config)
+│   └── package.json     # Configuration package (@tupynambalucas-dev/shared-config)
 └── git/                 # Centralized Git hooks and scripts
     ├── husky/           # Global git hooks definitions
     ├── scripts/         # Hook execution scripts in TypeScript
-    └── package.json     # Git hooks package (@monorepo/shared-git)`
+    └── package.json     # Git hooks package (@tupynambalucas-dev/shared-git)`
 
 ## Core Packages
 
-### @monorepo/shared-config (Centralized Project Settings)
+### @tupynambalucas-dev/shared-config (Centralized Project Settings)
 
 This package centralizes static configuration rules and project domains across the entire monorepo. Instead of duplicating config files inside every project workspace, each sub-workspace's sconfig.json and formatting tool configs inherit directly from this package.
 
@@ -37,7 +37,7 @@ This package centralizes static configuration rules and project domains across t
 - **Base TSConfig**: TypeScript base configurations ( sconfig.base.json) establish strict type-checking parameters and module resolutions for all sub-projects.
 - **Project Domains**: The project.config.json file serves as the Single Source of Truth (SSOT) for dynamic variables like %PROJECT_DOMAIN%, which are consumed during Markdown compilation and app runtime.
 
-### @monorepo/shared-git (Centralized Git Hooks)
+### @tupynambalucas-dev/shared-git (Centralized Git Hooks)
 
 This package houses our version control guardrails.
 
@@ -46,7 +46,7 @@ This package houses our version control guardrails.
 
 ## Workspace Management
 
-The configurations inside the Shared workspace are consumed at the root and package levels. For example, the root package.json coordinates tool inheritance and utilizes @monorepo/shared-config to standardise Prettier across the entire ecosystem.
+The configurations inside the Shared workspace are consumed at the root and package levels. For example, the root package.json coordinates tool inheritance and utilizes @tupynambalucas-dev/shared-config to standardise Prettier across the entire ecosystem.
 
 :::info[Foundational Dependency Rule]
 Files inside shared/ must always remain stateless, generic, and isolated from specific business logic or backend implementations. This context acts purely as the infrastructural base for developer ergonomics and version control.

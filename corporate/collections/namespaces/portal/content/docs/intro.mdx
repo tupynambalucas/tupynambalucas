@@ -16,7 +16,7 @@ This repository is a monorepo containing a developer profile stats generator, pe
 
 The monorepo coordinates the developer's personal website (`hub`), automated stats visualizations (`renderer`), design systems (`studio`), AI processing hub (`cortex`), and automation tools (`tools`).
 
-The primary customer-facing application is the **Developer Hub** (`@repo/hub/*`):
+The primary customer-facing application is the **Corporate Application** (`@tupynambalucas-dev/corporate-*`):
 
 | For Visitors                                                        | For the Developer (Admin)                                            |
 | :------------------------------------------------------------------ | :------------------------------------------------------------------- |
@@ -30,9 +30,9 @@ The primary customer-facing application is the **Developer Hub** (`@repo/hub/*`)
 
 The portfolio website and stats generator operate on a streamlined workflow:
 
-1. **Portfolio Presentation**: Visitors explore the frontend `@repo/hub/web`, consuming blog posts and project highlights served by `@repo/hub/api`.
-2. **Contact Submission**: Form inputs are validated via Turnstile anti-spam keys, serialized using Zod schemas from `@repo/hub/core`, and persisted to a MongoDB instance.
-3. **Renderer Statistics Generation**: The `@/renderer` workspace compiles GitHub metrics using a native Zig CLI and dynamically overwrites the root `README.md` file.
+1. **Portfolio Presentation**: Visitors explore the frontend `@tupynambalucas-dev/corporate-web`, consuming blog posts and project highlights served by `@tupynambalucas-dev/corporate-api`.
+2. **Contact Submission**: Form inputs are validated via Turnstile anti-spam keys, serialized using Zod schemas from `@tupynambalucas-dev/corporate-core`, and persisted to a MongoDB instance.
+3. **Renderer Statistics Generation**: The `@tupynambalucas-dev/renderer` workspace compiles GitHub metrics using a native Zig CLI and dynamically overwrites the root `README.md` file.
 
 ---
 
@@ -42,8 +42,8 @@ The monorepo uses Cloudflare and standard VPS environments for zero-maintenance 
 
 ### Infrastructure & Hosting
 
-- **Cloudflare Pages**: The Docusaurus documentation hub (`docs/`) and the developer React SPA frontend (`hub/services/web`) are deployed to Cloudflare Pages for optimized CDN delivery.
-- **Hetzner Cloud VPS / Linux VPS**: The backend Fastify REST API (`hub/services/api`) and MongoDB/Redis compose stacks run on a lightweight VPS instance.
+- **Cloudflare Pages**: The Docusaurus documentation hub (`docs/`) and the developer React SPA frontend (`corporate/services/web`) are deployed to Cloudflare Pages for optimized CDN delivery.
+- **Hetzner Cloud VPS / Linux VPS**: The backend Fastify REST API (`corporate/services/api`) and MongoDB/Redis compose stacks run on a lightweight VPS instance.
 - **DNS & SSL**: DNS routing and proxy protection are handled globally through Cloudflare.
 
 ---
@@ -78,8 +78,8 @@ For a comprehensive breakdown of our context philosophy, directory structure, an
 
 Our priority is the deployment and maintenance of:
 
-- **`@repo/hub/*`**: Personal React/Fastify hub.
-- **`@/renderer`**: Zig-based GitHub profile stats compiler.
+- **`@tupynambalucas-dev/corporate-*`**: Corporate React/Fastify application and developer portal.
+- **`@tupynambalucas-dev/renderer`**: GitHub profile stats compiler.
 
 ---
 
@@ -106,7 +106,7 @@ Ensure you have **Node.js 22+**, **PNPM 11+**, **Zig**, **Podman** (with Compose
 
 3. **Start Local Infrastructure & Applications:**
    We provide unified orchestration scripts via Turborepo and Skaffold. You can run in Podman Compose mode (`pnpm cortex:up` and `pnpm hub:dev`) or Kubernetes mode (`pnpm minikube:up` and `pnpm k8s:dev`).
-   See [MONOREPO.readme.md](https://github.com/workspace/workspace/blob/develop/MONOREPO.readme.md) or the [Command Reference](./reference/commands.mdx) for details.
+   See [README.md](https://github.com/%GITHUB_ORG%/%REPOSITORY_NAME%/blob/develop/README.md) or the [Command Reference](./reference/commands.mdx) for details.
 
 ---
 
