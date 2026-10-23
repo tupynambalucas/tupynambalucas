@@ -1,9 +1,0 @@
-{
-  "extends": "@tupynambalucas-dev/shared-config/tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "noEmit": true
-  },
-  "include": ["namespaces/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
-}

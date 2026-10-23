@@ -18,9 +18,6 @@
     "github:services:down": "podman compose -f infrastructure/docker/compose.yaml down",
     "github:services:reset": "podman compose -f infrastructure/docker/compose.yaml down --volumes && podman compose -f infrastructure/docker/compose.yaml up -d --build gh git"
   },
-  "dependencies": {
-    "@tupynambalucas-dev/corporate-portal": "workspace:*"
-  },
   "devDependencies": {
     "@tupynambalucas-dev/shared-config": "workspace:*",
     "@types/node": "catalog:",

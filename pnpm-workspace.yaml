@@ -19,7 +19,6 @@ minimumReleaseAgeExclude:
   - wrangler@4.108.0
 
 packages:
-  - 'corporate/collections'
   - 'corporate/packages/*'
   - 'corporate/services/*'
   - 'hub/studio/*'

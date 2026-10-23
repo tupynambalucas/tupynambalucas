@@ -1,8 +1,0 @@
-{
-  "label": "Infrastructure",
-  "position": 5,
-  "link": {
-    "type": "generated-index",
-    "description": "Centralized Kubernetes orchestration and GitOps deployment pipeline."
-  }
-}
