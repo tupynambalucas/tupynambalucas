@@ -1,41 +1,22 @@
-<!-- Note: This profile README is dynamically updated by the TypeScript-based generator in the ./renderer workspace -->
+# Platform Monorepo
 
-**Full-Stack Engineer** with over 10 years of experience and studies in software development, building production systems in TypeScript from end to end. I make architectural decisions driven by requirements, not by trends — selecting the right database, framework, or protocol for each problem. My current expertise runs deep in MongoDB replica sets with ACID transactions, but I reach for PostgreSQL or Redis when the domain calls for it. I design domain-driven monorepos orchestrated by Turborepo with strict catalog-managed dependencies, ship high-performance APIs on Fastify with Redis-backed job queues, and craft interactive frontends with React 19, Three.js, and GSAP. My infrastructure runs on Docker and Kubernetes with Traefik ingress, OpenTelemetry-instrumented observability pipelines exporting to Grafana Cloud, and multi-environment promotion from dev to production. I architect AI-native toolchains — self-hosted MCP gateway federations, containerized agent runtimes, and vector memory layers — turning autonomous workflows into first-class infrastructure. Every repository I own ships with automated CI/CD, Conventional Commits, and security hardened by design.
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/overview.svg?raw=true#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/overview.svg?raw=true" />
-    <img alt="Tupynambá Lucas's GitHub Stats" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/overview.svg?raw=true" height="200px" />
-  </picture>&nbsp;&nbsp;<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/languages.svg?raw=true#gh-dark-mode-only" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/languages.svg?raw=true" />
-    <img alt="Languages Used" src="https://raw.githubusercontent.com/tupynambalucas/tupynambalucas/generated/cards/stats/languages.svg?raw=true" height="200px" />
-  </picture>
-</p>
-
-<details>
-<summary><strong>Developer Overview: Monorepo Architecture & Services</strong></summary>
-
-# tupynambalucas.dev Monorepo
-
-High-performance, domain-driven monorepo powering the `tupynambalucas.dev` developer platform. Built on TypeScript, PNPM Workspaces, and Turborepo with Kubernetes-native orchestration via Skaffold.
+The core platform monorepo powering the %PROJECT_DOMAIN% ecosystem. Built on TypeScript, Fastify 5, React 19, PNPM Workspaces, and Turborepo with Kubernetes-native orchestration via Skaffold and k3d.
 
 > [!NOTE]
-> **Documentation:** Full architectural deep dives and developer guides are available at [https://docs.tupynambalucas.dev](https://docs.tupynambalucas.dev).
+> **Documentation Hub:** Full architectural deep dives, Diátaxis guides, and tutorials are available at [https://docs.tupynambalucas.dev](https://docs.tupynambalucas.dev) and hosted sovereignly in the [`docs`](https://github.com/tupynambalucas-dev/docs) repository.
 
 ---
 
-## Architecture Overview
+## 1. Architecture Overview
 
-The codebase is organized into isolated **Bounded Contexts**, each owning its own infrastructure manifests, Kubernetes namespace, and lifecycle scripts. Three Skaffold modules (`platform-dev`, `cortex-dev`, `studio-dev`) compose the full local Kubernetes development cluster, with `platform-dev` serving as the required infrastructure foundation for all downstream modules.
+The codebase is organized into isolated **Bounded Contexts**, each owning its own domain logic, infrastructure manifests, and lifecycle scripts. Multiple Skaffold profiles compose the full local Kubernetes development environment, with `platform-dev` serving as the base infrastructure foundation for all downstream services.
 
 ```mermaid
 graph TD
   direction TB
 
   subgraph IngressLayer ["Ingress Layer (platform namespace)"]
-    Cloudflared["cloudflared Tunnel"]
+    Cloudflared["Cloudflare Tunnel (cloudflared)"]
     Traefik["Traefik v3.1 Ingress Controller"]
     CertManager["cert-manager (DNS-01 ACME)"]
     Cloudflared --> Traefik
@@ -92,7 +73,7 @@ graph TD
     HubWeb["Web Client (React 19)"]
     HubAPI["REST API (Fastify 5)"]
     HubCore["Core Library (Zod)"]
-    HubMongo[("MongoDB rs0")]
+    HubMongo[("MongoDB rs0 (Replica Set)")]
     HubRedis[("Redis / BullMQ")]
 
     HubWeb --> HubAPI
@@ -101,140 +82,104 @@ graph TD
     HubAPI --> HubRedis
   end
 
-  Traefik --> AgentGateway
+  subgraph CorporateServices ["Corporate Services (platform)"]
+    CorpWeb["Corporate Web (React 19 + GSAP)"]
+    CorpAPI["Corporate API (Fastify 5)"]
+    CorpCore["Corporate Core Domain (Zod)"]
+
+    CorpWeb --> CorpAPI
+    CorpAPI --> CorpCore
+  end
+
+  Traefik --> HubWeb
+  Traefik --> HubAPI
+  Traefik --> CorpWeb
+  Traefik --> CorpAPI
   Traefik --> Grafana
   Traefik --> Headlamp
-  Traefik --> TurboCache
-  Traefik --> PenpotFE
-  Traefik --> Memos
-  HubWeb -.->|design tokens| PenpotBE
+  Traefik --> AgentGateway
 ```
 
 ---
 
-## Bounded Contexts
+## 2. Monorepo Workspaces
 
-> [!TIP]
-> Each directory operates as an independent domain. Refer to their individual `README.md` files for targeted deployment instructions.
-
-### [Hub](./hub/README.md)
-
-Personal developer portal, blog engine, and administration dashboard.
-
-| Package                              | Role        | Stack                                     |
-| :----------------------------------- | :---------- | :---------------------------------------- |
-| `@tupynambalucas-dev/corporate-web`  | Application | React 19, Vite 8, Zustand, TailwindCSS v4 |
-| `@tupynambalucas-dev/corporate-api`  | Application | Fastify 5, Mongoose, BullMQ, Zod          |
-| `@tupynambalucas-dev/corporate-core` | Library     | Zod schemas, shared contracts (SSOT)      |
-
-### [Cortex](./cortex/README.md)
-
-Unified AI processing hub with MCP gateway federation, vector memory, and agent runtimes.
-
-| Domain     | Purpose                                           | Key Service         |
-| :--------- | :------------------------------------------------ | :------------------ |
-| `gateway/` | Go-based MCP ingress proxy with CEL guardrails    | `agentgateway:8080` |
-| `memory/`  | MongoDB Vector RAG memory (API + React dashboard) | `memory-api:3006`   |
-| `mcp/`     | Downstream MCP adapter services and tools         | Per-adapter ports   |
-| `agents/`  | Containerized AI agent terminal runtimes          | Claude, Gemini CLI  |
-
-### [Studio](./studio/README.md)
-
-Brand identity management, collaborative design infrastructure, and asset synchronization.
-
-| Package / Service                   | Role          | Stack                                        |
-| :---------------------------------- | :------------ | :------------------------------------------- |
-| `@tupynambalucas-dev/studio-assets` | Library       | CSS tokens, React SVG icons                  |
-| `@tupynambalucas-dev/studio-bucket` | CLI Tool      | AWS SDK (Cloudflare R2), Glob                |
-| Penpot v2 (5 containers)            | Design Engine | Frontend, Backend, Exporter, Valkey, Aide AI |
-| Memos                               | Notes         | Lightweight collaborative notes              |
-
-### [Platform](./platform/README.md)
-
-Always-on cluster infrastructure, observability pipelines, and build acceleration.
-
-| Service                 | Port | Purpose                                 |
-| :---------------------- | :--- | :-------------------------------------- |
-| Traefik v3.1            | 80   | Kubernetes Ingress Controller           |
-| OpenTelemetry Collector | 4317 | Metrics, logs, and traces aggregation   |
-| Prometheus              | 9090 | Time-series metrics storage             |
-| Grafana Loki            | 3100 | Log aggregation and LogQL queries       |
-| Grafana Tempo           | 3200 | Distributed trace storage and TraceQL   |
-| Grafana                 | 3000 | Unified observability dashboards        |
-| Headlamp                | 4466 | Kubernetes cluster administration UI    |
-| Turbocache              | 3000 | Turborepo remote build cache            |
-| cloudflared             | -    | Cloudflare Tunnel for Zero Trust access |
-
-### Workspace Utilities
-
-- **[`renderer/`](./renderer/README.md)**: Dynamic asset generator compiling GitHub profile stats into SVG cards and templated Markdown documents.
-- **[`shared/`](./shared/README.md)**: Foundational utilities, global configuration, and Git lifecycle hooks.
-- **[`tools/`](./tools/README.md)**: Developer automation, repository provisioning scripts, and containerized Git environments.
-- **[`corporate/`](./corporate/README.md)**: Public products: company website, API, and the Docusaurus v3 documentation portal under the Diataxis framework.
+| Workspace                     | Path                                                   | Scope & Responsibilities                                                              |
+| :---------------------------- | :----------------------------------------------------- | :------------------------------------------------------------------------------------ |
+| **`corporate/packages/core`** | [`corporate/packages/core`](./corporate/packages/core) | Enterprise domain schemas, Zod validation models, and shared DTOs.                    |
+| **`corporate/services/api`**  | [`corporate/services/api`](./corporate/services/api)   | High-performance Fastify 5 REST API with Turnstile and rate limiting.                 |
+| **`corporate/services/web`**  | [`corporate/services/web`](./corporate/services/web)   | Customer-facing React 19 application with Three.js and GSAP animations.               |
+| **`hub/studio/assets`**       | [`hub/studio/assets`](./hub/studio/assets)             | Canonical design tokens, SVG/PNG brand marks, typography, and React icons.            |
+| **`hub/cortex`**              | [`hub/cortex`](./hub/cortex)                           | AgentGateway MCP proxy, CEL policy guardrails, and persistent vector memory.          |
+| **`k8s`**                     | [`k8s`](./k8s)                                         | Declarative Kubernetes manifests (Kustomize), Helm charts, and Skaffold configs.      |
+| **`shared`**                  | [`shared`](./shared)                                   | Cross-workspace shared configurations, ESLint/Prettier rules, and TypeScript configs. |
+| **`tools`**                   | [`tools`](./tools)                                     | Developer automation scripts and GitHub CLI workflows.                                |
 
 ---
 
-## Technology Stack
-
-| Layer                 | Technologies                                                     |
-| :-------------------- | :--------------------------------------------------------------- |
-| **Runtime**           | Node.js 22+, TypeScript 6, ESM modules                           |
-| **Package Manager**   | PNPM v11 (Catalogs, Workspaces, strict symlinks)                 |
-| **Task Orchestrator** | Turborepo (parallel pipelines, remote caching via Turbocache)    |
-| **Backend**           | Fastify 5, Mongoose, BullMQ, Zod                                 |
-| **Frontend**          | React 19, Vite 8, Zustand, TailwindCSS v4, GSAP, Three.js        |
-| **Containers**        | Docker, k3d, Kubernetes v1.31, Skaffold v4beta11                 |
-| **Ingress**           | Traefik v3.1, Cloudflare Tunnel                                  |
-| **Observability**     | OpenTelemetry Collector, Prometheus, Grafana Loki, Grafana Tempo |
-| **AI Infrastructure** | AgentGateway (Go), MCP protocol, MongoDB Vector Search           |
-| **Design**            | Penpot v2 (self-hosted), Memos, Cloudflare R2                    |
-| **Documentation**     | Docusaurus v3, MDX, Mermaid, Diataxis framework                  |
-| **Quality**           | ESLint 10 (flat config), Prettier 3, Husky, Conventional Commits |
-| **CI/CD**             | GitHub Actions, Cloudflare Pages, Changesets                     |
-
----
-
-## Getting Started
-
-> [!WARNING]
-> Before deploying, you must configure all environment variables via `k8s/.env`.
+## 3. Getting Started
 
 ### Prerequisites
 
-Install the following inside Ubuntu (WSL2). See the Ubuntu setup plan for pinned versions:
+Ensure the following dependencies are installed on your workstation (or inside WSL2):
 
-```bash
-# Container runtime and Kubernetes toolchain
-docker, k3d, kubectl, helm, skaffold
-```
+- **Node.js**: v22+
+- **PNPM**: v10+ (configured with Catalog mode)
+- **Container Engine**: Docker or Podman
+- **Kubernetes Toolchain**: `k3d` (or `minikube`), `kubectl`, `helm`, `skaffold`
 
 ### Installation
 
-```bash
-git clone https://github.com/tupynambalucas/tupynambalucas.git
-cd tupynambalucas
-pnpm install
-```
+1. Clone the repository using SSH:
+
+   ```bash
+   git clone git@github.com:tupynambalucas-dev/platform.git
+   cd platform
+   ```
+
+2. Install workspace dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+3. Configure environment variables:
+
+   ```bash
+   # Copy template environment files
+   cp k8s/.env.example k8s/.env
+   cp corporate/services/api/.env.example corporate/services/api/.env
+   cp corporate/services/web/.env.example corporate/services/web/.env
+   ```
 
 ---
 
-## Orchestration
+## 4. Local Development & Orchestration
 
-The monorepo uses a unified Kubernetes-native orchestration model. All infrastructure commands are defined in the root [`package.json`](./package.json) and executed via `pnpm`.
+### Corporate Application (Local Process Mode)
 
-### Kubernetes (Skaffold + k3d)
-
-Two isolated k3d clusters run locally: `k3d-hub` (internal tools) and `k3d-corporate` (public products). Each has its own Traefik ingress and Cloudflare Tunnel.
+To run the Corporate API and Web frontend with live hot-reloading outside Kubernetes:
 
 ```bash
-# Hub stack (platform + cortex + studio)
-skaffold dev -f k8s/skaffold.hub.yaml
+# Starts Corporate API (port 3000) and Web (port 5173) in parallel
+pnpm corporate:dev
 
-# Corporate stack (portal)
-skaffold dev -f k8s/skaffold.corporate.yaml
+# Run individual services
+pnpm corporate:api:dev
+pnpm corporate:web:dev
+```
 
-# Both stacks
+### Full Stack Orchestration (Kubernetes via Skaffold)
+
+To deploy containerized services into your local Kubernetes cluster:
+
+```bash
+# Deploy entire platform stack (platform + cortex + studio)
 pnpm infra:dev
+
+# Deploy specific Skaffold profiles
+skaffold dev -f k8s/skaffold.hub.yaml
+skaffold dev -f k8s/skaffold.corporate.yaml
 
 # Tear down all cluster resources
 pnpm infra:delete
@@ -242,32 +187,45 @@ pnpm infra:delete
 
 ---
 
-## Quality Assurance
+## 5. Quality Assurance & Validation
 
 ```bash
-pnpm typecheck          # TypeScript validation across all workspaces
-pnpm lint               # ESLint verification across all workspaces
-pnpm build              # Production build for all packages
-pnpm format:check       # Prettier formatting verification
-pnpm format:write       # Auto-fix formatting issues
+# TypeScript validation across all workspaces in parallel
+pnpm corporate:typecheck
+pnpm hub:typecheck
+
+# ESLint validation across all workspaces
+pnpm corporate:lint
+pnpm hub:lint
+
+# Production compilation
+pnpm corporate:build
+
+# Prettier format verification and auto-fix
+pnpm format:check
+pnpm format:write
 ```
 
 ---
 
-## Versioning and Releases
+## 6. Versioning and Branching Workflow
 
-The project uses [Changesets](https://github.com/changesets/changesets) for version management and follows [Conventional Commits](https://www.conventionalcommits.org/) for structured commit history.
+This repository adheres to the **Git Flow** branching model with cryptographic SSH commit signing:
+
+- **`main`**: Production-ready releases. Direct commits are restricted; requires signed commits and verified CI.
+- **`develop`**: Primary integration branch for active development.
+- **`feature/*`**: Feature branches branched from `develop`.
 
 ```bash
-pnpm version:changeset  # Create a new changeset
-pnpm version:bump       # Bump versions based on changesets
-pnpm version:publish    # Publish updated packages
+# Create a new version changeset
+pnpm version:changeset
+
+# Bump package versions based on merged changesets
+pnpm version:bump
 ```
 
 ---
 
-## License
+## 7. License
 
 This project is licensed under the [MIT License](./LICENSE.md).
-
-</details>
