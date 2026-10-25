@@ -1,6 +1,4 @@
-# Tupynambá Lucas V. R.
-
-**Principal Platform & AI Systems Architect / Full-Spectrum Systems Engineer**
+# Principal Platform & AI Systems Architect / Full-Spectrum Systems Engineer
 
 Full-spectrum systems architect and comprehensive engineer bridging the entire computing continuum: declarative cloud-native infrastructure, autonomous AI agent substrates, contract-driven full-stack software, low-level real-time graphics engines, and zero-trust cryptographic governance.
 
