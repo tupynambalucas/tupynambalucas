@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-dev/shared-config",
+  "name": "@tupynambalucas/shared-config",
   "version": "1.0.0",
   "private": true,
   "description": "Global configuration and constant definitions shared across all workspaces.",

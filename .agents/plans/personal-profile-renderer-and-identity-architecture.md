@@ -108,7 +108,7 @@ The document generator executes in two phases:
    - Attempts repository traffic view ingestion (`/traffic/views`). If forbidden (403), gracefully degrades and defaults to 0.
    - Computes total additions, deletions, commits, PRs, code reviews, and repositories.
 2. **Template Compilation & Asset Synthesis**:
-   - **Static Header**: Reads `github-header.svg` from `@tupynambalucas-dev/studio-assets`.
+   - **Static Header**: Reads `github-header.svg` from `@tupynambalucas/studio-assets`.
    - **Stats Cards**: Inlines variable brand fonts (`Nunito`), compiles `overview.svg` and `languages.svg` with exact design tokens.
    - **Markdown Documents**: Compiles `README.md`, `LICENSE.md`, and `CODE_OF_CONDUCT.md` via regex placeholder interpolation (`{{ var }}` and `%CONFIG_KEY%`).
    - In CI/CD mode (`GITHUB_ACTIONS=true`), directly commits updated SVGs to the `generated` branch and pushes updated markdown files to the target branch (`main`).
@@ -174,7 +174,7 @@ To test and run the generator locally:
 
 ```powershell
 # In repository root: C:\Users\tupyn\projects\personal\profile
-pnpm --filter @tupynambalucas-dev/renderer generate
+pnpm --filter @tupynambalucas/renderer generate
 ```
 
 Requirements for local run:

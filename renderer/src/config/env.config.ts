@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import ProjectConfig from '@tupynambalucas-dev/shared-config/project.config';
+import ProjectConfig from '@tupynambalucas/shared-config/project.config';
 
 dotenv.config();
 

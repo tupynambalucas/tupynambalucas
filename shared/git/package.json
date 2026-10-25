@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-dev/shared-git",
+  "name": "@tupynambalucas/shared-git",
   "version": "1.0.0",
   "private": true,
   "description": "Git hooks and commit conventions shared across the monorepo.",

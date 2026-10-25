@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-dev/studio-assets",
+  "name": "@tupynambalucas/studio-assets",
   "version": "1.0.0",
   "private": true,
   "description": "Canonical design tokens, icons, and visual brand assets.",
@@ -40,7 +40,7 @@
     "react-icons": "catalog:studio-stack"
   },
   "devDependencies": {
-    "@tupynambalucas-dev/shared-config": "workspace:*",
+    "@tupynambalucas/shared-config": "workspace:*",
     "@types/react": "catalog:web-stack",
     "@types/react-dom": "catalog:web-stack",
     "tailwindcss": "catalog:shared-stack",

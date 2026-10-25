@@ -1,5 +1,5 @@
 {
-  "name": "@tupynambalucas-dev/renderer",
+  "name": "@tupynambalucas/renderer",
   "version": "1.0.0",
   "private": true,
   "description": "Dynamic asset generation engine for GitHub README compilation and templates.",
@@ -20,10 +20,10 @@
   "dependencies": {
     "zod": "catalog:shared-stack",
     "dotenv": "catalog:shared-stack",
-    "@tupynambalucas-dev/studio-assets": "workspace:*"
+    "@tupynambalucas/studio-assets": "workspace:*"
   },
   "devDependencies": {
-    "@tupynambalucas-dev/shared-config": "workspace:*",
+    "@tupynambalucas/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:"
   }

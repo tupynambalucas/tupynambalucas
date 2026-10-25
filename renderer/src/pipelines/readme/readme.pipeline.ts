@@ -1,14 +1,14 @@
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { brandColors } from '@tupynambalucas-dev/studio-assets/tokens';
+import { brandColors } from '@tupynambalucas/studio-assets/tokens';
 import { fillTemplate } from '../../utils/template-fill.js';
 import { renderStatsCards } from '../../renderers/stats-card.js';
 import { uploadFileContents } from '../../clients/github.js';
 import type { Pipeline } from '../../schemas/pipeline.schema.js';
 import type { GitHubStats } from '../../schemas/githubstats.schema.js';
 import type { Config } from '../../schemas/env.schema.js';
-import ProjectConfig from '@tupynambalucas-dev/shared-config/project.config';
+import ProjectConfig from '@tupynambalucas/shared-config/project.config';
 
 export const readmePipeline: Pipeline = {
   id: 'readme',
@@ -27,15 +27,15 @@ export const readmePipeline: Pipeline = {
     // 1. Resolve asset paths from the studio-assets package
     const overviewTemplatePath = fileURLToPath(
       import.meta
-        .resolve('@tupynambalucas-dev/studio-assets/renderer/github/cards/stats/overview.template.svg'),
+        .resolve('@tupynambalucas/studio-assets/renderer/github/cards/stats/overview.template.svg'),
     );
     const languagesTemplatePath = fileURLToPath(
       import.meta
-        .resolve('@tupynambalucas-dev/studio-assets/renderer/github/cards/stats/languages.template.svg'),
+        .resolve('@tupynambalucas/studio-assets/renderer/github/cards/stats/languages.template.svg'),
     );
     const staticHeaderSrcPath = fileURLToPath(
       import.meta
-        .resolve('@tupynambalucas-dev/studio-assets/renderer/github/cards/static/github-header.svg'),
+        .resolve('@tupynambalucas/studio-assets/renderer/github/cards/static/github-header.svg'),
     );
 
     // 2. Generate Stats Cards (Returns SVG strings instead of writing to disk)

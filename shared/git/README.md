@@ -1,6 +1,6 @@
 # Shared Git Utilities
 
-The @tupynambalucas-dev/shared-git workspace contains the standardized Git lifecycle hooks (via Husky) and TypeScript-based commit validation scripts for the tupynambalucas.dev monorepo.
+The @tupynambalucas/shared-git workspace contains the standardized Git lifecycle hooks (via Husky) and TypeScript-based commit validation scripts for the tupynambalucas.dev monorepo.
 
 ## Directory Layout
 
