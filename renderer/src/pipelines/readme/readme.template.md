@@ -1,36 +1,49 @@
 <p align="center">
-  {{ headerImage }}
+  {{ logoImage }}
 </p>
 
 # Tupynambá Lucas
 
-**Principal Platform & AI Systems Architect / Founding Systems Architect** with deep experience designing and operating sovereign meta-repository ecosystems, high-throughput cloud-native Kubernetes platforms, autonomous AI agent substrates, low-level real-time engines, and cryptographic zero-trust architectures.
+**Principal Platform & AI Systems Architect / Founding Systems Architect** specialized in designing sovereign meta-repository ecosystems, high-throughput cloud-native Kubernetes infrastructure, autonomous AI agent substrates, low-level real-time engines, and zero-trust cryptographic governance.
 
 ---
 
-### Core Architectural Competencies
+### Professional Profile & Architectural Practice
 
-```
-                    ┌──────────────────────────────────────────────┐
-                    │          Systems & Meta Architecture         │
-                    │   Domain-Driven Design • Git Submodules • SSOT   │
-                    └──────────────────────┬───────────────────────┘
-                                           │
-         ┌─────────────────────────────────┼─────────────────────────────────┐
-         ▼                                 ▼                                 ▼
-┌──────────────────────────────┐ ┌──────────────────────────────┐ ┌──────────────────────────────┐
-│    Cloud-Native & GitOps     │ │    Autonomous AI Platform    │ │   Real-Time Systems & Wasm   │
-│ Kubernetes • Helm • ArgoCD   │ │ Model Context Protocol (MCP) │ │   Tessel Engine • WebGL/GPU  │
-│  Traefik v3 • OpenTelemetry  │ │ Policy Guardrails • Memory   │ │ High Performance Runtimes   │
-└──────────────────────────────┘ └──────────────────────────────┘ └──────────────────────────────┘
-```
+My engineering focus centers on the convergence of large-scale distributed systems, autonomous agentic infrastructure, and deterministic platform engineering. Operating primarily at the intersection of Staff-plus architectural leadership and hands-on systems implementation, my work emphasizes formal domain boundaries, cryptographic proof invariants, and paved-road developer platforms that eliminate cognitive friction across multi-tenant engineering teams.
 
-- **Meta-Repository & Multi-Repo Orchestration**: Master umbrella architecture (`org-core`) orchestrating federated repositories via Git Submodules (`platform`, `agent-toolkit`, `docs`, `.github`), enforced with 5-pillar automated workstation convergence, automated verification scripts, and deterministic submodule pointer synchronizations.
-- **Cloud-Native Infrastructure & GitOps**: Multi-cluster local and cloud Kubernetes orchestration (`k3d`, Skaffold, Helm, Kustomize), continuous GitOps deployments via ArgoCD, Cloudflare Zero Trust tunnels and edge routing, Traefik v3 ingress controllers, and automated ACME TLS certificate lifecycle management.
-- **Autonomous AI Substrate & Agentic Infrastructure**: Self-hosted Model Context Protocol (MCP) gateways, policy-enforced guardrails using Common Expression Language (CEL), vector RAG layers, and enterprise autonomous agent customization frameworks (Antigravity).
-- **Distributed Backends & Data Integrity**: Event-driven and transactional microservices with Node.js 22+ (strict ESM) and Fastify 5, asynchronous job queuing and state caching with Redis/Valkey (BullMQ), and multi-document ACID transactions with MongoDB replica sets and PostgreSQL.
-- **Full-Stack LGTM Observability**: Comprehensive OpenTelemetry Collector pipelines exporting Prometheus metrics, Grafana Loki logs, and Grafana Tempo distributed traces with Pyroscope continuous profiling.
-- **Sovereign Documentation Architecture**: Enterprise knowledge hubs (`docs`) structured strictly under the Diátaxis framework (Tutorials, How-To Guides, Technical Reference, Explanations) built with Docusaurus v3 and Crowdin localization.
+---
+
+### Core Architectural Pillars
+
+#### 1. Meta-Repository Orchestration & Developer Experience (DevEx)
+
+- **Federated Git Submodule Architecture**: Designed and orchestrated the master meta-repository ecosystem (`org-core`) uniting autonomous repositories (`platform`, `agent-toolkit`, `docs`, `.github`) through immutable Git 160000 commit tree pointers, automated 5-pillar Git submodule configurations, and continuous bidirectional synchronization.
+- **Paved-Road Automation & Preflight Verification**: Engineered zero-friction workstation bootstrap scripts (`bootstrap-workstation.ps1`) and strict 7-gate compliance verifiers (`verify-workstation.ps1`) to enforce cryptographic signature requirements, path case-sensitivity, and submodule recursion standards deterministically across environments.
+- **Multi-Tenant Workspace Segregation**: Architected workstation directory topology enforcing strict isolation between organizational domains (`projects/organizations/`) and personal environments (`projects/personal/`), preventing configuration leakage across divergent security scopes.
+
+#### 2. Autonomous AI Infrastructure & Context Governance
+
+- **Model Context Protocol (MCP) Gateways**: Engineered resilient, high-throughput Model Context Protocol infrastructure providing dynamic tool brokering, schema validation, and stateful multi-agent communication backplanes.
+- **Hierarchical Context Routing & Hermeticity**: Formulated multi-tier context routers (`AGENTS.md`) and attention-window hermeticity policies, ensuring autonomous coding agents operate with minimal cognitive overhead and zero prompt leakage across bounded contexts.
+- **Deterministic Policy Guardrails**: Enforced runtime agent safety, capability boundaries, and execution verification through Common Expression Language (CEL) policy enforcement and structured audit logs.
+
+#### 3. Cloud-Native Platforms, GitOps & Telemetry
+
+- **Multi-Cluster Kubernetes Orchestration**: Architected declarative infrastructure using Helm, Kustomize, and Skaffold across local lightweight environments (`k3d`) and production bare-metal/cloud clusters.
+- **GitOps State Reconciliation**: Managed continuous, automated cluster state enforcement with ArgoCD, establishing Git as the single source of truth (SSOT) for microservices, ingress routing, and background workers.
+- **Zero Trust Ingress & Cloudflare Tunnels**: Replaced conventional exposed public load balancers with end-to-end encrypted Cloudflare Zero Trust tunnels and Traefik v3 ingress controllers, paired with automated ACME certificate management via cert-manager.
+- **Comprehensive LGTM Observability**: Deployed complete telemetry pipelines using OpenTelemetry Collector exporting Prometheus metrics, Grafana Loki structured log streams, Grafana Tempo distributed trace graphs, and Pyroscope continuous runtime profiling.
+
+#### 4. Distributed Systems, Domain-Driven Design (DDD) & Data Integrity
+
+- **Strict Domain Modeling**: Applied bounded context segregation, hexagonal architecture (ports and adapters), and transaction scripts across microservices running Node.js 22+ (strict ESM) and Fastify 5.
+- **Resilient Distributed State**: Orchestrated asynchronous background task processing and distributed locks with Redis/Valkey (BullMQ), paired with multi-document ACID transactional consistency in MongoDB replica sets and relational PostgreSQL databases.
+
+#### 5. Low-Level Systems Toolmaking & Real-Time Runtimes
+
+- **Real-Time Graphics & WebAssembly Engines**: Authored `tessel`, a high-performance game engine and graphics runtime written in TypeScript and compiled WebAssembly (Wasm), targeting modern WebGL and WebGPU rendering pipelines.
+- **Sovereign Technical Documentation**: Designed enterprise knowledge architectures using Docusaurus v3 and Crowdin localization, organized strictly under the Diátaxis framework (Tutorials, How-To Guides, Technical Reference, Explanations).
 
 ---
 
@@ -39,57 +52,12 @@
 | Domain                       | Standards & Implementations                                                               |
 | :--------------------------- | :---------------------------------------------------------------------------------------- |
 | **Architectural Patterns**   | Domain-Driven Design (DDD), Hexagonal Architecture, Ports & Adapters, GitOps Reconcilers. |
-| **Languages & Runtimes**     | TypeScript (strict mode, zero-any), Node.js 22+ (ESM), Go, Rust/Wasm, PowerShell, Bash.   |
+| **Languages & Runtimes**     | TypeScript (strict mode, zero-any), Node.js 22+ (ESM), Go, Rust, WebAssembly, PowerShell. |
 | **API & Agentic Protocols**  | Model Context Protocol (MCP), REST, Fastify 5, WebSockets, Server-Sent Events, OpenAPI 3. |
 | **Storage & Data Integrity** | MongoDB (Replica Sets, ACID transactions, Vector Search), PostgreSQL, Redis, Valkey.      |
 | **Platform & Networking**    | Kubernetes, Skaffold, Helm, Kustomize, Traefik v3, Cloudflare Zero Trust, Docker.         |
 | **Observability & SRE**      | OpenTelemetry Collector, Prometheus, Grafana, Loki, Tempo, Pyroscope (LGTM Stack).        |
 | **Security & Governance**    | SSH Cryptographic Signatures (`git commit -S`), Infisical Universal Auth, Zero-Emoji.     |
-
----
-
-### Platform & AI Subsystem Topology
-
-Representative architecture of distributed platforms and autonomous systems engineered across the ecosystem:
-
-```mermaid
-graph LR
-  subgraph Edge ["Edge & Ingress Layer"]
-    CF["Cloudflare Zero Trust / Tunnels"]
-    Ingress["Traefik v3 Ingress Controller"]
-    CF --> Ingress
-  end
-
-  subgraph CorePlatform ["Platform Services (Kubernetes)"]
-    API["Fastify 5 API (TypeScript ESM)"]
-    Worker["Async Job Processor (BullMQ)"]
-    DB[("MongoDB Replica Set (ACID)")]
-    Cache[("Redis / Valkey")]
-
-    Ingress --> API
-    API --> Cache
-    API --> DB
-    Worker --> Cache
-    Worker --> DB
-  end
-
-  subgraph AgenticAI ["Autonomous AI Subsystem (Agent Toolkit)"]
-    Gateway["AgentGateway (MCP Proxy)"]
-    Guardrails["Policy Guardrails (CEL)"]
-    Memory[("Vector Memory RAG")]
-
-    Gateway --> Guardrails
-    Gateway --> Memory
-  end
-
-  subgraph Telemetry ["Observability Pipeline"]
-    Otel["OpenTelemetry Collector"]
-    LGTM["Grafana / Loki / Tempo / Prometheus"]
-
-    API -->|Traces & Metrics| Otel
-    Otel --> LGTM
-  end
-```
 
 ---
 
@@ -101,10 +69,16 @@ graph LR
 
 ---
 
-### Key Technical Principles
+### Cognitive Principles & Operational Invariants
 
 1. **Deterministic & Strict Typing**: Elimination of implicit any, schema validation at all system boundaries (Zod), and end-to-end compile-time type safety.
-2. **GitOps & Single Source of Truth (SSOT)**: All cluster infrastructure, services, and agent configurations are declared declaratively and reconciled through GitOps pipelines.
-3. **Defense in Depth & Cryptographic Invariants**: Zero hardcoded credentials, centralized secrets via Infisical Universal Auth, SSH cryptographic commit signing (`git commit -S`), and network boundary isolation.
-4. **Autonomous AI as Infrastructure**: Agentic systems engineered with strict contracts, deterministic evaluation, audit trails, and policy guardrails.
-5. **Architectural Pragmatism**: Matching data models and protocols to workload realities rather than industry trends.
+2. **GitOps & Single Source of Truth (SSOT)**: Every piece of infrastructure, application service, and agent workflow is declaratively declared in Git and reconciled automatically.
+3. **Defense in Depth & Cryptographic Invariants**: Zero hardcoded plaintext credentials, in-memory secret resolution via Infisical Universal Auth, mandatory SSH commit signatures (`git commit -S`), linear Git history, and automated secret scanning push protection.
+4. **Autonomous AI as First-Class Infrastructure**: AI agentic tools are integrated as audited, version-controlled infrastructure components with strict permission boundaries and deterministic validation gates.
+5. **Architectural Pragmatism & Empathy**: Workloads dictate data architectures and protocol choices, with clear boundaries designed to minimize cognitive overhead for every engineer interacting with the platform.
+
+---
+
+### Enterprise Governance & Ownership
+
+I am the Founder and Principal Owner of [**tupynambalucas-dev**](https://github.com/tupynambalucas-dev), directing sovereign software engineering, platform architecture, autonomous AI agents, and systems research across the organization's meta-repository ecosystem.

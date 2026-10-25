@@ -33,9 +33,8 @@ export const readmePipeline: Pipeline = {
       import.meta
         .resolve('@tupynambalucas/studio-assets/renderer/github/cards/stats/languages.template.svg'),
     );
-    const staticHeaderSrcPath = fileURLToPath(
-      import.meta
-        .resolve('@tupynambalucas/studio-assets/renderer/github/cards/static/github-header.svg'),
+    const logoHorizontalSrcPath = fileURLToPath(
+      import.meta.resolve('@tupynambalucas/studio-assets/logos/logo-horizontal-multicolor.svg'),
     );
 
     // 2. Generate Stats Cards (Returns SVG strings instead of writing to disk)
@@ -47,9 +46,9 @@ export const readmePipeline: Pipeline = {
       defaultLanguagesTemplatePath: languagesTemplatePath,
     });
 
-    // 3. Load Static Header SVG
-    console.info(`Reading static header template from ${staticHeaderSrcPath}...`);
-    const headerSvgContent = readFileSync(staticHeaderSrcPath, 'utf8');
+    // 3. Load Static Horizontal Logo SVG
+    console.info(`Reading static horizontal logo from ${logoHorizontalSrcPath}...`);
+    const logoSvgContent = readFileSync(logoHorizontalSrcPath, 'utf8');
 
     const totalContributions =
       stats.repo_contributions +
@@ -66,8 +65,9 @@ export const readmePipeline: Pipeline = {
     const assetsBaseUrl = `https://raw.githubusercontent.com/${config.repositoryOwner}/${config.repositoryName}/generated/cards`;
     const urlSuffix = '?raw=true';
 
-    // Header image markdown tag
-    const headerImage = `<img alt="Tupynambá Lucas" src="${assetsBaseUrl}/static/github-header.svg${urlSuffix}" width="100%" />`;
+    // Horizontal logo markdown tag
+    const logoImage = `<img alt="Tupynambá Lucas" src="${assetsBaseUrl}/static/logo-horizontal.svg${urlSuffix}" width="340px" />`;
+    const headerImage = logoImage;
 
     const overviewImages = `<picture>
     <source media="(prefers-color-scheme: dark)" srcset="${assetsBaseUrl}/stats/overview.svg${urlSuffix}#gh-dark-mode-only" />
@@ -92,6 +92,7 @@ export const readmePipeline: Pipeline = {
       repos: stats.repositories.length,
       assetsBaseUrl,
       urlSuffix,
+      logoImage,
       headerImage,
       overviewImages,
       languagesImages,
@@ -159,7 +160,7 @@ export const readmePipeline: Pipeline = {
     mkdirSync(resolve(generatedCardsDir, 'static'), { recursive: true });
     writeFileSync(resolve(generatedCardsDir, 'stats/overview.svg'), overviewSvg, 'utf8');
     writeFileSync(resolve(generatedCardsDir, 'stats/languages.svg'), languagesSvg, 'utf8');
-    writeFileSync(resolve(generatedCardsDir, 'static/github-header.svg'), headerSvgContent, 'utf8');
+    writeFileSync(resolve(generatedCardsDir, 'static/logo-horizontal.svg'), logoSvgContent, 'utf8');
     console.info(`Saved generated cards locally to ${generatedCardsDir}`);
 
     if (config.isGitHubAction) {
@@ -187,11 +188,11 @@ export const readmePipeline: Pipeline = {
         await uploadFileContents(
           config.repositoryOwner,
           config.repositoryName,
-          'cards/static/github-header.svg',
-          headerSvgContent,
+          'cards/static/logo-horizontal.svg',
+          logoSvgContent,
           'generated',
           config.githubToken,
-          'chore: update static github header',
+          'chore: update static horizontal logo',
         );
         console.info('GitHub Profile successfully generated and assets synced to all branches!');
       } catch (uploadError) {

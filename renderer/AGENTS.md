@@ -67,7 +67,7 @@ When executing `pnpm generate` locally, the compiler creates a unified sandbox f
 themes with absolute fidelity:
 
 - **[generated/cards/](./generated/cards/)**: Unified directory containing the shared theme-agnostic
-  `github-header.svg`, as well as physical `-light.svg` and `-dark.svg` copies of all theme-dependent
+  `logo-horizontal.svg`, as well as physical `-light.svg` and `-dark.svg` copies of all theme-dependent
   generated cards (including statistics overview and languages).
 - **[generated/docs/](./generated/docs/)**: Subdivided theme directories to view compiled markdown files:
   - **[generated/docs/light/](./generated/docs/light/)**: Light-themed `.md` documents, referencing light-themed
