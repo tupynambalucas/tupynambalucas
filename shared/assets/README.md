@@ -8,7 +8,7 @@ The `studio/assets` package (`@repo/studio/assets`) exports brand identity asset
 
 - **[tokens/](./tokens/)**: CSS variables, color scales, and Tailwind theme configuration.
 - **[icons/](./icons/)**: React SVG icon library.
-- **[brand/](./brand/)**: SVG logos and identity mark source files.
+- **[org/](./org/)**: SVG logos, organization assets, and identity mark source files.
 - **[three/](./three/)**: 3D scene assets.
 - **[assets-manifest.json](./assets-manifest.json)**: Asset inventory manifest.
 
