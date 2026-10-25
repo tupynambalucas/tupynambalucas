@@ -33,6 +33,15 @@ Complementing cognitive context routing, I architect persistent semantic vector 
 - **Asynchronous Context Retrieval**: High-throughput REST and streaming retrieval gateways that supply autonomous agents with relevant historical context, ensuring persistent organizational memory across disconnected execution sessions.
 - **Knowledge Graph Telemetry**: Real-time visual telemetry layers mapping high-dimensional vector clusters, semantic relationships, and retrieval accuracy to monitor cognitive topologies empirically.
 
+### Full-Stack Software Engineering & Contract-Driven Systems
+
+Beyond systems architecture and cloud infrastructure, I am an end-to-end full-stack software engineer who writes rigorous, production-grade code across client, server, and shared core packages. My engineering philosophy rejects fragmented silos: I build cohesive, contract-driven applications that guarantee type safety, high performance, and fluid user experiences from low-level database transactions up to browser pixel rendering:
+
+- **Type-Safe Backend Microservices**: High-performance HTTP/2 backends engineered with Fastify and Node.js, featuring end-to-end type validation via Zod type providers, asynchronous distributed job queues (BullMQ and Redis), transactional database schemas (MongoDB replica sets), and layered middleware for JWT sessions, CSRF protection, and rate limiting.
+- **Modern Reactive Frontend Architectures**: Modular, performant web applications built with React, TypeScript, and Vite. State is managed via lightweight, decoupled store slices (Zustand), secured with edge verification (Cloudflare Turnstile), localized through structured internationalization (i18next), and styled with strict utility design tokens (Tailwind CSS, CSS Modules).
+- **3D Graphics & Kinetic Motion**: Immersive web experiences leveraging Three.js for interactive 3D WebGL scene rendering, combined with timeline-driven kinematic animations and physics easing via GSAP for fluid, responsive interfaces.
+- **Contract-Driven Shared Core (Zero Divergence)**: Dedicated shared core domain packages containing single-source-of-truth Zod schemas, inferring canonical TypeScript types (`z.infer`) across client and server boundaries. This eliminates contract drift, ensuring that API mutations, request payloads, and UI validations remain strictly synchronized at compile time.
+
 ### Cloud-Native Infrastructure, GitOps & Real-Time Telemetry
 
 - **Kubernetes Orchestration**: Declarative multi-cluster provisioning across local rapid-iteration environments and production clusters using Helm charts and Kustomize overlays.
