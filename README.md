@@ -1,6 +1,8 @@
 # Tupynambá Lucas V. R.
 
-**Principal Platform & AI Systems Architect / Founding Systems Architect** specialized in designing sovereign meta-repository ecosystems, high-throughput cloud-native Kubernetes infrastructure, autonomous AI agent substrates, low-level real-time engines, and zero-trust cryptographic governance.
+**Principal Platform & AI Systems Architect / Full-Spectrum Systems Engineer**
+
+Full-spectrum systems architect and comprehensive engineer bridging the entire computing continuum: declarative cloud-native infrastructure, autonomous AI agent substrates, contract-driven full-stack software, low-level real-time graphics engines, and zero-trust cryptographic governance.
 
 <p align="center">
   <picture>
