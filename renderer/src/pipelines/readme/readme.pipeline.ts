@@ -36,6 +36,9 @@ export const readmePipeline: Pipeline = {
     const logoHorizontalSrcPath = fileURLToPath(
       import.meta.resolve('@tupynambalucas/studio-assets/logos/logo-horizontal-multicolor.svg'),
     );
+    const logoMarkSrcPath = fileURLToPath(
+      import.meta.resolve('@tupynambalucas/studio-assets/logos/logo-mark-round-purple.svg'),
+    );
 
     // 2. Generate Stats Cards (Returns SVG strings instead of writing to disk)
     console.info('Generating SVG stats cards...');
@@ -46,9 +49,10 @@ export const readmePipeline: Pipeline = {
       defaultLanguagesTemplatePath: languagesTemplatePath,
     });
 
-    // 3. Load Static Horizontal Logo SVG
-    console.info(`Reading static horizontal logo from ${logoHorizontalSrcPath}...`);
+    // 3. Load Static Logo SVGs
+    console.info('Reading static logos from studio-assets...');
     const logoSvgContent = readFileSync(logoHorizontalSrcPath, 'utf8');
+    const logoMarkSvgContent = readFileSync(logoMarkSrcPath, 'utf8');
 
     const totalContributions =
       stats.repo_contributions +
@@ -65,8 +69,9 @@ export const readmePipeline: Pipeline = {
     const assetsBaseUrl = `https://raw.githubusercontent.com/${config.repositoryOwner}/${config.repositoryName}/generated/cards`;
     const urlSuffix = '?raw=true';
 
-    // Horizontal logo markdown tag
+    // Logo image tags
     const logoImage = `<img alt="Tupynambá Lucas" src="${assetsBaseUrl}/static/logo-horizontal.svg${urlSuffix}" width="340px" />`;
+    const logoMarkImage = `<img alt="tupynambalucas-dev" src="${assetsBaseUrl}/static/logo-mark.svg${urlSuffix}" width="68px" />`;
     const headerImage = logoImage;
 
     const overviewImages = `<picture>
@@ -93,6 +98,7 @@ export const readmePipeline: Pipeline = {
       assetsBaseUrl,
       urlSuffix,
       logoImage,
+      logoMarkImage,
       headerImage,
       overviewImages,
       languagesImages,
@@ -161,6 +167,7 @@ export const readmePipeline: Pipeline = {
     writeFileSync(resolve(generatedCardsDir, 'stats/overview.svg'), overviewSvg, 'utf8');
     writeFileSync(resolve(generatedCardsDir, 'stats/languages.svg'), languagesSvg, 'utf8');
     writeFileSync(resolve(generatedCardsDir, 'static/logo-horizontal.svg'), logoSvgContent, 'utf8');
+    writeFileSync(resolve(generatedCardsDir, 'static/logo-mark.svg'), logoMarkSvgContent, 'utf8');
     console.info(`Saved generated cards locally to ${generatedCardsDir}`);
 
     if (config.isGitHubAction) {
@@ -193,6 +200,15 @@ export const readmePipeline: Pipeline = {
           'generated',
           config.githubToken,
           'chore: update static horizontal logo',
+        );
+        await uploadFileContents(
+          config.repositoryOwner,
+          config.repositoryName,
+          'cards/static/logo-mark.svg',
+          logoMarkSvgContent,
+          'generated',
+          config.githubToken,
+          'chore: update static logo mark',
         );
         console.info('GitHub Profile successfully generated and assets synced to all branches!');
       } catch (uploadError) {

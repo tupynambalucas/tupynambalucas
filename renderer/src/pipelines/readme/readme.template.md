@@ -8,63 +8,64 @@
 
 ---
 
-### Cognitive Problem-Solving & Operational Engineering
+### Surgical Systems Diagnosis & Operational Precision
 
-My technical practice is grounded in deep systems diagnosis, root-cause resolution, and architectural determinism. Rather than addressing symptoms with superficial patches, I dissect software and distributed topologies to identify core design flaws, race conditions, memory bottlenecks, and boundary mismatches. By combining first-principles reasoning with empirical telemetry, I transform ambiguous technical challenges into resilient, self-healing platforms built on clear contracts and predictable state transitions.
+My engineering practice is grounded in deep systems diagnosis, root-cause triage, and architectural determinism. Rather than masking symptoms with superficial patches, I dissect complex distributed topologies and low-level runtimes to identify core design flaws, race conditions, memory bottlenecks, asynchronous state divergence, and boundary mismatches. By combining first-principles reasoning with empirical telemetry, I transform ambiguous technical challenges into resilient, self-healing platforms built on explicit contracts and predictable state transitions.
 
-### Autonomous AI Orchestration & Surgical Error Diagnosis
+Complementing diagnostic depth with operational engineering, I build paved-road developer platforms that eliminate cognitive friction: automated workstation compliance verification, hermetic environment boundaries, and deterministic tooling that guarantee security and consistency across distributed engineering teams.
 
-I engineer autonomous artificial intelligence as a rigorous, deterministic infrastructure tier rather than a black-box commodity. Possessing a deep understanding of LLM failure modes, I surgically diagnose and mitigate context degradation, prompt drift, reasoning hallucinations, and tool invocation mismatches.
+### Autonomous AI Engineering & Surgical Error Diagnosis
 
-To ensure autonomous agents operate with enterprise-grade reliability, I design comprehensive agentic governance frameworks:
+I engineer autonomous artificial intelligence as a rigorous, deterministic infrastructure tier rather than a black-box commodity. With a deep understanding of LLM operational and cognitive failure modes, I surgically diagnose and mitigate context degradation, reasoning drift, attention-window saturation, hallucination loops, subtle tool invocation parameter mismatches, and multi-agent coordination failures.
 
-- **Dynamic Tool Brokering**: Scalable Model Context Protocol (MCP) gateways facilitating dynamic tool discovery, schema enforcement, and stateful agent communication backplanes.
-- **Context Routing & Hermeticity**: Hierarchical context routers (`AGENTS.md`) and attention-window hermeticity policies that restrict prompt exposure to bounded scopes, completely preventing information leakage and hallucination loops.
-- **Deterministic Policy Guardrails**: Integration of Common Expression Language (CEL) policy filters, execution evaluation gates, and audit trails to guarantee that autonomous agent operations adhere strictly to architectural standards.
+To organize autonomous agents into a reliable, enterprise-grade engineering tier, I design comprehensive agentic governance frameworks:
 
-### Pioneering Bounded Contexts & Platform Vector Memory (RAG)
+- **Dynamic Tool Brokering**: Scalable Model Context Protocol (MCP) gateways providing dynamic tool discovery, strict schema enforcement, and stateful agent communication backplanes.
+- **Context Routing & Attention Hermeticity**: Hierarchical context routers and strict attention-window hermeticity policies that restrict prompt exposure to bounded scopes, eliminating context drift and hallucination loops.
+- **Deterministic Policy Guardrails**: Integration of Common Expression Language (CEL) policy filters, execution evaluation gates, and audit trails to enforce absolute architectural standards during autonomous agent operations.
 
-A staunch advocate of Domain-Driven Design (DDD), I pioneered the formal bounded context topology of the platform (`platform/hub/cortex`, `corporate`, `network`, `observability`, and `studio`). Each domain maintains strict boundary isolation, explicit interfaces, and isolated lifecycle management.
+### Domain-Driven Bounded Contexts & Semantic Vector Architecture (RAG)
 
-Within the AI Cortex subsystem, I architected a persistent semantic vector memory (RAG) infrastructure:
+As a practitioner of Domain-Driven Design (DDD), I pioneer formal bounded context topologies across complex distributed systems. By establishing strict domain boundary isolation, ubiquitous domain models, and decoupled contract-driven interfaces, I eliminate cross-system entanglement and enable independently evolving lifecycles across distributed services.
 
-- **Persistent State & Embeddings**: Self-hosted MongoDB 7.0 Replica Sets with native Vector Search, providing high-dimensional vector storage and retrieval.
-- **Context Retrieval Pipeline**: Real-time vector search integration exposed through high-performance Fastify 5 REST APIs, enabling agents to maintain persistent organizational memory across asynchronous sessions.
-- **Graph Knowledge Visualization**: Interactive visual telemetry interfaces built with React and force-directed graph representations to monitor memory clusters and semantic relationships in real time.
+In parallel, I architect persistent semantic vector memory (RAG) substrates for autonomous intelligence:
 
-### Meta-Repository Architecture & Paved-Road DevEx
+- **High-Dimensional Vector Topologies**: Vector storage and similarity retrieval pipelines built on distributed replica sets with native vector indexing, enabling sub-millisecond similarity queries across vast operational corpora.
+- **Asynchronous Context Retrieval**: High-throughput REST and streaming gateways that bridge autonomous agents with persistent semantic memory, ensuring durable context retention across disconnected execution sessions.
+- **Knowledge Graph Telemetry**: Interactive, real-time graph visualization layers mapping high-dimensional memory clusters, semantic relationships, and vector retrieval relevance.
 
-To coordinate complex multi-system engineering without sacrificing autonomy, I designed and manage the `org-core` master meta-repository ecosystem using federated Git Submodules:
+### Cloud-Native Infrastructure, GitOps & Real-Time Telemetry
 
-- **Deterministic Synchronization**: Orchestration of autonomous child repositories (`platform`, `agent-toolkit`, `docs`, `.github`) via immutable Git 160000 commit tree pointers, governed by an automated 5-pillar Git submodule standard (`submodule.recurse`, `push.recurseSubmodules=check`, `fetchRecurseSubmodules=on-demand`).
-- **Paved-Road Automation**: Authored automated workstation bootstrapping scripts (`bootstrap-workstation.ps1`) and strict 7-gate preflight compliance verifiers (`verify-workstation.ps1`) that enforce SSH key signing, repository case-sensitivity, and submodule consistency across machines.
-- **Multi-Tenant Physical Segregation**: Enforced directory boundaries separating organizational repositories (`projects/organizations/`) from personal spaces (`projects/personal/`), eliminating cross-tenant credential leakage.
-
-### Cloud-Native Infrastructure, GitOps & LGTM Telemetry
-
-- **Kubernetes Orchestration**: Declarative multi-cluster provisioning across local rapid-iteration clusters (`k3d`, Skaffold) and production nodes using Helm charts and Kustomize overlays.
-- **Continuous GitOps Reconciliation**: ArgoCD state enforcement guaranteeing Git as the absolute Single Source of Truth (SSOT) for all live cluster deployments.
-- **Zero Trust Ingress**: Elimination of exposed public cloud load balancers through Cloudflare Zero Trust encrypted edge tunnels coupled with Traefik v3 ingress controllers and automated ACME certificate issuance.
+- **Kubernetes Orchestration**: Declarative multi-cluster provisioning across local rapid-iteration environments and production clusters using Helm charts and Kustomize overlays.
+- **Continuous GitOps Reconciliation**: ArgoCD state enforcement guaranteeing Git as the absolute Single Source of Truth (SSOT) for all live infrastructure deployments.
+- **Zero-Trust Ingress Topologies**: Elimination of exposed public cloud load balancers through Cloudflare Zero Trust encrypted edge tunnels coupled with modern ingress controllers and automated certificate management.
 - **Full-Stack LGTM Telemetry**: End-to-end observability pipelines leveraging OpenTelemetry Collector exporting Prometheus metrics, Grafana Loki structured log streams, Grafana Tempo distributed trace graphs, and Pyroscope continuous runtime profiling.
 
-### Low-Level Toolmaking & Real-Time Engines
+### Low-Level Toolmaking & Real-Time Computing
 
-My expertise spans from high-level cloud infrastructure down to real-time, low-level computing:
+My technical range spans from high-level cloud architecture down to real-time, low-level computing:
 
-- **Tessel Engine**: Author of `tessel`, a high-performance game engine and graphics runtime written in TypeScript and compiled WebAssembly (Wasm), targeting modern WebGL and WebGPU rendering pipelines.
-- **Sovereign Knowledge Architecture**: Authoring and structuring technical documentation strictly under the Diátaxis framework (Tutorials, How-To Guides, Reference, Explanations), powered by Docusaurus v3 and Crowdin localization.
+- **Real-Time Graphics & Engine Runtimes**: Author of high-performance rendering engines and graphics runtimes written in TypeScript and compiled WebAssembly (Wasm), targeting modern WebGL and WebGPU rendering pipelines.
+- **Sovereign Knowledge Architecture**: Authoring and structuring technical documentation strictly under the Diátaxis framework (Tutorials, How-To Guides, Reference, Explanations).
 
 ### Cryptographic Invariants & Defensive Security
 
-- **Zero-Trust Secret Governance**: Strict elimination of plaintext credentials and `.env` files on disk, replaced with dynamic in-memory secret injection via Infisical Universal Auth.
-- **Cryptographic Attestation**: Mandatory Ed25519 SSH commit signing (`git commit -S`) across all repositories, linear Git histories, automated branch protection rulesets, and secret scanning push protection.
+- **Zero-Trust Secret Governance**: Elimination of plaintext credentials and `.env` files on disk, replaced with dynamic in-memory secret injection via Infisical Universal Auth.
+- **Cryptographic Attestation**: Mandatory Ed25519 SSH commit signing (`git commit -S`) across all repositories, linear Git histories, automated branch protection rulesets, and proactive secret scanning push protection.
 
 ---
 
 ### Enterprise Governance & Ownership
 
-<p align="center">
-  {{ logoImage }}
-</p>
-
-I am the Founder and Principal Owner of [**tupynambalucas-dev**](https://github.com/tupynambalucas-dev), directing sovereign software engineering, platform architecture, autonomous AI agents, and systems research across the organization's meta-repository ecosystem.
+<table width="100%">
+  <tr>
+    <td align="center" valign="middle" width="96">
+      <a href="https://github.com/tupynambalucas-dev">
+        <img alt="tupynambalucas-dev" src="{{ assetsBaseUrl }}/static/logo-mark.svg{{ urlSuffix }}" width="68px" />
+      </a>
+    </td>
+    <td valign="middle">
+      I am the Founder and Principal Owner of <a href="https://github.com/tupynambalucas-dev"><strong>tupynambalucas-dev</strong></a>, directing sovereign software engineering, platform architecture, autonomous AI agents, and systems research across the organization's meta-repository ecosystem.
+    </td>
+  </tr>
+</table>
