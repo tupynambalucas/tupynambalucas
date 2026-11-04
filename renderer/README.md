@@ -58,6 +58,24 @@ For local development, copy [.env.example](./.env.example) to `.env` and set `RE
 
 ---
 
+## Generated Branch Setup
+
+The compiled statistics cards (`overview.svg`, `languages.svg`, and static brand logos) are served directly from the `generated` branch via GitHub raw content URLs (`https://raw.githubusercontent.com/<OWNER>/<REPO>/generated/cards/...`).
+
+An orphan branch named `generated` must exist in the repository to store and host these assets:
+
+```bash
+git checkout --orphan generated
+git rm -rf .
+git commit --allow-empty -m "chore: initialize generated branch"
+git push origin generated
+git checkout main
+```
+
+The CI workflow [.github/workflows/renderer-generate.yml](../.github/workflows/renderer-generate.yml) automatically commits and updates SVG cards on this branch on every execution.
+
+---
+
 ## Repository and Language Exclusions
 
 The renderer allows excluding specific repositories or programming languages from the generated statistics cards using case-insensitive glob patterns.

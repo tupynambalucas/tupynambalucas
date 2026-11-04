@@ -55,6 +55,7 @@ This workspace (`@profile/renderer`) manages dynamic asset generation and docume
 4. **Design Token Binding**: Text styles, layout dimensions, and palette colors MUST resolve directly from `@profile/assets`.
 5. **Base64 Font Inlining**: The Nunito font MUST be base64-encoded and inlined inside generated SVGs to bypass GitHub image sandboxing.
 6. **API Resilience**: The client MUST connect to the GitHub GraphQL API with automated retries and backoff handling.
+7. **Generated Branch Prerequisite**: An orphan branch named `generated` MUST exist in the remote repository to host SVG cards under `cards/` for raw GitHub URL serving.
 
 ---
 
