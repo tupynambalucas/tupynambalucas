@@ -20,7 +20,7 @@ minimumReleaseAgeExclude:
 
 packages:
   - 'renderer'
-  - 'shared/*'
+  - 'assets'
 
 catalog:
   '@types/node': ^26.6.2
@@ -50,10 +50,6 @@ catalog:
   dotenv: ^18.0.4
 
 catalogs:
-  mcp-stack:
-    '@modelcontextprotocol/sdk': ^1.30.1
-    'firecrawl': ^4.41.0
-
   tooling-stack:
     '@docusaurus/eslint-plugin': '3.10.2'
     '@eslint/js': '10.0.1'
@@ -81,7 +77,6 @@ catalogs:
     'tailwindcss': ^4.3.3
 
   web-stack:
-    # Dependencies
     'clsx': '^2.1.1'
     '@gsap/react': '^2.1.2'
     'gsap': ^3.15.0
@@ -93,7 +88,6 @@ catalogs:
     'zustand': ^5.0.15
     'react-force-graph-2d': ^1.29.1
     '@marsidev/react-turnstile': ^1.6.1
-    # Dev Dependencies
     '@vitejs/plugin-react-swc': ^4.3.3
     '@vitejs/plugin-react': '^4.3.4'
     'lucide-react': ^1.48.0
@@ -105,63 +99,6 @@ catalogs:
     'eslint-plugin-react-refresh': ^0.5.7
     'vite-plugin-svgr': ^5.2.0
     '@tailwindcss/postcss': ^4.3.3
-
-  docs-stack:
-    '@crowdin/cli': '^5.3.0'
-    '@docusaurus/core': '3.10.2'
-    '@docusaurus/faster': '3.10.2'
-    '@docusaurus/preset-classic': '3.10.2'
-    '@docusaurus/theme-live-codeblock': '3.10.2'
-    '@docusaurus/theme-mermaid': '3.10.2'
-    '@mdx-js/react': ^3.1.1
-    'prism-react-renderer': ^2.4.1
-    '@docusaurus/module-type-aliases': '3.10.2'
-    '@docusaurus/tsconfig': '3.10.2'
-    '@docusaurus/types': '3.10.2'
-    '@docusaurus/utils': '3.10.2'
-    # Core plugin/theme packages needed for custom local preset
-    '@docusaurus/plugin-content-docs': '3.10.2'
-    '@docusaurus/plugin-content-blog': '3.10.2'
-    '@docusaurus/plugin-content-pages': '3.10.2'
-    '@docusaurus/plugin-debug': '3.10.2'
-    '@docusaurus/plugin-google-gtag': '3.10.2'
-    '@docusaurus/plugin-google-tag-manager': '3.10.2'
-    '@docusaurus/plugin-sitemap': '3.10.2'
-    '@docusaurus/plugin-svgr': '3.10.2'
-    '@docusaurus/plugin-css-cascade-layers': '3.10.2'
-    '@docusaurus/theme-classic': '3.10.2'
-    '@docusaurus/theme-search-algolia': '3.10.2'
-    '@docusaurus/theme-common': '3.10.2'
-    'node-fetch': '^2.7.0'
-
-  api-stack:
-    # Dependencies
-    '@fastify/cookie': ^11.1.2
-    '@grpc/grpc-js': ^1.14.5
-    '@grpc/proto-loader': ^0.8.1
-    '@fastify/cors': ^11.3.0
-    '@fastify/csrf-protection': ^8.0.1
-    '@fastify/env': ^7.0.0
-    '@fastify/http-proxy': '^11.0.0'
-    '@fastify/jwt': ^10.2.2
-    '@fastify/one-line-logger': ^2.2.0
-    '@fastify/rate-limit': ^11.2.0
-    '@fastify/session': ^11.1.3
-    '@fastify/sse': ^0.6.0
-    '@sentry/node': ^11.0.0
-    '@sentry/profiling-node': ^11.0.0
-    'bcrypt': '^6.0.0'
-    'bullmq': ^6.3.8
-    'fastify': ^5.12.5
-    'fastify-metrics': ^14.1.0
-    'fastify-plugin': ^6.0.0
-    'fastify-type-provider-zod': ^7.0.0
-    'ioredis': 6.0.0
-    'mongoose': ^9.10.2
-    'pino-roll': '^4.0.0'
-    'sdk-node-apis-efi': ^2.0.1
-    # Dev Dependencies
-    '@types/bcrypt': '^6.0.0'
 
   studio-stack:
     '@fontsource-variable/nunito': '^5.2.7'

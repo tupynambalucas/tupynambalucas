@@ -1,5 +1,5 @@
 {
-  "extends": "@tupynambalucas/shared-config/tsconfig.base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "paths": {
       "@renderer/*": ["./src/*"]

@@ -5,7 +5,7 @@ import { uploadFileContents } from '../../clients/github.js';
 import type { Pipeline } from '../../schemas/pipeline.schema.js';
 import type { GitHubStats } from '../../schemas/githubstats.schema.js';
 import type { Config } from '../../schemas/env.schema.js';
-import ProjectConfig from '@tupynambalucas/shared-config/project.config';
+import ProjectConfig from '../../../../project.config.js';
 
 export const licensePipeline: Pipeline = {
   id: 'license',

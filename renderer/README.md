@@ -1,84 +1,125 @@
-# @/renderer
+# @profile/renderer
 
-This workspace manages the generic dynamic asset generator and document compilation engine,
-responsible for generating custom visual SVG cards and compiling markdown templates into
-production-grade documents across the monorepo.
+Dynamic asset generation engine and document compilation workspace for GitHub profile
+statistics, SVG visualization cards, and template compilation.
 
 ---
 
 ## Directory Layout
 
-- **[src/clients/](./src/clients/)**: API client integrations (such as
-  [github.ts](./src/clients/github.ts)) for retrieving user stats and repository metrics via
-  GitHub's GraphQL API.
-- **[src/config/](./src/config/)**: Environment variable configurations and target constants
-  loaded in [env.config.ts](./src/config/env.config.ts).
-- **[src/pipelines/](./src/pipelines/)**: Pipeline modules executing single-responsibility asset
-  compilation processes. Discovered and loaded dynamically at runtime.
-- **[src/renderers/](./src/renderers/)**: Engines compiling metadata into layout templates.
-  - [stats-card.ts](./src/renderers/stats-card.ts): Renders user profile metrics into SVG stats
-    cards.
-- **[src/schemas/](./src/schemas/)**: Zod validation schemas enforcing configuration and API
-  payload shape.
-  - [env.schema.ts](./src/schemas/env.schema.ts): Environment variable validation schema.
-  - [githubstats.schema.ts](./src/schemas/githubstats.schema.ts): Consolidated GitHub stats,
-    repository, and language validation schema.
-  - [pipeline.schema.ts](./src/schemas/pipeline.schema.ts): Pipeline execution targets and Zod
-    validation schemas.
-- **[src/templates/](./src/templates/)**: Domain-organized document templates.
-  - [docs/](./src/templates/docs/): Markdown templates for generated documents (e.g.,
-    [README.template.md](./src/templates/docs/README.template.md)).
-    _Note: SVG stats card templates are loaded from `@repo/studio/assets` under `studio/design/assets/github/cards/`._
-- **[src/utils/](./src/utils/)**: Common helpers for compilation and formatting.
-  - [glob.ts](./src/utils/glob.ts): Simple glob matcher helper for filtering items.
-  - [template-fill.ts](./src/utils/template-fill.ts): Custom string interpolation parser for
-    injecting stats into templates.
-- **[src/index.ts](./src/index.ts)**: Central coordination entrypoint coordinating data fetching,
-  rendering, and pipeline writes.
-- **[generated/cards/](./generated/cards/)**: Vector SVG card outputs generated for light and dark
-  themes, alongside the shared brand `logo-horizontal.svg`.
-- **[generated/docs/](./generated/docs/)**: Markdown preview files generated for light and dark
-  themes, both embedding the shared header.
+- **[src/clients/](./src/clients/)**: GitHub GraphQL and REST API clients ([github.ts](./src/clients/github.ts)) querying user statistics, commit velocity, and repository metadata.
+- **[src/config/](./src/config/)**: Environment configuration loader and runtime parameters in [env.config.ts](./src/config/env.config.ts).
+- **[src/pipelines/](./src/pipelines/)**: Modular document and asset generation pipelines:
+  - **[readme/](./src/pipelines/readme/)**: Compiles root `README.md` and SVG statistics cards.
+  - **[conduct/](./src/pipelines/conduct/)**: Compiles `CODE_OF_CONDUCT.md` from project metadata.
+  - **[license/](./src/pipelines/license/)**: Compiles `LICENSE.md` using configured author details.
+- **[src/renderers/](./src/renderers/)**: SVG visualization renderers ([stats-card.ts](./src/renderers/stats-card.ts)).
+- **[src/schemas/](./src/schemas/)**: Zod validation schemas enforcing configuration and data contracts.
+- **[src/utils/](./src/utils/)**: String interpolation ([template-fill.ts](./src/utils/template-fill.ts)) and case-insensitive wildcard glob matcher ([glob.ts](./src/utils/glob.ts)).
+- **[src/index.ts](./src/index.ts)**: Orchestration entrypoint discovering and executing all pipelines.
+
+---
+
+## GitHub Personal Access Token (PAT) Configuration
+
+The renderer requires a GitHub Personal Access Token to query the GraphQL API, retrieve commit statistics across contribution years, and push compiled assets in CI/CD.
+
+### 1. Token Creation (Fine-Grained PAT)
+
+Create a **Fine-Grained Personal Access Token** at [GitHub Settings > Personal Access Tokens > Fine-grained tokens](https://github.com/settings/tokens?type=beta):
+
+1. **Token Name**: `PROFILE_RENDERER_PAT` (or any descriptive identifier).
+2. **Expiration**: Choose your desired validity period.
+3. **Resource Owner**: Select your personal user account.
+4. **Repository Access**:
+   - Select **All repositories** (recommended to allow the engine to collect stats from all personal repositories), or
+   - Select **Only select repositories** and include the profile repository (e.g., `tupynambalucas/tupynambalucas`) plus any repositories whose contribution metrics should be analyzed.
+5. **Permissions**:
+   - **Repository Permissions**:
+     - `Contents`: **Read and Write** (required to upload generated cards to the `generated` branch and write updated markdown documents to `main`).
+     - `Metadata`: **Read-Only** (mandatory for all fine-grained tokens).
+   - **Account Permissions**:
+     - `Email addresses`: **Read-Only** (`user:email`, required to fetch verified emails and correlate commit author signatures with your profile stats).
+
+> Note: If using a **Classic Token**, select the `repo`, `read:user`, and `user:email` scopes.
+
+### 2. GitHub Actions Secret Setup
+
+To enable automated runs via [.github/workflows/renderer-generate.yml](../.github/workflows/renderer-generate.yml):
+
+1. Open your repository on GitHub.
+2. Navigate to **Settings** > **Secrets and variables** > **Actions**.
+3. Under **Repository secrets**, click **New repository secret**.
+4. Set **Name** to `RENDERER_GH_PAT`.
+5. Set **Secret** to your generated token.
+6. Click **Add secret**.
+
+For local development, copy [.env.example](./.env.example) to `.env` and set `RENDERER_GH_PAT`.
+
+---
+
+## Repository and Language Exclusions
+
+The renderer allows excluding specific repositories or programming languages from the generated statistics cards using case-insensitive glob patterns.
+
+### Configuration Methods
+
+#### 1. Via Environment Variables (`.env` or CI Secrets)
+
+Define exclusions in `.env` or in CI workflows as comma-separated values or JSON arrays:
+
+```bash
+# Comma-separated format
+EXCLUDE_REPOS="*test*, temp-*, legacy-project"
+EXCLUDE_LANGS="HTML, CSS, Shell, Makefile"
+
+# Or JSON array format
+EXCLUDE_REPOS='["*test*", "temp-*", "legacy-project"]'
+EXCLUDE_LANGS='["HTML", "CSS", "Shell"]'
+
+# Exclude all private repositories
+EXCLUDE_PRIVATE=true
+```
+
+#### 2. Via Code Configuration
+
+Directly configure patterns in [src/config/env.config.ts](./src/config/env.config.ts):
+
+```typescript
+export const config = {
+  // ...
+  excludeRepos: parseList(process.env.EXCLUDE_REPOS),
+  excludeLangs: parseList(process.env.EXCLUDE_LANGS),
+  excludePrivate: process.env.EXCLUDE_PRIVATE === 'true',
+  // ...
+};
+```
+
+### Glob Matching Rules
+
+The glob matcher ([src/utils/glob.ts](./src/utils/glob.ts)) evaluates repository names (`repo.name`) and language names (`lang.name`) with the following semantics:
+
+- **Case-Insensitive**: `html` matches `HTML`, and `test` matches `Test`.
+- **Exact Match**: `"my-repo"` matches only `my-repo`.
+- **Prefix Wildcard**: `"*temp"` matches `any-name-temp`.
+- **Suffix Wildcard**: `"archived-*"` matches `archived-frontend` and `archived-backend`.
+- **Substring Wildcard**: `"*sandbox*"` matches `my-sandbox-api`.
 
 ---
 
 ## Active Pipelines
 
-- **[github-profile.pipeline.ts](./src/pipelines/github-profile.pipeline.ts)**:
-  Compiles the root-level developer profile [README.md](../README.md) using the statistics cards
-  generated from the GitHub API.
-
----
-
-## Technical Features
-
-### 1. Extensible Pipeline Architecture
-
-The system supports registering multiple independent pipelines inside
-[src/pipelines/index.ts](./src/pipelines/index.ts). Each pipeline defines template sources,
-output locations (both locally and in remote CI/CD branches), allowing the renderer to compile
-completely different document suites (e.g., GitHub developer profiles, handbook manuals, or design
-systems) concurrently.
-
-### 2. Sandbox-Proof Vector Branding
-
-By base64-encoding our local variable **Nunito** font file and embedding it as an inlined
-`@font-face` within our SVG templates, we bypass GitHub's strict HTML image sandbox restrictions.
-This ensures that custom text styles render with pixel-perfect brand fidelity on all screens.
-
-### 3. Native Design System Binding
-
-Colors and font primitives are resolved directly from `@repo/studio/assets` tokens. This
-makes our SVGs completely responsive to design system changes.
+- **[readme.pipeline.ts](./src/pipelines/readme/readme.pipeline.ts)**: Fetches repository stats, generates SVG overview and language breakdown cards, and compiles the root [README.md](../README.md).
+- **[conduct.pipeline.ts](./src/pipelines/conduct/conduct.pipeline.ts)**: Compiles the root [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) from central project metadata.
+- **[license.pipeline.ts](./src/pipelines/license/license.pipeline.ts)**: Compiles the root [LICENSE.md](../LICENSE.md) dynamically with author details.
 
 ---
 
 ## Scripts
 
-Run these scripts from the workspace directory or via pnpm filters:
+Execute from the workspace directory or from root with pnpm filters:
 
-- `pnpm clean`: Removes all compiled files, caches, and output build directories.
-- `pnpm generate`: Runs the document compilation pipeline locally, writing files to the monorepo
-  root or package previews.
-- `pnpm typecheck`: Executes TypeScript compiler validation.
-- `pnpm lint`: Performs static ESLint checks.
+- `pnpm clean`: Cleans generated build artifacts and TypeScript incremental build caches.
+- `pnpm generate`: Executes all document pipelines locally, saving generated SVG cards to `../generated/cards/` and compiling markdown documents to the repository root.
+- `pnpm typecheck`: Runs strict TypeScript type validation (`tsc --noEmit`).
+- `pnpm lint`: Runs ESLint analysis across all renderer source files.

@@ -1,14 +1,14 @@
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
-import { brandColors } from '@tupynambalucas/studio-assets/tokens';
+import { brandColors } from '@profile/assets/tokens';
 import { fillTemplate } from '../../utils/template-fill.js';
 import { renderStatsCards } from '../../renderers/stats-card.js';
 import { uploadFileContents } from '../../clients/github.js';
 import type { Pipeline } from '../../schemas/pipeline.schema.js';
 import type { GitHubStats } from '../../schemas/githubstats.schema.js';
 import type { Config } from '../../schemas/env.schema.js';
-import ProjectConfig from '@tupynambalucas/shared-config/project.config';
+import ProjectConfig from '../../../../project.config.js';
 
 export const readmePipeline: Pipeline = {
   id: 'readme',
@@ -26,18 +26,16 @@ export const readmePipeline: Pipeline = {
   async run(stats: GitHubStats, config: Config, workspaceRoot: string): Promise<void> {
     // 1. Resolve asset paths from the studio-assets package
     const overviewTemplatePath = fileURLToPath(
-      import.meta
-        .resolve('@tupynambalucas/studio-assets/renderer/github/cards/stats/overview.template.svg'),
+      import.meta.resolve('@profile/assets/renderer/github/cards/stats/overview.template.svg'),
     );
     const languagesTemplatePath = fileURLToPath(
-      import.meta
-        .resolve('@tupynambalucas/studio-assets/renderer/github/cards/stats/languages.template.svg'),
+      import.meta.resolve('@profile/assets/renderer/github/cards/stats/languages.template.svg'),
     );
     const logoHorizontalSrcPath = fileURLToPath(
-      import.meta.resolve('@tupynambalucas/studio-assets/logos/logo-horizontal-multicolor.svg'),
+      import.meta.resolve('@profile/assets/logos/logo-horizontal-multicolor.svg'),
     );
     const logoMarkSrcPath = fileURLToPath(
-      import.meta.resolve('@tupynambalucas/studio-assets/logos/logo-mark-round-purple.svg'),
+      import.meta.resolve('@profile/assets/logos/logo-mark-round-purple.svg'),
     );
 
     // 2. Generate Stats Cards (Returns SVG strings instead of writing to disk)
@@ -50,7 +48,7 @@ export const readmePipeline: Pipeline = {
     });
 
     // 3. Load Static Logo SVGs
-    console.info('Reading static logos from studio-assets...');
+    console.info('Reading static logos from assets...');
     const logoSvgContent = readFileSync(logoHorizontalSrcPath, 'utf8');
     const logoMarkSvgContent = readFileSync(logoMarkSrcPath, 'utf8');
 
@@ -71,7 +69,7 @@ export const readmePipeline: Pipeline = {
 
     // Logo image tags
     const logoImage = `<img alt="Tupynambá Lucas" src="${assetsBaseUrl}/static/logo-horizontal.svg${urlSuffix}" width="340px" />`;
-    const logoMarkImage = `<img alt="tupynambalucas-dev" src="${assetsBaseUrl}/static/logo-mark.svg${urlSuffix}" width="68px" />`;
+    const logoMarkImage = `<img alt="${ProjectConfig.PROJECT_DISPLAY_NAME}" src="${assetsBaseUrl}/static/logo-mark.svg${urlSuffix}" width="68px" />`;
     const headerImage = logoImage;
 
     const overviewImages = `<picture>

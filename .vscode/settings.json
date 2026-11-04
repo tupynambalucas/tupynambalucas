@@ -61,8 +61,8 @@
   /* --- Prettier Formatting --- */
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": true,
-  "prettier.configPath": "shared/config/prettierrc.json",
-  "prettier.ignorePath": "shared/config/.prettierignore",
+  "prettier.configPath": ".prettierrc.json",
+  "prettier.ignorePath": ".prettierignore",
 
   /* --- Tailwind CSS IntelliSense --- */
   "tailwindCSS.showPixelEquivalents": true,

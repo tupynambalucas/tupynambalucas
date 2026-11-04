@@ -13,11 +13,6 @@
     "lib": ["ES2022", "ESNext"],
     "types": ["node"]
   },
-  "include": [
-    "eslint.config.ts",
-    "*.config.{js,mjs,ts}",
-    "services/*.config.{js,mjs,ts}",
-    "studio/scripts/**/*.ts"
-  ],
-  "exclude": ["node_modules", "dist", "**/apps/**/src", "**/packages/**/src", "studio/src"]
+  "include": ["eslint.config.ts", "*.config.{js,mjs,ts}", "project.config.ts", "scripts/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

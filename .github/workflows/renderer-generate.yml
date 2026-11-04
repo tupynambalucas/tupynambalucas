@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: 22
           frozen-lockfile: 'true'
-          filter: '@tupynambalucas/renderer...'
+          filter: '@profile/renderer...'
 
       - name: Generate and Publish Documents
         uses: ./.github/actions/generate-renderer

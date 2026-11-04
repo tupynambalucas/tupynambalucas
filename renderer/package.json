@@ -1,11 +1,11 @@
 {
-  "name": "@tupynambalucas/renderer",
+  "name": "@profile/renderer",
   "version": "1.0.0",
   "private": true,
   "description": "Dynamic asset generation engine for GitHub README compilation and templates.",
   "author": "Tupynambá Lucas Varela Rodrigues <tupynambalucas.dev>",
   "license": "MIT",
-  "homepage": "https://docs.tupynambalucas.dev",
+  "homepage": "https://tupynambalucas.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tupynambalucas/tupynambalucas.git"
@@ -20,10 +20,9 @@
   "dependencies": {
     "zod": "catalog:shared-stack",
     "dotenv": "catalog:shared-stack",
-    "@tupynambalucas/studio-assets": "workspace:*"
+    "@profile/assets": "workspace:*"
   },
   "devDependencies": {
-    "@tupynambalucas/shared-config": "workspace:*",
     "@types/node": "catalog:",
     "rimraf": "catalog:"
   }

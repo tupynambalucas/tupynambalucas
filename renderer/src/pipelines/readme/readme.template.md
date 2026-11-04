@@ -67,17 +67,17 @@ Underpinning every layer of the platform is an uncompromising security baseline 
 
 ---
 
-### Enterprise Governance & Ownership
+### Engineering Leadership & Profile
 
 <table width="100%">
   <tr>
     <td align="center" valign="middle" width="96">
-      <a href="https://github.com/tupynambalucas-dev">
-        <img alt="tupynambalucas-dev" src="{{ assetsBaseUrl }}/static/logo-mark.svg{{ urlSuffix }}" width="68px" />
+      <a href="https://github.com/%REPOSITORY_OWNER%">
+        <img alt="%PROJECT_DISPLAY_NAME%" src="{{ assetsBaseUrl }}/static/logo-mark.svg{{ urlSuffix }}" width="68px" />
       </a>
     </td>
     <td valign="middle">
-      I am the Founder and Principal Owner of <a href="https://github.com/tupynambalucas-dev"><strong>tupynambalucas-dev</strong></a>, directing sovereign software engineering, platform architecture, autonomous AI agents, and systems research across the organization's meta-repository ecosystem.
+      Principal Platform & AI Systems Architect, directing sovereign software engineering, platform architecture, autonomous AI agents, and systems research at <a href="https://%PROJECT_DOMAIN%"><strong>%PROJECT_DOMAIN%</strong></a>.
     </td>
   </tr>
 </table>

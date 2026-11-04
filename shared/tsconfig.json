@@ -1,4 +1,0 @@
-{
-  "files": [],
-  "references": [{ "path": "./config" }, { "path": "./git" }, { "path": "./assets" }]
-}

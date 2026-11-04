@@ -7,13 +7,11 @@
 
 # Bounded Context: renderer
 
-This workspace (`@/renderer`) manages the generic dynamic asset generator and
-document compilation engine, responsible for generating custom visual SVG cards and compiling
-markdown templates into production-grade documents across the monorepo.
+This workspace (`@profile/renderer`) manages dynamic asset generation and document compilation, generating SVG statistics cards and compiling markdown templates into production documents.
 
 ---
 
-## Ubiquitous Language
+## 1. Ubiquitous Language
 
 | Term       | Definition                                                             | Forbidden Synonyms   |
 | :--------- | :--------------------------------------------------------------------- | :------------------- |
@@ -24,90 +22,45 @@ markdown templates into production-grade documents across the monorepo.
 
 ---
 
-## Local Architecture
+## 2. Local Architecture
 
-- **[src/clients/](./src/clients/)**: API client integrations (e.g.,
-  [github.ts](./src/clients/github.ts)) to query the GitHub GraphQL API.
-- **[src/config/](./src/config/)**: Environment variable configurations and target constants
-  loaded in [env.config.ts](./src/config/env.config.ts).
-- **[src/pipelines/](./src/pipelines/)**: Pipeline modules executing single-responsibility asset
-  compilation processes. Discovered and loaded dynamically at runtime.
-- **[src/renderers/](./src/renderers/)**: Engines compiling metadata into layout templates.
-  - [stats-card.ts](./src/renderers/stats-card.ts): Renders user profile metrics into SVG stats
-    cards.
-- **[src/schemas/](./src/schemas/)**: Zod validation schemas enforcing configuration and API
-  payload shape.
-  - [env.schema.ts](./src/schemas/env.schema.ts): Environment variable validation schema.
-  - [githubstats.schema.ts](./src/schemas/githubstats.schema.ts): Consolidated GitHub stats,
-    repository, and language validation schema.
-  - [pipeline.schema.ts](./src/schemas/pipeline.schema.ts): Pipeline execution targets and Zod
-    validation schemas.
-- **[src/pipelines/profile/](./src/pipelines/profile/)**: Domain templates (e.g., [profile.template.md](./src/pipelines/profile/profile.template.md)).
-  _Note: SVG stats card templates are loaded from `@repo/studio/assets` under `studio/design/assets/github/cards/`._
-- **[src/utils/](./src/utils/)**: Common helpers for compilation and formatting.
-  - [glob.ts](./src/utils/glob.ts): Simple glob matcher helper for filtering items.
-  - [template-fill.ts](./src/utils/template-fill.ts):
-    Custom string interpolation parser for injecting stats into templates.
-- **[src/index.ts](./src/index.ts)**: Central coordination entrypoint coordinating data fetching,
-  rendering, and pipeline writes.
+- **[src/clients/](./src/clients/)**: GitHub API client integrations ([github.ts](./src/clients/github.ts)).
+- **[src/config/](./src/config/)**: Environment variable loader and runtime configuration in [env.config.ts](./src/config/env.config.ts).
+- **[src/pipelines/](./src/pipelines/)**: Pipeline modules executing compilation targets:
+  - [readme.pipeline.ts](./src/pipelines/readme/readme.pipeline.ts): Compiles root [README.md](../README.md) and SVG stats cards.
+  - [conduct.pipeline.ts](./src/pipelines/conduct/conduct.pipeline.ts): Compiles root [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md).
+  - [license.pipeline.ts](./src/pipelines/license/license.pipeline.ts): Compiles root [LICENSE.md](../LICENSE.md).
+- **[src/renderers/](./src/renderers/)**: SVG template compilers ([stats-card.ts](./src/renderers/stats-card.ts)).
+- **[src/schemas/](./src/schemas/)**: Zod validation schemas ([env.schema.ts](./src/schemas/env.schema.ts), [githubstats.schema.ts](./src/schemas/githubstats.schema.ts), [pipeline.schema.ts](./src/schemas/pipeline.schema.ts)).
+- **[src/utils/](./src/utils/)**: String interpolator ([template-fill.ts](./src/utils/template-fill.ts)) and case-insensitive wildcard glob matcher ([glob.ts](./src/utils/glob.ts)).
+- **[src/index.ts](./src/index.ts)**: Orchestration entrypoint.
 
 ---
 
-## Active Pipelines
+## 3. Configuration and Exclusions
 
-- **[profile.pipeline.ts](./src/pipelines/profile/profile.pipeline.ts)**:
-  Compiles the root-level developer profile [README.md](../README.md) using the statistics cards
-  generated from the GitHub API.
-
----
-
-## Local Previews Output Layout
-
-When executing `pnpm generate` locally, the compiler creates a unified sandbox for previewing both
-themes with absolute fidelity:
-
-- **[generated/cards/](./generated/cards/)**: Unified directory containing the shared theme-agnostic
-  `logo-horizontal.svg`, as well as physical `-light.svg` and `-dark.svg` copies of all theme-dependent
-  generated cards (including statistics overview and languages).
-- **[generated/docs/](./generated/docs/)**: Subdivided theme directories to view compiled markdown files:
-  - **[generated/docs/light/](./generated/docs/light/)**: Light-themed `.md` documents, referencing light-themed
-    cards and the shared header from `../../cards/`.
-  - **[generated/docs/dark/](./generated/docs/dark/)**: Dark-themed `.md` documents, referencing dark-themed
-    cards and the shared header from `../../cards/`.
+- **Fine-Grained PAT (`RENDERER_GH_PAT`)**: Mandatory secret with `Contents: read/write`, `Metadata: read-only`, and `Email: read-only` permissions.
+- **Exclusion Filters**: Filter out repositories and languages from statistics cards via case-insensitive wildcard patterns (`*`):
+  - `EXCLUDE_REPOS`: Comma-separated list or JSON array of repository globs (e.g., `*test*, temp-*, sandbox`).
+  - `EXCLUDE_LANGS`: Comma-separated list or JSON array of language globs (e.g., `HTML, CSS, Shell`).
+  - `EXCLUDE_PRIVATE`: Boolean flag (`true` / `false`) to omit private repositories.
 
 ---
 
-## Code Patterns
+## 4. Workspace Guardrails
 
-- **Registering a New Pipeline**: [references/pipeline.md](./references/pipeline.md)
-
----
-
-## Workspace Guardrails
-
-1. **TypeScript Implementation**: The rendering and pipeline compilation engine MUST be implemented
-   in TypeScript/Node.js to maintain a cohesive, full-type codebase.
-2. **Modular Pipelines**: All document generation targets MUST be implemented as independent
-   modules inside the pipelines layer to satisfy the Open/Closed Principle. Adding a compilation
-   routine MUST NOT modify existing pipelines or core execution logic.
-3. **Template Consistent Naming**: All source files under the templates directory MUST use the
-   `*.template.*` suffix pattern to distinguish static templates from compiled output.
-4. **Design Token Consumption**: Text style and layout colors MUST be bound directly to the central
-   brand design system tokens from `@repo/studio/assets`.
-5. **Base64 Font Inlining**: To guarantee rendering consistency under GitHub's SVG image sandbox,
-   the variable Nunito brand font file MUST be encoded and inlined directly inside the generated
-   SVGs using base64 data URIs.
-6. **Robust API Connection**: The engine MUST connect directly to the GitHub GraphQL API, employing
-   up to 10 automated retries with exponential backoff on network failures. Local git-clone
-   fallbacks are prohibited.
+1. **TypeScript Implementation**: The rendering engine MUST be implemented in TypeScript with zero compiler errors.
+2. **Modular Pipelines**: All compilation targets MUST be implemented as independent modules adhering to [references/pipeline.md](./references/pipeline.md).
+3. **Template Suffix**: Source templates MUST use the `*.template.*` naming convention.
+4. **Design Token Binding**: Text styles, layout dimensions, and palette colors MUST resolve directly from `@profile/assets`.
+5. **Base64 Font Inlining**: The Nunito font MUST be base64-encoded and inlined inside generated SVGs to bypass GitHub image sandboxing.
+6. **API Resilience**: The client MUST connect to the GitHub GraphQL API with automated retries and backoff handling.
 
 ---
 
-## Scoped Operations
+## 5. Scoped Operations
 
-Run these scripts from the workspace directory or via pnpm filters:
-
-- `pnpm clean`: Removes all compiled files and cache files.
-- `pnpm generate`: Runs the document compilation pipeline locally, generating previews.
+- `pnpm clean`: Removes all compiled files and incremental build caches.
+- `pnpm generate`: Executes all document and card compilation pipelines locally.
 - `pnpm typecheck`: Executes TypeScript compiler verification with zero emit.
-- `pnpm lint`: Runs ESLint analysis on the workspace codebase.
+- `pnpm lint`: Runs ESLint analysis across workspace files.

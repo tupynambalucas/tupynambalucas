@@ -5,24 +5,18 @@ tupynambalucas.dev monorepo.
 
 ## Navigation
 
-- [README.md](./README.md): Serves as the dynamic GitHub Profile view (updated by the `@Tupynambalucas/renderer` workspace) and contains the official developer entry point and technical architecture within a toggleable details block.
+- [README.md](./README.md): Serves as the dynamic GitHub Profile view (updated by the `@profile/renderer` workspace) and contains the official developer entry point and technical architecture within a toggleable details block.
 - [.agents](./.agents/AGENTS.md): Authoritative domain for agentic AI configurations, skills, plugins, and repository manipulation scripts.
-- [hub](./hub/AGENTS.md): Internal team context grouping `observability` (Grafana, Loki, Prometheus), `network` (Traefik, Cloudflared), `tools` (Headlamp), `studio` (Penpot, Memos, brand assets), and `cortex` (AgentGateway, Memory subsystem).
-- [corporate](./corporate/AGENTS.md): Public-facing products context housing the company website (React), API (Fastify), and documentation portal (Docusaurus).
-- [k8s](./k8s/AGENTS.md): Core infrastructure manifests organized by environment overlays (`dev`, `staging`, `prod`) and Helm charts.
 - [renderer](./renderer/AGENTS.md): Dynamic asset generator and document compilation engine producing GitHub profile SVG cards and templated Markdown.
-- [shared](./shared/AGENTS.md): Foundational cross-workspace utilities, global configurations, and Git hooks.
-- [tools](./tools/AGENTS.md): GitHub CLI automation, repository provisioning scripts, and containerized Git environments.
+- [assets](./assets/README.md): Design tokens, brand icons, and visual assets for profile cards and documentation.
 
 ## Architecture
 
-The monorepo uses Skaffold v4beta11 for local development (`dev` environment) across two isolated k3d clusters, configured in the `k8s/` directory:
+The repository is a lightweight pnpm monorepo with automated document compilation and dynamic GitHub profile stats generation:
 
-- `root` ([k8s/skaffold.yaml](./k8s/skaffold.yaml)): Main orchestrator that requires the two modules below.
-- `hub` ([k8s/skaffold.hub.yaml](./k8s/skaffold.hub.yaml)): Deploys internal tools to the `k3d-hub` cluster.
-- `corporate` ([k8s/skaffold.corporate.yaml](./k8s/skaffold.corporate.yaml)): Deploys public products to the `k3d-corporate` cluster.
-
-Cloud environments (`staging` and `prod`) are delivered via ArgoCD GitOps, circumventing Skaffold entirely.
+- `renderer`: Document generator compiling profile statistics, licenses, and conduct files from SVG templates and GitHub GraphQL API metrics.
+- `assets`: Design tokens, logos, and vector cards consumed by the renderer pipeline.
+- `scripts`: Root automation and Git hook scripts executed via Husky.
 
 ## Scoped Guardrails
 
@@ -38,7 +32,7 @@ Cloud environments (`staging` and `prod`) are delivered via ArgoCD GitOps, circu
 - MUST format all files according to Prettier standards (2-space indent, max 100-character
   line width).
 - MUST hardcode the project name and domain in all `AGENTS.md` and `README.md` files (e.g., `Tupynambalucas`, `tupynambalucas.dev`).
-- MUST NOT use template placeholder tokens like `%PROJECT_DOMAIN%` or `%PROJECT_NAME%` outside of the `corporate/collections` directory.
+- MUST NOT use template placeholder tokens like `%PROJECT_DOMAIN%` or `%PROJECT_NAME%` outside of templated assets.
 - **Routing**: When working within a specific bounded context, agents MUST read the local `AGENTS.md` file within that directory before proceeding.
 
 ## Required Skills

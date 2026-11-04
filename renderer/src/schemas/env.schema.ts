@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import dotenv from 'dotenv';
-import ProjectConfig from '@tupynambalucas/shared-config/project.config';
+import ProjectConfig from '../../../project.config.js';
 
 dotenv.config();
 
